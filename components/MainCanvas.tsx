@@ -58,11 +58,19 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalView, setModalView] = useState('main'); // 'main' or a specific tool id
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [expandedSubsections, setExpandedSubsections] = useState<Record<string, boolean>>({});
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
     { text: "Hello! I'm your BW Consultant. How can I help you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
+
+  const requiredFields: Record<string, string[]> = {
+    identity: ['organizationName', 'organizationType', 'country'],
+    mandate: ['strategicIntent', 'problemStatement'],
+    market: ['userCity'],
+    risk: ['riskTolerance'],
+  };
 
   const toggleSubsection = (key: string) => {
     setExpandedSubsections(prev => ({ ...prev, [key]: !prev[key] }));
@@ -84,9 +92,30 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
   const openModal = (id: string) => {
     setActiveModal(id);
+    setValidationErrors([]); // Clear previous errors
     setModalView('main'); // Reset to main view whenever a new modal is opened
   };
 
+  const handleModalClose = () => {
+    if (activeModal && requiredFields[activeModal]) {
+      const errors: string[] = [];
+      requiredFields[activeModal].forEach(field => {
+        const value = params[field as keyof ReportParameters];
+        if (Array.isArray(value) && value.length === 0) {
+          errors.push(field);
+        } else if (!value) {
+          errors.push(field);
+        }
+      });
+
+      if (errors.length > 0) {
+        setValidationErrors(errors);
+        return; // Prevent closing
+      }
+    }
+    setActiveModal(null);
+    setValidationErrors([]);
+  };
 
   const renderActiveModalContent = () => {
     // This function will return the form content based on the activeModal state.
@@ -94,6 +123,19 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     // This is a placeholder for the concept.
     return null;
   }
+
+  const isStepComplete = (stepId: string) => {
+    if (!requiredFields[stepId]) return false;
+    return requiredFields[stepId].every(field => {
+      const value = params[field as keyof ReportParameters];
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+      return !!value;
+    });
+  };
+
+  const isFieldInvalid = (fieldName: string) => validationErrors.includes(fieldName);
 
 
   return (
@@ -125,7 +167,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             >
                                 <div className="flex items-center gap-2 mb-1">
                                     <section.icon size={16} className={section.color} />
-                                    <span className="text-sm font-bold text-stone-900">{section.label}</span>
+                                    <span className="text-sm font-bold text-stone-900 flex items-center gap-1">
+                                      {section.label}
+                                      {isStepComplete(section.id) && <Check size={14} className="text-green-500" />}
+                                    </span>
                                 </div>
                                 <p className="text-[10px] text-stone-600 pl-6">{section.description}</p>
                             </button>
@@ -347,13 +392,13 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="p-6 border-b border-stone-200 flex items-center justify-between shrink-0">
-                            <h2 className="text-2xl font-serif font-bold text-bw-navy capitalize">{activeModal?.replace(/-/g, ' ')} Configuration</h2>
-                            <button onClick={() => setActiveModal(null)} className="p-2 rounded-full hover:bg-stone-100">
+                            <h2 className="text-2xl font-serif font-bold text-bw-navy capitalize">{modalView !== 'main' ? modalView.replace(/-/g, ' ') : activeModal?.replace(/-/g, ' ')} Configuration</h2>
+                            <button onClick={handleModalClose} className="p-2 rounded-full hover:bg-stone-100">
                                 <X size={20} className="text-stone-500" />
                             </button>
                         </div>
                         {/* Modal Body */}
-                        <div className="p-8 overflow-y-auto custom-scrollbar">
+                        <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
                             {/* Identity Section */}
                             {activeModal === 'identity' && (
                                 <div className="space-y-4">
@@ -367,21 +412,21 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         <div className="space-y-3">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Organization Name</label>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Organization Name <span className="text-red-500">*</span></label>
                                                     <input
                                                         type="text"
                                                         value={params.organizationName}
                                                         onChange={(e) => setParams({ ...params, organizationName: e.target.value })}
-                                                        className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent"
+                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent ${isFieldInvalid('organizationName') ? 'border-red-500' : 'border-stone-200'}`}
                                                         placeholder="Enter organization name"
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type</label>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type <span className="text-red-500">*</span></label>
                                                     <select
                                                         value={params.organizationType}
                                                         onChange={(e) => setParams({ ...params, organizationType: e.target.value })}
-                                                        className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent"
+                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent ${isFieldInvalid('organizationType') ? 'border-red-500' : 'border-stone-200'}`}
                                                     >
                                                         <option value="">Select type</option>
                                                         <option value="Corporation">Corporation</option>
@@ -393,12 +438,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Country of Incorporation</label>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Country of Incorporation <span className="text-red-500">*</span></label>
                                                     <input
                                                         type="text"
                                                         value={params.country}
                                                         onChange={(e) => setParams({ ...params, country: e.target.value })}
-                                                        className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent"
+                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent ${isFieldInvalid('country') ? 'border-red-500' : 'border-stone-200'}`}
                                                         placeholder="Enter country"
                                                     />
                                                 </div>
@@ -499,7 +544,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                      >
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Industry (select multiple)</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Industry</label>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     {["Technology", "Finance", "Healthcare", "Manufacturing", "Energy", "Consumer Goods"].map(ind => (
                                                         <label key={ind} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
@@ -533,7 +578,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         color="from-violet-50 to-violet-100">
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Primary Strategic Intent</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Primary Strategic Intent <span className="text-red-500">*</span></label>
                                                 <select value={params.strategicIntent[0] || ''} onChange={(e) => setParams({ ...params, strategicIntent: [e.target.value] })} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent">
                                                     <option value="">Select primary goal...</option>
                                                     <option value="Market Expansion">Market Expansion</option>
@@ -543,8 +588,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Problem Statement</label>
-                                                <textarea value={params.problemStatement} onChange={(e) => setParams({ ...params, problemStatement: e.target.value })} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24" placeholder="Describe the core problem this strategy aims to solve."/>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Problem Statement <span className="text-red-500">*</span></label>
+                                                <textarea value={params.problemStatement} onChange={(e) => setParams({ ...params, problemStatement: e.target.value })} className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24 ${isFieldInvalid('problemStatement') ? 'border-red-500' : 'border-stone-200'}`} placeholder="Describe the core problem this strategy aims to solve."/>
                                             </div>
                                         </div>
                                     </CollapsibleSection>
@@ -557,8 +602,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     >
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Risk Tolerance</label>
-                                                <select value={params.riskTolerance} onChange={(e) => setParams({ ...params, riskTolerance: e.target.value })} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent">
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Risk Tolerance <span className="text-red-500">*</span></label>
+                                                <select value={params.riskTolerance} onChange={(e) => setParams({ ...params, riskTolerance: e.target.value })} className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent ${isFieldInvalid('riskTolerance') ? 'border-red-500' : 'border-stone-200'}`}>
                                                     <option value="">Select risk tolerance...</option>
                                                     <option value="Low">Low</option>
                                                     <option value="Medium">Medium</option>
@@ -589,7 +634,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         color="from-green-50 to-green-100"
                                      >
                                         <div className="space-y-3">
-                                            <label className="block text-xs font-bold text-stone-700 mb-1">Select Strategic Objectives</label>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">Select Strategic Objectives <span className="text-red-500">*</span></label>
                                             <div className="grid grid-cols-2 gap-2">
                                                 {["Market Expansion", "Partnership Development", "Technology Acquisition", "Capital Investment", "Operational Excellence", "Innovation Leadership"].map(intent => (
                                                     <label key={intent} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
@@ -609,11 +654,11 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                 ))}
                                             </div>
                                             <div className="mt-3">
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Problem Statement</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Problem Statement <span className="text-red-500">*</span></label>
                                                 <textarea
                                                     value={params.problemStatement}
                                                     onChange={(e) => setParams({ ...params, problemStatement: e.target.value })}
-                                                    className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24"
+                                                    className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24 ${isFieldInvalid('problemStatement') ? 'border-red-500' : 'border-stone-200'}`}
                                                      placeholder="Describe the core problem this partnership aims to solve."
                                                 />
                                             </div>
@@ -743,11 +788,11 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     >
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Target City / Region</label>
-                                                <input type="text" value={params.userCity || ''} onChange={(e) => setParams({ ...params, userCity: e.target.value })} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent" placeholder="e.g., Silicon Valley, Singapore"/>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Target City / Region <span className="text-red-500">*</span></label>
+                                                <input type="text" value={params.userCity || ''} onChange={(e) => setParams({ ...params, userCity: e.target.value })} className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent ${isFieldInvalid('userCity') ? 'border-red-500' : 'border-stone-200'}`} placeholder="e.g., Silicon Valley, Singapore"/>
                                             </div>
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Analysis Timeframe</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Analysis Timeframe <span className="text-red-500">*</span></label>
                                                 <select value={params.analysisTimeframe} onChange={(e) => setParams({...params, analysisTimeframe: e.target.value})} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent">
                                                     <option value="1-Year">1-Year</option>
                                                     <option value="3-Year">3-Year</option>
@@ -819,8 +864,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     >
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Primary Risk Concerns</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24" placeholder="List main risks: financial, operational, reputational, geopolitical, etc."/>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Primary Risk Concerns <span className="text-red-500">*</span></label>
+                                                <textarea className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent h-24 ${isFieldInvalid('riskTolerance') ? 'border-red-500' : 'border-stone-200'}`} placeholder="List main risks: financial, operational, reputational, geopolitical, etc."/>
                                             </div>
                                         </div>
                                     </CollapsibleSection>
@@ -905,6 +950,30 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </div>
                                 </div>
                             )}
+                            {activeModal === 'analysis' && modalView === 'scenario-planning' && (
+                                <div>
+                                    <button onClick={() => setModalView('main')} className="text-sm text-blue-600 mb-4">&larr; Back to Analysis Tools</button>
+                                    <h3 className="text-lg font-bold mb-4">Scenario Planning</h3>
+                                    <p className="text-sm text-stone-600 mb-4">Define multiple scenarios to model potential outcomes for your strategy.</p>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">Scenario 1: Best Case</label>
+                                            <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="e.g., Rapid market adoption, 50% YoY growth."/>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">Scenario 2: Base Case</label>
+                                            <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="e.g., Steady growth, 20% YoY, moderate competition."/>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">Scenario 3: Worst Case</label>
+                                            <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="e.g., Economic downturn, new major competitor enters."/>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'analysis' && modalView === 'financial-modeling' && (
+                                <p>Financial Modeling interactive tool would be here.</p>
+                            )}
                             {activeModal === 'marketplace' && modalView === 'main' && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {toolCategories.marketplace.map(tool => (
@@ -916,6 +985,16 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             <p className="text-xs text-stone-600">{tool.description}</p>
                                         </button>
                                     ))}
+                                </div>
+                            )}
+                            {activeModal === 'marketplace' && modalView === 'compatibility-engine' && (
+                                <div>
+                                    <button onClick={() => setModalView('main')} className="text-sm text-blue-600 mb-4">&larr; Back to Marketplace Tools</button>
+                                    <h3 className="text-lg font-bold mb-4">Partner Compatibility Engine</h3>
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Potential Partner Name</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Enter a company name to analyze synergy"/>
+                                    </div>
                                 </div>
                             )}
                              {activeModal === 'generation' && (
@@ -1167,17 +1246,19 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         </div>
                                         <div>
                                             <label className="block text-xs font-bold text-stone-700 mb-1">Data Source</label>
-                                            <select className="w-full p-2 border border-stone-200 rounded text-sm">
-                                                <option>Industry Breakdown</option>
-                                                <option>Competitor Market Share</option>
-                                                <option>Funding Source Mix</option>
+                                            <select className="w-full p-2 border border-stone-200 rounded text-sm" disabled={!params.industry.length && !params.fundingSource}>
+                                                <option value="">Select data to visualize...</option>
+                                                {params.industry.length > 0 && <option value="industry">Industry Breakdown</option>}
+                                                {/* Add a placeholder for competitor data */}
+                                                <option value="competitor">Competitor Market Share</option>
+                                                {params.fundingSource && <option value="funding">Funding Source Mix</option>}
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             )}
                             {/* Placeholder for other modals */}
-                            {activeModal && !['identity', 'mandate', 'market', 'risk', 'generation', 'analysis', 'marketplace', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart'].includes(activeModal) && (
+                            {activeModal && !['identity', 'mandate', 'market', 'risk', 'generation', 'analysis', 'marketplace', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart'].includes(activeModal) && modalView === 'main' && (
                                 <div className="text-center text-stone-400 p-16">
                                     <h3 className="text-lg font-bold text-stone-700 mb-2">Configure {activeModal.replace(/-/g, ' ')}</h3>
                                     <p>Configuration options for this tool would appear here.</p>
@@ -1185,16 +1266,21 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             )}
                         </div>
                         {/* Modal Footer */}
-                        <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-end items-center gap-4 shrink-0">
-                            {['doc-suite', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart'].includes(activeModal || '') ? (
-                                <button onClick={() => { /* Add generation/add logic here */ setActiveModal(null); }} className="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded shadow-lg hover:bg-green-700 transition-all">
+                        <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-between items-center gap-4 shrink-0">
+                            <div>
+                                {validationErrors.length > 0 && <p className="text-xs text-red-600 font-bold">Please fill in all required fields (*).</p>}
+                            </div>
+                            <div className="flex items-center gap-4">
+                            {['doc-suite', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart', 'analysis', 'marketplace'].includes(activeModal || '') ? (
+                                <button onClick={() => { onGenerate(); handleModalClose(); }} className="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded shadow-lg hover:bg-green-700 transition-all">
                                     {activeModal?.startsWith('add-') ? 'Add to Report' : 'Generate Document'}
                                 </button>
                             ) : (
-                                <button onClick={() => setActiveModal(null)} className="px-6 py-2 bg-bw-navy text-white text-sm font-bold rounded shadow-lg hover:bg-stone-800 transition-all">
+                                <button onClick={handleModalClose} className="px-6 py-2 bg-bw-navy text-white text-sm font-bold rounded shadow-lg hover:bg-stone-800 transition-all">
                                     Close
                                 </button>
                             )}
+                            </div>
                         </div>
                     </motion.div>
                 </motion.div>
