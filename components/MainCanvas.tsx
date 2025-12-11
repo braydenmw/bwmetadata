@@ -182,7 +182,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 {/* Document Generation Tools */}
                 <div>
                     <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Document Generation Suite</h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                         <button
                             onClick={() => openModal('doc-suite')}
                             className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all text-left group"
@@ -226,13 +226,43 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             </div>
                             <p className="text-[10px] text-stone-600">Analyze existing partnerships</p>
                         </button>
+                        <button
+                            onClick={() => openModal('doc-diversification')}
+                            className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all text-left group"
+                        >
+                            <div className="flex items-center gap-2 mb-1">
+                                <PieChart className="w-5 h-5 text-blue-600" />
+                                <span className="text-xs font-bold text-stone-900">Diversification Report</span>
+                            </div>
+                            <p className="text-[10px] text-stone-600">Analyze market concentration risk</p>
+                        </button>
+                        <button
+                            onClick={() => openModal('doc-ethics')}
+                            className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all text-left group"
+                        >
+                            <div className="flex items-center gap-2 mb-1">
+                                <ShieldCheck className="w-5 h-5 text-blue-600" />
+                                <span className="text-xs font-bold text-stone-900">Ethical Check Report</span>
+                            </div>
+                            <p className="text-[10px] text-stone-600">Compliance & mitigation analysis</p>
+                        </button>
+                        <button
+                            onClick={() => openModal('doc-precedent')}
+                            className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all text-left group"
+                        >
+                            <div className="flex items-center gap-2 mb-1">
+                                <History className="w-5 h-5 text-blue-600" />
+                                <span className="text-xs font-bold text-stone-900">Historical Precedent</span>
+                            </div>
+                            <p className="text-[10px] text-stone-600">Compare against historical cases</p>
+                        </button>
                     </div>
                 </div>
 
                 {/* Letter Generation Tools */}
                 <div>
                     <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Letter Generation Suite</h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                         <button
                             onClick={() => openModal('letter-loi')}
                             className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all text-left group"
@@ -272,6 +302,26 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <span className="text-xs font-bold text-stone-900">Formal Proposal</span>
                             </div>
                             <p className="text-[10px] text-stone-600">Create a partnership proposal</p>
+                        </button>
+                        <button
+                            onClick={() => openModal('letter-im')}
+                            className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all text-left group"
+                        >
+                            <div className="flex items-center gap-2 mb-1">
+                                <Briefcase className="w-5 h-5 text-green-600" />
+                                <span className="text-xs font-bold text-stone-900">Investment Memo</span>
+                            </div>
+                            <p className="text-[10px] text-stone-600">Justify capital investment</p>
+                        </button>
+                        <button
+                            onClick={() => openModal('letter-ddr')}
+                            className="p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all text-left group"
+                        >
+                            <div className="flex items-center gap-2 mb-1">
+                                <Search className="w-5 h-5 text-green-600" />
+                                <span className="text-xs font-bold text-stone-900">Due Diligence Request</span>
+                            </div>
+                            <p className="text-[10px] text-stone-600">Formal info request list</p>
                         </button>
                     </div>
                 </div>
@@ -889,20 +939,20 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </CollapsibleSection>
                                 </div>
                             )}
-                            {/* --- DOCUMENT & LETTER GENERATION MODALS --- */}
-                            {activeModal === 'doc-summary' && (
+                            {/* --- DOCUMENT GENERATION SUITE MODALS --- */}
+                            {activeModal === 'doc-summary' && ( // Executive Summary
                                 <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Generates a high-level summary of the entire strategic roadmap. Ideal for circulating to stakeholders who need a quick overview of the key findings and recommendations.</p>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-2">Target Audience</label>
-                                        <select className="w-full p-2 border border-stone-200 rounded text-sm">
-                                            <option>Investor</option>
-                                            <option>Executive</option>
-                                            <option>Legal</option>
-                                            <option>Technical</option>
-                                        </select>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Report Length</label>
+                                        <select className="w-full p-2 border border-stone-200 rounded text-sm"><option>1-Page Brief</option><option>3-Page Standard</option><option>5-Page Detailed</option></select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-2">Key Sections to Emphasize</label>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Target Audience</label>
+                                        <select className="w-full p-2 border border-stone-200 rounded text-sm"><option>Investor</option><option>Executive Board</option><option>Legal Team</option><option>Technical Team</option></select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Key Sections to Emphasize</label>
                                         <div className="grid grid-cols-2 gap-2">
                                             {["Market Opportunity", "Financial Projections", "Risk Mitigation", "Team Strength"].map(sec => (
                                                 <label key={sec} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
@@ -912,14 +962,97 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             ))}
                                         </div>
                                     </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Specific Instructions or Custom Requests</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="e.g., 'Focus heavily on the competitive advantage section.'"/>
+                                    </div>
                                 </div>
                             )}
-                            {activeModal === 'letter-loi' && (
+                            {activeModal === 'doc-bi' && ( // Business Intelligence
                                 <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Generates a deep-dive report on a specific country or region, leveraging advanced analytical modules. Essential for market entry and geopolitical risk assessment.</p>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-2">Key Clauses</label>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Focus Country/Region</label>
+                                        <input type="text" value={params.userCity || params.country} className="w-full p-2 border border-stone-200 rounded text-sm bg-stone-50" readOnly/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Analytical Modules to Include</label>
                                         <div className="grid grid-cols-2 gap-2">
-                                            {["Binding", "Non-binding", "Confidentiality", "Exclusivity", "Termination"].map(clause => (
+                                            {["Geopolitical Analysis", "Governance Audit", "RROI Index", "Temporal Market Analysis"].map(mod => (
+                                                <label key={mod} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
+                                                    <input type="checkbox" className="h-4 w-4 text-bw-navy focus:ring-bw-gold"/>
+                                                    <span className="text-sm">{mod}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Comparative Context (Optional)</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 'Compare against Singapore'"/>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'doc-analyzer' && ( // Partnership Analyzer
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Analyzes an existing partnership to generate a Symbiotic Partnership Index (SPI) score, identifying strengths, weaknesses, and areas for improvement.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Partner Name</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Enter existing partner's name"/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Partnership Details & History</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Describe the nature of the partnership, its goals, and current status."/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Known Risk Factors or Issues</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="e.g., 'Communication breakdown in Q2', 'Dependency on a single supplier'"/>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'doc-diversification' && (
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Analyzes market and revenue concentration using the Herfindahl-Hirschman Index (HHI) and recommends markets for diversification to reduce dependency risk.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Focus Sectors for Diversification</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., Renewable Energy, SaaS, Healthcare IT"/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Number of Recommendations</label>
+                                        <select className="w-full p-2 border border-stone-200 rounded text-sm"><option>Top 3</option><option>Top 5</option><option>Top 10</option></select>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'doc-ethics' && (
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Performs an ethical and compliance check based on the provided data, flagging potential issues related to sanctions, labor practices, and corruption. Provides mitigation strategies.</p>
+                                     <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Risk Threshold</label>
+                                        <select className="w-full p-2 border border-stone-200 rounded text-sm"><option>Low (Flag all potential issues)</option><option>Medium (Flag moderate to high-risk issues)</option><option>High (Flag only critical issues)</option></select>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'doc-precedent' && (
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Compares the current venture against a database of historical cases, providing a probability of success, applicable success factors, and key warnings based on past outcomes.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Filter Historical Cases by Sector</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 'Fintech', 'Biotechnology' (Optional)"/>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* --- LETTER GENERATION SUITE MODALS --- */}
+                            {activeModal === 'letter-loi' && ( // Letter of Intent
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Drafts a formal Letter of Intent (LOI) to signal serious consideration of a partnership. This document outlines the broad terms before extensive due diligence.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Letter Style</label>
+                                        <select className="w-full p-2 border border-stone-200 rounded text-sm"><option>Formal</option><option>Standard</option><option>Collaborative</option></select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Key Clauses to Include</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {["Binding Provisions", "Non-binding Provisions", "Confidentiality", "Exclusivity", "Termination"].map(clause => (
                                                 <label key={clause} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
                                                     <input type="checkbox" className="h-4 w-4 text-bw-navy focus:ring-bw-gold"/>
                                                     <span className="text-sm">{clause} Clause</span>
@@ -928,19 +1061,24 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-1">Exclusivity Period (days)</label>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Exclusivity Period (days)</label>
                                         <input type="number" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 90"/>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-1">Governing Law (Jurisdiction)</label>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Governing Law (Jurisdiction)</label>
                                         <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., State of Delaware, USA"/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Specific Instructions or Custom Requests</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="e.g., 'Emphasize that the valuation is preliminary and subject to due diligence.'"/>
                                     </div>
                                 </div>
                             )}
-                            {activeModal === 'letter-termsheet' && (
+                            {activeModal === 'letter-termsheet' && ( // Term Sheet
                                 <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Generates a Term Sheet that lays out the material terms and conditions of a business agreement. This is a more detailed document than an LOI.</p>
                                     <div>
-                                        <label className="block text-sm font-bold text-stone-700 mb-1">Valuation ($)</label>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Valuation / Price ($)</label>
                                         <input type="number" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 10000000"/>
                                     </div>
                                     <div>
@@ -951,8 +1089,73 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         <label className="block text-sm font-bold text-stone-700 mb-1">Liquidation Preference</label>
                                         <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 1x, Non-participating"/>
                                     </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Board Seats</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 'One seat on the Board of Directors'"/>
+                                    </div>
                                 </div>
                             )}
+                            {activeModal === 'letter-mou' && ( // Memorandum of Understanding
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Creates a Memorandum of Understanding (MOU) to express a convergence of will between parties, indicating a common line of intended action.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Key Objectives of the MOU</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="List the primary goals this MOU aims to achieve."/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Scope of Collaboration</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Define the areas and limits of the collaboration."/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Specific Instructions or Custom Requests</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="e.g., 'Include a section on joint marketing efforts.'"/>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'letter-proposal' && ( // Formal Proposal
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Constructs a comprehensive formal proposal for a potential partner, detailing the project, value proposition, timeline, and costs.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Project Title</label>
+                                        <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 'Proposal for Joint Venture in APAC Region'"/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Key Deliverables</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="List the specific outcomes and deliverables of the proposed project."/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Proposed Budget & Payment Schedule</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Outline the financial aspects of the proposal."/>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'letter-im' && ( // Investment Memo
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Creates a detailed internal memorandum to justify a capital investment for the proposed partnership or project, aimed at an investment committee or executive board.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Requested Investment Amount ($)</label>
+                                        <input type="number" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 5000000"/>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Use of Funds</label>
+                                        <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Detail how the investment will be allocated (e.g., 40% R&D, 30% Marketing, 30% Operations)."/>
+                                    </div>
+                                </div>
+                            )}
+                            {activeModal === 'letter-ddr' && ( // Due Diligence Request
+                                <div className="space-y-6">
+                                    <p className="text-sm text-stone-600">Generates a formal Due Diligence Request List to be sent to a potential partner. This document outlines the specific information and documentation required for your team to conduct its analysis.</p>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">Scope of Diligence</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {["Financials", "Legal & Corporate Structure", "Technical IP", "Human Resources"].map(scope => (
+                                                <label key={scope} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer"><input type="checkbox" className="h-4 w-4 text-bw-navy focus:ring-bw-gold"/> <span className="text-sm">{scope}</span></label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Add-in Toolbar Modals */}
                             {activeModal === 'add-pie-chart' && (
                                 <div>
@@ -974,7 +1177,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 </div>
                             )}
                             {/* Placeholder for other modals */}
-                            {activeModal && !['identity', 'mandate', 'market', 'risk', 'generation', 'analysis', 'marketplace', 'doc-summary', 'letter-loi', 'letter-termsheet', 'add-pie-chart'].includes(activeModal) && (
+                            {activeModal && !['identity', 'mandate', 'market', 'risk', 'generation', 'analysis', 'marketplace', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart'].includes(activeModal) && (
                                 <div className="text-center text-stone-400 p-16">
                                     <h3 className="text-lg font-bold text-stone-700 mb-2">Configure {activeModal.replace(/-/g, ' ')}</h3>
                                     <p>Configuration options for this tool would appear here.</p>
@@ -983,7 +1186,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         </div>
                         {/* Modal Footer */}
                         <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-end items-center gap-4 shrink-0">
-                            {['doc-suite', 'doc-summary', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'doc-bi', 'doc-analyzer', 'add-pie-chart'].includes(activeModal || '') ? (
+                            {['doc-suite', 'doc-summary', 'doc-bi', 'doc-analyzer', 'doc-diversification', 'doc-ethics', 'doc-precedent', 'letter-loi', 'letter-termsheet', 'letter-mou', 'letter-proposal', 'letter-im', 'letter-ddr', 'add-pie-chart'].includes(activeModal || '') ? (
                                 <button onClick={() => { /* Add generation/add logic here */ setActiveModal(null); }} className="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded shadow-lg hover:bg-green-700 transition-all">
                                     {activeModal?.startsWith('add-') ? 'Add to Report' : 'Generate Document'}
                                 </button>
