@@ -98,7 +98,7 @@ const MegaMultiSelect = ({
                     placeholder={placeholder}
                 />
                 {isOpen && (
-                    <div className="absolute z-50 w-full bg-white border border-stone-200 shadow-2xl rounded-lg mt-1 max-h-60 overflow-y-auto flex flex-col">
+                    <div className="absolute z-50 w-full bg-white border border-stone-200 shadow-2xl rounded-lg mt-1 max-h-60 overflow-y-auto overflow-x-hidden flex flex-col">
                         <div className="flex justify-between items-center p-2 border-b border-stone-100 bg-stone-50 sticky top-0 z-10">
                             <span className="text-xs font-bold text-stone-500 px-2">{filtered.length} Options</span>
                             <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-stone-200 rounded-full">
@@ -107,13 +107,13 @@ const MegaMultiSelect = ({
                         </div>
                         <div className="flex-grow overflow-y-auto">
                             {filtered.slice(0, 100).map(opt => (
-                                <button 
-                                    key={opt} 
+                                <button
+                                    key={opt}
                                     onClick={() => { onToggle(opt); setSearch(''); }}
-                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 flex justify-between border-b border-stone-50 last:border-0 ${selected.includes(opt) ? 'bg-blue-50 text-blue-800 font-bold' : 'text-stone-700'}`}
+                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 flex justify-between border-b border-stone-50 last:border-0 break-words whitespace-normal ${selected.includes(opt) ? 'bg-blue-50 text-blue-800 font-bold' : 'text-stone-700'}`}
                                 >
-                                    {opt}
-                                    {selected.includes(opt) && <CheckCircle className="w-4 h-4" />}
+                                    <span className="break-words">{opt}</span>
+                                    {selected.includes(opt) && <CheckCircle className="w-4 h-4 flex-shrink-0" />}
                                 </button>
                             ))}
                             {filtered.length === 0 && <div className="p-3 text-sm text-stone-500">No matches found.</div>}
@@ -309,8 +309,8 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
     }, []);
 
     return (
-        <div id="gateway-container" className="h-full w-full flex flex-col items-center justify-start bg-stone-50 p-8 md:p-16 pb-32 overflow-y-auto">
-            <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden mb-16 shrink-0">
+        <div id="gateway-container" className="h-full w-full flex flex-col items-center justify-start bg-stone-50 p-6 md:p-10 lg:p-16 pb-32 overflow-y-auto overflow-x-hidden">
+            <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl w-full bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden mb-16 shrink-0">
                 
                 <div className="bg-stone-900 text-white p-6 px-8 flex justify-between items-center">
                     <div>
@@ -342,9 +342,9 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
                                 <label className="block text-sm font-bold text-stone-900 mb-4 uppercase tracking-wide">Your Experience Level</label>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {[{ id: 'novice', label: 'Novice', desc: 'I need guidance.' }, { id: 'experienced', label: 'Experienced', desc: 'Collaborate with me.' }, { id: 'expert', label: 'Expert', desc: 'Give me tools.' }].map((level) => (
-                                        <button key={level.id} onClick={() => update('skillLevel', level.id as SkillLevel)} className={`p-4 rounded-xl border-2 text-left transition-all ${params.skillLevel === level.id ? 'border-stone-800 bg-white shadow-md ring-1 ring-stone-800' : 'border-stone-200 hover:border-stone-400 text-stone-600 bg-white'}`}>
-                                            <div className={`font-bold text-base mb-1 ${params.skillLevel === level.id ? 'text-stone-900' : 'text-stone-800'}`}>{level.label}</div>
-                                            <div className="text-xs text-stone-500">{level.desc}</div>
+                                        <button key={level.id} onClick={() => update('skillLevel', level.id as SkillLevel)} className={`p-4 rounded-xl border-2 text-left transition-all break-words ${params.skillLevel === level.id ? 'border-stone-800 bg-white shadow-md ring-1 ring-stone-800' : 'border-stone-200 hover:border-stone-400 text-stone-600 bg-white'}`}>
+                                            <div className={`font-bold text-base mb-1 break-words ${params.skillLevel === level.id ? 'text-stone-900' : 'text-stone-800'}`}>{level.label}</div>
+                                            <div className="text-xs text-stone-500 break-words">{level.desc}</div>
                                         </button>
                                     ))}
                                 </div>
@@ -507,13 +507,13 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
                                         { id: 'discovery', title: 'Discover Partners', desc: 'Find new matches & opportunities.' },
                                         { id: 'expansion', title: 'Market Expansion', desc: 'Relocation & ecosystem analysis.' }
                                     ].map(mode => (
-                                        <button 
+                                        <button
                                             key={mode.id}
                                             onClick={() => update('strategicMode', mode.id as any)}
-                                            className={`p-4 rounded-lg border text-left transition-all ${params.strategicMode === mode.id ? 'bg-blue-50 border-blue-600 ring-1 ring-blue-600' : 'bg-white border-stone-200 hover:bg-stone-50'}`}
+                                            className={`p-4 rounded-lg border text-left transition-all break-words ${params.strategicMode === mode.id ? 'bg-blue-50 border-blue-600 ring-1 ring-blue-600' : 'bg-white border-stone-200 hover:bg-stone-50'}`}
                                         >
-                                            <div className={`font-bold text-sm mb-1 ${params.strategicMode === mode.id ? 'text-blue-800' : 'text-stone-900'}`}>{mode.title}</div>
-                                            <div className="text-xs text-stone-500">{mode.desc}</div>
+                                            <div className={`font-bold text-sm mb-1 break-words ${params.strategicMode === mode.id ? 'text-blue-800' : 'text-stone-900'}`}>{mode.title}</div>
+                                            <div className="text-xs text-stone-500 break-words">{mode.desc}</div>
                                         </button>
                                     ))}
                                 </div>
@@ -631,17 +631,17 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
                                         <button
                                             key={lens.id}
                                             onClick={() => toggleArrayItem('strategicLens', lens.id)}
-                                            className={`p-4 rounded-xl border text-left transition-all ${
+                                            className={`p-4 rounded-xl border text-left transition-all break-words ${
                                                 (params.strategicLens || []).includes(lens.id)
                                                 ? 'bg-white border-indigo-500 ring-1 ring-indigo-500 shadow-md'
                                                 : 'bg-white/60 border-indigo-100 hover:bg-white'
                                             }`}
                                         >
-                                            <div className="flex justify-between items-center mb-1">
-                                                <span className="font-bold text-sm">{lens.label}</span>
-                                                {(params.strategicLens || []).includes(lens.id) && <CheckCircle className="w-4 h-4 text-indigo-600" />}
+                                            <div className="flex justify-between items-start mb-1">
+                                                <span className="font-bold text-sm break-words">{lens.label}</span>
+                                                {(params.strategicLens || []).includes(lens.id) && <CheckCircle className="w-4 h-4 text-indigo-600 flex-shrink-0 ml-2" />}
                                             </div>
-                                            <div className="text-xs text-stone-500">{lens.desc}</div>
+                                            <div className="text-xs text-stone-500 break-words">{lens.desc}</div>
                                         </button>
                                     ))}
                                 </div>
