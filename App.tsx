@@ -359,7 +359,7 @@ const App: React.FC = () => {
             </header>
 
             {/* MAIN WORKSPACE */}
-            <main className="flex-grow w-full overflow-hidden bg-stone-50 flex">
+            <main className="flex-grow w-full h-full overflow-hidden bg-stone-50 flex">
                 
                 {/* 1. COMMAND CENTER (DASHBOARD) */}
                 {viewMode === 'command-center' && (
@@ -384,7 +384,7 @@ const App: React.FC = () => {
 
                 {/* 4. UNIFIED CONTROL MATRIX (SUPER SYSTEM) */}
                 {viewMode === 'report-generator' && (
-                    <div className="flex flex-1 w-full overflow-hidden">
+                    <div className="flex flex-1 w-full h-full overflow-hidden">
                         <MainCanvas
                             params={params}
                             setParams={setParams}
