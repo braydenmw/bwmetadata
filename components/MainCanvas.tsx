@@ -81,13 +81,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [showDocGenSuite, setShowDocGenSuite] = useState(false);
   const [partnerPersonas, setPartnerPersonas] = useState<string[]>([]);
   const [generatedDocs, setGeneratedDocs] = useState<{id: string, title: string, desc: string, timestamp: Date}[]>([]);
-  const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([
-    'roi-diagnostic', 'scenario-planning', 'due-diligence', 'partner-compatibility', 'diversification-analysis',
-    'ethical-compliance', 'historical-precedents', 'growth-modeling', 'stakeholder-analysis', 'geopolitical-risk',
-    'valuation-engine', 'performance-metrics', 'supply-chain-analysis', 'charts', 'data',
-    'ai-analysis', 'content', 'negotiation-advantage', 'trade-disruption', 'cultural-intelligence',
-    'deep-reasoning', 'temporal-analysis', 'regulatory-landscape', 'market-disruption', 'competitive-positioning'
-  ]);
+  const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   // Apply intelligence enhancements to report data
   const enhancedReportData = React.useMemo(() =>
