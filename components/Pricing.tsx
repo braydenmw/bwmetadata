@@ -15,12 +15,12 @@ const plans: PricingPlan[] = [
     duration: 'One-Time Pass',
     description: 'Perfect for executing a single high-stakes mission or trial run.',
     features: [
-      'Full System Access (9 Agents)',
+      '6 Specialized AI Analysis Modules',
       'Unlimited Report Generation',
       'Full Math Core (IVAS™, SCF™, SPI™)',
       'Partner Discovery & Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
-      'Real-Time Ethics & Governance'
+      'Live World Bank & Exchange Data'
     ]
   },
   {
@@ -30,12 +30,12 @@ const plans: PricingPlan[] = [
     duration: 'For 3 Months',
     description: 'Designed for strategic planning cycles and market analysis.',
     features: [
-      'Full System Access (9 Agents)',
+      '6 Specialized AI Analysis Modules',
       'Unlimited Report Generation',
       'Full Math Core (IVAS™, SCF™, SPI™)',
       'Partner Discovery & Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
-      'Real-Time Ethics & Governance'
+      'Live World Bank & Exchange Data'
     ]
   },
   {
@@ -45,12 +45,12 @@ const plans: PricingPlan[] = [
     duration: 'For 6 Months',
     description: 'Sustained intelligence for regional expansion execution.',
     features: [
-      'Full System Access (9 Agents)',
+      '6 Specialized AI Analysis Modules',
       'Unlimited Report Generation',
       'Full Math Core (IVAS™, SCF™, SPI™)',
       'Partner Discovery & Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
-      'Real-Time Ethics & Governance'
+      'Live World Bank & Exchange Data'
     ],
     recommended: true
   },
@@ -61,12 +61,12 @@ const plans: PricingPlan[] = [
     duration: 'For 12 Months',
     description: 'Maximum value. Continuous global monitoring & strategy.',
     features: [
-      'Full System Access (9 Agents)',
+      '6 Specialized AI Analysis Modules',
       'Unlimited Report Generation',
       'Full Math Core (IVAS™, SCF™, SPI™)',
       'Partner Discovery & Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
-      'Real-Time Ethics & Governance'
+      'Live World Bank & Exchange Data'
     ]
   }
 ];

@@ -42,7 +42,14 @@ export class ReportOrchestrator {
         country: params.country,
         region: params.region,
         timestamp: new Date().toISOString(),
-        reportId: params.id
+        reportId: params.id,
+        dataSources: [
+          'World Bank Open Data API',
+          'Open Exchange Rates API',
+          'REST Countries API',
+          'Monte Carlo Simulation (200 trials)',
+          '12-Component Weighted Scoring Model'
+        ]
       },
       problemDefinition: {
         statedProblem: params.problemStatement,

@@ -259,7 +259,7 @@ export function buildAdvisorSnapshot(model: AdvisorInputModel): AdvisorSnapshot 
   ];
 
   return {
-    summary: `${organization} can leverage a ${sector} knowledge graph with global precedents to accelerate decisions in ${geography}.`,
+    summary: `${organization} can leverage live World Bank data, 6 specialized AI modules, and Monte Carlo modeling to accelerate decisions in ${geography}.`,
     priorityMoves,
     engagements,
     artifacts,

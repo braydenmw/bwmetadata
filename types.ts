@@ -508,6 +508,7 @@ export interface ReportPayload {
     region: string;
     timestamp: string;
     reportId: string;
+    dataSources?: string[];
   };
   problemDefinition: {
     statedProblem: string;
