@@ -1,9 +1,10 @@
 // Feature flags and configuration for demo/production modes
+// V5.0 - Multi-Agent Brain System - ALL LIVE DATA BY DEFAULT
 export const config = {
-  // AI & Backend Features
-  useRealAI: process.env.REACT_APP_USE_REAL_AI === 'true',
-  useRealData: process.env.REACT_APP_USE_REAL_DATA === 'true',
-  useRealBackend: process.env.REACT_APP_USE_REAL_BACKEND === 'true',
+  // AI & Backend Features - ENABLED BY DEFAULT FOR LIVE SYSTEM
+  useRealAI: process.env.REACT_APP_USE_REAL_AI !== 'false', // Default TRUE
+  useRealData: process.env.REACT_APP_USE_REAL_DATA !== 'false', // Default TRUE
+  useRealBackend: process.env.REACT_APP_USE_REAL_BACKEND !== 'false', // Default TRUE
 
   // UI Features
   showDemoIndicators: process.env.REACT_APP_SHOW_DEMO_INDICATORS === 'true',
@@ -16,6 +17,13 @@ export const config = {
   // Development flags
   isDevelopment: process.env.NODE_ENV === 'development',
   isProduction: process.env.NODE_ENV === 'production',
+  
+  // Multi-Agent Brain System v5.0
+  enableMultiAgent: true,
+  enableHistoricalLearning: true,
+  enableRegionalCityEngine: true,
+  enableDocumentIntelligence: true,
+  enableLiveReportBuilder: true,
 };
 
 // Helper functions for feature detection

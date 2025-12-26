@@ -48,7 +48,7 @@ export class ReportOrchestrator {
           'Open Exchange Rates API',
           'REST Countries API',
           'Monte Carlo Simulation (200 trials)',
-          '12-Component Weighted Scoring Model'
+          'Composite Score Engine v2'
         ]
       },
       problemDefinition: {

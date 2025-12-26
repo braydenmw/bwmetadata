@@ -47,6 +47,8 @@ export interface LiveMarketData {
   fdiInflows: number | null;
   inflation: number | null;
   exchangeRate: number | null;
+  easeOfBusiness?: number | null;
+  unemployment?: number | null;
   lastUpdated: string;
   sources: string[];
 }
@@ -124,13 +126,15 @@ export class WorldBankAPI {
   }
 
   static async getCountryProfile(countryCode: string): Promise<LiveMarketData> {
-    const [gdpCurrent, gdpGrowth, population, tradeBalance, fdiInflows, inflation] = await Promise.all([
+    const [gdpCurrent, gdpGrowth, population, tradeBalance, fdiInflows, inflation, easeOfBusiness, unemployment] = await Promise.all([
       this.getIndicator(countryCode, this.INDICATORS.GDP_CURRENT),
       this.getIndicator(countryCode, this.INDICATORS.GDP_GROWTH),
       this.getIndicator(countryCode, this.INDICATORS.POPULATION),
       this.getIndicator(countryCode, this.INDICATORS.TRADE_BALANCE),
       this.getIndicator(countryCode, this.INDICATORS.FDI_INFLOWS),
       this.getIndicator(countryCode, this.INDICATORS.INFLATION),
+      this.getIndicator(countryCode, this.INDICATORS.EASE_OF_BUSINESS),
+      this.getIndicator(countryCode, this.INDICATORS.UNEMPLOYMENT),
     ]);
 
     return {
@@ -142,6 +146,8 @@ export class WorldBankAPI {
       fdiInflows: fdiInflows?.value || null,
       inflation: inflation?.value || null,
       exchangeRate: null, // Filled by ExchangeRateAPI
+      easeOfBusiness: easeOfBusiness?.value || null,
+      unemployment: unemployment?.value || null,
       lastUpdated: new Date().toISOString(),
       sources: ['World Bank Open Data API']
     };

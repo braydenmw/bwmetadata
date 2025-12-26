@@ -14,17 +14,17 @@ export const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bw-navy/95 backdrop-blur-md py-4 shadow-xl border-b border-white/5' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/85 backdrop-blur-md py-4 border-b border-black/5' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
           {/* Logo */}
           <div className="flex items-center gap-3 group cursor-default">
-            <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/10 group-hover:border-bw-gold/50 transition-colors shadow-lg backdrop-blur-sm">
-                <LayoutGrid className="w-5 h-5 text-bw-gold" />
+            <div className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-colors shadow-sm ${scrolled ? 'bg-bw-light border-black/10' : 'bg-white/70 border-black/10'} group-hover:border-bw-gold/50`}>
+              <LayoutGrid className="w-5 h-5 text-bw-navy" />
             </div>
             <div className="flex flex-col justify-center">
-                <h1 className="text-xl font-serif font-bold leading-none tracking-tight text-white">
+              <h1 className="text-xl font-serif font-bold leading-none tracking-tight text-bw-navy">
                     BW GLOBAL ADVISORY
                 </h1>
                 <span className="text-[10px] text-bw-gold font-medium uppercase tracking-[0.2em] mt-1 opacity-90">

@@ -380,6 +380,104 @@ No existing system combines:
 
 ---
 
+## PART 7: HOW THE LAYERS CONNECT TO NSIL + THE 21 FORMULAS
+
+The five autonomous layers do not invent new math—they wrap around the existing NSIL/Nexus Brain engines so everything stays explainable:
+
+1. **NSIL-Orchestrated Execution**
+  - Every layer publishes its findings as NSIL blocks (`<nsil:adversarial_shield>`, `<nsil:persona_panel>`, `<nsil:counterfactual>`), so the report stream keeps a single source of truth.
+  - The ReportViewer already understands NSIL XML, so no new rendering surface is needed.
+
+2. **Shared 21-Formula Backbone**
+  - Input Shield validates data *before* it feeds the 12-component composite, SPI weights, IVAS Monte Carlo, SCF capture, RROI components, SEAM partners, Ethics flags, Market Diversification HHI, etc.
+  - Persona Reasoner and Counterfactual Lab simply call the same functions (`calculateSPI`, `computeIVAS`, `computeSCF`, `generateRROI`, `generateSEAM`, `runEthicalSafeguards`, `MarketDiversificationEngine.analyzeConcentration`) with modified assumptions.
+  - Motivation Graph and Self-Learning Memory consume the outputs of those 21 formulas and adjust only the weights/thresholds—not the formula definitions themselves.
+
+3. **Nexus Brain Event Loop**
+  - The `ReportOrchestrator` exposes an event bus so each module subscribes to `onParametersUpdated`, `onComputationComplete`, and `onOutcomeRecorded` events.
+  - That keeps the “thinking brain” synchronized with Gemini narratives, NSIL XML, and the Monte Carlo simulations already wired into the system.
+
+**Result:** The autonomous layers are augmentation wrappers on top of the NSIL + Nexus Brain core. They never fork the logic; they interrogate, reweight, and replay the same 21 formulas so every insight remains auditable.
+
+---
+
+## PART 8: NEXT STEP — ALIGN NARRATIVE + PRODUCT SURFACE
+
+To keep the build synchronized with how we present it, the next immediate step is to **align the landing narrative with the NSIL architecture** described above.
+
+1. **Lead with NSIL identity.** The opening viewport should name the Nexus Strategic Intelligence Layer, why it exists, and who built it before diving into feature bullets or poetic language.
+2. **Group the autonomous defenses.** `Adversarial Input Shield`, `Multi-Perspective Reasoner`, `Counterfactual Lab`, and `Self-Learning Memory` must stay word-for-word consistent everywhere (docs, landing, in-product tooltips) so future updates only have a single source of truth.
+3. **Give Partner Discovery / Multi-Scenario Simulation / Early-Warning Alerts their own operational stack callout.** They are execution modules, not badges; present them as part of the Regional Intelligence Core rather than footnotes.
+4. **Reference live data provenance.** Wherever we mention NSIL, reinforce that it is wired to World Bank, sanctions data, exchange rates, and LiveDataService composites so the marketing copy cannot drift from the live math.
+5. **Bridge to Connectivity.** The introductory narrative must conclude by positioning the user as a "verified node," creating a logical transition to the "Connecting the Unconnected" section without redundancy.
+
+**Owner:** Landing page / Hero component. **Dependency:** Completed composite-score + engine rewrite (done). **Success Criteria:** First fold introduces NSIL + builder context, then enumerates the autonomous shield + operational stack using the same vocabulary as this roadmap.
+
+---
+
+## APPENDIX A: LANDING PAGE NARRATIVE SCRIPT (v2025)
+
+### 1. The Story: The Invisible Giant
+**Headline:** The World’s Growth Edge is Regional.
+**Sub:** But for too long, it has been invisible.
+
+**The Pain:**
+Regional cities are the backbone of the global economy. You have the land, the talent, and the worth—but you are struggling to be seen. The current system is broken. It relies on expensive consultants and complex networks that leave most of the world behind.
+
+**The Gap:**
+For centuries, there has been no 100% dedicated development system that is affordable for all. The tools to bridge the gap between local reality and global capital simply did not exist. **Until now.**
+
+### 2. The Journey: 16 Months of Discovery
+**Origin Story:**
+This didn't start in a boardroom. It started with boots on the ground. Over the past 16 months, I analyzed the last 200 years of global business and growth to answer one question: *Why is this so hard?*
+
+**The Discovery:**
+I discovered that people don't need to be told what to do. They need a way to build a document that matches *what they need*, not what they are told they should have. They need a system that allows them to be discovered on their own terms.
+
+### 3. The Invention: The NSIL Brain
+**100% New Architecture:**
+This is not an update to an old system. This is 100% original. We built the **NSIL Brain** to look at the problem from all angles.
+
+**The Philosophy:**
+Most systems look at the "bee and the flower"—the immediate transaction. We built a brain that looks at the **"entire meadow."** It sees the ecosystem, the context, and the hidden connections that others miss.
+
+**Unbiased Intelligence:**
+This is a 24/7 service designed to answer your questions simply, without outside influence. No hidden agendas. No consultant greed. Just pure, calculated clarity to break the gap.
+
+### 4. The Solution: Clarifying the Complex
+**Straightforward Answers:**
+We provide enough information to break the gap and clarify what should be simple. We make the complex straightforward, giving you a deterministic operating system to navigate the world.
+
+---
+
+### 5. The Engine: Autonomous Reasoning Stack (New for 2025)
+*The technology that makes the philosophy possible.*
+
+- **🛡️ Adversarial Input Shield**  
+  Auto-cross-checks your claims against World Bank data, sanctions lists, and live feeds to ensure credibility.
+- **🧠 Multi-Perspective Reasoner**  
+  Five AI personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate every mandate to find weaknesses before investors do.
+- **⚖️ Counterfactual Lab**  
+  Generates “do the opposite” scenarios with regret probability bands to prove your strategy is robust.
+- **📈 Self-Learning Memory**  
+  Captures real-world outcomes and retunes every scoring model without manual prompts.
+
+### 6. Regional Intelligence Core
+*Built to execute, not just analyze.*
+
+- **Partner Discovery:** Symbiotic matchmaking (SPI) + LoI/MoU/Proposal generation suite.
+- **Multi‑Scenario Simulation:** Stress tests activation paths with live composite math.
+- **Early‑Warning Alerts:** Detects regulatory or currency shocks before deals finalize.
+- **Due Diligence Intelligence:** Relocation modeling, TCO analysis, and NSIL/API export in a single pane.
+
+### 7. Transition
+**Verified. Ready. Connected.**  
+You are no longer an unknown entity. You are a verified node in the global grid.
+
+*(Next Section: Connecting the Unconnected)*
+
+---
+
 ## CONCLUSION
 
 The current system has **solid foundations** but the mathematical formulas have critical weaknesses:

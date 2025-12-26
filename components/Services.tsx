@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { 
-  Network, BarChart3, TrendingUp, Cpu, Layers, Database, Globe, 
-  ShieldCheck, Zap, Target, Scale, FileText, Activity,
+    Network, BarChart3, TrendingUp, Layers, Database, Globe, 
+    ShieldCheck, Zap, Target, Scale, Activity,
   Anchor, Compass, Lock, Share2, BrainCircuit, Briefcase, Users,
-  FileCode, Fingerprint, GitBranch, Key, MapPin, Lightbulb, UserCheck, AlertTriangle, BookOpen, CheckCircle2
+    FileCode, Fingerprint, GitBranch, Key, UserCheck, CheckCircle2
 } from 'lucide-react';
 import { Service } from '../types';
 
@@ -112,12 +112,18 @@ export const Services: React.FC = () => {
                         <span className="text-stone-400">Unconnected.</span>
                     </h2>
                     
-                    <div className="prose prose-lg text-stone-600 leading-relaxed space-y-6 text-sm md:text-base">
+                    <div className="prose prose-lg text-stone-600 leading-[1.85] space-y-7 text-base md:text-lg">
                         <p>
                             Regional economies face a critical visibility crisis. They hold immense value—latent assets, skilled labor, and rapid growth potential—but lack the structured data to prove it to the world.
                         </p>
                         <p>
+                            This system was built from the field up. Over 16 months of boots-on-the-ground observation and synthesis, we traced the repeating failure modes of regional development through 200 years of global business and growth—then converted those lessons into a machine-operable intelligence layer.
+                        </p>
+                        <p>
                             We built the <strong>Regional Intelligence Core</strong> to solve this specific inequity. It is not a tool for extraction; it is an engine for connection. By translating local reality into global metrics, we ensure that no viable opportunity is lost to translation errors.
+                        </p>
+                        <p>
+                            Most systems only see the bee and the flower—the visible transaction. This architecture is designed to see the entire meadow: the ecosystem context, the execution constraints, and the hidden connections that determine whether a strategy survives contact with reality.
                         </p>
                         <p>
                             This system is <strong>100% dedicated to regional development</strong>. It provides the same level of analytical rigor found in global financial centers, but is purpose-built to navigate the complexities of regional economic growth.
@@ -128,20 +134,20 @@ export const Services: React.FC = () => {
                     </div>
 
                     {/* Regional Commitment Card */}
-                    <div className="mt-8 p-6 bg-stone-50 border border-stone-200 rounded-sm">
+                    <div className="mt-10 p-7 md:p-8 bg-stone-50 border border-stone-200 rounded-sm">
                         <div className="flex items-center justify-between mb-3">
                             <h4 className="text-xs font-bold text-bw-navy uppercase tracking-widest flex items-center gap-2">
                                 <Globe className="w-4 h-4 text-bw-gold" />
                                 System Dedication
                             </h4>
-                            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] font-bold uppercase flex items-center gap-1">
+                            <span className="bg-bw-gold/15 text-bw-navy px-2 py-0.5 rounded text-[9px] font-bold uppercase flex items-center gap-1 border border-bw-gold/30">
                                 <CheckCircle2 size={10} /> Committed
                             </span>
                         </div>
-                        <p className="text-xs text-stone-500 leading-relaxed italic mb-3">
+                        <p className="text-xs text-stone-500 leading-relaxed italic mb-4">
                             "We architected this system to serve the 'blind spots' of the global economy. It is explicitly designed to calculate value in high-complexity, high-growth regional markets where standard tools fail."
                         </p>
-                        <div className="flex gap-4 pt-2 border-t border-stone-200">
+                        <div className="flex gap-6 pt-3 border-t border-stone-200">
                             <div>
                                 <span className="block text-[10px] font-bold text-stone-400 uppercase">Target Markets</span>
                                 <span className="text-xs font-bold text-bw-navy">Emerging & Regional</span>
@@ -199,7 +205,7 @@ export const Services: React.FC = () => {
                                 <div className="py-4">
                                     <h4 className="text-xl font-bold text-white mb-2">Level 2: The Core Brain</h4>
                                     <p className="text-sm text-stone-400 leading-relaxed">
-                                        The central processing unit that ingests NSIL data. It doesn't just read data; it understands <i>strategic intent</i>. It was developed immediately after NSIL to parse "Case Observations (CO)"—our proprietary dataset of failure points.
+                                        The central processing unit that ingests NSIL data. It doesn't just read data; it understands <i>strategic intent</i>. It was developed immediately after NSIL to parse "Case Observations (CO)"—our proprietary dataset of failure points—and to model ecosystem context, not just the visible transaction.
                                     </p>
                                 </div>
                             </div>

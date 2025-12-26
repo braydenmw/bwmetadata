@@ -24,54 +24,71 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
     const [backendStatus, setBackendStatus] = useState<string>('Idle');
 
     useEffect(() => {
-        // 1. Calculate scores locally for immediate UI feedback (Legacy/Fast Path)
-        const spi = calculateSPI(params);
-        const ethics = runEthicalSafeguards(params);
-        setSpiData(spi);
-        setEthicalData(ethics);
+        let isActive = true;
 
-        // 2. Prepare Backend Payload from calculated sub-scores
-        const payload: any = {
-            context: {
-                project: { industry: params.industry[0], region: params.region },
-                target: params.idealPartnerProfile,
-            }
-        };
-        
-        // Flatten SPI inputs for payload
-        spi.breakdown.forEach(b => {
-            if(b.label === 'Economic Readiness') payload.ER = b.value;
-            if(b.label === 'Symbiosis Potential') payload.SP = b.value;
-            if(b.label === 'Cultural Compatibility') payload.CC = b.value;
-            if(b.label === 'Partner Reliability') payload.PR = b.value;
-            if(b.label === 'Activation Velocity') payload.CA = b.value;
-            if(b.label === 'Ethical Alignment') payload.EA = b.value;
-            if(b.label === 'User Transparency') payload.UT = b.value;
-        });
+        const runLocalEngines = async () => {
+            const [spiResult, ethicsResult] = await Promise.all([
+                calculateSPI(params),
+                Promise.resolve(runEthicalSafeguards(params))
+            ]);
 
-        // 3. Simulate Backend Check (Since no real backend in this demo environment)
-        const submitAndPoll = async () => {
-            setBackendStatus('Submitting...');
-            // Simulate network delay
-            setTimeout(() => {
-                setBackendStatus('Processing...');
+            if (!isActive) return;
+
+            setSpiData(spiResult);
+            setEthicalData(ethicsResult);
+
+            const payload: any = {
+                context: {
+                    project: { industry: params.industry[0], region: params.region },
+                    target: params.idealPartnerProfile,
+                }
+            };
+
+            const labelMap: Record<string, keyof typeof payload> = {
+                'Economic Readiness': 'ER',
+                'Symbiotic Fit': 'SP',
+                'Political Stability': 'CC',
+                'Partner Reliability': 'PR',
+                'Activation Velocity': 'CA',
+                'Ethical Alignment': 'EA',
+                'Transparency': 'UT'
+            };
+
+            spiResult.breakdown.forEach(b => {
+                const key = labelMap[b.label];
+                if (key) {
+                    payload[key] = b.value;
+                }
+            });
+
+            const submitAndPoll = () => {
+                setBackendStatus('Submitting...');
                 setTimeout(() => {
-                    setBackendStatus('Verified (Local)');
-                    // Generate mock verified ethics report
-                    setBackendEthics({
-                        overallScore: ethics.score,
-                        overallFlag: ethics.overallFlag,
-                        version: 'ethics-v1.2.0-verified',
-                        timestamp: new Date().toISOString(),
-                        flags: ethics.flags,
-                        mitigation: ethics.mitigation
-                    });
-                }, 1500);
-            }, 1000);
-        };
-        
-        submitAndPoll();
+                    if (!isActive) return;
+                    setBackendStatus('Processing...');
+                    setTimeout(() => {
+                        if (!isActive) return;
+                        setBackendStatus('Verified (Local)');
+                        setBackendEthics({
+                            overallScore: ethicsResult.score,
+                            overallFlag: ethicsResult.overallFlag,
+                            version: 'ethics-v1.2.0-verified',
+                            timestamp: new Date().toISOString(),
+                            flags: ethicsResult.flags,
+                            mitigation: ethicsResult.mitigation
+                        });
+                    }, 1500);
+                }, 1000);
+            };
 
+            submitAndPoll();
+        };
+
+        runLocalEngines();
+
+        return () => {
+            isActive = false;
+        };
     }, [params]);
 
     const handleListen = async () => {

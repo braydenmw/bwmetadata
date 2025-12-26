@@ -358,6 +358,42 @@ If section needs data (e.g., country), show: "Set your target country above"
 
 ---
 
+## 🧠 Autonomous Reasoning Brain (Auto-Run)
+
+The new [Critical System Analysis & Roadmap](CRITICAL_SYSTEM_ANALYSIS_AND_ROADMAP.md) defines five layered reasoning modules that now run automatically inside the existing workflow—no extra toggles or popups. When a user opens a step, the AI Consultant activates the relevant modules and surfaces their findings inside the same form or inside the assistant window.
+
+| Layer | What It Does | Where It Appears | User Action |
+|-------|--------------|------------------|-------------|
+| **1. Adversarial Input Shield** | Cross-checks user claims versus external data and raises contradiction prompts. | Automatically audits Identity + Mandate fields; summary banner appears in the AI consultant. | None – runs as soon as fields are filled. |
+| **2. Multi-Perspective Reasoner** | Generates Skeptic/Advocate/Regulator/Accountant/Operator viewpoints, then highlights alignment vs disagreement. | Mandate + Strategy sections, Deep Reasoning panel. | None – auto-runs when mandate context is present. |
+| **3. Motivation Graph & Bias Scanner** | Compares stated vs implied motivations, flags greed/overconfidence/desperation signals. | Identity + Mandate review footer, AI consultant status strip. | None – user only reviews flags. |
+| **4. Counterfactual Lab** | Produces “what if we did the opposite?” outcomes with regret probability. | Financial + Risk sections, scenario cards, AI consultant quick links. | None – surfaces comparison chips automatically. |
+| **5. Self-Learning Memory Loop** | Tracks recommendations vs real outcomes, adjusts weights, and logs calibration notes. | Insights drawer + upcoming Governance section. | None – background service; UI only shows most recent learning.
+
+**Implementation Notes**
+
+- Modules piggyback on the same `params` state, so they can score inputs as soon as the user types.
+- Each module emits a lightweight status object (`moduleId`, `status`, `lastRun`, `alerts[]`). The AI consultant reads that store and renders banners/badges.
+- If a blocking contradiction appears (e.g., sanctions mismatch), the module injects a mitigation prompt directly into the relevant section (similar to how ethics flags already behave).
+- Auto-run status is also mirrored inside the assistant window—users can review what the “thinking brain” just executed without clicking anything.
+- Landing/marketing copy now references this brain so prospects understand that the intelligence layer is proactive, not manual.
+
+> ✅ Outcome: Every reasoning module is treated like the rest of the embedded intelligence—always-on, scrollable, contextual, and never a separate modal.
+
+### How the Brain Uses NSIL + Nexus Brain + 21 Formulas
+
+- **NSIL Traceability:** Every module emits NSIL tags (e.g., `<nsil:reasoning_chain>`, `<nsil:counterfactual>`). This keeps the XML audit trail intact and lets the ReportViewer render persona debates, contradiction prompts, and counterfactual outputs alongside IVAS/SCF data.
+- **Nexus Brain Orchestration:** The five layers run inside the same orchestrator that already coordinates SPI, IVAS, SCF, RROI, SEAM, ethics, and matchmaking. They subscribe to the `ReportOrchestrator` observable queue, ensuring the "thinking brain" never diverges from the rest of the workflow.
+- **21 Formula Hooks:**
+  - Adversarial Shield checks inputs before they feed the 12-component composite, IVAS Monte Carlo trials, SCF capture rates, and SPI weights.
+  - Multi-Perspective Reasoner consumes SPI, IVAS, SCF, RROI, SEAM, Ethics, and HHI metrics to give each persona objective footing.
+  - Motivation Graph inspects ethics flags, transparency scores, and RROI component deltas to detect bias.
+  - Counterfactual Lab re-runs IVAS/SCF Monte Carlo draws, SPI weights, and RROI composites under opposite assumptions to surface regret math.
+  - Self-Learning Memory stores real outcomes with the same 21-formula outputs, so future simulations tweak weights rather than inventing new math.
+- **No Rogue Logic:** All five layers are thin reasoning shells wrapped around the existing mathematical engines. They never override SPI/IVAS/SCF/etc.—they only challenge inputs, synthesize perspectives, or replay the calculations with different parameters, then feed the results back into NSIL.
+
+---
+
 ## 📊 COMPARISON
 
 | Aspect | Before (Popup Approach) | Now (Embedded Approach) |

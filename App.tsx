@@ -10,7 +10,6 @@ import {
 import { INITIAL_PARAMETERS } from './constants';
 import CommandCenter from './components/CommandCenter'; 
 import MonitorDashboard from './components/MonitorDashboard';
-import { LandingPage } from './components/LandingPage';
 import AdminDashboard from './components/AdminDashboard';
 import { LegalInfoHub } from './components/LegalInfoHub';
 import { ArchitectPage } from './components/ArchitectPage';
@@ -63,7 +62,7 @@ const App: React.FC = () => {
     // --- STATE ---
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
     const [viewMode, setViewMode] = useState<ViewMode>('command-center');
-    const [hasEntered, setHasEntered] = useState(false);
+    const [hasEntered, setHasEntered] = useState(true); // Skip landing page - directly enter app
     
         // Load saved reports without injecting demo benchmarks
         const [savedReports, setSavedReports] = useState<ReportParameters[]>(() => {
@@ -253,9 +252,7 @@ const App: React.FC = () => {
 
 
     // --- RENDER ---
-    if (!hasEntered) {
-        return <LandingPage onEnter={handleEnterApp} />;
-    }
+    // Direct entry to command center - landing page removed per user request
 
     if (viewMode === 'admin-dashboard') {
         return (

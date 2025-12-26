@@ -259,6 +259,41 @@ export interface RegionProfile {
     rawFeatures: { name: string; rarityScore: number; relevanceScore: number; marketProxy: number }[];
 }
 
+export interface CompositeScoreInputs {
+  gdpCurrent: number;
+  population: number;
+  gdpPerCapita: number;
+  gdpGrowth: number;
+  inflation: number;
+  fdiInflows: number;
+  tradeBalance: number;
+  easeOfBusiness?: number | null;
+  unemployment?: number | null;
+  regionBaseline: number;
+}
+
+export interface CompositeScoreComponents {
+  infrastructure: number;
+  talent: number;
+  costEfficiency: number;
+  marketAccess: number;
+  regulatory: number;
+  politicalStability: number;
+  growthPotential: number;
+  riskFactors: number;
+  digitalReadiness: number;
+  sustainability: number;
+  innovation: number;
+  supplyChain: number;
+}
+
+export interface CompositeScoreResult {
+  components: CompositeScoreComponents;
+  overall: number;
+  inputs: CompositeScoreInputs;
+  dataSources: string[];
+}
+
 export interface MarketShare {
   country: string;
   share: number;
@@ -266,6 +301,7 @@ export interface MarketShare {
 
 export interface MarketOpportunity {
   country: string;
+  city?: string;
   growthRate: number;
   easeOfEntry: number;
   talentAvailability: number;
@@ -275,6 +311,8 @@ export interface MarketOpportunity {
   opportunityScore: number;
   recommendedStrategy: string;
   rationale: string;
+  historicalComparables?: string[];
+  timeToActivation?: { p10: number; p50: number; p90: number };
 }
 
 export interface DiversificationAnalysis {
@@ -386,6 +424,13 @@ export interface SPIResult {
     ciLow: number;
     ciHigh: number;
     breakdown: SPI_BreakdownItem[];
+    dataSources?: string[];
+    historicalContext?: {
+        era: string;
+        region: string;
+        outcome: string;
+        lesson: string;
+    }[];
 }
 
 export type EthicsStatus = 'PASS' | 'CAUTION' | 'BLOCK';

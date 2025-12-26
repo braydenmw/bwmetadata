@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Sparkles, Brain, Database, Map, AlertTriangle, TrendingUp, 
-  FileText, Scale, Target, DollarSign 
+  FileText, Scale, Target, DollarSign, Shield, Users 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,6 +11,7 @@ interface AIFeature {
   description: string;
   icon: React.ElementType;
   badge?: string;
+  autoRun?: boolean;
   action: () => void;
 }
 
@@ -41,6 +42,15 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       badge: 'HIGH VALUE',
       action: () => {},
     },
+    {
+      id: 'adversarial-shield',
+      title: 'Adversarial Input Shield',
+      description: 'Auto-validates claims against sanctions lists and macro data.',
+      icon: Shield,
+      badge: 'AUTO',
+      autoRun: true,
+      action: () => {},
+    },
   ],
   mandate: [
     {
@@ -57,6 +67,15 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       description: 'Learn from 100+ historical deals and proven patterns',
       icon: Database,
       badge: 'HIGH VALUE',
+      action: () => {},
+    },
+    {
+      id: 'multi-perspective',
+      title: 'Multi-Perspective Reasoner',
+      description: 'Runs skeptic/advocate/regulator personas automatically.',
+      icon: Users,
+      badge: 'AUTO',
+      autoRun: true,
       action: () => {},
     },
   ],
@@ -110,6 +129,15 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       icon: DollarSign,
       action: () => {},
     },
+    {
+      id: 'counterfactual-lab',
+      title: 'Counterfactual Lab',
+      description: 'Auto-produces opposite-scenario outcomes & regret odds.',
+      icon: Brain,
+      badge: 'AUTO',
+      autoRun: true,
+      action: () => {},
+    },
   ],
   risks: [
     {
@@ -126,6 +154,15 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       description: 'Compliance checking, human rights, environmental impact',
       icon: Scale,
       badge: 'NEW',
+      action: () => {},
+    },
+    {
+      id: 'bias-scanner',
+      title: 'Motivation & Bias Scanner',
+      description: 'Flags greed/overconfidence signals automatically.',
+      icon: Shield,
+      badge: 'AUTO',
+      autoRun: true,
       action: () => {},
     },
   ],
@@ -163,6 +200,64 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       icon: Database,
       action: () => {},
     },
+    {
+      id: 'self-learning-memory',
+      title: 'Self-Learning Memory Loop',
+      description: 'Continuously recalibrates models based on live outcomes.',
+      icon: Brain,
+      badge: 'AUTO',
+      autoRun: true,
+      action: () => {},
+    },
+  ],
+};
+
+const AUTONOMOUS_MODULES: Record<string, { id: string; title: string; status: 'active' | 'monitoring'; summary: string }[]> = {
+  identity: [
+    {
+      id: 'adversarial-shield',
+      title: 'Adversarial Input Shield',
+      status: 'active',
+      summary: 'Cross-checking entity details vs sanctions + governance data.',
+    },
+    {
+      id: 'motivation-graph',
+      title: 'Motivation Graph',
+      status: 'monitoring',
+      summary: 'Watching for desperation, greed, or overconfidence signals.',
+    },
+  ],
+  mandate: [
+    {
+      id: 'multi-perspective',
+      title: 'Multi-Perspective Reasoner',
+      status: 'active',
+      summary: 'Running skeptic, advocate, regulator, operator personas.',
+    },
+  ],
+  financial: [
+    {
+      id: 'counterfactual-lab',
+      title: 'Counterfactual Lab',
+      status: 'active',
+      summary: 'Testing opposite strategies and computing regret odds.',
+    },
+  ],
+  risks: [
+    {
+      id: 'bias-scanner',
+      title: 'Bias Scanner',
+      status: 'monitoring',
+      summary: 'Scanning risk narratives for hidden motivations.',
+    },
+  ],
+  governance: [
+    {
+      id: 'self-learning-memory',
+      title: 'Self-Learning Memory',
+      status: 'active',
+      summary: 'Collecting outcome data to recalibrate playbooks.',
+    },
   ],
 };
 
@@ -174,6 +269,7 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
   city,
 }) => {
   const features = STEP_FEATURES[activeStep] || [];
+  const autoModules = AUTONOMOUS_MODULES[activeStep] || [];
 
   if (features.length === 0) return null;
 
@@ -185,9 +281,16 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
         return 'bg-purple-500 text-white';
       case 'NEW':
         return 'bg-blue-500 text-white';
+      case 'AUTO':
+        return 'bg-indigo-600 text-white';
       default:
         return 'bg-stone-300 text-stone-700';
     }
+  };
+
+  const handleFeatureLaunch = (feature: AIFeature) => {
+    if (feature.autoRun) return;
+    onLaunchFeature(feature.id);
   };
 
   return (
@@ -232,15 +335,45 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
           </div>
         )}
 
+        {autoModules.length > 0 && (
+          <div className="px-4 py-3 bg-indigo-50 border-b border-indigo-100">
+            <div className="text-[10px] uppercase tracking-wider text-indigo-800 font-semibold mb-1">
+              Autonomous Brain Status
+            </div>
+            <div className="space-y-1">
+              {autoModules.map((module) => (
+                <div key={module.id} className="flex items-start gap-2">
+                  <Brain size={14} className="text-indigo-600 mt-0.5" />
+                  <div>
+                    <div className="text-xs font-bold text-stone-900">
+                      {module.title}
+                      <span className={`ml-2 text-[9px] font-black uppercase tracking-wider ${module.status === 'active' ? 'text-green-600' : 'text-amber-600'}`}>
+                        {module.status === 'active' ? 'Active' : 'Monitoring'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-stone-600">{module.summary}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] text-indigo-700 mt-2">Runs automatically—no action needed.</p>
+          </div>
+        )}
+
         {/* Feature Cards */}
         <div className="p-4 space-y-3 max-h-[400px] overflow-y-auto">
           {features.map((feature) => (
             <motion.button
               key={feature.id}
-              onClick={() => onLaunchFeature(feature.id)}
+              onClick={() => handleFeatureLaunch(feature)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full text-left p-3 rounded-lg border border-stone-200 hover:border-blue-300 hover:bg-blue-50 transition-all group"
+              disabled={feature.autoRun}
+              className={`w-full text-left p-3 rounded-lg border transition-all group ${
+                feature.autoRun
+                  ? 'border-indigo-200 bg-indigo-50 cursor-default'
+                  : 'border-stone-200 hover:border-blue-300 hover:bg-blue-50'
+              }`}
             >
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 group-hover:shadow-lg transition-shadow">
@@ -264,6 +397,11 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
                   <p className="text-xs text-stone-600 leading-snug">
                     {feature.description}
                   </p>
+                  {feature.autoRun && (
+                    <p className="text-[10px] text-indigo-700 font-semibold mt-1">
+                      Auto-run insight: refreshed continuously in this step.
+                    </p>
+                  )}
                 </div>
               </div>
             </motion.button>

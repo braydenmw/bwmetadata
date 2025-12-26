@@ -1,10 +1,9 @@
-
 import React from 'react';
-import { Cpu, Globe, Activity, Layers } from 'lucide-react';
+import { Cpu, Globe, Activity, Layers, Radio } from 'lucide-react';
 
 export const About: React.FC = () => {
   return (
-    <section id="identity" className="py-24 bg-white relative overflow-hidden">
+        <section id="identity" className="py-24 bg-bw-light relative overflow-hidden border-t border-black/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
@@ -18,19 +17,19 @@ export const About: React.FC = () => {
                     </h3>
                 </div>
 
-                <div className="space-y-12">
+                <div className="space-y-14">
                     {/* Our Mandate */}
                     <div className="relative pl-8 border-l-2 border-stone-200 hover:border-bw-gold transition-colors duration-300 group">
                         <div className="absolute -left-[9px] top-0 bg-white py-1 transition-transform group-hover:scale-110">
                             <Globe className="w-4 h-4 text-bw-gold" />
                         </div>
                         <h4 className="text-xl font-bold text-bw-navy mb-3">Our Global Mandate</h4>
-                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Visibility Creates Opportunity.</h5>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                            We operate on the belief that economic potential is evenly distributed, but visibility is not. Our mandate is to illuminate the value in regional markets that are often overshadowed by major global hubs.
+                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Fairness, Calculated.</h5>
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base">
+                            Global capital sees some markets in high resolution and others as a blur. Our mandate is to correct that imbalance by giving regional cities a signal that is as legible and disciplined as anything coming out of a major hub.
                         </p>
-                        <p className="text-gray-600 leading-relaxed text-sm mt-2">
-                            By providing a standardized, mathematical assessment of these regions, we lower the risk barrier for international investors and allow local economies to prove their worth based on data, not just reputation.
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base mt-4">
+                            When the math is clear, perception has less room to distort reality. This system exists so regional leaders can walk into any room with evidence, not anecdotes.
                         </p>
                     </div>
 
@@ -41,23 +40,38 @@ export const About: React.FC = () => {
                         </div>
                         <h4 className="text-xl font-bold text-bw-navy mb-3">Deterministic Intelligence</h4>
                         <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Calculated, Not Curated.</h5>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                            This is not a consultancy that sells subjective advice. This is an <strong>Intelligence Operating System</strong>. 
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base">
+                            This is not a consultancy that sells subjective advice. It is an <strong>Intelligence Operating System</strong> built to run in high-complexity, high-uncertainty environments.
                         </p>
-                        <p className="text-gray-600 leading-relaxed text-sm mt-2">
-                            It ingests strategic intent and stress-tests it against a century of economic precedent, replacing "expert opinion" with calculated probability. We don't guess if a strategy will work; we calculate the likelihood of it failing.
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base mt-4">
+                            It ingests your strategic intent and stress-tests it against a century of economic precedent, replacing "expert opinion" with calculated probability. We don't guess if a strategy will work; we calculate the specific ways it might fail—and how to correct for them.
+                        </p>
+                    </div>
+
+                    {/* NSIL Provenance Callout */}
+                    <div className="relative pl-8 border-l-2 border-stone-200 hover:border-bw-gold transition-colors duration-300 group">
+                        <div className="absolute -left-[9px] top-0 bg-white py-1 transition-transform group-hover:scale-110">
+                            <Layers className="w-4 h-4 text-bw-gold" />
+                        </div>
+                        <h4 className="text-xl font-bold text-bw-navy mb-3">NSIL: The Live Data Spine</h4>
+                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Provenance Anchored.</h5>
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base">
+                            NSIL—Nexus Strategic Intelligence Layer—standardises regional signals and feeds the engines with live data. Each calculation is anchored to sources like World Bank indicators, sanctions ledgers, exchange rates, and our Composite Score Engine v2.
+                        </p>
+                        <p className="text-gray-600 leading-[1.85] text-[15px] md:text-base mt-4">
+                            Outputs like <strong>SPI</strong>, <strong>IVAS</strong>, <strong>SCF</strong>, <strong>RROI</strong>, and <strong>SEAM</strong> stay explainable and auditable: the same logic that scores a mandate is what shapes the narrative, the dossier, and the Workbench guidance.
                         </p>
                     </div>
                 </div>
             </div>
 
             {/* Right: The Visual */}
-            <div className="relative h-full min-h-[500px] flex items-center justify-center">
+            <div className="relative h-full min-h-[520px] flex items-center justify-center">
                 {/* Decorative Background Element */}
-                <div className="absolute top-0 right-0 w-3/4 h-full bg-stone-100 rounded-sm -z-10 transform translate-x-4 translate-y-4"></div>
+                <div className="absolute top-0 right-0 w-3/4 h-full bg-white rounded-2xl -z-10 transform translate-x-4 translate-y-4 border border-black/5"></div>
                 
                 {/* Main Image Container */}
-                <div className="relative h-full w-full rounded-sm overflow-hidden shadow-2xl border border-stone-200 group">
+                <div className="relative h-full w-full rounded-2xl overflow-hidden shadow-2xl border border-black/10 group">
                     <img 
                         src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2301" 
                         alt="Global Architecture" 
@@ -66,7 +80,7 @@ export const About: React.FC = () => {
                     <div className="absolute inset-0 bg-bw-navy/20 mix-blend-multiply pointer-events-none transition-opacity duration-500 group-hover:opacity-0"></div>
                     
                     {/* Floating Overlay */}
-                    <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md p-6 border-l-4 border-bw-gold shadow-lg">
+                    <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md p-6 border border-black/10 rounded-2xl shadow-lg">
                         <div className="flex items-center gap-4">
                             <Activity className="w-8 h-8 text-bw-navy animate-pulse" />
                             <div>
@@ -81,7 +95,7 @@ export const About: React.FC = () => {
         </div>
 
         {/* Stats Strip */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-gray-200 pt-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-black/10 pt-12">
             {[
                 { val: '21', label: 'Proprietary Engines', icon: <Layers className="w-4 h-4 mb-2 text-bw-gold" /> },
                 { val: '100y', label: 'Economic Cycles Indexed', icon: <Activity className="w-4 h-4 mb-2 text-bw-gold" /> },
@@ -94,6 +108,16 @@ export const About: React.FC = () => {
                     <div className="text-xs text-gray-500 uppercase tracking-widest mt-1 font-bold">{stat.label}</div>
                 </div>
             ))}
+        </div>
+
+        {/* The Core Mandate */}
+        <div className="bg-bw-navy border border-white/10 p-8 rounded-2xl shadow-xl relative overflow-hidden mt-24">
+            <h3 className="text-bw-gold font-bold uppercase tracking-widest text-sm mb-3 flex items-center gap-2">
+                <Radio className="w-5 h-5 animate-pulse" /> The Core Mandate
+            </h3>
+            <p className="text-gray-300 text-lg leading-relaxed relative z-10 font-serif">
+                "We don't guess. We calculate. By giving regional markets a standardized data language, we give them a fair chance to compete for global capital."
+            </p>
         </div>
 
       </div>
