@@ -1,3 +1,60 @@
+                        {/* What is this system & What makes it different */}
+                        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* What is this system? */}
+                            <div className="bg-bw-navy/90 border border-bw-gold/30 rounded-lg p-6 shadow-md">
+                                <h3 className="text-bw-gold text-lg font-bold mb-3">1. What is this system?</h3>
+                                <p className="text-white text-sm mb-4">BW Nexus AI is a Strategic Intelligence & Execution Platform—a digital consultant plus a high-end document automation factory. It helps anyone build a rigorous business model, analyze it for flaws, and instantly generate the professional documents needed to execute it.</p>
+                                <div className="space-y-3">
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">Live Document Builder</p>
+                                        <p className="text-gray-300 text-xs">Input your business data (Foundation, Market, Operations, Financials) into a dynamic interface.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">Adaptive Guidance</p>
+                                        <p className="text-gray-300 text-xs">The system asks "Who are you?" and adapts its interface for beginners, growing companies, or executives.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">Document Factory</p>
+                                        <p className="text-gray-300 text-xs">Auto-generates 12+ professional documents (Pitch Decks, Proposals, Outreach Letters, Confidential Memos) ready to send.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">NSIL (Nexus Strategic Intelligence Layer)</p>
+                                        <p className="text-gray-300 text-xs">Runs your inputs through mathematical models (Monte Carlo simulations, Risk Indices) to score business viability.</p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            {/* What makes it different? */}
+                            <div className="bg-bw-navy/90 border border-bw-gold/30 rounded-lg p-6 shadow-md">
+                                <h3 className="text-bw-gold text-lg font-bold mb-3">2. What makes it different?</h3>
+                                <p className="text-white text-sm mb-4">BW Nexus AI combines static forms, chatbots, and enterprise analytics into a true reasoning engine, with five unique differentiators:</p>
+                                <div className="space-y-3">
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">A. It Challenges You (Adversarial Reasoning)</p>
+                                        <p className="text-gray-300 text-xs">Skeptic Persona and Counterfactual Lab actively look for reasons your plan will fail. Input Shield checks claims against real-world data and corrects errors.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">B. It Adapts to Your Level</p>
+                                        <p className="text-gray-300 text-xs">Beginners get tutorials and examples; executives get speed and critical risk fields. The interface changes to match your experience.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">C. Quantitative + Qualitative (Math + Language)</p>
+                                        <p className="text-gray-300 text-xs">Uses 21 mathematical formulas (like Strategic Partnership Index) and AI to write a narrative explaining your score.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">D. "The Entire Meadow" Philosophy</p>
+                                        <p className="text-gray-300 text-xs">Models the ecosystem, not just transactions. SEAM calculates partner alignment for long-term cultural and operational fit.</p>
+                                    </div>
+                                    <div className="bg-bw-navy/40 border border-bw-gold/20 rounded p-3">
+                                        <p className="font-bold text-bw-gold">E. 100% Capability (No "Hardcoded" Limits)</p>
+                                        <p className="text-gray-300 text-xs">Supports 50+ business types, validates 195 countries, and models any legal structure—not just simple templates.</p>
+                                    </div>
+                                </div>
+                                <p className="mt-4 font-bold text-white">Summary</p>
+                                <p className="text-gray-300 text-xs">BW Nexus AI is not just a form-filler. It is an autonomous reasoning partner that helps you build a business strategy, mathematically proves if it will work, and then writes the paperwork to make it happen.</p>
+                            </div>
+                        </div>
 
 
 
@@ -20,6 +77,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
     savedReports,
     onCreateNew,
     onLoadReport,
+    onOpenInstant,
     onOpenSimulator
 }) => {
     const [accepted, setAccepted] = useState(false);
@@ -28,158 +86,227 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
         <div className="w-full min-h-screen bg-stone-100 p-4 sm:p-6 md:p-8 lg:p-12 pb-8 font-sans overflow-y-auto">
             <div className="max-w-7xl mx-auto space-y-6">
                 
-                {/* Top Section: Nexus Control Matrix - Full Width */}
+                {/* Top Section: Custom Welcome - Full Width */}
                 <div className="bg-white shadow-2xl border border-stone-200 rounded-lg overflow-hidden">
                     <div className="bg-bw-navy p-8 sm:p-10 lg:p-12 text-white">
                         <div className="flex items-center gap-2 text-bw-gold font-bold tracking-widest text-xs uppercase mb-4">
-                            <Layers size={14} /> Nexus Intelligence OS v6.0 — Live Regional Intelligence Platform
+                            <Layers size={14} /> BW (Brayden Walls) Global Advisory — Next-Gen Regional Intelligence
                         </div>
-                        
                         <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2 leading-tight text-white">
-                            Welcome to the Nexus Control Matrix
+                            Welcome to a New Era of Regional Intelligence
                         </h1>
-                        
-                        <p className="text-bw-gold text-sm font-medium mb-6 italic">
-                            The world's first live AI platform 100% dedicated to regional city investment, partnership, and development intelligence.
+                        <p className="text-bw-gold text-base font-medium mb-6 italic">
+                            Real answers. Real speed. Real impact. No more waiting, no more guesswork—just the truth you need, delivered instantly and tailored to you.
                         </p>
-                        
-                        <div className="text-gray-300 text-sm leading-relaxed mb-8 border-l-2 border-bw-gold pl-6 max-w-5xl space-y-4">
+                        <div className="text-gray-200 text-base leading-relaxed mb-8 border-l-2 border-bw-gold pl-6 max-w-5xl space-y-4">
                             <p>
-                                <strong className="text-white">This is not consulting. This is live intelligence.</strong> Forget weeks of waiting. Forget months of research. Forget expensive reports that arrive outdated. The Nexus OS works in real-time—building your strategic intelligence live, before your eyes, in seconds and minutes, not hours or months. You watch it happen. You control it. You own it.
+                                <strong className="text-white">Not just another consultancy—your personal intelligence engine.</strong> At BW Global Advisory, we combine deep regional expertise with advanced AI to give you clarity, confidence, and control. Whether you’re an investor, a business leader, or a community builder, you get actionable insights—live, transparent, and always in your hands.
                             </p>
                             <p>
-                                <strong className="text-white">See what a regional city truly is—not what others want you to believe.</strong> Every regional city has a story that outsiders never hear. Local politics, hidden opportunities, infrastructure realities, community dynamics, untapped potential, genuine risks. This system cuts through perception to deliver truth. Whether you're an investor from Singapore, a development agency in Geneva, or a local entrepreneur in Tamworth—you get the same unfiltered, verified intelligence. Clarity. Confidence. Immediately.
+                                <strong className="text-white">Every city, every opportunity, every risk—revealed.</strong> We cut through noise and bias to show you what’s really happening on the ground. From local politics to hidden growth drivers, you see the full picture—no filters, no delays.
                             </p>
                             <p>
-                                <strong className="text-white">The world's first personal consultant that focuses entirely on you.</strong> You define the regions. You set the questions. You build the report—live. The system doesn't tell you what others want you to hear; it finds what you need to know. And it doesn't stop at your brief. It searches globally to discover opportunities you haven't considered—including ones in your own backyard you never knew existed.
+                                <strong className="text-white">You set the agenda. We deliver the intelligence.</strong> Define your goals, your regions, your questions. Our system adapts to you, searching globally and locally for the best opportunities—sometimes in places you never thought to look.
                             </p>
                             <p>
-                                <strong className="text-white">One person or a $100 billion corporation—the system treats you the same.</strong> Whether you're an individual exploring a sea-change, a family business expanding regionally, a council seeking investment, or a multinational corporation deploying capital—Nexus focuses only on you. Your goals. Your risk tolerance. Your timeline. Your success.
+                                <strong className="text-white">For individuals and institutions alike.</strong> Whether you’re a solo entrepreneur or a global enterprise, you get the same focus, the same rigor, and the same commitment to your success.
                             </p>
                             <p>
-                                <strong className="text-white">These regional cities power nations.</strong> They grow the food. Mine the resources. Manufacture the goods. Support the communities that keep metropolitan centres running. Yet they've been systematically overlooked by traditional investment channels for a century. This platform exists to change that—permanently.
+                                <strong className="text-white">Built for action, not just analysis.</strong> Get strategic reports, partner matches, risk registers, and more—ready to use, ready to share, ready to drive results.
                             </p>
                             <p>
-                                <strong className="text-white">Massive output. Immediate delivery.</strong> Strategic Dossiers. Investment Briefs. Partner Compatibility Reports. Risk Registers. Letters of Intent. Policy Analysis. Stakeholder Mapping. Financial Models. Implementation Roadmaps. Scenario Planning. Community Impact Assessments. Regulatory Guidance. All generated live. All verified through Multi-Agent AI cross-validation. All informed by 200+ years of economic development patterns.
+                                <strong className="text-white">Always learning, always improving.</strong> Our AI never sleeps. It monitors, adapts, and gets smarter with every project—so your intelligence stays ahead of the curve.
                             </p>
-                            <p>
-                                <strong className="text-white">You take control.</strong> This is your platform. Your intelligence. Your future. Stop waiting for others to tell you what's possible. Start discovering it yourself—right now, in real-time, with the most focused regional intelligence system ever built.
-                            </p>
-                        </div>
-
-                        {/* 7-Stage Process */}
-                        <div className="mb-6">
-                            <p className="text-bw-gold text-xs font-bold uppercase tracking-widest mb-4">The 7-Stage Live Intelligence Process</p>
                         </div>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                            {/* Step 01 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">01</div>
-                                    <h4 className="font-bold text-white text-sm">Define Your Mission</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Tell the system who you are, what you're seeking, and where you want to explore. Individual investor, corporate entity, government body, NGO—the system adapts to you.
-                                </p>
-                            </div>
-
-                            {/* Step 02 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">02</div>
-                                    <h4 className="font-bold text-white text-sm">Set Your Parameters</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Investment size, risk appetite, timeline, sector focus, geographic preferences. You control every variable. The system works within your boundaries—then shows you what's beyond them.
-                                </p>
-                            </div>
-
-                            {/* Step 03 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">03</div>
-                                    <h4 className="font-bold text-white text-sm">Live AI Analysis</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Watch in real-time as Multi-Agent AI systems cross-validate findings. No black box. No waiting. See the intelligence being built, verified, and refined before your eyes.
-                                </p>
-                            </div>
-
-                            {/* Step 04 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">04</div>
-                                    <h4 className="font-bold text-white text-sm">Global Discovery</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    The system doesn't just answer your questions—it searches globally for opportunities you haven't considered. Hidden gems. Unexpected matches. Even opportunities in your own region you never knew existed.
-                                </p>
-                            </div>
-
-                            {/* Step 05 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">05</div>
-                                    <h4 className="font-bold text-white text-sm">Proprietary Scoring</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Five engines—SPI™, RROI™, SEAM™, IVAS™, SCF™—process 200+ years of economic patterns against live data. Success probability. Risk-adjusted returns. Partner compatibility. All quantified.
-                                </p>
-                            </div>
-
-                            {/* Step 06 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">06</div>
-                                    <h4 className="font-bold text-white text-sm">Live Report Building</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Your Strategic Dossier builds in real-time. Sections populate as intelligence is verified. Modify. Expand. Focus. You're in control of what goes in and how deep it goes.
-                                </p>
-                            </div>
-
-                            {/* Step 07 */}
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold/20 flex items-center justify-center text-bw-gold font-bold text-xs">07</div>
-                                    <h4 className="font-bold text-white text-sm">Complete Deliverables</h4>
-                                </div>
-                                <p className="text-xs text-gray-400 leading-relaxed">
-                                    Executive Summary. Full Dossier. Financial Models. Partner Shortlists. Risk Registers. Letters of Intent. Policy Briefs. Implementation Roadmaps. Download, share, act.
-                                </p>
-                            </div>
-
-                            {/* Bonus */}
-                            <div className="bg-bw-gold/10 border border-bw-gold/30 rounded-lg p-4">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-bw-gold flex items-center justify-center text-bw-navy font-bold text-xs">+</div>
-                                    <h4 className="font-bold text-bw-gold text-sm">Ongoing Intelligence</h4>
-                                </div>
-                                <p className="text-xs text-gray-300 leading-relaxed">
-                                    Your mission doesn't end at delivery. Reactive monitoring continues. Alerts when opportunities emerge. Updates when conditions change. Your intelligence stays live.
-                                </p>
-                            </div>
-                        </div>
-
                         {/* Key Differentiators */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-6 border-t border-white/10">
                             <div className="text-center">
-                                <p className="text-bw-gold text-2xl font-bold">Live</p>
-                                <p className="text-gray-400 text-xs">Real-Time Intelligence</p>
+                                <p className="text-bw-gold text-2xl font-bold">Personalized</p>
+                                <p className="text-gray-300 text-xs">Tailored to You</p>
                             </div>
                             <div className="text-center">
-                                <p className="text-bw-gold text-2xl font-bold">200+</p>
-                                <p className="text-gray-400 text-xs">Years of Patterns</p>
+                                <p className="text-bw-gold text-2xl font-bold">Transparent</p>
+                                <p className="text-gray-300 text-xs">No Black Boxes</p>
                             </div>
                             <div className="text-center">
-                                <p className="text-bw-gold text-2xl font-bold">35+</p>
-                                <p className="text-gray-400 text-xs">Regional Cities</p>
+                                <p className="text-bw-gold text-2xl font-bold">200+ Years</p>
+                                <p className="text-gray-300 text-xs">Proven Patterns</p>
                             </div>
                             <div className="text-center">
-                                <p className="text-bw-gold text-2xl font-bold">10%</p>
-                                <p className="text-gray-400 text-xs">Reinvested in Communities</p>
+                                <p className="text-bw-gold text-2xl font-bold">24/7</p>
+                                <p className="text-gray-300 text-xs">Continuous Learning</p>
                             </div>
+                        </div>
+
+                        {/* What is this system? */}
+                        <div className="mt-12 bg-bw-navy/90 border border-bw-gold/40 rounded-lg p-8">
+                            <h3 className="text-bw-gold text-xl font-bold mb-4">1. What is this system?</h3>
+                            <div className="text-gray-100 text-sm leading-relaxed space-y-4">
+                                <p>
+                                    <strong className="text-white">BW Nexus AI</strong> is a Strategic Intelligence & Execution Platform — a digital consultant plus a high-end document automation factory. Its purpose is to help anyone—from first-time founders to seasoned investors—build a rigorous business model, stress-test it, and immediately generate the professional documents needed to execute it.
+                                </p>
+
+                                <p className="font-bold text-bw-gold">Core Capabilities:</p>
+                                <ul className="list-disc list-inside text-gray-300 text-xs space-y-2">
+                                    <li><strong>Live Document Builder:</strong> Input Foundation, Market, Operations, and Financials into a dynamic interface that drives downstream documents.</li>
+                                    <li><strong>Adaptive Guidance:</strong> The UI adapts to your skill level (Beginner, Growing Company, Executive) and adjusts guidance, examples, and controls accordingly.</li>
+                                    <li><strong>Document Factory:</strong> Auto-generate 12+ professional deliverables (Pitch Decks, Proposals, Outreach Letters, Confidential Memos) that are production-ready.</li>
+                                    <li><strong>NSIL (Nexus Strategic Intelligence Layer):</strong> The 'brain' that runs inputs through mathematical models (Monte Carlo, Risk Indices), producing scores and actionable diagnostics.</li>
+                                </ul>
+                            </div>
+
+                            <h3 className="text-bw-gold text-xl font-bold mt-6 mb-3">2. What makes it different?</h3>
+                            <div className="text-gray-100 text-sm leading-relaxed space-y-4">
+                                <p className="mb-2">Most tools fall into static forms, chatbots, or enterprise analytics. BW Nexus AI is a reasoning engine that blends all three and adds several critical innovations:</p>
+
+                                <div className="space-y-3">
+                                    <div>
+                                        <p className="font-bold text-bw-gold">A. It Challenges You — Adversarial Reasoning</p>
+                                        <p className="text-gray-300 text-xs">A Skeptic persona and Counterfactual Lab actively try to break your plan, exposing fragile assumptions and surfacing hidden risks. An Input Shield cross-checks claims against authoritative data (e.g., World Bank) and corrects incorrect inputs.</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="font-bold text-bw-gold">B. It Adapts to Your Level</p>
+                                        <p className="text-gray-300 text-xs">Beginners receive tutorials and examples; executives receive compact analytics and rapid controls—one system, tailored pathways.</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="font-bold text-bw-gold">C. Quantitative + Qualitative</p>
+                                        <p className="text-gray-300 text-xs">The platform runs 21 mathematical formulas (e.g., Strategic Partnership Index) and pairs them with AI-written narratives that explain the results in plain language.</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="font-bold text-bw-gold">D. 'The Entire Meadow' Philosophy</p>
+                                        <p className="text-gray-300 text-xs">We model ecosystems, not just transactions. SEAM (Symbiotic Ecosystem Assessment) evaluates partner cultural, operational, and strategic fit—not just short-term gains.</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="font-bold text-bw-gold">E. 100% Capability — No Hardcoded Limits</p>
+                                        <p className="text-gray-300 text-xs">The system supports 50+ business/legal models, validates 195 countries with regional logic, and lets you model real-world legal structures—not simplified templates.</p>
+                                    </div>
+                                </div>
+
+                                <p className="mt-4 font-bold text-white">Summary</p>
+                                <p className="text-gray-300 text-xs">BW Nexus AI is not a form-filler. It is an autonomous reasoning partner that helps you design strategy, mathematically tests viability, and auto-produces the documents you need to act—faster, more rigorously, and more transparently than standard tools.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* NSIL — The Brain (expanded) */}
+                <div className="mt-8 bg-bw-navy/95 border border-bw-gold/30 rounded-lg p-8 shadow-lg">
+                    <h3 className="text-bw-gold text-xl font-bold mb-3">NSIL — The Brain (How the system thinks)</h3>
+                    <div className="text-gray-100 text-sm leading-relaxed space-y-4">
+                        <p><strong className="text-white">At the center of the platform is NSIL: the Nexus Strategic Intelligence Layer.</strong> NSIL treats your business plan as a living simulation. It doesn't just store your inputs—it reads them, simulates outcomes, finds hidden risks, and proposes fixes.</p>
+                        <p><strong className="text-bw-gold">Five-layer Autonomous Reasoning Stack</strong> — NSIL mimics a team of experts through thin reasoning shells that wrap around the core mathematical engines. This preserves explainability while enabling adversarial and counterfactual reasoning.</p>
+                        <p><strong className="text-bw-gold">Multi-Perspective Reasoning Engine</strong> — when you submit a strategy, NSIL spawns five personas that each evaluate the plan in parallel and produce evidence-backed arguments:</p>
+                        <ul className="list-disc list-inside text-gray-300 text-xs space-y-2">
+                            <li><strong>Skeptic</strong> — finds deal-killers, over-optimism, and hidden downside.</li>
+                            <li><strong>Advocate</strong> — finds upside, synergies and optional levers to increase value.</li>
+                            <li><strong>Regulator</strong> — checks legal, sanctions, and ethical constraints.</li>
+                            <li><strong>Accountant</strong> — validates cashflow, margins, and economic durability.</li>
+                            <li><strong>Operator</strong> — tests execution feasibility: team, supply chains, and infrastructure.</li>
+                        </ul>
+                        <p><strong className="text-bw-gold">The Debate — how outputs are born</strong> — personas vote and attach evidence; NSIL synthesizes the debate. Findings are accepted only when corroborated or when a transparent disagreement is recorded, producing a clear recommendation (e.g., 'high-risk', 'requires operational fix', or 'opportunity — monitor').</p>
+                        <p><strong className="text-bw-gold">How it learns</strong> — NSIL continuously improves through:</p>
+                        <ul className="list-decimal list-inside text-gray-300 text-xs space-y-2">
+                            <li><strong>Motivation Detection</strong> — learns your decision profile and adjusts how insights are framed.</li>
+                            <li><strong>Counterfactual Lab</strong> — silently simulates opposite choices to surface robust alternatives and trade-offs.</li>
+                            <li><strong>Outcome Tracking</strong> — compares predictions to real outcomes and recalibrates internal weights.</li>
+                        </ul>
+                        <p className="text-white"><strong>What this delivers:</strong> explainable, math-backed recommendations with provenance, debate logs, and counterfactual alternatives — turning passive data into an active advisory partner.</p>
+                    </div>
+                </div>
+
+                {/* 7-Stage Process: How It Works */}
+                <div className="mt-12">
+                    <div className="mb-6">
+                        <h3 className="text-bw-gold text-lg font-extrabold uppercase tracking-widest mb-3">How It Works: 7 Steps to Clarity</h3>
+                        <div className="bg-bw-navy border-l-4 border-bw-gold rounded-md p-4 mt-2 shadow-lg">
+                            <p className="text-white text-base font-semibold leading-relaxed">Each step below is powered by <strong className="text-bw-gold">NSIL</strong>: five AI personas analyze, debate, and feed verified outputs into this workflow to produce recommendations and deliverables.</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        {/* Step 01 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">01</div>
+                                <h4 className="font-extrabold text-white text-base">Define Your Mission</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                Tell us who you are, what you want, and where you want to go. We adapt to your needs—no matter your size or sector.
+                            </p>
+                        </div>
+                        {/* Step 02 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">02</div>
+                                <h4 className="font-extrabold text-white text-base">Set Your Parameters</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                Investment, risk, timeline, sector, geography—you control every variable. We work within your boundaries, then show you what’s possible beyond them.
+                            </p>
+                        </div>
+                        {/* Step 03 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">03</div>
+                                <h4 className="font-extrabold text-white text-base">Live AI Analysis</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                See your intelligence build in real time. No black box, no waiting—just transparent, cross-validated insights as they happen.
+                            </p>
+                        </div>
+                        {/* Step 04 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">04</div>
+                                <h4 className="font-extrabold text-white text-base">Global & Local Discovery</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                We don’t just answer your questions—we find new opportunities, risks, and partners you might never have considered.
+                            </p>
+                        </div>
+                        {/* Step 05 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">05</div>
+                                <h4 className="font-extrabold text-white text-base">Scoring & Diagnostics</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                SPI™, RROI™, SEAM™, IVAS™ and SCF™ quantify viability, risk, and partner fit; all scores include provenance and contributing arguments.
+                            </p>
+                        </div>
+                        {/* Step 06 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">06</div>
+                                <h4 className="font-extrabold text-white text-base">Live Report Building</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                Your strategic dossier builds as you watch. You decide what goes in, what gets expanded, and what matters most.
+                            </p>
+                        </div>
+                        {/* Step 07 */}
+                        <div className="bg-bw-navy shadow-lg border border-bw-gold/20 rounded-lg p-6 hover:bg-bw-navy/95 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-14 h-14 rounded-full bg-bw-gold flex items-center justify-center text-white font-extrabold">07</div>
+                                <h4 className="font-extrabold text-white text-base">Actionable Deliverables</h4>
+                            </div>
+                            <p className="text-sm text-gray-200 leading-relaxed">
+                                Executive summaries, full dossiers, financial models, partner lists, risk registers, and more—ready to use, share, and act on with traceable provenance.
+                            </p>
+                        </div>
+                        {/* Bonus */}
+                        <div className="bg-bw-gold border border-bw-gold/30 rounded-lg p-6 shadow-md">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-12 h-12 rounded-full bg-bw-navy flex items-center justify-center text-bw-gold font-bold">+</div>
+                                <h4 className="font-bold text-bw-navy text-base">Continuous Intelligence</h4>
+                            </div>
+                            <p className="text-sm text-bw-navy leading-relaxed">
+                                Our AI monitors and learns 24/7. You get alerts, updates, and smarter insights—so your strategy always stays ahead.
+                            </p>
                         </div>
                     </div>
                 </div>

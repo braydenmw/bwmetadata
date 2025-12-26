@@ -5,6 +5,9 @@ import { config, features, demoMessages } from './config';
 // API base URL - Vite proxies /api to backend in dev, same origin in production
 const API_BASE = '/api';
 
+// System instruction for the AI
+const SYSTEM_INSTRUCTION = `You are "BW Nexus AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
+
 // Session ID for maintaining chat context on the server
 let sessionId: string | null = null;
 

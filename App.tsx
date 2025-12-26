@@ -40,6 +40,11 @@ import { generateCopilotInsights, generateReportSectionStream } from './services
 import { config } from './services/config';
 import { generateBenchmarkData } from './services/mockDataGenerator';
 import { ReportOrchestrator } from './services/ReportOrchestrator';
+// AUTONOMOUS CAPABILITIES IMPORTS
+import { solveAndAct as autonomousSolve } from './services/autonomousClient';
+import { selfLearningEngine } from './services/selfLearningEngine';
+import { ReactiveIntelligenceEngine } from './services/ReactiveIntelligenceEngine';
+// import { MultiAgentBrainSystem } from './services/MultiAgentBrainSystem'; // Temporarily disabled - needs implementation
 import { LayoutGrid, Globe, ShieldCheck, LayoutDashboard, Plus } from 'lucide-react';
 import DemoIndicator from './components/DemoIndicator';
 // Note: report-generator sidebar is rendered inside MainCanvas.
@@ -96,6 +101,17 @@ const App: React.FC = () => {
     const [genPhase, setGenPhase] = useState<GenerationPhase>('idle');
     const [genProgress, setGenProgress] = useState(0);
 
+    // AUTONOMOUS CAPABILITIES STATE
+    const [autonomousMode, setAutonomousMode] = useState(false);
+    const [autonomousInsights, setAutonomousInsights] = useState<CopilotInsight[]>([]);
+    const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
+    const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
+
+    // COMBINED INSIGHTS - Merge regular and autonomous insights
+    const combinedInsights = useMemo(() => {
+        return [...insights, ...autonomousInsights];
+    }, [insights, autonomousInsights]);
+
 
 
     // --- EFFECTS ---
@@ -124,6 +140,116 @@ const App: React.FC = () => {
         return () => clearTimeout(timer);
         }, [params, viewMode, insights.length]);
 
+    // AUTONOMOUS CAPABILITIES EFFECTS
+
+    // Autonomous Analysis Trigger - Runs when user provides basic inputs
+    useEffect(() => {
+        if (autonomousMode && params.organizationName && params.country && params.organizationName.length > 2) {
+            const timer = setTimeout(async () => {
+                console.log("🤖 AUTONOMOUS: Starting autonomous analysis");
+                setIsAutonomousThinking(true);
+                try {
+                    const problem = `Analyze partnership and investment opportunities for ${params.organizationName} in ${params.country}`;
+                    const context = {
+                        region: params.country,
+                        industry: params.industry,
+                        dealSize: params.dealSize,
+                        strategicIntent: params.strategicIntent
+                    };
+
+                    const result = await autonomousSolve(problem, context, params, { autoAct: false, urgency: 'normal' });
+
+                    // Convert autonomous solutions to insights
+                    const autonomousInsights: CopilotInsight[] = result.solutions.map((solution, index) => ({
+                        id: `autonomous-${Date.now()}-${index}`,
+                        type: 'strategy' as const,
+                        title: `Autonomous Discovery: ${solution.action}`,
+                        description: solution.reasoning,
+                        content: `Autonomous analysis suggests: ${solution.action}. Reasoning: ${solution.reasoning}`,
+                        confidence: solution.confidence || 75,
+                        isAutonomous: true
+                    }));
+
+                    setAutonomousInsights(autonomousInsights);
+
+                    // Add proactive suggestions
+                    const suggestions = result.solutions.map(s => s.action);
+                    setAutonomousSuggestions(suggestions);
+
+                    console.log("🤖 AUTONOMOUS: Analysis complete, generated", autonomousInsights.length, "insights");
+                } catch (error) {
+                    console.error("🤖 AUTONOMOUS: Error in autonomous analysis:", error);
+                } finally {
+                    setIsAutonomousThinking(false);
+                }
+            }, 3000); // Longer delay for autonomous analysis
+
+            return () => clearTimeout(timer);
+        }
+    }, [params.organizationName, params.country, params.industry, autonomousMode]);
+
+    // Self-Learning Data Collection - Records performance after report generation
+    useEffect(() => {
+        if (genPhase === 'complete' && params.id) {
+            console.log("📊 SELF-LEARNING: Recording performance data");
+            try {
+                // Calculate performance metrics
+                const startTime = Date.now() - (genProgress * 1000); // Estimate based on progress
+                const generationTime = Date.now() - startTime;
+
+                selfLearningEngine.recordTest({
+                    timestamp: new Date().toISOString(),
+                    testId: params.id,
+                    scenario: 'report_generation',
+                    inputs: params,
+                    outputs: {
+                        spiScore: params.opportunityScore?.totalScore,
+                        rroiScore: params.opportunityScore?.marketPotential,
+                        reportQuality: 85, // Could be user-rated
+                        generationTime: generationTime
+                    },
+                    feedback: {
+                        successful: true,
+                        errors: [],
+                        warnings: [],
+                        suggestions: autonomousSuggestions
+                    },
+                    improvements: ['Enhanced autonomous analysis', 'Improved insight generation']
+                });
+
+                console.log("📊 SELF-LEARNING: Performance data recorded");
+            } catch (error) {
+                console.error("📊 SELF-LEARNING: Error recording data:", error);
+            }
+        }
+    }, [genPhase, params.id, genProgress, autonomousSuggestions]);
+
+    // Proactive Intelligence Monitoring - Continuous background analysis
+    useEffect(() => {
+        if (autonomousMode && params.organizationName) {
+            const interval = setInterval(async () => {
+                try {
+                    console.log("🔍 PROACTIVE: Checking for new opportunities");
+                    const opportunities = await ReactiveIntelligenceEngine.thinkAndAct(
+                        `Monitor for new opportunities related to ${params.organizationName} in ${params.country || 'target markets'}`,
+                        params,
+                        { autoAct: false, urgency: 'low' }
+                    );
+
+                    if (opportunities.actions.length > 0) {
+                        const newSuggestions = opportunities.actions.map(action => action.action);
+                        setAutonomousSuggestions(prev => [...new Set([...prev, ...newSuggestions])]);
+                        console.log("🔍 PROACTIVE: Found", opportunities.actions.length, "new opportunities");
+                    }
+                } catch (error) {
+                    console.error("🔍 PROACTIVE: Error in monitoring:", error);
+                }
+            }, 30000); // Check every 30 seconds
+
+            return () => clearInterval(interval);
+        }
+    }, [autonomousMode, params.organizationName, params.country]);
+
     // --- ACTIONS ---
     const handleEscape = useCallback(() => {
         if (viewMode !== 'command-center') {
@@ -137,6 +263,18 @@ const App: React.FC = () => {
         setHasEntered(true);
         setViewMode('command-center');
     };
+
+    // AUTONOMOUS CAPABILITIES ACTIONS
+    const toggleAutonomousMode = useCallback(() => {
+        setAutonomousMode(prev => !prev);
+        if (!autonomousMode) {
+            console.log("🤖 AUTONOMOUS MODE: ACTIVATED");
+            setAutonomousInsights([]);
+            setAutonomousSuggestions([]);
+        } else {
+            console.log("🤖 AUTONOMOUS MODE: DEACTIVATED");
+        }
+    }, [autonomousMode]);
 
     const startNewMission = () => {
         const newParams = { 
@@ -158,6 +296,8 @@ const App: React.FC = () => {
         setParams(newParams);
         setReportData(initialReportData);
         setInsights([]);
+        setAutonomousInsights([]); // Clear autonomous insights for new mission
+        setAutonomousSuggestions([]); // Clear autonomous suggestions
         // UPDATED: Start directly in the Unified Control Matrix
         setViewMode('report-generator'); 
     };
@@ -322,6 +462,28 @@ const App: React.FC = () => {
 
                 <div className="flex items-center gap-3">
                     <DemoIndicator className="mr-2" />
+                    
+                    {/* AUTONOMOUS MODE TOGGLE */}
+                    <button
+                        onClick={toggleAutonomousMode}
+                        className={`p-2 rounded-full transition-all shadow-sm hover:shadow-md ${
+                            autonomousMode 
+                                ? 'text-emerald-600 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100' 
+                                : 'text-stone-400 hover:text-stone-600 hover:bg-stone-100'
+                        }`}
+                        title={autonomousMode ? "Autonomous Mode Active - AI is analyzing independently" : "Enable Autonomous Mode - Let AI think independently"}
+                    >
+                        <div className="relative">
+                            <ShieldCheck className="w-5 h-5" />
+                            {autonomousMode && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                            )}
+                            {isAutonomousThinking && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-spin"></div>
+                            )}
+                        </div>
+                    </button>
+                    
                     <button
                         onClick={() => setViewMode('admin-dashboard')}
                         className="p-2 text-stone-400 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
@@ -379,6 +541,10 @@ const App: React.FC = () => {
                             onNewAnalysis={startNewMission}
                             onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
                             onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
+                            insights={combinedInsights}
+                            autonomousMode={autonomousMode}
+                            autonomousSuggestions={autonomousSuggestions}
+                            isAutonomousThinking={isAutonomousThinking}
                         />
                     </div>
                 )}

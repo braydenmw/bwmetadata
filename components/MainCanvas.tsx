@@ -121,6 +121,10 @@ interface MainCanvasProps {
   params: ReportParameters;
   setParams: (params: ReportParameters) => void;
   onChangeViewMode?: (mode: string) => void;
+  insights?: CopilotInsight[];
+  autonomousMode?: boolean;
+  autonomousSuggestions?: string[];
+  isAutonomousThinking?: boolean;
 }
 
 const CollapsibleSection: React.FC<{
@@ -149,7 +153,8 @@ const CollapsibleSection: React.FC<{
 );
 
 const MainCanvas: React.FC<MainCanvasProps> = ({
-    params, setParams, onGenerate, onChangeViewMode, reports, onOpenReport, onDeleteReport, onNewAnalysis, reportData, isGenerating, generationPhase, generationProgress, onCopilotMessage
+    params, setParams, onGenerate, onChangeViewMode, reports, onOpenReport, onDeleteReport, onNewAnalysis, reportData, isGenerating, generationPhase, generationProgress, onCopilotMessage,
+    insights = [], autonomousMode = false, autonomousSuggestions = [], isAutonomousThinking = false
 }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalView, setModalView] = useState('main'); // 'main' or a specific tool id
@@ -942,6 +947,64 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             </div>
                         </div>
                     </div>
+
+                    {/* AUTONOMOUS INSIGHTS - Only shown when autonomous mode is active */}
+                    {autonomousMode && (
+                        <>
+                            <div className="w-full h-px bg-stone-200"></div>
+                            <div>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Autonomous Intelligence</h3>
+                                    {isAutonomousThinking && (
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                            <span className="text-[10px] text-blue-600 font-medium">Analyzing...</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Autonomous Suggestions */}
+                                {autonomousSuggestions.length > 0 && (
+                                    <div className="mb-3">
+                                        <div className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide mb-2">AI Suggestions</div>
+                                        <div className="space-y-1">
+                                            {autonomousSuggestions.slice(0, 3).map((suggestion, index) => (
+                                                <div key={index} className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 rounded px-2 py-1">
+                                                    {suggestion}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Autonomous Insights */}
+                                {insights.filter(i => i.isAutonomous).length > 0 && (
+                                    <div>
+                                        <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Autonomous Insights</div>
+                                        <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+                                            {insights.filter(i => i.isAutonomous).map((insight, index) => (
+                                                <div key={index} className="p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
+                                                    <div className="flex items-start gap-2">
+                                                        <div className="w-2 h-2 bg-indigo-500 rounded-full mt-1.5 shrink-0"></div>
+                                                        <div>
+                                                            <div className="text-[11px] font-semibold text-indigo-900">{insight.title}</div>
+                                                            <div className="text-[10px] text-indigo-700 mt-1">{insight.description}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {insights.filter(i => i.isAutonomous).length === 0 && autonomousSuggestions.length === 0 && !isAutonomousThinking && (
+                                    <div className="text-[11px] text-stone-500 italic">
+                                        Autonomous analysis will appear here when you provide organization and market details.
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
 
                     {generatedDocs.length > 0 && (
                         <>

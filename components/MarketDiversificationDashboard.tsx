@@ -28,11 +28,14 @@ export const MarketDiversificationDashboard: React.FC<Props> = ({
   const [markets] = useState<MarketShare[]>(initialMarkets);
 
   useEffect(() => {
-    const result = MarketDiversificationEngine.analyzeConcentration(markets);
-    setAnalysis(result);
-    if (result.recommendedMarkets.length > 0) {
-      setSelectedOpportunity(result.recommendedMarkets[0]);
-    }
+    const loadAnalysis = async () => {
+      const result = await MarketDiversificationEngine.analyzeConcentration(markets);
+      setAnalysis(result);
+      if (result.recommendedMarkets.length > 0) {
+        setSelectedOpportunity(result.recommendedMarkets[0]);
+      }
+    };
+    loadAnalysis();
   }, [markets]);
 
   if (!analysis) return <div className="p-8 text-center text-stone-400">Loading Diversification Engine...</div>;

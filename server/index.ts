@@ -13,6 +13,7 @@ dotenv.config();
 import aiRoutes from './routes/ai.js';
 import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
+import autonomousRoutes from './routes/autonomous.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -47,6 +48,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 app.use('/api/ai', aiRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/autonomous', autonomousRoutes);
 
 // Health check
 app.get('/api/health', (_req: Request, res: Response) => {

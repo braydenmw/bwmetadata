@@ -198,6 +198,9 @@ export interface ReportParameters {
   outcome?: 'Success' | 'Failure' | 'Stalled' | 'Ongoing';
   outcomeReason?: string;
   actualReturnMultiplier?: number; // e.g. 1.5x ROI
+
+  // Computed Results (added after processing)
+  reportPayload?: ReportPayload;
   
   // UI Helpers
   selectedAgents: string[];
@@ -637,6 +640,7 @@ export interface CopilotInsight {
   description?: string;
   content?: string;
   confidence?: number;
+  isAutonomous?: boolean;
 }
 
 export interface LiveOpportunityItem {
