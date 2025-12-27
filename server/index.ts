@@ -72,6 +72,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Error handling
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  void _next;
   console.error('Server error:', err);
   res.status(500).json({ 
     error: 'Internal server error',

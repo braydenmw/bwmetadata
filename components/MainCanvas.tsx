@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ENTITY_TYPES, COUNTRIES, INDUSTRIES } from '../constants/businessData';
 import { evaluateDocReadiness } from '../services/intakeMapping';
 import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';
+import useBrainObserver, { BrainSignal } from '../hooks/useBrainObserver';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -186,6 +187,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   ]);
   const [chatInput, setChatInput] = useState('');
     const { snapshot: advisorSnapshot, refresh: refreshAdvisorSnapshot } = useAdvisorSnapshot(params);
+    const brainObservation = useBrainObserver(params);
     const [advisorExpanded, setAdvisorExpanded] = useState(true);
     const [advisorRefreshing, setAdvisorRefreshing] = useState(false);
     const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -327,9 +329,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const renderCompletenessBadge = () => {
         if (completeness <= 0) return null;
         return (
-            <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-800">
-                <div className="w-24 h-2 bg-blue-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500" style={{ width: `${completeness}%` }} />
+            <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-lg text-xs text-amber-800">
+                <div className="w-24 h-2 bg-amber-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-amber-500" style={{ width: `${completeness}%` }} />
                 </div>
                 <span className="font-semibold">Readiness checklist: {completeness}%</span>
             </div>
@@ -666,18 +668,18 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     <div className="flex-1 w-full flex h-full bg-slate-50 font-sans text-gray-900 overflow-hidden">
         {/* --- LEFT PANEL: REPORT BUILDER --- */}
         <div className="w-[380px] shrink-0 flex flex-col bg-white border-r border-stone-200 overflow-hidden">
-            <div className="p-5 border-b border-stone-200 bg-gradient-to-r from-indigo-50 to-blue-50">
+            <div className="p-5 border-b border-stone-200 bg-gradient-to-r from-stone-50 to-amber-50">
                 <div className="flex items-center justify-between">
                     <div className="flex-1">
-                        <div className="text-[10px] uppercase tracking-[0.16em] text-blue-700 font-bold">Report Builder</div>
+                        <div className="text-[10px] uppercase tracking-[0.16em] text-stone-600 font-bold">Report Builder</div>
                         <div className="mt-2 text-sm font-semibold text-stone-900">
                             {params.organizationName?.trim() ? params.organizationName : 'New Report'}
                         </div>
                     </div>
                     <div className="text-right">
-                        <div className="text-xs font-bold text-blue-700">{completeness}%</div>
-                        <div className="mt-1 w-16 h-2 bg-blue-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-600" style={{ width: `${completeness}%` }} />
+                        <div className="text-xs font-bold text-amber-600">{completeness}%</div>
+                        <div className="mt-1 w-16 h-2 bg-amber-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-amber-500" style={{ width: `${completeness}%` }} />
                         </div>
                     </div>
                 </div>
@@ -706,12 +708,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     onClick={() => openModal(step.id)}
                                     className={`w-full p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
                                         activeModal === step.id
-                                            ? 'bg-blue-50 border-blue-200'
+                                            ? 'bg-amber-50 border-amber-200'
                                             : 'bg-white border-stone-200 hover:border-stone-300'
                                     }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-7 h-7 rounded flex items-center justify-center shrink-0 ${activeModal === step.id ? 'bg-blue-600 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                                        <div className={`w-7 h-7 rounded flex items-center justify-center shrink-0 ${activeModal === step.id ? 'bg-amber-500 text-white' : 'bg-stone-100 text-stone-600'}`}>
                                             <step.icon size={14} />
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -765,7 +767,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 disabled={completeness < 50}
                                 className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
                                     completeness >= 50
-                                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                        ? 'bg-stone-700 text-white hover:bg-stone-800'
                                         : 'bg-stone-100 text-stone-500 cursor-not-allowed'
                                 }`}
                                 title={completeness < 50 ? 'Complete intake steps first' : 'Generate draft report'}
@@ -778,7 +780,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 disabled={!canLaunchDocSuite}
                                 className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
                                     canLaunchDocSuite
-                                        ? 'border border-blue-300 text-blue-600 hover:bg-blue-50'
+                                        ? 'border border-amber-300 text-amber-600 hover:bg-amber-50'
                                         : 'border border-stone-200 text-stone-400 cursor-not-allowed'
                                 }`}
                                 title={canLaunchDocSuite ? 'Generate official documents' : 'Set country, city, partner first'}
@@ -806,7 +808,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             </div>
                             <button
                                 onClick={scrollAdvisorPanelIntoView}
-                                className="text-[11px] font-semibold text-blue-700 hover:underline"
+                                className="text-[11px] font-semibold text-amber-600 hover:underline"
                             >
                                 View Advisor
                             </button>
@@ -818,7 +820,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                                     : statusLabel === 'Locked'
                                         ? 'bg-stone-100 text-stone-500 border-stone-200'
-                                        : 'bg-blue-50 text-blue-700 border-blue-200';
+                                        : 'bg-amber-50 text-amber-700 border-amber-200';
                                 return (
                                     <div key={step.id} className="p-3 border border-stone-200 rounded-lg bg-white/70">
                                         <div className="flex items-start justify-between gap-3">
@@ -893,12 +895,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             { id: 'market-disruption', label: 'Market Disruption', icon: Zap },
                                             { id: 'competitive-positioning', label: 'Competitive Pos', icon: Target },
                                         ].map(option => (
-                                            <label key={option.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-xs transition-all ${selectedIntelligenceEnhancements.includes(option.id) ? 'bg-blue-50 border border-blue-200' : 'hover:bg-stone-50'}`}>
+                                            <label key={option.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-xs transition-all ${selectedIntelligenceEnhancements.includes(option.id) ? 'bg-amber-50 border border-amber-200' : 'hover:bg-stone-50'}`}>
                                                 <input
                                                     type="checkbox"
                                                     checked={selectedIntelligenceEnhancements.includes(option.id)}
                                                     onChange={() => handleIntelligenceEnhancementToggle(option.id)}
-                                                    className="h-3 w-3 text-blue-600"
+                                                    className="h-3 w-3 text-amber-600"
                                                 />
                                                 <option.icon size={12} className="text-stone-600" />
                                                 <span className="font-semibold text-stone-900">{option.label}</span>
@@ -921,7 +923,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
                                             msg.sender === 'user'
-                                                ? 'bg-blue-600 text-white'
+                                                ? 'bg-stone-700 text-white'
                                                 : 'bg-stone-100 text-stone-900'
                                         }`}>
                                             {msg.text}
@@ -940,7 +942,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 />
                                 <button
                                     onClick={handleSendMessage}
-                                    className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
+                                    className="px-2 py-1 bg-stone-700 text-white rounded hover:bg-stone-800 transition-all"
                                 >
                                     <Send size={12} />
                                 </button>
@@ -948,60 +950,126 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         </div>
                     </div>
 
-                    {/* AUTONOMOUS INSIGHTS - Only shown when autonomous mode is active */}
-                    {autonomousMode && (
-                        <>
-                            <div className="w-full h-px bg-stone-200"></div>
-                            <div>
-                                <div className="flex items-center gap-2 mb-3">
-                                    <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Autonomous Intelligence</h3>
-                                    {isAutonomousThinking && (
-                                        <div className="flex items-center gap-1">
-                                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                                            <span className="text-[10px] text-blue-600 font-medium">Analyzing...</span>
+                    {/* BRAIN INTELLIGENCE - Always visible, powered by useBrainObserver */}
+                    <div className="w-full h-px bg-stone-200"></div>
+                    <div>
+                        <div className="flex items-center gap-2 mb-3">
+                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Brain Intelligence</h3>
+                            {brainObservation.isThinking && (
+                                <div className="flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                                    <span className="text-[10px] text-amber-600 font-medium">Analyzing...</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Live Scores */}
+                        {(brainObservation.scores.spi !== null || brainObservation.scores.rroi !== null) && (
+                            <div className="mb-3 p-2 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+                                <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Live Scores</div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {brainObservation.scores.spi !== null && (
+                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
+                                            <div className="text-[10px] text-stone-500">SPI</div>
+                                            <div className="text-sm font-bold text-indigo-700">{Math.round(brainObservation.scores.spi)}</div>
+                                        </div>
+                                    )}
+                                    {brainObservation.scores.rroi !== null && (
+                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
+                                            <div className="text-[10px] text-stone-500">RROI</div>
+                                            <div className="text-sm font-bold text-emerald-700">{Math.round(brainObservation.scores.rroi)}</div>
+                                        </div>
+                                    )}
+                                    {brainObservation.scores.seam !== null && (
+                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
+                                            <div className="text-[10px] text-stone-500">SEAM</div>
+                                            <div className="text-sm font-bold text-purple-700">{Math.round(brainObservation.scores.seam)}</div>
+                                        </div>
+                                    )}
+                                    {brainObservation.scores.composite !== null && (
+                                        <div className="text-center p-1.5 bg-white rounded border border-amber-200">
+                                            <div className="text-[10px] text-stone-500">Overall</div>
+                                            <div className="text-sm font-bold text-amber-700">{Math.round(brainObservation.scores.composite)}</div>
                                         </div>
                                     )}
                                 </div>
+                            </div>
+                        )}
 
-                                {/* Autonomous Suggestions */}
-                                {autonomousSuggestions.length > 0 && (
-                                    <div className="mb-3">
-                                        <div className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide mb-2">AI Suggestions</div>
-                                        <div className="space-y-1">
-                                            {autonomousSuggestions.slice(0, 3).map((suggestion, index) => (
-                                                <div key={index} className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 rounded px-2 py-1">
-                                                    {suggestion}
-                                                </div>
-                                            ))}
+                        {/* Brain Suggestions */}
+                        {brainObservation.suggestions.length > 0 && (
+                            <div className="mb-3">
+                                <div className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide mb-2">Next Steps</div>
+                                <div className="space-y-1">
+                                    {brainObservation.suggestions.map((suggestion, index) => (
+                                        <div key={index} className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 rounded px-2 py-1">
+                                            {suggestion}
                                         </div>
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                                {/* Autonomous Insights */}
-                                {insights.filter(i => i.isAutonomous).length > 0 && (
-                                    <div>
-                                        <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Autonomous Insights</div>
-                                        <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
-                                            {insights.filter(i => i.isAutonomous).map((insight, index) => (
-                                                <div key={index} className="p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
-                                                    <div className="flex items-start gap-2">
-                                                        <div className="w-2 h-2 bg-indigo-500 rounded-full mt-1.5 shrink-0"></div>
-                                                        <div>
-                                                            <div className="text-[11px] font-semibold text-indigo-900">{insight.title}</div>
-                                                            <div className="text-[10px] text-indigo-700 mt-1">{insight.description}</div>
-                                                        </div>
-                                                    </div>
+                        {/* Brain Signals */}
+                        {brainObservation.globalSignals.length > 0 && (
+                            <div>
+                                <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Live Signals</div>
+                                <div className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
+                                    {brainObservation.globalSignals.slice(0, 5).map((signal, index) => (
+                                        <div key={index} className={`p-2 rounded-lg border ${
+                                            signal.severity === 'success' ? 'bg-emerald-50 border-emerald-200' :
+                                            signal.severity === 'warning' ? 'bg-amber-50 border-amber-200' :
+                                            signal.severity === 'critical' ? 'bg-rose-50 border-rose-200' :
+                                            'bg-indigo-50 border-indigo-200'
+                                        }`}>
+                                            <div className="flex items-start gap-2">
+                                                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
+                                                    signal.severity === 'success' ? 'bg-emerald-500' :
+                                                    signal.severity === 'warning' ? 'bg-amber-500' :
+                                                    signal.severity === 'critical' ? 'bg-rose-500' :
+                                                    'bg-indigo-500'
+                                                }`}></div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-[11px] font-semibold text-stone-900">{signal.title}</div>
+                                                    <div className="text-[10px] text-stone-600 mt-0.5">{signal.description}</div>
+                                                    {signal.actionable && (
+                                                        <div className="text-[10px] text-amber-600 mt-1 font-medium">→ {signal.actionable}</div>
+                                                    )}
+                                                    <div className="text-[9px] text-stone-400 mt-1">{signal.source} • {signal.confidence}% confidence</div>
                                                 </div>
-                                            ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                                {insights.filter(i => i.isAutonomous).length === 0 && autonomousSuggestions.length === 0 && !isAutonomousThinking && (
-                                    <div className="text-[11px] text-stone-500 italic">
-                                        Autonomous analysis will appear here when you provide organization and market details.
-                                    </div>
-                                )}
+                        {brainObservation.globalSignals.length === 0 && brainObservation.suggestions.length === 0 && !brainObservation.isThinking && (
+                            <div className="text-[11px] text-stone-500 italic p-2 bg-stone-50 rounded border border-stone-200">
+                                Start filling in the Identity section to activate brain intelligence. The system will analyze your inputs in real-time.
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Legacy autonomous mode - kept for backward compatibility */}
+                    {autonomousMode && insights.filter(i => i.isAutonomous).length > 0 && (
+                        <>
+                            <div className="w-full h-px bg-stone-200"></div>
+                            <div>
+                                <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Additional Insights</div>
+                                <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+                                    {insights.filter(i => i.isAutonomous).map((insight, index) => (
+                                        <div key={index} className="p-2 bg-indigo-50 border border-indigo-200 rounded-lg">
+                                            <div className="flex items-start gap-2">
+                                                <div className="w-2 h-2 bg-indigo-500 rounded-full mt-1.5 shrink-0"></div>
+                                                <div>
+                                                    <div className="text-[11px] font-semibold text-indigo-900">{insight.title}</div>
+                                                    <div className="text-[10px] text-indigo-700 mt-1">{insight.description}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </>
                     )}
@@ -1145,7 +1213,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                                 key={option.value}
                                                                 type="button"
                                                                 onClick={() => setParams({ ...params, entityClassification: option.value })}
-                                                                className={`w-full border rounded-lg px-3 py-2 text-left text-sm transition ${isActive ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-sm' : 'border-stone-200 hover:border-blue-200 hover:bg-stone-50'}`}
+                                                                className={`w-full border rounded-lg px-3 py-2 text-left text-sm transition ${isActive ? 'border-amber-500 bg-amber-50 text-amber-900 shadow-sm' : 'border-stone-200 hover:border-amber-200 hover:bg-stone-50'}`}
                                                             >
                                                                 <div className="font-semibold">{option.label}</div>
                                                                 <p className="text-[11px] text-stone-500 leading-snug">{option.description}</p>
@@ -1540,6 +1608,80 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             </div>
                                         </div>
                                     </CollapsibleSection>
+
+                                    {/* INLINE BRAIN INTELLIGENCE FOR IDENTITY */}
+                                    {brainObservation.stepIntelligence['identity'] && (
+                                        <div className="p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-xl">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <Cpu size={16} className="text-indigo-600" />
+                                                <h4 className="text-sm font-bold text-indigo-900">Brain Analysis</h4>
+                                                {brainObservation.isThinking && (
+                                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                                )}
+                                                <div className="ml-auto text-[10px] text-stone-500">
+                                                    Step Completeness: {brainObservation.stepIntelligence['identity'].completeness}%
+                                                </div>
+                                            </div>
+
+                                            {/* Historical Match */}
+                                            {brainObservation.stepIntelligence['identity'].historicalMatch && (
+                                                <div className="mb-3 p-3 bg-white rounded-lg border border-indigo-100">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <History size={14} className="text-indigo-500" />
+                                                        <span className="text-xs font-semibold text-indigo-800">Historical Pattern Match</span>
+                                                        <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded">
+                                                            {Math.round(brainObservation.stepIntelligence['identity'].historicalMatch.relevance)}% match
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs text-stone-600">
+                                                        <span className="font-medium">{brainObservation.stepIntelligence['identity'].historicalMatch.era}:</span>{' '}
+                                                        {brainObservation.stepIntelligence['identity'].historicalMatch.scenario}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {/* Live Signals for this step */}
+                                            {brainObservation.stepIntelligence['identity'].signals.length > 0 && (
+                                                <div className="space-y-2 mb-3">
+                                                    {brainObservation.stepIntelligence['identity'].signals.slice(0, 3).map((signal, idx) => (
+                                                        <div key={idx} className={`p-2 rounded-lg border text-xs ${
+                                                            signal.severity === 'success' ? 'bg-emerald-50 border-emerald-200' :
+                                                            signal.severity === 'warning' ? 'bg-amber-50 border-amber-200' :
+                                                            'bg-white border-indigo-100'
+                                                        }`}>
+                                                            <div className="flex items-start gap-2">
+                                                                <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
+                                                                    signal.severity === 'success' ? 'bg-emerald-500' :
+                                                                    signal.severity === 'warning' ? 'bg-amber-500' :
+                                                                    'bg-indigo-500'
+                                                                }`}></div>
+                                                                <div>
+                                                                    <div className="font-semibold text-stone-800">{signal.title}</div>
+                                                                    <div className="text-stone-600 mt-0.5">{signal.description}</div>
+                                                                    {signal.actionable && (
+                                                                        <div className="text-blue-600 font-medium mt-1">→ {signal.actionable}</div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Next Steps */}
+                                            <div className="p-2 bg-white rounded border border-indigo-100">
+                                                <div className="text-[10px] font-semibold text-indigo-700 uppercase mb-1">Recommendations</div>
+                                                <ul className="text-xs text-stone-600 space-y-1">
+                                                    {brainObservation.stepIntelligence['identity'].recommendations.map((rec, idx) => (
+                                                        <li key={idx} className="flex items-start gap-1.5">
+                                                            <span className="text-indigo-500 shrink-0">•</span>
+                                                            <span>{rec}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             {activeModal === 'mandate' && (

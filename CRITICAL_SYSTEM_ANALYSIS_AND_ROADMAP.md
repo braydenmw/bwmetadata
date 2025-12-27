@@ -159,6 +159,14 @@ ciDelta = 12 * (1 - (UT / 100));  // User Transparency score
 
 ---
 
+### ✅ Phase 1 Engine Remediation (Dec 27, 2025)
+- **SPI v2 — contextual weighting live:** $SPI_{v2} = (\sum_i c_i \cdot w_i(\text{context})) \cdot P_{\text{interaction}}$ now ships with industry + risk-aware weights plus a multiplicative interaction penalty to prevent false positives when multiple components crater. See [services/engine.ts#L175-L334](services/engine.ts#L175-L334) for the dynamic weighting tables and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042) for the new penalty curve.
+- **IVAS v2 — deterministic friction:** Sector friction profiles, permit backlog signals, and compliance drag now flow from the enriched `RegionProfile` so activation windows reflect regulatory reality instead of RNG. Implementation spans [types.ts#L256-L266](types.ts#L256-L266), [services/ReportOrchestrator.ts#L91-L119](services/ReportOrchestrator.ts#L91-L119), and [services/engine.ts#L501-L574](services/engine.ts#L501-L574).
+- **SCF v2 — sector capture & discounting:** Each archetype uses calibrated capture bands, discount factors, and localized job-cost multipliers, turning SCF into an actual economic analysis instead of a single random slice. See [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
+- **Harness + telemetry:** The automated NSIL runner in [scripts/nsilSimulation.ts](scripts/nsilSimulation.ts) now executes the upgraded engines end-to-end and emits JSON artifacts ([test-results-simulation.json](test-results-simulation.json)) for every queue, giving Part 10 concrete evidence.
+
+---
+
 ## PART 2: MISSING INDICES (Documented but Not Implemented)
 
 The ModelingPlan.md references **16 additional indices** that are NOT yet implemented:
@@ -478,15 +486,262 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 
 ---
 
+## PART 9: NSIL LEARNING SIMULATION — 100 GLOBAL CLIENTS
+
+### 9.1 Simulation Parameters
+- **Objective:** Stress-test the Nexus Strategic Intelligence Layer (NSIL) with 100 simultaneous mandates so the system can adapt sector-by-sector, learn regional nuance, and surface edge-case interactions between formulas, personas, and data provenance.
+- **Method:** Curated pipeline spans 10 sector cohorts × 10 clients each. Every client is tethered to real geopolitical, climatic, or financial dynamics observed in 2023-2025 so the scenarios remain grounded and auditable.
+- **Engines Exercised:** Input Shield contradiction checks, SEAM partner matching, SPI/RROI/SCF recalibration, Monte Carlo expansions (10,000 trials), Counterfactual Lab, Persona Debate Board, Motivation Detection, Outcome Tracker hooks.
+- **Deliverables Captured:** For each client we log the live issue, the requested outcome, and which NSIL subsystems must lead so we can benchmark latency, accuracy, and bias exposure.
+
+### 9.2 Coverage Summary
+
+#### Regional Distribution (Actual Clients in Queue)
+| Region | # Clients | Representative Themes |
+| --- | --- | --- |
+| Africa | 19 | Drought adaptation, load shedding, One Health, port congestion |
+| Latin America & Caribbean | 15 | Housing PPPs, hydrogen exports, creative economy monetization |
+| North America | 8 | Wildfire resilience, rural broadband, hydrogen workforce |
+| Europe | 10 | Island decarbonization, CCS logistics, Arctic TVET |
+| Middle East | 8 | Reconstruction finance, logistics autonomy, cyber peace |
+| South Asia | 10 | Delta relocations, defense offsets, climate upskilling |
+| Southeast Asia | 14 | Mekong rail, EV supply chains, seafood biosecurity |
+| East Asia | 7 | Semiconductor redundancy, aging coastal defenses, Web3 policy |
+| Oceania | 6 | Remote grids, malaria corridors, Indigenous creative campuses |
+| Global / Multiregion | 3 | Sahel mobility, Arctic food security, Indigenous data sovereignty |
+
+#### Sector Cohort Distribution
+| Cohort | ID Range | Focus | Primary Stressors |
+| --- | --- | --- | --- |
+| Government & Multilateral Stabilization | 01-10 | Ministries, provincial treasuries, city resilience labs | Sovereign risk, compliance with IFI safeguards |
+| Banking, Fintech & Capital Markets | 11-20 | Development banks, microfinance, open banking alliances | Basel III, FX volatility, AML/sanctions |
+| Energy Transition & Utilities | 21-30 | Grid operators, hydrogen clusters, rural biogas | Land rights, CCUS logistics, currency hedging |
+| Infrastructure, Mobility & Logistics | 31-40 | Ports, rail PPPs, autonomous logistics councils | CAPEX phasing, V2X security, AfCFTA alignment |
+| Agriculture, Food & Water Security | 41-50 | Co-ops, irrigation boards, commodity councils | EU what deforestation law, MRV, canal leakage |
+| Health, Life Sciences & Biosecurity | 51-60 | Ministries, telehealth mutuals, One Health desks | EMR rollout, zoonotic intel, reimbursement policy |
+| Advanced Manufacturing & Supply Chain | 61-70 | EV supply chains, aerospace parks, defense clusters | Local-content thresholds, energy shocks |
+| Technology, Telecom & Digital Trust | 71-80 | Digital ID exports, quantum labs, Open RAN forums | Talent leakage, cyber norms, grant compliance |
+| Education, Workforce & Creative Economies | 81-90 | Skills authorities, creative incubators, TVET networks | Curriculum agility, IP monetization, safe housing |
+| Humanitarian, Climate Resilience & NGOs | 91-100 | UN clusters, climate alliances, Indigenous networks | Sanction-safe procurement, parametric risk, data rights |
+
+### 9.3 Client Queue (Detailed Dataset)
+
+#### Cohort 1: Government & Multilateral Stabilization (Clients 01-10)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 01 | São Paulo Metropolitan Housing Authority | LATAM / Urban Development | Floods stalled 48k-unit social housing PPP as lenders exited | Recompose blended-finance stack and phasing plan to resume builds | Input Shield data integrity, SPI dynamic weights, Counterfactual Lab on phasing |
+| 02 | Ghana Dept. of Water & Sanitation | Africa / Water | Coastal aquifers salinating 12 towns after illegal sand mining | Prioritize desal + solar micro-utility PPP with tariff reform | IVAS sector friction tables, SEAM partner scoring, SCF temporal discounting |
+| 03 | Philippines Dept. of Transportation (Mindanao Rail) | SE Asia / Rail | Appropriations freeze amid insurgency hotspots | Stage financing with security-adjusted Monte Carlo and risk-sharing LoIs | Persona debate (Regulator + Operator), RROI penalties, Motivation detection |
+| 04 | Edmonton Resilience Office (Canada) | North America / Climate | Wildfire defense levy gap for peri-urban communities | Rank mitigation bundles and carbon-market backed funding | SPI interaction penalties, Counterfactual fire scenarios, SCF jobs recalibration |
+| 05 | Bangladesh Planning Commission | South Asia / Industrial Policy | Deltaic industrial zone relocation before 2030 | Map relocation path, compensation envelopes, and FX hedges | Input Shield vs WB data, SEAM ecosystem rebuild, Monte Carlo relocation costs |
+| 06 | Western Cape Provincial Treasury | Africa / Fiscal | Municipal defaults triggered by five-year drought | Design contingent liquidity facility + tariff reform timeline | Motivation detection (austerity vs relief), SCF capture by sector, Outcome tracker prep |
+| 07 | Indonesia BNPB (Disaster Agency) | SE Asia / Emergency Mgmt | Volcanic early warning systems fragmented across islands | Build interoperable sensor + satellite procurement with local SMEs | Partner Discovery, Persona Operator focus, RROI digital readiness weighting |
+| 08 | Colombian Peace Fund Secretariat | LATAM / Post-conflict | Reintegration corridors lack investable infrastructure | Package agro-logistics PPPs aligned to peace zones | SEAM coalition design, Counterfactual boomerang risk, Motivation check on donors |
+| 09 | Greek Ministry of Tourism Islands Division | Europe / Tourism | EU ETS rules threaten ferry economics to Cycladic islands | Craft green corridor roadmap with phased electrification grants | RROI industry weights, SCF capture vs seasonal demand, Input Shield on EU regs |
+| 10 | Rwanda Cooperative Agency | Africa / MSME Enablement | 14,000 cooperatives lack audited data to access capital | Digitize filings, score borrower ladders, and syndicate diaspora fund | Input Shield literacy, SPI per-coop adjustments, Outcome tracker instrumentation |
+
+#### Cohort 2: Banking, Fintech & Capital Markets (Clients 11-20)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 11 | Bank of Tanzania Digital Finance Unit | Africa / Central Banking | Cross-border CBDC pilot needs settlement risk modeling | Design sandbox partners and prudential guardrails | Adversarial Input Shield vs FATF, Persona Accountant, Counterfactual on FX corridors |
+| 12 | Singapore FinTech Association | SE Asia / Fintech | 2,300 SMEs must meet Basel III-lite stress tests | Create templated capital plans + audit trails | SPI weight swap (regulatory), SEAM audit partners, Self-learning calibration |
+| 13 | Abu Dhabi Investment Authority Clean Logistics Fund | Middle East / Sovereign Capital | Evaluating MENA cold-chain decarb deals under sanctions filters | Build sanction-safe diligence stack + partner map | Input Shield (OFAC), Persona Regulator, Counterfactual Lab on routing |
+| 14 | Nacional Financiera (Mexico) | LATAM / Development Bank | Peso volatility undermines near-shore manufacturing fund | Structure FX hedge co-payments with U.S. buyers | IVAS currency module, Motivation detection for borrowers, Outcome tracker seeds |
+| 15 | Frankfurt Sustainable Finance Lab | Europe / Banking | Fragmented EU taxonomy reporting across 40 lenders | Harmonize data schema + assurance partner roster | SEAM partner scoring, Input Shield vs ESMA data, Persona Skeptic on greenwashing |
+| 16 | Kansas Community Credit Union Collective | North America / Cooperative Finance | Climate-loss lending threatens Tier-3 solvency | Design state guarantee ladder + borrower monitoring | SCF job impact by county, SPI rural weights, Counterfactual on rate caps |
+| 17 | Mumbai Cooperative Bank Federation | South Asia / Agri Finance | Crop-failure NPLs spike 19%; board resists write-offs | Build restructuring playbook + blended-loss reserve | Persona Advocate vs Skeptic, Motivation detection (political cycle), Outcome tracking |
+| 18 | Nairobi Inclusive Microfinance Network | Africa / Microcredit | Mobile scoring biased against informal female traders | Retrain risk model with gender-equity guardrails | Input Shield vs survey data, Self-learning fairness metrics, Persona debate |
+| 19 | Santiago Impact Bond Studio | LATAM / Capital Markets | Social bond pipeline thin after pension reforms | Curate investable dossiers with verified metrics | SCF capture per borough, SEAM partner matchmaking, Counterfactual investor mix |
+| 20 | Riyadh Open Banking Consortium | Middle East / Digital Banking | New data-sharing rules lack trust + security overlays | Draft federated architecture plus compliance runbook | Input Shield (data residency), Persona Regulator, Tech architecture via NSIL events |
+
+#### Cohort 3: Energy Transition & Utilities (Clients 21-30)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 21 | Queensland Remote Grid Utility | Oceania / Energy | 34 diesel-reliant islands face fuel inflation | Stage hybrid microgrid rollout with Indigenous equity | RROI island weights, Counterfactual diesel subsidy, Motivation detection |
+| 22 | Moroccan Sahara Solar Agency | Africa / Solar | Land rights disputes with Amazigh cooperatives | Create shared-benefit charter + escrow | SEAM partner negotiation, Persona Operator, SPI ethical penalties |
+| 23 | Chilean Green Hydrogen Valley | LATAM / Hydrogen | Export ammonia needs port + pipeline sequencing | Align CAPEX, offtake, and EU CBAM compliance | IVAS sector friction, SCF temporal discount, Counterfactual on markets |
+| 24 | Navajo Tribal Energy Cooperative (USA) | North America / Tribal Energy | Legacy coal retirements leave revenue cliff | Monetize transmission rights + IRA incentives | SPI interaction (sovereign vs utility), Persona Advocate, Outcome tracker |
+| 25 | Vietnam Mekong Floating Solar Taskforce | SE Asia / Renewables | Sediment load + typhoon risk raise insurance costs | Evaluate anchoring tech + catastrophe pools | Monte Carlo hazard suite, Input Shield hydrology, Counterfactual land-based PV |
+| 26 | Norway North Sea CCS Alliance | Europe / CCS | EU liability for cross-border CO₂ shipping unclear | Build treaty-backed indemnity pathway | Persona Regulator, Adversarial Input Shield vs IMO, SEAM legal partners |
+| 27 | Saudi Downstream Innovation Directorate | Middle East / Petrochem | Need CO₂-to-chemicals roadmap without stranded assets | Compare circular feedstock plays + export incentives | Counterfactual (CCUS vs H2), Motivation detection, SCF jobs delta |
+| 28 | Kenya Rift Geothermal SME Window | Africa / Geothermal | SMEs excluded from drilling equity | Create community trust + mezzanine ladder | SEAM trust design, Persona Accountant, SPI partner reliability |
+| 29 | Yokohama Waste-to-Hydrogen Authority | East Asia / Circular | Supply chain lacks electrolyzer maintenance talent | Structure JVs + workforce pipeline | Input Shield supplier data, RROI talent weight, Education handoff |
+| 30 | Bangladesh Rural Biogas Mission | South Asia / Bioenergy | 45,000 households stuck at pilot stage | Bundle carbon revenue + micro-finance | SCF capture rural, Persona Operator, Outcome tracker feeding Self-learning |
+
+#### Cohort 4: Infrastructure, Mobility & Logistics (Clients 31-40)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 31 | Nigerian Ports Authority (Lagos) | Africa / Ports | Berth congestion + 14-day dwell times | Sequence berth automation + inland dry ports | IVAS logistics friction, Persona Operator, Counterfactual tariff reform |
+| 32 | Peru Andean Rail PPP Unit | LATAM / Rail | Altitude stresses equipment & FX costs | Blend yen loans + local currency hedges | RROI supply-chain weights, SCF jobs/inclusion, Input Shield cost data |
+| 33 | Croatian Island Ferry Service | Europe / Maritime | Electrification mandates vs operator margins | Build EU grant-backed fleet roadmap | SPI industry weights, Counterfactual diesel extension, Persona Regulator |
+| 34 | California Inland Port Coalition | North America / Freight | Labor unions fear automation in zero-emission inland port | Negotiate just-transition comp and training stack | Motivation detection, Persona debate, SEAM workforce partners |
+| 35 | NEOM Logistics Directorate | Middle East / Autonomous Freight | Need ICAO/IMO compliance for autonomous cargo | Produce certification + risk log | Adversarial Input Shield vs ICAO, Persona Regulator, Counterfactual staging |
+| 36 | Vietnam Mekong Dike Authority | SE Asia / Water Infrastructure | Aging dikes threaten rice exports | Prioritize segments + blended funding | SCF ag impact, Input Shield hydrology, Outcome tracker hooks |
+| 37 | Ethiopia Digital Customs Service | Africa / TradeTech | Paper processes blocking AfCFTA revenue | Deploy single-window & risk-scoring | SEAM vendor stack, Persona Operator, SPI readiness |
+| 38 | Colombian Air Ambulance Network | LATAM / Health Logistics | Mountainous regions uncovered for trauma transport | Design PPP fleet + financing | RROI health weights, Counterfactual staging, Motivation detection |
+| 39 | Korea Smart Highway Ops Center | East Asia / ITS | V2X rollout faces cybersecurity liabilities | Build trust + insurance framework | Persona Regulator, Input Shield threat intel, Counterfactual manual ops |
+| 40 | New Zealand High Country Fibre Partnership | Oceania / Digital Infra | High CapEx to reach iwi-owned terrain | Create revenue-share + low-orbit backup | SPI cultural weights, SEAM Indigenous partners, SCF rural jobs |
+
+#### Cohort 5: Agriculture, Food & Water Security (Clients 41-50)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 41 | Kenya Pastoralist Cooperative Federation | Africa / Livestock | Recurrent drought collapsing feed systems | Pivot to drought-resilient fodder + index insurance | SCF regional capture, Counterfactual herd cuts, Persona Advocate |
+| 42 | Argentina Soy Value-Add Fund | LATAM / Agri-processing | USD controls block equipment imports | Engineer supplier credit + hedge path | Input Shield forex data, SPI partner reliability, Persona Accountant |
+| 43 | Punjab Irrigation Authority (India) | South Asia / Water | 38% canal leakage, farmer protests | Stage canal lining + rationing incentives | RROI water weights, Monte Carlo rainfall, Motivation detection |
+| 44 | Philippines Blue Food Alliance | SE Asia / Aquaculture | Shrimp disease + mangrove loss harming exports | Finance hatchery biosecurity + blue carbon swaps | SEAM science partners, Counterfactual farm siting, SCF climate jobs |
+| 45 | Ethiopia Coffee Traceability Board | Africa / Specialty Crops | EU deforestation law compliance gaps | Deploy satellite tracking + premium pricing | Input Shield supply data, Persona Operator, SPI ethical weight |
+| 46 | Morocco Argan Women's Union | Africa / Agroforestry | Yield drops due to drought & land grabs | Build regenerative finance + land title defense | Motivation detection, SEAM legal clinics, SCF women employment |
+| 47 | Ukraine Grain Corridor Taskforce | Europe / Export Logistics | Insurance gaps on wartime Black Sea routes | Structure war-risk pool + alternative corridors | Counterfactual Danube routes, Persona Regulator, SPI logistics weighting |
+| 48 | Brazil Cerrado Regeneration Bank | LATAM / Natural Capital | Need carbon MRV for agro-forestry investors | Build MRV stack + buyer pipeline | Input Shield satellite feeds, SCF carbon capture, SEAM buyers |
+| 49 | Indonesia Spice Export Council | SE Asia / SME Export | FDA compliance blocking SME shipments | Provide shared lab + certification finance | Persona Operator, SPI partner scoring, Outcome tracker |
+| 50 | NT Water Security Board (Australia) | Oceania / Water Rights | Aquifer licenses contested by Indigenous nations | Craft co-management & revenue sharing | Motivation detection, SEAM Traditional Owners, Counterfactual extraction caps |
+
+#### Cohort 6: Health, Life Sciences & Biosecurity (Clients 51-60)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 51 | Nigeria Primary Care Digitization Unit | Africa / Health IT | Clinics offline; EMR pilots failing | Build low-bandwidth EMR + training finance | Persona Operator, Input Shield telecom data, Outcome tracker |
+| 52 | Chile Telehealth Mutual | LATAM / Insurance | Remote Andes consults unreimbursed | Create actuarial evidence + payer contracts | SCF health impact, SPI payer partners, Counterfactual travel clinics |
+| 53 | NHS Midlands Innovation Hub (UK) | Europe / Workforce | Elder-care robotics stuck in pilots | Model ROI + vendor risk for scale | Persona Accountant, RROI talent, Self-learning module |
+| 54 | UAE Genomics Council | Middle East / Data | Need federated privacy framework across emirates | Draft governance + sovereign cloud deal | Input Shield legal, Persona Regulator, SEAM cloud partners |
+| 55 | Thailand Medical Tourism Board | SE Asia / Tourism Health | U.S. insurers won't credential Thai hospitals | Build credentialing dossier + escrow model | SPI ethical weights, Counterfactual domestic focus, Motivation detection |
+| 56 | India Rural Vaccine Alliance | South Asia / Supply Chain | Cold-chain loss >18% in tier-3 towns | Finance solar cold-chain + routes | IVAS friction, Persona Operator, Outcome tracker |
+| 57 | U.S. Tribal Behavioral Health Network | North America / Health Equity | Integrating cultural healers with Medicaid billing | Build compliant code stack + funding | Input Shield CMS policy, SEAM universities, Persona Regulator |
+| 58 | Rwanda One Health Emergency Desk | Africa / Biosecurity | Border zoonotic surveillance gaps | Deploy cross-border labs + drone logistics | Counterfactual resource allocation, Persona Skeptic, SPI readiness |
+| 59 | Japan Care Robotics Consortium | East Asia / Gerontechnology | Rural towns lack technicians | Joint venture training fund + leasing model | RROI workforce weighting, SEAM training, Outcome tracker |
+| 60 | PNG Malaria Elimination Taskforce | Oceania / Public Health | Rivers block medicine reach post-flood | Map drone + boat mix and buffer stocks | Monte Carlo logistics, Persona Operator, SCF health impact |
+
+#### Cohort 7: Advanced Manufacturing & Supply Chain (Clients 61-70)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 61 | Vietnam EV Supply Chain Accelerator | SE Asia / EV Manufacturing | Local content mandates outpacing suppliers | Design supplier upgrade blueprint + credit access | SEAM supplier grading, SPI industry weights, Counterfactual import reliance |
+| 62 | Baja Aerospace SME Park (Mexico) | LATAM / Aerospace | FAA certification backlog for SMEs | Build shared DER (Designated Engineering Rep) pool | Persona Regulator, Input Shield FAA data, SCF jobs |
+| 63 | Germany Mittelstand Reshoring Group | Europe / Advanced Manufacturing | Energy prices crushing margins | Hedge strategy + on-site renewables finance | Motivation detection, Counterfactual overseas plants, SPI partner reliability |
+| 64 | Kenya Textile Modernization Initiative | Africa / Apparel | Need recycled fiber capabilities for EU buyers | Finance circular upgrades + training | SEAM buyer linkage, SPI ethics weight, Outcome tracker |
+| 65 | India Defense Offset Cluster | South Asia / Aerospace & Defense | Export controls slowing JV approvals | Map compliant JV structure + digital twin | Persona Regulator, Input Shield ITAR data, Counterfactual local-only |
+| 66 | Brazil Bio-based Plastics Hub | LATAM / Bio-Manufacturing | Feedstock volatility vs export contracts | Build hedging ladder + farmer co-ops | SCF capture, Persona Accountant, SPI partner reliability |
+| 67 | South Africa Battery Precursor JV | Africa / Minerals | Load shedding halts production windows | Stage captive renewables + storage | RROI energy weights, Counterfactual relocation, Motivation detection |
+| 68 | Canada Indigenous Advanced Materials Lab | North America / R&D | Need procurement certainty to scale mineral composites | Secure offtake + ESG reporting | SEAM Indigenous corp partnerships, Persona Advocate, Outcome tracker |
+| 69 | Korea Semiconductor Outage Council | East Asia / Chips | Earthquake redundancy rules unclear | Model redundancy ROI + insurance | Input Shield seismic data, Persona Regulator, Counterfactual single sites |
+| 70 | Indonesia Nickel Responsible Mining Board | SE Asia / Mining | EU battery passport compliance risk | Build ESG audit guild + traceability tech | SEAM auditors, SPI ethical penalty, Self-learning loops |
+
+#### Cohort 8: Technology, Telecom & Digital Trust (Clients 71-80)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 71 | Estonia Digital Identity Export Desk | Europe / GovTech | Demand from African states exceeds legal capacity | Prioritize markets + licensing guardrails | Input Shield on data laws, Persona Regulator, Counterfactual partner order |
+| 72 | Ghana CivicTech Safety Lab | Africa / GovTech | Need real-time violence early warning for secondary cities | Fuse municipal feeds + community channels | SEAM civic partners, SPI public safety weights, Outcome tracker |
+| 73 | Singapore Quantum Testbed Council | SE Asia / Deep Tech | Talent flight to Big Tech slows adoption | Build incentive matrix + global fellowships | Motivation detection, SCF jobs, Persona Advocate |
+| 74 | Israel Cyber Peace Team | Middle East / Cybersecurity | Hospitals hit by cross-border ransomware | Craft shared SOC + legal rapid response | Input Shield threat intel, Persona Regulator, Counterfactual decentralization |
+| 75 | Nigeria Open RAN Forum | Africa / Telecom | Need vendor financing + security certification | Create blended facility + assurance scheme | SPI partner reliability, SEAM OEM roster, Counterfactual single-vendor |
+| 76 | U.S. Rural Broadband Cooperative Network | North America / Telecom | BEAD grant compliance overwhelming co-ops | Provide documentation engine + cashflow model | Input Shield grant rules, Persona Accountant, Outcome tracker |
+| 77 | India GovStack Integration PMO | South Asia / Digital Public Goods | 27 ministries onboarding to shared stack | Sequence modules + resolve data conflicts | Persona Operator, Input Shield contradictions, Motivation detection |
+| 78 | Philippines Disaster Data Mesh | SE Asia / Resilience Tech | LGUs store sensor data in silos | Design mesh + sharing incentives | SEAM municipal nodes, Counterfactual centralized cloud, SPI readiness |
+| 79 | Japan Web3 Compliance Sandbox | East Asia / Digital Assets | Need anti-fraud models for CBDC pilots | Build oversight + counterparty trust scoring | Persona Regulator, Input Shield AML data, Counterfactual manual review |
+| 80 | Australia Space Data Downlink Cooperative | Oceania / SpaceTech | Ground station financing gaps for remote orbits | Tie defense + ag demand to pay-for-use model | SCF jobs, RROI satcom weights, SEAM anchor tenants |
+
+#### Cohort 9: Education, Workforce & Creative Economies (Clients 81-90)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 81 | Colombia Creative Export Incubator | LATAM / Orange Economy | Artists lack monetization + export paperwork | Build marketplace + export credit | SPI SME weights, SEAM label partners, Outcome tracker |
+| 82 | Bangladesh Skills-for-Climate Authority | South Asia / Workforce | Garment workers need solar + EV trades | Design stipend, curriculum, placement map | Motivation detection, SCF job tracking, Persona Operator |
+| 83 | Finland Arctic Vocational Network | Europe / TVET | Duplicated labs across Lapland municipalities | Share equipment + remote learning stack | Input Shield demographic data, SEAM municipality MOUs, Counterfactual closure |
+| 84 | Saudi Technical Apprenticeship Fund | Middle East / Workforce | Industry distrusts public curriculum speed | Build employer-led board + KPI financing | Persona Skeptic vs Advocate, SPI industry weights, Outcome tracker |
+| 85 | Appalachian Workforce Board (USA) | North America / Workforce | Hydrogen hub funding lacks trained labor | Stand up dual-track apprenticeships | SCF wage delta, Counterfactual hydrogen delay, Motivation detection |
+| 86 | Philippines Creative Economy Studio | SE Asia / Creative Tech | IP contracts leave artists unpaid | Provide legal co-op + royalty fintech | Input Shield contract law, Persona Regulator, SEAM legal partners |
+| 87 | Spain Creative Cities Lab | Europe / Culture | EU Missions require measurable creative impact | Build KPI stack + financing | SPI tourism weights, Counterfactual alt cities, Outcome tracker |
+| 88 | India Women-in-Logistics Fellowship | South Asia / Inclusion | Safety + housing block female truck leaders | Package dorms, escorts, financing | Motivation detection, Persona Operator, SCF inclusion metrics |
+| 89 | Korea eSports Academic League | East Asia / Education | Need accreditation + youth protections | Draft governance + scholarship model | Input Shield policy, Persona Regulator, Counterfactual private leagues |
+| 90 | Māori Creative Campus (New Zealand) | Oceania / Cultural Economy | Need revenue-sharing terms across iwi | Build governance + investor pack | SEAM Indigenous partners, Motivation detection, SPI cultural weighting |
+
+#### Cohort 10: Humanitarian, Climate Resilience & NGOs (Clients 91-100)
+| ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
+| --- | --- | --- | --- | --- | --- |
+| 91 | UNHCR Sahel Mobility Corridor | Global / Humanitarian | Need route planning around insurgent zones | Optimize corridors + convoy finance | Input Shield security intel, Persona Operator, Counterfactual seasonal shifts |
+| 92 | Palestine Water Reconstruction Taskforce | Middle East / Reconstruction | Dual-use material controls stall desal rebuild | Build compliance + escrow | Persona Regulator, SEAM suppliers, Motivation detection |
+| 93 | Caribbean Disaster & Climate Alliance | LATAM / Climate Finance | Microstates can’t afford premium parametric cover | Create pooled risk and reinsurer syndicate | SCF loss avoidance, Counterfactual self-insurance, SPI partner scoring |
+| 94 | Arctic Council Food Security Taskforce | Global / Arctic | Shipping windows shrinking for northern communities | Map cold-chain corridors + drone resupply | RROI logistics, Persona Operator, Input Shield climate data |
+| 95 | Mozambique Cyclone Microinsurance Guild | Africa / Climate Risk | Reinsurance scarce post-Idai | Package donor-backed risk capital | SEAM reinsurers, SPI ethical weighting, Counterfactual cash relief |
+| 96 | Sri Lanka Coastal Adaptation Fund | South Asia / Climate Adapt | Fisher relocation finance unpopular | Craft benefit-sharing + housing finance | Motivation detection, Persona Advocate, SCF livelihood tracking |
+| 97 | Myanmar Cross-Border Humanitarian Corridor | SE Asia / Aid Logistics | Procurement must avoid sanctioned entities | Build compliant vendor pool + audit trail | Input Shield sanctions, Persona Regulator, Counterfactual local sourcing |
+| 98 | Japan Aging Coastal Defense Retrofit | East Asia / Infrastructure | Budget lag vs urgency on seawall repairs | Rank sections + finance tools | Persona Accountant, SCF public safety, Counterfactual relocation |
+| 99 | Haiti Cholera Early Warning Network | LATAM / Health Security | Sensor data mistrusted post-disaster | Build provenance + community validators | Motivation detection, Input Shield lab data, Outcome tracker |
+| 100 | Global Indigenous Data Sovereignty Alliance | Global / Data Governance | Need encrypted federated store for cultural data | Architect consent ledger + funding | SEAM tech partners, Persona Regulator, Self-learning guardrails |
+
+### 9.4 Simulation Output Hooks
+- **Model Calibration:** Each cohort injects tagged telemetry (sector, region, issue archetype) into the Outcome Tracker so SPI, RROI, SCF, and SEAM weights can be tuned automatically once real project outcomes stream back.
+- **Bias Audits:** Motivation Detection logs why requests originate (political cycle, reputational repair, revenue chase). Persona disagreements are archived per client to analyze recurring blind spots.
+- **Counterfactual Repository:** Every client triggers at least two “do-the-opposite” branches so future users can browse precedent, reducing hallucinated narratives.
+- **Human-in-the-Loop Points:** The simulation flags where manual sign-off is still mandatory (e.g., sanctions, Indigenous governance) so we know where to embed legal reviewers inside the workflow.
+- **Learning Cadence:** Weekly replay sessions will compare predicted vs actual KPI deltas. Deviations >5 percentage points automatically queue math-engine tweaks and prompt Landing/CommandCenter copy updates so narrative and math never diverge.
+
+---
+
+## PART 10: EXECUTION PLAYBOOK — BASELINE & FULL TESTING
+
+### 10.1 Prerequisites (Week 0)
+1. **Dataset Loader:** Export the Part 9 table into `nsil/testing/client_queue_v1.json` (schema: id, entity, region, sector, issue, desiredOutcome, moduleFocus). Validate with zod to match orchestrator expectations.
+2. **Scenario Harness:** Extend `ReportOrchestrator` with `SimulationRunner` that can ingest the queue, enqueue persona jobs, and emit NSIL XML per client without UI dependencies.
+3. **Telemetry Sink:** Provision `nsil_telemetry.baseline_*` tables (outputs, personaVotes, counterfactuals, motivationFlags, runtimeStats). Wire to existing OutcomeTracker but flag runs as `mode="baseline"`.
+4. **Version Lock:** Tag current math/weight code as `nsil-baseline-2025-12-27` so diffs against tuned engines stay deterministic.
+5. **Ops Checklist:** Assign roles: Simulation Lead, Data Steward (OFAC/privacy), Reviewer for manual checkpoints (sanctions, Indigenous data, legal clauses).
+
+### 10.2 Baseline Runbook (Week 1)
+| Step | Action | Owner | Output |
+| --- | --- | --- | --- |
+| 1 | Load 100-client queue and validate schema | Data Steward | Signed JSON hash stored in repo |
+| 2 | Run Input Shield-only pass to log contradiction counts per cohort | Simulation Lead | `baseline_input_shield.csv` |
+| 3 | Execute full NSIL flow (SPI/RROI/SCF/SEAM, personas, counterfactuals, motivation) in batches of 10 to monitor resource spikes | Simulation Lead | 100 NSIL XML bundles stored in blob + telemetry rows |
+| 4 | Capture runtime + variance metrics (latency per module, Monte Carlo convergence, persona disagreement %) | Observability | Dashboard snapshot `baseline_vitals.png` |
+| 5 | Conduct bias audit triage: highlight clients with high contradiction score but still greenlit | Reviewer | Memo + JIRA tickets |
+| 6 | Freeze artifacts: tag data, XML, dashboards, and narrative exports as Baseline Set | PMO | `baseline_manifest.md` |
+
+### 10.3 Full Testing Runbook (Week 2-3)
+1. **Engine Upgrades:** Merge dynamic SPI weights, sectoral SCF capture tables, IVAS friction integrations, 10k Monte Carlo, and Input Shield live-data hooks.
+2. **Rehydrate Queue:** Replay the exact 100 clients with identical IDs. Use orchestrator flag `mode="full_test"` to write to new telemetry tables for diffing.
+3. **Comparative Analytics:**
+  - Variance reduction: compare SPI/RROI deltas vs baseline (target ±3 percentage points per cohort).
+  - Persona agreement shifts: expect ≥10% drop in unresolved disagreements due to better data.
+  - Counterfactual regret gap: measure change in regret probability; flag increases >5% for manual review.
+4. **Human Review Windows:** Auto-route scenarios touching sanctions, Indigenous governance, or humanitarian corridors for manual sign-off before marking test as complete.
+5. **Outcome Tracker Hooks:** For any client with real-world analogues already in CRM, backfill actual KPIs to validate calibration quickly.
+6. **Sign-off Gate:** Produce `full_test_comparison.pdf` summarizing improvements, regressions, unresolved bugs, and recommendations for production rollout.
+
+### 10.4 Kickoff Checklist & Timeline
+| Week | Milestone | Exit Criteria |
+| --- | --- | --- |
+| 0 | Ready-to-run | Dataset, harness, telemetry, governance approvals complete |
+| 1 | Baseline complete | 100 clients processed, dashboards + bias memo archived |
+| 2 | Engine upgrades merged | QA sign-off, feature flags ready |
+| 3 | Full test executed | Comparison report + remediation tickets filed |
+| 4 | Production prep | Playbook adopted into SOP, Landing copy updated with validated claims |
+
+### 10.5 Baseline Execution Log — 27 Dec 2025
+- **Command + assets:** `npm run test:nsil -- --mode baseline` executed against `tests/client_queue_mini.json`, with outputs stored in [test-results-simulation.json](test-results-simulation.json) for reproducibility.
+- **Coverage:** 10/10 scenarios succeeded (100% success rate) with runtime spread 1.0–4.6 seconds per client, validating the upgraded SPI/IVAS/SCF stack before scaling to the 100-client cohort.
+- **Telemetry excerpt:**
+
+| ID | Entity | Sector | SPI | RROI | SCF USD |
+| --- | --- | --- | --- | --- | --- |
+| 01 | São Paulo Metropolitan Housing Authority | Urban Development | 57 | 48 | $15,921,691,714 |
+| 12 | Singapore FinTech Association | Financial Services | 82 | 70 | $3,840,061,717 |
+| 34 | California Inland Port Coalition | Logistics | 66 | 54 | $218,402,264,594 |
+| 56 | India Rural Vaccine Alliance | Healthcare | 60 | 47 | $38,045,121,794 |
+| 100 | Global Indigenous Data Sovereignty Alliance | Data Governance | 57 | 44 | $670,046,041 |
+
+- **Observations:** Contextual SPI weights are spreading scores (range 43–82) instead of clustering near 70, IVAS activation windows now correlate with permit friction (e.g., infrastructure IDs 01/34 spiking runtime), and SCF impact scales with sector capture assumptions (ports vs. fintech). These baselines become the comparison set for the upcoming `--mode full-test` replay.
+
+**Trigger:** Once leadership approves the checklist, run `npm run nsil:simulate --queue client_queue_v1.json --mode baseline` followed by the full-test invocation. All artifacts funnel back into the CRITICAL SYSTEM ANALYSIS log for auditing.
+
+---
+
 ## CONCLUSION
 
 The current system has **solid foundations** but the mathematical formulas have critical weaknesses:
 
-### Must Fix Immediately:
-1. ❌ Static weights in SPI formula
-2. ❌ Random friction in IVAS
-3. ❌ Arbitrary capture rates in SCF
-4. ❌ 76% of planned indices not implemented
+### Must Fix Immediately (Status — Dec 27, 2025):
+1. ✅ Static weights in SPI formula — replaced by contextual weighting + interaction penalties in [services/engine.ts#L175-L334](services/engine.ts#L175-L334) and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042).
+2. ✅ Random friction in IVAS — superseded by deterministic sector friction tables in [services/engine.ts#L501-L574](services/engine.ts#L501-L574) with new profile data wired through [types.ts#L256-L266](types.ts#L256-L266).
+3. ✅ Arbitrary capture rates in SCF — sector capture/discount curves now drive outputs in [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
+4. ❌ 76% of planned indices not implemented — derivative indices still pending; remains the top priority for Phase 2.
 
 ### System Potential:
 With the enhancements described, BW Nexus AI would be the **only platform** that:
@@ -503,3 +758,72 @@ This is not just a "consultant tool" — it would be a **reasoning partner** tha
 **Document prepared by:** BW Nexus AI System Analysis  
 **Classification:** Internal Development Roadmap  
 **Next Action:** Review with development team for Phase 1 implementation
+
+---
+
+## APPENDIX B: DEFINITIVE SYSTEM REFERENCE (THE 21 FORMULAS & NSIL BRAIN)
+
+### 1. THE 21 PROPRIETARY FORMULAS
+**Core Engines (5 Primary + 16 Derivatives)**
+
+#### A. Primary Engines (engine.ts)
+| Formula | Purpose | Current Implementation |
+| :--- | :--- | :--- |
+| **SPI™ (Success Probability Index)** | Overall success probability | Weighted composite: 7 factors including economic readiness, political stability, partner reliability |
+| **RROI™ (Regional Return on Investment)** | Location-based ROI | 12-component scoring with live World Bank data |
+| **SEAM™ (Stakeholder & Entity Alignment)** | Partnership ecosystem health | Partner synergy + gap analysis |
+| **IVAS™ (Investment Validation Assessment)** | Time-to-activation velocity | Friction model: P10/P50/P90 month estimates |
+| **SCF™ (Strategic Cash Flow)** | Economic impact projection | Market capture × readiness × temporal discount |
+
+#### B. Derivative Formulas (MissingFormulasEngine.ts)
+**18 additional heuristic models:**
+
+1. **BARNA** (Negotiation Power)
+2. **NVI** (Negotiation Value Index)
+3. **CRI** (Cultural Resonance Index)
+4. **CAP** (Counterparty Analysis Protocol)
+5. **AGI** (Accelerated Growth Index)
+6. **VCI** (Value Creation Index)
+7. **ATI** (Adaptability & Transition Index)
+8. **ESI** (Execution Superiority Index)
+9. **ISI** (Innovation Strength Index)
+10. **OSI** (Operational Sustainability Index)
+11. **TCO** (Total Cost of Ownership)
+12. **PRI** (Portfolio Risk Index)
+13. **RNI** (Regulatory Navigation Index)
+14. **SRA** (Sovereign Risk Assessment)
+15. **IDV** (Institutional Distance Vector)
+16. **LAI** (Latent Asset Identification)
+17. **HHI** (Market Concentration Index)
+18. **Ethics Score**
+
+#### C. Quantitative + Qualitative
+The platform runs 21 mathematical formulas (e.g., Strategic Partnership Index) and pairs them with AI-written narratives that explain the results in plain language.
+
+### 2. NSIL — THE BRAIN (How the system thinks)
+
+At the center of the platform is **NSIL: the Nexus Strategic Intelligence Layer**. NSIL treats your business plan as a living simulation. It doesn't just store your inputs—it reads them, simulates outcomes, finds hidden risks, and proposes fixes.
+
+#### Five-layer Autonomous Reasoning Stack
+NSIL mimics a team of experts through thin reasoning shells that wrap around the core mathematical engines. This preserves explainability while enabling adversarial and counterfactual reasoning.
+
+#### Multi-Perspective Reasoning Engine
+When you submit a strategy, NSIL spawns five personas that each evaluate the plan in parallel and produce evidence-backed arguments:
+
+*   **Skeptic** — finds deal-killers, over-optimism, and hidden downside.
+*   **Advocate** — finds upside, synergies and optional levers to increase value.
+*   **Regulator** — checks legal, sanctions, and ethical constraints.
+*   **Accountant** — validates cashflow, margins, and economic durability.
+*   **Operator** — tests execution feasibility: team, supply chains, and infrastructure.
+
+#### The Debate — How outputs are born
+Personas vote and attach evidence; NSIL synthesizes the debate. Findings are accepted only when corroborated or when a transparent disagreement is recorded, producing a clear recommendation (e.g., 'high-risk', 'requires operational fix', 'opportunity — monitor').
+
+#### How it learns
+NSIL continuously improves through:
+
+*   **Motivation Detection** — learns your decision profile and adjusts how insights are framed.
+*   **Counterfactual Lab** — silently simulates opposite choices to surface robust alternatives and trade-offs.
+*   **Outcome Tracking** — compares predictions to real outcomes and recalibrates internal weights.
+
+**What this delivers:** Explainable, math-backed recommendations with provenance, debate logs, and counterfactual alternatives — turning passive data into an active advisory partner.

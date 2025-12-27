@@ -22,7 +22,7 @@ body {
 
 /* Utility classes */
 .text-bw-navy {
-  color: #0f172a;
+  color: #3d3d3d;
 }
 
 .text-bw-gold {
@@ -30,7 +30,7 @@ body {
 }
 
 .bg-bw-navy {
-  background-color: #0f172a;
+  background-color: #3d3d3d;
 }
 
 .bg-bw-gold {
@@ -38,7 +38,7 @@ body {
 }
 
 .border-bw-navy {
-  border-color: #0f172a;
+  border-color: #3d3d3d;
 }
 
 .border-bw-gold {
@@ -47,7 +47,7 @@ body {
 
 /* Button styles */
 .btn-primary {
-  background-color: #0f172a;
+  background-color: #3d3d3d;
   color: #b49b67;
   border: 1px solid #b49b67;
   padding: 0.5rem 1rem;

@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "mode": "baseline",
+    "queue": "client_queue_mini.json",
+    "total": 10,
+    "succeeded": 10,
+    "failed": 0,
+    "successRate": 100,
+    "timestamp": "2025-12-27T10:48:35.025Z"
+  },
+  "results": [
+    {
+      "id": "01",
+      "entity": "São Paulo Metropolitan Housing Authority",
+      "region": "Latin America",
+      "sector": "Urban Development",
+      "spi": 57,
+      "rroi": 48,
+      "scfUSD": 15921691714,
+      "durationMs": 4585
+    },
+    {
+      "id": "12",
+      "entity": "Singapore FinTech Association",
+      "region": "Southeast Asia",
+      "sector": "Financial Services",
+      "spi": 82,
+      "rroi": 70,
+      "scfUSD": 3840061717,
+      "durationMs": 1006
+    },
+    {
+      "id": "23",
+      "entity": "Chilean Green Hydrogen Valley",
+      "region": "Latin America",
+      "sector": "Energy Transition",
+      "spi": 71,
+      "rroi": 60,
+      "scfUSD": 112803142,
+      "durationMs": 1508
+    },
+    {
+      "id": "34",
+      "entity": "California Inland Port Coalition",
+      "region": "North America",
+      "sector": "Logistics",
+      "spi": 66,
+      "rroi": 54,
+      "scfUSD": 218402264594,
+      "durationMs": 3289
+    },
+    {
+      "id": "45",
+      "entity": "Ethiopia Coffee Traceability Board",
+      "region": "Africa",
+      "sector": "Agriculture",
+      "spi": 43,
+      "rroi": 42,
+      "scfUSD": 593811318,
+      "durationMs": 1243
+    },
+    {
+      "id": "56",
+      "entity": "India Rural Vaccine Alliance",
+      "region": "South Asia",
+      "sector": "Healthcare",
+      "spi": 60,
+      "rroi": 47,
+      "scfUSD": 38045121794,
+      "durationMs": 1465
+    },
+    {
+      "id": "67",
+      "entity": "South Africa Battery Precursor JV",
+      "region": "Africa",
+      "sector": "Advanced Manufacturing",
+      "spi": 54,
+      "rroi": 41,
+      "scfUSD": 3077340567,
+      "durationMs": 3581
+    },
+    {
+      "id": "78",
+      "entity": "Philippines Disaster Data Mesh",
+      "region": "Southeast Asia",
+      "sector": "Resilience Tech",
+      "spi": 60,
+      "rroi": 48,
+      "scfUSD": 690672471,
+      "durationMs": 1603
+    },
+    {
+      "id": "89",
+      "entity": "Korea eSports Academic League",
+      "region": "East Asia",
+      "sector": "Education",
+      "spi": 64,
+      "rroi": 52,
+      "scfUSD": 11674828828,
+      "durationMs": 1832
+    },
+    {
+      "id": "100",
+      "entity": "Global Indigenous Data Sovereignty Alliance",
+      "region": "Global",
+      "sector": "Data Governance",
+      "spi": 57,
+      "rroi": 44,
+      "scfUSD": 670046041,
+      "durationMs": 1259
+    }
+  ]
+}

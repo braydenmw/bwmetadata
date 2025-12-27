@@ -22,6 +22,7 @@ import DealMarketplace from './components/DealMarketplace';
 import ExecutiveSummaryGenerator from './components/ExecutiveSummaryGenerator';
 import BusinessPracticeIntelligenceModule from './components/BusinessPracticeIntelligenceModule';
 import DocumentGenerationSuite from './components/DocumentGenerationSuite';
+import { EnhancedDocumentGenerator } from './components/EnhancedDocumentGenerator';
 import ExistingPartnershipAnalyzer from './components/ExistingPartnershipAnalyzer';
 import RelationshipDevelopmentPlanner from './components/RelationshipDevelopmentPlanner';
 import MultiScenarioPlanner from './components/MultiScenarioPlanner';
@@ -436,31 +437,6 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="hidden md:flex items-center bg-stone-100/50 p-1 rounded-lg border border-stone-200">
-                    <button
-                        onClick={() => setViewMode('report-generator')}
-                        className={`flex items-center gap-2 px-6 py-1.5 rounded-md text-xs font-bold transition-all ${
-                            viewMode === 'report-generator'
-                            ? 'bg-white text-stone-900 shadow-sm ring-1 ring-stone-200'
-                            : 'text-stone-500 hover:text-stone-800'
-                        }`}
-                    >
-                        <LayoutDashboard className="w-3.5 h-3.5" />
-                        Control Matrix
-                    </button>
-                    <button
-                        onClick={() => setViewMode('live-feed')}
-                        className={`flex items-center gap-2 px-6 py-1.5 rounded-md text-xs font-bold transition-all ${
-                            viewMode === 'live-feed'
-                            ? 'bg-white text-stone-900 shadow-sm ring-1 ring-stone-200'
-                            : 'text-stone-500 hover:text-stone-800'
-                        }`}
-                    >
-                        <Globe className="w-3.5 h-3.5" />
-                        System Monitor
-                    </button>
-                </div>
-
-                <div className="flex items-center gap-3">
                     <DemoIndicator className="mr-2" />
                     
                     {/* AUTONOMOUS MODE TOGGLE */}
@@ -479,7 +455,7 @@ const App: React.FC = () => {
                                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                             )}
                             {isAutonomousThinking && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-spin"></div>
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full animate-spin"></div>
                             )}
                         </div>
                     </button>
@@ -490,12 +466,6 @@ const App: React.FC = () => {
                         title="Admin Console"
                     >
                         <ShieldCheck className="w-5 h-5" />
-                    </button>
-                    <button
-                        onClick={startNewMission}
-                        className="hidden lg:flex items-center gap-2 text-xs font-bold text-white bg-bw-navy hover:bg-bw-gold hover:text-bw-navy px-4 py-2 rounded-lg transition-all shadow-md hover:shadow-lg"
-                    >
-                        <Plus size={14} /> New Mission
                     </button>
                 </div>
             </header>
@@ -602,12 +572,11 @@ const App: React.FC = () => {
                     />
                 )}
 
-                {/* 11. DOCUMENT GENERATION SUITE */}
+                {/* 11. DOCUMENT GENERATION SUITE - ENHANCED WITH 200+ TYPES */}
                 {viewMode === 'document-generation' && (
-                    <DocumentGenerationSuite
-                        entityName={params.organizationName}
-                        targetMarket={params.country}
-                        dealValue={50000000}
+                    <EnhancedDocumentGenerator
+                        params={params}
+                        className="m-4"
                     />
                 )}
 
@@ -749,12 +718,11 @@ const App: React.FC = () => {
                     <GlobalMarketComparison />
                 )}
 
-                {/* 29. DOCUMENT SUITE (QUICK ACCESS) */}
+                {/* 29. DOCUMENT SUITE (QUICK ACCESS) - ENHANCED WITH 200+ TYPES */}
                 {viewMode === 'document-suite' && (
-                    <DocumentGenerationSuite
-                        entityName={params.organizationName}
-                        targetMarket={params.country}
-                        dealValue={50000000}
+                    <EnhancedDocumentGenerator
+                        params={params}
+                        className="m-4"
                     />
                 )}
             </main>

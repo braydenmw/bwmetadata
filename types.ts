@@ -260,6 +260,11 @@ export interface RegionProfile {
     population: number;
     gdp: number;
     rawFeatures: { name: string; rarityScore: number; relevanceScore: number; marketProxy: number }[];
+  sectorHint?: string;
+  regulatoryComplexity?: number;
+  permitBacklogMonths?: number;
+  infrastructureSignal?: number;
+  talentSignal?: number;
 }
 
 export interface CompositeScoreInputs {
@@ -358,6 +363,227 @@ export interface SCFResult {
   jobsP10?: number;
   jobsP50?: number;
   jobsP90?: number;
+}
+
+export type RiskBand = 'Low' | 'Medium' | 'High';
+
+export interface PRIResult {
+  overall: number;
+  riskBand: RiskBand;
+  components: {
+    political: number;
+    regulatory: number;
+    market: number;
+    security: number;
+  };
+  commentary: string[];
+}
+
+export interface TCOResult {
+  fiveYearUSD: number;
+  annualRunRateUSD: number;
+  breakdown: {
+    operating: number;
+    capital: number;
+    compliance: number;
+  };
+  sensitivity: {
+    fxExposure: string;
+    inflationOutlook: string;
+  };
+  notes: string[];
+}
+
+export interface CRIResult {
+  score: number;
+  resonanceTier: 'High' | 'Medium' | 'Emerging';
+  components: {
+    communityFit: number;
+    governanceFit: number;
+    partnerTrust: number;
+  };
+  signals: string[];
+}
+
+export type InsightBand = 'low' | 'medium' | 'high' | 'critical';
+
+export interface DerivedIndexBase {
+  score: number;
+  band: InsightBand;
+  drivers: string[];
+  pressurePoints: string[];
+  recommendation: string;
+  dataSources?: string[];
+}
+
+export interface BARNAResult extends DerivedIndexBase {
+  leverageProfile: 'weak' | 'balanced' | 'dominant';
+  fallbackPositions: string[];
+  confidence: number;
+}
+
+export interface NVIResult extends DerivedIndexBase {
+  monetaryValueUSD: number;
+  intangibleValueNarrative: string;
+}
+
+export interface CAPResult extends DerivedIndexBase {
+  counterpartiesAssessed: number;
+  trustSignals: string[];
+  redFlags: string[];
+  diligenceDepth: 'light' | 'standard' | 'enhanced';
+}
+
+export interface AGIResult extends DerivedIndexBase {
+  velocityScore: number;
+  timeToValueMonths: { p10: number; p50: number; p90: number };
+  gatingFactors: string[];
+}
+
+export interface VCIResult extends DerivedIndexBase {
+  valueBreakdown: {
+    revenueLiftUSD: number;
+    costSavingsUSD: number;
+    strategicPremiumUSD: number;
+  };
+}
+
+export interface ATIResult extends DerivedIndexBase {
+  transitionRoutes: string[];
+  changeManagementNeeds: string[];
+}
+
+export interface ESIResult extends DerivedIndexBase {
+  capacityUtilization: number;
+  executionGaps: string[];
+  opsPlaybook: string[];
+}
+
+export interface ISIResult extends DerivedIndexBase {
+  innovationPortfolioMix: { core: number; adjacent: number; transformational: number };
+  ipSignals: string[];
+}
+
+export interface OSIResult extends DerivedIndexBase {
+  sustainabilityMetrics: { emissionsScore: number; circularityScore: number };
+  resilienceDrivers: string[];
+}
+
+export interface RNIResult extends DerivedIndexBase {
+  clearancePath: string[];
+  policyWatchlist: string[];
+  complianceEffort: 'light' | 'moderate' | 'heavy';
+}
+
+export interface SRAResult extends DerivedIndexBase {
+  sovereignRiskBand: 'secure' | 'watch' | 'distressed';
+  macroSignals: string[];
+  stressEvents: string[];
+}
+
+export interface IDVResult extends DerivedIndexBase {
+  distanceScore: number;
+  culturalBridges: string[];
+  alignmentPlaybook: string[];
+}
+
+export interface AdvancedIndexResults {
+  barna: BARNAResult;
+  nvi: NVIResult;
+  cap: CAPResult;
+  agi: AGIResult;
+  vci: VCIResult;
+  ati: ATIResult;
+  esi: ESIResult;
+  isi: ISIResult;
+  osi: OSIResult;
+  rni: RNIResult;
+  sra: SRAResult;
+  idv: IDVResult;
+}
+
+export interface AdversarialInputCheck {
+  field: string;
+  userClaim: string;
+  externalEvidence: string[];
+  contradictionLevel: number;
+  challengePrompt: string;
+  severity: 'info' | 'warning' | 'critical';
+}
+
+export interface AdversarialShieldResult {
+  contradictionIndex: number;
+  checks: AdversarialInputCheck[];
+  escalations: string[];
+  reviewedAt: string;
+}
+
+export type PersonaRole = 'Skeptic' | 'Advocate' | 'Regulator' | 'Accountant' | 'Operator';
+
+export interface PersonaInsight {
+  persona: PersonaRole;
+  stance: 'support' | 'neutral' | 'oppose';
+  summary: string;
+  evidence: string[];
+  riskCallouts: string[];
+}
+
+export interface PersonaPanelResult {
+  consensus: 'go' | 'hold' | 'block';
+  agreementLevel: number;
+  insights: PersonaInsight[];
+  blindSpots: string[];
+}
+
+export interface MotivationRedFlag {
+  flag: string;
+  evidence: string;
+  probability: number;
+}
+
+export interface MotivationAnalysis {
+  statedMotivation: string;
+  impliedMotivation: string;
+  alignmentScore: number;
+  redFlags: MotivationRedFlag[];
+  narrative: string;
+}
+
+export interface CounterfactualImpactDelta {
+  spiDelta?: number;
+  rroiDelta?: number;
+  scfDeltaUSD?: number;
+  activationMonthsDelta?: number;
+}
+
+export interface CounterfactualScenario {
+  scenario: string;
+  baseline: string;
+  opposite: string;
+  impactDelta: CounterfactualImpactDelta;
+  opportunityCostUSD: number;
+  regretProbability: number;
+  recommendation: string;
+}
+
+export interface CounterfactualLabResult {
+  scenarios: CounterfactualScenario[];
+  highestRegretScenario?: string;
+}
+
+export interface OutcomeAlignment {
+  metric: string;
+  predicted: number;
+  actual?: number;
+  delta?: number;
+  status: 'pending' | 'tracking' | 'met' | 'missed';
+}
+
+export interface OutcomeLearningSnapshot {
+  reportId: string;
+  predictions: OutcomeAlignment[];
+  learningActions: string[];
+  lastUpdated: string;
 }
 
 export interface ProvenanceTag {
@@ -545,6 +771,15 @@ export interface ReportData {
     scf?: SCFResult;
     intakeMapping?: IntakeMappingSnapshot;
     provenance?: ProvenanceTag[];
+    pri?: PRIResult;
+    tco?: TCOResult;
+    cri?: CRIResult;
+    advancedIndices?: AdvancedIndexResults;
+    adversarialShield?: AdversarialShieldResult;
+    personaPanel?: PersonaPanelResult;
+    motivationAnalysis?: MotivationAnalysis;
+    counterfactuals?: CounterfactualLabResult;
+    outcomeLearning?: OutcomeLearningSnapshot;
   };
 }
 
@@ -630,6 +865,15 @@ export interface ReportPayload {
     ivas: IVASResult; // From orchestration
     scf: SCFResult; // Strategic Cash Flow
     intakeMapping: IntakeMappingSnapshot;
+    pri: PRIResult;
+    tco: TCOResult;
+    cri: CRIResult;
+    advancedIndices?: AdvancedIndexResults;
+    adversarialShield?: AdversarialShieldResult;
+    personaPanel?: PersonaPanelResult;
+    motivationAnalysis?: MotivationAnalysis;
+    counterfactuals?: CounterfactualLabResult;
+    outcomeLearning?: OutcomeLearningSnapshot;
   };
 }
 

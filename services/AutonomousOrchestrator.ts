@@ -16,27 +16,39 @@ import { ReportParameters } from '../types';
  * - Logs outcomes and triggers learning
  * - Provides full reasoning and audit trail
  */
+
+type AuditEntry = Record<string, unknown>;
+
 export class AutonomousOrchestrator {
   /**
    * Solve a problem end-to-end, optionally auto-executing actions
    */
   static async solveAndAct(
     problem: string,
-    context: any,
+    context: unknown,
     params: ReportParameters,
     options: { autoAct: boolean; urgency: 'immediate' | 'normal' | 'low' }
   ): Promise<{
     solutions: ProactiveAction[];
     actionsTaken: ProactiveAction[];
     reasoning: ThinkingChain[];
-    auditTrail: any[];
+    auditTrail: AuditEntry[];
     confidence: number;
     explainabilityReportPath?: string;
   }> {
-    const auditTrail: any[] = [];
+    const auditTrail: AuditEntry[] = []; 
 
     // Step 0: Historical data analysis
-    const historical = await ingestData(context.region || context.domain || 'global');
+    const getContextRegion = (ctx: unknown): string => {
+      if (typeof ctx === 'object' && ctx !== null) {
+        const c = ctx as Record<string, unknown>;
+        if (typeof c['region'] === 'string') return c['region'] as string;
+        if (typeof c['domain'] === 'string') return c['domain'] as string;
+      }
+      return 'global';
+    };
+
+    const historical = await ingestData(getContextRegion(context));
     auditTrail.push({ step: 'historicalData', historical });
 
     // Step 0.5: Causal simulation

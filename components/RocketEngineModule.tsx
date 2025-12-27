@@ -37,7 +37,12 @@ const RocketEngineModule: React.FC<RocketEngineModuleProps> = ({ params }) => {
             country: params.country || params.region?.split(',')[0] || 'Global',
             population: 10000000, // Mock default
             gdp: 50000000000, // Mock default
-            rawFeatures: features
+            rawFeatures: features,
+            sectorHint: params.industry?.[0],
+            regulatoryComplexity: 50,
+            permitBacklogMonths: 14,
+            infrastructureSignal: 70,
+            talentSignal: 70
         };
 
         try {

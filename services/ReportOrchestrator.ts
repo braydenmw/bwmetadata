@@ -4,6 +4,11 @@ import { MarketDiversificationEngine } from './engine';
 import { runOpportunityOrchestration } from './engine';
 import { GLOBAL_CITY_DATABASE } from '../constants';
 import { mapToSPI, mapToIVAS, mapToSCF } from './intakeMapping';
+import DerivedIndexService from './DerivedIndexService';
+import AdvancedIndexService from './MissingFormulasEngine';
+import AdversarialReasoningService from './AdversarialReasoningService';
+
+const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 export class ReportOrchestrator {
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
@@ -22,7 +27,12 @@ export class ReportOrchestrator {
       symbioticPartners,
       diversificationAnalysis,
       ethicsCheck,
-      orchestrationResult
+      orchestrationResult,
+      priResult,
+      tcoResult,
+      criResult,
+      advancedIndices,
+      adversarialStack
     ] = await Promise.all([
       calculateSPI(params),
       generateRROI(params),
@@ -30,7 +40,12 @@ export class ReportOrchestrator {
       generateSymbioticMatches(params),
       this.runDiversificationAnalysis(params),
       runEthicalSafeguards(params),
-      runOpportunityOrchestration(this.buildRegionProfile(params))
+      runOpportunityOrchestration(this.buildRegionProfile(params)),
+      DerivedIndexService.calculatePRI(params),
+      DerivedIndexService.calculateTCO(params),
+      DerivedIndexService.calculateCRI(params),
+      AdvancedIndexService.computeIndices(params),
+      AdversarialReasoningService.generate(params)
     ]);
 
     console.log('DEBUG: All engines completed');
@@ -78,7 +93,16 @@ export class ReportOrchestrator {
           spiInput,
           ivasInput,
           scfInput
-        }
+        },
+        pri: priResult,
+        tco: tcoResult,
+        cri: criResult,
+        advancedIndices,
+        adversarialShield: adversarialStack.adversarialShield,
+        personaPanel: adversarialStack.personaPanel,
+        motivationAnalysis: adversarialStack.motivation,
+        counterfactuals: adversarialStack.counterfactuals,
+        outcomeLearning: adversarialStack.outcomeLearning
       }
     };
 
@@ -90,6 +114,17 @@ export class ReportOrchestrator {
     const cityData = GLOBAL_CITY_DATABASE[params.country];
     const population = cityData?.population ?? 10_000_000;
     const gdpBillion = cityData?.gdp.totalBillionUSD ?? 100;
+    const regulatoryComplexity = cityData
+      ? clampValue(100 - (cityData.businessEnvironment.regulatoryQuality ?? 60), 5, 90)
+      : undefined;
+    const permitBacklogMonths = cityData
+      ? clampValue(
+          18 - (cityData.businessEnvironment.easeOfDoingBusiness ?? 60) / 10 +
+            (cityData.businessEnvironment.corruptionIndex ?? 50) / 20,
+          4,
+          36
+        )
+      : undefined;
 
     return {
       id: `${params.country || 'unknown'}-${params.region || 'region'}`,
@@ -100,7 +135,12 @@ export class ReportOrchestrator {
       rawFeatures: cityData ? [
         { name: 'Infrastructure', rarityScore: cityData.infrastructure.transportation, relevanceScore: 80, marketProxy: cityData.infrastructure.digital },
         { name: 'Talent Pool', rarityScore: cityData.talentPool.skillsAvailability, relevanceScore: 85, marketProxy: cityData.talentPool.educationLevel }
-      ] : []
+      ] : [],
+      sectorHint: params.industry?.[0],
+      regulatoryComplexity,
+      permitBacklogMonths,
+      infrastructureSignal: cityData?.infrastructure.transportation,
+      talentSignal: cityData?.talentPool.skillsAvailability
     };
   }
 
