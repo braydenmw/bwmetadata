@@ -36,6 +36,7 @@ import { DeepReasoningEngine } from './components/DeepReasoningEngine';
 import CompetitorMap from './components/CompetitorMap';
 import AlternativeLocationMatcher from './components/AlternativeLocationMatcher';
 import EthicsPanel from './components/EthicsPanel';
+import { ConversationalAIChat, ChatFloatingButton } from './components/ConversationalAIChat';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
@@ -45,7 +46,7 @@ import { ReportOrchestrator } from './services/ReportOrchestrator';
 import { solveAndAct as autonomousSolve } from './services/autonomousClient';
 import { selfLearningEngine } from './services/selfLearningEngine';
 import { ReactiveIntelligenceEngine } from './services/ReactiveIntelligenceEngine';
-// import { MultiAgentBrainSystem } from './services/MultiAgentBrainSystem'; // Temporarily disabled - needs implementation
+import { MultiAgentOrchestrator } from './services/MultiAgentBrainSystem';
 import { LayoutGrid, Globe, ShieldCheck, LayoutDashboard, Plus } from 'lucide-react';
 import DemoIndicator from './components/DemoIndicator';
 // Note: report-generator sidebar is rendered inside MainCanvas.
@@ -103,10 +104,14 @@ const App: React.FC = () => {
     const [genProgress, setGenProgress] = useState(0);
 
     // AUTONOMOUS CAPABILITIES STATE
-    const [autonomousMode, setAutonomousMode] = useState(false);
+    const [autonomousMode, setAutonomousMode] = useState(true); // DEFAULT ON
     const [autonomousInsights, setAutonomousInsights] = useState<CopilotInsight[]>([]);
     const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
     const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
+
+    // CONVERSATIONAL AI CHAT STATE
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatHasUnread, setChatHasUnread] = useState(false);
 
     // COMBINED INSIGHTS - Merge regular and autonomous insights
     const combinedInsights = useMemo(() => {
@@ -726,6 +731,33 @@ const App: React.FC = () => {
                     />
                 )}
             </main>
+
+            {/* CONVERSATIONAL AI CHAT - Always available */}
+            <ConversationalAIChat
+                isOpen={isChatOpen}
+                onClose={() => setIsChatOpen(false)}
+                currentContext={params}
+                onActionTriggered={(action, data) => {
+                    console.log('Chat action triggered:', action, data);
+                    // Handle actions from chat
+                    if (action === 'generate-report') {
+                        setViewMode('report-generator');
+                    } else if (action === 'find-partners') {
+                        setViewMode('compatibility-engine');
+                    }
+                }}
+            />
+            
+            {/* Floating Chat Button - Always visible */}
+            {!isChatOpen && (
+                <ChatFloatingButton 
+                    onClick={() => {
+                        setIsChatOpen(true);
+                        setChatHasUnread(false);
+                    }} 
+                    hasUnread={chatHasUnread}
+                />
+            )}
 
             {/* SYSTEM FOOTER */}
             <footer className="bg-white border-t border-stone-200 py-2 px-6 z-40 flex justify-between items-center text-[9px] text-stone-400 uppercase tracking-widest font-medium shrink-0">

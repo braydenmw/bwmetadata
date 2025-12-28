@@ -107,14 +107,29 @@ export interface RegionalCityOpportunity {
 // MULTI-AGENT ORCHESTRATOR
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Check environment for API keys to enable agents
+const GPT4_AVAILABLE = typeof process !== 'undefined' && process.env?.OPENAI_API_KEY ? true : false;
+const CLAUDE_AVAILABLE = typeof process !== 'undefined' && process.env?.ANTHROPIC_API_KEY ? true : false;
+
 export class MultiAgentOrchestrator {
   private static agents: AIAgent[] = [
     { id: 'gemini-flash', name: 'Gemini Flash', model: 'gemini', specialty: 'Fast analysis & pattern recognition', priority: 1, isAvailable: true },
     { id: 'gemini-pro', name: 'Gemini Pro', model: 'gemini', specialty: 'Deep reasoning & complex analysis', priority: 2, isAvailable: true },
-    { id: 'gpt-4', name: 'GPT-4 Turbo', model: 'gpt-4', specialty: 'Strategic synthesis & document generation', priority: 2, isAvailable: false },
-    { id: 'claude-3', name: 'Claude 3 Opus', model: 'claude', specialty: 'Ethical analysis & risk assessment', priority: 2, isAvailable: false },
+    { id: 'gpt-4', name: 'GPT-4 Turbo', model: 'gpt-4', specialty: 'Strategic synthesis & document generation', priority: 2, isAvailable: GPT4_AVAILABLE },
+    { id: 'claude-3', name: 'Claude 3 Opus', model: 'claude', specialty: 'Ethical analysis & risk assessment', priority: 2, isAvailable: CLAUDE_AVAILABLE },
     { id: 'local-brain', name: 'Local Brain', model: 'local', specialty: 'Deterministic calculations & formula execution', priority: 1, isAvailable: true }
   ];
+
+  // Enable an agent dynamically
+  static enableAgent(agentId: string) {
+    const agent = this.agents.find(a => a.id === agentId);
+    if (agent) agent.isAvailable = true;
+  }
+
+  // Get all available agents
+  static getAvailableAgents(): AIAgent[] {
+    return this.agents.filter(a => a.isAvailable);
+  }
 
   private static async callAgent(agent: AIAgent, prompt: string, context: any): Promise<AgentResponse> {
     const startTime = Date.now();
