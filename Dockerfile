@@ -26,6 +26,39 @@ COPY --from=builder /app/dist-server ./dist-server
 EXPOSE 3000
 
 ENV NODE_ENV=production
+ENV PORT=3000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD wget -qO- http://localhost:3000/api/health || exit 1
+
+CMD ["node", "dist-server/server/index.js"]
+### Multi-stage Dockerfile for production
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Install dependencies and build frontend + server bundle
+COPY package*.json ./
+RUN npm ci --silent
+
+# Copy source and build
+COPY . .
+RUN npm run build && npm run build:server
+
+### Runtime image
+FROM node:20-alpine AS runtime
+WORKDIR /app
+
+# Production deps
+COPY package*.json ./
+RUN npm ci --production --silent
+
+# Copy built artifacts from builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist-server ./dist-server
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD wget -qO- http://localhost:3000/api/health || exit 1
 
