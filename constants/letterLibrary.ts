@@ -15,24 +15,101 @@
  */
 
 // ============================================================================
-// LETTER CATEGORY DEFINITIONS
+// LETTER CATEGORY DEFINITIONS - ALIGNED WITH 14-CATEGORY DOCUMENT FACTORY
 // ============================================================================
+/**
+ * Letter categories are mapped to the 14-category Document Factory structure
+ * to ensure comprehensive coverage across all lifecycle phases:
+ * 
+ * ENTRY PHASE:    Strategy, Market, Government
+ * DEAL PHASE:     Foundation, Financial, Partnership  
+ * EXECUTION:      Project Management, Procurement, HR, Infrastructure
+ * SAFETY PHASE:   Risk, Governance, Regulatory, ESG
+ */
 
 export type LetterCategory =
-  | 'government-outreach'      // Letters TO government officials
-  | 'government-response'      // Letters FROM government (templates)
-  | 'investor-relations'       // Investor communications
-  | 'partnership-outreach'     // Partner engagement
-  | 'legal-notices'            // Legal correspondence
-  | 'regulatory'               // Regulatory submissions
-  | 'diplomatic'               // International relations
-  | 'internal-memos'           // Internal communications
-  | 'customer-relations'       // Client communications
-  | 'supplier-relations'       // Vendor communications
-  | 'banking-finance'          // Financial institution letters
-  | 'media-pr'                 // Press and media relations
-  | 'employment'               // HR and employment letters
-  | 'acknowledgment'           // Confirmations and receipts;
+  // ===== ALIGNED WITH 14-CATEGORY STRUCTURE =====
+  // 1. Foundation & Legal
+  | 'foundation-legal'
+  // 2. Strategic Intelligence
+  | 'strategic-outreach'
+  // 3. Financial & Investment
+  | 'investor-relations'
+  // 4. Risk & Due Diligence
+  | 'due-diligence-correspondence'
+  // 5. Government & Policy
+  | 'government-outreach'
+  | 'government-response'
+  // 6. Partnership & Consortium
+  | 'partnership-outreach'
+  // 7. Execution & Project Management
+  | 'execution-correspondence'
+  // 8. Governance & Board
+  | 'governance-correspondence'
+  // 9. Human Capital & Capability
+  | 'employment'
+  // 10. Procurement & Supply Chain
+  | 'supplier-relations'
+  // 11. ESG & Social Impact
+  | 'esg-correspondence'
+  // 12. Regulatory & Compliance
+  | 'regulatory'
+  // 13. Communications & IR
+  | 'media-pr'
+  | 'customer-relations'
+  // 14. Asset & Infrastructure
+  | 'technical-correspondence'
+  
+  // ===== SUPPORTING CATEGORIES =====
+  | 'legal-notices'
+  | 'diplomatic'
+  | 'internal-memos'
+  | 'banking-finance'
+  | 'acknowledgment';
+
+// ============================================================================
+// LETTER-TO-14-CATEGORY MAPPING
+// ============================================================================
+
+export type DocumentFactoryCategory = 
+  | 'foundation-legal'
+  | 'strategic-intelligence'
+  | 'financial-investment'
+  | 'risk-due-diligence'
+  | 'government-policy'
+  | 'partnership-consortium'
+  | 'execution-project-management'
+  | 'governance-board'
+  | 'human-capital'
+  | 'procurement-supply-chain'
+  | 'esg-social-impact'
+  | 'regulatory-compliance'
+  | 'communications-ir'
+  | 'asset-infrastructure';
+
+export const LETTER_CATEGORY_TO_14_CATEGORY_MAP: Record<LetterCategory, DocumentFactoryCategory> = {
+  'foundation-legal': 'foundation-legal',
+  'strategic-outreach': 'strategic-intelligence',
+  'investor-relations': 'financial-investment',
+  'due-diligence-correspondence': 'risk-due-diligence',
+  'government-outreach': 'government-policy',
+  'government-response': 'government-policy',
+  'partnership-outreach': 'partnership-consortium',
+  'execution-correspondence': 'execution-project-management',
+  'governance-correspondence': 'governance-board',
+  'employment': 'human-capital',
+  'supplier-relations': 'procurement-supply-chain',
+  'esg-correspondence': 'esg-social-impact',
+  'regulatory': 'regulatory-compliance',
+  'media-pr': 'communications-ir',
+  'customer-relations': 'communications-ir',
+  'technical-correspondence': 'asset-infrastructure',
+  'legal-notices': 'foundation-legal',
+  'diplomatic': 'government-policy',
+  'internal-memos': 'governance-board',
+  'banking-finance': 'financial-investment',
+  'acknowledgment': 'governance-board',
+};
 
 // ============================================================================
 // COMPREHENSIVE LETTER TYPE UNION
@@ -378,22 +455,32 @@ export function getLetterCount(): number {
   return 150; // Total letter types defined
 }
 
-// Category metadata for UI
-export const LETTER_CATEGORY_METADATA: Record<LetterCategory, { label: string; description: string }> = {
-  'government-outreach': { label: 'Government Outreach', description: 'Communications to government officials and agencies' },
-  'government-response': { label: 'Government Response', description: 'Templates for government reply letters' },
-  'investor-relations': { label: 'Investor Relations', description: 'Communications with investors and LPs' },
-  'partnership-outreach': { label: 'Partnership Outreach', description: 'Partner engagement and collaboration letters' },
-  'legal-notices': { label: 'Legal Notices', description: 'Formal legal correspondence and demands' },
-  'regulatory': { label: 'Regulatory', description: 'Regulatory submissions and compliance letters' },
-  'diplomatic': { label: 'Diplomatic', description: 'International and diplomatic communications' },
-  'internal-memos': { label: 'Internal Memos', description: 'Internal organizational communications' },
-  'customer-relations': { label: 'Customer Relations', description: 'Client and customer communications' },
-  'supplier-relations': { label: 'Supplier Relations', description: 'Vendor and supplier correspondence' },
-  'banking-finance': { label: 'Banking & Finance', description: 'Financial institution communications' },
-  'media-pr': { label: 'Media & PR', description: 'Press and public relations communications' },
-  'employment': { label: 'Employment', description: 'HR and employment-related letters' },
-  'acknowledgment': { label: 'Acknowledgments', description: 'Confirmations and receipt letters' },
+// Category metadata for UI - Aligned with 14-Category Document Factory
+export const LETTER_CATEGORY_METADATA: Record<LetterCategory, { label: string; description: string; mappedTo14Category: string }> = {
+  // ===== NEW ALIGNED CATEGORIES =====
+  'foundation-legal': { label: 'Foundation & Legal', description: 'Initial outreach, LOI cover letters, legal correspondence', mappedTo14Category: '1. Foundation & Legal' },
+  'strategic-outreach': { label: 'Strategic Outreach', description: 'Strategic initiative communications', mappedTo14Category: '2. Strategic Intelligence' },
+  'due-diligence-correspondence': { label: 'Due Diligence', description: 'DD requests, verification letters, screening correspondence', mappedTo14Category: '4. Risk & Due Diligence' },
+  'execution-correspondence': { label: 'Execution & PM', description: 'Project status, milestone updates, coordination letters', mappedTo14Category: '7. Execution & PM' },
+  'governance-correspondence': { label: 'Governance & Board', description: 'Board communications, committee updates, governance letters', mappedTo14Category: '8. Governance & Board' },
+  'esg-correspondence': { label: 'ESG & Social Impact', description: 'Community engagement, sustainability communications', mappedTo14Category: '11. ESG & Social Impact' },
+  'technical-correspondence': { label: 'Technical & Infrastructure', description: 'Technical inquiries, site visit requests, infrastructure letters', mappedTo14Category: '14. Asset & Infrastructure' },
+  
+  // ===== EXISTING CATEGORIES (with 14-category mapping) =====
+  'government-outreach': { label: 'Government Outreach', description: 'Communications to government officials and agencies', mappedTo14Category: '5. Government & Policy' },
+  'government-response': { label: 'Government Response', description: 'Templates for government reply letters', mappedTo14Category: '5. Government & Policy' },
+  'investor-relations': { label: 'Investor Relations', description: 'Communications with investors and LPs', mappedTo14Category: '3. Financial & Investment' },
+  'partnership-outreach': { label: 'Partnership Outreach', description: 'Partner engagement and collaboration letters', mappedTo14Category: '6. Partnership & Consortium' },
+  'legal-notices': { label: 'Legal Notices', description: 'Formal legal correspondence and demands', mappedTo14Category: '1. Foundation & Legal' },
+  'regulatory': { label: 'Regulatory', description: 'Regulatory submissions and compliance letters', mappedTo14Category: '12. Regulatory & Compliance' },
+  'diplomatic': { label: 'Diplomatic', description: 'International and diplomatic communications', mappedTo14Category: '5. Government & Policy' },
+  'internal-memos': { label: 'Internal Memos', description: 'Internal organizational communications', mappedTo14Category: '8. Governance & Board' },
+  'customer-relations': { label: 'Customer Relations', description: 'Client and customer communications', mappedTo14Category: '13. Communications & IR' },
+  'supplier-relations': { label: 'Supplier Relations', description: 'Vendor and supplier correspondence', mappedTo14Category: '10. Procurement & Supply Chain' },
+  'banking-finance': { label: 'Banking & Finance', description: 'Financial institution communications', mappedTo14Category: '3. Financial & Investment' },
+  'media-pr': { label: 'Media & PR', description: 'Press and public relations communications', mappedTo14Category: '13. Communications & IR' },
+  'employment': { label: 'Employment', description: 'HR and employment-related letters', mappedTo14Category: '9. Human Capital & Capability' },
+  'acknowledgment': { label: 'Acknowledgments', description: 'Confirmations and receipt letters', mappedTo14Category: '8. Governance & Board' },
 };
 
 // ============================================================================

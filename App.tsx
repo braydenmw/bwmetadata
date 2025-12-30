@@ -533,6 +533,7 @@ const App: React.FC = () => {
                         onLoadReport={loadReport}
                         onOpenInstant={() => setViewMode('partner-management')} 
                         onOpenSimulator={() => setViewMode('live-feed')}
+                        onOpenReportGenerator={startNewMission}
                         ecosystemPulse={ecosystemPulse}
                     />
                 )}

@@ -8,7 +8,18 @@ import {
     ShieldAlert,
     BookOpen,
     X,
-    Brain
+    Brain,
+    Database,
+    Layers,
+    Users,
+    Activity,
+    Scale,
+    FileText,
+    GraduationCap,
+    Briefcase,
+    Target,
+    Cpu,
+    GitBranch
 } from 'lucide-react';
 
 interface CommandCenterProps {
@@ -167,19 +178,29 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
 
                 {/* 1. Header & The Big Idea */}
                 <div className="text-center space-y-4">
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 leading-tight">
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-blue-900 leading-tight mb-14 pb-2">
                         BW Nexus AI — Proactive Agentic Intelligence OS
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
-                        A new era for regional development intelligence.
-                        Around the world, a persistent <span className="font-semibold text-slate-800">Global Understanding Gap</span> obscures genuine opportunity.
-                        Fueled by fragmented data, outdated perceptions, and a lack of investor-grade tools, this gap systematically hinders development in the regional economies that form the backbone of national prosperity.
-                    </p>
-                    <p className="text-sm md:text-base text-slate-600 max-w-4xl mx-auto leading-relaxed">
-                        BW Nexus AI is not a passive dashboard and not a standard chatbot. It is a proactive, agentic digital worker that begins reasoning the moment you start engaging — via your BW Consultant — listening, learning context, and responding with structured, decision-grade intelligence.
-                        Built 100% for regional development connection, it helps reduce the misunderstanding of places and break away from typical markets.
-                        The goal is simple: turn a mandate into clarity, fast, with explainable math and traceable reasoning.
-                    </p>
+
+                    <div className="mt-10 mb-4">
+                        <p className="text-lg md:text-xl text-blue-900 max-w-3xl mx-auto font-semibold mb-4">
+                            A new era for regional development intelligence.
+                        </p>
+
+                        <p className="text-base md:text-lg max-w-3xl mx-auto mb-4 text-blue-900">
+                            Around the world, a persistent <span className="font-bold text-blue-900">Global Understanding Gap</span> obscures genuine opportunity.
+                        </p>
+
+                        <p className="text-base md:text-lg max-w-3xl mx-auto mb-4 text-blue-900">
+                            Fueled by fragmented data, outdated perceptions, and a lack of investor-grade tools, this gap systematically hinders development in the regional economies that form the backbone of national prosperity.
+                        </p>
+
+                        <p className="text-sm md:text-base text-slate-600 max-w-4xl mx-auto leading-relaxed mt-6">
+                            BW Nexus AI is not a passive dashboard and not a standard chatbot. It is a proactive, agentic digital worker that begins reasoning the moment you start engaging — via your BW Consultant — listening, learning context, and responding with structured, decision-grade intelligence.<br/>
+                            Built 100% for regional development connection, it helps reduce the misunderstanding of places and break away from typical markets.<br/>
+                            The goal is simple: turn a mandate into clarity, fast, with explainable math and traceable reasoning.
+                        </p>
+                    </div>
                 </div>
 
                 {/* 1.5 About BWGA (short, not a book) */}
@@ -192,13 +213,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
                         </p>
                     </div>
                     <div className="mt-6 grid md:grid-cols-2 gap-6">
-                        <div className="bg-slate-50 p-5 rounded-lg border border-slate-200">
-                            <h4 className="font-semibold text-slate-800">Mission</h4>
-                            <p className="text-xs text-slate-500 mt-1">To bridge the Global Understanding Gap by providing AI‑enhanced intelligence that illuminates regional economic potential, facilitates symbiotic partnerships, and ensures community‑centered development outcomes.</p>
+                        <div className="bg-blue-50 p-5 rounded-lg border border-slate-200 border-l-4 border-blue-400">
+                            <h4 className="font-semibold text-blue-800">Mission</h4>
+                            <p className="text-xs text-blue-700 mt-1">To bridge the Global Understanding Gap by providing AI‑enhanced intelligence that illuminates regional economic potential, facilitates symbiotic partnerships, and ensures community‑centered development outcomes.</p>
                         </div>
-                        <div className="bg-slate-50 p-5 rounded-lg border border-slate-200">
-                            <h4 className="font-semibold text-slate-800">Ethical AI‑Human Symbiosis</h4>
-                            <p className="text-xs text-slate-500 mt-1">AI amplifies human insight, but human expertise remains indispensable for context, ethics, and trust. Nexus AI is designed to <strong>augment, not replace</strong>, human judgment.</p>
+                        <div className="bg-emerald-50 p-5 rounded-lg border border-slate-200 border-l-4 border-emerald-400">
+                            <h4 className="font-semibold text-emerald-800">Ethical AI‑Human Symbiosis</h4>
+                            <p className="text-xs text-emerald-700 mt-1">AI amplifies human insight, but human expertise remains indispensable for context, ethics, and trust. Nexus AI is designed to <strong>augment, not replace</strong>, human judgment.</p>
                         </div>
                     </div>
                 </Section>
@@ -213,11 +234,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
                         </p>
                     </div>
 
-                    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm text-left max-w-5xl mx-auto mb-10">
-                        <div className="text-slate-900 font-bold">Example (regional investment)</div>
-                        <div className="text-slate-600 text-sm mt-1 leading-relaxed">
-                            A regional city may be trying to attract investment into industries like agribusiness, clean energy, logistics, or tourism — but faces fragmented information, outdated perceptions, and uncertainty about partners, approvals, and timelines.
-                            Nexus turns the mandate into a structured case: a draft narrative is built live as you complete the intake, then refined into an outreach pack that can help “break the ice” with investors and partners.
+                    <div className="bg-gradient-to-r from-white via-slate-50 to-white border border-slate-200 rounded-xl p-5 shadow-sm text-left max-w-5xl mx-auto mb-10">
+                        <div className="text-slate-900 font-bold text-lg">Example (regional investment)</div>
+                        <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="col-span-2 text-slate-600 text-sm leading-relaxed">
+                                A regional city may be trying to attract investment into industries like <span className="font-semibold text-slate-800">agribusiness</span>, <span className="font-semibold text-slate-800">clean energy</span>, <span className="font-semibold text-slate-800">logistics</span>, or <span className="font-semibold text-slate-800">tourism</span> — but faces fragmented information, outdated perceptions, and uncertainty about partners, approvals, and timelines.
+                                Nexus turns the mandate into a structured case: a draft narrative is built live as you complete the intake, then refined into an outreach pack that can help “break the ice” with investors and partners.
+                            </div>
+                            <div className="col-span-1 bg-blue-50 p-3 rounded-lg border-l-4 border-blue-300">
+                                <div className="text-xs text-blue-800 font-semibold">Use Case</div>
+                                <div className="text-xs text-blue-700 mt-1">Live intake → structured case → outreach pack to engage partners and investors.</div>
+                            </div>
                         </div>
                     </div>
 
@@ -275,10 +302,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
                                 <div className="text-xs text-slate-700 mt-2"><strong>Creates:</strong> governance operating model + audit trail backbone.</div>
                             </div>
                         </div>
-                        <div className="mt-8 bg-white border border-slate-200 rounded-lg p-5">
-                            <div className="text-slate-900 font-bold">What this produces (simply)</div>
-                            <div className="text-slate-700 text-sm mt-2 leading-relaxed">
-                                A complete, investor‑grade deliverable pack: an executive summary, scorecards (SPI™, RROI™, SEAM™, IVAS™, SCF™), debate outcomes, a risk register, and an implementation narrative — structured for boards, partners, and regulators.
+                        <div className="mt-8 bg-white border border-slate-200 rounded-lg p-5 flex items-start justify-between gap-6">
+                            <div className="flex-1">
+                                <div className="text-slate-900 font-bold">What this produces (simply)</div>
+                                <div className="text-slate-700 text-sm mt-2 leading-relaxed">
+                                    A complete, investor‑grade deliverable pack: an executive summary, scorecards (SPI™, RROI™, SEAM™, IVAS™, SCF™), debate outcomes, a risk register, and an implementation narrative — structured for boards, partners, and regulators.
+                                </div>
+                            </div>
+                            <div className="flex-shrink-0">
+                                <button
+                                    onClick={() => setShowFormulaModal(true)}
+                                    className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md"
+                                >
+                                    <BookOpen className="w-4 h-4" />
+                                    <span>Explore Full Methodology & 21 Formulas</span>
+                                </button>
                             </div>
                         </div>
                         <div className="mt-10 text-slate-900 font-bold text-lg text-center">How the 9-Step Intake Becomes a Living, Auditable Report</div>
@@ -294,13 +332,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
                         </div>
                         <div className="mt-10 text-slate-900 font-bold text-lg text-center">Adaptive Elevation: A Platform for All Skill Levels</div>
                         <div className="mt-2 text-slate-700 text-sm leading-relaxed">
-                            Recognizing that strategic initiatives involve stakeholders with varying levels of expertise, BW Nexus AI is built with an "Adaptive Elevation" interface. The system intelligently adjusts the guidance, controls, and data presentation based on the user's profile.<br/>
-                            <ul className="list-disc ml-6 mt-2">
-                                <li><strong>For Beginners:</strong> The system provides detailed, step-by-step guidance, explains complex concepts with examples, and proactively suggests fields to consider. The interface is supportive and educational, designed to build capability as well as analyze a plan.</li>
-                                <li><strong>For Operators:</strong> The platform presents structured workflows, operational checklists, and detailed implementation plans. The focus is on execution feasibility, resource allocation, and timeline management.</li>
-                                <li><strong>For Executives:</strong> The system delivers compressed analytics, high-level dashboards, and direct controls. It surfaces the most critical insights and decision points, allowing for rapid assessment and decisive action.</li>
-                            </ul>
-                            This adaptive approach ensures that every user, regardless of their role or experience level, receives the precise level of detail and control they need to be effective, making BW Nexus AI a single, unified platform for the entire organization.
+                            Recognizing that strategic initiatives involve stakeholders with varying levels of expertise, BW Nexus AI is built with an "Adaptive Elevation" interface. The system intelligently adjusts the guidance, controls, and data presentation based on the user's profile.
+                            <div className="flex flex-col md:flex-row justify-center gap-6 mt-6 mb-4">
+                                <div className="flex-1 bg-blue-50 border-l-4 border-blue-400 rounded-md p-4 shadow-sm">
+                                    <div className="font-bold text-blue-700 text-base mb-1">For Beginners</div>
+                                    <div className="text-slate-700 text-sm">The system provides detailed, step-by-step guidance, explains complex concepts with examples, and proactively suggests fields to consider. The interface is supportive and educational, designed to build capability as well as analyze a plan.</div>
+                                </div>
+                                <div className="flex-1 bg-green-50 border-l-4 border-green-400 rounded-md p-4 shadow-sm">
+                                    <div className="font-bold text-green-700 text-base mb-1">For Operators</div>
+                                    <div className="text-slate-700 text-sm">The platform presents structured workflows, operational checklists, and detailed implementation plans. The focus is on execution feasibility, resource allocation, and timeline management.</div>
+                                </div>
+                                <div className="flex-1 bg-yellow-50 border-l-4 border-yellow-400 rounded-md p-4 shadow-sm">
+                                    <div className="font-bold text-yellow-700 text-base mb-1">For Executives</div>
+                                    <div className="text-slate-700 text-sm">The system delivers compressed analytics, high-level dashboards, and direct controls. It surfaces the most critical insights and decision points, allowing for rapid assessment and decisive action.</div>
+                                </div>
+                            </div>
+                            <div className="mt-2">
+                                This adaptive approach ensures that every user, regardless of their role or experience level, receives the precise level of detail and control they need to be effective, making BW Nexus AI a single, unified platform for the entire organization.
+                            </div>
                         </div>
                         <div className="mt-10 text-slate-900 font-bold text-lg text-center">The Document Factory: Instant, Professional Deliverables</div>
                         <div className="mt-2 text-slate-700 text-sm leading-relaxed">
@@ -309,56 +358,84 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onOpenReportGenerator }) 
                         </div>
                         <div className="mt-10 text-slate-900 font-bold text-lg text-center">Inside the Agentic Brain: The Heart and Brains of Why This All Works</div>
                         <div className="mt-2 text-slate-700 text-sm leading-relaxed">
-                            The Agentic Brain is the operating “digital worker” inside BW Nexus AI that does the end-to-end work of turning a person’s raw context into a structured, decision‑grade deliverable pack. It is not a chatbot that waits for a prompt and returns a single answer; it is an orchestrated workflow engine that continuously builds a case as the user engages.<br/>
-                            The Agentic Brain’s job is to take messy real-world information—goals, constraints, political realities, partner dynamics, uncertainty, and incomplete data—and convert it into a structured case model that can be validated, pressure‑tested, quantified, and written into a report that survives scrutiny. It behaves like an internal advisory team compressed into a repeatable system: it asks for missing constraints, challenges assumptions, proposes alternatives, and progresses the work instead of passively responding.<br/>
-                            The Agentic Brain uses the 9-step intake as its structured data foundation, because this is what makes the system computable and repeatable. Each step captures a category of decision information (Identity, Mandate, Market, Partners, Financial, Risks, Capabilities, Execution, Governance) and converts it into structured variables: objectives and weights, constraints, scenarios, assumptions, evidence requirements, stakeholders and influence, risk items and mitigations, capability gaps, timeline gates, and governance controls. This becomes a living dataset—an evolving “case file”—rather than disconnected notes. Once the dataset exists, the Agentic Brain can run the same reasoning workflow every time, producing consistent outputs that can be audited and explained.
+                            <p className="mb-4">
+                                The Agentic Brain is the operating “digital worker” inside BW Nexus AI that does the end-to-end work of turning a person’s raw context into a structured, decision‑grade deliverable pack. It is not a chatbot that waits for a prompt and returns a single answer; it is an orchestrated workflow engine that continuously builds a case as the user engages.
+                            </p>
+                            <p className="mb-4 border-l-4 border-blue-200 pl-4 bg-blue-50">
+                                The Agentic Brain’s job is to take messy real-world information—goals, constraints, political realities, partner dynamics, uncertainty, and incomplete data—and convert it into a structured case model that can be validated, pressure‑tested, quantified, and written into a report that survives scrutiny. It behaves like an internal advisory team compressed into a repeatable system: it asks for missing constraints, challenges assumptions, proposes alternatives, and progresses the work instead of passively responding.
+                            </p>
+                            <p>
+                                The Agentic Brain uses the 9-step intake as its structured data foundation, because this is what makes the system computable and repeatable. Each step captures a category of decision information (Identity, Mandate, Market, Partners, Financial, Risks, Capabilities, Execution, Governance) and converts it into structured variables: objectives and weights, constraints, scenarios, assumptions, evidence requirements, stakeholders and influence, risk items and mitigations, capability gaps, timeline gates, and governance controls. This becomes a living dataset—an evolving “case file”—rather than disconnected notes. Once the dataset exists, the Agentic Brain can run the same reasoning workflow every time, producing consistent outputs that can be audited and explained.
+                            </p>
                         </div>
                         <div className="mt-10 text-slate-900 font-bold text-lg text-center">What is NSIL?</div>
                         <div className="mt-2 text-slate-700 text-sm leading-relaxed">
-                            NSIL (the Nexus Strategic Intelligence Layer) is the orchestration loop the Agentic Brain runs on that dataset. NSIL is the repeatable lifecycle: <strong>validate → debate → score → synthesize → deliver</strong>.<br/>
-                            <strong>Validate:</strong> NSIL checks completeness, detects contradictions, and flags uncertainty, ensuring the system doesn’t confidently build on missing or conflicting inputs.<br/>
-                            <strong>Debate:</strong> It runs multi‑perspective reasoning (the specialist personas) to force trade-offs into the open—upside vs downside, speed vs compliance, ambition vs feasibility—so blind spots are surfaced before partners or boards find them.<br/>
-                            <strong>Score:</strong> NSIL applies the proprietary scoring engines and indices to quantify what normally remains vague: probability drivers, pressure points, return ranges, alignment friction, activation risk, and confidence.<br/>
-                            <strong>Synthesize:</strong> It converts the validated, debated, and scored case into structured narrative that matches the math and the evidence, producing sections that decision-makers actually use.<br/>
-                            <strong>Deliver:</strong> It compiles the living draft into a report pack: scorecards, debate outcomes, risk register, execution roadmap, governance model, and next steps.<br/>
-                            The formula suite is the quantitative backbone that the Agentic Brain uses during the “score” phase to translate narrative into explainable numbers. The primary engines (SPI™, RROI™, SEAM™, IVAS™, SCF™) provide the main “hard outputs”: success probability posture, risk-adjusted return logic, stakeholder alignment and friction mapping, activation/timeline feasibility, and an overall confidence grade that becomes the “board answer” (proceed/pause/restructure with reasons). The derivative indices extend that core scoring into specialist diagnostics—so the system can pinpoint why something is strong or weak, what lever to pull, and what will break first under stress. The key point is that the formulas are not decorative metrics; they are the mechanism that turns complex context into measurable drivers and pressure points, which makes the final narrative defensible.<br/>
-                            The algorithm layer is what makes the Agentic Brain fast, consistent, and scalable rather than slow and ad hoc. Algorithms handle the mechanics that allow the same reasoning to run reliably: memory retrieval to reuse relevant prior context and prior decisions, contradiction checks to prevent inconsistent cases from proceeding, parallel execution so multiple analyses can run at once, early stopping so debate and analysis converge efficiently, and structured synthesis that selects the right report template and section plan for the target audience. This is what lets the system operate like an OS: it doesn’t just “generate text,” it manages a workflow, updates the case as inputs change, and keeps outputs consistent across sessions.<br/>
-                            <br/>
-                            <strong>All of this working together is what makes the system different:</strong> the Agentic Brain converts human information into structure; NSIL enforces a repeatable reasoning lifecycle; the formulas quantify drivers and confidence in an explainable way; and the algorithms make the workflow fast, consistent, and memory‑augmented. The result is a proactive intelligence pipeline that continuously turns a person’s inputs into an investor‑grade structured report—not a one-off response—while keeping validation, traceability, and decision usability at the center.
+                            <p className="mb-4">
+                                NSIL (the Nexus Strategic Intelligence Layer) is the orchestration loop the Agentic Brain runs on that dataset. NSIL is the repeatable lifecycle:
+                                <span className="inline-flex gap-2 ml-2 align-middle">
+                                    <span className="bg-blue-100 text-blue-800 font-semibold px-2 py-1 rounded">Validate</span>
+                                    <span className="text-slate-500 font-bold">→</span>
+                                    <span className="bg-purple-100 text-purple-800 font-semibold px-2 py-1 rounded">Debate</span>
+                                    <span className="text-slate-500 font-bold">→</span>
+                                    <span className="bg-green-100 text-green-800 font-semibold px-2 py-1 rounded">Score</span>
+                                    <span className="text-slate-500 font-bold">→</span>
+                                    <span className="bg-yellow-100 text-yellow-800 font-semibold px-2 py-1 rounded">Synthesize</span>
+                                    <span className="text-slate-500 font-bold">→</span>
+                                    <span className="bg-pink-100 text-pink-800 font-semibold px-2 py-1 rounded">Deliver</span>
+                                </span>
+                            </p>
+                            <div className="mb-4">
+                                <p className="mb-2"><strong>Validate:</strong> NSIL checks completeness, detects contradictions, and flags uncertainty, ensuring the system doesn’t confidently build on missing or conflicting inputs.</p>
+                                <p className="mb-2"><strong>Debate:</strong> It runs multi‑perspective reasoning (the specialist personas) to force trade-offs into the open—upside vs downside, speed vs compliance, ambition vs feasibility—so blind spots are surfaced before partners or boards find them.</p>
+                                <p className="mb-2"><strong>Score:</strong> NSIL applies the proprietary scoring engines and indices to quantify what normally remains vague: probability drivers, pressure points, return ranges, alignment friction, activation risk, and confidence.</p>
+                                <p className="mb-2"><strong>Synthesize:</strong> It converts the validated, debated, and scored case into structured narrative that matches the math and the evidence, producing sections that decision-makers actually use.</p>
+                                <p className="mb-2"><strong>Deliver:</strong> It compiles the living draft into a report pack: scorecards, debate outcomes, risk register, execution roadmap, governance model, and next steps.</p>
+                            </div>
+                            <p className="mb-4">
+                                The formula suite is the quantitative backbone that the Agentic Brain uses during the “score” phase to translate narrative into explainable numbers. The primary engines (SPI™, RROI™, SEAM™, IVAS™, SCF™) provide the main “hard outputs”: success probability posture, risk-adjusted return logic, stakeholder alignment and friction mapping, activation/timeline feasibility, and an overall confidence grade that becomes the “board answer” (proceed/pause/restructure with reasons). The derivative indices extend that core scoring into specialist diagnostics—so the system can pinpoint why something is strong or weak, what lever to pull, and what will break first under stress. The key point is that the formulas are not decorative metrics; they are the mechanism that turns complex context into measurable drivers and pressure points, which makes the final narrative defensible.
+                            </p>
+                            <p className="mb-4">
+                                The algorithm layer is what makes the Agentic Brain fast, consistent, and scalable rather than slow and ad hoc. Algorithms handle the mechanics that allow the same reasoning to run reliably: memory retrieval to reuse relevant prior context and prior decisions, contradiction checks to prevent inconsistent cases from proceeding, parallel execution so multiple analyses can run at once, early stopping so debate and analysis converge efficiently, and structured synthesis that selects the right report template and section plan for the target audience. This is what lets the system operate like an OS: it doesn’t just “generate text,” it manages a workflow, updates the case as inputs change, and keeps outputs consistent across sessions.
+                            </p>
+                            <p className="mt-4 text-blue-900">
+                                <strong>All of this working together is what makes the system different:</strong> the Agentic Brain converts human information into structure; NSIL enforces a repeatable reasoning lifecycle; the formulas quantify drivers and confidence in an explainable way; and the algorithms make the workflow fast, consistent, and memory‑augmented. The result is a proactive intelligence pipeline that continuously turns a person’s inputs into an investor‑grade structured report—not a one-off response—while keeping validation, traceability, and decision usability at the center.
+                            </p>
                         </div>
                     </Section>
                 </div>
 
                 {/* 3. Inside the Agentic Brain (how it does it) */}
-                <Section>
-                    <div className="text-center mt-8">
-                        <button
-                            onClick={() => setShowFormulaModal(true)}
-                            className="px-6 py-3 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto shadow-md"
-                        >
-                            <BookOpen className="w-5 h-5" />
-                            <span>Explore Full Methodology & 21 Formulas</span>
-                        </button>
-                    </div>
-                </Section>
+                {/* Removed duplicate short 'Inside the Agentic Brain' caption (button moved earlier) */}
 
                 {/* 7. About BWGA */}
                 <Section>
                     <div className="text-center">
                         <h2 className="text-2xl font-bold text-slate-900">Built by BW Global Advisory</h2>
-                        <p className="text-slate-600 mt-2 max-w-4xl mx-auto leading-relaxed">
-                            BW Global Advisory (BWGA) is an independent Australian initiative, founded and solely developed by <strong>Brayden Walls</strong>.
-                            It was born from immersive, on‑the‑ground research in regional Philippines — and the lived reality of what actually breaks deals and stalls development — translated into a repeatable system.
-                        </p>
-                        <p className="text-slate-600 mt-3 max-w-4xl mx-auto leading-relaxed">
-                            <strong>BW Global Advisory is not here to compete with anyone, but to work alongside everyone who wants to change the way the world sees regional cities and the people who live there.</strong> Our mission is to offer a solution that opens doors for all—making it possible for anyone, from anywhere, to access a system that saves time and money, and brings opportunity to those who have been left out. Where once only a few could afford this level of insight, now it is open to all.
-                        </p>
-                        <p className="text-slate-600 mt-3 max-w-4xl mx-auto leading-relaxed">
-                            This is for those who see, those who know, and—most importantly—for those who want to build true partnerships for a better life in their city, so no one feels left behind. We believe in empowering communities, fostering collaboration, and making sure every voice has a chance to be heard and every region has a chance to thrive.
-                        </p>
-                        <p className="text-slate-600 mt-6 max-w-4xl mx-auto leading-relaxed text-right">
-                            <em>Thank you,<br/>Brayden Walls<br/>Developer & Founder</em>
-                        </p>
+                        <div className="mt-4 max-w-4xl mx-auto pt-2" style={{ fontFamily: "Papyrus, fantasy, 'Patrick Hand', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" }}>
+                            <p className="text-lg md:text-xl text-slate-800 leading-relaxed">
+                                BW Global Advisory (BWGA) is an independent Australian initiative, founded and solely developed by <strong>Brayden Walls</strong>.
+                                It was born from immersive, on‑the‑ground research in regional Philippines — and the lived reality of what actually breaks deals and stalls development — translated into a repeatable system.
+                            </p>
+                            <p className="text-lg md:text-xl text-slate-800 mt-3 leading-relaxed">
+                                <strong>BW Global Advisory is not here to compete with anyone, but to work alongside everyone who wants to change the way the world sees regional cities and the people who live there.</strong> Our mission is to offer a solution that opens doors for all—making it possible for anyone, from anywhere, to access a system that saves time and money, and brings opportunity to those who have been left out. Where once only a few could afford this level of insight, now it is open to all.
+                            </p>
+                            <p className="text-lg md:text-xl text-slate-800 mt-3 leading-relaxed">
+                                This is for those who see, those who know, and—most importantly—for those who want to build true partnerships for a better life in their city, so no one feels left behind. We believe in empowering communities, fostering collaboration, and making sure every voice has a chance to be heard and every region has a chance to thrive.
+                            </p>
+                            <div className="mt-6 text-right">
+                                <div className="inline-block align-middle">
+                                    <svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Signature">
+                                        <defs>
+                                            <filter id="inkShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                                <feDropShadow dx="0" dy="1" stdDeviation="0.6" flood-color="#0b1220" flood-opacity="0.25"/>
+                                            </filter>
+                                        </defs>
+                                        <text x="0" y="56" font-family="'Great Vibes', 'Dancing Script', cursive" font-size="48" fill="#0b1220" filter="url(#inkShadow)">Brayden Walls</text>
+                                    </svg>
+                                </div>
+                                <div className="text-slate-700 text-base mt-1">Developer &amp; Founder</div>
+                            </div>
+                        </div>
                     </div>
                 </Section>
 

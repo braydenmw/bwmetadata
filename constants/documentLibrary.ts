@@ -17,38 +17,328 @@
  */
 
 // ============================================================================
-// DOCUMENT CATEGORY DEFINITIONS
+// DOCUMENT CATEGORY DEFINITIONS - THE 14 GLOBAL SCALE CATEGORIES
 // ============================================================================
+/**
+ * The 14-Category Document Factory Structure
+ * 
+ * This structure ensures BW Nexus AI handles the entire lifecycle of global development projects:
+ * 
+ * ENTRY PHASE:    Strategy, Market, Government
+ * DEAL PHASE:     Foundation, Financial, Partnership  
+ * EXECUTION:      Project Management, Procurement, HR, Infrastructure
+ * SAFETY PHASE:   Risk, Governance, Regulatory, ESG
+ */
 
 export type DocumentCategory = 
-  // Foundation Documents
+  // ===== THE 5 CORE CATEGORIES (Foundation) =====
+  // 1. Foundation & Legal Documents
+  | 'foundation-legal'
+  // 2. Strategic Intelligence Documents
+  | 'strategic-intelligence'
+  // 3. Financial & Investment Documents
+  | 'financial-investment'
+  // 4. Risk & Due Diligence Documents
+  | 'risk-due-diligence'
+  // 5. Government & Policy Documents
+  | 'government-policy'
+  
+  // ===== THE 9 ADDITIONAL CATEGORIES (Derived from System Architecture) =====
+  // 6. Partnership & Consortium Agreements (from Step 4: Partners & Ecosystem)
+  | 'partnership-consortium'
+  // 7. Execution & Project Management (from Step 8 & Operator Persona)
+  | 'execution-project-management'
+  // 8. Governance & Board Reporting (from Step 9: Governance & Monitoring)
+  | 'governance-board'
+  // 9. Human Capital & Capability (from Step 7: Resources & Capability)
+  | 'human-capital'
+  // 10. Procurement & Supply Chain (from Operator Persona - Supply Chain)
+  | 'procurement-supply-chain'
+  // 11. ESG & Social Impact (from World Bank/Global Standards)
+  | 'esg-social-impact'
+  // 12. Regulatory & Compliance (from Regulator Persona)
+  | 'regulatory-compliance'
+  // 13. Communications & Investor Relations (from outreach letters)
+  | 'communications-ir'
+  // 14. Asset & Infrastructure Technical Specs (from Step 3: Market Context)
+  | 'asset-infrastructure'
+  
+  // ===== LEGACY CATEGORIES (for backward compatibility) =====
   | 'foundation'
-  // Strategic Documents  
   | 'strategic'
-  // Legal & Compliance
   | 'legal'
-  // Financial & Investment
   | 'financial'
-  // Risk & Due Diligence
   | 'risk'
-  // Government & Policy
   | 'government'
-  // Trade & Commerce
   | 'trade'
-  // Partnerships & Alliances
   | 'partnership'
-  // Market Intelligence
   | 'intelligence'
-  // Operational
   | 'operational'
-  // Communications & PR
   | 'communications'
-  // Technical & Sector-Specific
   | 'technical'
-  // ESG & Sustainability
   | 'esg'
-  // Academic & Research
   | 'research';
+
+// ============================================================================
+// 14-CATEGORY LIFECYCLE PHASE MAPPING
+// ============================================================================
+
+export type LifecyclePhase = 'entry' | 'deal' | 'execution' | 'safety';
+
+export interface CategoryDefinition {
+  id: DocumentCategory;
+  name: string;
+  shortName: string;
+  description: string;
+  purpose: string;
+  derivedFrom: string;
+  phase: LifecyclePhase;
+  personaLink?: string;
+  intakeStepLink?: string;
+  documentExamples: string[];
+  letterExamples: string[];
+  color: string;
+}
+
+export const FOURTEEN_CATEGORY_DEFINITIONS: CategoryDefinition[] = [
+  // ===== THE 5 CORE CATEGORIES =====
+  {
+    id: 'foundation-legal',
+    name: '1. Foundation & Legal Documents',
+    shortName: 'Foundation & Legal',
+    description: 'Letters of Intent (LOI), Non-Disclosure Agreements (NDA), Term Sheets, Memorandums of Understanding (MOU)',
+    purpose: 'Establishing the legal bedrock for deals',
+    derivedFrom: 'Core Foundation',
+    phase: 'deal',
+    documentExamples: ['Letter of Intent', 'NDA', 'Term Sheet', 'MOU', 'Expression of Interest', 'Pre-Qualification'],
+    letterExamples: ['Partnership Introduction', 'Commitment Confirmation', 'Closing Confirmation'],
+    color: 'blue',
+  },
+  {
+    id: 'strategic-intelligence',
+    name: '2. Strategic Intelligence Documents',
+    shortName: 'Strategic Intelligence',
+    description: 'Business Cases, Feasibility Studies, White Papers, Market Entry Strategies',
+    purpose: 'Defining the "what" and "why" of the mandate',
+    derivedFrom: 'Core Foundation',
+    phase: 'entry',
+    documentExamples: ['Business Case', 'Feasibility Study', 'White Paper', 'Market Entry Strategy', 'Strategic Plan', 'Executive Summary'],
+    letterExamples: ['Ministerial Introduction', 'Investment Promotion Letter', 'Policy Advocacy Letter'],
+    color: 'emerald',
+  },
+  {
+    id: 'financial-investment',
+    name: '3. Financial & Investment Documents',
+    shortName: 'Financial & Investment',
+    description: 'Full Financial Models, Private Placement Memorandums (PPM), Valuation Reports, Monte Carlo Simulations',
+    purpose: 'Securing capital and proving economic viability (The Accountant Persona)',
+    derivedFrom: 'Core Foundation',
+    phase: 'deal',
+    personaLink: 'The Accountant',
+    documentExamples: ['Financial Model', 'PPM', 'Valuation Report', 'Monte Carlo Simulation', 'Investment Memo', 'Capital Raise Deck'],
+    letterExamples: ['Investor Update', 'Capital Call Notice', 'Distribution Notice', 'Fundraising Teaser'],
+    color: 'amber',
+  },
+  {
+    id: 'risk-due-diligence',
+    name: '4. Risk & Due Diligence Documents',
+    shortName: 'Risk & Due Diligence',
+    description: 'Comprehensive Due Diligence Reports, AML/KYC Checklists, Sanctions Screening Reports',
+    purpose: 'Protecting against liability and fraud (The Skeptic Persona)',
+    derivedFrom: 'Core Foundation',
+    phase: 'safety',
+    personaLink: 'The Skeptic',
+    documentExamples: ['Due Diligence Report', 'AML/KYC Report', 'Sanctions Screening', 'Risk Register', 'Integrity DD', 'Political Risk Assessment'],
+    letterExamples: ['Sanctions Clearance Request', 'AML Compliance Letter', 'Audit Response'],
+    color: 'rose',
+  },
+  {
+    id: 'government-policy',
+    name: '5. Government & Policy Documents',
+    shortName: 'Government & Policy',
+    description: 'Policy Briefs, Cabinet Memos, Public-Private Partnership (PPP) Frameworks',
+    purpose: 'Navigating political landscapes and securing public sector support',
+    derivedFrom: 'Core Foundation',
+    phase: 'entry',
+    documentExamples: ['Policy Brief', 'Cabinet Memo', 'PPP Framework', 'Regulatory Impact Assessment', 'Grant Application', 'Subsidy Application'],
+    letterExamples: ['Ministerial Introduction', 'Permit Application Cover', 'Government Contract Proposal', 'Trade Mission Request'],
+    color: 'purple',
+  },
+  
+  // ===== THE 9 ADDITIONAL CATEGORIES =====
+  {
+    id: 'partnership-consortium',
+    name: '6. Partnership & Consortium Agreements',
+    shortName: 'Partnership & Consortium',
+    description: 'Joint Venture Agreements, Consortium Charters, Stakeholder Alignment Maps',
+    purpose: 'Structuring multi-party collaborations and alliances',
+    derivedFrom: 'Step 4: Partners & Ecosystem',
+    phase: 'deal',
+    intakeStepLink: 'Step 4',
+    documentExamples: ['JV Agreement', 'Consortium Charter', 'Stakeholder Map', 'Alliance Framework', 'Teaming Agreement', 'Partnership Scorecard'],
+    letterExamples: ['Partnership Introduction', 'JV Invitation', 'Strategic Alliance Proposal', 'Co-Investment Invitation'],
+    color: 'blue',
+  },
+  {
+    id: 'execution-project-management',
+    name: '7. Execution & Project Management',
+    shortName: 'Execution & PM',
+    description: 'Implementation Roadmaps, 100-Day Plans, Gantt Charts, Critical Path Analyses',
+    purpose: 'Operationalizing strategy into actionable plans',
+    derivedFrom: 'Step 8: Execution Plan & The Operator Persona',
+    phase: 'execution',
+    personaLink: 'The Operator',
+    intakeStepLink: 'Step 8',
+    documentExamples: ['Implementation Roadmap', '100-Day Plan', 'Gantt Chart', 'Critical Path Analysis', 'Project Charter', 'Milestone Report'],
+    letterExamples: ['Meeting Confirmation', 'Decision Confirmation', 'Instruction Acknowledgment'],
+    color: 'amber',
+  },
+  {
+    id: 'governance-board',
+    name: '8. Governance & Board Reporting',
+    shortName: 'Governance & Board',
+    description: 'Board Charters, Monthly Steering Committee Reports, Decision Rights Matrices',
+    purpose: 'Establishing oversight and accountability structures',
+    derivedFrom: 'Step 9: Governance & Monitoring',
+    phase: 'safety',
+    intakeStepLink: 'Step 9',
+    documentExamples: ['Board Charter', 'Steering Committee Report', 'Decision Rights Matrix', 'Governance Report', 'Annual Report', 'Board Presentation'],
+    letterExamples: ['Annual Meeting Invitation', 'Proxy Solicitation', 'Decision Confirmation'],
+    color: 'rose',
+  },
+  {
+    id: 'human-capital',
+    name: '9. Human Capital & Capability',
+    shortName: 'Human Capital',
+    description: 'Organizational Charts, Talent Gap Analyses, Key Personnel Bios',
+    purpose: 'Building and assessing team capabilities',
+    derivedFrom: 'Step 7: Resources & Capability',
+    phase: 'execution',
+    intakeStepLink: 'Step 7',
+    documentExamples: ['Org Chart', 'Talent Gap Analysis', 'Key Personnel Bios', 'Capability Assessment', 'Training Materials', 'HR Due Diligence'],
+    letterExamples: ['Offer Letter', 'Reference Letter', 'Promotion Letter', 'Secondment Agreement'],
+    color: 'purple',
+  },
+  {
+    id: 'procurement-supply-chain',
+    name: '10. Procurement & Supply Chain',
+    shortName: 'Procurement & Supply',
+    description: 'Request for Proposals (RFP), Tender Documents, Vendor Assessment Scorecards',
+    purpose: 'Managing sourcing and supplier relationships',
+    derivedFrom: 'The Operator Persona (Supply Chain Robustness)',
+    phase: 'execution',
+    personaLink: 'The Operator',
+    documentExamples: ['RFP', 'Tender Document', 'Vendor Scorecard', 'Procurement Strategy', 'Supply Chain Mapping', 'Vendor Assessment'],
+    letterExamples: ['Vendor Onboarding', 'Purchase Order Cover', 'Quality Concern', 'Price Negotiation'],
+    color: 'amber',
+  },
+  {
+    id: 'esg-social-impact',
+    name: '11. ESG & Social Impact',
+    shortName: 'ESG & Social Impact',
+    description: 'Environmental Impact Statements, Social License to Operate Audits, Community Benefit Plans',
+    purpose: 'Meeting global sustainability and social responsibility standards',
+    derivedFrom: 'Regional Development Context (World Bank/Global Standards)',
+    phase: 'safety',
+    documentExamples: ['Environmental Impact Statement', 'Social License Audit', 'Community Benefit Plan', 'ESG Report', 'Net Zero Roadmap', 'SDG Alignment'],
+    letterExamples: ['Community Consultation', 'Humanitarian Cooperation', 'Cultural Exchange Proposal'],
+    color: 'emerald',
+  },
+  {
+    id: 'regulatory-compliance',
+    name: '12. Regulatory & Compliance',
+    shortName: 'Regulatory & Compliance',
+    description: 'Permit Applications, Regulatory Clearance Timelines, Compliance Certificates',
+    purpose: 'Navigating legal and regulatory requirements',
+    derivedFrom: 'The Regulator Persona',
+    phase: 'safety',
+    personaLink: 'The Regulator',
+    documentExamples: ['Permit Application', 'Regulatory Clearance Timeline', 'Compliance Certificate', 'Regulatory Filing', 'License Application', 'Regulatory Pathway'],
+    letterExamples: ['License Renewal Request', 'Compliance Certification', 'Exemption Request', 'Appeal Letter'],
+    color: 'rose',
+  },
+  {
+    id: 'communications-ir',
+    name: '13. Communications & Investor Relations',
+    shortName: 'Communications & IR',
+    description: 'Investor Updates, Press Releases, Community Consultation Decks',
+    purpose: 'Managing stakeholder and public communications',
+    derivedFrom: 'Outreach letters designed to break the ice',
+    phase: 'entry',
+    documentExamples: ['Investor Update', 'Press Release', 'Media Kit', 'Stakeholder Update', 'Crisis Communication', 'Case Study'],
+    letterExamples: ['Investor Update', 'Press Release Cover', 'Media Inquiry Response', 'Crisis Statement'],
+    color: 'blue',
+  },
+  {
+    id: 'asset-infrastructure',
+    name: '14. Asset & Infrastructure Technical Specs',
+    shortName: 'Asset & Infrastructure',
+    description: 'Site Selection Reports, Asset Utilization Plans, Technical Requirement Briefs',
+    purpose: 'Defining physical and technical requirements',
+    derivedFrom: 'Step 3: Market & Context - Infrastructure',
+    phase: 'execution',
+    intakeStepLink: 'Step 3',
+    documentExamples: ['Site Selection Report', 'Asset Utilization Plan', 'Technical Requirements', 'Infrastructure Assessment', 'Grid Connection', 'Engineering Study'],
+    letterExamples: ['Technical Inquiry', 'Site Visit Request', 'Capacity Inquiry'],
+    color: 'amber',
+  },
+];
+
+// ============================================================================
+// LIFECYCLE PHASE DEFINITIONS
+// ============================================================================
+
+export const LIFECYCLE_PHASES: Record<LifecyclePhase, {
+  name: string;
+  description: string;
+  categories: DocumentCategory[];
+  color: string;
+}> = {
+  entry: {
+    name: 'Entry Phase',
+    description: 'Strategy, Market, Government',
+    categories: ['strategic-intelligence', 'government-policy', 'communications-ir'],
+    color: 'emerald',
+  },
+  deal: {
+    name: 'Deal Phase',
+    description: 'Foundation, Financial, Partnership',
+    categories: ['foundation-legal', 'financial-investment', 'partnership-consortium'],
+    color: 'blue',
+  },
+  execution: {
+    name: 'Execution Phase',
+    description: 'Project Management, Procurement, HR, Infrastructure',
+    categories: ['execution-project-management', 'procurement-supply-chain', 'human-capital', 'asset-infrastructure'],
+    color: 'amber',
+  },
+  safety: {
+    name: 'Safety Phase',
+    description: 'Risk, Governance, Regulatory, ESG',
+    categories: ['risk-due-diligence', 'governance-board', 'regulatory-compliance', 'esg-social-impact'],
+    color: 'rose',
+  },
+};
+
+// Helper function to get category by ID
+export const getCategoryDefinition = (categoryId: DocumentCategory): CategoryDefinition | undefined => {
+  return FOURTEEN_CATEGORY_DEFINITIONS.find(cat => cat.id === categoryId);
+};
+
+// Helper function to get categories by lifecycle phase
+export const getCategoriesByPhase = (phase: LifecyclePhase): CategoryDefinition[] => {
+  return FOURTEEN_CATEGORY_DEFINITIONS.filter(cat => cat.phase === phase);
+};
+
+// Helper function to get categories linked to a persona
+export const getCategoriesByPersona = (personaName: string): CategoryDefinition[] => {
+  return FOURTEEN_CATEGORY_DEFINITIONS.filter(cat => cat.personaLink === personaName);
+};
+
+// Helper function to get categories linked to an intake step
+export const getCategoriesByIntakeStep = (stepName: string): CategoryDefinition[] => {
+  return FOURTEEN_CATEGORY_DEFINITIONS.filter(cat => cat.intakeStepLink === stepName);
+};
 
 // ============================================================================
 // COMPREHENSIVE DOCUMENT TYPE UNION
@@ -582,8 +872,25 @@ export function getDocumentCount(): number {
   return EXTENDED_DOCUMENT_TEMPLATES.length;
 }
 
-// Category metadata for UI
-export const CATEGORY_METADATA: Record<DocumentCategory, { label: string; description: string; icon: string }> = {
+// Category metadata for UI - Extended to include all 14 global categories
+export const CATEGORY_METADATA: Record<DocumentCategory, { label: string; description: string; icon: string; phase?: string }> = {
+  // ===== THE 14 GLOBAL CATEGORIES =====
+  'foundation-legal': { label: '1. Foundation & Legal', description: 'LOI, NDA, Term Sheets, MOU - Establishing the legal bedrock for deals', icon: 'FileText', phase: 'deal' },
+  'strategic-intelligence': { label: '2. Strategic Intelligence', description: 'Business Cases, Feasibility Studies, White Papers - The "what" and "why"', icon: 'Brain', phase: 'entry' },
+  'financial-investment': { label: '3. Financial & Investment', description: 'PPM, Financial Models, Valuation - The Accountant Persona', icon: 'DollarSign', phase: 'deal' },
+  'risk-due-diligence': { label: '4. Risk & Due Diligence', description: 'DD Reports, AML/KYC, Sanctions - The Skeptic Persona', icon: 'AlertTriangle', phase: 'safety' },
+  'government-policy': { label: '5. Government & Policy', description: 'Policy Briefs, Cabinet Memos, PPP Frameworks', icon: 'Building2', phase: 'entry' },
+  'partnership-consortium': { label: '6. Partnership & Consortium', description: 'JV Agreements, Consortium Charters - Step 4', icon: 'Handshake', phase: 'deal' },
+  'execution-project-management': { label: '7. Execution & PM', description: 'Roadmaps, 100-Day Plans, Gantt Charts - The Operator', icon: 'ClipboardList', phase: 'execution' },
+  'governance-board': { label: '8. Governance & Board', description: 'Board Charters, Steering Reports - Step 9', icon: 'Users', phase: 'safety' },
+  'human-capital': { label: '9. Human Capital', description: 'Org Charts, Talent Gap Analysis - Step 7', icon: 'Users2', phase: 'execution' },
+  'procurement-supply-chain': { label: '10. Procurement & Supply', description: 'RFP, Tender Docs, Vendor Scorecards - The Operator', icon: 'Package', phase: 'execution' },
+  'esg-social-impact': { label: '11. ESG & Social Impact', description: 'Environmental, Social License, Community Plans', icon: 'Leaf', phase: 'safety' },
+  'regulatory-compliance': { label: '12. Regulatory & Compliance', description: 'Permits, Clearance Timelines - The Regulator', icon: 'Shield', phase: 'safety' },
+  'communications-ir': { label: '13. Communications & IR', description: 'Investor Updates, Press Releases, Consultation Decks', icon: 'MessageCircle', phase: 'entry' },
+  'asset-infrastructure': { label: '14. Asset & Infrastructure', description: 'Site Selection, Technical Specs - Step 3', icon: 'Building', phase: 'execution' },
+  
+  // ===== LEGACY CATEGORIES (for backward compatibility) =====
   foundation: { label: 'Foundation', description: 'Initial outreach and preliminary agreements', icon: 'FileText' },
   strategic: { label: 'Strategic', description: 'Strategy, planning, and vision documents', icon: 'Target' },
   legal: { label: 'Legal & Compliance', description: 'Contracts, agreements, and regulatory documents', icon: 'Scale' },
