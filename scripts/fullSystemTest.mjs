@@ -31,7 +31,7 @@ const testData = {
 };
 
 (async () => {
-  console.log('\n=== BW NEXUS AI - FULL SYSTEM TEST ===');
+  console.log('\n=== BWGA Intelligence AI - FULL SYSTEM TEST ===');
   console.log('Test Persona: Dr. Elena Rodriguez');
   console.log('Organization: MediTech Solutions Inc.');
   console.log('Mission: Vietnam Manufacturing Hub Expansion\n');

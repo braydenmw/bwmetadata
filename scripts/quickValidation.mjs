@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 
 const APP_URL = 'http://localhost:3000';
 
-console.log('🚀 BW NEXUS AI - QUICK VALIDATION TEST\n');
+console.log('🚀 BWGA Intelligence AI - QUICK VALIDATION TEST\n');
 console.log('Testing core functionality with Gemini API...\n');
 
 const browser = await chromium.launch({ 

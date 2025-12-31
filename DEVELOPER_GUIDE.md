@@ -1,4 +1,4 @@
-# Developer Quick Reference - BW Nexus AI v2.0
+# Developer Quick Reference - BWGA Intelligence AI v2.0
 
 ## 🔧 Service Architecture Quick Start
 

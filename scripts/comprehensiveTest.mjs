@@ -3,7 +3,7 @@ import fs from 'fs';
 
 const APP_URL = 'http://localhost:3001';
 
-console.log('\n🚀 BW NEXUS AI - COMPREHENSIVE SYSTEM TEST');
+console.log('\n🚀 BWGA Intelligence AI - COMPREHENSIVE SYSTEM TEST');
 console.log('Testing with Real Gemini API Key\n');
 console.log('='.repeat(80));
 
@@ -202,7 +202,7 @@ const browser = await chromium.launch({
 const page = await browser.newPage();
 
 try {
-  console.log('Navigating to BW Nexus AI system...\n');
+  console.log('Navigating to BWGA Intelligence AI system...\n');
   await page.goto(APP_URL, { waitUntil: 'networkidle', timeout: 30000 });
   
   console.log('Entering system through landing page...\n');

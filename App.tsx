@@ -482,7 +482,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex flex-col">
                         <h1 className="text-lg font-bold text-bw-navy leading-none tracking-tight group-hover:text-bw-navy/80 transition-colors">
-                            BW Nexus AI
+                            BWGA Intelligence AI
                         </h1>
                         <span className="text-[9px] text-bw-gold font-bold uppercase tracking-widest">Intelligence OS</span>
                     </div>

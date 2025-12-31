@@ -53,7 +53,7 @@ const TermsContent: React.FC = () => (
       {/* How to Use - System Overview */}
       <div>
         <h3 className="text-xl font-serif font-bold text-bw-gold mb-2">How to Use</h3>
-        <p className="text-sm text-gray-400 mb-6">BW Nexus AI System Overview | 7-Stage Strategic Intelligence Platform | Version 4.1</p>
+        <p className="text-sm text-gray-400 mb-6">BWGA Intelligence AI System Overview | 7-Stage Strategic Intelligence Platform | Version 4.1</p>
 
         <div className="space-y-6 text-sm text-gray-300">
           <div className="border border-gray-700 rounded-lg p-4 bg-gray-800/50">

@@ -1,6 +1,6 @@
 # 📑 COMPLETE DOCUMENTATION INDEX & TABLE OF CONTENTS
 
-## Welcome to BW NEXUS AI Documentation
+## Welcome to BWGA Intelligence AI Documentation
 
 You have received a **complete, production-ready enterprise application** with comprehensive documentation explaining everything about the system, how it works, and how to rebuild it elsewhere.
 

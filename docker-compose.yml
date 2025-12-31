@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# BW NEXUS AI - DOCKER COMPOSE FOR PRODUCTION
+# BWGA Intelligence AI - DOCKER COMPOSE FOR PRODUCTION
 # ═══════════════════════════════════════════════════════════════════════════════
 
 version: '3.8'

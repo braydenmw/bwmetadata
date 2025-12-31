@@ -1,4 +1,4 @@
-# BW Nexus AI - Comprehensive Dropdown Audit & Expansion Report
+# BWGA Intelligence AI - Comprehensive Dropdown Audit & Expansion Report
 
 ## Executive Summary
 

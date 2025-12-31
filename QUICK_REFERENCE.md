@@ -1,4 +1,4 @@
-# 🎬 QUICK REFERENCE CARD - BW NEXUS AI System
+# 🎬 QUICK REFERENCE CARD - BWGA Intelligence AI System
 
 ## 30-Second Explanation
 

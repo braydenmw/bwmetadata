@@ -1,4 +1,4 @@
-# BW NEXUS AI - Quick Reference for AI-to-AI Handoff
+# BWGA Intelligence AI - Quick Reference for AI-to-AI Handoff
 
 ## System Purpose
 Enterprise partnership intelligence platform that guides users through a structured workflow to evaluate strategic expansion opportunities and build comprehensive pre-feasibility reports.

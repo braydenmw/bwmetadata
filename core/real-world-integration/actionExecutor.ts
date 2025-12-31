@@ -477,7 +477,7 @@ export async function executeRealWorldAction(
   // Route to appropriate executor
   if (action.startsWith('notify-') || action === 'send-notification') {
     result = await executeNotification(
-      params.title as string || 'BW Nexus AI Notification',
+      params.title as string || 'BWGA Intelligence AI Notification',
       params.message as string || JSON.stringify(params),
       params.priority as 'low' | 'normal' | 'high' || 'normal'
     );

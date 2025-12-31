@@ -2,7 +2,7 @@
 
 ## Overview
 
-The BW Nexus AI system now includes a complete algorithm suite that enables **1-3 second thinking** instead of the previous 10-30 seconds. This represents a **5-15x speedup** in response time.
+The BWGA Intelligence AI system now includes a complete algorithm suite that enables **1-3 second thinking** instead of the previous 10-30 seconds. This represents a **5-15x speedup** in response time.
 
 ## Architecture
 

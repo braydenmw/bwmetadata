@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
 // Simplified 100 comprehensive tests
-console.log('\n🚀 BW NEXUS AI - 100 COMPREHENSIVE TESTS\n');
+console.log('\n🚀 BWGA Intelligence AI - 100 COMPREHENSIVE TESTS\n');
 console.log('Testing all system capabilities with real Gemini API...\n');
 
 const scenarios = [

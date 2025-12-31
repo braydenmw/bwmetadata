@@ -1,6 +1,6 @@
-# Deployment Guide — BW Nexus AI
+# Deployment Guide — BWGA Intelligence AI
 
-This document describes how to deploy the full-stack BW Nexus AI application (frontend + backend) to Render using the CI workflow included in `.github/workflows/deploy-render.yml`. It also includes local Docker test steps.
+This document describes how to deploy the full-stack BWGA Intelligence AI application (frontend + backend) to Render using the CI workflow included in `.github/workflows/deploy-render.yml`. It also includes local Docker test steps.
 
 ## Overview
 - Frontend: Vite-built static site (output `dist`).

@@ -169,7 +169,7 @@ export const AnalysisModal: React.FC<AnalysisModalProps> = ({ item, region, onCl
               </main>
 
               <footer className="mt-16 pt-8 border-t border-stone-200 text-center text-[10px] text-stone-400 font-mono uppercase tracking-widest">
-                  <p>BW Nexus AI | Generated on {new Date().toLocaleDateString()}</p>
+                  <p>BWGA Intelligence AI | Generated on {new Date().toLocaleDateString()}</p>
               </footer>
           </div>
       );

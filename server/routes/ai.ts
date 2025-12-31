@@ -18,7 +18,7 @@ const getGenAI = () => {
 
 // System instruction for the AI
 const SYSTEM_INSTRUCTION = `
-You are "BW Nexus AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.
+You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.
 You are NOT a standard chatbot. You are a deterministic economic modeling engine.
 
 YOUR CORE FUNCTIONS:
@@ -555,7 +555,7 @@ Return as JSON array.`;
 });
 
 const MULTI_AGENT_SYSTEM_INSTRUCTION = `
-You are the BW NEXUS AI Multi-Agent Brain v5.0 - a self-learning economic intelligence system.
+You are the BWGA Intelligence AI Multi-Agent Brain v5.0 - a self-learning economic intelligence system.
 
 CORE CAPABILITIES:
 1. Analyze 200+ years of global economic patterns (1820-2025)

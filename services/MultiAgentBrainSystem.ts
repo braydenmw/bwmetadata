@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI - MULTI-AGENT BRAIN SYSTEM v5.0
+ * BWGA Intelligence AI - MULTI-AGENT BRAIN SYSTEM v5.0
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
  * A self-learning, multi-agent AI system that:
@@ -1188,7 +1188,7 @@ export class DocumentIntelligenceEngine {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const BRAIN_SYSTEM_INSTRUCTION = `
-You are the BW NEXUS AI Multi-Agent Brain System v5.0 - a self-learning economic intelligence engine.
+You are the BWGA Intelligence AI Multi-Agent Brain System v5.0 - a self-learning economic intelligence engine.
 
 YOUR CORE CAPABILITIES:
 1. Process 200+ years of global economic patterns to inform analysis

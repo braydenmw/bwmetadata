@@ -640,7 +640,7 @@ When adding features:
 
 ## License
 
-This code is part of the BW Nexus AI platform.
+This code is part of the BWGA Intelligence AI platform.
 Copyright © 2024 BW Global Advisory.
 
 ---

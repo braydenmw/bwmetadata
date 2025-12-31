@@ -149,7 +149,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
-║  BW Nexus AI Backend Server                                ║
+║  BWGA Intelligence AI Backend Server                                ║
 ║  ──────────────────────────────────────────────────────────║
 ║  Status:    ONLINE                                         ║
 ║  Port:      ${PORT}                                            ║

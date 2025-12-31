@@ -1,4 +1,4 @@
-# BW NEXUS AI - System Capability Report
+# BWGA Intelligence AI - System Capability Report
 
 ## Executive Summary
 
@@ -253,7 +253,7 @@ import { NSILBrainPanel } from './components/NSILBrainPanel';
 
 ## Conclusion
 
-The BW Nexus AI system now has a fully functional intelligence layer that delivers on its core claims:
+The BWGA Intelligence AI system now has a fully functional intelligence layer that delivers on its core claims:
 
 1. ✅ **Multi-Agent Brain** - 5 personas analyze from different perspectives
 2. ✅ **Input Shield** - Validates and cross-checks user data

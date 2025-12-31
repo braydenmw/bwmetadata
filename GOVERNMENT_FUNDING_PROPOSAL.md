@@ -1,6 +1,6 @@
-# BW Nexus AI — Real Answers. Real Speed. Real Impact.
+# BWGA Intelligence AI — Real Answers. Real Speed. Real Impact.
 
-No more waiting. No more guesswork. BW Nexus AI delivers the truth you need—instant, transparent, and tuned to your exact mission.
+No more waiting. No more guesswork. BWGA Intelligence AI delivers the truth you need—instant, transparent, and tuned to your exact mission.
 
 ---
 
@@ -21,8 +21,8 @@ No more waiting. No more guesswork. BW Nexus AI delivers the truth you need—in
 
 ---
 
-## 1. What Is BW Nexus AI?
-BW Nexus AI is a Strategic Intelligence & Execution Platform—a digital consultant plus a high-end document automation factory. It helps founders, operators, and investors design rigorous business models, stress-test them, and instantly generate the documents required to execute.
+## 1. What Is BWGA Intelligence AI?
+BWGA Intelligence AI is a Strategic Intelligence & Execution Platform—a digital consultant plus a high-end document automation factory. It helps founders, operators, and investors design rigorous business models, stress-test them, and instantly generate the documents required to execute.
 
 ### Core Capabilities
 - **Live Document Builder:** Feed foundation, market, operations, and financial assumptions into a dynamic canvas that drives every downstream output.
@@ -41,7 +41,7 @@ BW Nexus AI is a Strategic Intelligence & Execution Platform—a digital consult
 5. **No Hardcoded Ceilings:** Model 50+ business/legal archetypes, run logic for 195 countries, and build entity structures exactly as they exist in law.
 6. **Serious Probabilistic Modeling:** 10,000+ Monte Carlo iterations yield P5–P95 spreads, Value-at-Risk, probability-of-loss, and Expected Shortfall—never single-point fantasies.
 
-BW Nexus AI is an autonomous reasoning partner: design strategy, stress-test viability, and auto-compose the packages you need to act—with more rigor and transparency than any static form, chatbot, or stale enterprise dashboard.
+BWGA Intelligence AI is an autonomous reasoning partner: design strategy, stress-test viability, and auto-compose the packages you need to act—with more rigor and transparency than any static form, chatbot, or stale enterprise dashboard.
 
 ---
 
@@ -100,4 +100,4 @@ Deliverable: math-backed recommendations with provenance, debate logs, Monte Car
 ---
 
 ## Call to Action
-Deploy BW Nexus AI as your always-on strategic intelligence partner. Set the agenda; we deliver the intelligence—real answers, real speed, real impact.
+Deploy BWGA Intelligence AI as your always-on strategic intelligence partner. Set the agenda; we deliver the intelligence—real answers, real speed, real impact.

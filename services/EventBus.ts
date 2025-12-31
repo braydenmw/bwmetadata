@@ -1,5 +1,5 @@
 /**
- * EventBus — Unified pub/sub for the BW Nexus AI ecosystem
+ * EventBus — Unified pub/sub for the BWGA Intelligence AI ecosystem
  *
  * Connects: agentic worker, orchestrator, self-learning engine, consultant, App
  * Enables all modules to see the whole "meadow" (bee, flower, ecosystem).

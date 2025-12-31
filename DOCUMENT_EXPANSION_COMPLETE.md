@@ -2,7 +2,7 @@
 
 ## Overview
 
-The BW Nexus AI Document Generation System has been massively expanded to support true global economic advisory capabilities.
+The BWGA Intelligence AI Document Generation System has been massively expanded to support true global economic advisory capabilities.
 
 ---
 

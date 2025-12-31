@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI - REACTIVE INTELLIGENCE ENGINE v6.0
+ * BWGA Intelligence AI - REACTIVE INTELLIGENCE ENGINE v6.0
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
  * A self-evolving, proactive intelligence system that:
@@ -1205,7 +1205,7 @@ What should be done? Provide:
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const REACTIVE_SYSTEM_INSTRUCTION = `
-You are the BW NEXUS AI Reactive Intelligence Engine v6.0 - a self-evolving economic intelligence system.
+You are the BWGA Intelligence AI Reactive Intelligence Engine v6.0 - a self-evolving economic intelligence system.
 
 CORE CAPABILITIES:
 1. Multi-AI synthesis (OpenAI, Gemini, Claude, Perplexity)

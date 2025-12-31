@@ -1,9 +1,9 @@
-# BW Nexus AI (BW Global Advisory)
+# BWGA Intelligence AI (BW Global Advisory)
 # Full Technical Brief & System Audit (Funding + Partnership Package)
 
 **Prepared for:** Funding partners, strategic partners, government stakeholders, and institutional collaborators  
 **Prepared by:** BW Global Advisory (BWGA)  
-**System:** BW Nexus AI — NSIL (Nexus Strategic Intelligence Layer) + Agentic Intelligence OS  
+**System:** BWGA Intelligence AI — NSIL (Nexus Strategic Intelligence Layer) + Agentic Intelligence OS  
 **Date:** 2025-12-30  
 **Version of this document:** 1.0 (Repo-derived)  
 
@@ -17,7 +17,7 @@ This document is written as a **technical brief + audit-style system description
 - Government and institutional evaluation (auditability, transparency, decision-support posture)
 
 **Important framing**
-- BW Nexus AI is designed as **decision-support**. It does not replace legal, financial, compliance, engineering, or investment advice.
+- BWGA Intelligence AI is designed as **decision-support**. It does not replace legal, financial, compliance, engineering, or investment advice.
 - Several components currently use **mock/static data + AI-assisted narrative generation**. The architecture is built to be extended to live connectors.
 
 ---
@@ -26,7 +26,7 @@ This document is written as a **technical brief + audit-style system description
 
 1. Executive Summary
 2. System Goals & the Problem Space
-3. Product Definition (What BW Nexus AI Is / Is Not)
+3. Product Definition (What BWGA Intelligence AI Is / Is Not)
 4. High-Level Architecture (Client / Server / Intelligence Services)
 5. Core User Journeys & Workflow
 6. Data Model & Persistence Strategy
@@ -49,7 +49,7 @@ This document is written as a **technical brief + audit-style system description
 
 ## 1) Executive Summary
 
-BW Nexus AI is an **enterprise-grade partnership intelligence and deal feasibility platform** built with:
+BWGA Intelligence AI is an **enterprise-grade partnership intelligence and deal feasibility platform** built with:
 - **Frontend:** React 19 + TypeScript + Vite + TailwindCSS
 - **Backend:** Node.js + Express + Helmet + CORS + Compression
 - **AI Integration:** Gemini (via `@google/generative-ai` and `@google/genai` dependencies)
@@ -66,7 +66,7 @@ This brief is intentionally written in a structure that maps to common diligence
 Where possible, statements are grounded in **repository artifacts** (source files and internal documentation). Where the repository describes a capability but the code path appears partial, this document labels it as **“implemented,” “partially implemented,” or “architecture-intended.”**
 
 ### What it does (in operational terms)
-BW Nexus AI turns a mandate (who you are, what you want, where, constraints, risk appetite) into:
+BWGA Intelligence AI turns a mandate (who you are, what you want, where, constraints, risk appetite) into:
 - A **structured strategic case** (inputs validated and normalized)
 - A **multi-perspective reasoning outcome** (persona debate + counterfactual stress tests)
 - **Explainable quantitative scores** (NSIL/21-formula suite references; in-product scoring payloads)
@@ -94,7 +94,7 @@ In regional development, partnerships, and investment attraction, stakeholders o
 - Misalignment between narrative (what a region says) and evidence (what can be proven)
 - Low trust due to opaque reasoning (“black box” outputs)
 
-### BW Nexus AI’s explicit system goals
+### BWGA Intelligence AI’s explicit system goals
 1. **Structuring:** Convert messy real-world intent into a structured case dataset.
 2. **Validation:** Surface missing constraints and contradictions early.
 3. **Multi-perspective reasoning:** Prevent single-thread bias through persona debate.
@@ -123,7 +123,7 @@ In regional development, partnerships, and investment attraction, stakeholders o
 ## 4) High-Level Architecture
 
 ### System boundary
-BW Nexus AI is a web application that can be run in two primary modes:
+BWGA Intelligence AI is a web application that can be run in two primary modes:
 - **Frontend-only mode** (local dev / static hosting): UI + local logic + local persistence.
 - **Full-stack mode** (recommended for production): UI + API server for AI calls, report storage, and integrations.
 
@@ -133,7 +133,7 @@ BW Nexus AI is a web application that can be run in two primary modes:
 - **Intelligence services (TypeScript modules):** reasoning stack and orchestrators used by both server and client.
 
 ### Control-plane vs data-plane (audit concept)
-To support high-stakes decisions, BW Nexus AI conceptually separates:
+To support high-stakes decisions, BWGA Intelligence AI conceptually separates:
 - **Data-plane:** ingestion of user inputs, uploads, and external signals; storage and retrieval; export artifacts.
 - **Control-plane:** validation rules, scoring engines, orchestration policies, audit logs, and governance rules.
 
@@ -259,7 +259,7 @@ Outputs preserve agreements and disagreements to avoid “fake certainty”.
 
 ## 8) Scoring Layer — 21-Formula Suite
 
-BW Nexus AI references a 21-formula suite:
+BWGA Intelligence AI references a 21-formula suite:
 - **5 primary engines:** SPI™, RROI™, SEAM™, IVAS™, SCF™
 - **16 derivative indices:** BARNA, NVI, CRI, FRS, CAP, AGI, VCI, ATI, ESI, ISI, OSI, TCO, PRI, RNI, SRA, IDV
 
@@ -507,7 +507,7 @@ Phase 3 (12–24 weeks):
 
 ## 18) Partnership & Integration Model
 
-BW Nexus AI is designed to be partnered, not competitive:
+BWGA Intelligence AI is designed to be partnered, not competitive:
 - White-label deployments for regions
 - Data partnerships (government datasets, institutional data)
 - Workflow partnerships (consultancies, accelerators, banks)
@@ -854,7 +854,7 @@ Partners typically want one of three things:
 2. **Better defensibility:** explainable outputs and audit trails.
 3. **Broader access:** enable small regions/organizations to access high-grade intelligence.
 
-BW Nexus AI is positioned to deliver all three through its architecture:
+BWGA Intelligence AI is positioned to deliver all three through its architecture:
 - structured intake creates repeatability
 - scoring creates comparability
 - persona debate reduces one-dimensional bias
@@ -976,7 +976,7 @@ Unify readiness, capture, timeline, and debate consensus into a single “board 
 
 ## A10) Data Provenance & Evidence Design (Institutional Requirement)
 
-If BW Nexus AI is positioned for government and large institutional partners, provenance is not optional.
+If BWGA Intelligence AI is positioned for government and large institutional partners, provenance is not optional.
 
 ### A10.1 Evidence object model (recommended)
 Each “evidence” reference used by scores or narrative should include:

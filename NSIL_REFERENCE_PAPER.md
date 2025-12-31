@@ -1,13 +1,13 @@
-# BW Nexus AI — Intelligence Reference Paper
+# BWGA Intelligence AI — Intelligence Reference Paper
 
 **Document type:** Reference & Explanation Paper (Word-style)
 
-**Scope:** Explains NSIL, the BW Brain, and the 21-formula suite used to generate BW Nexus AI reports.
+**Scope:** Explains NSIL, the BW Brain, and the 21-formula suite used to generate BWGA Intelligence AI reports.
 
 ---
 
 ## Executive summary
-BW Nexus AI is not a reactive chatbot or a passive dashboard. It is an **adversarial reasoning system**: it validates inputs, runs a multi-agent debate, applies a quantified scoring suite (the “21 formulas”), and produces board-ready outputs with explicit drivers, pressure points, and confidence.
+BWGA Intelligence AI is not a reactive chatbot or a passive dashboard. It is an **adversarial reasoning system**: it validates inputs, runs a multi-agent debate, applies a quantified scoring suite (the “21 formulas”), and produces board-ready outputs with explicit drivers, pressure points, and confidence.
 
 ---
 
@@ -116,7 +116,7 @@ These indices extend the primary engines and explain *why* the strategy is stron
 - **SRA** — *Strategic Risk Assessment*: market/execution/competitive/timing risk profile.
 - **IDV** — *Investment Default Variance*: variance from expected outcomes (projection fragility).
 
-**Note on “21”:** BW Nexus AI refers to the 21-formula suite as the 5 primary engines + 16 derivative indices above. Some modes may compute additional advanced diagnostics, but they are treated as extensions rather than the core suite.
+**Note on “21”:** BWGA Intelligence AI refers to the 21-formula suite as the 5 primary engines + 16 derivative indices above. Some modes may compute additional advanced diagnostics, but they are treated as extensions rather than the core suite.
 
 ---
 

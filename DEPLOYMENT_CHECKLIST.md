@@ -383,5 +383,5 @@ If issues occur post-deployment:
 ---
 
 **Generated**: 2024
-**System**: BW Nexus AI - Live Report System v1.0.0
+**System**: BWGA Intelligence AI - Live Report System v1.0.0
 **Status**: Production Ready

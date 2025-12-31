@@ -1,10 +1,10 @@
-# BW NEXUS AI - Architecture Diagrams & Data Flow
+# BWGA Intelligence AI - Architecture Diagrams & Data Flow
 
 ## System Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    BW NEXUS AI PLATFORM v4.2                        │
+│                    BWGA Intelligence AI PLATFORM v4.2                        │
 │             React + TypeScript + Vite + TailwindCSS                  │
 └─────────────────────────────────────────────────────────────────────┘
 
@@ -491,7 +491,7 @@ UI Renders
 ---
 
 **Diagrams Generated**: December 16, 2025
-**System Version**: BW NEXUS AI v4.2
+**System Version**: BWGA Intelligence AI v4.2
 **Architecture Pattern**: React Component State Machine
 **Data Flow Model**: Unidirectional (ReportParameters)
 

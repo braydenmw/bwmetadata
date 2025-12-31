@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI - LIVE SEARCH API ROUTES
+ * BWGA Intelligence AI - LIVE SEARCH API ROUTES
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
  * Real-time search integrations:

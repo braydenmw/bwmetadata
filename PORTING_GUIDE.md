@@ -1,4 +1,4 @@
-# BW NEXUS AI - Step-by-Step Porting Guide for Another System
+# BWGA Intelligence AI - Step-by-Step Porting Guide for Another System
 
 ## Phase 1: Preparation & Planning (2-4 hours)
 
@@ -652,7 +652,7 @@ If porting stalls:
 ---
 
 **Prepared**: December 16, 2025
-**System Version**: BW NEXUS AI v4.2
+**System Version**: BWGA Intelligence AI v4.2
 **Original Build**: 2,099 modules | 188.78 kB gzipped | 5.49s build
 
 Good luck with your port! 🚀

@@ -1,5 +1,5 @@
 /**
- * Server Build Script for BW Nexus AI
+ * Server Build Script for BWGA Intelligence AI
  * 
  * Uses esbuild to bundle the server for production deployment.
  * This avoids TypeScript configuration issues with ESM modules.

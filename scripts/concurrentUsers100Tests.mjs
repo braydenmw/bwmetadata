@@ -5,7 +5,7 @@ const APP_URL = 'http://localhost:4173'; // Production preview
 const TOTAL_TESTS = 100;
 const CONCURRENT_BROWSERS = 5; // Simulate 5 users at once
 
-console.log('\n🚀 BW NEXUS AI - 100 CONCURRENT USER SIMULATION');
+console.log('\n🚀 BWGA Intelligence AI - 100 CONCURRENT USER SIMULATION');
 console.log('━'.repeat(80));
 console.log(`Testing ${TOTAL_TESTS} scenarios with ${CONCURRENT_BROWSERS} concurrent users`);
 console.log(`Simulating real-world multi-user load\n`);

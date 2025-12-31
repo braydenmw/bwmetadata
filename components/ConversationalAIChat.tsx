@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI - CONVERSATIONAL AI CHAT
+ * BWGA Intelligence AI - CONVERSATIONAL AI CHAT
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
  * Real-time conversational interface that allows users to chat with the AI
@@ -85,7 +85,7 @@ export const ConversationalAIChat: React.FC<ConversationalAIChatProps> = ({
       const welcomeMessage: ChatMessage = {
         id: 'welcome',
         role: 'assistant',
-        content: `Welcome to BW Nexus AI. I'm your autonomous strategic intelligence partner.
+        content: `Welcome to BWGA Intelligence AI. I'm your autonomous strategic intelligence partner.
 
 I can help you with:
 • **Strategic Analysis** - Deep reasoning on partnerships, markets, and risks
