@@ -29,265 +29,154 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                     <section className="rounded-lg border border-slate-200 bg-white p-4">
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">Full Technical Brief &amp; System Audit (Funding + Partnership Package)</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Prepared for: Funding partners, strategic partners, government stakeholders, and institutional collaborators
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Prepared by: BW Global Advisory (BWGA)
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            System: BWGA Intelligence AI + NSIL (Nexus Strategic Intelligence Layer)
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Date: 2025-12-30
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Document Version: 1.0 (Repo-derived)
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed mt-3">
-                            This page is intentionally formatted like a professional audit brief. Every section mirrors repository artifacts so a funding,
-                            partnership, or government reviewer can evaluate feasibility, defensibility, and scalability without leaving this screen.
-                        </p>
+                        <h3 className="text-lg font-bold text-slate-900 mb-1">BW Nexus AI — Technical Proof &amp; Comparative Brief</h3>
+                        <p className="text-slate-600 text-sm leading-relaxed">Prepared For: Funding partners, strategic partners, government, institutions, banks, enterprises.</p>
+                        <p className="text-slate-600 text-sm leading-relaxed">Prepared By: BW Global Advisory (BWGA) — Founding Architect: Brayden Walls.</p>
+                        <p className="text-slate-600 text-sm leading-relaxed">System: BW Nexus AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain.</p>
+                        <p className="text-slate-600 text-sm leading-relaxed mt-3">Positioning: A sovereign-grade, explainable, auditable, and continuously learning decision-support platform. Not a black box. Governed reasoning with live deliverables.</p>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Document Use, Confidentiality &amp; Positioning</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Executive Proof Summary</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Funding diligence (technical feasibility, defensibility, scalability)</li>
-                            <li>Partnership discussions (integration points, governance, operating model)</li>
-                            <li>Government and institutional evaluation (auditability, transparency, decision-support posture)</li>
-                        </ul>
-                        <p className="text-slate-600 text-sm leading-relaxed mt-3">
-                            <span className="font-semibold">Important framing:</span> BWGA Intelligence AI is a decision-support system. It does not replace legal,
-                            financial, compliance, engineering, or investment advice. Several modules currently rely on mock or static data and AI-assisted
-                            narrative generation; the architecture is designed for rapid extension to live connectors.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Table of Contents (Print/PDF Alignment)</h4>
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-slate-600">
-                            <li>Executive Summary</li>
-                            <li>System Goals &amp; the Problem Space</li>
-                            <li>Product Definition (What It Is / Is Not)</li>
-                            <li>High-Level Architecture (Client / Server / Intelligence Services)</li>
-                            <li>Core User Journeys &amp; Workflow</li>
-                            <li>Data Model &amp; Persistence Strategy</li>
-                            <li>Intelligence Architecture: NSIL, BW Brain, and Multi-Agent Reasoning</li>
-                            <li>Scoring Layer: 21-Formula Suite</li>
-                            <li>Algorithm Layer: Speed, Consistency, Repeatability</li>
-                            <li>Frontend Technical Architecture</li>
-                            <li>Backend Technical Architecture</li>
-                            <li>Report Orchestration &amp; Document Generation</li>
-                            <li>Security, Privacy, and Governance Controls</li>
-                            <li>Reliability, Observability, and Operational Readiness</li>
-                            <li>Deployment &amp; Environments</li>
-                            <li>Testing, Verification, and Quality Controls</li>
-                            <li>Risks, Gaps, and Recommendations</li>
-                            <li>Partnership &amp; Integration Model</li>
-                            <li>Funding Readiness: Why This Can Scale</li>
-                            <li>Appendices &amp; Addendum</li>
+                            <li><span className="font-semibold">Claim:</span> BW Nexus AI with NSIL + Agentic Brain is a world‑first governed reasoning platform that treats mandates as living simulations.</li>
+                            <li><span className="font-semibold">Outcome:</span> Converts a mandate into adversarial debate, counterfactuals, explainable scores, traceable recommendations, and live deliverables.</li>
+                            <li><span className="font-semibold">Why new:</span> Agentic AI applied to judgment (not tasks), under explicit governance, with a formal 21‑formula suite and auditable “why” chains.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Executive Summary</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                            BWGA Intelligence AI is an enterprise-grade partnership intelligence and deal feasibility platform built with React 19, TypeScript 5,
-                            Vite 6, TailwindCSS, Node.js, Express, Helmet, CORS, Compression, and Gemini-powered intelligence services. The repository already
-                            contains validation, maturity scoring, persistence, persona reasoning, counterfactual analysis, outcome learning, and report
-                            orchestration modules.
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                            This brief is organized to answer diligence questions: what is implemented, how data flows, what controls prevent unreliable output,
-                            what must be hardened for government or enterprise deployment, and where partners can integrate.
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Operationally, the system converts a mandate (who, what, where, constraints, risk appetite) into a structured case, multi-perspective
-                            reasoning, explainable quantitative scores, and ready-to-send deliverables. The goal is to compress time-to-clarity while keeping every
-                            assumption traceable.
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed mt-3">
-                            Current status: a React/Vite application with dozens of components, an Express backend exposing AI/search/report/autonomous APIs, and a
-                            simulation harness (scripts/nsilSimulation.ts) validating payload completeness.
-                        </p>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Category Definition</h4>
+                        <p className="text-slate-600 text-sm leading-relaxed">Governed Strategic Intelligence Systems: computable intent, adversarial reasoning, counterfactual stress testing, explainable scoring, live documents, and complete traceability.</p>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">System Goals &amp; the Problem Space</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                            Regional development teams battle fragmented data, slow diligence, misalignment between narrative and evidence, and distrust from opaque
-                            reasoning. BWGA Intelligence AI was built to close that Global Understanding Gap.
-                        </p>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Novelty Claim</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Structuring:</span> Convert messy real-world intent into a computable case dataset.</li>
-                            <li><span className="font-semibold">Validation:</span> Surface missing constraints and contradictions early.</li>
-                            <li><span className="font-semibold">Multi-perspective reasoning:</span> Persona debate prevents single-thread bias.</li>
-                            <li><span className="font-semibold">Scoring + explainability:</span> Quantified outputs with explicit drivers and pressure points.</li>
-                            <li><span className="font-semibold">Delivery:</span> Compile investor-grade reports, comparisons, outreach letters.</li>
-                            <li><span className="font-semibold">Audit posture:</span> Preserve traceability and a defensible why chain.</li>
+                            <li><span className="font-semibold">Intent Computation:</span> Structures human mandates into machine‑legible models without losing real‑world richness.</li>
+                            <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate → Debate → Counterfactuals → Score → Synthesize → Deliver prevents false confidence.</li>
+                            <li><span className="font-semibold">Agentic Brain:</span> Owns the case, anticipates questions, prepares analyses, surfaces contradictions, and learns continuously — every step traceable.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Product Definition (What It Is / Is Not)</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Architectural Proofs</h4>
+                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                            <li><span className="font-semibold">Planes Separation:</span> Control‑plane (governance, scoring, orchestration) distinct from data‑plane (inputs, storage, exports).</li>
+                            <li><span className="font-semibold">Explainability Contracts:</span> Each score has definitions, drivers, pressure points, assumptions, evidence citations.</li>
+                            <li><span className="font-semibold">Traceability:</span> Debate transcripts, contradiction flags, counterfactuals, score rationales, and deliverable provenance form a complete why chain.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">21‑Formula Suite</h4>
+                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Primary engines: SPI™, RROI™, SEAM™, IVAS™, SCF™. Derivatives: 16 indices for alignment, risk, viability, capacity, velocity, resilience.</p>
+                        <p className="text-slate-600 text-sm leading-relaxed">Purpose: Not prediction — exposure of fragility, leverage, hidden failure points, and misalignment costs. Each with explainability contracts.</p>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Proof by Collapse (Scenario)</h4>
+                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Ambitious regional mandate → legacy approaches collapse; Nexus holds.</p>
+                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                            <li><span className="font-semibold">Consulting:</span> Latency, static PDFs, no instant recalculation.</li>
+                            <li><span className="font-semibold">BI Dashboards:</span> Data visualization without governed reasoning.</li>
+                            <li><span className="font-semibold">LLM Copilots:</span> Unstructured prompts, non‑traceable outputs.</li>
+                            <li><span className="font-semibold">Spreadsheets:</span> Non‑reactive; fragile under change.</li>
+                            <li><span className="font-semibold">Nexus Path:</span> Governed debate, counterfactuals, explainable scores, live documents that update instantly.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Governance &amp; Explainability</h4>
+                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                            <li><span className="font-semibold">Adversarial Shield:</span> Contradiction detection; sanction, compliance, ethics checks.</li>
+                            <li><span className="font-semibold">Multi‑Perspective Debate:</span> Skeptic, Advocate, Regulator, Accountant, Operator — parallel reasoning.</li>
+                            <li><span className="font-semibold">Counterfactual Lab:</span> Sensitivity and robustness quantification with explicit deltas.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Document Factory (Live)</h4>
+                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Live documents: change one variable; risks, scores, timelines, and instrument drafts re‑compute across the set.</p>
+                        <p className="text-slate-600 text-sm leading-relaxed">Guided delivery: a BW Consultant accompanies the journey with evidence‑linked outputs.</p>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Comparative Matrix (Market Landscape)</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <p className="text-sm font-bold text-slate-800 mb-2">What the Product Is</p>
+                                <p className="text-sm font-bold text-slate-800 mb-2">Legacy Approaches</p>
                                 <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>A strategic intelligence workflow, not a single AI chat prompt</li>
-                                    <li>A platform combining structured intake, validation engines, scoring, reasoning services, and report orchestration</li>
+                                    <li>Consulting: Static, expensive, slow; no live governance or instant recalculation.</li>
+                                    <li>BI/Analytics: Visualize data; lack adversarial governance and live deliverables.</li>
+                                    <li>LLM Copilots: Unstructured prompts; non‑traceable; no formula‑level explainability.</li>
+                                    <li>Spreadsheets: Non‑reactive systems; fragile under change.</li>
                                 </ul>
                             </div>
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <p className="text-sm font-bold text-slate-800 mb-2">What the Product Is Not</p>
+                                <p className="text-sm font-bold text-slate-800 mb-2">BW Nexus AI</p>
                                 <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>Not a replacement for independent professional diligence</li>
-                                    <li>Not a promise of outcome; it provides structured intelligence to reduce uncertainty</li>
+                                    <li>Governed reasoning (NSIL) + Agentic execution (Brain).</li>
+                                    <li>Counterfactuals + 21‑formula explainable scoring.</li>
+                                    <li>Traceability: complete why chain and evidence provenance.</li>
+                                    <li>Live documents: instant recalculation of deliverables on change.</li>
                                 </ul>
                             </div>
                         </div>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">High-Level Architecture</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
-                            <li><span className="font-semibold">Frontend-only mode:</span> UI + local logic + local persistence</li>
-                            <li><span className="font-semibold">Full-stack mode (recommended):</span> UI + API server for AI calls, report storage, and integrations</li>
-                            <li><span className="font-semibold">Client (React):</span> UI workflow, data entry, live previews, local insights, exporting</li>
-                            <li><span className="font-semibold">Server (Express):</span> AI endpoints, report CRUD persistence, health checks, autonomous endpoint</li>
-                            <li><span className="font-semibold">Intelligence services (TypeScript modules):</span> reasoning stack and orchestrators used by both server and client</li>
-                        </ul>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            <span className="font-semibold">Audit note:</span> defensibility rests on separating the data-plane (inputs, storage, exports) from the
-                            control-plane (validation rules, scoring engines, orchestration policies, governance).
-                        </p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Core User Journeys &amp; Workflow</h4>
-                        <div className="space-y-4">
-                            <div>
-                                <p className="text-sm font-bold text-slate-800 mb-2">Journey A: Standard Report Builder Flow</p>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>User enters CommandCenter for system explanation and acceptance</li>
-                                    <li>User defines entity profile and strategic intent</li>
-                                    <li>System runs analysis modules across a multi-stage report workflow</li>
-                                    <li>Outputs generated: scorecards, narrative sections, partner matching, scenario plans, exports</li>
-                                    <li>UI operates as a live workspace where readiness, insights, and outputs update with inputs</li>
-                                    <li>Mixes deterministic calculation with AI-assisted narrative generation</li>
-                                    <li>Exports are first-class outputs, not screenshots of UI</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p className="text-sm font-bold text-slate-800 mb-2">Journey B: Agentic / Orchestrated Run</p>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>Structured parameter object passed to ReportOrchestrator.assembleReportPayload()</li>
-                                    <li>Payload completeness validated with missing fields flagged explicitly</li>
-                                    <li>Results persisted as a report snapshot for later review and export</li>
-                                    <li>Server-side /api/autonomous/solve and the NSIL simulation harness exercise this workflow</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p className="text-sm font-bold text-slate-800 mb-2">Journey C: Conversational / Copilot Assistance</p>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>/api/ai/chat provides AI-assisted reasoning output with a system instruction</li>
-                                    <li>/api/ai/insights returns a structured JSON insight list</li>
-                                    <li>Gemini API usage is gated by GEMINI_API_KEY; server returns 503 when missing</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Data Model &amp; Persistence Strategy</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600 mb-3">
-                            <li><span className="font-semibold">ReportParameters:</span> full case intake dataset (identity, mandate, constraints, partners, etc.)</li>
-                            <li><span className="font-semibold">ReportPayload:</span> computed intelligence output (scores, risks, confidence, sections)</li>
-                            <li>TypeScript definitions in types.ts act as contracts between UI, services, and orchestrators</li>
-                            <li>Client-side persistence (localStorage) for drafts, snapshots, export/import</li>
-                            <li>Server-side file persistence (server/data/reports.json) for CRUD operations</li>
-                        </ul>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            File persistence is acceptable for prototypes but must evolve into database-backed, multi-tenant storage with immutable audit trails for institutional scale.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Intelligence Architecture (NSIL, BW Brain, Multi-Agent Reasoning)</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Defensibility</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>NSIL intelligence hub unifies InputShieldService, PersonaEngine, CounterfactualEngine, OutcomeTracker, and UnbiasedAnalysisEngine</li>
-                            <li>InputShield flags missing critical fields, contradictions, and risk patterns</li>
-                            <li>Persona model (Skeptic, Advocate, Regulator, Accountant, Operator) preserves agreements/disagreements</li>
-                            <li>NSIL lifecycle: Validate → Debate → Score → Synthesize → Deliver</li>
+                            <li><span className="font-semibold">IP Boundary:</span> Governance protocols + formula suite + orchestration primitives.</li>
+                            <li><span className="font-semibold">Audit Posture:</span> Evidence provenance and explainability contracts; advisory outputs require professional validation.</li>
+                            <li><span className="font-semibold">Falsifiability:</span> If contradictions aren’t caught, scores aren’t explainable, or documents aren’t live, the claim fails.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Scoring Layer — 21-Formula Suite</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                            5 primary engines: SPI™ (TM), RROI™ (TM), SEAM™ (TM), IVAS™ (TM), SCF™ (TM)
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                            16 derivative indices: BARNA, NVI, CRI, FRS, CAP, AGI, VCI, ATI, ESI, ISI, OSI, TCO, PRI, RNI, SRA, IDV
-                        </p>
-                        <p className="text-slate-600 text-sm leading-relaxed">
-                            Each engine requires documented definitions, calibration, and explainability contracts (score, band, drivers, pressure points, assumptions).
-                        </p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Algorithm Layer — Speed, Consistency, Repeatability</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Limits &amp; Posture</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Memory retrieval / similar-case recall to maintain context continuity</li>
-                            <li>Contradiction checks prevent unstable payloads</li>
-                            <li>Parallel scoring, persona debate, and counterfactual stress tests</li>
-                            <li>Structured synthesis ensures deterministic payload assembly and explicit labeling of computed vs narrative vs human-entered text</li>
+                            <li>Decision‑Support: Advisory outputs; users retain final accountability.</li>
+                            <li>Data Connectors: Live connectors recommended for institutional deployment.</li>
+                            <li>Human Oversight: Professional validation for binding commitments.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Frontend Technical Architecture</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Deployment Readiness</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>React 19 + TypeScript 5 + Vite 6 + TailwindCSS</li>
-                            <li>Framer Motion + Lucide icons for animation and iconography</li>
-                            <li>State-driven ViewMode routing (no URL router) keeps workspace feel</li>
-                            <li>Feature modules for market comparison, compatibility engine, deal marketplace, scenario planning, and document generation</li>
-                        </ul>
-                        <p className="text-slate-600 text-sm leading-relaxed mt-3">
-                            <span className="font-semibold">Risk watch:</span> lack of URL routing means deep-linking and audit trails require additional instrumentation,
-                            especially for multi-user environments.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Backend Technical Architecture</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Express server with Helmet, CORS, compression, JSON body limits, and logging</li>
-                            <li>Routes: /api/ai, /api/reports, /api/search, /api/autonomous, /api/health</li>
-                            <li>Gemini client initialized lazily; server returns 503 if GEMINI_API_KEY absent</li>
-                            <li>File-backed storage for reports plus import/export utilities</li>
-                            <li><span className="font-semibold">Audit note:</span> server/routes/agentic.ts exists but is not mounted in server/index.ts in the current snapshot</li>
+                            <li>Modular architecture ready for auth, tenancy, immutable logs.</li>
+                            <li>Deterministic payload assembly; simulation harness for repeatability.</li>
+                            <li>Score calibration and narrative evaluation on the roadmap.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Report Orchestration &amp; Document Generation</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Target Users</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>ReportOrchestrator assembles payloads and validates completeness</li>
-                            <li>Simulation harness (scripts/nsilSimulation.ts) runs repeatable orchestration tests</li>
-                            <li>Exports treat scorecards, risk registers, and narratives as first-class outputs</li>
-                            <li>Document Factory supports PDF/DOCX/HTML, letters, and outreach packs</li>
+                            <li>Government &amp; Policy: National/regional strategy.</li>
+                            <li>Companies: SMEs → multinationals.</li>
+                            <li>Banks &amp; DFIs: Risk registers, explainable confidence, compliance.</li>
+                            <li>Regional Agencies &amp; NGOs: Equitable, region‑first growth and partnerships.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Security, Privacy, and Governance Controls</h4>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Evidence Lines</h4>
                         <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Helmet security headers + CORS allowlist with production fallback</li>
-                            <li>Secrets kept server-side; UI never sees API keys</li>
-                            <li>Recommended upgrades: authentication, RBAC, tenant isolation, immutable audit logs, prompt-injection resistance, evidence provenance</li>
+                            <li><span className="font-semibold">Category Primitives:</span> Computable mandate + NSIL governance + Agentic Brain + 21‑formula suite + live documents + traceability.</li>
+                            <li><span className="font-semibold">Comparative Outcomes:</span> Only Nexus unifies all primitives; legacy stacks fail specific governance/explainability/live‑document criteria.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4 className="text-md font-bold text-slate-800 mb-2">Appendices &amp; Addendum</h4>
+                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                            <li>Governance Protocols &amp; Explainability Contracts</li>
+                            <li>Formula Specs (SPI/RROI/SEAM/IVAS/SCF)</li>
+                            <li>Evidence Provenance &amp; Audit Trails</li>
+                            <li>Hardening Blueprint &amp; Integration Model</li>
                         </ul>
                     </section>
 

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { ReportParameters } from '../types';
 import type { EcosystemPulse } from '../services/EventBus';
 import FormulaDeepDiveModal from './FormulaDeepDiveModal';
+import CatalogModal from './CatalogModal';
 import { 
     Play, CheckCircle2, ShieldAlert, 
     Globe, Lock, ArrowRight, Layers
@@ -26,6 +27,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
 }) => {
     const [accepted, setAccepted] = useState(false);
     const [showFormulaModal, setShowFormulaModal] = useState(false);
+    const [showCatalogModal, setShowCatalogModal] = useState(false);
 
     return (
         <div className="h-full w-full flex-1 bg-stone-50 flex items-start justify-center p-6 pt-16 pb-24 font-sans overflow-y-auto">
@@ -186,14 +188,38 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                 {/* 8. Outcomes */}
                 <section className="p-10 border-t border-stone-200">
                     <h2 className="text-2xl font-bold text-stone-900 mb-2">The Document Factory: From Analysis to Action</h2>
-                    <p className="text-stone-600 text-sm mb-3">A validated strategy is useless if it remains trapped in a dashboard.</p>
+                    <p className="text-stone-600 text-sm mb-3">A validated strategy is useless if it remains trapped in a dashboard. Nexus turns analysis into action with governed, live documents.</p>
+                    <div className="rounded-sm border border-stone-200 p-6 bg-white mb-6 space-y-3">
+                        <p className="text-sm text-stone-700"><span className="font-semibold">Live recalculation:</span> Change one assumption; the entire set — risks, scores, timelines, capital stacks, and instrument drafts — updates instantly.</p>
+                        <p className="text-sm text-stone-700"><span className="font-semibold">Guided delivery:</span> A BW Consultant orchestrates outreach, evidence, approvals, and versioning with full traceability.</p>
+                        <p className="text-sm text-stone-700"><span className="font-semibold">Explainable by design:</span> Every output carries a <span className="italic">why chain</span> — definitions, drivers, sensitivities, and citations.</p>
+                    </div>
+                    <div className="rounded-sm border border-stone-200 p-6 bg-stone-50 mb-6">
+                        <h3 className="text-sm font-bold text-stone-900 mb-2">Partnership Matchmaking</h3>
+                        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
+                            <li><span className="font-semibold">Fit vectors:</span> Mandate, sector, geography, capacity, compliance/ethics — scored and updated live.</li>
+                            <li><span className="font-semibold">Outreach sequencer:</span> Timing‑aware intros and letters with privacy‑safe routing.</li>
+                            <li><span className="font-semibold">Negotiation workspace:</span> One‑click NDAs, LOIs, and terms aligned to objectives and risk.</li>
+                            <li><span className="font-semibold">Evidence locker:</span> Shared artifacts with provenance for compliance reviews.</li>
+                        </ul>
+                        <p className="text-xs text-stone-600 mt-3">Flow: Discover → Assess → Engage → Negotiate → Close</p>
+                    </div>
                     <div className="rounded-sm border border-stone-200 p-6 bg-white mb-6">
-                        <p className="text-sm text-stone-700">Outputs are <span className="font-semibold">live documents</span>: change a single assumption, and the entire document set — risks, scores, timelines, and instrument drafts — recalibrates instantly. A BW Consultant accompanies the journey, providing guided interactions and structured assistance at every step.</p>
+                        <h3 className="text-sm font-bold text-stone-900 mb-2">Operational Signals</h3>
+                        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
+                            <li><span className="font-semibold">Outcome examples:</span> Signed LOI in 10–14 days; syndication outline under 30 days; policy brief v1 in 48 hours.</li>
+                            <li><span className="font-semibold">Approvals &amp; versioning:</span> Redlines, approvals, and sign‑offs tracked with timestamps and role attribution.</li>
+                            <li><span className="font-semibold">Roles &amp; collaboration:</span> Executive, Operator, Legal/Compliance, and BW Consultant handoffs within one workspace.</li>
+                            <li><span className="font-semibold">Exports &amp; integrations:</span> PDF, DOCX, CSV, email packs; optional API push to DMS/CRM.</li>
+                            <li><span className="font-semibold">Compliance guardrails:</span> KYC/AML, sanctions, ESG checks run before outreach; blockers are visible and fixable.</li>
+                            <li><span className="font-semibold">Provenance banner:</span> Each document includes sources, assumptions, sensitivity ranges, and change history.</li>
+                        </ul>
                     </div>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="rounded-sm border border-stone-200 p-6 bg-stone-50">
                             <h3 className="text-sm font-bold text-stone-900 mb-2">Capabilities</h3>
-                            <p className="text-sm text-stone-700">The platform can auto-generate over 200 unique document types and 150 letter templates across 14 categories, including:</p>
+                            <p className="text-sm text-stone-700">Auto‑generates 200+ document types and 180+ letter templates across 24+ categories.</p>
+                            <p className="text-xs text-stone-600 mt-2">Need specifics? <button className="underline text-bw-navy" onClick={() => setShowCatalogModal(true)}>Request the full catalog</button> and we’ll tailor the pack to your sector.</p>
                         </div>
                         <div className="rounded-sm border border-stone-200 p-6 bg-stone-50">
                             <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
@@ -203,6 +229,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                                 <li><span className="font-semibold">Risk:</span> Due Diligence Reports, Sanctions Screening.</li>
                                 <li><span className="font-semibold">Government:</span> Policy Briefs, Cabinet Memos.</li>
                             </ul>
+                            <p className="text-xs text-stone-600 mt-3">Plus more across 24+ categories. Show only what’s relevant; <button className="underline text-bw-navy" onClick={() => setShowCatalogModal(true)}>open the full catalog</button> when needed.</p>
                         </div>
                     </div>
                 </section>
@@ -245,7 +272,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     </div>
                     <p className="text-stone-700 text-xs mt-3">Built to create partnerships across sectors and geographies, with a 100% regional focus to reduce bottlenecks in big cities.</p>
                     <p className="text-stone-600 text-xs mt-3">Start your journey: define your mandate, then let the system show you what’s possible.</p>
+                    <p className="text-stone-600 text-[11px] mt-2 italic">The bee meets the flower: when fit is governed and evidence is live, regions bloom sustainably.</p>
                 </section>
+
+                {/* Compact closing line integrated into CTA */}
 
                 {/* Terms of Engagement & Compliance */}
                 <section className="p-10 border-t border-stone-200">
@@ -258,7 +288,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                         <p><strong className="text-stone-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws. Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
                         <p><strong className="text-stone-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (SPI™, RROI™, SEAM™, etc.) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
                         <p><strong className="text-stone-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability.</p>
-                        <p><strong className="text-stone-900 block mb-1">6. Liability</strong> To the extent permitted by law, BW Global Advisory shall not be liable for indirect or consequential losses arising from use of the platform. Total liability is limited to fees paid for the specific service.</p>
+                        <p><strong className="text-stone-900 block mb-1">6. Liability &amp; IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21‑formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) are owned by BW Global Advisory (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non‑public materials confidential, use them solely for evaluation, and not disclose, copy, reverse‑engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&amp;D notice: the platform is provided “AS IS” without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
                     </div>
                     <div className="mt-6 flex flex-col gap-4">
                         <label className="flex items-center gap-3 cursor-pointer select-none group">
@@ -290,6 +320,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                 </section>
                 {/* Modal render */}
                 <FormulaDeepDiveModal isOpen={showFormulaModal} onClose={() => setShowFormulaModal(false)} />
+                <CatalogModal isOpen={showCatalogModal} onClose={() => setShowCatalogModal(false)} />
             </div>
         </div>
     );
