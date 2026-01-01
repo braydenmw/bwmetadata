@@ -4,7 +4,14 @@
  * Connects: agentic worker, orchestrator, self-learning engine, consultant, App
  * Enables all modules to see the whole "meadow" (bee, flower, ecosystem).
  */
-import type { ReportPayload, CopilotInsight, IntakeMappingSnapshot } from '../types';
+import type {
+  ReportPayload,
+  CopilotInsight,
+  IntakeMappingSnapshot,
+  ApprovalRecord,
+  ProvenanceEntry,
+  MandateRecord
+} from '../types';
 
 // Ecosystem pulse: the "meadow" view (alignment, bottlenecks, opportunities)
 export type EcosystemPulse = {
@@ -41,7 +48,9 @@ export type NexusEvent =
   | { type: 'outcomeRecorded'; reportId: string; outcome: { success: boolean; notes?: string } }
   | { type: 'proactiveDiscovery'; reportId: string; actions: string[]; sources: string[] }
   | { type: 'learningUpdate'; reportId: string; message: string; improvements?: string[] }
-  | { type: 'ecosystemPulse'; reportId: string; signals: EcosystemPulse };
+  | { type: 'ecosystemPulse'; reportId: string; signals: EcosystemPulse }
+  | { type: 'approvalUpdated'; reportId: string; approval: ApprovalRecord; mandate?: MandateRecord }
+  | { type: 'provenanceLogged'; reportId: string; entry: ProvenanceEntry; mandate?: MandateRecord };
 
 type Handler<T extends NexusEvent['type']> = (event: Extract<NexusEvent, { type: T }>) => void;
 

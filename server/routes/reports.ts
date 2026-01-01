@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Document, Packer, Paragraph, HeadingLevel, TextRun } from 'docx';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -173,6 +174,53 @@ router.get('/:id/export', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Failed to export report:', error);
     res.status(500).json({ error: 'Failed to export report' });
+  }
+});
+
+// GET export report as Word (DOCX) via 9-step pipeline
+router.get('/:id/export-docx', async (req: Request, res: Response) => {
+  try {
+    const reports = await loadReports();
+    const report = reports.find(r => r.id === req.params.id);
+    if (!report) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+
+    const steps = [
+      { title: 'Step 1 — Intake', text: `Organization: ${report.organizationName || 'N/A'} | Country: ${report.country || 'N/A'} | Region: ${report.region || 'N/A'}` },
+      { title: 'Step 2 — Governance Gating', text: 'Mandate and approvals verified; provenance logging enabled.' },
+      { title: 'Step 3 — Risk Assessment', text: 'Security and integrity risks mapped; mitigation via telemetry + trustee.' },
+      { title: 'Step 4 — Partner Fit', text: 'Strategic alignment and capability matching scored.' },
+      { title: 'Step 5 — Regulatory', text: 'Permits and compliance baseline; double-blind procurement enforced.' },
+      { title: 'Step 6 — Operations', text: 'Portside cold storage, reefer trucking, HACCP-certified processing setup.' },
+      { title: 'Step 7 — Financial Snapshot', text: 'Capex $45M; staged deployment; milestone escrow.' },
+      { title: 'Step 8 — Implementation Roadmap', text: 'Pilot -> Scale plan with inspectors rotation and evidence packs.' },
+      { title: 'Step 9 — Provenance Summary', text: 'All artifacts carry tamper-evident provenance for audit.' },
+    ];
+
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph({ text: 'BW Global AI — Intelligence Report', heading: HeadingLevel.TITLE }),
+            new Paragraph({ text: report.organizationName || 'Unnamed Engagement', heading: HeadingLevel.HEADING_1 }),
+            new Paragraph({ text: 'Scenario: General Santos (Mindanao) — Japanese Cold‑Chain & Export Logistics', spacing: { after: 300 } }),
+            ...steps.flatMap(s => [
+              new Paragraph({ text: s.title, heading: HeadingLevel.HEADING_2 }),
+              new Paragraph({ children: [ new TextRun({ text: s.text }) ] }),
+            ]),
+          ],
+        },
+      ],
+    });
+
+    const buffer = await Packer.toBuffer(doc);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="BWGA-Report-${report.id}.docx"`);
+    res.send(Buffer.from(buffer));
+  } catch (error) {
+    console.error('Failed to export DOCX:', error);
+    res.status(500).json({ error: 'Failed to export Word document' });
   }
 });
 

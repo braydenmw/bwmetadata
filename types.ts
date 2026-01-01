@@ -19,6 +19,46 @@ export interface IngestedDocumentMeta {
   notes?: string;
 }
 
+// --- GOVERNANCE & PROVENANCE TYPES ---
+
+export type ApprovalStage = 'draft' | 'review' | 'approved' | 'signed';
+export type ApproverRole = 'executive' | 'legal' | 'compliance' | 'consultant' | 'operator';
+export type ApprovalDecision = 'approve' | 'reject' | 'revise';
+
+export interface ApprovalRecord {
+  id: string;
+  reportId: string;
+  stage: ApprovalStage;
+  decision: ApprovalDecision;
+  actor: string;
+  role: ApproverRole;
+  notes?: string;
+  attachment?: string;
+  createdAt: string;
+  versionId?: string;
+}
+
+export interface ProvenanceEntry {
+  id: string;
+  reportId: string;
+  artifact: string;
+  action: string;
+  actor: string;
+  source?: string;
+  checksum?: string;
+  tags?: string[];
+  createdAt: string;
+  relatedApprovalId?: string;
+}
+
+export interface MandateRecord {
+  reportId: string;
+  mandateName?: string;
+  owner?: string;
+  stage: ApprovalStage;
+  lastUpdated: string;
+}
+
 // --- NEURO-SYMBOLIC TYPES ---
 
 export type ChecklistStatus = 'pending' | 'satisfied' | 'failed' | 'skipped';

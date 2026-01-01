@@ -6,6 +6,88 @@ import { ReportParameters } from '../types';
 import type { EcosystemPulse } from '../services/EventBus';
 import FormulaDeepDiveModal from './FormulaDeepDiveModal';
 import CatalogModal from './CatalogModal';
+// Inline Letters Catalog Modal to avoid import resolution issues
+interface LettersCatalogModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+            <div className="relative z-10 w-full max-w-3xl bg-white rounded-sm shadow-2xl border border-stone-200">
+                <div className="p-4 border-b border-stone-200 flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-stone-900">Letters & Documents — Full Library</h3>
+                    <button onClick={onClose} className="text-stone-600 hover:text-stone-900 text-xs">Close</button>
+                </div>
+                <div className="p-6 max-h-[60vh] overflow-y-auto text-sm text-stone-700 space-y-4">
+                    <p className="text-stone-600">Browse a representative selection of letters and document templates. These bind to your live model to generate production‑ready drafts in seconds.</p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Letters</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Introductory Outreach Letters (Formal / Friendly / Executive)</li>
+                                <li>Partner Introduction Letters (Government / Corporate / Investor)</li>
+                                <li>Engagement Follow‑ups (Reminder / Scheduling / Clarification)</li>
+                                <li>Support Letters (Policy / Banking / Consortium)</li>
+                                <li>Investor Interest Letters (Soft / Firm)</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Foundation Documents</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Letter of Intent (LOI)</li>
+                                <li>Memorandum of Understanding (MOU)</li>
+                                <li>Non‑Disclosure Agreement (NDA)</li>
+                                <li>Term Sheet</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Strategic</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Business Case</li>
+                                <li>Feasibility Study</li>
+                                <li>White Paper</li>
+                                <li>Market Entry Strategy</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Financial & Investment</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Financial Model</li>
+                                <li>Private Placement Memorandum (PPM)</li>
+                                <li>Valuation Report</li>
+                                <li>Monte Carlo Simulation Pack</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Risk & Due Diligence</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Due Diligence Report</li>
+                                <li>AML/KYC Checklist</li>
+                                <li>Sanctions Screening Report</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
+                            <p className="font-semibold text-stone-900 mb-2">Government & Policy</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Policy Brief</li>
+                                <li>Cabinet Memo</li>
+                                <li>PPP Framework Outline</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p className="text-xs text-stone-600">For a sector‑specific catalog and letter templates, open the Category Index or contact BW Consultant support.</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+import GovernancePanel from './GovernancePanel';
+import { ReportViewer } from './ReportViewer';
+// Removed API pipeline; using sample modal preview
 import { 
     Play, CheckCircle2, ShieldAlert, 
     Globe, Lock, ArrowRight, Layers
@@ -17,17 +99,56 @@ interface CommandCenterProps {
     onLoadReport: (report: ReportParameters) => void;
     onOpenInstant: () => void;
     onOpenSimulator: () => void;
-    onOpenReportGenerator?: () => void;
+    onOpenReportGenerator: () => void;
+    onOpenScenarioReport: () => void;
     ecosystemPulse?: EcosystemPulse | null;
+    reportId?: string;
 }
+
+// Removed step timeline and scenario payload; using a simple sample document preview instead
 
 const CommandCenter: React.FC<CommandCenterProps> = ({ 
     onCreateNew,
-    onOpenSimulator
+    onOpenSimulator,
+    reportId
 }) => {
     const [accepted, setAccepted] = useState(false);
     const [showFormulaModal, setShowFormulaModal] = useState(false);
     const [showCatalogModal, setShowCatalogModal] = useState(false);
+    const [showLettersModal, setShowLettersModal] = useState(false);
+        // Modal state for scenario-tailored sample package (letter + full report)
+        const [showSampleModal, setShowSampleModal] = useState(false);
+        const [activeSampleTab, setActiveSampleTab] = useState<'letter' | 'report'>('letter');
+
+        const SAMPLE_NSIL = `
+        <analysis_report mode="Discovery">
+            <executive_summary>
+                <overall_score>85</overall_score>
+                <key_findings>Regional port readiness;High policy alignment;Trustee + telemetry reduces integrity risk;Cold-chain throughput provides export lift</key_findings>
+                <strategic_outlook>Gensan cold-chain hub viable with probity controls; staged rollout mitigates procurement anomalies.</strategic_outlook>
+            </executive_summary>
+            <match_score value="83" confidence="High">
+                <rationale>Japanese investor capabilities match local logistics and agribusiness potential; trustee governance reduces friction.</rationale>
+            </match_score>
+            <scenario name="Pilot 20-Container Run" probability="48">
+                <drivers>Trusted permitting, Inspector rotation, Digital seals</drivers>
+                <regional_impact>Jobs uptick; HACCP skill transfer; export volume stability.</regional_impact>
+                <recommendation>Deploy RFID and digital seals; double-blind vendor selection; milestone escrow tied to evidence packs.</recommendation>
+            </scenario>
+            <phase name="Pilot" duration="3m" cost="$0.5M">
+                <milestones>JV LOI, Trustee appointed, Telemetry live</milestones>
+                <resources>Cold-chain ops team, Inspectors, Compliance unit</resources>
+            </phase>
+            <metadata>
+                <case_id>GENSAN-COLDCHAIN-NSIL-001</case_id>
+                <generated_at>2026-01-01T00:00:00Z</generated_at>
+                <version>v1.0</version>
+                <confidence_level>High</confidence_level>
+            </metadata>
+        </analysis_report>`;
+    // Recorded chunks are handled inline; no need to track separately
+
+    // All pipeline demo and recording logic removed
 
     return (
         <div className="h-full w-full flex-1 bg-stone-50 flex items-start justify-center p-6 pt-16 pb-24 font-sans overflow-y-auto">
@@ -40,8 +161,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">A National Strategic Asset</h1>
                     <p className="text-bw-gold font-semibold mb-6">A sovereign-grade intelligence platform designed to enhance the quality and speed of high-stakes decision-making.</p>
                     <div className="text-gray-200 text-sm leading-relaxed border-l-2 border-bw-gold pl-6 max-w-3xl">
-                        <p className="mb-2">Our ultimate vision is for BW Nexus AI to be deployed as a shared, national strategic asset — a secure, sovereign-grade intelligence platform utilized across government, companies, and banking organizations of any size to enhance the quality and speed of high-stakes decision-making.</p>
-                        <p>Designed to create partnerships across sectors and geographies, BW Nexus AI is 100% regional-focused. It reduces bottlenecks in big cities by channeling growth to high-potential regions where capacity can be built deliberately and equitably.</p>
+                        <p className="mb-2">Our ultimate vision is for BW Global AI to be deployed as a shared, national strategic asset — a secure, sovereign-grade intelligence platform utilized across government, companies, and banking organizations of any size to enhance the quality and speed of high-stakes decision-making.</p>
+                        <p>Designed to create partnerships across sectors and geographies, BW Global AI is 100% regional-focused. It reduces bottlenecks in big cities by channeling growth to high-potential regions where capacity can be built deliberately and equitably.</p>
                     </div>
                 </section>
 
@@ -62,17 +183,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     <div className="space-y-3 text-stone-700 text-sm max-w-4xl">
                         <p><span className="font-semibold">Every consequential decision starts with a human mandate.</span> <span className="text-stone-900 font-semibold">Fatal truth:</span> Human intent is not computable.</p>
                         <p className="font-semibold">The Shift: Until now.</p>
-                        <p>BW Nexus AI is more than an incremental improvement on existing analytical tools; it represents a fundamental leap forward in decision-making technology. By fusing a suite of proprietary mathematical engines with a multi-layered autonomous reasoning architecture, it provides a capability that has, until now, not existed: an active, adversarial, and continuously learning AI reasoning partner.</p>
+                        <p>BW Global AI is more than an incremental improvement on existing analytical tools; it represents a fundamental leap forward in decision-making technology. By fusing a suite of proprietary mathematical engines with a multi-layered autonomous reasoning architecture, it provides a capability that has, until now, not existed: an active, adversarial, and continuously learning AI reasoning partner.</p>
                         <p>It is a system designed to combat bias, embrace uncertainty, and deliver auditable, explainable, and actionable strategic intelligence. It is a world-first.</p>
                     </div>
                 </section>
 
                 {/* 4. The Solution */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Introducing BW Nexus AI</h2>
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Introducing BW Global AI</h2>
                     <p className="text-stone-600 text-sm mb-3">A Strategic Intelligence and Execution Platform.</p>
                     <div className="space-y-3 text-stone-700 text-sm max-w-4xl">
-                        <p>BW Nexus AI is best understood as a hybrid platform that merges the analytical mind of a top-tier consulting firm with the productive power of a high-end document automation factory. It is a unified environment designed to guide a user from the earliest stages of strategic conception all the way through to the generation of execution-ready deliverables.</p>
+                        <p>BW Global AI is best understood as a hybrid platform that merges the analytical mind of a top-tier consulting firm with the productive power of a high-end document automation factory. It is a unified environment designed to guide a user from the earliest stages of strategic conception all the way through to the generation of execution-ready deliverables.</p>
                         <p><span className="font-semibold">Core Function:</span> It transforms a user's inputs—their mission, constraints, risk appetite, and strategic goals—into a live, interactive decision model. The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, and proposes auditable, evidence-backed fixes.</p>
                     </div>
                 </section>
@@ -185,51 +306,85 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     </div>
                 </section>
 
-                {/* 8. Outcomes */}
+                {/* 8. Document Factory — Simple Overview & Quick Actions */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Document Factory: From Analysis to Action</h2>
-                    <p className="text-stone-600 text-sm mb-3">A validated strategy is useless if it remains trapped in a dashboard. Nexus turns analysis into action with governed, live documents.</p>
-                    <div className="rounded-sm border border-stone-200 p-6 bg-white mb-6 space-y-3">
-                        <p className="text-sm text-stone-700"><span className="font-semibold">Live recalculation:</span> Change one assumption; the entire set — risks, scores, timelines, capital stacks, and instrument drafts — updates instantly.</p>
-                        <p className="text-sm text-stone-700"><span className="font-semibold">Guided delivery:</span> A BW Consultant orchestrates outreach, evidence, approvals, and versioning with full traceability.</p>
-                        <p className="text-sm text-stone-700"><span className="font-semibold">Explainable by design:</span> Every output carries a <span className="italic">why chain</span> — definitions, drivers, sensitivities, and citations.</p>
-                    </div>
-                    <div className="rounded-sm border border-stone-200 p-6 bg-stone-50 mb-6">
-                        <h3 className="text-sm font-bold text-stone-900 mb-2">Partnership Matchmaking</h3>
-                        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
-                            <li><span className="font-semibold">Fit vectors:</span> Mandate, sector, geography, capacity, compliance/ethics — scored and updated live.</li>
-                            <li><span className="font-semibold">Outreach sequencer:</span> Timing‑aware intros and letters with privacy‑safe routing.</li>
-                            <li><span className="font-semibold">Negotiation workspace:</span> One‑click NDAs, LOIs, and terms aligned to objectives and risk.</li>
-                            <li><span className="font-semibold">Evidence locker:</span> Shared artifacts with provenance for compliance reviews.</li>
-                        </ul>
-                        <p className="text-xs text-stone-600 mt-3">Flow: Discover → Assess → Engage → Negotiate → Close</p>
-                    </div>
-                    <div className="rounded-sm border border-stone-200 p-6 bg-white mb-6">
-                        <h3 className="text-sm font-bold text-stone-900 mb-2">Operational Signals</h3>
-                        <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
-                            <li><span className="font-semibold">Outcome examples:</span> Signed LOI in 10–14 days; syndication outline under 30 days; policy brief v1 in 48 hours.</li>
-                            <li><span className="font-semibold">Approvals &amp; versioning:</span> Redlines, approvals, and sign‑offs tracked with timestamps and role attribution.</li>
-                            <li><span className="font-semibold">Roles &amp; collaboration:</span> Executive, Operator, Legal/Compliance, and BW Consultant handoffs within one workspace.</li>
-                            <li><span className="font-semibold">Exports &amp; integrations:</span> PDF, DOCX, CSV, email packs; optional API push to DMS/CRM.</li>
-                            <li><span className="font-semibold">Compliance guardrails:</span> KYC/AML, sanctions, ESG checks run before outreach; blockers are visible and fixable.</li>
-                            <li><span className="font-semibold">Provenance banner:</span> Each document includes sources, assumptions, sensitivity ranges, and change history.</li>
-                        </ul>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="rounded-sm border border-stone-200 p-6 bg-stone-50">
-                            <h3 className="text-sm font-bold text-stone-900 mb-2">Capabilities</h3>
-                            <p className="text-sm text-stone-700">Auto‑generates 200+ document types and 180+ letter templates across 24+ categories.</p>
-                            <p className="text-xs text-stone-600 mt-2">Need specifics? <button className="underline text-bw-navy" onClick={() => setShowCatalogModal(true)}>Request the full catalog</button> and we’ll tailor the pack to your sector.</p>
-                        </div>
-                        <div className="rounded-sm border border-stone-200 p-6 bg-stone-50">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Document Factory: Explainable, Governed Outputs</h2>
+                    <p className="text-stone-600 text-sm mb-4">The system converts a validated model into ready‑to‑send documents. Every output is traceable to assumptions, scores, and evidence — with approvals and change history logged.</p>
+
+                                        <div className="grid md:grid-cols-2 gap-6 mb-6">
+                        <div className="rounded-sm border border-stone-200 p-6 bg-white">
+                            <h3 className="text-sm font-bold text-stone-900 mb-2">How it works</h3>
                             <ul className="list-disc pl-5 text-sm text-stone-700 space-y-2">
-                                <li><span className="font-semibold">Foundation:</span> LOIs, MOUs, NDAs, Term Sheets.</li>
-                                <li><span className="font-semibold">Strategic:</span> Business Cases, Feasibility Studies, White Papers.</li>
-                                <li><span className="font-semibold">Financial:</span> Financial Models, Valuation Reports.</li>
-                                <li><span className="font-semibold">Risk:</span> Due Diligence Reports, Sanctions Screening.</li>
-                                <li><span className="font-semibold">Government:</span> Policy Briefs, Cabinet Memos.</li>
+                                <li><span className="font-semibold">Template binding:</span> Parameters → templates (LOI, NDA, Term Sheet, Policy Brief).</li>
+                                <li><span className="font-semibold">Live recalculation:</span> Change inputs → regenerate sections + redlines.</li>
+                                <li><span className="font-semibold">Provenance:</span> Sources, assumptions, and sensitivity ranges attached.</li>
+                                <li><span className="font-semibold">Approvals:</span> Role‑based gating before export and outreach.</li>
                             </ul>
-                            <p className="text-xs text-stone-600 mt-3">Plus more across 24+ categories. Show only what’s relevant; <button className="underline text-bw-navy" onClick={() => setShowCatalogModal(true)}>open the full catalog</button> when needed.</p>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 p-6 bg-white">
+                                                        <h3 className="text-sm font-bold text-stone-900 mb-2">Quick access</h3>
+                                                        <div className="grid grid-cols-2 gap-3">
+                                                                <button
+                                                                    onClick={() => setShowLettersModal(true)}
+                                                                    className="bg-bw-navy text-white py-3 px-4 rounded-sm text-xs font-bold tracking-wide hover:bg-bw-gold hover:text-bw-navy transition-colors"
+                                                                    title="View full letters & documents"
+                                                                >
+                                                                    Letters & Documents Catalog
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setShowCatalogModal(true)}
+                                                                    className="bg-white text-bw-navy border border-bw-navy py-3 px-4 rounded-sm text-xs font-bold tracking-wide hover:bg-bw-navy hover:text-white transition-colors"
+                                                                    title="View category index"
+                                                                >
+                                                                    Category Index (24+)
+                                                                </button>
+                                                        </div>
+                                                        <p className="text-xs text-stone-600 mt-3">Pop‑up windows show the full library and category index.</p>
+                        </div>
+                    </div>
+
+                                        {/* Descriptive overview */}
+                                        <div className="rounded-sm border border-stone-200 p-6 bg-white mb-6 space-y-3 text-sm text-stone-700">
+                                                <h3 className="text-sm font-bold text-stone-900">The Document Factory: From Analysis to Actionable Deliverables</h3>
+                                                <p>A validated strategy is useless if it remains trapped in a dashboard. The BW Nexus AI platform includes a powerful Document Factory designed to convert analytical insights into professional, execution‑ready deliverables instantly. This capability closes the gap between decision and action, enabling teams to move with unprecedented speed.</p>
+                                                <p>The platform's library contains over 200 unique document types and 150 letter templates across 14 distinct categories, covering the full spectrum of strategic, legal, financial, and operational needs. This includes, but is not limited to:</p>
+                                                <ul className="list-disc pl-5 space-y-1">
+                                                    <li><span className="font-semibold">Foundation Documents:</span> LOI, MOU, NDA, Term Sheets.</li>
+                                                    <li><span className="font-semibold">Strategic Documents:</span> Business Cases, Feasibility Studies, White Papers, Market Entry Strategies.</li>
+                                                    <li><span className="font-semibold">Financial & Investment Documents:</span> Financial Models, PPMs, Valuation Reports, Monte Carlo Simulations.</li>
+                                                    <li><span className="font-semibold">Risk & Due Diligence Documents:</span> Due Diligence Reports, AML/KYC Checklists, Sanctions Screening Reports.</li>
+                                                    <li><span className="font-semibold">Government & Policy Documents:</span> Policy Briefs, Cabinet Memos, PPP Frameworks.</li>
+                                                </ul>
+                                                <p>When a user requests a document, the system automatically populates the template with relevant data and analysis from their live model, producing a production‑ready draft in seconds. This transforms the platform from a mere analytical tool into a true execution engine.</p>
+                                        </div>
+
+                    {/* Production specs + provenance preview intentionally removed per request */}
+                </section>
+
+                {/* Scenario Spotlight — Overview (no modal, single action) */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Scenario Spotlight: General Santos (Mindanao)</h2>
+                    <p className="text-stone-600 text-sm mb-4">Regional port and agribusiness hub facing integrity and security challenges impacting investor confidence.</p>
+                    <div className="rounded-sm border border-stone-200 p-6 bg-white">
+                        <div className="grid md:grid-cols-2 gap-6 text-sm text-stone-700">
+                            <div>
+                                <p><span className="font-semibold">City:</span> General Santos (Mindanao; regional port and agribusiness hub)</p>
+                                <p><span className="font-semibold">Deal:</span> Japanese cold-chain and export logistics investor planning a $45M regional hub (portside cold storage, reefer trucking, HACCP-certified processing)</p>
+                                <p><span className="font-semibold">Department:</span> DOTr Regional Operations with LGU coordination</p>
+                                <p><span className="font-semibold">Issues:</span> Smuggling interference, opaque permitting, vendor collusion</p>
+                            </div>
+                            <div>
+                                <p><span className="font-semibold">Solution:</span> Integrity Pact; independent trustee; RFID + digital seals; clean-room inspector rotation; double‑blind procurement; milestone escrow with evidence packs.</p>
+                                <p className="mt-2"><span className="font-semibold">Outcome:</span> Minute-level assurance; anomaly rate under 0.5%; capital unlock; local jobs.</p>
+                            </div>
+                        </div>
+                        <div className="mt-6 flex justify-end">
+                            <button
+                                onClick={() => { setActiveSampleTab('letter'); setShowSampleModal(true); }}
+                                className="bg-bw-navy text-white py-3 px-4 rounded-sm text-xs font-bold tracking-wide hover:bg-bw-gold hover:text-bw-navy transition-colors"
+                            >
+                                View Sample Package (Letter + Report)
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -249,7 +404,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                         </div>
                         <div className="rounded-sm border border-stone-200 p-6 bg-stone-50">
                             <h3 className="text-sm font-bold text-stone-900 mb-2">The BW Difference</h3>
-                            <p className="text-sm text-stone-700">BW Nexus AI treats a strategic plan not as a document, but as a living, dynamic simulation. Change one input, and the entire system—risks, scores, documents—recalibrates instantly. It offers an active, adversarial, and continuously learning AI reasoning partner that is available 24/7.</p>
+                            <p className="text-sm text-stone-700">BW Global AI treats a strategic plan not as a document, but as a living, dynamic simulation. Change one input, and the entire system—risks, scores, documents—recalibrates instantly. It offers an active, adversarial, and continuously learning AI reasoning partner that is available 24/7.</p>
                         </div>
                     </div>
                 </section>
@@ -275,6 +430,65 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     <p className="text-stone-600 text-[11px] mt-2 italic">The bee meets the flower: when fit is governed and evidence is live, regions bloom sustainably.</p>
                 </section>
 
+                {/* Governance & Provenance */}
+                <section className="p-10 border-t border-stone-200">
+                    <GovernancePanel reportId={reportId} />
+                </section>
+                {/* Scenario Sample Modal: Letter + Report (tabs) */}
+                {showSampleModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/40" onClick={() => setShowSampleModal(false)} />
+                        <div className="relative z-10 w-full max-w-4xl bg-white rounded-sm shadow-2xl border border-stone-200">
+                            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
+                                <div>
+                                    <h3 className="text-sm font-bold text-stone-900">Scenario Package — General Santos Cold‑Chain Hub</h3>
+                                    <p className="text-xs text-stone-600">City: General Santos (Mindanao) · Investor: Japanese cold‑chain & export logistics · Dept: DOTr + LGU</p>
+                                </div>
+                                <button onClick={() => setShowSampleModal(false)} className="text-stone-600 hover:text-stone-900 text-xs">Close</button>
+                            </div>
+                            <div className="px-4 pt-3 flex items-center gap-2 border-b border-stone-200">
+                                <button
+                                    className={`text-xs font-bold px-3 py-2 rounded-sm ${activeSampleTab === 'letter' ? 'bg-bw-navy text-white' : 'bg-stone-100 text-stone-700'}`}
+                                    onClick={() => setActiveSampleTab('letter')}
+                                >Letter</button>
+                                <button
+                                    className={`text-xs font-bold px-3 py-2 rounded-sm ${activeSampleTab === 'report' ? 'bg-bw-navy text-white' : 'bg-stone-100 text-stone-700'}`}
+                                    onClick={() => setActiveSampleTab('report')}
+                                >Full Report</button>
+                            </div>
+                            <div className="p-4 max-h-[70vh] overflow-y-auto">
+                                {activeSampleTab === 'letter' ? (
+                                    <div className="prose prose-stone max-w-none">
+                                        <div className="border border-stone-200 rounded-md p-6">
+                                            <div className="mb-4">
+                                                <h4 className="text-lg font-serif font-bold text-stone-900">Letter of Intent — General Santos Cold‑Chain Hub</h4>
+                                                <p className="text-xs text-stone-600">Date: 01 Jan 2026</p>
+                                            </div>
+                                            <div className="text-sm text-stone-700 space-y-4">
+                                                <p>To: Department of Transportation (DOTr), Regional Operations — with coordination to the General Santos LGU</p>
+                                                <p>From: Japanese Cold‑Chain & Export Logistics JV</p>
+                                                <p>Subject: Establishment of a $45M Regional Cold‑Chain and Export Logistics Hub (Portside cold storage, reefer trucking, HACCP‑certified processing)</p>
+                                                <p>We intend to establish a regional cold‑chain logistics hub in General Santos (Mindanao), a critical agribusiness and port node. Current investor confidence is constrained by integrity and security risks including smuggling interference, opaque permitting, and vendor collusion. To address these, we propose a jointly governed architecture with the following controls:</p>
+                                                <ul className="list-disc pl-5">
+                                                    <li>Integrity Pact and independent trustee oversight to separate decision rights from vendor access.</li>
+                                                    <li>RFID and digital seals across containers and critical workflows with live anomaly alerting.</li>
+                                                    <li>Clean‑room inspector rotation and double‑blind procurement to reduce capture risk.</li>
+                                                    <li>Milestone escrow tied to evidence packs and tamper‑evident provenance.</li>
+                                                </ul>
+                                                <p>With these measures, we forecast minute‑level assurance, anomaly rates under 0.5%, and a durable unlock of capital flows and jobs. We request DOTr’s facilitation for permits and operational interfaces, and LGU’s support in site selection and coordination.</p>
+                                                <p>Upon acceptance, we will proceed with a 3‑month pilot (estimated $0.5M), including LOI confirmation, trustee appointment, and telemetry activation, followed by staged scale‑up.</p>
+                                                <p>Sincerely,<br/>Japanese Cold‑Chain & Export Logistics JV</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <ReportViewer nsilContent={SAMPLE_NSIL} />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Compact closing line integrated into CTA */}
 
                 {/* Terms of Engagement & Compliance */}
@@ -283,7 +497,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                         <ShieldAlert size={16} className="text-bw-gold" /> Terms of Engagement & Compliance
                     </h3>
                     <div className="space-y-4 text-xs text-stone-700 bg-white p-6 rounded-sm border border-stone-200 max-h-[320px] overflow-y-auto shadow-inner">
-                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW Nexus AI is a sovereign-grade decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
+                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW Global AI is a sovereign-grade decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
                         <p><strong className="text-stone-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This prevents false confidence and enforces explainability.</p>
                         <p><strong className="text-stone-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws. Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
                         <p><strong className="text-stone-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (SPI™, RROI™, SEAM™, etc.) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
@@ -319,8 +533,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     <p className="text-stone-500 text-[11px] mt-2">© 2026 BW Global Advisory. Nexus Intelligence OS v6.0 — Melbourne, Australia.</p>
                 </section>
                 {/* Modal render */}
-                <FormulaDeepDiveModal isOpen={showFormulaModal} onClose={() => setShowFormulaModal(false)} />
+                                <FormulaDeepDiveModal isOpen={showFormulaModal} onClose={() => setShowFormulaModal(false)} />
                 <CatalogModal isOpen={showCatalogModal} onClose={() => setShowCatalogModal(false)} />
+                                <LettersCatalogModal isOpen={showLettersModal} onClose={() => setShowLettersModal(false)} />
             </div>
         </div>
     );

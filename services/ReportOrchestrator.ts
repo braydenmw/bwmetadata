@@ -8,6 +8,7 @@ import DerivedIndexService from './DerivedIndexService';
 import AdvancedIndexService from './MissingFormulasEngine';
 import AdversarialReasoningService from './AdversarialReasoningService';
 import { EventBus } from './EventBus';
+import { GovernanceService } from './GovernanceService';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -113,6 +114,14 @@ export class ReportOrchestrator {
     try {
       if (payload.metadata.reportId) {
         EventBus.publish({ type: 'payloadAssembled', reportId: payload.metadata.reportId, payload });
+        GovernanceService.recordProvenance({
+          reportId: payload.metadata.reportId,
+          artifact: 'report-payload',
+          action: 'assembled',
+          actor: 'ReportOrchestrator',
+          source: 'intelligence-engines',
+          tags: ['live-recalc']
+        });
         if (payload.computedIntelligence?.intakeMapping) {
           EventBus.publish({
             type: 'intakeUpdated',

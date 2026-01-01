@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { ReportParameters, ReportPayload } from '../types';
 import { ReportOrchestrator } from '../services/ReportOrchestrator';
+import { GovernanceService } from '../services/GovernanceService';
+import { ExportService } from '../services/ExportService';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface AdvancedReportGeneratorProps {
@@ -31,6 +33,20 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
   const [selectedFormat, setSelectedFormat] = useState<ReportFormat>('interactive');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['executive-summary']));
   const [realTimeUpdates, setRealTimeUpdates] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [exportSuccess, setExportSuccess] = useState<string | null>(null);
+
+  const logProvenance = (action: string, details?: { tags?: string[] }) => {
+    if (!params.id) return;
+    GovernanceService.recordProvenance({
+      reportId: params.id,
+      artifact: 'report-export',
+      action,
+      actor: 'AdvancedReportGenerator',
+      tags: details?.tags,
+      source: 'ui'
+    });
+  };
 
   const reportRef = useRef<HTMLDivElement>(null);
 
@@ -58,10 +74,25 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
 
       const payload = await ReportOrchestrator.assembleReportPayload(params);
       setReportPayload(payload);
+      GovernanceService.recordProvenance({
+        reportId: params.id,
+        artifact: 'report-payload',
+        action: 'generation-complete',
+        actor: 'AdvancedReportGenerator',
+        source: 'ui'
+      });
       onReportGenerated?.(payload);
       setViewMode('overview');
     } catch (error) {
       console.error('Report generation failed:', error);
+      GovernanceService.recordProvenance({
+        reportId: params.id,
+        artifact: 'report-payload',
+        action: 'generation-failed',
+        actor: 'AdvancedReportGenerator',
+        source: 'ui',
+        tags: [String(error)]
+      });
     } finally {
       setIsGenerating(false);
     }
@@ -78,9 +109,31 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
   };
 
   const exportReport = async (format: ReportFormat) => {
-    // Implementation for different export formats
-    console.log(`Exporting report as ${format}`);
-    // This would integrate with actual export services
+    setExportError(null);
+    setExportSuccess(null);
+    try {
+      const result = await ExportService.exportReport({
+        reportId: params.id,
+        format,
+        payload: reportPayload
+      });
+      setExportSuccess(`Export ready: ${result.link}`);
+    } catch (err: any) {
+      setExportError(err?.message || 'Export failed');
+    }
+  };
+
+  const gatedAction = (name: string, tags?: string[]) => {
+    setExportError(null);
+    setExportSuccess(null);
+    const check = GovernanceService.ensureStage(params.id, 'approved');
+    if (!check.ok) {
+      setExportError(`Action blocked: approval stage must be at least 'approved'. Current stage: ${check.stage}`);
+      logProvenance(`${name}-blocked`, { tags });
+      return false;
+    }
+    logProvenance(`${name}-requested`, { tags });
+    return true;
   };
 
   const renderMetricCard = (title: string, value: string | number, icon: React.ReactNode, trend?: 'up' | 'down' | 'neutral') => (
@@ -531,6 +584,16 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
               <div className="space-y-6">
                 <div className="bg-white rounded-lg border border-stone-200 p-6">
                   <h3 className="font-semibold text-stone-900 mb-4">Export Report</h3>
+                  {exportError && (
+                    <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-sm px-3 py-2">
+                      {exportError}
+                    </div>
+                  )}
+                  {exportSuccess && (
+                    <div className="mb-3 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-sm px-3 py-2">
+                      {exportSuccess}
+                    </div>
+                  )}
                   <div className="grid md:grid-cols-2 gap-6">
                     {[
                       { format: 'pdf', label: 'PDF Report', desc: 'Comprehensive PDF with charts and analysis', icon: FileText },
@@ -558,17 +621,26 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                 <div className="bg-white rounded-lg border border-stone-200 p-6">
                   <h3 className="font-semibold text-stone-900 mb-4">Additional Options</h3>
                   <div className="grid md:grid-cols-3 gap-4">
-                    <button className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left">
+                    <button
+                      className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
+                      onClick={() => gatedAction('email-report', ['email'])}
+                    >
                       <Mail size={20} className="text-blue-600 mb-2" />
                       <div className="font-semibold text-stone-900">Email Report</div>
                       <div className="text-sm text-stone-600">Send to specific recipients</div>
                     </button>
-                    <button className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left">
+                    <button
+                      className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
+                      onClick={() => gatedAction('share-link', ['share'])}
+                    >
                       <Share2 size={20} className="text-green-600 mb-2" />
                       <div className="font-semibold text-stone-900">Share Link</div>
                       <div className="text-sm text-stone-600">Generate shareable link</div>
                     </button>
-                    <button className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left">
+                    <button
+                      className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
+                      onClick={() => gatedAction('customize-report', ['customize'])}
+                    >
                       <Settings size={20} className="text-purple-600 mb-2" />
                       <div className="font-semibold text-stone-900">Customize</div>
                       <div className="text-sm text-stone-600">Adjust report settings</div>

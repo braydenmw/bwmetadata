@@ -49,6 +49,7 @@ import { MultiAgentOrchestrator } from './services/MultiAgentBrainSystem';
 import { runSmartAgenticWorker, AgenticRun } from './services/agenticWorker';
 // EventBus for ecosystem connectivity
 import { EventBus, type EcosystemPulse } from './services/EventBus';
+import { ReportsService } from './services/ReportsService';
 import { LayoutGrid, Globe, ShieldCheck, LayoutDashboard, Plus } from 'lucide-react';
 import DemoIndicator from './components/DemoIndicator';
 // Note: report-generator sidebar is rendered inside MainCanvas.
@@ -72,29 +73,19 @@ const App: React.FC = () => {
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
     const [viewMode, setViewMode] = useState<ViewMode>('command-center');
     const [hasEntered, setHasEntered] = useState(true); // Skip landing page - directly enter app
-    
-        // Load saved reports without injecting demo benchmarks
-        const [savedReports, setSavedReports] = useState<ReportParameters[]>(() => {
-        try {
-          console.log("DEBUG: Loading saved reports from localStorage");
-          const saved = localStorage.getItem('bw-nexus-reports-unified');
-          if (saved) {
-              console.log("DEBUG: Found saved data, parsing...");
-              const parsed = JSON.parse(saved);
-              if (parsed.length > 0) {
-                  console.log("DEBUG: Using saved reports, count:", parsed.length);
-                  return parsed;
-              }
-          }
-                    // No saved data: start with an empty repository for production
-                    console.log("DEBUG: No saved data, starting empty repository");
-                    return [];
-        } catch (e) {
-          console.error("DEBUG: Error loading saved reports:", e);
-                    console.log("DEBUG: Falling back to empty repository");
-                    return [];
-        }
-    });
+    const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
+
+    useEffect(() => {
+        const loadReports = async () => {
+            try {
+                const reports = await ReportsService.list();
+                setSavedReports(reports);
+            } catch (error) {
+                console.error('Failed to load reports from API', error);
+            }
+        };
+        loadReports();
+    }, []);
     
     const [legalSection, setLegalSection] = useState<string | undefined>(undefined);
 
@@ -158,12 +149,7 @@ const App: React.FC = () => {
     }, []);
 
 
-
     // --- EFFECTS ---
-    useEffect(() => {
-        localStorage.setItem('bw-nexus-reports-unified', JSON.stringify(savedReports));
-    }, [savedReports]);
-
     // Copilot Auto-Gen - ONLY runs if valid input exists
     useEffect(() => {
         console.log("DEBUG: Copilot useEffect triggered", { viewMode, orgName: params.organizationName, country: params.country, insightsLength: insights.length });
@@ -363,8 +349,13 @@ const App: React.FC = () => {
         setViewMode('report-generator');
     };
 
-    const deleteReport = (id: string) => {
+    const deleteReport = async (id: string) => {
         setSavedReports(prev => prev.filter(r => r.id !== id));
+        try {
+            await ReportsService.delete(id);
+        } catch (error) {
+            console.error('Failed to delete report via API', error);
+        }
     };
 
     const openLegal = (section?: string) => {
@@ -410,10 +401,16 @@ const App: React.FC = () => {
 
         // Save to repository immediately
         setSavedReports(prev => {
-            const existing = prev.findIndex(r => r.id === params.id);
+            const existing = prev.findIndex(r => r.id === updatedParams.id);
             if (existing >= 0) return prev.map((r, i) => i === existing ? updatedParams : r);
             return [updatedParams, ...prev];
         });
+
+        try {
+            await ReportsService.upsert(updatedParams);
+        } catch (error) {
+            console.error('Failed to persist report (generating)', error);
+        }
 
         // Sim Phases
         await new Promise(r => setTimeout(r, 2000));
@@ -437,10 +434,17 @@ const App: React.FC = () => {
             setReportData(prev => ({ ...prev, [sectionKey]: { ...prev[sectionKey as keyof ReportData], status: 'completed' } }));
         }
 
+        const completedReport = { ...updatedParams, status: 'complete' as const };
         setGenPhase('complete');
         setGenProgress(100);
         setIsGeneratingReport(false);
-        setSavedReports(prev => prev.map(r => r.id === params.id ? { ...r, status: 'complete' } : r));
+        setSavedReports(prev => prev.map(r => r.id === completedReport.id ? completedReport : r));
+
+        try {
+            await ReportsService.upsert(completedReport);
+        } catch (error) {
+            console.error('Failed to persist report (complete)', error);
+        }
     }, [params]);
 
 
@@ -533,8 +537,36 @@ const App: React.FC = () => {
                         onLoadReport={loadReport}
                         onOpenInstant={() => setViewMode('partner-management')} 
                         onOpenSimulator={() => setViewMode('live-feed')}
-                        onOpenReportGenerator={startNewMission}
+                        onOpenReportGenerator={() => setViewMode('document-suite')}
+                        onOpenScenarioReport={() => {
+                            const scenarioParams: ReportParameters = {
+                                ...INITIAL_PARAMETERS,
+                                id: Math.random().toString(36).slice(2, 11),
+                                createdAt: Date.now().toString(),
+                                organizationName: 'Japanese Cold‑Chain & Export Logistics JV',
+                                userName: 'BWGA Operator',
+                                userDepartment: 'Investment Facilitation',
+                                country: 'Philippines',
+                                industry: ['Cold-chain', 'Logistics', 'Agribusiness'],
+                                region: 'General Santos (Mindanao)',
+                                organizationType: 'Investor',
+                                organizationSubType: 'Cold‑chain / Logistics',
+                                strategicIntent: ['Regional hub setup', 'Portside cold storage', 'Reefer trucking', 'HACCP‑certified processing'],
+                                problemStatement: 'Investor confidence blocked by port security and procurement integrity issues; need probity + telemetry + trustee controls.'
+                            } as ReportParameters;
+                            setParams(scenarioParams);
+                            setReportData(initialReportData);
+                            setInsights([]);
+                            setAutonomousInsights([]);
+                            setAutonomousSuggestions([]);
+                            setViewMode('report-generator');
+                            // Persist scenario for testing in reports API
+                            ReportsService.upsert(scenarioParams).then(() => {
+                                setSavedReports(prev => [scenarioParams, ...prev]);
+                            }).catch(err => console.error('Failed to persist scenario report', err));
+                        }}
                         ecosystemPulse={ecosystemPulse}
+                        reportId={params.id}
                     />
                 )}
 

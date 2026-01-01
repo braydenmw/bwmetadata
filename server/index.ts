@@ -34,6 +34,7 @@ import aiRoutes from './routes/ai.js';
 import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
 import autonomousRoutes from './routes/autonomous.js';
+import governanceRoutes from './routes/governance.js';
 
 const app = express();
 const PORT = parseInt(String(process.env.PORT || 3001), 10);
@@ -95,6 +96,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);
+app.use('/api/governance', governanceRoutes);
 
 // Serve static frontend in production
 if (process.env.NODE_ENV === 'production') {
