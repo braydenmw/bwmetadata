@@ -34,3 +34,9 @@ server/data/
 
 # Local test artifacts
 e2e-check.json
+
+# Local content extraction artifacts
+_doc209_extracted.txt
+
+# Local build output artifacts
+build_output.txt

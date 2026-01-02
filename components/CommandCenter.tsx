@@ -40,216 +40,235 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
     return (
         <div className="h-full w-full flex-1 bg-stone-50 flex items-start justify-center p-6 pt-16 pb-24 font-sans overflow-y-auto">
             <div className="max-w-6xl w-full bg-white shadow-2xl border border-stone-200 rounded-sm overflow-hidden flex flex-col">
-                {/* 1. Header & Catchment (Hero) */}
+                {/* Hero */}
                 <section className="bg-bw-navy text-white p-12">
                     <div className="flex items-center gap-2 text-bw-gold font-bold tracking-widest text-xs uppercase mb-4">
-                        <Layers size={14} /> BW Global AI Command Center
+                        <Layers size={14} /> BW Nexus AI Command Center
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">A National Strategic Asset</h1>
-                    <p className="text-bw-gold font-semibold mb-6">A sovereign-grade intelligence platform designed to enhance the quality and speed of high-stakes decision-making.</p>
-                    <div className="text-gray-200 text-sm leading-relaxed border-l-2 border-bw-gold pl-6 max-w-3xl">
-                        <p className="mb-2">Our ultimate vision is for BW Global AI to be deployed as a shared, national strategic asset — a secure, sovereign-grade intelligence platform utilized across government, companies, and banking organizations of any size to enhance the quality and speed of high-stakes decision-making.</p>
-                        <p>Designed to create partnerships across sectors and geographies, BW Global AI is 100% regional-focused. It reduces bottlenecks in big cities by channeling growth to high-potential regions where capacity can be built deliberately and equitably.</p>
+                    <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Architecture of an Autonomous Reasoning Partner</h1>
+                    <p className="text-bw-gold font-semibold mb-6">A Strategic Intelligence &amp; Execution Platform for decisions that must survive scrutiny.</p>
+                    <div className="text-gray-200 text-sm leading-relaxed border-l-2 border-bw-gold pl-6 max-w-3xl space-y-3">
+                        <p className="text-bw-gold font-semibold">The strategic imperative is clear: decision-making is now too complex, too fast, and too consequential for static work products.</p>
+                        <p>Governments and institutions are being asked to make high-stakes choices across economic policy, investment, security, procurement, and regional development — inside a landscape of interconnected risks, hidden variables, and cognitive bias.</p>
+                        <p>Traditional tools — months-long consulting engagements, static reports, and siloed expert opinions — are often too slow, too expensive, and too brittle under real-world volatility. They frequently produce a single-point forecast with no auditable chain of custody, no live regeneration, and no enforceable governance controls.</p>
+                        <p className="text-white"><span className="font-semibold">BW Nexus AI changes the work product.</span> You provide the mandate, constraints, and risk appetite. The system builds a live decision model, stress-tests assumptions, runs adversarial challenge, executes the 21-formula suite, and outputs a governed decision packet — with controls, evidence requirements, and export gating.</p>
                     </div>
                 </section>
 
-                {/* The Problem: The Global Understanding Gap */}
+                {/* What makes it different */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Problem: The Global Understanding Gap</h2>
-                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
-                        <p>In the 21st century, governments and institutions face a landscape of unprecedented complexity. Decisions concerning economic policy, foreign investment, and regional development are fraught with interconnected risks, hidden variables, and the pervasive threat of cognitive bias.</p>
-                        <p>The traditional tools for navigating this landscape are broken:</p>
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Why This Matters (Now)</h2>
+                    <p className="text-stone-600 text-sm mb-6">The global direction is clear: trustworthy AI requires transparency, robustness, and accountability — not just convincing language.</p>
+                    <div className="rounded-sm border border-stone-200 bg-white p-6 text-sm text-stone-700 space-y-4 max-w-4xl">
+                        <p>Across jurisdictions, risk frameworks and AI governance standards are converging on the same requirements: explainability, traceability, safety, and accountability. Frameworks like the NIST AI Risk Management Framework and the OECD AI Principles are explicit about the need for transparency, robustness, and accountability — especially in high-impact settings.</p>
+                        <p className="font-semibold text-stone-900">What breaks in the real world:</p>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li>Consulting: Months-long engagements produce static reports that are outdated the moment they are printed. You pay for hours, not outcomes.</li>
-                            <li>Dashboards &amp; Analytics: They show you what happened, but provide no system to decide what to do next. They require clean data and cannot reason about human intent.</li>
-                            <li>AI Chatbots &amp; LLMs: They generate plausible language with zero accountability, making them unusable for high-stakes decisions where every assumption must be defended.</li>
-                            <li>Simulation Software: These tools operate in silos, require rare expertise, and break when reality shifts, locking insights away from those who need them most.</li>
+                            <li><span className="font-semibold">Consulting</span> produces static artifacts that age instantly and are expensive to refresh.</li>
+                            <li><span className="font-semibold">Dashboards / BI</span> describe what happened, but don’t generate governed decisions under uncertainty.</li>
+                            <li><span className="font-semibold">GenAI chat</span> generates persuasive language without a verifiable decision chain.</li>
                         </ul>
-                        <p>This isn’t a theoretical problem. It’s the hidden tax on every major decision, leading to stalled projects, wasted capital, and missed opportunities that can define a nation’s trajectory for a generation. This is the cost of the Global Understanding Gap.</p>
-                    </div>
-                </section>
-
-                {/* The Breakthrough: Making Intent Computable */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Breakthrough: Making Intent Computable</h2>
-                    <div className="space-y-3 text-stone-700 text-sm max-w-4xl">
-                        <p><span className="font-semibold">The Unsolved Problem:</span> Every consequential decision starts with a human mandate—goals in natural language, competing objectives, political realities, and unknowns.</p>
-                        <p><span className="font-semibold">The Fatal Truth:</span> Human intent is not computable.</p>
-                        <p><span className="font-semibold">The Shift:</span> Until now.</p>
-                        <p>The core discovery was not more data. It was realizing that intent itself must be structured—without losing its connection to reality—before true intelligence can exist. BW Global AI is more than an incremental improvement; it represents a fundamental leap forward in decision-making technology. It is a world-first.</p>
-                    </div>
-                </section>
-
-                {/* The Solution: Introducing BW Global AI */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Solution: Introducing BW Global AI</h2>
-                    <p className="text-stone-600 text-sm mb-3">A Strategic Intelligence and Execution Platform.</p>
-                    <div className="space-y-3 text-stone-700 text-sm max-w-4xl">
-                        <p>BW Global AI is a new class of system that functions as a digital consultant combined with a high-end document automation factory. It transforms a user’s inputs—their mission, constraints, risk appetite, and strategic goals—into a live, interactive decision model.</p>
-                        <p>The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, and proposes auditable, evidence-backed fixes. It is built for speed without sacrificing rigor, delivering in minutes what once took months, and providing a level of analytical depth previously accessible only to the world’s largest organizations.</p>
-                    </div>
-                </section>
-
-                {/* How It Works: The NSIL Architecture */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">How It Works: The NSIL Architecture</h2>
-                    <p className="text-stone-700 text-sm max-w-4xl">Our technology is a governed, adversarial, and continuously learning system. It is powered by two core components working in symbiosis: the Nexus Strategic Intelligence Layer (NSIL) and the Agentic Brain.</p>
-                </section>
-
-                {/* Rigor from the Start: 10-Step Framework */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Rigor from the Start: 10-Step Framework</h2>
-                    <p className="text-stone-600 text-sm mb-4">This is the governed workflow that takes a mandate from ambiguity to auditable, decision-grade outputs.</p>
-                    <ol className="list-decimal pl-5 space-y-2 text-sm text-stone-700 max-w-4xl">
-                        <li><span className="font-semibold">Intake &amp; Goals Capture</span> — objectives, stakeholders, constraints, and risk appetite.</li>
-                        <li><span className="font-semibold">Guardrails</span> — policy, sanctions, ethics, and data-quality checks.</li>
-                        <li><span className="font-semibold">Evidence Harvest</span> — normalize sources; bind citations for provenance.</li>
-                        <li><span className="font-semibold">Contradiction Scan</span> — SPI™ preflight identifies incoherence and missing logic.</li>
-                        <li><span className="font-semibold">Adversarial Debate</span> — role-based personas challenge assumptions; contradictions cannot pass silently.</li>
-                        <li><span className="font-semibold">Counterfactual Lab</span> — shocks across rates, liquidity, partners, policy, and supply chain.</li>
-                        <li><span className="font-semibold">Scoring &amp; Explainability</span> — 21 formulas compute resilience; each score ships with drivers and citations.</li>
-                        <li><span className="font-semibold">Decision Packet &amp; Controls</span> — thresholds, actions, and monitoring hooks assembled for governance.</li>
-                        <li><span className="font-semibold">Live Deliverables Binding</span> — LOI/NDA/Term Sheet/Briefs regenerate on change.</li>
-                        <li><span className="font-semibold">Governance &amp; Provenance</span> — approvals, change history, export guardrails, and audit trails.</li>
-                    </ol>
-                    <div className="mt-6 rounded-sm border border-amber-200 bg-amber-50 p-4 text-amber-900 text-xs max-w-4xl">
-                        <p className="font-bold">Rate &amp; Liquidity Stress — Explicit Gates</p>
-                        <ul className="list-disc pl-5 mt-1 space-y-1">
-                            <li>Rates: Δ+30bps / Δ+90bps → DSCR/ICR thresholds gate recommendations.</li>
-                            <li>Liquidity: FX/CSR/IRP lanes tested; funding staged with evidence packs.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                {/* Part 1: The Brain — NSIL */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Part 1: The Brain — The Nexus Strategic Intelligence Layer (NSIL)</h2>
-                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
-                        <p>NSIL is the autonomous reasoning engine that treats every plan as a living simulation. It is a five-layer reasoning stack that wraps around our 21 proprietary mathematical formulas, ensuring every output is both explainable and robust.</p>
-                        <p className="font-semibold text-stone-900">The 5-Layer Reasoning Stack:</p>
+                        <p className="font-semibold text-stone-900">BW Nexus AI is not a writing system. It is an autonomous reasoning partner:</p>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">The Adversarial Input Shield:</span> Before analysis begins, this layer acts as a gatekeeper. It cross-references user claims against external authoritative data (World Bank, sanctions lists) and flags contradictions, preventing the “garbage in, garbage out” problem.</li>
-                            <li><span className="font-semibold">The Multi-Perspective Reasoning Engine:</span> NSIL spawns five specialist AI personas to debate the plan from every angle, systematically eliminating cognitive bias and forcing trade-offs into the open.</li>
-                            <li><span className="font-semibold">The Counterfactual Lab:</span> The system automatically generates “what if?” scenarios to test the strategy’s robustness against market shifts, partner failures, and geopolitical shocks, quantifying the potential cost of making the wrong choice.</li>
-                            <li><span className="font-semibold">The Scoring Engines:</span> With validated inputs, the system runs its full suite of 21 proprietary mathematical formulas (including SPI™, RROI™, and SEAM™) to produce hard, quantitative scores for the plan.</li>
-                            <li><span className="font-semibold">The Learning Loop:</span> The system tracks the real-world outcomes of its recommendations, allowing it to recalibrate its models, identify new patterns of success, and measure its own confidence over time.</li>
+                            <li><span className="font-semibold">It refuses bad inputs</span> — contradictions, missing basics, and sanctions red flags are surfaced before analysis.</li>
+                            <li><span className="font-semibold">It debates your plan</span> — Skeptic, Advocate, Regulator, Accountant, Operator (and records disagreement instead of faking certainty).</li>
+                            <li><span className="font-semibold">It runs the 21-formula suite</span> — core engines + derivative indices; each score emits drivers, pressure points, and a confidence band.</li>
+                            <li><span className="font-semibold">It outputs an executable packet</span> — controls, actions, evidence requirements, and export readiness.</li>
+                            <li><span className="font-semibold">It enforces governance</span> — provenance is logged, approvals are staged, exports can be blocked until approved.</li>
                         </ul>
+                        <p className="font-semibold text-stone-900">Result: a decision chain that can survive scrutiny — not just presentation.</p>
                     </div>
                 </section>
 
-                {/* Part 2: The Executor — The Agentic Brain */}
+                {/* NSIL stack */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Part 2: The Executor — The Agentic Brain</h2>
-                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
-                        <p>Most systems wait for instructions. BW Global AI works. The Agentic Brain is the persistent digital worker that executes the governance protocols of NSIL.</p>
-                        <p><span className="font-semibold">How it works with NSIL:</span> Think of NSIL as the constitution—the rules of reasoning, debate, and scoring. The Agentic Brain is the executive branch that proactively enforces that constitution. It owns the case, progresses it continuously, challenges weak assumptions, and refuses to proceed on incomplete logic.</p>
-                        <p><span className="font-semibold">Why it’s different:</span> This is agentic AI applied not to simple tasks, but to judgment. It anticipates your next question, prepares analyses in the background, and acts as a proactive member of your team, not a passive tool. This active, governed reasoning is what makes the system unique.</p>
-                    </div>
-                </section>
-
-                {/* What You Get: From Mandate to Actionable Intelligence */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">What You Get: From Mandate to Actionable Intelligence</h2>
-                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
-                        <p>A validated strategy is useless if it remains trapped in a dashboard. From a single mandate, BW Global AI generates a suite of decision-grade assets and can instantly convert the analysis into professional, execution-ready deliverables.</p>
-                        <p className="font-semibold text-stone-900">Key Outputs Include:</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>A living, interactive decision model.</li>
-                            <li>An assumptions and verification register.</li>
-                            <li>Quantified confidence scores (SPI™, RROI™, SEAM™).</li>
-                            <li>Risk and mitigation maps.</li>
-                            <li>Phased execution roadmaps.</li>
-                            <li>
-                                Investor- and Regulator-Grade Documents, including a library of over 200 document types and 150 letter templates across 14 categories:
-                                <div className="mt-2 grid md:grid-cols-2 gap-2">
-                                    <div><span className="font-semibold">Foundation:</span> Letters of Intent (LOI), Memorandums of Understanding (MOU), Term Sheets.</div>
-                                    <div><span className="font-semibold">Strategic:</span> Business Cases, Feasibility Studies, White Papers.</div>
-                                    <div><span className="font-semibold">Financial:</span> Full Financial Models, Private Placement Memorandums (PPM).</div>
-                                    <div><span className="font-semibold">Government:</span> Policy Briefs, Cabinet Memos, Public-Private Partnership (PPP) Frameworks.</div>
-                                </div>
-                            </li>
-                            <li>Change one assumption—a budget, a timeline, a partner—and the entire system of models and documents instantly updates. This was not previously possible.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                {/* Proof Point: Scenario Spotlight */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Proof Point: Scenario Spotlight</h2>
-                    <div className="rounded-sm border border-stone-200 p-6 bg-white text-sm text-stone-700 space-y-3">
-                        <p><span className="font-semibold">City:</span> General Santos, Mindanao (a regional port and agribusiness hub).</p>
-                        <p><span className="font-semibold">Deal:</span> A Japanese investor plans a $45M cold-chain logistics hub.</p>
-                        <p><span className="font-semibold">Issues:</span> The project faces smuggling interference, opaque permitting, and vendor collusion, causing investor confidence to collapse.</p>
-                        <div className="pt-3 border-t border-stone-200 space-y-2">
-                            <p className="font-semibold text-stone-900">The BW Global AI Solution:</p>
-                            <p>The system models an “Integrity Pact” with an independent trustee, RFID and digital seals for supply chain transparency, a clean-room inspector rotation to break collusion, and milestone-based escrow releases tied to evidence packs.</p>
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Core Innovation: NSIL (Nexus Strategic Intelligence Layer)</h2>
+                    <p className="text-stone-600 text-sm mb-6">NSIL is the platform’s autonomous reasoning engine. It treats each mandate as a live simulation and governs the path from intake → analysis → export.</p>
+                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">Layer 1 — Adversarial Input Shield</h3>
+                            <p className="text-sm text-stone-700 mb-3">Pre-flight validation catches contradictions, missing basics, unrealistic projections, and sanctions-style red flags before they contaminate the decision record.</p>
+                            <p className="text-xs text-stone-500">Outputs: trust score, status (trusted → rejected), flagged fields, and remediation steps.</p>
                         </div>
-                        <div className="pt-3 border-t border-stone-200 space-y-2">
-                            <p className="font-semibold text-stone-900">The Outcome:</p>
-                            <p>Minute-level assurance is achieved. The anomaly rate drops below 0.5%. Investor capital is unlocked, and local jobs are created.</p>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">Layer 2 — Multi-Perspective Debate</h3>
+                            <p className="text-sm text-stone-700 mb-3">Five personas evaluate the plan in parallel: Skeptic, Advocate, Regulator, Accountant, Operator.</p>
+                            <p className="text-xs text-stone-500">Outputs: consensus, dissent points, and the exact issues to resolve before “yes”.</p>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">Layer 3 — 21-Formula Execution</h3>
+                            <p className="text-sm text-stone-700 mb-3">Core engines and derivative indices run as inspectable calculations with weights, thresholds, and confidence gating — so stakeholders can challenge the drivers, not argue about vibes.</p>
+                            <p className="text-xs text-stone-500">Outputs: scores, drivers, pressure points, and confidence bands.</p>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">Layer 4 — Counterfactual & Stress Testing</h3>
+                            <p className="text-sm text-stone-700 mb-3">The system generates alternative scenarios and tests how fragile the strategy is under adverse conditions.</p>
+                            <p className="text-xs text-stone-500">Outputs: worst-case deltas, regrets, and the highest-impact mitigations.</p>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6 md:col-span-2">
+                            <h3 className="font-bold text-stone-900 mb-2">Layer 5 — Synthesis Into Governable Outputs</h3>
+                            <p className="text-sm text-stone-700">All signals are synthesized into a recommendation, then converted into a <span className="font-semibold text-stone-900">decision packet</span> (controls, actions, evidence list, export readiness) with provenance and approval workflow.</p>
                         </div>
                     </div>
                 </section>
 
-                {/* Why It's Different */}
+                {/* The 21 formulas */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Why It’s Different: A World-First Capability</h2>
-                    <p className="text-stone-700 text-sm max-w-4xl mb-6">BW Global AI is not just another tool; it’s an active reasoning partner. It does not just present data; it interrogates it, debates it, and transforms it into a coherent strategic argument.</p>
-                    <div className="overflow-x-auto border border-stone-200 rounded-sm">
-                        <table className="w-full text-sm">
-                            <thead className="bg-stone-50 text-stone-900">
-                                <tr>
-                                    <th className="text-left font-bold p-3 border-b border-stone-200">Feature</th>
-                                    <th className="text-left font-bold p-3 border-b border-stone-200">Consulting Firms</th>
-                                    <th className="text-left font-bold p-3 border-b border-stone-200">Dashboards / BI</th>
-                                    <th className="text-left font-bold p-3 border-b border-stone-200">GenAI Chatbots</th>
-                                    <th className="text-left font-bold p-3 border-b border-stone-200">BWGA Intelligence AI</th>
-                                </tr>
-                            </thead>
-                            <tbody className="text-stone-700">
-                                {[ 
-                                    ['Primary Output', 'Static PDF Reports', 'Historical Charts', 'Text / Conversation', 'Living Decision Model'],
-                                    ['Reasoning Type', 'Human Expert', 'Descriptive Stats', 'Probabilistic Text', 'Governed Neuro-Symbolic'],
-                                    ['Speed', 'Weeks / Months', 'Instant (Data only)', 'Instant', 'Instant'],
-                                    ['Adversarial Checks', 'Manual / Ad-hoc', 'None', 'None (Hallucinates)', 'Systematic (5 Personas)'],
-                                    ['Math Rigor', 'Excel Models', 'Visualizations', 'None', '21 Proprietary Formulas'],
-                                    ['Auditability', 'Low (Opinion)', 'High (Data)', 'Low (Black Box)', 'High (Traceable Logic)'],
-                                    ['Self-Learning', 'No', 'No', 'No', 'Yes (Outcome Tracker)'],
-                                ].map((row, i) => (
-                                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50'}>
-                                        {row.map((cell, j) => (
-                                            <td key={j} className="p-3 border-b border-stone-200 align-top">{cell}</td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                {/* Who We Are & Who It's For */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Who We Are &amp; Who It’s For</h2>
-                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
-                        <p><span className="font-semibold">Built by BW Global Advisory:</span> BW Global Advisory (BWGA) is an independent Australian initiative, founded and solely developed by Brayden Walls. It was born from immersive, on‑the‑ground research in regional Philippines — and the lived reality of what actually breaks deals and stalls development — translated into a repeatable system.</p>
-                        <div>
-                            <p className="font-semibold text-stone-900 mb-2">Who This Is For:</p>
-                            <ul className="list-disc pl-5 space-y-1">
-                                <li>Government &amp; Policy Leaders shaping national economic strategy.</li>
-                                <li>Institutional Investors &amp; DFIs deploying capital into complex markets.</li>
-                                <li>Corporate Strategists planning market entry, JVs, or supply chain resilience.</li>
-                                <li>Regional Development Agencies seeking to attract investment with verifiable proof.</li>
-                                <li>Banks &amp; Financial Institutions from local credit unions to global banks.</li>
-                                <li>Companies of any size pursuing regional expansion.</li>
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The 21-Formula Suite (Inspectability Is the Product)</h2>
+                    <p className="text-stone-600 text-sm mb-6">This is the engine room. The suite turns strategic intent into quantified scores with drivers, confidence gating, and remediation actions.</p>
+                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">5 Primary Engines</h3>
+                            <ul className="list-disc pl-5 space-y-2 text-sm text-stone-700">
+                                <li><span className="font-semibold">SPI</span> — partner fit via weighted signals and constraints.</li>
+                                <li><span className="font-semibold">RROI</span> — regional return with downside-adjusted resilience.</li>
+                                <li><span className="font-semibold">SEAM</span> — ecosystem / stakeholder alignment and friction mapping.</li>
+                                <li><span className="font-semibold">IVAS</span> — viability under uncertainty bands (scenario variance).</li>
+                                <li><span className="font-semibold">SCF</span> — strategic cash-flow impact with confidence framing.</li>
                             </ul>
                         </div>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">16 Derivative Indices</h3>
+                            <p className="text-sm text-stone-700 mb-3">Specialist indices explain <span className="font-semibold">why</span> a plan is strong/weak (capability, governance, cost, risk concentration, regulatory friction, and more).</p>
+                            <p className="text-xs text-stone-500">These indices drive remediation actions and control thresholds in the decision packet.</p>
+                        </div>
+                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-6 md:col-span-2">
+                            <h3 className="font-bold text-amber-900 mb-2">Proof Mechanics (Examples)</h3>
+                            <div className="bg-white border border-amber-200 rounded-sm p-4 text-xs text-stone-800 space-y-2">
+                                <div className="font-bold text-stone-900">Risk Concentration (Herfindahl-like)</div>
+                                <div className="font-mono">RCI = Σ (pᵢ²)</div>
+                                <div className="text-stone-700">Flags single-point exposure and recommends diversification actions.</div>
+                                <div className="border-t border-amber-200 pt-2" />
+                                <div className="font-bold text-stone-900">Evidence Confidence Gate</div>
+                                <div className="font-mono">ECS = coverage × freshness × diversity</div>
+                                <div className="text-stone-700">Low ECS clamps certainty and forces explicit caution language.</div>
+                            </div>
+                            <p className="text-xs text-amber-900 mt-3">Math is not decoration here. It’s the auditable contract between inputs and outputs.</p>
+                        </div>
                     </div>
                 </section>
 
-                {/* Start Your Journey */}
+                {/* Generic/Agentic Brain */}
                 <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Start Your Journey</h2>
-                    <p className="text-stone-700 text-sm max-w-4xl">Define your mandate, then let the system show you what’s possible. The bee meets the flower: when fit is governed and evidence is live, regions bloom sustainably.</p>
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Agentic Core (Generic Brain)</h2>
+                    <p className="text-stone-600 text-sm mb-6">This is what makes the platform operationally different: a persistent digital worker that orchestrates reasoning, governance, and regeneration — not just content.</p>
+                    <div className="rounded-sm border border-stone-200 bg-white p-6 text-sm text-stone-700 space-y-4 max-w-5xl">
+                        <p className="font-semibold text-stone-900">The architecture is deliberately modular:</p>
+                        <ul className="grid md:grid-cols-2 gap-2 text-sm text-stone-700">
+                            <li>• SAT-style contradiction checks for input integrity</li>
+                            <li>• Vector memory retrieval for similar historical cases</li>
+                            <li>• DAG scheduler for the 21 formulas (dependencies handled correctly)</li>
+                            <li>• Bayesian persona debate with early stopping</li>
+                            <li>• Lazy evaluation for derivative indices (compute on demand)</li>
+                            <li>• Decision-tree synthesis for output structuring</li>
+                        </ul>
+                        <p className="text-xs text-stone-500">This is why the system regenerates fast when one assumption changes: only impacted dependencies recompute, then the packet and deliverables are re-synthesized with provenance intact.</p>
+                    </div>
+                </section>
+
+                {/* Outputs */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">What You Get: Decision Packet + Document Factory</h2>
+                    <p className="text-stone-600 text-sm mb-6">The output is structured to execute — and designed to be audited.</p>
+                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">A Governed Decision Packet</h3>
+                            <p className="text-sm text-stone-700 mb-3">Instead of a narrative memo, you get a packet with explicit controls and readiness gates.</p>
+                            <div className="bg-stone-50 border border-stone-200 rounded-sm p-4 text-xs">
+                                <div className="font-mono text-stone-800 space-y-1">
+                                    <div>{`phases: [intake, validate, debate, score, synthesize, controls, approvals...]`}</div>
+                                    <div>{`controls: [{ metric, threshold, action }, ...]`}</div>
+                                    <div>{`actions: [{ title, owner?, due?, criteria? }, ...]`}</div>
+                                    <div>{`exports: { reportReady, loiReady, blockers: [...] }`}</div>
+                                    <div>{`evidence: [...]`}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="rounded-sm border border-stone-200 bg-white p-6">
+                            <h3 className="font-bold text-stone-900 mb-2">A Large Document Library</h3>
+                            <p className="text-sm text-stone-700 mb-3">When the decision is ready, the system can generate execution deliverables from the live model (LOIs, MOUs, term sheets, memos, briefs, and more).</p>
+                            <p className="text-xs text-stone-500">The platform includes a document library spanning 200+ document types (and a growing template set for formal letters), built to convert analysis into action without losing governance.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* The chain of custody */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The 10-Step Chain of Custody (How a Decision Becomes Exportable)</h2>
+                    <p className="text-stone-600 text-sm mb-4">This is the workflow that turns ambiguity into a governed artifact you can actually share.</p>
+                    <ol className="list-decimal pl-5 space-y-2 text-sm text-stone-700 max-w-4xl">
+                        <li><span className="font-semibold">Mandate capture</span> — mission, location, intent, constraints.</li>
+                        <li><span className="font-semibold">Input shield</span> — contradictions, missing essentials, sanctions-style red flags.</li>
+                        <li><span className="font-semibold">Persona debate</span> — Skeptic/Advocate/Regulator/Accountant/Operator evaluation.</li>
+                        <li><span className="font-semibold">Core scoring</span> — SPI/RROI/SEAM/IVAS/SCF produce scores + drivers.</li>
+                        <li><span className="font-semibold">Derivative indices</span> — readiness, governance, cost, concentration, friction, resilience.</li>
+                        <li><span className="font-semibold">Counterfactuals</span> — adverse scenarios + fragility checks.</li>
+                        <li><span className="font-semibold">Synthesis</span> — unified recommendation and key decision points.</li>
+                        <li><span className="font-semibold">Controls bound</span> — thresholds + remediation actions attached to the plan.</li>
+                        <li><span className="font-semibold">Governance stage</span> — approvals logged, provenance timeline built.</li>
+                        <li><span className="font-semibold">Export gating</span> — exports blocked until required fields exist and stage ≥ approved.</li>
+                    </ol>
+                </section>
+
+                {/* Regional development reframing */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Regional Development (Making Opportunity Investable)</h2>
+                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
+                        <p>Regional economies are the backbone of national strength — yet capital concentrates in major hubs because regional opportunity is harder to explain, harder to govern, and harder to defend under scrutiny.</p>
+
+                        <p className="font-semibold text-stone-900">Why bigger cities keep winning (even when they’re saturated)</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><span className="font-semibold">Lower perceived execution risk</span> — talent, vendors, logistics, and “known-good” counterparties feel easier to validate.</li>
+                            <li><span className="font-semibold">Signal value</span> — a tier‑1 city address can satisfy committees, lenders, and boards even when fundamentals are weaker.</li>
+                            <li><span className="font-semibold">Faster approvals &amp; familiarity</span> — teams know the playbook, so fewer unknowns need to be explained.</li>
+                            <li><span className="font-semibold">Network effects</span> — clusters create a self-reinforcing magnet (even as congestion, costs, and bottlenecks rise).</li>
+                        </ul>
+
+                        <p className="font-semibold text-stone-900">Why regional cities are often overlooked (even when the upside is real)</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><span className="font-semibold">Information friction</span> — fragmented data, inconsistent signals, and local nuance that outsiders can’t easily price.</li>
+                            <li><span className="font-semibold">Governance uncertainty</span> — permitting variance, partner quality, and compliance exposure are hard to quantify up-front.</li>
+                            <li><span className="font-semibold">“Investability gap”</span> — opportunity exists, but it isn’t packaged into an auditable, committee-ready decision chain.</li>
+                        </ul>
+
+                        <p className="font-semibold text-stone-900">What BW Nexus AI does differently</p>
+                        <p>It closes the investability gap by turning a regional opportunity into a governed case: quantified drivers, explicit controls, staged commitments, and an evidence trail that can survive audit.</p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><span className="font-semibold">De-risks market entry</span> with persona debate, counterfactual stress tests, and confidence gating (so uncertainty is explicit, not hidden).</li>
+                            <li><span className="font-semibold">Makes mitigation enforceable</span> by binding thresholds and actions to the plan (not just listing risks in prose).</li>
+                            <li><span className="font-semibold">Builds committee-grade artifacts</span> — decision packet + export gating + provenance.</li>
+                        </ul>
+
+                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-amber-900 text-xs">
+                            <p className="font-bold">Bee · Flower · Meadow</p>
+                            <p className="mt-1">Big cities are where the bees already gather — dense networks, known signals, easy validation. Regional cities can be extraordinary flowers, but they’re often invisible from the boardroom because the meadow isn’t mapped.</p>
+                            <p className="mt-2">BW Nexus AI maps the meadow: it makes regional opportunity legible, governable, and repeatable — so investment follows fundamentals, not just familiarity.</p>
+                        </div>
+
+                        <p>Every major city started smaller. The constraint is not ambition — it’s whether opportunity can be structured into controlled, auditable commitments that unlock capital and talent without gambling on unknowns.</p>
+                    </div>
+                </section>
+
+                {/* Who it is for */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Who It’s For</h2>
+                    <div className="space-y-4 text-stone-700 text-sm max-w-4xl">
+                        <p>BW Nexus AI is built for organizations that must make decisions that survive scrutiny — politically, financially, legally, and operationally — and want to upgrade capability without waiting months for static deliverables.</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li>Government &amp; policy leadership</li>
+                            <li>Investment screening and capital allocation teams</li>
+                            <li>Banks and risk committees</li>
+                            <li>PPP and infrastructure program owners</li>
+                            <li>Corporate strategy and operators</li>
+                            <li>Regional development agencies</li>
+                        </ul>
+                        <p><span className="font-semibold">Built by BW Global Advisory:</span> an independent Australian initiative, founded and solely developed by Brayden Walls.</p>
+                    </div>
+                </section>
+
+                {/* CTA framing */}
+                <section className="p-10 border-t border-stone-200">
+                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Start Here</h2>
+                    <p className="text-stone-700 text-sm max-w-4xl">Accept the Terms of Engagement to proceed, then define your mandate. The system will run NSIL + the 21-formula suite to generate a governed decision packet — and the execution deliverables needed to act.</p>
                 </section>
 
                 {/* Governance & Provenance */}
@@ -266,8 +285,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                         <ShieldAlert size={16} className="text-bw-gold" /> Terms of Engagement & Compliance
                     </h3>
                     <div className="space-y-4 text-xs text-stone-700 bg-white p-6 rounded-sm border border-stone-200 max-h-[320px] overflow-y-auto shadow-inner">
-                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW Global AI is a sovereign-grade decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
-                        <p><strong className="text-stone-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This prevents false confidence and enforces explainability.</p>
+                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW Nexus AI is a decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
+                        <p><strong className="text-stone-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This reduces false confidence and enforces explainability.</p>
                         <p><strong className="text-stone-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws. Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
                         <p><strong className="text-stone-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI™, RROI™, SEAM™, etc.) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
                         <p><strong className="text-stone-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability.</p>
