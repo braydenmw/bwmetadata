@@ -1,7 +1,8 @@
 import { ReportPayload } from '../types';
 import { GovernanceService } from './GovernanceService';
+import { ReportOrchestrator } from './ReportOrchestrator';
 
-export type ExportFormat = 'pdf' | 'ppt' | 'dashboard' | 'interactive';
+export type ExportFormat = 'pdf' | 'docx' | 'ppt' | 'dashboard' | 'interactive';
 
 export class ExportService {
   /**
@@ -12,7 +13,22 @@ export class ExportService {
     format: ExportFormat;
     payload?: ReportPayload | null;
   }): Promise<{ link: string }> {
-    const { reportId, format } = params;
+    const { reportId, format, payload } = params;
+    if (!payload) {
+      throw new Error('Export blocked. Payload is required to generate outputs.');
+    }
+    const validation = ReportOrchestrator.validatePayload(payload);
+    if (!validation.isComplete) {
+      await GovernanceService.recordProvenance({
+        reportId,
+        artifact: 'report-export',
+        action: 'export-blocked',
+        actor: 'ExportService',
+        tags: [format, 'incomplete-payload', ...validation.missingFields],
+        source: 'service'
+      });
+      throw new Error(`Export blocked until required fields are present: ${validation.missingFields.join(', ')}`);
+    }
     const check = await GovernanceService.ensureStage(reportId, 'approved');
     if (!check.ok) {
       await GovernanceService.recordProvenance({

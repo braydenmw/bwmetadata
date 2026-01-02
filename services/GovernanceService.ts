@@ -9,9 +9,27 @@ const stageRank: Record<ApprovalStage, number> = {
 };
 
 const API_BASE = '/api/governance';
+const hasWindow = typeof window !== 'undefined';
+const apiOrigin = hasWindow ? '' : process.env.API_BASE_URL;
+const shouldBypassNetwork = !hasWindow && !apiOrigin;
+
+const resolveUrl = (relative: string) => {
+  if (relative.startsWith('http://') || relative.startsWith('https://')) {
+    return relative;
+  }
+  if (hasWindow) {
+    return relative;
+  }
+  if (apiOrigin) {
+    return `${apiOrigin}${relative}`;
+  }
+  // Node context without configured API origin — return relative path (callers should guard)
+  return relative;
+};
 
 const postJson = async (url: string, body: Record<string, unknown>) => {
-  const res = await fetch(url, {
+  const target = resolveUrl(url);
+  const res = await fetch(target, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
@@ -23,7 +41,8 @@ const postJson = async (url: string, body: Record<string, unknown>) => {
 };
 
 const putJson = async (url: string, body: Record<string, unknown>) => {
-  const res = await fetch(url, {
+  const target = resolveUrl(url);
+  const res = await fetch(target, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
@@ -35,7 +54,8 @@ const putJson = async (url: string, body: Record<string, unknown>) => {
 };
 
 const getJson = async (url: string) => {
-  const res = await fetch(url);
+  const target = resolveUrl(url);
+  const res = await fetch(target);
   if (!res.ok) {
     throw new Error(await res.text());
   }
@@ -72,6 +92,22 @@ export const GovernanceService = {
     tags?: string[];
     relatedApprovalId?: string;
   }): Promise<ProvenanceEntry> {
+    if (shouldBypassNetwork) {
+      const entry: ProvenanceEntry = {
+        id: `offline-${Date.now()}`,
+        reportId: input.reportId,
+        artifact: input.artifact,
+        action: input.action,
+        actor: input.actor,
+        source: input.source,
+        checksum: input.checksum,
+        tags: input.tags,
+        createdAt: new Date().toISOString(),
+        relatedApprovalId: input.relatedApprovalId
+      };
+      EventBus.publish({ type: 'provenanceLogged', reportId: input.reportId, entry, mandate: undefined });
+      return entry;
+    }
     const res = await postJson(`${API_BASE}/${input.reportId}/provenance`, input);
     EventBus.publish({ type: 'provenanceLogged', reportId: input.reportId, entry: res.entry, mandate: res.mandate });
     return res.entry as ProvenanceEntry;

@@ -44,6 +44,7 @@
 | **7. Capabilities** | Capability Reference (from Intelligence Library) |
 | **8. Execution** | Timeline Scenarios (Scenario Planning) |
 | **9. Governance** | Governance Documents, Best Practices |
+| **10. Rate & Liquidity Stress** | FX Shock Resilience, Capital Stack Resilience, Inflation & Rate Pass-through, ECS/TIS gating |
 
 ---
 
@@ -56,6 +57,13 @@
 3. **Shows 2-3 relevant features** for that specific step
 4. **User clicks a feature** → Modal closes, feature opens with context pre-filled
 5. **Feature has org name, city, country automatically passed**
+6. **Returns to step** via top navigation or Command Center
+
+#### Step 10: Rate & Liquidity Stress (new)
+- **Inputs:** 30d/90d borrowing rates, hedge ratio, currency mix, covenants/headroom, cash runway, liquidity buffers.
+- **Signals:** Δ30/90 spread = R30 − R90 (inversion = near-term stress), DSCR/ICR under +100/+200 bps, FX P&L deltas (±1/2/3σ), runway under stressed burn (30/60/90 days), pass-through impact on margins (IRP).
+- **Outputs:** Traffic-light band (Green/Amber/Red), hedging/structure actions, covenant alerts, export gate (block if Red and ECS < 0.4).
+- **Usability:** Auto-prefills from Financial step; clamps language when ECS is low; runs in-place without leaving the modal.
 
 ### Example Flow:
 
@@ -132,7 +140,7 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
     { id: 'scenario-planning', title: 'Scenario Planning', ... },
     { id: 'benchmark-comparison', title: 'Financial Benchmarking', ... }
   ],
-  // ... 9 steps total
+  // ... 10 steps total (includes rate-liquidity stress)
 };
 ```
 
@@ -152,18 +160,22 @@ onLaunchFeature={(featureId) => {
 
 ## 📊 FEATURE AVAILABILITY MATRIX
 
-| Feature | Identity | Mandate | Market | Partners | Financial | Risks | Capabilities | Execution | Governance |
-|---------|----------|---------|--------|----------|-----------|-------|--------------|-----------|------------|
-| Cultural Intelligence | ✅ | | | | | | | | |
-| Competitive Map | ✅ | | ✅ | | | | | | |
-| Deep Reasoning | | ✅ | | ✅ | | | | | |
-| Intelligence Library | | ✅ | | ✅ | | | ✅ | | ✅ |
-| Alternative Locations | | | ✅ | | | | | | |
-| Scenario Planning | | | | | ✅ | | | ✅ | |
-| Financial Benchmarking | | | | | ✅ | | | | |
-| Risk Scoring | | | | | | ✅ | | | |
-| Ethics Panel | | | | | | ✅ | | | |
-| Document Suite | | | | | | | | | ✅ |
+| Feature | Identity | Mandate | Market | Partners | Financial | Risks | Capabilities | Execution | Governance | Rate & Liquidity Stress |
+|---------|----------|---------|--------|----------|-----------|-------|--------------|-----------|------------|------------------------|
+| Cultural Intelligence | ✅ | | | | | | | | | |
+| Competitive Map | ✅ | | ✅ | | | | | | | |
+| Deep Reasoning | | ✅ | | ✅ | | | | | | |
+| Intelligence Library | | ✅ | | ✅ | | | ✅ | | ✅ | |
+| Alternative Locations | | | ✅ | | | | | | | |
+| Scenario Planning | | | | | ✅ | | | ✅ | | |
+| Financial Benchmarking | | | | | ✅ | | | | | |
+| FX Shock Resilience | | | | | | | | | | ✅ |
+| Capital Stack Resilience | | | | | | | | | | ✅ |
+| Inflation & Rate Pass-through | | | | | | | | | | ✅ |
+| Risk Scoring | | | | | | ✅ | | | | |
+| Ethics Panel | | | | | | ✅ | | | | |
+| ECS/TIS Gating | | | | | | ✅ | | | ✅ | ✅ |
+| Document Suite | | | | | | | | | ✅ | |
 
 ---
 
@@ -204,6 +216,7 @@ npm run preview # Serve on http://localhost:4173
 - [ ] **Capabilities:** Open step → AI Assistant shows Capability Reference → Click feature → Opens Intelligence Library
 - [ ] **Execution:** Open step → AI Assistant shows Timeline Scenarios → Click feature → Opens Scenario Planning
 - [ ] **Governance:** Open step → AI Assistant shows Document Suite + Best Practices → Click feature → Opens docs
+- [ ] **Rate & Liquidity Stress:** Open step → AI Assistant shows FXR + CSR + IRP → Enter 30d/90d rates, hedges → Δ30/90 spread computed → DSCR/ICR shock bands displayed → ECS < 0.4 clamps language
 
 ---
 
@@ -389,7 +402,7 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
     },
     // ...
   ],
-  // ... 9 steps total
+  // ... 10 steps total (includes rate-liquidity stress)
 };
 ```
 
@@ -399,7 +412,7 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
 
 - [x] ContextualAIAssistant component created (308 lines)
 - [x] Integrated into MainCanvas.tsx (appears when modal open)
-- [x] Step-to-feature mapping defined (9 steps, 12 features)
+- [x] Step-to-feature mapping defined (10 steps, 15 features including rate-liquidity stress)
 - [x] Context propagation implemented (org, country, city)
 - [x] FeatureDiscoveryPanel removed (no longer needed)
 - [x] QuickAccessBar removed (no longer needed)

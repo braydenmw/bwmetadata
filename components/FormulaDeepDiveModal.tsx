@@ -28,236 +28,240 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
 
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                    {/* Hero summary + actions */}
+                    <section className="rounded-lg border border-slate-200 bg-white p-4 space-y-3">
+                        <div className="flex flex-wrap gap-2 text-[11px] font-semibold text-slate-700 uppercase tracking-wide">
+                            <span className="px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Governed Reasoning</span>
+                            <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">21-Formula Suite</span>
+                            <span className="px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">Explainable & Traceable</span>
+                            <span className="px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">Live Documents</span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-900">BW Nexus AI — Technical Proof &amp; Comparative Brief</h3>
+                                <p className="text-slate-600 text-sm leading-relaxed">Prepared for funding partners, strategic partners, government, institutions, banks, enterprises. Prepared by BW Global Advisory (BWGA) — Founding Architect: Brayden Walls.</p>
+                                <p className="text-slate-600 text-sm leading-relaxed">System: BW Nexus AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain. Sovereign-grade, explainable, auditable, continuously learning; not a black box.</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <a
+                                    href="/docs/NSIL_FORMULAS_FULL.md"
+                                    className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+                                >
+                                    Open Full Methodology &amp; 21 Formulas
+                                </a>
+                                <button
+                                    disabled
+                                    className="px-3 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-500 bg-slate-50 cursor-not-allowed"
+                                    title="PDF export coming via export pipeline"
+                                >
+                                    Download Brief (PDF soon)
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+                            <p className="text-xs font-bold text-blue-900 mb-1">Claim</p>
+                            <p className="text-sm text-blue-900">World-first governed reasoning platform treating mandates as living simulations.</p>
+                        </div>
+                        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                            <p className="text-xs font-bold text-emerald-900 mb-1">Outcome</p>
+                            <p className="text-sm text-emerald-900">Adversarial debate → counterfactuals → explainable scores → traceable recommendations → live deliverables.</p>
+                        </div>
+                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                            <p className="text-xs font-bold text-amber-900 mb-1">Why New</p>
+                            <p className="text-sm text-amber-900">Agentic AI for judgment under explicit governance with auditable why-chains and 21-formula suite.</p>
+                        </div>
+                    </section>
+
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Category Definition</h4>
+                            <p className="text-slate-600 text-sm leading-relaxed">Governed Strategic Intelligence: computable intent, adversarial reasoning, counterfactual stress tests, explainable scoring, live documents, and full traceability.</p>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Novelty</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li><span className="font-semibold">Intent Computation:</span> Machine-legible mandates without losing richness.</li>
+                                <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate → Debate → Counterfactuals → Score → Synthesize → Deliver.</li>
+                                <li><span className="font-semibold">Agentic Brain:</span> Owns the case, anticipates questions, surfaces contradictions, learns continuously.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Architecture Proofs</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Control-plane (governance/orchestration) separated from data-plane (inputs/exports).</li>
+                                <li>Explainability contracts: definitions, drivers, pressure points, assumptions, citations.</li>
+                                <li>Traceability: debate transcripts, contradiction flags, counterfactuals, rationales, provenance.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">21-Formula Suite</h4>
+                            <p className="text-slate-600 text-sm mb-2">Primary engines: SPI™, RROI™, SEAM™, IVAS™, SCF™. Plus 16 indices for alignment, risk, viability, capacity, velocity, resilience.</p>
+                            <p className="text-slate-600 text-sm">Purpose: expose fragility, leverage, and misalignment—not mere prediction.</p>
+                        </div>
+                    </section>
+
                     <section className="rounded-lg border border-slate-200 bg-white p-4">
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">BW Nexus AI — Technical Proof &amp; Comparative Brief</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">Prepared For: Funding partners, strategic partners, government, institutions, banks, enterprises.</p>
-                        <p className="text-slate-600 text-sm leading-relaxed">Prepared By: BW Global Advisory (BWGA) — Founding Architect: Brayden Walls.</p>
-                        <p className="text-slate-600 text-sm leading-relaxed">System: BW Nexus AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain.</p>
-                        <p className="text-slate-600 text-sm leading-relaxed mt-3">Positioning: A sovereign-grade, explainable, auditable, and continuously learning decision-support platform. Not a black box. Governed reasoning with live deliverables.</p>
+                        <h4 className="text-sm font-bold text-slate-800 mb-2">Proof by Collapse (Scenario)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-700">
+                            <div className="space-y-1">
+                                <p className="font-semibold text-slate-800">Legacy Fails</p>
+                                <p>Consulting: static PDFs, slow recalculation.</p>
+                                <p>BI Dashboards: visualization without governed reasoning.</p>
+                                <p>LLM Copilots: unstructured, non-traceable.</p>
+                                <p>Spreadsheets: brittle, non-reactive.</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="font-semibold text-slate-800">Nexus Path</p>
+                                <p>Governed debate → counterfactuals → explainable scores → live documents that update instantly.</p>
+                            </div>
+                        </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Executive Proof Summary</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Claim:</span> BW Nexus AI with NSIL + Agentic Brain is a world‑first governed reasoning platform that treats mandates as living simulations.</li>
-                            <li><span className="font-semibold">Outcome:</span> Converts a mandate into adversarial debate, counterfactuals, explainable scores, traceable recommendations, and live deliverables.</li>
-                            <li><span className="font-semibold">Why new:</span> Agentic AI applied to judgment (not tasks), under explicit governance, with a formal 21‑formula suite and auditable “why” chains.</li>
-                        </ul>
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Governance &amp; Explainability</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Adversarial Shield (sanctions/compliance/ethics checks).</li>
+                                <li>Multi-perspective debate (Skeptic, Advocate, Regulator, Accountant, Operator).</li>
+                                <li>Counterfactual Lab with explicit deltas.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Document Factory (Live)</h4>
+                            <p className="text-slate-600 text-sm">Change one variable; risks, scores, timelines, and instrument drafts recompute. A BW Consultant guides with evidence-linked outputs.</p>
+                        </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Category Definition</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed">Governed Strategic Intelligence Systems: computable intent, adversarial reasoning, counterfactual stress testing, explainable scoring, live documents, and complete traceability.</p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Novelty Claim</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Intent Computation:</span> Structures human mandates into machine‑legible models without losing real‑world richness.</li>
-                            <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate → Debate → Counterfactuals → Score → Synthesize → Deliver prevents false confidence.</li>
-                            <li><span className="font-semibold">Agentic Brain:</span> Owns the case, anticipates questions, prepares analyses, surfaces contradictions, and learns continuously — every step traceable.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Architectural Proofs</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Planes Separation:</span> Control‑plane (governance, scoring, orchestration) distinct from data‑plane (inputs, storage, exports).</li>
-                            <li><span className="font-semibold">Explainability Contracts:</span> Each score has definitions, drivers, pressure points, assumptions, evidence citations.</li>
-                            <li><span className="font-semibold">Traceability:</span> Debate transcripts, contradiction flags, counterfactuals, score rationales, and deliverable provenance form a complete why chain.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">21‑Formula Suite</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Primary engines: SPI™, RROI™, SEAM™, IVAS™, SCF™. Derivatives: 16 indices for alignment, risk, viability, capacity, velocity, resilience.</p>
-                        <p className="text-slate-600 text-sm leading-relaxed">Purpose: Not prediction — exposure of fragility, leverage, hidden failure points, and misalignment costs. Each with explainability contracts.</p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Proof by Collapse (Scenario)</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Ambitious regional mandate → legacy approaches collapse; Nexus holds.</p>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Consulting:</span> Latency, static PDFs, no instant recalculation.</li>
-                            <li><span className="font-semibold">BI Dashboards:</span> Data visualization without governed reasoning.</li>
-                            <li><span className="font-semibold">LLM Copilots:</span> Unstructured prompts, non‑traceable outputs.</li>
-                            <li><span className="font-semibold">Spreadsheets:</span> Non‑reactive; fragile under change.</li>
-                            <li><span className="font-semibold">Nexus Path:</span> Governed debate, counterfactuals, explainable scores, live documents that update instantly.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Governance &amp; Explainability</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Adversarial Shield:</span> Contradiction detection; sanction, compliance, ethics checks.</li>
-                            <li><span className="font-semibold">Multi‑Perspective Debate:</span> Skeptic, Advocate, Regulator, Accountant, Operator — parallel reasoning.</li>
-                            <li><span className="font-semibold">Counterfactual Lab:</span> Sensitivity and robustness quantification with explicit deltas.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Document Factory (Live)</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-2">Live documents: change one variable; risks, scores, timelines, and instrument drafts re‑compute across the set.</p>
-                        <p className="text-slate-600 text-sm leading-relaxed">Guided delivery: a BW Consultant accompanies the journey with evidence‑linked outputs.</p>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Comparative Matrix (Market Landscape)</h4>
+                    <section className="rounded-lg border border-slate-200 bg-white p-4">
+                        <h4 className="text-sm font-bold text-slate-800 mb-3">Comparative Matrix</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <p className="text-sm font-bold text-slate-800 mb-2">Legacy Approaches</p>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>Consulting: Static, expensive, slow; no live governance or instant recalculation.</li>
-                                    <li>BI/Analytics: Visualize data; lack adversarial governance and live deliverables.</li>
-                                    <li>LLM Copilots: Unstructured prompts; non‑traceable; no formula‑level explainability.</li>
-                                    <li>Spreadsheets: Non‑reactive systems; fragile under change.</li>
+                                <p className="text-sm font-bold text-slate-800 mb-2">Legacy</p>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                                    <li>Consulting: static, slow, no live governance.</li>
+                                    <li>BI/Analytics: visuals without adversarial checks.</li>
+                                    <li>LLM Copilots: non-traceable, no formula explainability.</li>
+                                    <li>Spreadsheets: fragile under change.</li>
                                 </ul>
                             </div>
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                                 <p className="text-sm font-bold text-slate-800 mb-2">BW Nexus AI</p>
-                                <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                                    <li>Governed reasoning (NSIL) + Agentic execution (Brain).</li>
-                                    <li>Counterfactuals + 21‑formula explainable scoring.</li>
-                                    <li>Traceability: complete why chain and evidence provenance.</li>
-                                    <li>Live documents: instant recalculation of deliverables on change.</li>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                                    <li>Governed reasoning (NSIL) + Agentic execution.</li>
+                                    <li>Counterfactuals + 21-formula explainable scoring.</li>
+                                    <li>Traceable why-chain and provenance.</li>
+                                    <li>Live documents that recalc instantly.</li>
                                 </ul>
                             </div>
                         </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Defensibility</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">IP Boundary:</span> Governance protocols + formula suite + orchestration primitives.</li>
-                            <li><span className="font-semibold">Audit Posture:</span> Evidence provenance and explainability contracts; advisory outputs require professional validation.</li>
-                            <li><span className="font-semibold">Falsifiability:</span> If contradictions aren’t caught, scores aren’t explainable, or documents aren’t live, the claim fails.</li>
-                        </ul>
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Defensibility</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>IP boundary: governance protocols + formula suite + orchestration primitives.</li>
+                                <li>Audit posture: provenance, explainability contracts; advisory outputs need professional validation.</li>
+                                <li>Falsifiability: if contradictions aren’t caught, scores aren’t explainable, or docs aren’t live, the claim fails.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Limits &amp; Posture</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Decision-support; users retain accountability.</li>
+                                <li>Live connectors recommended for institutional deployment.</li>
+                                <li>Human oversight for binding commitments.</li>
+                            </ul>
+                        </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Limits &amp; Posture</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Decision‑Support: Advisory outputs; users retain final accountability.</li>
-                            <li>Data Connectors: Live connectors recommended for institutional deployment.</li>
-                            <li>Human Oversight: Professional validation for binding commitments.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Deployment Readiness</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                    <section className="rounded-lg border border-slate-200 bg-white p-4">
+                        <h4 className="text-sm font-bold text-slate-800 mb-2">Deployment &amp; Readiness</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
                             <li>Modular architecture ready for auth, tenancy, immutable logs.</li>
                             <li>Deterministic payload assembly; simulation harness for repeatability.</li>
-                            <li>Score calibration and narrative evaluation on the roadmap.</li>
+                            <li>Roadmap: score calibration and narrative evaluation.</li>
+                            <li>Health endpoint /api/health; suggested SLOs 99.5%+ uptime, P95 &lt; 300ms non-AI.</li>
+                            <li>Environments: npm run dev/dev:server/dev:all; build/start; Docker multi-stage; Railway + Netlify.</li>
                         </ul>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Target Users</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Government &amp; Policy: National/regional strategy.</li>
-                            <li>Companies: SMEs → multinationals.</li>
-                            <li>Banks &amp; DFIs: Risk registers, explainable confidence, compliance.</li>
-                            <li>Regional Agencies &amp; NGOs: Equitable, region‑first growth and partnerships.</li>
-                        </ul>
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Testing &amp; Quality</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Simulation harness for payload completeness and runtime capture.</li>
+                                <li>Recommended: unit tests for scoring, regression tests for schema, snapshot tests for templates, security red-team tests.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Risks &amp; Priorities</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Priority 1: authn/authz, replace file storage with DB + tenancy, immutable audit logging.</li>
+                                <li>Priority 2: formalize scoring documentation and evaluation harnesses.</li>
+                                <li>Priority 3: connector framework with caching and provenance.</li>
+                            </ul>
+                        </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Evidence Lines</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Category Primitives:</span> Computable mandate + NSIL governance + Agentic Brain + 21‑formula suite + live documents + traceability.</li>
-                            <li><span className="font-semibold">Comparative Outcomes:</span> Only Nexus unifies all primitives; legacy stacks fail specific governance/explainability/live‑document criteria.</li>
-                        </ul>
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Target Users</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>Government &amp; Policy: national/regional strategy.</li>
+                                <li>Companies: SME to multinational.</li>
+                                <li>Banks &amp; DFIs: explainable confidence and compliance.</li>
+                                <li>Regional Agencies &amp; NGOs: equitable, region-first growth.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-lg border border-slate-200 bg-white p-4">
+                            <h4 className="text-sm font-bold text-slate-800 mb-2">Partnership &amp; Integration</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
+                                <li>White-label regional deployments.</li>
+                                <li>Data partnerships with governments/institutions.</li>
+                                <li>Workflow partnerships (consultancies, accelerators, banks).</li>
+                                <li>Institutional integrations (banks, funds, DFIs) consuming scoring outputs.</li>
+                            </ul>
+                        </div>
                     </section>
 
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Appendices &amp; Addendum</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Governance Protocols &amp; Explainability Contracts</li>
-                            <li>Formula Specs (SPI/RROI/SEAM/IVAS/SCF)</li>
-                            <li>Evidence Provenance &amp; Audit Trails</li>
-                            <li>Hardening Blueprint &amp; Integration Model</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Reliability, Observability, and Operational Readiness</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Health endpoint /api/health used for liveness probes</li>
-                            <li>Console logging today; roadmap includes request IDs, structured logs, metrics, tracing</li>
-                            <li>Suggested SLOs: API availability 99.5%+, P95 latency &lt; 300ms for non-AI routes, deterministic scoring for identical inputs</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Deployment &amp; Environments</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Local: npm run dev, npm run dev:server, npm run dev:all</li>
-                            <li>Builds: npm run build, npm run build:server, npm run start</li>
-                            <li>Docker: multi-stage file building frontend then running Node server</li>
-                            <li>Railway + Netlify configuration with healthchecks and redirects</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Testing, Verification, and Quality Controls</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Simulation harness validates payload completeness and captures runtime data</li>
-                            <li>Recommended additions: unit tests for scoring, regression tests for schema, snapshot tests for templates, security red-team tests</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Risks, Gaps, and Recommendations</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li><span className="font-semibold">Priority 1:</span> add authn/authz, replace file storage with database + tenancy boundaries, implement immutable audit logging</li>
-                            <li><span className="font-semibold">Priority 2:</span> formalize scoring documentation and evaluation harnesses for AI content quality</li>
-                            <li><span className="font-semibold">Priority 3:</span> connector framework for live data sources with caching and provenance</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Partnership &amp; Integration Model</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>White-label regional deployments</li>
-                            <li>Data partnerships with governments and institutions</li>
-                            <li>Workflow partnerships (consultancies, accelerators, banks)</li>
-                            <li>Institutional integrations (banks, funds, DFIs) consuming scoring outputs</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Funding Readiness: Why This Can Scale</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Modular component architecture ready for hardening</li>
-                            <li>Central orchestration (ReportOrchestrator) provides defensible IP boundary</li>
-                            <li>Simulation harness proves repeatability</li>
-                            <li>Clear packaging: structured intake -&gt; explainable scores -&gt; deliverables</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h4 className="text-md font-bold text-slate-800 mb-2">Appendices &amp; Addendum (Overview)</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
-                            <li>Appendix A — Backend API Catalog (health, AI, reports, autonomous)</li>
-                            <li>Appendix B — Environment Variables (GEMINI_API_KEY, FRONTEND_URL, optional connectors)</li>
-                            <li>Appendix C — Evidence sources (SYSTEM_ARCHITECTURE.md, NSIL_REFERENCE_PAPER.md, etc.)</li>
-                            <li>Appendix D — Terminology (decision-support, explainability, audit trail, provenance)</li>
-                            <li>A1) System Inventory</li>
-                            <li>A2) API Surface</li>
-                            <li>A3) Report Lifecycle</li>
-                            <li>A4) Security &amp; Privacy Narrative</li>
-                            <li>A5) Compliance &amp; Auditability</li>
-                            <li>A6) Enterprise Hardening Blueprint</li>
-                            <li>A7) Partner Value Proposition</li>
-                            <li>A8) Suggested 20-page PDF Layout</li>
-                            <li>A9) Engine Specifications (SPI, RROI, SEAM, IVAS, SCF)</li>
-                            <li>A10) Data Provenance &amp; Evidence Design</li>
-                            <li>A11) Document Generation Pipeline</li>
-                            <li>A12) Performance &amp; Scalability</li>
-                            <li>A13) Audit Checklist</li>
-                            <li>A14) Partnership Packaging</li>
-                        </ul>
+                    <section className="rounded-lg border border-slate-200 bg-white p-4">
+                        <h4 className="text-sm font-bold text-slate-800 mb-2">Appendices &amp; Addendum</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-700">
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>Appendix A — Backend API Catalog</li>
+                                <li>Appendix B — Environment Variables</li>
+                                <li>Appendix C — Evidence Sources</li>
+                                <li>Appendix D — Terminology</li>
+                                <li>A1) System Inventory</li>
+                                <li>A2) API Surface</li>
+                                <li>A3) Report Lifecycle</li>
+                                <li>A4) Security &amp; Privacy Narrative</li>
+                                <li>A5) Compliance &amp; Auditability</li>
+                            </ul>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>A6) Enterprise Hardening Blueprint</li>
+                                <li>A7) Partner Value Proposition</li>
+                                <li>A8) Suggested 20-page PDF Layout</li>
+                                <li>A9) Engine Specs (SPI, RROI, SEAM, IVAS, SCF)</li>
+                                <li>A10) Data Provenance &amp; Evidence Design</li>
+                                <li>A11) Document Generation Pipeline</li>
+                                <li>A12) Performance &amp; Scalability</li>
+                                <li>A13) Audit Checklist</li>
+                                <li>A14) Partnership Packaging</li>
+                            </ul>
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            <a href="/BW_NEXUS_AI_FULL_TECHNICAL_BRIEF_AND_AUDIT.md" className="text-blue-700 text-sm font-semibold hover:underline">Open Full Technical Brief</a>
+                            <span className="text-slate-500 text-sm">|</span>
+                            <a href="/docs/NSIL_FORMULAS_FULL.md" className="text-blue-700 text-sm font-semibold hover:underline">See NSIL Formula Suite</a>
+                        </div>
                     </section>
                 </div>
 

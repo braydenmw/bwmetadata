@@ -9,7 +9,7 @@ import {
 } from '../types';
 import { GovernanceService } from '../services/GovernanceService';
 import { EventBus } from '../services/EventBus';
-import { ShieldCheck, FileCheck2, Clock3, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, FileCheck2, Clock3 } from 'lucide-react';
 
 interface GovernancePanelProps {
   reportId?: string;
@@ -107,16 +107,7 @@ const GovernancePanel: React.FC<GovernancePanelProps> = ({ reportId }) => {
     setProvenance((prev) => [...prev, entry]);
   };
 
-  if (!reportId) {
-    return (
-      <div className="rounded-sm border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
-        <div className="flex items-center gap-2 font-semibold text-stone-800 mb-1">
-          <AlertTriangle size={14} /> Governance &amp; provenance
-        </div>
-        <p>Link a report to view approvals and provenance. No active report ID provided.</p>
-      </div>
-    );
-  }
+  if (!reportId) return null;
 
   return (
     <div className="rounded-sm border border-stone-200 bg-white p-6 shadow-sm">

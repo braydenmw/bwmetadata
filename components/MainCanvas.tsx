@@ -20,13 +20,15 @@ import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPT
 import { evaluateDocReadiness } from '../services/intakeMapping';
 import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';
 import useBrainObserver, { BrainSignal } from '../hooks/useBrainObserver';
+import ContextualAIAssistant from './ContextualAIAssistant';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
     mandate: ['strategicIntent', 'problemStatement'],
     market: ['userCity'],
     'partner-personas': ['partnerPersonas'],
-    risk: ['riskTolerance'],
+    risks: ['riskTolerance'],
+    'rate-liquidity': [],
 };
 
 const STAKEHOLDER_ALIGNMENT_GROUPS = [
@@ -189,6 +191,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     revenue: '200000',
     costs: '75000'
   });
+    const [rateStressInputs, setRateStressInputs] = useState({
+        rate30: '',
+        rate90: '',
+        hedgeRatio: '',
+        currencyMix: '',
+        dscrBase: '',
+        icrBase: '',
+        liquidityDays: '',
+    });
   const [generationConfig, setGenerationConfig] = useState<any>({});
   const [isDraftFinalized, setIsDraftFinalized] = useState(false);
   const [showFinalizationModal, setShowFinalizationModal] = useState(false);
@@ -734,8 +745,22 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
             <div className="flex-1 overflow-y-auto custom-scrollbar">
                 <div className="p-5 space-y-4">
-                    {/* COMPREHENSIVE SYSTEM INTAKE: 9 Sections */}
+                    {/* COMPREHENSIVE SYSTEM INTAKE: 10 Sections */}
                     <div>
+
+                    {/* Contextual AI Assistant (fixed, follows active step) */}
+                    {activeModal && onChangeViewMode && (
+                        <ContextualAIAssistant
+                            activeStep={activeModal}
+                            onLaunchFeature={(featureId) => {
+                                setActiveModal(null);
+                                onChangeViewMode(featureId);
+                            }}
+                            organizationName={params.organizationName}
+                            country={params.country}
+                            city={params.userCity}
+                        />
+                    )}
                         <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">System Development</h3>
                         <p className="text-[11px] text-stone-600 mb-3">Complete comprehensive intake to build any system</p>
                         <div className="space-y-2">
@@ -749,6 +774,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 {id: 'capabilities', label: '7. Capabilities', description: 'Team depth, tech maturity, gaps, plan-to-close', icon: Cpu},
                                 {id: 'execution', label: '8. Execution', description: 'Phased roadmap, gates, owners, budgets, buffers', icon: GitBranch},
                                 {id: 'governance', label: '9. Governance', description: 'Decision rights, cadence, KPIs, compliance checks', icon: Scale},
+                                {id: 'rate-liquidity', label: '10. Rate & Liquidity Stress', description: '30/90 spreads, hedges, DSCR/ICR shocks, runway', icon: Shield},
                             ].map((step, idx) => (
                                 <button
                                     key={step.id}
@@ -1158,24 +1184,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
         </div>
         {/* --- MODAL FOR FORMS --- */}
-        <AnimatePresence>
-            {activeModal && (
-                <motion.div
-                    key={`modal-${activeModal}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-8"
-                    onClick={() => setActiveModal(null)}
+        {activeModal && (
+            <div
+                className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-8"
+                onClick={() => setActiveModal(null)}
+            >
+                <div
+                    className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <motion.div
-                        initial={{ scale: 0.95, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.95, y: 20, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
-                    >
                         <div className="p-6 border-b border-stone-200 flex items-center justify-between shrink-0">
                             <h2 className="text-2xl font-serif font-bold text-indigo-800 capitalize">{modalView !== 'main' ? modalView.replace(/-/g, ' ') : activeModal?.replace(/-/g, ' ')} Configuration</h2>
                             <button onClick={handleModalClose} className="p-2 rounded-full hover:bg-stone-100">
@@ -3783,6 +3800,120 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </CollapsibleSection>
                                 </div>
                             )}
+                            {activeModal === 'rate-liquidity' && (
+                                <div className="space-y-4">
+                                    <CollapsibleSection
+                                        title="10.1 Rate & Liquidity Stress Harness"
+                                        description="Capture short/medium rate signals, hedge stance, and runway to gate exports"
+                                        isExpanded={!!expandedSubsections['rate-liquidity-core']}
+                                        onToggle={() => toggleSubsection('rate-liquidity-core')}
+                                        color="from-blue-50 to-indigo-50"
+                                    >
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">30d Rate (%)</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.rate30}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, rate30: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 6.25"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">90d Rate (%)</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.rate90}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, rate90: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 5.90"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Hedge Ratio (%)</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.hedgeRatio}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, hedgeRatio: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 65"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Currency Mix</label>
+                                                <input
+                                                    type="text"
+                                                    value={rateStressInputs.currencyMix}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, currencyMix: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 60% USD / 40% PHP"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Base DSCR</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.dscrBase}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, dscrBase: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 1.4"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Base ICR</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.icrBase}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, icrBase: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 3.0"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Liquidity Runway (days)</label>
+                                                <input
+                                                    type="number"
+                                                    value={rateStressInputs.liquidityDays}
+                                                    onChange={(e) => setRateStressInputs({ ...rateStressInputs, liquidityDays: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm"
+                                                    placeholder="e.g., 75"
+                                                />
+                                            </div>
+                                        </div>
+                                        {(() => {
+                                            const rate30 = parseFloat(rateStressInputs.rate30) || 0;
+                                            const rate90 = parseFloat(rateStressInputs.rate90) || 0;
+                                            const delta = rate30 - rate90;
+                                            const deltaLabel = delta > 0 ? 'Inversion / near-term stress' : delta < 0 ? 'Normal upward curve' : 'Flat curve';
+                                            const dscrBase = parseFloat(rateStressInputs.dscrBase) || 0;
+                                            const icrBase = parseFloat(rateStressInputs.icrBase) || 0;
+                                            const dscr100 = dscrBase ? Math.max(dscrBase - 0.25, 0).toFixed(2) : '—';
+                                            const dscr200 = dscrBase ? Math.max(dscrBase - 0.50, 0).toFixed(2) : '—';
+                                            const icr100 = icrBase ? Math.max(icrBase - 0.35, 0).toFixed(2) : '—';
+                                            const icr200 = icrBase ? Math.max(icrBase - 0.70, 0).toFixed(2) : '—';
+                                            return (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                                    <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                                                        <div className="text-xs font-bold text-blue-900 mb-1">Δ30/90 Spread</div>
+                                                        <div className="text-lg font-bold text-blue-800">{delta.toFixed(2)}%</div>
+                                                        <div className="text-xs text-blue-700">{deltaLabel}</div>
+                                                    </div>
+                                                    <div className="p-4 bg-amber-50 border border-amber-100 rounded-lg space-y-1">
+                                                        <div className="text-xs font-bold text-amber-900">DSCR / ICR under +100 / +200 bps</div>
+                                                        <div className="text-sm text-amber-800">DSCR: {dscr100} / {dscr200}</div>
+                                                        <div className="text-sm text-amber-800">ICR: {icr100} / {icr200}</div>
+                                                        <div className="text-[11px] text-amber-700">Update base values to see stressed headroom.</div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+                                        <div className="mt-4 p-3 bg-stone-50 border border-stone-200 rounded text-[12px] text-stone-700 leading-relaxed">
+                                            ECS/TIS gating runs automatically. If evidence is weak, language and export actions will be clamped until hedges, covenants, and liquidity buffers are validated.
+                                        </div>
+                                    </CollapsibleSection>
+                                </div>
+                            )}
                             {activeModal === 'analysis' && modalView === 'main' && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {toolCategories.analysis.map(tool => (
@@ -4538,30 +4669,20 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             ) : null}
                             </div>
                         </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                </div>
+            </div>
+        )}
 
         {/* --- FINALIZATION MODAL --- */}
-        <AnimatePresence>
-            {showFinalizationModal && (
-                <motion.div
-                    key="finalization-modal"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-8"
-                    onClick={() => setShowFinalizationModal(false)}
+        {showFinalizationModal && (
+            <div
+                className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-8"
+                onClick={() => setShowFinalizationModal(false)}
+            >
+                <div
+                    className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <motion.div
-                        initial={{ scale: 0.95, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.95, y: 20, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
-                    >
                         <div className="p-6 border-b border-stone-200">
                             <h2 className="text-2xl font-serif font-bold text-indigo-800">Official Report Selection</h2>
                             <p className="text-sm text-stone-600 mt-1">Select which official documents to generate. Each will be created based on the finalized draft data.</p>
@@ -4588,38 +4709,27 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 Generate {selectedFinalReports.length} Official Document(s)
                             </button>
                         </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                </div>
+            </div>
+        )}
 
         {/* --- DOCUMENT GENERATION SUITE MODAL --- */}
-        <AnimatePresence>
-            {showDocGenSuite && (
-                <motion.div
-                    key="doc-gen-suite-modal"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center"
-                    onClick={() => setShowDocGenSuite(false)}
+        {showDocGenSuite && (
+            <div
+                className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center"
+                onClick={() => setShowDocGenSuite(false)}
+            >
+                <div
+                    className="bg-stone-50 rounded-xl shadow-2xl w-full max-w-7xl h-[90vh] flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <motion.div
-                        initial={{ scale: 0.95, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.95, y: 20, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="bg-stone-50 rounded-xl shadow-2xl w-full max-w-7xl h-[90vh] flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <DocumentGenerationSuite
-                            entityName={params.organizationName}
-                            targetMarket={params.userCity}
-                        />
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                    <DocumentGenerationSuite
+                        entityName={params.organizationName}
+                        targetMarket={params.userCity}
+                    />
+                </div>
+            </div>
+        )}
 
         <DocumentUploadModal
             isOpen={showDocumentUpload}

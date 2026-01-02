@@ -210,6 +210,40 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
       action: () => {},
     },
   ],
+  'rate-liquidity': [
+    {
+      id: 'fx-shock-resilience',
+      title: 'FX Shock Resilience',
+      description: 'P&L deltas for ±1/2/3σ moves; hedge coverage and gaps.',
+      icon: DollarSign,
+      badge: 'HIGH VALUE',
+      action: () => {},
+    },
+    {
+      id: 'capital-stack-resilience',
+      title: 'Capital Stack Resilience',
+      description: 'DSCR/ICR under +100/+200 bps rate shocks; covenant headroom.',
+      icon: Shield,
+      badge: 'PREMIUM',
+      action: () => {},
+    },
+    {
+      id: 'inflation-rate-pass-through',
+      title: 'Inflation & Rate Pass-through',
+      description: 'Margin impact of rate/inflation moves given pricing power.',
+      icon: TrendingUp,
+      action: () => {},
+    },
+    {
+      id: 'evidence-gating',
+      title: 'ECS/TIS Gating',
+      description: 'Clamps language and export actions when evidence is weak.',
+      icon: AlertTriangle,
+      badge: 'AUTO',
+      autoRun: true,
+      action: () => {},
+    },
+  ],
 };
 
 const AUTONOMOUS_MODULES: Record<string, { id: string; title: string; status: 'active' | 'monitoring'; summary: string }[]> = {
@@ -259,6 +293,14 @@ const AUTONOMOUS_MODULES: Record<string, { id: string; title: string; status: 'a
       summary: 'Collecting outcome data to recalibrate playbooks.',
     },
   ],
+  'rate-liquidity': [
+    {
+      id: 'evidence-gating',
+      title: 'ECS/TIS Gating',
+      status: 'active',
+      summary: 'Clamping language and export until evidence quality is adequate.',
+    },
+  ],
 };
 
 const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
@@ -299,7 +341,7 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="fixed right-6 top-24 w-80 bg-white border border-blue-200 rounded-xl shadow-lg overflow-hidden z-40"
+        className="fixed right-6 top-24 w-80 bg-white border border-blue-200 rounded-xl shadow-lg overflow-hidden z-60"
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b border-blue-100">

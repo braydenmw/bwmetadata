@@ -15,24 +15,35 @@ const REPORTS_FILE = path.join(DATA_DIR, 'reports.json');
 const ensureDataDir = async () => {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch (error) {
-    // Directory exists
+  } catch {
+    // Directory already exists or cannot be created; ignore
   }
 };
 
+type StoredReport = {
+  id: string;
+  organizationName?: string;
+  reportName?: string;
+  country?: string;
+  region?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+} & Record<string, unknown>;
+
 // Load reports from file
-const loadReports = async (): Promise<any[]> => {
+const loadReports = async (): Promise<StoredReport[]> => {
   try {
     await ensureDataDir();
     const data = await fs.readFile(REPORTS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
+    return JSON.parse(data) as StoredReport[];
+  } catch {
     return [];
   }
 };
 
 // Save reports to file
-const saveReports = async (reports: any[]): Promise<void> => {
+const saveReports = async (reports: StoredReport[]): Promise<void> => {
   await ensureDataDir();
   await fs.writeFile(REPORTS_FILE, JSON.stringify(reports, null, 2));
 };
@@ -203,7 +214,7 @@ router.get('/:id/export-docx', async (req: Request, res: Response) => {
         {
           children: [
             new Paragraph({ text: 'BW Global AI — Intelligence Report', heading: HeadingLevel.TITLE }),
-            new Paragraph({ text: report.organizationName || 'Unnamed Engagement', heading: HeadingLevel.HEADING_1 }),
+            new Paragraph({ text: typeof report.organizationName === 'string' ? report.organizationName : 'Unnamed Engagement', heading: HeadingLevel.HEADING_1 }),
             new Paragraph({ text: 'Scenario: General Santos (Mindanao) — Japanese Cold‑Chain & Export Logistics', spacing: { after: 300 } }),
             ...steps.flatMap(s => [
               new Paragraph({ text: s.title, heading: HeadingLevel.HEADING_2 }),
@@ -272,7 +283,7 @@ router.get('/stats/summary', async (_req: Request, res: Response) => {
       byRegion: {} as Record<string, number>,
       recentActivity: reports.slice(0, 10).map(r => ({
         id: r.id,
-        name: r.organizationName || r.reportName,
+        name: (typeof r.organizationName === 'string' && r.organizationName) || (typeof r.reportName === 'string' ? r.reportName : 'Unnamed'),
         status: r.status,
         date: r.updatedAt || r.createdAt
       }))
@@ -280,7 +291,7 @@ router.get('/stats/summary', async (_req: Request, res: Response) => {
     
     // Count by region
     reports.forEach(r => {
-      const region = r.region || 'Unspecified';
+      const region = typeof r.region === 'string' ? r.region : 'Unspecified';
       stats.byRegion[region] = (stats.byRegion[region] || 0) + 1;
     });
     
