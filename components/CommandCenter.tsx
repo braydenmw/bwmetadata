@@ -1,352 +1,606 @@
 ﻿
+import React from 'react';
+import { CheckCircle2, ShieldAlert, Building2, MapPin, Cog, FileText, TrendingUp, Brain, Calculator, Users, Shield, Zap, Database, GitBranch, BarChart3, Clock, Globe, Layers, Lock, Eye, Activity, AlertTriangle } from 'lucide-react';
 
-
-import React, { useState } from 'react';
-import { ReportParameters } from '../types';
-import type { EcosystemPulse } from '../services/EventBus';
-// Inline Letters Catalog Modal to avoid import resolution issues
-// (Inline Letters catalog modal removed for full narrative replacement)
-import GovernancePanel from './GovernancePanel';
-// Removed API pipeline; using sample modal preview
-import { 
-    Play, CheckCircle2, ShieldAlert, 
-    Globe, Lock, ArrowRight, Layers
-} from 'lucide-react';
-
-interface CommandCenterProps {
-    savedReports: ReportParameters[];
-    onCreateNew: () => void;
-    onLoadReport: (report: ReportParameters) => void;
-    onOpenInstant: () => void;
-    onOpenSimulator: () => void;
-    onOpenReportGenerator: () => void;
-    onOpenScenarioReport: () => void;
-    ecosystemPulse?: EcosystemPulse | null;
-    reportId?: string;
-}
-
-// Removed step timeline and scenario payload; using a simple sample document preview instead
-
-const CommandCenter: React.FC<CommandCenterProps> = ({ 
-    onCreateNew,
-    onOpenSimulator,
-    reportId
-}) => {
-    const [accepted, setAccepted] = useState(false);
-    // Recorded chunks are handled inline; no need to track separately
-
-    // All pipeline demo and recording logic removed
+// Command Center — Comprehensive marketing brief for beta evaluation
+const CommandCenter: React.FC = () => {
 
     return (
         <div className="h-full w-full flex-1 bg-stone-50 flex items-start justify-center p-6 pt-16 pb-24 font-sans overflow-y-auto">
-            <div className="max-w-6xl w-full bg-white shadow-2xl border border-stone-200 rounded-sm overflow-hidden flex flex-col">
+            <div className="max-w-5xl w-full bg-white shadow-lg border border-stone-200 rounded-lg overflow-hidden flex flex-col font-serif">
+                
                 {/* Hero */}
-                <section className="bg-bw-navy text-white p-12">
-                    <div className="flex items-center gap-2 text-bw-gold font-bold tracking-widest text-xs uppercase mb-4">
-                        <Layers size={14} /> BW Intelligence AI Command Center
-                    </div>
-                    <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Architecture of an Autonomous Reasoning Partner</h1>
-                    <p className="text-bw-gold font-semibold mb-6">A Strategic Intelligence &amp; Execution Platform for decisions that must survive scrutiny.</p>
-                    <div className="text-gray-200 text-base leading-relaxed border-l-2 border-bw-gold pl-6 max-w-3xl space-y-3">
-                        <p className="text-white"><span className="font-semibold">Developed by BW Global Advisory (Australia).</span></p>
-                        <p className="text-bw-gold font-semibold">The Strategic Imperative: Decision‑Making in a Complex World</p>
-                        <p>In the 21st century, governments and institutions face a landscape of unprecedented complexity. Decisions concerning economic policy, foreign investment, national security, and regional development are fraught with interconnected risks, hidden variables, and the pervasive threat of cognitive bias.</p>
-                        <p>The traditional tools for navigating this landscape — months‑long consulting engagements, static reports, and siloed expert opinions — are proving increasingly inadequate. They are slow, prohibitively expensive, and often produce a single‑point forecast that fails to account for real‑world volatility.</p>
-                        <p>This results in missed opportunities, unforeseen crises, and the inefficient allocation of a nation’s most precious resources: its capital, its talent, and its time. The strategic imperative is clear: a new paradigm for decision‑making is required — one that is dynamic, rigorous, transparent, and adaptive.</p>
+                <section className="bg-bw-navy text-white p-12 text-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+                    <div className="relative z-10">
+                        <p className="text-bw-gold text-sm font-bold uppercase tracking-widest mb-2">Beta Evaluation — January 2026</p>
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-bw-gold">BW AI</h1>
+                        <p className="text-2xl text-white mb-4">The World's First Governed Strategic Reasoning Platform</p>
+                        <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">A self-learning decision engine that turns strategic intent into explainable confidence and execution-ready artifacts—treating every mandate as a living simulation, not a static document.</p>
                     </div>
                 </section>
 
-                {/* The Solution */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Solution: Introducing BW Intelligence AI</h2>
-                    <p className="text-stone-600 text-base mb-6">A Strategic Intelligence &amp; Execution Platform designed for high-stakes decisions.</p>
-                    <div className="rounded-sm border border-stone-200 bg-white p-6 text-base text-stone-700 space-y-4 max-w-5xl">
-                        <p>BW Intelligence AI is a new class of system that functions as a <span className="font-semibold text-stone-900">digital consultant</span> combined with a <span className="font-semibold text-stone-900">high-end document automation factory</span>.</p>
-                        <p>It transforms a user’s inputs — mission, constraints, risk appetite, and strategic goals — into a <span className="font-semibold text-stone-900">live, interactive decision model</span>. The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, and proposes <span className="font-semibold text-stone-900">auditable, evidence-backed fixes</span>.</p>
-                        <p>It is built for speed without sacrificing rigor, delivering in minutes what once took months — and making analytical depth accessible beyond only the world’s largest organizations.</p>
-                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-amber-900 text-sm">
-                            <p className="font-bold">Not a static report</p>
-                            <p className="mt-1">When you change a single input (cost of capital, timeline, partner choice, risk constraints), the model recalibrates: formulas re-run, personas re-evaluate, outcomes update, and the decision packet regenerates — with governance and provenance intact.</p>
+                {/* Key Numbers Banner */}
+                <section className="bg-stone-900 text-white py-8">
+                    <p className="text-center text-gray-300 text-sm mb-6 px-6 max-w-3xl mx-auto">Built on deep research and real-world field testing—these are the building blocks that power every decision:</p>
+                    <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 text-center px-6">
+                        <div>
+                            <div className="text-3xl font-bold text-bw-gold">21</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-wider">Scoring Formulas</div>
+                            <div className="text-xs text-gray-500 mt-1">to measure risk, fit & value</div>
                         </div>
-                    </div>
-                </section>
-
-                {/* What makes it different */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Why This Matters (Now)</h2>
-                    <p className="text-stone-600 text-base mb-6">The global direction is clear: trustworthy AI requires transparency, robustness, and accountability — not just convincing language.</p>
-                    <div className="rounded-sm border border-stone-200 bg-white p-6 text-base text-stone-700 space-y-4 max-w-4xl">
-                        <p>Across jurisdictions, risk frameworks and AI governance standards are converging on the same requirements: explainability, traceability, safety, and accountability. Frameworks like the NIST AI Risk Management Framework and the OECD AI Principles are explicit about the need for transparency, robustness, and accountability — especially in high-impact settings.</p>
-                        <p className="font-semibold text-stone-900">What breaks in the real world:</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">Consulting</span> produces static artifacts that age instantly and are expensive to refresh.</li>
-                            <li><span className="font-semibold">Dashboards / BI</span> describe what happened, but don’t generate governed decisions under uncertainty.</li>
-                            <li><span className="font-semibold">GenAI chat</span> generates persuasive language without a verifiable decision chain.</li>
-                        </ul>
-                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-amber-900 text-sm">
-                            <p className="font-bold">The cost/time gap (why this matters)</p>
-                            <p className="mt-1">A single strategic consulting engagement can take <span className="font-semibold">3–6 months</span> and cost <span className="font-semibold">hundreds of thousands to millions</span>, often ending as a static deck that starts aging immediately.</p>
-                            <p className="mt-2">BW Intelligence AI is designed to produce governed, regenerable outputs in minutes — so teams can test “what if?” scenarios and move faster without losing accountability.</p>
+                        <div>
+                            <div className="text-3xl font-bold text-bw-gold">5</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-wider">Expert Personas</div>
+                            <div className="text-xs text-gray-500 mt-1">that debate every decision</div>
                         </div>
-                        <p className="font-semibold text-stone-900">BW Intelligence AI is not a writing system. It is an autonomous reasoning partner:</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">It refuses bad inputs</span> — contradictions, missing basics, and sanctions red flags are surfaced before analysis.</li>
-                            <li><span className="font-semibold">It debates your plan</span> — Skeptic, Advocate, Regulator, Accountant, Operator (and records disagreement instead of faking certainty).</li>
-                            <li><span className="font-semibold">It runs the 21-formula suite</span> — core engines + derivative indices; each score emits drivers, pressure points, and a confidence band.</li>
-                            <li><span className="font-semibold">It outputs an executable packet</span> — controls, actions, evidence requirements, and export readiness.</li>
-                            <li><span className="font-semibold">It enforces governance</span> — provenance is logged, approvals are staged, exports can be blocked until approved.</li>
-                        </ul>
-                        <p className="font-semibold text-stone-900">Result: a decision chain that can survive scrutiny — not just presentation.</p>
-                    </div>
-                </section>
-
-                {/* NSIL stack */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Core Innovation: NSIL (Nexus Strategic Intelligence Layer)</h2>
-                    <p className="text-stone-600 text-base mb-6">NSIL is the platform’s autonomous reasoning engine. It treats each mandate as a live simulation and governs the path from intake → analysis → export.</p>
-                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">Layer 1 — Adversarial Input Shield</h3>
-                            <p className="text-base text-stone-700 mb-3">Pre-flight validation catches contradictions, missing basics, unrealistic projections, and sanctions-style red flags before they contaminate the decision record.</p>
-                            <p className="text-sm text-stone-500">Outputs: trust score, status (trusted → rejected), flagged fields, and remediation steps.</p>
+                        <div>
+                            <div className="text-3xl font-bold text-bw-gold">200+</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-wider">Document Types</div>
+                            <div className="text-xs text-gray-500 mt-1">from LOIs to due diligence</div>
                         </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">Layer 2 — Multi-Perspective Debate</h3>
-                            <p className="text-base text-stone-700 mb-3">Five personas evaluate the plan in parallel: Skeptic, Advocate, Regulator, Accountant, Operator.</p>
-                            <p className="text-sm text-stone-500">Outputs: consensus, dissent points, and the exact issues to resolve before “yes”.</p>
+                        <div>
+                            <div className="text-3xl font-bold text-bw-gold">10,000</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-wider">Scenario Tests</div>
+                            <div className="text-xs text-gray-500 mt-1">stress-testing each forecast</div>
                         </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">Layer 3 — 21-Formula Execution</h3>
-                            <p className="text-base text-stone-700 mb-3">Core engines and derivative indices run as inspectable calculations with weights, thresholds, and confidence gating — so stakeholders can challenge the drivers, not argue about vibes.</p>
-                            <p className="text-sm text-stone-500">Outputs: scores, drivers, pressure points, and confidence bands.</p>
-                        </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">Layer 4 — Counterfactual & Stress Testing</h3>
-                            <p className="text-base text-stone-700 mb-3">The system generates alternative scenarios and tests how fragile the strategy is under adverse conditions.</p>
-                            <p className="text-sm text-stone-500">Outputs: worst-case deltas, regrets, and the highest-impact mitigations.</p>
-                        </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6 md:col-span-2">
-                            <h3 className="font-bold text-stone-900 mb-2">Layer 5 — Synthesis Into Governable Outputs</h3>
-                            <p className="text-base text-stone-700">All signals are synthesized into a recommendation, then converted into a <span className="font-semibold text-stone-900">decision packet</span> (controls, actions, evidence list, export readiness) with provenance and approval workflow.</p>
+                        <div>
+                            <div className="text-3xl font-bold text-bw-gold">200+</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-wider">Years of Data</div>
+                            <div className="text-xs text-gray-500 mt-1">historical patterns analysed</div>
                         </div>
                     </div>
                 </section>
 
-                {/* The 21 formulas */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The 21-Formula Suite (Clear, Explainable Scoring)</h2>
-                    <p className="text-stone-600 text-base mb-6">The suite turns strategic intent into clear scores and plain-English drivers — so teams can see what pushed a decision up or down, and what to fix.</p>
-                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">5 Primary Engines</h3>
-                            <ul className="list-disc pl-5 space-y-2 text-base text-stone-700">
-                                <li><span className="font-semibold">SPI</span> — partner fit via weighted signals and constraints.</li>
-                                <li><span className="font-semibold">RROI</span> — regional return with downside-adjusted resilience.</li>
-                                <li><span className="font-semibold">SEAM</span> — ecosystem / stakeholder alignment and friction mapping.</li>
-                                <li><span className="font-semibold">IVAS</span> — viability under uncertainty bands (scenario variance).</li>
-                                <li><span className="font-semibold">SCF</span> — strategic cash-flow impact with confidence framing.</li>
-                            </ul>
+                {/* The Problem */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-6 text-center">The Problem We Solve</h2>
+                    <div className="max-w-4xl mx-auto text-lg text-stone-700 leading-relaxed space-y-6">
+                        <p className="text-xl text-stone-800">You have a strategic opportunity in front of you—a potential investment, a partnership, a policy initiative, or a market expansion. Millions of dollars and serious reputations are on the line. Before you can act, you need to answer hard questions: <em>Is this real? What are the risks? Can we execute? Will this survive scrutiny?</em></p>
+                        
+                        <div className="bg-stone-100 border border-stone-300 rounded-lg p-6 text-center">
+                            <p className="font-semibold text-stone-900 text-xl">The real gap isn't money or intelligence.</p>
+                            <p className="text-stone-700 mt-2">It's the translation layer—something that turns your strategic intent into <strong>governed, explainable, action-ready decisions</strong> that boards, partners, and regulators can actually trust.</p>
                         </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">16 Derivative Indices</h3>
-                            <p className="text-base text-stone-700 mb-3">Specialist indices explain <span className="font-semibold">why</span> a plan is strong/weak (capability, governance, cost, risk concentration, regulatory friction, and more).</p>
-                            <p className="text-sm text-stone-500">These indices drive remediation actions and control thresholds in the decision packet.</p>
+                    </div>
+                </section>
+
+                {/* What Makes This Different */}
+                <section className="p-10 bg-stone-100 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">What Makes This Different</h2>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto text-lg">BW AI isn't another chatbot or dashboard. It's a complete decision-making partner that works like a senior consultant—but faster, more thorough, and with full transparency on every conclusion.</p>
+                    <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+                        <div className="bg-white border border-stone-200 rounded-lg p-6 text-center">
+                            <Brain size={32} className="mx-auto text-bw-gold mb-3" />
+                            <h3 className="font-bold text-stone-900 mb-2">It Thinks, Not Just Responds</h3>
+                            <p className="text-sm text-stone-600">The system reasons through problems step-by-step, showing you exactly how it reached each conclusion—so you can challenge it, refine it, and trust it.</p>
                         </div>
-                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-6 md:col-span-2">
-                            <h3 className="font-bold text-amber-900 mb-2">Simple Examples (What the scoring actually does)</h3>
-                            <div className="bg-white border border-amber-200 rounded-sm p-4 text-sm text-stone-800 space-y-3">
+                        <div className="bg-white border border-stone-200 rounded-lg p-6 text-center">
+                            <Layers size={32} className="mx-auto text-bw-gold mb-3" />
+                            <h3 className="font-bold text-stone-900 mb-2">It Owns the Whole Case</h3>
+                            <p className="text-sm text-stone-600">Unlike chatbots that answer one question and forget, this system remembers your context, tracks progress, and manages the full lifecycle of your strategic engagement.</p>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-6 text-center">
+                            <Lock size={32} className="mx-auto text-bw-gold mb-3" />
+                            <h3 className="font-bold text-stone-900 mb-2">It's Auditable by Default</h3>
+                            <p className="text-sm text-stone-600">Every recommendation links back to evidence. Every score shows its working. Your compliance team, board, and partners can trace exactly why any conclusion was reached.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* The BW Brain: NSIL */}
+                <section className="p-10 bg-bw-navy text-white">
+                    <h2 className="text-3xl font-bold text-bw-gold mb-6 text-center">The Brain Behind the Platform</h2>
+                    <p className="text-center text-gray-300 mb-4 max-w-3xl mx-auto text-lg">At the heart of BW AI is something we call <strong className="text-white">NSIL</strong>—the Nexus Strategic Intelligence Layer. Think of it as the reasoning engine that powers every analysis, score, and recommendation.</p>
+                    <p className="text-center text-gray-300 mb-8 max-w-3xl mx-auto">Unlike a simple AI that just predicts the next word, NSIL actively debates, challenges, validates, and learns. It's built to produce decisions that survive board scrutiny, partner negotiation, and regulatory review—because it can explain exactly <em>why</em> it reached each conclusion.</p>
+                    
+                    <div className="max-w-4xl mx-auto">
+                        <h3 className="text-xl font-bold text-bw-gold mb-2 text-center">How NSIL Thinks</h3>
+                        <p className="text-center text-gray-400 mb-6 text-sm">Every analysis passes through five layers—each one adding rigour, challenge, and protection against bad decisions:</p>
+                        <div className="space-y-3">
+                            <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
+                                <div className="w-8 h-8 bg-bw-gold text-bw-navy rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
                                 <div>
-                                    <div className="font-bold text-stone-900">Risk concentration</div>
-                                    <div className="text-stone-700">Highlights single‑point dependencies (one supplier, one partner, one approval path) and recommends practical diversification steps.</div>
-                                </div>
-                                <div className="border-t border-amber-200" />
-                                <div>
-                                    <div className="font-bold text-stone-900">Evidence confidence</div>
-                                    <div className="text-stone-700">Shows when the evidence base is thin or outdated, and forces the system to speak cautiously until stronger evidence is provided.</div>
+                                    <strong className="text-white">Adversarial Input Shield</strong>
+                                    <p className="text-gray-400 text-sm">Auto-cross-checks every claim against World Bank data, sanctions lists, and live feeds. Detects overconfidence and hidden agendas before they poison analysis.</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-amber-900 mt-3">The point is transparency: you can see what drove the result and what changes would improve it.</p>
+                            <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
+                                <div className="w-8 h-8 bg-bw-gold text-bw-navy rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+                                <div>
+                                    <strong className="text-white">Multi-Perspective Reasoner</strong>
+                                    <p className="text-gray-400 text-sm">Five AI personas debate every mandate in parallel—finding weaknesses, surfacing blind spots, and preserving disagreements.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
+                                <div className="w-8 h-8 bg-bw-gold text-bw-navy rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+                                <div>
+                                    <strong className="text-white">Counterfactual Lab</strong>
+                                    <p className="text-gray-400 text-sm">Generates "What if we did the opposite?" scenarios with regret probability bands. Tests rate shocks, partner failures, and policy reversals.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
+                                <div className="w-8 h-8 bg-bw-gold text-bw-navy rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
+                                <div>
+                                    <strong className="text-white">Quantitative Scoring Engine</strong>
+                                    <p className="text-gray-400 text-sm">21 proprietary formulas compute confidence—banded by evidence quality, not vibes. Every score emits value, rationale, and source provenance.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
+                                <div className="w-8 h-8 bg-bw-gold text-bw-navy rounded-full flex items-center justify-center font-bold flex-shrink-0">5</div>
+                                <div>
+                                    <strong className="text-white">Self-Learning Memory</strong>
+                                    <p className="text-gray-400 text-sm">Captures real-world outcomes (δ between prediction and actual) and retunes scoring models. Every engagement starts smarter than the last.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Generic/Agentic Brain */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The Agentic Core (Generic Brain)</h2>
-                    <p className="text-stone-600 text-base mb-6">This is what makes the platform operationally different: a persistent digital worker that orchestrates reasoning, governance, and regeneration — not just content.</p>
-                    <div className="rounded-sm border border-stone-200 bg-white p-6 text-base text-stone-700 space-y-4 max-w-5xl">
-                        <p className="font-semibold text-stone-900">In plain terms, it works like a tireless project team:</p>
-                        <ul className="list-disc pl-5 space-y-2 text-base text-stone-700">
-                            <li><span className="font-semibold">Checks your inputs</span> for contradictions and missing essentials before it starts.</li>
-                            <li><span className="font-semibold">Pulls relevant context</span> (similar past cases and supporting evidence) to avoid “fresh air” analysis.</li>
-                            <li><span className="font-semibold">Runs the scoring in the right order</span> so the outputs are consistent and repeatable.</li>
-                            <li><span className="font-semibold">Challenges assumptions</span> using multiple perspectives, not a single point of view.</li>
-                            <li><span className="font-semibold">Regenerates outputs</span> when inputs change, instead of forcing a new manual engagement.</li>
-                        </ul>
-                        <p className="text-sm text-stone-500">Reassessment is built into the workflow: when you update the mandate/inputs and re-run NSIL, the system recomputes the reasoning and re-synthesizes the decision packet and deliverables, preserving governance and provenance.</p>
-                    </div>
-                </section>
-
-                {/* Outputs */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">What You Get: Decision Packet + Document Factory</h2>
-                    <p className="text-stone-600 text-base mb-6">The output is structured to execute — and designed to be audited.</p>
-                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">A Governed Decision Packet</h3>
-                            <p className="text-base text-stone-700 mb-3">Instead of a narrative memo, you get a packet with explicit controls and readiness gates.</p>
-                            <div className="bg-stone-50 border border-stone-200 rounded-sm p-4 text-sm text-stone-800">
-                                <ul className="list-disc pl-5 space-y-1">
-                                    <li><span className="font-semibold">Workflow</span>: intake → validate → debate → score → synthesize → controls → approvals</li>
-                                    <li><span className="font-semibold">Controls</span>: thresholds and what action triggers if a threshold is breached</li>
-                                    <li><span className="font-semibold">Actions</span>: what to do next, what evidence is needed, and what “ready” looks like</li>
-                                    <li><span className="font-semibold">Export readiness</span>: what can be shared now, and what is blocked pending approval</li>
-                                    <li><span className="font-semibold">Evidence list</span>: what the decision relies on (so it can be reviewed)</li>
+                {/* Agentic AI Section */}
+                <section className="p-10 bg-gradient-to-br from-stone-900 to-bw-navy text-white">
+                    <h2 className="text-3xl font-bold text-bw-gold mb-6 text-center">A World-First: Agentic AI That Thinks and Learns</h2>
+                    <div className="max-w-4xl mx-auto">
+                        <p className="text-center text-gray-300 mb-4 text-lg">Most AI tools respond to prompts—you ask, they answer, conversation over. BW AI is fundamentally different. It's an <strong className="text-white">agentic system</strong> that actively owns your strategic engagement from start to finish.</p>
+                        <p className="text-center text-gray-300 mb-8">This isn't incremental improvement. It's a paradigm shift—combining NSIL's governed reasoning with autonomous agency, creating something that has never existed before: a self-thinking, self-learning strategic consultant that gets smarter with every engagement.</p>
+                        
+                        <div className="grid md:grid-cols-2 gap-6 mb-8">
+                            <div className="bg-white/10 rounded-lg p-6">
+                                <h3 className="font-bold text-bw-gold mb-3 flex items-center gap-2"><Brain size={20} /> Self-Thinking</h3>
+                                <p className="text-gray-300 text-sm mb-3">The system doesn't wait for you to ask the right questions. It proactively identifies gaps in your strategy, surfaces risks you haven't considered, and generates follow-up analysis without being prompted.</p>
+                                <ul className="text-xs text-gray-400 space-y-1">
+                                    <li>• Anticipates what you'll need next</li>
+                                    <li>• Challenges its own conclusions</li>
+                                    <li>• Generates unprompted insights</li>
+                                </ul>
+                            </div>
+                            <div className="bg-white/10 rounded-lg p-6">
+                                <h3 className="font-bold text-bw-gold mb-3 flex items-center gap-2"><Activity size={20} /> Self-Learning</h3>
+                                <p className="text-gray-300 text-sm mb-3">After each engagement, the system captures what happened versus what it predicted. It then adjusts its scoring models and reasoning patterns—getting measurably better over time.</p>
+                                <ul className="text-xs text-gray-400 space-y-1">
+                                    <li>• Tracks prediction vs. reality</li>
+                                    <li>• Retunes formulas based on outcomes</li>
+                                    <li>• Every client benefits from accumulated wisdom</li>
                                 </ul>
                             </div>
                         </div>
-                        <div className="rounded-sm border border-stone-200 bg-white p-6">
-                            <h3 className="font-bold text-stone-900 mb-2">A Large Document Library</h3>
-                            <p className="text-base text-stone-700 mb-3">When the decision is ready, the system can generate execution deliverables from the live model (LOIs, MOUs, term sheets, memos, briefs, and more).</p>
-                            <p className="text-sm text-stone-500">The platform includes a document library spanning 200+ document types (and a growing template set for formal letters), built to convert analysis into action without losing governance.</p>
+                        
+                        <div className="bg-bw-gold/20 border border-bw-gold/40 rounded-lg p-6 text-center">
+                            <p className="text-bw-gold font-bold text-lg mb-2">Why This Matters</p>
+                            <p className="text-gray-300">Traditional AI is static—it knows what it was trained on, nothing more. BW AI is dynamic—it evolves with every mandate, learns from every outcome, and builds institutional knowledge that compounds over time. This is the difference between a tool and a partner.</p>
                         </div>
                     </div>
                 </section>
 
-                {/* The chain of custody */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">The 10-Step Chain of Custody (How a Decision Becomes Exportable)</h2>
-                    <p className="text-stone-600 text-base mb-4">This is the workflow that turns ambiguity into a governed artifact you can actually share.</p>
-                    <ol className="list-decimal pl-5 space-y-2 text-base text-stone-700 max-w-4xl">
-                        <li><span className="font-semibold">Mandate capture</span> — mission, location, intent, constraints.</li>
-                        <li><span className="font-semibold">Input shield</span> — contradictions, missing essentials, sanctions-style red flags.</li>
-                        <li><span className="font-semibold">Persona debate</span> — Skeptic/Advocate/Regulator/Accountant/Operator evaluation.</li>
-                        <li><span className="font-semibold">Core scoring</span> — SPI/RROI/SEAM/IVAS/SCF produce scores + drivers.</li>
-                        <li><span className="font-semibold">Derivative indices</span> — readiness, governance, cost, concentration, friction, resilience.</li>
-                        <li><span className="font-semibold">Counterfactuals</span> — adverse scenarios + fragility checks.</li>
-                        <li><span className="font-semibold">Synthesis</span> — unified recommendation and key decision points.</li>
-                        <li><span className="font-semibold">Controls bound</span> — thresholds + remediation actions attached to the plan.</li>
-                        <li><span className="font-semibold">Governance stage</span> — approvals logged, provenance timeline built.</li>
-                        <li><span className="font-semibold">Export gating</span> — exports blocked until required fields exist and stage ≥ approved.</li>
-                    </ol>
-                </section>
-
-                {/* Regional development reframing */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Regional Development (Making Opportunity Investable)</h2>
-                    <div className="space-y-4 text-stone-700 text-base max-w-4xl">
-                        <p>Regional economies are the backbone of national strength — yet capital concentrates in major hubs because regional opportunity is harder to explain, harder to govern, and harder to defend under scrutiny.</p>
-
-                        <p className="font-semibold text-stone-900">Why bigger cities keep winning (even when they’re saturated)</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">Lower perceived execution risk</span> — talent, vendors, logistics, and “known-good” counterparties feel easier to validate.</li>
-                            <li><span className="font-semibold">Signal value</span> — a tier‑1 city address can satisfy committees, lenders, and boards even when fundamentals are weaker.</li>
-                            <li><span className="font-semibold">Faster approvals &amp; familiarity</span> — teams know the playbook, so fewer unknowns need to be explained.</li>
-                            <li><span className="font-semibold">Network effects</span> — clusters create a self-reinforcing magnet (even as congestion, costs, and bottlenecks rise).</li>
-                        </ul>
-
-                        <p className="font-semibold text-stone-900">Why regional cities are often overlooked (even when the upside is real)</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">Information friction</span> — fragmented data, inconsistent signals, and local nuance that outsiders can’t easily price.</li>
-                            <li><span className="font-semibold">Governance uncertainty</span> — permitting variance, partner quality, and compliance exposure are hard to quantify up-front.</li>
-                            <li><span className="font-semibold">“Investability gap”</span> — opportunity exists, but it isn’t packaged into an auditable, committee-ready decision chain.</li>
-                        </ul>
-
-                        <p className="font-semibold text-stone-900">What BW Intelligence AI does differently</p>
-                        <p>It closes the investability gap by turning a regional opportunity into a governed case: quantified drivers, explicit controls, staged commitments, and an evidence trail that can survive audit.</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">De-risks market entry</span> with persona debate, counterfactual stress tests, and confidence gating (so uncertainty is explicit, not hidden).</li>
-                            <li><span className="font-semibold">Makes mitigation enforceable</span> by binding thresholds and actions to the plan (not just listing risks in prose).</li>
-                            <li><span className="font-semibold">Builds committee-grade artifacts</span> — decision packet + export gating + provenance.</li>
-                        </ul>
-
-                        <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-amber-900 text-sm">
-                            <p className="font-bold">Bee · Flower · Meadow</p>
-                            <p className="mt-1">Big cities are where the bees already gather — dense networks, known signals, easy validation. Regional cities can be extraordinary flowers, but they’re often invisible from the boardroom because the meadow isn’t mapped.</p>
-                            <p className="mt-2">BW Intelligence AI maps the meadow: it makes regional opportunity legible, governable, and repeatable — so investment follows fundamentals, not just familiarity.</p>
+                {/* The 5 Personas */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">Five Expert Perspectives on Every Decision</h2>
+                    <p className="text-center text-stone-600 mb-4 max-w-3xl mx-auto text-lg">Imagine having five senior advisors with different specialties all reviewing your strategy at once—a risk analyst, a growth strategist, a compliance officer, a financial controller, and an operations expert.</p>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto">That's exactly what happens inside BW AI. These five "personas" debate your case in parallel, each bringing their unique lens. They vote, they disagree, and they show you exactly where views differ—so you make the call with full awareness, not false consensus.</p>
+                    
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                        <div className="border border-stone-200 rounded-lg p-5 bg-white">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 bg-red-100 text-red-700 rounded-full flex items-center justify-center"><Shield size={16} /></div>
+                                <h3 className="font-bold text-stone-900">The Skeptic</h3>
+                            </div>
+                            <p className="text-stone-600 text-sm">Finds reasons NOT to proceed. Hunts deal-killers, hidden risks, and over-optimism. Questions every assumption.</p>
                         </div>
-
-                        <p>Every major city started smaller. The constraint is not ambition — it’s whether opportunity can be structured into controlled, auditable commitments that unlock capital and talent without gambling on unknowns.</p>
+                        <div className="border border-stone-200 rounded-lg p-5 bg-white">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center"><TrendingUp size={16} /></div>
+                                <h3 className="font-bold text-stone-900">The Advocate</h3>
+                            </div>
+                            <p className="text-stone-600 text-sm">Finds reasons TO proceed. Identifies growth potential, synergies, optionality, and timing windows.</p>
+                        </div>
+                        <div className="border border-stone-200 rounded-lg p-5 bg-white">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center"><ShieldAlert size={16} /></div>
+                                <h3 className="font-bold text-stone-900">The Regulator</h3>
+                            </div>
+                            <p className="text-stone-600 text-sm">Checks compliance and ethics. Sanctions screening, legal barriers, policy alignment, ESG implications.</p>
+                        </div>
+                        <div className="border border-stone-200 rounded-lg p-5 bg-white">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center"><Calculator size={16} /></div>
+                                <h3 className="font-bold text-stone-900">The Accountant</h3>
+                            </div>
+                            <p className="text-stone-600 text-sm">Tests financial viability. IRR, payback, working capital, margins, liquidity stress, capital efficiency.</p>
+                        </div>
+                        <div className="border border-stone-200 rounded-lg p-5 bg-white md:col-span-2 lg:col-span-1">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center"><Cog size={16} /></div>
+                                <h3 className="font-bold text-stone-900">The Operator</h3>
+                            </div>
+                            <p className="text-stone-600 text-sm">Tests execution feasibility. Logistics, talent, infrastructure, supply chains, 100-day activation reality.</p>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-8 bg-stone-50 border border-stone-200 rounded-lg p-6 max-w-4xl mx-auto">
+                        <h4 className="font-bold text-stone-900 mb-3 text-center">How Outputs Are Born</h4>
+                        <div className="grid md:grid-cols-3 gap-4 text-sm text-stone-700">
+                            <div className="text-center">
+                                <div className="text-green-600 font-bold mb-1">✓ AGREE</div>
+                                <p>High confidence zones where personas converge</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-amber-600 font-bold mb-1">⚠ DISAGREE</div>
+                                <p>Requires user decision; debate transcript preserved</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-red-600 font-bold mb-1">⊘ BLIND SPOTS</div>
+                                <p>What none considered—surfaced proactively</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                {/* Who it is for */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Who It’s For</h2>
-                    <div className="space-y-4 text-stone-700 text-base max-w-4xl">
-                        <p>BW Intelligence AI is built for organizations that must make decisions that survive scrutiny — politically, financially, legally, and operationally — and want to upgrade capability without waiting months for static deliverables.</p>
-                        <ul className="list-disc pl-5 space-y-1">
-                            <li>Government &amp; policy leadership</li>
-                            <li>Investment screening and capital allocation teams</li>
-                            <li>Banks and risk committees</li>
-                            <li>PPP and infrastructure program owners</li>
-                            <li>Corporate strategy and operators</li>
-                            <li>Regional development agencies</li>
+                {/* The 21-Formula Suite */}
+                <section className="p-10 bg-stone-100 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">21 Proprietary Scoring Formulas</h2>
+                    <p className="text-center text-stone-600 mb-4 max-w-3xl mx-auto text-lg">How do you turn complex strategic questions into actionable scores? We built 21 proprietary formulas—each designed to measure a specific dimension of risk, value, fit, or feasibility.</p>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto">These aren't black boxes. Every score shows its working: what inputs drove it, how confident we are in the data, and what would change the result. Think of it as a financial model for strategic confidence—rigorous, transparent, and auditable.</p>
+                    
+                    <div className="max-w-5xl mx-auto">
+                        <h3 className="font-bold text-stone-800 mb-4 flex items-center gap-2"><Calculator size={18} className="text-bw-gold" /> 5 Primary Engines</h3>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+                            <div className="bg-white border border-stone-200 rounded-lg p-4">
+                                <div className="font-bold text-bw-navy">SPI™</div>
+                                <div className="text-sm text-stone-700">Strategic Partnership Index</div>
+                                <p className="text-xs text-stone-500 mt-1">Partner fit: reach, credibility, ops capacity, compliance, governance alignment</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4">
+                                <div className="font-bold text-bw-navy">RROI™</div>
+                                <div className="text-sm text-stone-700">Regional Return on Investment</div>
+                                <p className="text-xs text-stone-500 mt-1">Risk-adjusted cashflows with sector hazard multipliers and location premia</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4">
+                                <div className="font-bold text-bw-navy">SEAM™</div>
+                                <div className="text-sm text-stone-700">Ecosystem Assessment & Matching</div>
+                                <p className="text-xs text-stone-500 mt-1">Complementarity, non-overlap, governance fit, ecosystem synergy potential</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4">
+                                <div className="font-bold text-bw-navy">IVAS™</div>
+                                <div className="text-sm text-stone-700">Investment Viability Score</div>
+                                <p className="text-xs text-stone-500 mt-1">Monte Carlo probability of positive NPV across 10,000 simulations</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4">
+                                <div className="font-bold text-bw-navy">SCF™</div>
+                                <div className="text-sm text-stone-700">Strategic Cash Flow Impact</div>
+                                <p className="text-xs text-stone-500 mt-1">Value uplift vs. baseline with discount rate, leverage, and timing sensitivity</p>
+                            </div>
+                        </div>
+                        
+                        <h3 className="font-bold text-stone-800 mb-4 flex items-center gap-2"><BarChart3 size={18} className="text-bw-gold" /> 16 Derivative Indices</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>CRI</strong> — Counterfactual Robustness</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>OVS</strong> — Opportunity Velocity</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>PRI</strong> — Partner Readiness</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>RCI</strong> — Risk Concentration</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>CFI</strong> — Compliance Friction</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>TIS</strong> — Trust & Integrity</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>SDI</strong> — Supply Dependency</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>LRS</strong> — Logistics Resilience</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>ECI</strong> — Execution Confidence</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>GMS</strong> — Governance Maturity</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>ECS</strong> — Evidence Confidence</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>PGI</strong> — Perception Gap</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>LCR</strong> — Location Composite Risk</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>CES</strong> — Capital Efficiency</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>AV</strong> — Activation Velocity</div>
+                            <div className="bg-white border border-stone-200 rounded p-2"><strong>TTI</strong> — Transparency Index</div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Evidence Clamping */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-6 text-center">Honest Confidence: The System Won't Fake Certainty</h2>
+                    <div className="max-w-4xl mx-auto">
+                        <p className="text-lg text-stone-700 leading-relaxed mb-4 text-center">You've seen it before: AI systems that sound confident about everything, even when they're making things up. That's called "hallucination," and it's dangerous for high-stakes decisions.</p>
+                        <p className="text-lg text-stone-700 leading-relaxed mb-6 text-center">BW AI takes the opposite approach. When evidence is thin, the system automatically <strong>dials down its confidence</strong>—using hedged language, flagging gaps, and in some cases blocking document exports until you've addressed the data quality issues. We call this "evidence clamping."</p>
+                        
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
+                            <h3 className="font-bold text-amber-800 mb-4 flex items-center gap-2"><AlertTriangle size={18} /> Evidence Confidence Score (ECS) Gating</h3>
+                            <div className="grid md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <strong className="text-stone-800">Formula:</strong>
+                                    <p className="font-mono text-xs bg-white p-2 rounded mt-1">ECS = coverage × freshness × diversity</p>
+                                </div>
+                                <div>
+                                    <strong className="text-stone-800">Critical Threshold:</strong>
+                                    <p className="text-stone-700 mt-1">If ECS &lt; 0.4, system <strong>clamps assertions</strong> and adds caution language</p>
+                                </div>
+                            </div>
+                            <div className="mt-4 text-sm text-amber-800">
+                                <strong>What gets clamped:</strong> Recommendations become hedged • Export actions blocked on RED status • Required mitigations surfaced • Language tone adjusted to evidence band
+                            </div>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-3 gap-4">
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl font-bold text-green-700 mb-1">GREEN</div>
+                                <p className="text-sm text-green-700">ECS ≥ 0.7</p>
+                                <p className="text-xs text-stone-600 mt-2">Full confidence, all actions enabled</p>
+                            </div>
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl font-bold text-amber-700 mb-1">AMBER</div>
+                                <p className="text-sm text-amber-700">0.4 ≤ ECS &lt; 0.7</p>
+                                <p className="text-xs text-stone-600 mt-2">Hedged language, flagged for review</p>
+                            </div>
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl font-bold text-red-700 mb-1">RED</div>
+                                <p className="text-sm text-red-700">ECS &lt; 0.4</p>
+                                <p className="text-xs text-stone-600 mt-2">Clamped assertions, exports blocked</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Document Factory */}
+                <section className="p-10 bg-stone-100 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">From Analysis to Action: 200+ Document Types</h2>
+                    <p className="text-center text-stone-600 mb-4 max-w-3xl mx-auto text-lg">Analysis is worthless if it doesn't turn into action. That's why BW AI includes a complete document factory—generating over 200 types of execution-ready artifacts from your strategic analysis.</p>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto">These aren't templates you fill in. They're intelligent documents that draw directly from your live analysis, update automatically when inputs change, and embed the governance and evidence trails your stakeholders need to sign off.</p>
+                    
+                    <div className="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><FileText size={16} className="text-bw-gold" /> Foundation</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Letters of Intent (LOI)</li>
+                                <li>• Term Sheets</li>
+                                <li>• MOUs & NDAs</li>
+                                <li>• Expression of Interest</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><BarChart3 size={16} className="text-bw-gold" /> Financial</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Financial Models</li>
+                                <li>• Investment Memos</li>
+                                <li>• Valuation Reports</li>
+                                <li>• Project Finance Docs</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Shield size={16} className="text-bw-gold" /> Risk & DD</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Due Diligence Reports</li>
+                                <li>• Risk Registers</li>
+                                <li>• Sanctions Screening</li>
+                                <li>• AML/KYC Packs</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Building2 size={16} className="text-bw-gold" /> Government</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Policy Briefs</li>
+                                <li>• Cabinet Memos</li>
+                                <li>• PPP Frameworks</li>
+                                <li>• Grant Applications</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Users size={16} className="text-bw-gold" /> Partnership</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• JV Agreements</li>
+                                <li>• Consortium Charters</li>
+                                <li>• Partner Scorecards</li>
+                                <li>• Alliance Frameworks</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Cog size={16} className="text-bw-gold" /> Execution</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Implementation Plans</li>
+                                <li>• 100-Day Roadmaps</li>
+                                <li>• Project Charters</li>
+                                <li>• Change Management</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Globe size={16} className="text-bw-gold" /> ESG</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• ESG Reports</li>
+                                <li>• Carbon Footprint</li>
+                                <li>• SDG Alignment</li>
+                                <li>• Community Plans</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-4">
+                            <h4 className="font-bold text-stone-900 mb-2 flex items-center gap-2"><Database size={16} className="text-bw-gold" /> Intelligence</h4>
+                            <ul className="text-xs text-stone-600 space-y-1">
+                                <li>• Market Dossiers</li>
+                                <li>• SWOT / PESTLE</li>
+                                <li>• Location Analysis</li>
+                                <li>• Precedent Studies</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-8 bg-white border border-stone-200 rounded-lg p-6 max-w-4xl mx-auto">
+                        <h4 className="font-bold text-stone-900 mb-3 text-center flex items-center justify-center gap-2"><Clock size={18} className="text-bw-gold" /> Generation Times</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-center">
+                            <div><span className="font-bold text-bw-navy">&lt; 2 min</span><br/><span className="text-stone-600">Letter of Intent</span></div>
+                            <div><span className="font-bold text-bw-navy">&lt; 3 min</span><br/><span className="text-stone-600">Policy Brief</span></div>
+                            <div><span className="font-bold text-bw-navy">&lt; 5 min</span><br/><span className="text-stone-600">Financial Model</span></div>
+                            <div><span className="font-bold text-bw-navy">&lt; 15 min</span><br/><span className="text-stone-600">Due Diligence Report</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Monte Carlo & Counterfactuals */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">Stress-Testing Your Decisions</h2>
+                    <p className="text-center text-stone-600 mb-4 max-w-3xl mx-auto text-lg">Before you commit, you need to know: What could go wrong? What if the opposite approach is actually better? What happens if key assumptions fail?</p>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto">BW AI answers these questions through two powerful techniques. <strong>Monte Carlo simulation</strong> runs thousands of "what if" scenarios to stress-test your financial forecasts. <strong>Counterfactual analysis</strong> asks "what if we did the exact opposite?" to surface regret risks you might miss.</p>
+                    <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-3 flex items-center gap-2"><GitBranch size={18} className="text-bw-gold" /> Counterfactual Analysis</h3>
+                            <p className="text-stone-700 text-sm mb-4">For every recommendation, the system asks: "What if we did the opposite?" This surfaces the risks of both action <em>and</em> inaction.</p>
+                            <ul className="text-xs text-stone-600 space-y-2">
+                                <li><strong>Interest rate shocks:</strong> What if rates rise 30-90 basis points?</li>
+                                <li><strong>Partner failure:</strong> What if your key partner defaults?</li>
+                                <li><strong>Policy reversal:</strong> What if regulations change?</li>
+                                <li><strong>Regret probability:</strong> Quantified chance you'll wish you chose differently</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-3 flex items-center gap-2"><Activity size={18} className="text-bw-gold" /> Monte Carlo Simulation</h3>
+                            <p className="text-stone-700 text-sm mb-4">The system runs up to 10,000 randomized scenarios—varying demand, costs, timing, and exchange rates—to show you the probability range of outcomes.</p>
+                            <ul className="text-xs text-stone-600 space-y-2">
+                                <li><strong>P10 / P50 / P90:</strong> Best case, most likely, and worst case outcomes</li>
+                                <li><strong>Sensitivity ranking:</strong> Which variables move the needle most</li>
+                                <li><strong>Correlated variables:</strong> Models how risks compound together</li>
+                                <li><strong>Evidence-aware:</strong> Wider bands when data is thin</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Historical Intelligence */}
+                <section className="p-10 bg-stone-100 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">Learning from 200+ Years of History</h2>
+                    <p className="text-center text-stone-600 mb-4 max-w-3xl mx-auto text-lg">Every strategic decision has precedent. Markets have crashed before. Partnerships have failed before. Regions have emerged before. The question is: are you learning from that history, or ignoring it?</p>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto">BW AI analyses over 200 years of global economic patterns (1820–2025), finding historical analogues for your situation and showing you what worked, what failed, and why. It's not prediction—it's pattern recognition with applicability scoring.</p>
+                    <div className="max-w-4xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-4">
+                            <div className="bg-white border border-stone-200 rounded-lg p-4 text-center">
+                                <Clock size={24} className="mx-auto text-bw-gold mb-2" />
+                                <strong className="text-stone-900">Historical Precedent</strong>
+                                <p className="text-sm text-stone-600 mt-1">Finds analogous cases with applicability scores and adaptation notes</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4 text-center">
+                                <Database size={24} className="mx-auto text-bw-gold mb-2" />
+                                <strong className="text-stone-900">Live Data Integration</strong>
+                                <p className="text-sm text-stone-600 mt-1">World Bank, sanctions lists, exchange rates—no mock data</p>
+                            </div>
+                            <div className="bg-white border border-stone-200 rounded-lg p-4 text-center">
+                                <TrendingUp size={24} className="mx-auto text-bw-gold mb-2" />
+                                <strong className="text-stone-900">Outcome Learning</strong>
+                                <p className="text-sm text-stone-600 mt-1">Delta between prediction and actual retunes scoring models</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Performance Stats */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">Fast, Transparent, Auditable</h2>
+                    <p className="text-center text-stone-600 mb-8 max-w-3xl mx-auto text-lg">Strategic consulting usually takes weeks. BW AI delivers in minutes—with full transparency on how every conclusion was reached.</p>
+                    <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-bw-navy to-stone-900 text-white rounded-lg p-6">
+                            <h3 className="font-bold text-bw-gold mb-4 flex items-center gap-2"><Zap size={18} /> Speed</h3>
+                            <ul className="space-y-3 text-sm">
+                                <li className="flex justify-between"><span>First response:</span><strong>1-3 seconds</strong></li>
+                                <li className="flex justify-between"><span>Full document generation:</span><strong>2-15 minutes</strong></li>
+                                <li className="flex justify-between"><span>vs. traditional consulting:</span><strong>5-15× faster</strong></li>
+                            </ul>
+                        </div>
+                        <div className="bg-gradient-to-br from-bw-navy to-stone-900 text-white rounded-lg p-6">
+                            <h3 className="font-bold text-bw-gold mb-4 flex items-center gap-2"><Eye size={18} /> Transparency</h3>
+                            <ul className="space-y-3 text-sm">
+                                <li className="flex justify-between"><span>Every claim:</span><strong>Traced to source</strong></li>
+                                <li className="flex justify-between"><span>Every score:</span><strong>Shows its working</strong></li>
+                                <li className="flex justify-between"><span>Every decision:</span><strong>Full audit trail</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Who Built This */}
+                <section className="p-10 bg-stone-50 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-6 text-center">Who Built This</h2>
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white border border-stone-200 rounded-xl p-8">
+                            <div className="flex flex-col md:flex-row gap-8 items-start">
+                                <div className="flex-shrink-0 flex flex-col items-center">
+                                    <div className="w-24 h-24 bg-bw-navy rounded-full flex items-center justify-center text-bw-gold text-3xl font-bold">BW</div>
+                                    <p className="text-stone-600 text-sm mt-2">Founding Architect</p>
+                                </div>
+                                <div className="flex-1 text-stone-700 text-lg leading-relaxed space-y-4">
+                                    <p><strong className="text-stone-900 text-xl">Brayden Walls</strong><br/>Founder & System Architect, BW Global Advisory</p>
+                                    <p>This system was born from <strong>16 months of intensive field work</strong> in regional Philippines—inside the friction that actually breaks deals and stalls development. I mapped what blocks confidence: probity gaps, sanctions exposure, policy misalignment, liquidity reality, and execution drag.</p>
+                                    <p className="italic border-l-4 border-bw-gold pl-4">"Until intent is computable, confidence stays political and artifacts stay performative."</p>
+                                    <p>BW AI exists to make mandates computable, confidence explainable, and action immediate.</p>
+                                    <div className="flex flex-wrap gap-4 pt-4 text-sm text-stone-600">
+                                        <span className="flex items-center gap-1"><Building2 size={14} /> BW Global Advisory Pty Ltd</span>
+                                        <span className="flex items-center gap-1"><MapPin size={14} /> Melbourne, Australia</span>
+                                        <span>ABN 55 978 113 300</span>
+                                    </div>
+                                    <p className="text-xs text-stone-500 mt-2">Trading as Sole Trader while in R&D</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Who This Is For */}
+                <section className="p-10">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-6 text-center">Who This Is For</h2>
+                    <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-2 text-lg flex items-center gap-2"><Building2 size={18} className="text-bw-gold" /> Government & Policy</h3>
+                            <p className="text-stone-700 text-sm">Design programs with explicit gates, risks, and audit trails. Generate policy briefs, program charters, cabinet memos, and probity packs aligned to governance requirements.</p>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-2 text-lg flex items-center gap-2"><BarChart3 size={18} className="text-bw-gold" /> Institutional Investors & DFIs</h3>
+                            <p className="text-stone-700 text-sm">Explainable screening, board-ready packets, and confidence bands that committees can sign off on. No black-box scores.</p>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-2 text-lg flex items-center gap-2"><Globe size={18} className="text-bw-gold" /> Corporate Strategy</h3>
+                            <p className="text-stone-700 text-sm">Market entry, JV design, M&A fit, and supply chain resilience with quantified pressure points and auto-generated deliverables.</p>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg p-6">
+                            <h3 className="font-bold text-stone-900 mb-2 text-lg flex items-center gap-2"><MapPin size={18} className="text-bw-gold" /> Regional Development</h3>
+                            <p className="text-stone-700 text-sm">Make regional investability explicit. Package opportunity with the evidence and controls that global capital requires.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* The Meadow Philosophy */}
+                <section className="p-10 bg-bw-navy text-white">
+                    <h2 className="text-3xl font-bold text-bw-gold mb-6 text-center">The Meadow Philosophy</h2>
+                    <blockquote className="max-w-3xl mx-auto border-l-4 border-bw-gold pl-6 italic text-xl leading-relaxed mb-6">
+                        "Big cities are where the bees already gather—dense networks, known signals, easy validation. Regional cities can be extraordinary flowers, but they're often invisible from the boardroom because the meadow isn't mapped."
+                    </blockquote>
+                    <p className="max-w-3xl mx-auto text-lg text-gray-300 text-center">BW AI maps the meadow. It makes regional opportunity legible, governable, and repeatable—so investment follows fundamentals, not just familiarity.</p>
+                </section>
+
+                {/* Beta CTA */}
+                <section className="p-10 bg-stone-100 border-y border-stone-200">
+                    <h2 className="text-3xl font-bold text-stone-900 mb-4 text-center">Join the Beta Evaluation</h2>
+                    <div className="max-w-3xl mx-auto text-lg text-stone-700 leading-relaxed text-center space-y-4">
+                        <p>This platform is entering its <strong>beta testing phase</strong>. We're seeking strategic partners who face high-stakes decisions and want governed, explainable intelligence.</p>
+                        <p className="font-semibold text-stone-800">What beta partners receive:</p>
+                        <ul className="list-none space-y-2 text-left max-w-md mx-auto">
+                            <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> Full platform access for pilot engagement</li>
+                            <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> Direct collaboration with the founding architect</li>
+                            <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> Influence on roadmap priorities</li>
+                            <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> Preferred terms as the platform scales</li>
                         </ul>
-                        <p><span className="font-semibold">Built by BW Global Advisory:</span> an independent Australian initiative, founded and solely developed by Brayden Walls.</p>
+                        <p className="text-stone-600 pt-4">To discuss a pilot engagement, contact BW Global Advisory directly.</p>
                     </div>
                 </section>
-
-                {/* CTA framing */}
-                <section className="p-10 border-t border-stone-200">
-                    <h2 className="text-2xl font-bold text-stone-900 mb-2">Start Here</h2>
-                    <p className="text-stone-700 text-base max-w-4xl">Accept the Terms of Engagement to proceed, then define your mandate. The system will run NSIL + the 21-formula suite to generate a governed decision packet — and the execution deliverables needed to act.</p>
-                </section>
-
-                {/* Governance & Provenance */}
-                <section className="p-10 border-t border-stone-200">
-                    <GovernancePanel reportId={reportId} />
-                </section>
-                {/* Scenario sample modal removed */}
-
-                {/* Compact closing line integrated into CTA */}
 
                 {/* Terms of Engagement & Compliance */}
                 <section className="p-10 border-t border-stone-200">
-                    <h3 className="text-bw-navy font-bold uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
+                    <h3 className="text-bw-navy font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
                         <ShieldAlert size={16} className="text-bw-gold" /> Terms of Engagement & Compliance
                     </h3>
-                    <div className="space-y-4 text-sm text-stone-700 bg-white p-6 rounded-sm border border-stone-200 max-h-[320px] overflow-y-auto shadow-inner">
-                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW Intelligence AI is a decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
+                    <div className="space-y-4 text-sm text-stone-700 bg-white p-6 rounded-lg border border-stone-200 max-h-[320px] overflow-y-auto shadow-inner">
+                        <p><strong className="text-stone-900 block mb-1">1. Strategic Decision Support</strong> BW AI is a decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
                         <p><strong className="text-stone-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This reduces false confidence and enforces explainability.</p>
-                        <p><strong className="text-stone-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws. Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
-                        <p><strong className="text-stone-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI™, RROI™, SEAM™, etc.) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
-                        <p><strong className="text-stone-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability.</p>
-                        <p><strong className="text-stone-900 block mb-1">6. Liability &amp; IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) are owned by BW Global Advisory (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non‑public materials confidential, use them solely for evaluation, and not disclose, copy, reverse‑engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&amp;D notice: the platform is provided “AS IS” without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
+                        <p><strong className="text-stone-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws (GDPR, Australian Privacy Act). Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
+                        <p><strong className="text-stone-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
+                        <p><strong className="text-stone-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability. AI must never replace human authority.</p>
+                        <p><strong className="text-stone-900 block mb-1">6. Liability & IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&D notice: the platform is provided "AS IS" without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
                     </div>
-                    <div className="mt-6 flex flex-col gap-4">
-                        <label className="flex items-center gap-3 cursor-pointer select-none group">
-                            <div className={`w-5 h-5 border rounded flex items-center justify-center transition-all ${accepted ? 'bg-bw-navy border-bw-navy' : 'bg-white border-stone-300 group-hover:border-bw-navy'}`}>
-                                {accepted && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
-                            </div>
-                            <input type="checkbox" className="hidden" checked={accepted} onChange={e => setAccepted(e.target.checked)} />
-                            <span className="text-sm font-bold text-stone-700">I have read and accept the Terms of Engagement.</span>
-                        </label>
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <button 
-                                onClick={onCreateNew}
-                                disabled={!accepted}
-                                className="flex-1 bg-bw-navy text-white py-4 px-6 rounded-sm font-bold text-sm uppercase tracking-wide flex items-center justify-between gap-2 hover:bg-bw-gold hover:text-bw-navy transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg group"
-                            >
-                                <span className="flex items-center gap-3">{!accepted ? <Lock size={16} /> : <Play size={16} />} Define Your Mandate</span>
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button 
-                                onClick={onOpenSimulator}
-                                className="flex-1 bg-white text-stone-600 border border-stone-300 py-4 px-6 rounded-sm font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-stone-100 hover:text-stone-900 transition-all"
-                            >
-                                <Globe size={14} />
-                                View System Monitor
-                            </button>
-                        </div>
-                    </div>
-                    <p className="text-stone-500 text-xs mt-2">© 2026 BW Global Advisory. Nexus Intelligence OS v6.0 — Melbourne, Australia.</p>
+                    <p className="text-stone-500 text-xs mt-4 text-center">© 2026 BW Global Advisory Pty Ltd. Nexus Intelligence OS v6.0 — Melbourne, Australia. ABN 55 978 113 300. Trading as Sole Trader while in R&D.</p>
                 </section>
-                {/* (No modals; full narrative replacement) */}
             </div>
         </div>
     );
 };
 
 export default CommandCenter;
-

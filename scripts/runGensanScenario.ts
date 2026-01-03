@@ -50,7 +50,7 @@ function buildScenarioParams(): ReportParameters {
     userTier: 'enterprise',
     entityClassification: 'Consortium',
     parentAgency: 'BW Global Advisory',
-    operatingUnit: 'BW Nexus AI',
+    operatingUnit: 'BWGA AI',
     missionRequestSummary: 'Unlock probity-assured cold-chain hub for Mindanao exports.',
     assistanceBackground: 'Scenario test capturing El Nino and customs enforcement dynamics.',
     intakeGuidanceMode: 'expert',

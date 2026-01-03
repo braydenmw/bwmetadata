@@ -531,43 +531,7 @@ const App: React.FC = () => {
                 
                 {/* 1. COMMAND CENTER (DASHBOARD) */}
                 {viewMode === 'command-center' && (
-                    <CommandCenter 
-                        savedReports={savedReports}
-                        onCreateNew={startNewMission}
-                        onLoadReport={loadReport}
-                        onOpenInstant={() => setViewMode('partner-management')} 
-                        onOpenSimulator={() => setViewMode('live-feed')}
-                        onOpenReportGenerator={() => setViewMode('document-suite')}
-                        onOpenScenarioReport={() => {
-                            const scenarioParams: ReportParameters = {
-                                ...INITIAL_PARAMETERS,
-                                id: Math.random().toString(36).slice(2, 11),
-                                createdAt: Date.now().toString(),
-                                organizationName: 'Japanese Cold‑Chain & Export Logistics JV',
-                                userName: 'BWGA Operator',
-                                userDepartment: 'Investment Facilitation',
-                                country: 'Philippines',
-                                industry: ['Cold-chain', 'Logistics', 'Agribusiness'],
-                                region: 'General Santos (Mindanao)',
-                                organizationType: 'Investor',
-                                organizationSubType: 'Cold‑chain / Logistics',
-                                strategicIntent: ['Regional hub setup', 'Portside cold storage', 'Reefer trucking', 'HACCP‑certified processing'],
-                                problemStatement: 'Investor confidence blocked by port security and procurement integrity issues; need probity + telemetry + trustee controls.'
-                            } as ReportParameters;
-                            setParams(scenarioParams);
-                            setReportData(initialReportData);
-                            setInsights([]);
-                            setAutonomousInsights([]);
-                            setAutonomousSuggestions([]);
-                            setViewMode('report-generator');
-                            // Persist scenario for testing in reports API
-                            ReportsService.upsert(scenarioParams).then(() => {
-                                setSavedReports(prev => [scenarioParams, ...prev]);
-                            }).catch(err => console.error('Failed to persist scenario report', err));
-                        }}
-                        ecosystemPulse={ecosystemPulse}
-                        reportId={params.id}
-                    />
+                    <CommandCenter />
                 )}
 
                 {/* 2. PARTNER MANAGEMENT */}

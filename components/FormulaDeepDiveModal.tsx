@@ -16,7 +16,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                 <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
                     <div className="flex items-center gap-3">
                         <BookOpen className="w-6 h-6 text-blue-600" />
-                        <h2 className="text-xl font-bold text-slate-900">BWGA Intelligence AI — Full Technical Brief &amp; System Audit</h2>
+                        <h2 className="text-xl font-bold text-slate-900">Brayden Walls · BW Global Advisory — Full Technical Brief &amp; System Audit</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -38,9 +38,9 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div>
-                                <h3 className="text-lg font-bold text-slate-900">BW Nexus AI — Technical Proof &amp; Comparative Brief</h3>
+                                <h3 className="text-lg font-bold text-slate-900">BWGA AI — Technical Proof &amp; Comparative Brief</h3>
                                 <p className="text-slate-600 text-sm leading-relaxed">Prepared for funding partners, strategic partners, government, institutions, banks, enterprises. Prepared by BW Global Advisory (BWGA) — Founding Architect: Brayden Walls.</p>
-                                <p className="text-slate-600 text-sm leading-relaxed">System: BW Nexus AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain. Sovereign-grade, explainable, auditable, continuously learning; not a black box.</p>
+                                <p className="text-slate-600 text-sm leading-relaxed">System: BWGA AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain. Sovereign-grade, explainable, auditable, continuously learning; not a black box.</p>
                             </div>
                             <div className="flex gap-2">
                                 <a
@@ -151,7 +151,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                                 </ul>
                             </div>
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <p className="text-sm font-bold text-slate-800 mb-2">BW Nexus AI</p>
+                                <p className="text-sm font-bold text-slate-800 mb-2">BWGA AI</p>
                                 <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
                                     <li>Governed reasoning (NSIL) + Agentic execution.</li>
                                     <li>Counterfactuals + 21-formula explainable scoring.</li>
