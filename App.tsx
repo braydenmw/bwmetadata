@@ -531,7 +531,7 @@ const App: React.FC = () => {
                 
                 {/* 1. COMMAND CENTER (DASHBOARD) */}
                 {viewMode === 'command-center' && (
-                    <CommandCenter />
+                    <CommandCenter onEnterPlatform={() => setViewMode('report-generator')} />
                 )}
 
                 {/* 2. PARTNER MANAGEMENT */}

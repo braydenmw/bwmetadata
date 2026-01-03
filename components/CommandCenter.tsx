@@ -1,9 +1,15 @@
 ﻿
-import React from 'react';
-import { CheckCircle2, ShieldAlert, Building2, MapPin, Cog, FileText, TrendingUp, Brain, Calculator, Users, Shield, Zap, Database, GitBranch, BarChart3, Clock, Globe, Layers, Lock, Eye, Activity, AlertTriangle } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle2, ShieldAlert, Building2, MapPin, Cog, FileText, TrendingUp, Brain, Calculator, Users, Shield, Zap, Database, GitBranch, BarChart3, Clock, Globe, Layers, Lock, Eye, Activity, AlertTriangle, ArrowRight } from 'lucide-react';
 
 // Command Center — Comprehensive marketing brief for beta evaluation
-const CommandCenter: React.FC = () => {
+
+interface CommandCenterProps {
+    onEnterPlatform?: () => void;
+}
+
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     return (
         <div className="h-full w-full flex-1 bg-stone-50 flex items-start justify-center p-6 pt-16 pb-24 font-sans overflow-y-auto">
@@ -596,7 +602,41 @@ const CommandCenter: React.FC = () => {
                         <p><strong className="text-stone-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability. AI must never replace human authority.</p>
                         <p><strong className="text-stone-900 block mb-1">6. Liability & IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&D notice: the platform is provided "AS IS" without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
                     </div>
-                    <p className="text-stone-500 text-xs mt-4 text-center">© 2026 BW Global Advisory Pty Ltd. Nexus Intelligence OS v6.0 — Melbourne, Australia. ABN 55 978 113 300. Trading as Sole Trader while in R&D.</p>
+                    
+                    {/* Terms Acceptance Checkbox */}
+                    <div className="mt-6 flex items-start gap-3">
+                        <input 
+                            type="checkbox" 
+                            id="acceptTerms" 
+                            checked={termsAccepted}
+                            onChange={(e) => setTermsAccepted(e.target.checked)}
+                            className="mt-1 w-5 h-5 rounded border-stone-300 text-bw-navy focus:ring-bw-gold cursor-pointer"
+                        />
+                        <label htmlFor="acceptTerms" className="text-sm text-stone-700 cursor-pointer">
+                            I have read and agree to the <strong>Terms of Engagement & Compliance</strong> above. I understand that BW AI is a decision support platform in R&D beta, and all outputs require professional validation before binding commitments.
+                        </label>
+                    </div>
+                    
+                    {/* Access Platform Button */}
+                    <div className="mt-6 text-center">
+                        <button 
+                            disabled={!termsAccepted}
+                            onClick={() => termsAccepted && onEnterPlatform?.()}
+                            className={`inline-flex items-center gap-2 px-8 py-4 rounded-lg font-bold text-lg transition-all ${
+                                termsAccepted 
+                                    ? 'bg-bw-navy text-white hover:bg-bw-navy/90 cursor-pointer shadow-lg hover:shadow-xl' 
+                                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                            }`}
+                        >
+                            Access BW AI Platform
+                            <ArrowRight size={20} />
+                        </button>
+                        {!termsAccepted && (
+                            <p className="text-xs text-stone-500 mt-2">Please accept the terms above to continue</p>
+                        )}
+                    </div>
+                    
+                    <p className="text-stone-500 text-xs mt-6 text-center">© 2026 BW Global Advisory Pty Ltd. Nexus Intelligence OS v6.0 — Melbourne, Australia. ABN 55 978 113 300. Trading as Sole Trader while in R&D.</p>
                 </section>
             </div>
         </div>
