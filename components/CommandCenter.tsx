@@ -48,6 +48,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                     <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Architecture of an Autonomous Reasoning Partner</h1>
                     <p className="text-bw-gold font-semibold mb-6">A Strategic Intelligence &amp; Execution Platform for decisions that must survive scrutiny.</p>
                     <div className="text-gray-200 text-sm leading-relaxed border-l-2 border-bw-gold pl-6 max-w-3xl space-y-3">
+                        <p className="text-white"><span className="font-semibold">Built by BW Global Advisory</span> — an independent Australian initiative founded and solely developed by Brayden Walls.</p>
                         <p className="text-bw-gold font-semibold">The strategic imperative is clear: decision-making is now too complex, too fast, and too consequential for static work products.</p>
                         <p>Governments and institutions are being asked to make high-stakes choices across economic policy, investment, security, procurement, and regional development — inside a landscape of interconnected risks, hidden variables, and cognitive bias.</p>
                         <p>Traditional tools — months-long consulting engagements, static reports, and siloed expert opinions — are often too slow, too expensive, and too brittle under real-world volatility. They frequently produce a single-point forecast with no auditable chain of custody, no live regeneration, and no enforceable governance controls.</p>
@@ -161,7 +162,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({
                             <li>• Lazy evaluation for derivative indices (compute on demand)</li>
                             <li>• Decision-tree synthesis for output structuring</li>
                         </ul>
-                        <p className="text-xs text-stone-500">This is why the system regenerates fast when one assumption changes: only impacted dependencies recompute, then the packet and deliverables are re-synthesized with provenance intact.</p>
+                        <p className="text-xs text-stone-500">Reassessment is built into the workflow: when you update the mandate/inputs and re-run NSIL, the system recomputes the reasoning and re-synthesizes the decision packet and deliverables, preserving governance and provenance.</p>
                     </div>
                 </section>
 
