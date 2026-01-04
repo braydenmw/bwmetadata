@@ -48,7 +48,7 @@ export const AddOpportunityModal: React.FC<AddOpportunityModalProps> = ({ isOpen
     if (!isOpen) return null;
 
     const inputStyles = "w-full p-3 bg-white border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-800 focus:border-stone-800 outline-none transition-all duration-200 placeholder:text-stone-400 text-stone-800 shadow-sm text-sm";
-    const labelStyles = "block text-xs font-bold text-stone-700 uppercase mb-2";
+    const labelStyles = "block text-xs font-bold uppercase mb-2";
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={onClose} role="dialog">
@@ -62,50 +62,51 @@ export const AddOpportunityModal: React.FC<AddOpportunityModalProps> = ({ isOpen
                              <PlusCircle className="w-6 h-6 text-stone-800" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-bold text-stone-900">Add Target Opportunity</h2>
-                            <p className="text-xs text-stone-500">Inject a specific project into the analysis engine.</p>
+                            <h2 className="text-lg font-bold" style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Add Target Opportunity</h2>
+                            <p className="text-xs" style={{color:'#808080', fontFamily:'Inter, Arial, sans-serif'}}>Inject a specific project into the analysis engine.</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 text-stone-400 hover:text-stone-800 rounded-full hover:bg-stone-200 transition-colors"><X className="w-5 h-5"/></button>
+                    <button onClick={onClose} className="p-2 rounded-full hover:bg-stone-200 transition-colors" style={{color:'#808080'}}><X className="w-5 h-5"/></button>
                 </header>
 
                 <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
                     <main className="p-6 space-y-5 flex-1 overflow-y-auto custom-scrollbar">
                         <div>
-                            <label htmlFor="projectName" className={labelStyles}>Project Name *</label>
+                            <label htmlFor="projectName" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Project Name *</label>
                             <input type="text" id="projectName" value={projectName} onChange={e => setProjectName(e.target.value)} className={inputStyles} placeholder="e.g., National Fiber Optic Backbone Expansion" required />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label htmlFor="country" className={labelStyles}>Country *</label>
+                                <label htmlFor="country" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Country *</label>
                                 <select id="country" value={country} onChange={e => setCountry(e.target.value)} className={inputStyles} required>
                                     {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                                 </select>
                             </div>
                              <div>
-                                <label htmlFor="sector" className={labelStyles}>Sector *</label>
+                                <label htmlFor="sector" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Sector *</label>
                                 <select id="sector" value={sector} onChange={e => setSector(e.target.value)} className={inputStyles} required>
                                     {INDUSTRIES.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
                                 </select>
                             </div>
                         </div>
                          <div>
-                            <label htmlFor="value" className={labelStyles}>Est. Value (Optional)</label>
+                            <label htmlFor="value" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Est. Value (Optional)</label>
                             <input type="text" id="value" value={value} onChange={e => setValue(e.target.value)} className={inputStyles} placeholder="e.g., $250 Million" />
                         </div>
                         <div>
-                            <label htmlFor="summary" className={labelStyles}>Context / Notes *</label>
+                            <label htmlFor="summary" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Context / Notes *</label>
                             <textarea id="summary" value={summary} onChange={e => setSummary(e.target.value)} rows={4} className={`${inputStyles} resize-none`} placeholder="Provide a brief overview of the project, its goals, and current status." required />
                         </div>
                          <div>
-                            <label htmlFor="sourceUrl" className={labelStyles}>Source URL (Optional)</label>
+                            <label htmlFor="sourceUrl" className={labelStyles} style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>Source URL (Optional)</label>
                             <input type="url" id="sourceUrl" value={sourceUrl} onChange={e => setSourceUrl(e.target.value)} className={inputStyles} placeholder="https://example.gov/project-details" />
                         </div>
                         {error && <p className="text-red-600 text-xs text-center bg-red-50 p-2 rounded border border-red-100 font-bold">{error}</p>}
+                                        {error && <p className="text-red-600 text-xs text-center bg-red-50 p-2 rounded border border-red-100 font-bold">{error}</p>}
                     </main>
 
                     <footer className="p-4 bg-stone-50 border-t border-stone-200 flex-shrink-0 flex justify-end items-center gap-4">
-                        <button type="button" onClick={onClose} className="px-5 py-2.5 text-xs font-bold text-stone-500 hover:text-stone-800 transition-colors uppercase">
+                        <button type="button" onClick={onClose} className="px-5 py-2.5 text-xs font-bold uppercase" style={{color:'#808080', fontFamily:'Inter, Arial, sans-serif'}}>
                             Cancel
                         </button>
                         <button type="submit" className="px-6 py-2.5 bg-stone-900 text-white text-xs font-bold uppercase rounded-lg hover:bg-black transition-colors shadow-sm flex items-center gap-2">

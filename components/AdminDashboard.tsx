@@ -20,7 +20,7 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="h-full w-full bg-stone-100 p-8 pb-32 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-stone-900 mb-8 flex items-center gap-3">
+        <h1 className="text-3xl font-bold mb-8 flex items-center gap-3" style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>
           <Shield className="text-stone-700" size={32} /> Admin Console
         </h1>
         
@@ -33,10 +33,10 @@ const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden mb-8">
             <div className="p-6 border-b border-stone-100 bg-stone-50 flex justify-between items-center">
                 <div>
-                    <h2 className="text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <h2 className="text-lg font-bold flex items-center gap-2" style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>
                         <Key className="w-5 h-5 text-blue-600" /> Data Source Configuration
                     </h2>
-                    <p className="text-sm text-stone-500">Manage API keys for external intelligence feeds.</p>
+                    <p className="text-sm" style={{color:'#808080', fontFamily:'Inter, Arial, sans-serif'}}>Manage API keys for external intelligence feeds.</p>
                 </div>
                 <button 
                     onClick={handleSave}
@@ -49,13 +49,13 @@ const AdminDashboard: React.FC = () => {
             
             <div className="p-8 grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4">Institutional Feeds</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'#808080'}}>Institutional Feeds</h3>
                     <ApiKeyInput label="World Bank Data API" value={keys.worldBank} onChange={(v) => setKeys({...keys, worldBank: v})} placeholder="WK-..." />
                     <ApiKeyInput label="IMF Economic Data" value={keys.imf} onChange={(v) => setKeys({...keys, imf: v})} placeholder="IMF-..." />
                     <ApiKeyInput label="SEC EDGAR (Corporate Filings)" value={keys.sec} onChange={(v) => setKeys({...keys, sec: v})} placeholder="SEC-..." />
                 </div>
                 <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4">Financial & Custom</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'#808080'}}>Financial & Custom</h3>
                     <ApiKeyInput label="Bloomberg Terminal API" value={keys.bloomberg} onChange={(v) => setKeys({...keys, bloomberg: v})} placeholder="BB-..." />
                     <ApiKeyInput label="Custom Enterprise Data Gateway" value={keys.custom} onChange={(v) => setKeys({...keys, custom: v})} placeholder="https://api.internal..." />
                     
@@ -67,8 +67,8 @@ const AdminDashboard: React.FC = () => {
             </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-12 text-center">
-           <p className="text-stone-400">System Logs and User Audit Trails are available in the Security Tab.</p>
+          <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-12 text-center">
+              <p style={{color:'#808080', fontFamily:'Inter, Arial, sans-serif'}}>System Logs and User Audit Trails are available in the Security Tab.</p>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ const AdminDashboard: React.FC = () => {
 
 const ApiKeyInput = ({ label, value, onChange, placeholder }: any) => (
     <div>
-        <label className="block text-sm font-bold text-stone-700 mb-1">{label}</label>
+        <label className="block text-sm font-bold mb-1" style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>{label}</label>
         <div className="relative">
             <input 
                 type="password" 
@@ -86,18 +86,18 @@ const ApiKeyInput = ({ label, value, onChange, placeholder }: any) => (
                 className="w-full p-3 border border-stone-200 rounded-lg bg-stone-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none text-sm font-mono tracking-wider"
                 placeholder={placeholder}
             />
-            <div className="absolute right-3 top-3 text-xs font-bold text-stone-400 select-none">API KEY</div>
+            <div className="absolute right-3 top-3 text-xs font-bold select-none" style={{color:'#808080'}}>API KEY</div>
         </div>
     </div>
 );
 
 const AdminCard = ({ title, icon, value, color = 'text-stone-900' }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-    <div className="flex items-center justify-between mb-4 text-stone-400">
+    <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+        <div className="flex items-center justify-between mb-4" style={{color:'#808080'}}>
        {icon}
     </div>
-    <div className={`text-2xl font-bold ${color}`}>{value}</div>
-    <div className="text-xs text-stone-500 uppercase font-bold mt-1">{title}</div>
+    <div className="text-2xl font-bold" style={{color:'#1C1C1C', fontFamily:'Inter, Arial, sans-serif'}}>{value}</div>
+    <div className="text-xs uppercase font-bold mt-1" style={{color:'#808080'}}>{title}</div>
   </div>
 );
 
