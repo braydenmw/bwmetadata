@@ -1498,25 +1498,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         <p className="text-slate-600">Scans two centuries of economic precedent to identify analogous cases and failure modes that inform current analysis.</p>
                                     </div>
                                 </div>
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="bg-white border border-[#1C53A4]/20 rounded-lg p-5">
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-8 h-8 bg-[#0D3A83] text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                                        <h4 className="font-bold text-[#1C1C1C]">Adversarial Input Shield</h4>
-                                    </div>
-                                    <p className="text-[#2D2D2D] text-sm mb-2"><strong>What it does:</strong> Cross-references claims against live World Bank data, UN Sanctions lists, and historical baselines.</p>
-                                    <p className="text-[#5EAC1B] text-sm"><strong>Why they need it:</strong> Stops "Garbage In, Garbage Out." If someone claims "zero political risk" in a volatile region, the Shield blocks it.</p>
-                                </div>
-                                <div className="bg-white border border-[#1C53A4]/20 rounded-lg p-5">
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-8 h-8 bg-[#0D3A83] text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                                        <h4 className="font-bold text-[#1C1C1C]">Historical Contextualization</h4>
-                                    </div>
-                                    <p className="text-[#2D2D2D] text-sm mb-2"><strong>What it does:</strong> Scans 200 years of economic history (1820–2025) to find analogues. "Has this been tried before? Why did it fail in 1990?"</p>
-                                    <p className="text-[#5EAC1B] text-sm"><strong>Why they need it:</strong> Prevents repeating history. Proves to investors you aren't guessing—you are learning.</p>
-                                </div>
-                            </div>
-                        </div>
                         
                                 {/* Phase 2: Boardroom Simulation */}
                                 <div>
@@ -1564,13 +1545,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         <h2 className="text-4xl font-light text-slate-900 mb-4">Regional Intelligence Capabilities</h2>
                         <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Execution Modules Built for Institutional Deployment</p>
                         
-                        <div className="prose prose-lg max-w-none space-y-8">
-                            <div className="border-l-2 border-slate-300 pl-6">
-                                <p className="font-medium text-slate-900 mb-2">Partner Discovery Engine</p>
-                                <p className="text-lg text-slate-600 leading-relaxed">
-                                    Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, memoranda of understanding, and partnership proposals automatically matched to counterparty capabilities and cultural alignment.
-                                </p>
-                            </div>
+                        <div className="prose prose-lg max-w-none space-y-8">\n                            <div className="border-l-2 border-slate-300 pl-6">\n                                <p className="font-medium text-slate-900 mb-2">Partner Discovery Engine</p>\n                                <p className="text-lg text-slate-600 leading-relaxed">\n                                    Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, memoranda of understanding, and partnership proposals automatically matched to counterparty capabilities and cultural alignment.\n                                </p>\n                            </div>
                             
                             <div className="border-l-2 border-slate-300 pl-6">
                                 <p className="font-medium text-slate-900 mb-2">Multi-Scenario Simulation</p>
@@ -1778,18 +1753,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                         </div>
                     </div>
-                            >
-                                <div className="flex items-center gap-3">
-                                    <BarChart3 size={24} className="text-[#A5DC76]" />
-                                    <div className="text-left">
-                                        <div className="font-bold">Explore Test Results</div>
-                                        <div className="text-sm text-white/80">See full scenarios with P10/P50/P90 outcomes</div>
-                                    </div>
-                                </div>
-                                <span className="text-xs text-[#A5DC76] uppercase tracking-wider">View Proof →</span>
-                            </button>
-                        </div>
-                    </div>
                 </section>
 
                 {/* Photo Break - Global Connections */}
@@ -1834,7 +1797,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         <AlertTriangle size={32} className="text-amber-600" />
                                     </div>
                                     <p className="text-lg font-medium text-slate-900 mb-2">Amber Zone</p>
-                                    <p className="text-sm text-slate-600">0.4 ≤ ECS < 0.7</p>
+                                    <p className="text-sm text-slate-600">0.4 ≤ ECS {"<"} 0.7</p>
                                     <p className="text-sm text-slate-500 mt-2">Hedged language, flagged for review</p>
                                 </div>
                                 <div className="text-center">
@@ -1842,7 +1805,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         <ShieldAlert size={32} className="text-red-600" />
                                     </div>
                                     <p className="text-lg font-medium text-slate-900 mb-2">Red Zone</p>
-                                    <p className="text-sm text-slate-600">ECS < 0.4</p>
+                                    <p className="text-sm text-slate-600">ECS {"<"} 0.4</p>
                                     <p className="text-sm text-slate-500 mt-2">Clamped assertions, exports blocked</p>
                                 </div>
                             </div>
