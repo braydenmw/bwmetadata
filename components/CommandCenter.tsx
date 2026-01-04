@@ -1442,51 +1442,61 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* The BW Brain: NSIL */}
+                {/* The BW Brain: NSIL - The Discovery That Started Everything */}
                 <section className="p-10 bg-[#0D3A83] text-white">
-                    <h2 className="text-3xl font-bold text-[#81C449] mb-6 text-center">The Brain Behind the Platform</h2>
-                    <p className="text-center text-white mb-4 max-w-3xl mx-auto text-lg">At the heart of BW AI is something we call <strong className="text-white">NSIL</strong>-the Nexus Strategic Intelligence Layer. Think of it as the reasoning engine that powers every analysis, score, and recommendation.</p>
-                    <p className="text-center text-white mb-8 max-w-3xl mx-auto">Unlike a simple AI that just predicts the next word, NSIL actively debates, challenges, validates, and learns. It's built to produce decisions that survive board scrutiny, partner negotiation, and regulatory review-because it can explain exactly <em>why</em> it reached each conclusion.</p>
+                    <h2 className="text-3xl font-bold text-[#81C449] mb-4 text-center">The Discovery That Started Everything</h2>
+                    <p className="text-center text-[#A5DC76] mb-6 max-w-3xl mx-auto text-lg font-semibold">NSIL — Nexus Strategic Intelligence Layer</p>
+                    
+                    <div className="max-w-4xl mx-auto mb-8">
+                        <p className="text-center text-white mb-4 text-lg">We didn't set out to build AI. We set out to solve a problem: <strong className="text-white">why do regional cities with extraordinary potential get ignored by global capital?</strong></p>
+                        <p className="text-center text-white/90 mb-4">The answer was clear: information asymmetry. The data existed, but it was scattered across local governments, state agencies, industry reports, and tacit knowledge that never made it to investors. No one had built the translation layer.</p>
+                        <p className="text-center text-white/90">So we built NSIL—an autonomous reasoning engine that doesn't just store data, but <em>thinks</em> about it. It validates claims, runs adversarial debates, scores opportunities, and generates the documents needed to act. It's the brain that makes regional development <strong className="text-white">visible</strong> and <strong className="text-white">investable</strong>.</p>
+                    </div>
                     
                     <div className="max-w-4xl mx-auto">
                         <h3 className="text-xl font-bold text-[#81C449] mb-2 text-center">How NSIL Thinks</h3>
-                        <p className="text-center text-gray-200 mb-6 text-sm">Every analysis passes through five layers-each one adding rigour, challenge, and protection against bad decisions:</p>
+                        <p className="text-center text-white/80 mb-6 text-sm">Every analysis passes through five layers—each one adding rigour, challenge, and protection against bad decisions:</p>
                         <div className="space-y-3">
                             <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
                                 <div className="w-8 h-8 bg-[#81C449] text-[#0D3A83] rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
                                 <div>
                                     <strong className="text-white">Adversarial Input Shield</strong>
-                                    <p className="text-gray-200 text-base">Auto-cross-checks every claim against World Bank data, sanctions lists, and live feeds. Detects overconfidence and hidden agendas before they poison analysis.</p>
+                                    <p className="text-white/80 text-base">Cross-checks every claim against World Bank data, sanctions lists, and live feeds. Detects overconfidence and hidden agendas before they poison analysis.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
                                 <div className="w-8 h-8 bg-[#81C449] text-[#0D3A83] rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
                                 <div>
-                                    <strong className="text-white">Multi-Perspective Reasoner</strong>
-                                    <p className="text-gray-200 text-base">Five AI personas debate every mandate in parallel-finding weaknesses, surfacing blind spots, and preserving disagreements.</p>
+                                    <strong className="text-white">Multi-Perspective Debate</strong>
+                                    <p className="text-white/80 text-base">Five AI personas—<span className="text-[#A5DC76]">Skeptic, Advocate, Regulator, Accountant, Operator</span>—argue every mandate in parallel. They vote, disagree, and preserve debate transcripts so you see exactly where views differ.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
                                 <div className="w-8 h-8 bg-[#81C449] text-[#0D3A83] rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
                                 <div>
                                     <strong className="text-white">Counterfactual Lab</strong>
-                                    <p className="text-gray-200 text-base">Generates "What if we did the opposite?" scenarios with regret probability bands. Tests rate shocks, partner failures, and policy reversals.</p>
+                                    <p className="text-white/80 text-base">Generates "What if we did the opposite?" scenarios with regret probability bands. Tests rate shocks, partner failures, and policy reversals before you commit.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
                                 <div className="w-8 h-8 bg-[#81C449] text-[#0D3A83] rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
                                 <div>
                                     <strong className="text-white">Quantitative Scoring Engine</strong>
-                                    <p className="text-gray-200 text-base">21 proprietary formulas compute confidence-banded by evidence quality, not vibes. Every score emits value, rationale, and source provenance.</p>
+                                    <p className="text-white/80 text-base">21 proprietary formulas compute confidence bands based on evidence quality, not vibes. Every score shows its working, its inputs, and what would change the result.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4 bg-white/5 rounded-lg p-4">
                                 <div className="w-8 h-8 bg-[#81C449] text-[#0D3A83] rounded-full flex items-center justify-center font-bold flex-shrink-0">5</div>
                                 <div>
                                     <strong className="text-white">Self-Learning Memory</strong>
-                                    <p className="text-gray-200 text-base">Captures real-world outcomes (d between prediction and actual) and retunes scoring models. Every engagement starts smarter than the last.</p>
+                                    <p className="text-white/80 text-base">Captures real-world outcomes and retunes scoring models. Every engagement makes the next one smarter—your successes and failures improve the system for everyone.</p>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div className="mt-6 bg-[#81C449]/20 border border-[#81C449]/40 rounded-lg p-4 text-center">
+                            <p className="text-[#A5DC76] font-semibold">This is why outputs are board-ready.</p>
+                            <p className="text-white/80 text-sm mt-1">When personas agree → high confidence. When they disagree → your decision, with full transcript. When none considered something → blind spots surfaced proactively.</p>
                         </div>
                     </div>
                 </section>
@@ -1532,68 +1542,64 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* The 5 Personas */}
-                <section className="p-10">
-                    <h2 className="text-3xl font-bold text-[#1C1C1C] mb-4 text-center">Five Expert Perspectives on Every Decision</h2>
-                    <p className="text-center text-[#3D3D3D] mb-4 max-w-3xl mx-auto text-lg">Imagine having five senior advisors with different specialties all reviewing your strategy at once—a risk analyst, a growth strategist, a compliance officer, a financial controller, and an operations expert.</p>
-                    <p className="text-center text-[#3D3D3D] mb-8 max-w-3xl mx-auto">That's exactly what happens inside BW AI. These five "personas" debate your case in parallel, each bringing their unique lens. They vote, they disagree, and they show you exactly where views differ—so you make the call with full awareness, not false consensus.</p>
-                    
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-                        <div className="border border-[#0D3A83]/30 rounded-lg p-5 bg-gradient-to-br from-white to-[#F0F7FF]">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-[#0D3A83] text-white rounded-full flex items-center justify-center"><Scale size={20} /></div>
-                                <h3 className="font-bold text-[#0D3A83] text-lg">The Skeptic</h3>
+                {/* Nothing Else Like This Exists */}
+                <section className="p-10 bg-[#F0F7FF] border-y border-[#1C53A4]/20">
+                    <h2 className="text-3xl font-bold text-[#1C1C1C] mb-6 text-center">Nothing Else Like This Exists</h2>
+                    <div className="max-w-4xl mx-auto">
+                        <p className="text-center text-[#2D2D2D] mb-6 text-lg">We searched. There is no other system on the market—anywhere in the world—that does what BW AI does. Here's what exists today, and why none of it solves the problem:</p>
+                        
+                        <div className="grid md:grid-cols-2 gap-6 mb-8">
+                            <div className="bg-white border border-red-200 rounded-lg p-5">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <div className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center"><X size={16} /></div>
+                                    <h4 className="font-bold text-[#1C1C1C]">General AI Chatbots</h4>
+                                </div>
+                                <p className="text-[#3D3D3D] text-base mb-2">ChatGPT, Claude, Gemini—they answer questions, but they don't validate against live data, run Monte Carlo simulations, or produce auditable documents. They can't tell you when they're guessing.</p>
+                                <p className="text-red-600 text-sm font-medium">❌ No governance, no audit trail, no regional expertise</p>
                             </div>
-                            <p className="text-[#2D2D2D] text-base">Finds reasons NOT to proceed. Hunts deal-killers, hidden risks, and over-optimism. Questions every assumption.</p>
+                            <div className="bg-white border border-red-200 rounded-lg p-5">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <div className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center"><X size={16} /></div>
+                                    <h4 className="font-bold text-[#1C1C1C]">BI Dashboards</h4>
+                                </div>
+                                <p className="text-[#3D3D3D] text-base mb-2">Tableau, Power BI, Looker—they visualise data you already have, but they don't think, debate, or challenge assumptions. They can't generate documents or stress-test decisions.</p>
+                                <p className="text-red-600 text-sm font-medium">❌ Passive visualisation, not active intelligence</p>
+                            </div>
+                            <div className="bg-white border border-red-200 rounded-lg p-5">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <div className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center"><X size={16} /></div>
+                                    <h4 className="font-bold text-[#1C1C1C]">Consulting Firms</h4>
+                                </div>
+                                <p className="text-[#3D3D3D] text-base mb-2">McKinsey, Deloitte, PwC—they deliver expertise, but at $500K+ per engagement, 3-6 months wait, and a static PDF that's outdated by delivery. Regional projects rarely get this treatment.</p>
+                                <p className="text-red-600 text-sm font-medium">❌ Too slow, too expensive, not accessible</p>
+                            </div>
+                            <div className="bg-white border border-red-200 rounded-lg p-5">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <div className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center"><X size={16} /></div>
+                                    <h4 className="font-bold text-[#1C1C1C]">Regional Data Platforms</h4>
+                                </div>
+                                <p className="text-[#3D3D3D] text-base mb-2">Various economic development tools exist, but they're passive databases—they don't reason, score, generate documents, or run adversarial analysis. They don't connect to global capital.</p>
+                                <p className="text-red-600 text-sm font-medium">❌ Data without intelligence, no execution</p>
+                            </div>
                         </div>
-                        <div className="border border-[#5EAC1B]/30 rounded-lg p-5 bg-gradient-to-br from-white to-[#F0FFF0]">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-[#5EAC1B] text-white rounded-full flex items-center justify-center"><Rocket size={20} /></div>
-                                <h3 className="font-bold text-[#5EAC1B] text-lg">The Advocate</h3>
+                        
+                        <div className="bg-[#0D3A83] rounded-xl p-6 text-center">
+                            <p className="text-[#81C449] font-bold text-xl mb-3">BW AI is the First and Only Platform That:</p>
+                            <div className="grid md:grid-cols-3 gap-4 text-white text-sm">
+                                <div className="bg-white/10 rounded-lg p-3">
+                                    <CheckCircle2 size={20} className="text-[#81C449] mx-auto mb-2" />
+                                    <p>Runs <strong>adversarial multi-persona debate</strong> on every decision</p>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-3">
+                                    <CheckCircle2 size={20} className="text-[#81C449] mx-auto mb-2" />
+                                    <p>Produces <strong>200+ document types</strong> with embedded evidence trails</p>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-3">
+                                    <CheckCircle2 size={20} className="text-[#81C449] mx-auto mb-2" />
+                                    <p>Is <strong>100% dedicated to regional development</strong> and overlooked markets</p>
+                                </div>
                             </div>
-                            <p className="text-[#2D2D2D] text-base">Finds reasons TO proceed. Identifies growth potential, synergies, optionality, and timing windows.</p>
-                        </div>
-                        <div className="border border-[#114899]/30 rounded-lg p-5 bg-gradient-to-br from-white to-[#F0F7FF]">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-[#114899] text-white rounded-full flex items-center justify-center"><Gavel size={20} /></div>
-                                <h3 className="font-bold text-[#114899] text-lg">The Regulator</h3>
-                            </div>
-                            <p className="text-[#2D2D2D] text-base">Checks compliance and ethics. Sanctions screening, legal barriers, policy alignment, ESG implications.</p>
-                        </div>
-                        <div className="border border-[#1C53A4]/30 rounded-lg p-5 bg-gradient-to-br from-white to-[#F0F7FF]">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-[#1C53A4] text-white rounded-full flex items-center justify-center"><Coins size={20} /></div>
-                                <h3 className="font-bold text-[#1C53A4] text-lg">The Accountant</h3>
-                            </div>
-                            <p className="text-[#2D2D2D] text-base">Tests financial viability. IRR, payback, working capital, margins, liquidity stress, capital efficiency.</p>
-                        </div>
-                        <div className="border border-[#81C449]/30 rounded-lg p-5 bg-gradient-to-br from-white to-[#F0FFF0] md:col-span-2 lg:col-span-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 bg-[#81C449] text-white rounded-full flex items-center justify-center"><Wrench size={20} /></div>
-                                <h3 className="font-bold text-[#81C449] text-lg">The Operator</h3>
-                            </div>
-                            <p className="text-[#2D2D2D] text-base">Tests execution feasibility. Logistics, talent, infrastructure, supply chains, 100-day activation reality.</p>
-                        </div>
-                    </div>
-                    
-                    <div className="mt-8 bg-[#0D3A83] rounded-lg p-6 max-w-4xl mx-auto">
-                        <h4 className="font-bold text-white mb-4 text-center text-lg">How Outputs Are Born</h4>
-                        <div className="grid md:grid-cols-3 gap-6 text-base">
-                            <div className="text-center">
-                                <div className="w-12 h-12 bg-[#5EAC1B] text-white rounded-full flex items-center justify-center mx-auto mb-2"><CheckCircle2 size={24} /></div>
-                                <div className="text-[#A5DC76] font-bold mb-1">AGREE</div>
-                                <p className="text-white/80 text-sm">High confidence zones where personas converge</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-12 h-12 bg-[#114899] text-white rounded-full flex items-center justify-center mx-auto mb-2"><AlertTriangle size={24} /></div>
-                                <div className="text-[#A5DC76] font-bold mb-1">DISAGREE</div>
-                                <p className="text-white/80 text-sm">Requires user decision; debate transcript preserved</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-12 h-12 bg-[#1C53A4] text-white rounded-full flex items-center justify-center mx-auto mb-2"><Eye size={24} /></div>
-                                <div className="text-[#A5DC76] font-bold mb-1">BLIND SPOTS</div>
-                                <p className="text-white/80 text-sm">What none considered—surfaced proactively</p>
-                            </div>
+                            <p className="text-white/80 text-base mt-4">This isn't an incremental improvement. It's a new category of tool that didn't exist before.</p>
                         </div>
                     </div>
                 </section>
