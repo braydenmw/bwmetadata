@@ -486,9 +486,9 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex flex-col">
                         <h1 className="text-lg font-bold text-bw-navy leading-none tracking-tight group-hover:text-bw-navy/80 transition-colors">
-                            BWGA Intelligence AI
+                            BWGA AI
                         </h1>
-                        <span className="text-[9px] text-bw-gold font-bold uppercase tracking-widest">Intelligence OS</span>
+                        <span className="text-[9px] text-bw-gold font-bold uppercase tracking-widest">Brayden Walls Global Advisory</span>
                     </div>
                 </div>
 
