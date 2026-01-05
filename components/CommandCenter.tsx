@@ -1625,15 +1625,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 </div>
                             </div>
                             
-                            <div className="bg-white p-6 border border-slate-200 rounded-lg">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <Eye size={24} className="text-purple-600" />
-                                    <h3 className="font-medium text-slate-900">Live Scenario Reports</h3>
-                                </div>
-                                <p className="text-sm text-slate-600 mb-4">
-                                    Click any of our 10 test scenarios (spanning 6 continents, 9 sectors, $811M deal value) to see a complete one-page strategic report-including next steps, recommended partners, risk analysis, and source citations. This is what the system produces. No mockups. No simulations. Actual output.
-                                </p>
-                            </div>
+
                         </div>
                     </div>
                 </section>
