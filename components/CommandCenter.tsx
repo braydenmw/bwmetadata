@@ -1308,7 +1308,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div className="text-sm text-slate-300 uppercase tracking-wider">Scoring Formulas</div>
                         </div>
                         <div>
-                            <div className="text-4xl font-light text-white mb-2">200+</div>
+                            <div className="text-4xl font-light text-white mb-2">30+</div>
                             <div className="text-sm text-slate-300 uppercase tracking-wider">Document Types</div>
                         </div>
                     </div>
@@ -1375,11 +1375,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-6">
-                                The system ingests unstructured regional data—municipal planning documents, industry reports, demographic statistics, infrastructure inventories—and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It cross-references claims against verified data sources including World Bank statistics, UN sanctions databases, and regulatory filings. It identifies inconsistencies, flags data gaps, and adjusts confidence intervals based on evidence quality. Every output is designed for human review and professional validation.
+                                The system ingests unstructured regional data—municipal planning documents, industry reports, demographic statistics, infrastructure inventories—and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It references institutional data sources including World Bank indicators, sanctions registries, and regulatory frameworks to validate claims and flag inconsistencies. It identifies data gaps and adjusts confidence intervals based on evidence quality. Every output is designed for human review and professional validation.
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                                Where traditional processes rely solely on individual capacity constrained by time and cognitive limits, BWGA Nexus extends that capacity through a governed protocol. Five autonomous expert personas debate every mandate in parallel—not to replace professional perspective, but to ensure no analytical angle goes unexplored. The Skeptic surfaces risks that confirmation bias might miss. The Advocate identifies value propositions that time pressure might overlook. The Regulator flags compliance considerations across jurisdictions. The Accountant stress-tests assumptions through Monte Carlo simulation. The Operator maps execution against infrastructure reality. Together, they deliver the comprehensive foundation upon which professional judgment can build.
+                                Where traditional processes rely solely on individual capacity constrained by time and cognitive limits, BWGA Nexus extends that capacity through a governed protocol. Five autonomous expert personas debate every mandate in parallel—not to replace professional perspective, but to ensure no analytical angle goes unexplored. The Skeptic surfaces risks that confirmation bias might miss. The Advocate identifies value propositions that time pressure might overlook. The Regulator flags compliance considerations across jurisdictions. The Accountant stress-tests assumptions through probabilistic simulation. The Operator maps execution against infrastructure reality. Together, they deliver the comprehensive foundation upon which professional judgment can build.
                             </p>
                             
                             <div className="grid grid-cols-2 gap-8 my-12">
@@ -1389,12 +1389,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 </div>
                                 <div className="border-l-2 border-slate-400 pl-6">
                                     <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Enhanced with BWGA Nexus</p>
-                                    <p className="text-lg text-white">Fifteen minutes to draft investment memo. Complete audit trail. Two hundred document types. Professional teams liberated to focus on strategic refinement and stakeholder engagement.</p>
+                                    <p className="text-lg text-white">Typically under thirty minutes to draft investment memo. Complete audit trail. Over thirty document types across ten categories. Professional teams liberated to focus on strategic refinement and stakeholder engagement.</p>
                                 </div>
                             </div>
                             
                             <p className="text-lg text-slate-400 leading-relaxed">
-                                The output is not a replacement for professional advisory services—it is the evidential foundation that makes those services more effective. Board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system refuses to export until data gaps are addressed. Human professionals retain final authority. The system ensures they exercise that authority with comprehensive context.
+                                The output is not a replacement for professional advisory services—it is the evidential foundation that makes those services more effective. Board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system flags outputs for additional review before export. Human professionals retain final authority. The system ensures they exercise that authority with comprehensive context.
                             </p>
                         </div>
                     </div>
@@ -1494,11 +1494,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </p>
                                     <div className="bg-white p-6 border-l-2 border-slate-300">
                                         <p className="font-medium text-slate-900 mb-2">Adversarial Input Shield</p>
-                                        <p className="text-slate-600">Validates claims against verified institutional sources before reasoning begins. Blocks analysis when input quality is insufficient for confident outputs.</p>
+                                        <p className="text-slate-600">Screens claims against institutional data references before reasoning begins. Flags analysis when input quality is insufficient for confident outputs.</p>
                                     </div>
                                     <div className="bg-white p-6 border-l-2 border-slate-300 mt-4">
                                         <p className="font-medium text-slate-900 mb-2">Historical Contextualization</p>
-                                        <p className="text-slate-600">Scans two centuries of economic precedent to identify analogous cases and failure modes that inform current analysis.</p>
+                                        <p className="text-slate-600">Identifies historical economic patterns and precedent cases to surface analogous situations and failure modes that inform current analysis.</p>
                                     </div>
                                 </div>
                         
@@ -1610,16 +1610,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             
                             <div className="grid grid-cols-3 gap-8 mb-12">
                                 <div className="text-center">
-                                    <div className="text-5xl font-light text-slate-900 mb-2">15</div>
-                                    <p className="text-sm text-slate-600">Minutes from intent to investment memo</p>
+                                    <div className="text-5xl font-light text-slate-900 mb-2">~30</div>
+                                    <p className="text-sm text-slate-600">Minutes typical from intent to draft memo</p>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-5xl font-light text-slate-900 mb-2">200+</div>
+                                    <div className="text-5xl font-light text-slate-900 mb-2">30+</div>
                                     <p className="text-sm text-slate-600">Document types across ten categories</p>
                                 </div>
-                                <div className="text-center">
-                                    <div className="text-5xl font-light text-slate-900 mb-2">100%</div>
-                                    <p className="text-sm text-slate-600">Auditability on every claim and number</p>
+                                <div class="text-center">
+                                    <div className="text-5xl font-light text-slate-900 mb-2">Full</div>
+                                    <p className="text-sm text-slate-600">Audit trail on key claims and scores</p>
                                 </div>
                             </div>
                             
@@ -1825,12 +1825,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* HISTORICAL MEMORY - Premium Editorial */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Two Centuries of Historical Memory</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Every Decision Has Precedent</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Historical Pattern Recognition</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Learning From Economic Precedent</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-12">
-                                The system scans two hundred years of global economic patterns from eighteen twenty through twenty twenty-five, finding historical analogues and showing you what worked, what failed, and why.
+                                The system draws on historical economic patterns and case studies to identify precedents relevant to your mandate—surfacing what has worked, what has failed, and why similar strategies succeeded or collapsed.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-8">
@@ -1841,9 +1841,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </p>
                                 </div>
                                 <div className="border-l-2 border-slate-300 pl-6">
-                                    <p className="font-medium text-slate-900 mb-2">Live Data Integration</p>
+                                    <p className="font-medium text-slate-900 mb-2">Institutional Data References</p>
                                     <p className="text-lg text-slate-600 leading-relaxed">
-                                        World Bank statistics, UN sanctions lists, exchange rates—verified institutional sources only.
+                                        Cross-references World Bank indicators, sanctions registries, and exchange rate sources to validate claims and flag inconsistencies.
                                     </p>
                                 </div>
                                 <div className="border-l-2 border-slate-300 pl-6">
