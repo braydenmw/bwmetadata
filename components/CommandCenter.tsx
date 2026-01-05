@@ -1585,50 +1585,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* PROOF POINTS - The Pop-Ups That Prove It */}
-                <section className="py-16 px-12 bg-slate-50">
-                    <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Evidence You Can Verify</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Interactive Proof of NSIL, Monte Carlo, and Agentic Reasoning</p>
-                        
-                        <div className="space-y-6">
-                            <p className="text-xl text-slate-700 leading-relaxed">
-                                We do not ask you to take our word for it. The platform includes interactive evidence modals that prove the technology operates as described:
-                            </p>
-                            
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="bg-white p-6 border border-slate-200 rounded-lg">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <BarChart3 size={24} className="text-blue-600" />
-                                        <h3 className="font-medium text-slate-900">Monte Carlo Evidence</h3>
-                                    </div>
-                                    <p className="text-sm text-slate-600 mb-4">View the actual source code implementation. See 100+ iteration simulations. Examine P10/P50/P90 distribution outputs from real test scenarios.</p>
-                                    <button 
-                                        onClick={() => setShowMonteCarloEvidence(true)} 
-                                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                                    >
-                                        View Monte Carlo Evidence →
-                                    </button>
-                                </div>
-                                <div className="bg-white p-6 border border-slate-200 rounded-lg">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <FileText size={24} className="text-green-600" />
-                                        <h3 className="font-medium text-slate-900">Document Factory</h3>
-                                    </div>
-                                    <p className="text-sm text-slate-600 mb-4">Explore the complete catalog of auto-generated strategic documents across 10 categories-over 100 document types.</p>
-                                    <button 
-                                        onClick={() => setShowDocumentTypesModal(true)} 
-                                        className="text-sm text-green-600 hover:text-green-800 font-medium"
-                                    >
-                                        View Document Catalog →
-                                    </button>
-                                </div>
-                            </div>
-                            
 
-                        </div>
-                    </div>
-                </section>
 
                 {/* WHAT IT DELIVERS - Reports & Letters */}
                 <section className="py-16 px-12 bg-white">
