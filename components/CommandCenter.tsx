@@ -1292,26 +1292,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
                 
-                {/* Capability Statement - Clean Banner */}
-                <section className="bg-gradient-to-r from-slate-800 to-slate-700 py-16">
-                    <div className="max-w-5xl mx-auto grid grid-cols-4 gap-8 text-center px-6">
-                        <div>
-                            <div className="text-4xl font-light text-white mb-2">10</div>
-                            <div className="text-sm text-slate-300 uppercase tracking-wider">Step Protocol</div>
-                        </div>
-                        <div>
-                            <div className="text-4xl font-light text-white mb-2">5</div>
-                            <div className="text-sm text-slate-300 uppercase tracking-wider">Expert Personas</div>
-                        </div>
-                        <div>
-                            <div className="text-4xl font-light text-white mb-2">21</div>
-                            <div className="text-sm text-slate-300 uppercase tracking-wider">Scoring Formulas</div>
-                        </div>
-                        <div>
-                            <div className="text-4xl font-light text-white mb-2">30+</div>
-                            <div className="text-sm text-slate-300 uppercase tracking-wider">Document Types</div>
-                        </div>
-                    </div>
+                {/* Photo Break - AI Technology */}
+                <section className="relative h-80 overflow-hidden">
+                    <img 
+                        src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1600&q=80" 
+                        alt="AI technology visualization" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-transparent"></div>
                 </section>
 
                 {/* THE PROBLEM - Editorial Narrative Style */}
@@ -1767,8 +1755,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* Photo Break - Global Connections */}
                 <section className="relative h-96 overflow-hidden">
                     <img 
-                        src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=1600&q=80" 
-                        alt="Global shipping port with containers" 
+                        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80" 
+                        alt="Global network connections visualization" 
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-transparent"></div>
