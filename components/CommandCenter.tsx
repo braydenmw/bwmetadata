@@ -1266,7 +1266,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             
                             <h1 className="text-5xl md:text-6xl font-light mb-8 text-white leading-[1.1] tracking-tight">
                                 The World's First<br/>
-                                <span className="font-semibold">Global Regional Assistance Platform</span>
+                                <span className="font-semibold">100% Dedicated AI Regional Development Platform</span>
                             </h1>
                             
                             <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light max-w-3xl mx-auto">
