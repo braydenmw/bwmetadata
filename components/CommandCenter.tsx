@@ -1304,7 +1304,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                The problem is not capital scarcity. Sovereign wealth funds, pension managers, and development finance institutions are actively seeking diversified, real-asset exposure outside congested metropolitan markets. The problem is information asymmetry. Regional opportunities require specialized knowledge that global analysts do not possess and cannot efficiently acquire.
+                                The problem is not capital scarcity. Global investors, development banks, and institutional funds are actively seeking diversified exposure outside congested metropolitan markets. The problem is information asymmetry. Regional opportunities require specialized knowledge that global analysts do not possess and cannot efficiently acquire.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
