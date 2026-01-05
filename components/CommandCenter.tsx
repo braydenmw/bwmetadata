@@ -1,4 +1,4 @@
-
+ï»¿
 import React, { useState } from 'react';
 import { CheckCircle2, ShieldAlert, Building2, MapPin, Cog, FileText, TrendingUp, Brain, Calculator, Users, Shield, Zap, Database, GitBranch, BarChart3, Clock, Globe, Layers, Lock, Eye, Activity, AlertTriangle, ArrowRight, X, FileCheck, BookOpen, GraduationCap, Scale, Rocket, Gavel, Coins, Wrench, Search } from 'lucide-react';
 
@@ -54,10 +54,10 @@ const testScenarios = [
                 "Engage local construction cost consultant for INCC-adjusted budget validation"
             ],
             documentation: [
-                "Letter of Intent (LOI) — Housing PPP Framework Agreement",
-                "Due Diligence Request List — Real Estate & Environmental",
-                "Term Sheet — BNDES FINEM Co-financing Structure",
-                "MOU — Social Housing Delivery & Impact Metrics"
+                "Letter of Intent (LOI) - Housing PPP Framework Agreement",
+                "Due Diligence Request List - Real Estate & Environmental",
+                "Term Sheet - BNDES FINEM Co-financing Structure",
+                "MOU - Social Housing Delivery & Impact Metrics"
             ],
             recommendedPartners: [
                 { name: "BNDES (Banco Nacional de Desenvolvimento)", role: "Primary DFI Lender", contact: "Area de Infraestrutura Social", priority: "Critical" },
@@ -113,10 +113,10 @@ const testScenarios = [
                 "Assess competitive landscape: Tookitaki, Silent Eight, NICE Actimize positioning"
             ],
             documentation: [
-                "Term Sheet — Series A Equity Investment",
-                "Technology Due Diligence Report — ISO 27001 & MAS TRMG Compliance",
-                "Commercial Agreement — Regional Expansion Rights (ASEAN+)",
-                "LOI — Strategic Partnership with Anchor Bank Customer"
+                "Term Sheet - Series A Equity Investment",
+                "Technology Due Diligence Report - ISO 27001 & MAS TRMG Compliance",
+                "Commercial Agreement - Regional Expansion Rights (ASEAN+)",
+                "LOI - Strategic Partnership with Anchor Bank Customer"
             ],
             recommendedPartners: [
                 { name: "Temasek Holdings", role: "Lead Strategic Investor", contact: "FinTech Investment Team", priority: "Critical" },
@@ -172,11 +172,11 @@ const testScenarios = [
                 "Engage with potential EPC contractors: Technip Energies, Linde, Air Liquide"
             ],
             documentation: [
-                "Heads of Terms — Green Hydrogen Offtake Agreement (FOB Punta Arenas)",
-                "Development Agreement — Project Company Formation & Governance",
-                "Term Sheet — DFI Concessional Debt Facility (IFC/IADB)",
-                "MOU — Technology Partnership & License Agreement",
-                "EIA Scoping Report — SEA Environmental Pre-Assessment"
+                "Heads of Terms - Green Hydrogen Offtake Agreement (FOB Punta Arenas)",
+                "Development Agreement - Project Company Formation & Governance",
+                "Term Sheet - DFI Concessional Debt Facility (IFC/IADB)",
+                "MOU - Technology Partnership & License Agreement",
+                "EIA Scoping Report - SEA Environmental Pre-Assessment"
             ],
             recommendedPartners: [
                 { name: "IFC (World Bank Group)", role: "Lead DFI Lender", contact: "Chile Infrastructure Team", priority: "Critical" },
@@ -233,11 +233,11 @@ const testScenarios = [
                 "Engage CARB-compliant fleet consultant for Advanced Clean Fleets planning"
             ],
             documentation: [
-                "Letter of Intent (LOI) — Land Acquisition & Option Agreement",
-                "Pre-Lease Agreement — Anchor Tenant 3PL Operator",
-                "Term Sheet — CMBS Financing with ESG Certification",
-                "Development Agreement — San Bernardino County Entitlements",
-                "Rail Access Agreement — BNSF Spur Construction"
+                "Letter of Intent (LOI) - Land Acquisition & Option Agreement",
+                "Pre-Lease Agreement - Anchor Tenant 3PL Operator",
+                "Term Sheet - CMBS Financing with ESG Certification",
+                "Development Agreement - San Bernardino County Entitlements",
+                "Rail Access Agreement - BNSF Spur Construction"
             ],
             recommendedPartners: [
                 { name: "Prologis", role: "Development JV Partner", contact: "Southern California Industrial Team", priority: "Critical" },
@@ -294,11 +294,11 @@ const testScenarios = [
                 "Engage specialty coffee buyers (Starbucks, Nestle, JDE Peet's) for offtake interest"
             ],
             documentation: [
-                "Grant Agreement — USAID Feed the Future Digital Agriculture",
-                "MOU — Cooperative Union Partnership & Data Sharing",
-                "Technology License — Blockchain Platform Implementation",
-                "Offtake LOI — Premium Pricing for Traceable Coffee",
-                "Impact Measurement Framework — Farmer Income & Traceability KPIs"
+                "Grant Agreement - USAID Feed the Future Digital Agriculture",
+                "MOU - Cooperative Union Partnership & Data Sharing",
+                "Technology License - Blockchain Platform Implementation",
+                "Offtake LOI - Premium Pricing for Traceable Coffee",
+                "Impact Measurement Framework - Farmer Income & Traceability KPIs"
             ],
             recommendedPartners: [
                 { name: "USAID Ethiopia", role: "Primary Grant Funder", contact: "Feed the Future Program", priority: "Critical" },
@@ -355,11 +355,11 @@ const testScenarios = [
                 "Engage with UNICEF Supply Division for procurement framework alignment"
             ],
             documentation: [
-                "Grant Application — Gavi Health System Strengthening (HSS)",
-                "State MOU — Cold Chain Modernization Partnership",
-                "Procurement Plan — WHO PQS Equipment Specifications",
-                "O&M Transition Agreement — State Health Budget Integration",
-                "Impact Framework — Immunization Coverage & Wastage Reduction KPIs"
+                "Grant Application - Gavi Health System Strengthening (HSS)",
+                "State MOU - Cold Chain Modernization Partnership",
+                "Procurement Plan - WHO PQS Equipment Specifications",
+                "O&M Transition Agreement - State Health Budget Integration",
+                "Impact Framework - Immunization Coverage & Wastage Reduction KPIs"
             ],
             recommendedPartners: [
                 { name: "Gavi, The Vaccine Alliance", role: "Primary Grant Funder", contact: "Country Programmes, India", priority: "Critical" },
@@ -416,12 +416,12 @@ const testScenarios = [
                 "Assess Eskom load-shedding mitigation options (solar + battery microgrid)"
             ],
             documentation: [
-                "Joint Venture Agreement — BEE Ownership Structure & Governance",
-                "Technology License Agreement — Cell Manufacturing Know-How",
-                "Section 12I Application — Tax Incentive Pre-Approval",
-                "Coega SEZ Lease Agreement — Industrial Plot & Infrastructure",
-                "Offtake MOU — Domestic OEM & Export Commitments",
-                "Power Purchase Agreement — Renewable Energy & Backup"
+                "Joint Venture Agreement - BEE Ownership Structure & Governance",
+                "Technology License Agreement - Cell Manufacturing Know-How",
+                "Section 12I Application - Tax Incentive Pre-Approval",
+                "Coega SEZ Lease Agreement - Industrial Plot & Infrastructure",
+                "Offtake MOU - Domestic OEM & Export Commitments",
+                "Power Purchase Agreement - Renewable Energy & Backup"
             ],
             recommendedPartners: [
                 { name: "Industrial Development Corporation (IDC)", role: "DFI Lender & Equity Partner", contact: "Green Industries Unit", priority: "Critical" },
@@ -478,11 +478,11 @@ const testScenarios = [
                 "Engage PAGASA and PHIVOLCS for data integration protocol design"
             ],
             documentation: [
-                "Grant Application — ADB Urban Climate Change Resilience Trust Fund",
-                "National Agency MOU — NDRRMC, PAGASA, PHIVOLCS, DICT Integration",
-                "LGU Partnership Agreement — Pilot Region Implementation",
-                "Technology Specification — IoT Sensor Network & Data Mesh Architecture",
-                "O&M Sustainability Plan — National Disaster Risk Reduction Fund Integration"
+                "Grant Application - ADB Urban Climate Change Resilience Trust Fund",
+                "National Agency MOU - NDRRMC, PAGASA, PHIVOLCS, DICT Integration",
+                "LGU Partnership Agreement - Pilot Region Implementation",
+                "Technology Specification - IoT Sensor Network & Data Mesh Architecture",
+                "O&M Sustainability Plan - National Disaster Risk Reduction Fund Integration"
             ],
             recommendedPartners: [
                 { name: "Asian Development Bank (ADB)", role: "Primary Grant Provider", contact: "Philippines Country Office", priority: "Critical" },
@@ -539,11 +539,11 @@ const testScenarios = [
                 "Assess scholarship program structure and academic eligibility frameworks"
             ],
             documentation: [
-                "Investment Agreement — Series A Equity Round",
-                "Broadcasting Rights Agreement — Exclusive University League Coverage",
-                "Publisher License Agreement — Riot Games/Blizzard Academic Use",
-                "University Consortium MOU — Participation Terms & Revenue Share",
-                "Scholarship Fund Agreement — Student-Athlete Support Program"
+                "Investment Agreement - Series A Equity Round",
+                "Broadcasting Rights Agreement - Exclusive University League Coverage",
+                "Publisher License Agreement - Riot Games/Blizzard Academic Use",
+                "University Consortium MOU - Participation Terms & Revenue Share",
+                "Scholarship Fund Agreement - Student-Athlete Support Program"
             ],
             recommendedPartners: [
                 { name: "CJ ENM (OGN)", role: "Broadcasting & Content Partner", contact: "Esports Division", priority: "Critical" },
@@ -600,12 +600,12 @@ const testScenarios = [
                 "Assess multi-language interface requirements and indigenous language support"
             ],
             documentation: [
-                "Grant Application — Ford Foundation Building Institutions & Networks",
-                "FPIC Protocol — Engagement Framework for All Participating Nations",
-                "Governance Charter — Indigenous Board Control & Decision Rights",
-                "Technology Specification — Data Sovereignty Platform Architecture",
-                "Cross-Jurisdictional Agreement — Multi-Country Legal Framework",
-                "CARE Principles Compliance Certification — Implementation Audit"
+                "Grant Application - Ford Foundation Building Institutions & Networks",
+                "FPIC Protocol - Engagement Framework for All Participating Nations",
+                "Governance Charter - Indigenous Board Control & Decision Rights",
+                "Technology Specification - Data Sovereignty Platform Architecture",
+                "Cross-Jurisdictional Agreement - Multi-Country Legal Framework",
+                "CARE Principles Compliance Certification - Implementation Audit"
             ],
             recommendedPartners: [
                 { name: "Ford Foundation", role: "Lead Philanthropic Funder", contact: "Civic Engagement & Government", priority: "Critical" },
@@ -741,10 +741,10 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                         <div className="bg-blue-50 border-l-4 border-blue-600 p-4">
                             <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2"><CheckCircle2 size={18} className="text-[#5EAC1B]" /> Statistical Validity</h4>
                             <ul className="text-base text-blue-800 space-y-1">
-                                <li>• <strong>Box-Muller Transform:</strong> Generates statistically valid normal distributions</li>
-                                <li>• <strong>100+ Iterations:</strong> Provides statistically significant confidence intervals</li>
-                                <li>• <strong>Full Percentile Analysis:</strong> P5, P10, P25, P50, P75, P90, P95</li>
-                                <li>• <strong>Risk Metrics:</strong> VaR95, Expected Shortfall, Probability of Loss</li>
+                                <li>- <strong>Box-Muller Transform:</strong> Generates statistically valid normal distributions</li>
+                                <li>- <strong>100+ Iterations:</strong> Provides statistically significant confidence intervals</li>
+                                <li>- <strong>Full Percentile Analysis:</strong> P5, P10, P25, P50, P75, P90, P95</li>
+                                <li>- <strong>Risk Metrics:</strong> VaR95, Expected Shortfall, Probability of Loss</li>
                             </ul>
                         </div>
                     </section>
@@ -783,8 +783,8 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                                         <th className="p-2 text-left font-semibold">Country</th>
                                         <th className="p-2 text-left font-semibold">Sector</th>
                                         <th className="p-2 text-right font-semibold">Deal Size</th>
-                                        <th className="p-2 text-center font-semibold">SPI™</th>
-                                        <th className="p-2 text-center font-semibold">IVAS™</th>
+                                        <th className="p-2 text-center font-semibold">SPI-</th>
+                                        <th className="p-2 text-center font-semibold">IVAS-</th>
                                         <th className="p-2 text-center font-semibold">Risk</th>
                                     </tr>
                                 </thead>
@@ -842,8 +842,8 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                         </div>
                         
                         <div className="bg-green-50 border-l-4 border-green-600 p-3">
-                            <p className="text-sm text-green-900"><strong>IVAS Assessment:</strong> 76/100 — PROCEED ?</p>
-                            <p className="text-sm text-green-800 mt-1">Risk-Adjusted NPV: $7.1M (after 18% volatility discount). Confidence Interval: ±22%.</p>
+                            <p className="text-sm text-green-900"><strong>IVAS Assessment:</strong> 76/100 - PROCEED ?</p>
+                            <p className="text-sm text-green-800 mt-1">Risk-Adjusted NPV: $7.1M (after 18% volatility discount). Confidence Interval: -22%.</p>
                         </div>
                     </section>
                     
@@ -851,7 +851,7 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                     <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6">
                         <h3 className="text-lg font-bold text-[#0D3A83] mb-3">4. Conclusion</h3>
                         <p className="text-base text-[#2D2D2D] leading-relaxed">
-                            The evidence presented demonstrates that BW AI implements genuine Monte Carlo simulation with 100+ iterations per financial analysis. This is not marketing language—it is verifiable production code that executes over 100 randomized scenarios using statistically valid Box-Muller transformation. The system has been validated against 10 real-world scenarios spanning diverse geographies and sectors, producing comprehensive percentile distributions, risk metrics, and probability assessments suitable for institutional decision-making.
+                            The evidence presented demonstrates that BW AI implements genuine Monte Carlo simulation with 100+ iterations per financial analysis. This is not marketing language-it is verifiable production code that executes over 100 randomized scenarios using statistically valid Box-Muller transformation. The system has been validated against 10 real-world scenarios spanning diverse geographies and sectors, producing comprehensive percentile distributions, risk metrics, and probability assessments suitable for institutional decision-making.
                         </p>
                     </section>
                 </div>
@@ -859,7 +859,7 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                 {/* Footer */}
                 <div className="bg-[#F0F7FF] border-t border-[#1C53A4]/30 p-4">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm text-[#4D4D4D]">BW Global Advisory Pty Ltd · ABN 55 978 113 300 · Melbourne, Australia</p>
+                        <p className="text-sm text-[#4D4D4D]">BW Global Advisory Pty Ltd - ABN 55 978 113 300 - Melbourne, Australia</p>
                         <button onClick={onClose} className="px-6 py-2 bg-[#0D3A83] text-white rounded-lg text-sm font-medium hover:bg-[#0D3A83]/90 transition-colors">
                             Close Document
                         </button>
@@ -910,10 +910,10 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
                 <div className="bg-[#0D3A83] text-white p-8 border-b-4 border-[#81C449]">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
-                            <div className="text-xs text-[#81C449] uppercase tracking-widest mb-2">BW Global Advisory Pty Ltd — Confidential</div>
+                            <div className="text-xs text-[#81C449] uppercase tracking-widest mb-2">BW Global Advisory Pty Ltd - Confidential</div>
                             <div className="text-xs text-gray-200 mb-4">Strategic Partnership Intelligence Report #TS-{scenario.id.toString().padStart(3, '0')} | Generated: January 2026</div>
                             <h1 className="text-3xl font-bold mb-2">{scenario.entity}</h1>
-                            <h2 className="text-xl text-[#81C449] mb-3">{scenario.sector} Sector — {scenario.country} {scenario.flag}</h2>
+                            <h2 className="text-xl text-[#81C449] mb-3">{scenario.sector} Sector - {scenario.country} {scenario.flag}</h2>
                             <div className="flex items-center gap-6 text-sm">
                                 <div><span className="text-gray-200">Indicative Value:</span> <span className="font-bold text-[#81C449] text-lg">{scenario.dealSize}</span></div>
                                 <div><span className="text-gray-200">SPI Score:</span> <span className="font-bold">{scenario.SPI}/100</span></div>
@@ -941,7 +941,7 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
                         <section>
                             <h3 className="text-lg font-bold text-[#0D3A83] border-b-2 border-[#81C449] pb-2 mb-4">2. Probabilistic Financial Analysis (Monte Carlo Simulation)</h3>
                             <p className="text-base leading-7 text-justify mb-4">
-                                The BW AI platform has executed 100+ Monte Carlo simulation iterations to stress-test the financial projections for this opportunity. The simulation varies key input parameters including interest rates (±30-90 basis points), currency exchange rates (based on historical volatility), implementation timelines (±20% variance), and cost structures (±15% variance). The resulting probability distribution provides decision-makers with a comprehensive view of potential outcomes across pessimistic, base case, and optimistic scenarios.
+                                The BW AI platform has executed 100+ Monte Carlo simulation iterations to stress-test the financial projections for this opportunity. The simulation varies key input parameters including interest rates (-30-90 basis points), currency exchange rates (based on historical volatility), implementation timelines (-20% variance), and cost structures (-15% variance). The resulting probability distribution provides decision-makers with a comprehensive view of potential outcomes across pessimistic, base case, and optimistic scenarios.
                             </p>
                             <div className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-4">
                                 <table className="w-full text-sm">
@@ -956,17 +956,17 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
                                         <tr>
                                             <td className="py-3">P10 (10th Percentile)</td>
                                             <td className="py-3 text-center font-bold">{scenario.p10}</td>
-                                            <td className="py-3">Pessimistic outcome — 90% probability of exceeding this value</td>
+                                            <td className="py-3">Pessimistic outcome - 90% probability of exceeding this value</td>
                                         </tr>
                                         <tr>
                                             <td className="py-3">P50 (50th Percentile)</td>
                                             <td className="py-3 text-center font-bold">{scenario.p50}</td>
-                                            <td className="py-3">Base case expectation — median outcome across all scenarios</td>
+                                            <td className="py-3">Base case expectation - median outcome across all scenarios</td>
                                         </tr>
                                         <tr>
                                             <td className="py-3">P90 (90th Percentile)</td>
                                             <td className="py-3 text-center font-bold">{scenario.p90}</td>
-                                            <td className="py-3">Optimistic outcome — 10% probability of exceeding this value</td>
+                                            <td className="py-3">Optimistic outcome - 10% probability of exceeding this value</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1069,7 +1069,7 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
                             <ol className="list-decimal list-inside space-y-2 text-sm">
                                 {scenario.sources.map((source, idx) => (
                                     <li key={idx}>
-                                        <span className="font-medium">{source.name}</span> — <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{source.url}</a>
+                                        <span className="font-medium">{source.name}</span> - <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{source.url}</a>
                                     </li>
                                 ))}
                             </ol>
@@ -1088,7 +1088,7 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
                 <div className="bg-[#0D3A83] text-white p-4 border-t-4 border-[#81C449]">
                     <div className="flex items-center justify-between max-w-4xl mx-auto">
                         <div className="text-sm text-gray-200">
-                            <span>BW AI Platform — Strategic Partnership Intelligence Report</span>
+                            <span>BW AI Platform - Strategic Partnership Intelligence Report</span>
                             <span className="mx-3">|</span>
                             <span>Report #TS-{scenario.id.toString().padStart(3, '0')}</span>
                             <span className="mx-3">|</span>
@@ -1211,7 +1211,7 @@ const DocumentTypesModal: React.FC<{ isOpen: boolean; onClose: () => void }> = (
                         </h4>
                         <p className="text-base text-blue-800">
                             Each document type is generated through NSIL's reasoning pipeline, incorporating relevant formulas (from the 21-formula suite), 
-                            persona perspectives, and data validation. Documents maintain internal consistency across an engagement—a Financial Model 
+                            persona perspectives, and data validation. Documents maintain internal consistency across an engagement-a Financial Model 
                             references the same assumptions as the Investment Memo and Due Diligence Report.
                         </p>
                     </div>
@@ -1262,7 +1262,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     
                     <div className="relative z-10 flex flex-col justify-center min-h-[780px] px-12 py-20">
                         <div className="max-w-4xl mx-auto">
-                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Invitation — Founding Beta Partners</p>
+                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Invitation - Founding Beta Partners</p>
                             
                             <h1 className="text-5xl md:text-6xl font-light mb-8 text-white leading-[1.1] tracking-tight">
                                 The World's First<br/>
@@ -1271,13 +1271,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             
                             <div className="my-8 py-8 border-l-2 border-slate-600 pl-8">
                                 <p className="text-2xl md:text-3xl text-slate-200 leading-relaxed font-light mb-6">
-                                    Regional cities power the real economy—agriculture, energy, manufacturing—yet eighty percent of global capital flows to the same saturated metro hubs.
+                                    Regional cities power the real economy-agriculture, energy, manufacturing-yet eighty percent of global capital flows to the same saturated metro hubs.
                                 </p>
                                 <p className="text-xl text-slate-300 leading-relaxed font-light mb-6">
                                     The barrier is not lack of potential. It is the asymmetric cost of understanding. For a global investor in New York or Singapore, the intellectual labor required to comprehend a project in a regional province is five times higher than comprehending one in a capital city. The data is fragmented across municipal databases, provincial agencies, and federal repositories. The risks are difficult to quantify without local knowledge. The comparable precedents do not exist in the analyst's usual reference library.
                                 </p>
                                 <p className="text-xl text-slate-300 leading-relaxed font-light mb-6">
-                                    When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city—no matter how compelling its fundamentals—never makes it to the investment committee agenda.
+                                    When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city-no matter how compelling its fundamentals-never makes it to the investment committee agenda.
                                 </p>
                                 <p className="text-xl text-white italic leading-relaxed font-light">
                                     "When they cannot compute the risk, they do not write the check. This is not a failure of capital availability. This is a failure of information architecture."
@@ -1314,7 +1314,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                Regional cities power the real economy—agriculture, energy, manufacturing—yet eighty percent of global capital flows to the same saturated metro hubs.
+                                Regional cities power the real economy-agriculture, energy, manufacturing-yet eighty percent of global capital flows to the same saturated metro hubs.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
@@ -1322,7 +1322,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city—no matter how compelling its fundamentals—never makes it to the investment committee agenda.
+                                When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city-no matter how compelling its fundamentals-never makes it to the investment committee agenda.
                             </p>
                             
                             <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-12">
@@ -1363,15 +1363,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg prose-invert max-w-none">
                             <p className="text-xl font-light text-slate-300 leading-relaxed mb-8">
-                                BWGA AI functions as a continuous bridge between local reality and global capital markets. It is not a replacement for human judgment—it is the enhancement layer that amplifies professional expertise. Analysts gain research velocity. Legal advisors gain compliance coverage. Sector specialists gain cross-domain context. The system handles the computational burden so professionals can focus on the strategic decisions that require human wisdom.
+                                BWGA AI functions as a continuous bridge between local reality and global capital markets. It is not a replacement for human judgment-it is the enhancement layer that amplifies professional expertise. Analysts gain research velocity. Legal advisors gain compliance coverage. Sector specialists gain cross-domain context. The system handles the computational burden so professionals can focus on the strategic decisions that require human wisdom.
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-6">
-                                The system ingests unstructured regional data—municipal planning documents, industry reports, demographic statistics, infrastructure inventories—and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It references institutional data sources including World Bank indicators, sanctions registries, and regulatory frameworks to validate claims and flag inconsistencies. It identifies data gaps and adjusts confidence intervals based on evidence quality. Every output is designed for human review and professional validation.
+                                The system ingests unstructured regional data-municipal planning documents, industry reports, demographic statistics, infrastructure inventories-and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It references institutional data sources including World Bank indicators, sanctions registries, and regulatory frameworks to validate claims and flag inconsistencies. It identifies data gaps and adjusts confidence intervals based on evidence quality. Every output is designed for human review and professional validation.
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                                Where traditional processes rely solely on individual capacity constrained by time and cognitive limits, BWGA AI extends that capacity through a governed protocol. Five autonomous expert personas debate every mandate in parallel—not to replace professional perspective, but to ensure no analytical angle goes unexplored. The Skeptic surfaces risks that confirmation bias might miss. The Advocate identifies value propositions that time pressure might overlook. The Regulator flags compliance considerations across jurisdictions. The Accountant stress-tests assumptions through probabilistic simulation. The Operator maps execution against infrastructure reality. Together, they deliver the comprehensive foundation upon which professional judgment can build.
+                                Where traditional processes rely solely on individual capacity constrained by time and cognitive limits, BWGA AI extends that capacity through a governed protocol. Five autonomous expert personas debate every mandate in parallel-not to replace professional perspective, but to ensure no analytical angle goes unexplored. The Skeptic surfaces risks that confirmation bias might miss. The Advocate identifies value propositions that time pressure might overlook. The Regulator flags compliance considerations across jurisdictions. The Accountant stress-tests assumptions through probabilistic simulation. The Operator maps execution against infrastructure reality. Together, they deliver the comprehensive foundation upon which professional judgment can build.
                             </p>
                             
                             <div className="grid grid-cols-2 gap-8 my-12">
@@ -1386,7 +1386,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <p className="text-lg text-slate-400 leading-relaxed">
-                                The output is not a replacement for professional advisory services—it is the evidential foundation that makes those services more effective. Board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system flags outputs for additional review before export. Human professionals retain final authority. The system ensures they exercise that authority with comprehensive context.
+                                The output is not a replacement for professional advisory services-it is the evidential foundation that makes those services more effective. Board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system flags outputs for additional review before export. Human professionals retain final authority. The system ensures they exercise that authority with comprehensive context.
                             </p>
                         </div>
                     </div>
@@ -1460,7 +1460,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="absolute inset-0 flex items-center px-12">
                         <div className="max-w-2xl">
                             <p className="text-2xl font-light text-white leading-relaxed">
-                                Agriculture, mining, manufacturing, services—we quantify the infrastructure and human capital that institutional investors require before deployment.
+                                Agriculture, mining, manufacturing, services-we quantify the infrastructure and human capital that institutional investors require before deployment.
                             </p>
                         </div>
                     </div>
@@ -1480,7 +1480,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div className="space-y-12">
                                 {/* Phase 1: Ingestion */}
                                 <div>
-                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase One — Ingestion & Defense</h3>
+                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase One - Ingestion & Defense</h3>
                                     <p className="text-lg text-slate-600 leading-relaxed mb-6">
                                         The system begins with adversarial validation. Claims are cross-referenced against World Bank data, UN sanctions databases, and historical economic baselines. If input quality falls below institutional thresholds, the analysis terminates before computational resources are wasted on garbage data.
                                     </p>
@@ -1496,22 +1496,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                                 {/* Phase 2: Boardroom Simulation */}
                                 <div>
-                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Two — The Boardroom Simulation</h3>
+                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Two - The Boardroom Simulation</h3>
                                     <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                        Five autonomous reasoning agents debate the opportunity in parallel. They operate independently, surface contradictions, and preserve disagreement. The Skeptic hunts for hidden risks. The Advocate identifies timing advantages. The Regulator validates compliance. The Accountant stress-tests financials. The Operator assesses execution feasibility. You receive the full transcript—not a sanitized consensus.
+                                        Five autonomous reasoning agents debate the opportunity in parallel. They operate independently, surface contradictions, and preserve disagreement. The Skeptic hunts for hidden risks. The Advocate identifies timing advantages. The Regulator validates compliance. The Accountant stress-tests financials. The Operator assesses execution feasibility. You receive the full transcript-not a sanitized consensus.
                                     </p>
                                     <div className="bg-slate-900 text-white p-8">
                                         <p className="text-xl font-light text-slate-200 leading-relaxed italic">
-                                            "The value is not in the final score. The value is in seeing where the five personas disagree—because that disagreement surfaces the assumptions you have not yet tested."
+                                            "The value is not in the final score. The value is in seeing where the five personas disagree-because that disagreement surfaces the assumptions you have not yet tested."
                                         </p>
                                     </div>
                                 </div>
                         
                                 {/* Phase 3: Quantification */}
                                 <div>
-                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Three — Mathematical Quantification</h3>
+                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Three - Mathematical Quantification</h3>
                                     <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                        The debate outputs feed twenty-one proprietary scoring formulas. Strategic Partnership Index quantifies counterparty reliability. Regional Return on Investment adjusts yields for location-specific risk premiums. Investment Velocity Score measures capital deployment friction. These are not subjective ratings—they are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
+                                        The debate outputs feed twenty-one proprietary scoring formulas. Strategic Partnership Index quantifies counterparty reliability. Regional Return on Investment adjusts yields for location-specific risk premiums. Investment Velocity Score measures capital deployment friction. These are not subjective ratings-they are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
                                     </p>
                                     <div className="bg-white p-6 border-l-2 border-slate-300">
                                         <p className="font-medium text-slate-900 mb-2">Evidence Clamping Protocol</p>
@@ -1521,12 +1521,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 
                                 {/* Phase 4: Execution */}
                                 <div>
-                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Four — Strategic Synthesis & Execution</h3>
+                                    <h3 className="text-2xl font-light text-slate-900 mb-6 pb-3 border-b border-slate-200">Phase Four - Strategic Synthesis & Execution</h3>
                                     <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                        The system resolves the multi-persona debate into executive recommendations. It generates board-ready artifacts—letters of intent, investment memos, policy briefs—with complete source provenance and audit trails. Every claim traces to evidence. Every number traces to formula. Every risk traces to mitigation strategy.
+                                        The system resolves the multi-persona debate into executive recommendations. It generates board-ready artifacts-letters of intent, investment memos, policy briefs-with complete source provenance and audit trails. Every claim traces to evidence. Every number traces to formula. Every risk traces to mitigation strategy.
                                     </p>
                                     <p className="text-lg text-slate-600 leading-relaxed">
-                                        Strategic intent becomes executable documentation in fifteen minutes. Not because the system cuts corners. Because it performs the intellectual labor that traditionally requires weeks of consultant engagement—and it does so with mathematical rigor that survives committee scrutiny.
+                                        Strategic intent becomes executable documentation in fifteen minutes. Not because the system cuts corners. Because it performs the intellectual labor that traditionally requires weeks of consultant engagement-and it does so with mathematical rigor that survives committee scrutiny.
                                     </p>
                                 </div>
                             </div>
@@ -1583,7 +1583,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="absolute inset-0 flex items-center">
                         <div className="px-12 max-w-2xl">
                             <p className="text-3xl font-light text-white leading-relaxed">
-                                Infrastructure that scales—renewable energy, logistics networks, digital connectivity—quantified for institutional deployment.
+                                Infrastructure that scales-renewable energy, logistics networks, digital connectivity-quantified for institutional deployment.
                             </p>
                         </div>
                     </div>
@@ -1648,10 +1648,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div>
                                 <h3 className="text-2xl font-light text-slate-200 mb-6">For Regional Governments & Development Agencies</h3>
                                 <p className="text-lg text-slate-300 leading-relaxed mb-6">
-                                    Your region has extraordinary potential—skilled workers, natural resources, strategic location. But you cannot get seen. Investment promotion generates interest, but deals stall in due diligence because investors lack the structured data they require.
+                                    Your region has extraordinary potential-skilled workers, natural resources, strategic location. But you cannot get seen. Investment promotion generates interest, but deals stall in due diligence because investors lack the structured data they require.
                                 </p>
                                 <p className="text-lg text-slate-300 leading-relaxed">
-                                    BWGA AI packages regional opportunities in the format global capital demands. Generate investment briefs, policy frameworks, and partner assessments in minutes. Respond to investor inquiries with governed, auditable intelligence—not brochures. Your region competes on fundamentals, not familiarity.
+                                    BWGA AI packages regional opportunities in the format global capital demands. Generate investment briefs, policy frameworks, and partner assessments in minutes. Respond to investor inquiries with governed, auditable intelligence-not brochures. Your region competes on fundamentals, not familiarity.
                                 </p>
                             </div>
                             
@@ -1661,7 +1661,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     You have capital to deploy, but regional opportunities are expensive to assess. Your analysts can evaluate three metro deals in the time required to understand one regional project. The cost of curiosity is too high, so capital stays concentrated.
                                 </p>
                                 <p className="text-lg text-slate-300 leading-relaxed">
-                                    Screen regional opportunities at metro-deal speed with structured, comparable data. Receive investment committee-ready memos with Monte Carlo simulations and risk-adjusted scoring. Trace every recommendation to evidence—satisfy compliance without delays. Expand your mandate into overlooked markets without expanding your team.
+                                    Screen regional opportunities at metro-deal speed with structured, comparable data. Receive investment committee-ready memos with Monte Carlo simulations and risk-adjusted scoring. Trace every recommendation to evidence-satisfy compliance without delays. Expand your mandate into overlooked markets without expanding your team.
                                 </p>
                             </div>
                             
@@ -1671,13 +1671,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     You're considering expansion or partnerships in unfamiliar regions. Local consultants tell you what you want to hear. Your board wants evidence, not optimism. Traditional due diligence takes months.
                                 </p>
                                 <p className="text-lg text-slate-300 leading-relaxed">
-                                    Know a place before visiting—structured intelligence on any region, delivered fast. Score potential partners with Strategic Partnership Index—identify who will actually deliver. Generate joint venture frameworks, risk registers, and implementation roadmaps automatically. Move faster with confidence.
+                                    Know a place before visiting-structured intelligence on any region, delivered fast. Score potential partners with Strategic Partnership Index-identify who will actually deliver. Generate joint venture frameworks, risk registers, and implementation roadmaps automatically. Move faster with confidence.
                                 </p>
                             </div>
                             
                             <div className="bg-slate-800 p-8 mt-12">
                                 <p className="text-xl font-light text-slate-200 leading-relaxed text-center">
-                                    When regional cities are equipped with world-class intelligence tools, they can compete for—and win—foreign direct investment on their own terms. Capital follows fundamentals. The meadow gets mapped. Places worth exploring finally get properly seen.
+                                    When regional cities are equipped with world-class intelligence tools, they can compete for-and win-foreign direct investment on their own terms. Capital follows fundamentals. The meadow gets mapped. Places worth exploring finally get properly seen.
                                 </p>
                             </div>
                         </div>
@@ -1699,11 +1699,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <h2 className="text-4xl font-light mb-6">The Philosophy: Mapping the Meadow</h2>
                             <div className="bg-slate-800/50 border-l-4 border-slate-400 p-8 mb-8">
                                 <p className="text-2xl font-light text-slate-200 leading-relaxed italic">
-                                    "Big cities are where the bees already gather—dense networks, known signals, easy validation. Regional cities can be extraordinary flowers, but they are often invisible from the boardroom because the meadow isn't mapped."
+                                    "Big cities are where the bees already gather-dense networks, known signals, easy validation. Regional cities can be extraordinary flowers, but they are often invisible from the boardroom because the meadow isn't mapped."
                                 </p>
                             </div>
                             <p className="text-xl font-light text-slate-300 leading-relaxed">
-                                BWGA AI maps the meadow. It makes regional opportunity legible, governable, and repeatable—so investment follows fundamentals, not just familiarity.
+                                BWGA AI maps the meadow. It makes regional opportunity legible, governable, and repeatable-so investment follows fundamentals, not just familiarity.
                             </p>
                         </div>
                     </div>
@@ -1717,7 +1717,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-8">
-                                We did not build this in a vacuum. We proved it works through one hundred-plus Monte Carlo simulations across ten real-world sectors—from green hydrogen in Chile to coffee traceability in Ethiopia.
+                                We did not build this in a vacuum. We proved it works through one hundred-plus Monte Carlo simulations across ten real-world sectors-from green hydrogen in Chile to coffee traceability in Ethiopia.
                             </p>
                             
                             <div className="grid grid-cols-4 gap-6 mb-12">
@@ -1740,7 +1740,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                The adversarial input shield catches compliance risks that human analysts miss—sanctions exposure, policy misalignment, inflated claims. The five-persona debate surfaces deal-killers weeks before due diligence teams would find them. The evidence clamping protocol flags weak data early, protecting reputations by refusing to manufacture certainty.
+                                The adversarial input shield catches compliance risks that human analysts miss-sanctions exposure, policy misalignment, inflated claims. The five-persona debate surfaces deal-killers weeks before due diligence teams would find them. The evidence clamping protocol flags weak data early, protecting reputations by refusing to manufacture certainty.
                             </p>
                             
                             <div className="bg-slate-50 p-8 border-l-2 border-slate-300 text-center">
@@ -1767,7 +1767,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="absolute inset-0 flex items-center">
                         <div className="px-12 max-w-2xl">
                             <p className="text-3xl font-light text-white leading-relaxed">
-                                Global reach, local precision—connecting regional economies to international supply chains, export markets, and sovereign wealth funds.
+                                Global reach, local precision-connecting regional economies to international supply chains, export markets, and sovereign wealth funds.
                             </p>
                         </div>
                     </div>
@@ -1781,7 +1781,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-12">
-                                When evidence is thin, the system automatically dials down its confidence—using hedged language, flagging gaps, and in some cases blocking document exports until data quality issues are addressed.
+                                When evidence is thin, the system automatically dials down its confidence-using hedged language, flagging gaps, and in some cases blocking document exports until data quality issues are addressed.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-8">
@@ -1822,7 +1822,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-12">
-                                The system draws on historical economic patterns and case studies to identify precedents relevant to your mandate—surfacing what has worked, what has failed, and why similar strategies succeeded or collapsed.
+                                The system draws on historical economic patterns and case studies to identify precedents relevant to your mandate-surfacing what has worked, what has failed, and why similar strategies succeeded or collapsed.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-8">
@@ -1860,7 +1860,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="absolute inset-0 flex items-center">
                         <div className="px-12 max-w-2xl">
                             <p className="text-3xl font-light text-white leading-relaxed">
-                                From agricultural heartlands to emerging manufacturing hubs—helping regional economies tell their story to global capital.
+                                From agricultural heartlands to emerging manufacturing hubs-helping regional economies tell their story to global capital.
                             </p>
                         </div>
                     </div>
@@ -1883,7 +1883,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     
                                     <p className="text-lg text-slate-600 leading-relaxed">
-                                        This system was born from sixteen months of intensive field work in regional Philippines—inside the friction that actually breaks deals and stalls development. I mapped what blocks confidence: probity gaps, sanctions exposure, policy misalignment, liquidity reality, and execution drag.
+                                        This system was born from sixteen months of intensive field work in regional Philippines-inside the friction that actually breaks deals and stalls development. I mapped what blocks confidence: probity gaps, sanctions exposure, policy misalignment, liquidity reality, and execution drag.
                                     </p>
                                     
                                     <div className="bg-slate-50 p-6 border-l-2 border-slate-400">
@@ -1914,7 +1914,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="absolute inset-0 flex items-center">
                         <div className="px-12 max-w-2xl">
                             <p className="text-3xl font-light text-white leading-relaxed">
-                                Built for the real economy—agriculture, mining, manufacturing, services—speaking the language of regional industries and the investors who fund them.
+                                Built for the real economy-agriculture, mining, manufacturing, services-speaking the language of regional industries and the investors who fund them.
                             </p>
                         </div>
                     </div>
@@ -1933,7 +1933,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             
                             <div className="bg-slate-800 p-8 border-l-4 border-slate-500 mb-12">
                                 <p className="text-2xl font-light text-slate-200 leading-relaxed text-center">
-                                    The goal: to prove that when a region is equipped with world-class intelligence tools, it can compete for—and win—foreign direct investment on its own terms.
+                                    The goal: to prove that when a region is equipped with world-class intelligence tools, it can compete for-and win-foreign direct investment on its own terms.
                                 </p>
                             </div>
                             
@@ -2004,7 +2004,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <p><strong className="text-slate-900 block mb-1">1. Strategic Decision Support</strong> BW AI is a decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
                             <p><strong className="text-slate-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This reduces false confidence and enforces explainability.</p>
                             <p><strong className="text-slate-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws (GDPR, Australian Privacy Act). Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
-                            <p><strong className="text-slate-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
+                            <p><strong className="text-slate-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI-, RROI-, SEAM-, IVAS-, SCF-) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
                             <p><strong className="text-slate-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability. AI must never replace human authority.</p>
                             <p><strong className="text-slate-900 block mb-1">6. Liability & IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&D notice: the platform is provided "AS IS" without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
                         </div>
@@ -2042,7 +2042,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             )}
                         </div>
                         
-                        <p className="text-slate-500 text-xs mt-8 text-center">© 2026 BW Global Advisory Pty Ltd. Nexus Intelligence OS v6.0 - Melbourne, Australia. ABN 55 978 113 300. Trading as Sole Trader while in R&D.</p>
+                        <p className="text-slate-500 text-xs mt-8 text-center">- 2026 BW Global Advisory Pty Ltd. Nexus Intelligence OS v6.0 - Melbourne, Australia. ABN 55 978 113 300. Trading as Sole Trader while in R&D.</p>
                     </div>
                 </section>
             </div>
