@@ -1273,19 +1273,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     Regional intelligence has always been trapped between two impossible choices: <span className="text-white font-normal">silence or speculation.</span>
                                 </p>
                                 <p className="text-xl text-slate-300 leading-relaxed font-light">
-                                    BWGA Nexus introduces a third option. Not advice. Not forecasts. Evidence.
+                                    BWGA Nexus introduces a third option. Not replacement. Enhancement. Evidence at the speed of opportunity.
                                 </p>
                             </div>
                             
                             <div className="text-lg text-slate-300 leading-relaxed space-y-6 font-light">
                                 <p>
-                                    This is an autonomous reasoning engine that doesn't predict. It validates. It doesn't speculate. It measures. It hunts for hidden risks, exposes analytical blind spots, and builds the institutional-grade evidence that survives committee scrutiny—all before capital is deployed.
+                                    This is an autonomous reasoning engine that amplifies professional expertise—not replaces it. It validates claims that analysts would investigate. It measures risks that advisors would assess. It surfaces blind spots that specialists would flag. The system handles the computational burden so professionals can focus on strategic decisions that require human judgment and stakeholder relationships.
                                 </p>
                                 <p>
-                                    Five expert personas debate every mandate. Twenty-one proprietary formulas score every dimension. Every output is auditable. Every claim is traceable. Every number is formulaic. The system refuses to aggregate confidence when evidence is thin.
+                                    Five expert personas debate every mandate. Twenty-one proprietary formulas score every dimension. Every output is auditable. Every claim is traceable. Every number is formulaic. The system refuses to aggregate confidence when evidence is thin—and human professionals retain final authority over every conclusion.
                                 </p>
                                 <p className="text-slate-400">
-                                    This is the translation layer between local reality and global capital—where regional cities finally become visible to institutional investors.
+                                    This is the translation layer between local reality and global capital—where regional cities finally become visible to institutional investors, and where professional teams gain the velocity to act on that visibility.
                                 </p>
                             </div>
                         </div>
@@ -1371,30 +1371,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg prose-invert max-w-none">
                             <p className="text-xl font-light text-slate-300 leading-relaxed mb-8">
-                                BWGA Nexus functions as a continuous bridge between local reality and global capital markets. It is not a document generation tool. It is an autonomous reasoning system that performs the intellectual labor traditionally conducted by teams of analysts, legal advisors, and sector specialists.
+                                BWGA Nexus functions as a continuous bridge between local reality and global capital markets. It is not a replacement for human judgment—it is the enhancement layer that amplifies professional expertise. Analysts gain research velocity. Legal advisors gain compliance coverage. Sector specialists gain cross-domain context. The system handles the computational burden so professionals can focus on the strategic decisions that require human wisdom.
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-6">
-                                The system ingests unstructured regional data—municipal planning documents, industry reports, demographic statistics, infrastructure inventories—and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It cross-references claims against verified data sources including World Bank statistics, UN sanctions databases, and regulatory filings. It identifies inconsistencies, flags data gaps, and adjusts confidence intervals based on evidence quality.
+                                The system ingests unstructured regional data—municipal planning documents, industry reports, demographic statistics, infrastructure inventories—and transforms it into the standardized metrics, risk assessments, and financial projections that institutional investors require for committee approval. It cross-references claims against verified data sources including World Bank statistics, UN sanctions databases, and regulatory filings. It identifies inconsistencies, flags data gaps, and adjusts confidence intervals based on evidence quality. Every output is designed for human review and professional validation.
                             </p>
                             
                             <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                                Where traditional advisory processes rely on human judgment shaped by cognitive biases and time constraints, BWGA Nexus operates through a governed protocol. Every mandate passes through five autonomous expert personas that debate the opportunity in parallel. The Skeptic hunts for hidden risks and unrealistic assumptions. The Advocate identifies unique value propositions and timing advantages. The Regulator validates compliance with sanctions regimes and local law. The Accountant stress-tests financial viability through Monte Carlo simulation. The Operator assesses execution feasibility against infrastructure constraints.
+                                Where traditional processes rely solely on individual capacity constrained by time and cognitive limits, BWGA Nexus extends that capacity through a governed protocol. Five autonomous expert personas debate every mandate in parallel—not to replace professional perspective, but to ensure no analytical angle goes unexplored. The Skeptic surfaces risks that confirmation bias might miss. The Advocate identifies value propositions that time pressure might overlook. The Regulator flags compliance considerations across jurisdictions. The Accountant stress-tests assumptions through Monte Carlo simulation. The Operator maps execution against infrastructure reality. Together, they deliver the comprehensive foundation upon which professional judgment can build.
                             </p>
                             
                             <div className="grid grid-cols-2 gap-8 my-12">
                                 <div className="border-l-2 border-slate-600 pl-6">
                                     <p className="text-sm text-slate-500 uppercase tracking-wider mb-3">Traditional Process</p>
-                                    <p className="text-lg text-slate-300">Four to twelve weeks for initial assessment. Multiple consulting engagements. Fragmented deliverables. Opaque methodology.</p>
+                                    <p className="text-lg text-slate-300">Four to twelve weeks for initial assessment. Multiple consulting engagements. Fragmented deliverables. Professional expertise constrained by research velocity.</p>
                                 </div>
                                 <div className="border-l-2 border-slate-400 pl-6">
-                                    <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">BWGA Nexus</p>
-                                    <p className="text-lg text-white">Fifteen minutes to investment memo. Complete audit trail. Two hundred document types. Mathematical confidence bands on every score.</p>
+                                    <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Enhanced with BWGA Nexus</p>
+                                    <p className="text-lg text-white">Fifteen minutes to draft investment memo. Complete audit trail. Two hundred document types. Professional teams liberated to focus on strategic refinement and stakeholder engagement.</p>
                                 </div>
                             </div>
                             
                             <p className="text-lg text-slate-400 leading-relaxed">
-                                The output is not advisory recommendations qualified by disclaimers. The output is board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system refuses to export documents until data gaps are addressed. This is not artificial intelligence that hallucinates certainty. This is governed intelligence that takes institutional responsibility for its outputs.
+                                The output is not a replacement for professional advisory services—it is the evidential foundation that makes those services more effective. Board-ready artifacts with complete source provenance, formula transparency, and confidence-adjusted language. When evidence is insufficient, the system refuses to export until data gaps are addressed. Human professionals retain final authority. The system ensures they exercise that authority with comprehensive context.
                             </p>
                         </div>
                     </div>
