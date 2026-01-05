@@ -1270,19 +1270,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             
                             <div className="my-12 py-8 border-l-2 border-slate-600 pl-8">
                                 <p className="text-2xl md:text-3xl text-slate-200 leading-relaxed font-light mb-4">
-                                    Capital is not scarce. <span className="text-white font-normal">Confidence is.</span>
+                                    Regional intelligence has always been trapped between two impossible choices: <span className="text-white font-normal">silence or speculation.</span>
                                 </p>
                                 <p className="text-xl text-slate-300 leading-relaxed font-light">
-                                    We built the intelligence engine that transforms regional opportunity into the mathematical evidence that investment committees require.
+                                    BWGA Nexus introduces a third option. Not advice. Not forecasts. Evidence.
                                 </p>
                             </div>
                             
-                            <div className="text-lg text-slate-300 leading-relaxed space-y-4 font-light">
+                            <div className="text-lg text-slate-300 leading-relaxed space-y-6 font-light">
                                 <p>
-                                    BWGA Nexus is not a chatbot. It is an autonomous reasoning system that hunts for risks, validates claims, and surfaces blind spots before they become board-level embarrassments. It debates every mandate through five expert personas, scores every dimension through twenty-one proprietary formulas, and refuses to hallucinate confidence when evidence is thin.
+                                    This is an autonomous reasoning engine that doesn't predict. It validates. It doesn't speculate. It measures. It hunts for hidden risks, exposes analytical blind spots, and builds the institutional-grade evidence that survives committee scrutiny—all before capital is deployed.
+                                </p>
+                                <p>
+                                    Five expert personas debate every mandate. Twenty-one proprietary formulas score every dimension. Every output is auditable. Every claim is traceable. Every number is formulaic. The system refuses to aggregate confidence when evidence is thin.
                                 </p>
                                 <p className="text-slate-400">
-                                    This is the translation layer between local reality and global capital. This is how regional cities finally get seen.
+                                    This is the translation layer between local reality and global capital—where regional cities finally become visible to institutional investors.
                                 </p>
                             </div>
                         </div>
