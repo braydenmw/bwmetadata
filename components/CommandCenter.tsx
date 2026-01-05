@@ -1404,7 +1404,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-4xl font-light text-slate-900 mb-4">The Reasoning Engine</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Five Personas, Twenty-One Formulas, Zero Hallucinations</p>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Five Personas, Twenty-One Formulas, Evidence-Governed Outputs</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-8">
@@ -1601,7 +1601,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 <section className="py-20 px-12 bg-slate-50">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-4xl font-light text-slate-900 mb-4">Board-Ready Deliverables</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Analysis Becomes Execution in Fifteen Minutes</p>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">From Strategic Intent to Institutional Artifacts</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-xl font-light text-slate-700 leading-relaxed mb-12">
@@ -1849,7 +1849,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <div className="border-l-2 border-slate-300 pl-6">
                                     <p className="font-medium text-slate-900 mb-2">Outcome Learning</p>
                                     <p className="text-lg text-slate-600 leading-relaxed">
-                                        Delta between prediction and actual results retrunes scoring models continuously.
+                                        Delta between prediction and actual results retunes scoring models continuously.
                                     </p>
                                 </div>
                             </div>
@@ -1914,8 +1914,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* Photo Break - Regional Economy */}
                 <section className="relative h-96 overflow-hidden">
                     <img 
-                        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80" 
-                        alt="Agricultural harvesting in regional Australia" 
+                        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80" 
+                        alt="Mining and industrial operations in regional area" 
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 to-transparent"></div>
