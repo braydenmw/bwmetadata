@@ -1442,6 +1442,194 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
+                {/* THE REASONING ENGINE - Full Capability */}
+                <section className="py-20 px-12 bg-slate-900 text-white">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light mb-4">The Reasoning Engine</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">Five Personas. Twenty-One Formulas. Evidence-Governed Outputs.</p>
+                        
+                        <div className="space-y-8">
+                            <p className="text-xl text-slate-200 leading-relaxed">
+                                Most AI tells you what you want to hear. BWGA AI tells you what the evidence supports. It operates through three integrated layers: an adversarial boardroom, a mathematical backbone, and an evidence governance protocol.
+                            </p>
+                            
+                            <div className="grid grid-cols-5 gap-4 my-12">
+                                <div className="bg-slate-800 p-4 text-center">
+                                    <div className="text-2xl mb-2">🔍</div>
+                                    <p className="font-medium text-white text-sm">The Skeptic</p>
+                                    <p className="text-xs text-slate-400 mt-1">Hunts hidden risks and unrealistic assumptions</p>
+                                </div>
+                                <div className="bg-slate-800 p-4 text-center">
+                                    <div className="text-2xl mb-2">💡</div>
+                                    <p className="font-medium text-white text-sm">The Advocate</p>
+                                    <p className="text-xs text-slate-400 mt-1">Identifies competitive advantages and timing windows</p>
+                                </div>
+                                <div className="bg-slate-800 p-4 text-center">
+                                    <div className="text-2xl mb-2">⚖️</div>
+                                    <p className="font-medium text-white text-sm">The Regulator</p>
+                                    <p className="text-xs text-slate-400 mt-1">Validates compliance and governance standards</p>
+                                </div>
+                                <div className="bg-slate-800 p-4 text-center">
+                                    <div className="text-2xl mb-2">📊</div>
+                                    <p className="font-medium text-white text-sm">The Accountant</p>
+                                    <p className="text-xs text-slate-400 mt-1">Stress-tests financials via Monte Carlo simulation</p>
+                                </div>
+                                <div className="bg-slate-800 p-4 text-center">
+                                    <div className="text-2xl mb-2">⚙️</div>
+                                    <p className="font-medium text-white text-sm">The Operator</p>
+                                    <p className="text-xs text-slate-400 mt-1">Assesses execution against infrastructure reality</p>
+                                </div>
+                            </div>
+                            
+                            <p className="text-lg text-slate-300 leading-relaxed">
+                                These five personas debate every mandate in parallel. They surface contradictions, preserve disagreement, and show you the full transcript. You see where consensus exists and where conflict remains. The final decision belongs to you-but the intellectual labor of adversarial review has already been completed.
+                            </p>
+                            
+                            <div className="bg-slate-800 p-6 border-l-4 border-slate-500">
+                                <p className="text-lg text-white italic">
+                                    "The value is not in the final score. The value is in seeing where the five personas disagree-because that disagreement surfaces the assumptions you have not yet tested."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* THE 21 FORMULAS */}
+                <section className="py-20 px-12 bg-white">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Mathematical Confidence</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Twenty-One Proprietary Scoring Formulas</p>
+                        
+                        <div className="space-y-8">
+                            <p className="text-xl text-slate-700 leading-relaxed">
+                                Every opportunity is scored across twenty-one formulas. These are not subjective ratings-they are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
+                            </p>
+                            
+                            <div className="grid grid-cols-3 gap-6">
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">SPI™ - Strategic Partnership Index</p>
+                                    <p className="text-sm text-slate-600">Quantifies counterparty reliability and alignment</p>
+                                </div>
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">RROI™ - Regional Return on Investment</p>
+                                    <p className="text-sm text-slate-600">Adjusts yields for location-specific risk premiums</p>
+                                </div>
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">SEAM™ - Socio-Economic Alignment Metric</p>
+                                    <p className="text-sm text-slate-600">Measures community benefit and sustainability</p>
+                                </div>
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">IVAS™ - Investment Viability Assessment</p>
+                                    <p className="text-sm text-slate-600">Calculates capital deployment feasibility</p>
+                                </div>
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">SCF™ - Supply Chain Friction</p>
+                                    <p className="text-sm text-slate-600">Identifies logistics and execution bottlenecks</p>
+                                </div>
+                                <div className="bg-slate-50 p-6">
+                                    <p className="font-medium text-slate-900 mb-2">+16 Derivative Indices</p>
+                                    <p className="text-sm text-slate-600">Risk, governance, ESG, execution, and more</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-slate-900 text-white p-8">
+                                <h3 className="text-xl font-light mb-4">Evidence Clamping Protocol</h3>
+                                <p className="text-slate-300 leading-relaxed">
+                                    When evidence quality is insufficient, formulas produce low scores with wide confidence bands. The system does not compensate with optimistic language. It flags the data gap and blocks document export until the gap is addressed. This is how institutional-grade intelligence maintains integrity under production conditions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* THE 10-STEP PROTOCOL */}
+                <section className="py-20 px-12 bg-slate-50">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Ten-Step Protocol</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">From Strategic Intent to Executable Artifacts</p>
+                        
+                        <div className="space-y-6">
+                            <p className="text-xl text-slate-700 leading-relaxed mb-8">
+                                Every mandate passes through a structured reasoning sequence that transforms raw ambition into board-ready intelligence. This is an institutional governance protocol that enforces intellectual honesty at every transition point.
+                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 1</span>
+                                    <p className="text-slate-800">Adversarial Input Screening</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 2</span>
+                                    <p className="text-slate-800">Historical Contextualization</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 3</span>
+                                    <p className="text-slate-800">Five-Persona Boardroom Debate</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 4</span>
+                                    <p className="text-slate-800">Mathematical Quantification (21 Formulas)</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 5</span>
+                                    <p className="text-slate-800">Monte Carlo Simulation</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 6</span>
+                                    <p className="text-slate-800">Evidence Quality Assessment</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 7</span>
+                                    <p className="text-slate-800">Risk-Mitigation Mapping</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 8</span>
+                                    <p className="text-slate-800">Partner Matching & Scoring</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 9</span>
+                                    <p className="text-slate-800">Document Generation & Audit Trail</p>
+                                </div>
+                                <div className="bg-white p-4 border-l-4 border-slate-400">
+                                    <span className="text-sm font-medium text-slate-500">Step 10</span>
+                                    <p className="text-slate-800">Outcome Learning & Model Refinement</p>
+                                </div>
+                            </div>
+                            
+                            <p className="text-lg text-slate-600 leading-relaxed mt-8">
+                                Strategic intent becomes executable documentation in approximately thirty minutes. Not because the system cuts corners-but because it performs the intellectual labor that traditionally requires weeks of consultant engagement, with mathematical rigor that survives committee scrutiny.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* REGIONAL INTELLIGENCE CAPABILITIES */}
+                <section className="py-20 px-12 bg-slate-900 text-white">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light mb-4">Regional Intelligence Capabilities</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">Execution Modules Built for Institutional Deployment</p>
+                        
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="bg-slate-800 p-6">
+                                <h3 className="text-lg font-medium text-white mb-3">Partner Discovery Engine</h3>
+                                <p className="text-sm text-slate-300">Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, MOUs, and partnership proposals automatically matched to counterparty capabilities.</p>
+                            </div>
+                            <div className="bg-slate-800 p-6">
+                                <h3 className="text-lg font-medium text-white mb-3">Multi-Scenario Simulation</h3>
+                                <p className="text-sm text-slate-300">Stress-tests activation paths through Monte Carlo simulation with 100+ iterations. Produces probabilistic outcomes with Value-at-Risk calculations and sensitivity analysis.</p>
+                            </div>
+                            <div className="bg-slate-800 p-6">
+                                <h3 className="text-lg font-medium text-white mb-3">Early-Warning Detection</h3>
+                                <p className="text-sm text-slate-300">Monitors for regulatory shifts, sanctions updates, and currency volatility that affect transaction viability. Detects policy drift and compliance risks before deals finalize.</p>
+                            </div>
+                            <div className="bg-slate-800 p-6">
+                                <h3 className="text-lg font-medium text-white mb-3">Due Diligence Intelligence</h3>
+                                <p className="text-sm text-slate-300">Comprehensive operational risk profiling including total cost of ownership analysis, execution feasibility assessment, and complete audit trail generation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* WHO IT SERVES - Direct Value Props */}
                 <section className="py-16 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
