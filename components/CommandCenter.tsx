@@ -1292,349 +1292,480 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* THE PROBLEM - Editorial Narrative Style */}
+                {/* THE RESEARCH - What We Found */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Cost of Curiosity</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Why Regional Cities Remain Invisible</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Research: What We Found</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Evidence From Brookings, OECD, and Development Economics</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                Every year, trillions of dollars flow into infrastructure, agriculture, energy, and manufacturing. Yet the communities that produce these assets rarely capture the investment premium they deserve.
+                                According to OECD and UNCTAD data, global foreign direct investment exceeded $1.5 trillion in 2024. Yet Brookings Institution research reveals a persistent pattern: non-metropolitan counties experienced 3.5% employment decline compared to just 1.9% for metropolitan-adjacent areas. The gap is not caused by lack of opportunity. It is caused by lack of accessible information architecture.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                The problem is not capital scarcity. Global investors, development banks, and institutional funds are actively seeking diversified exposure outside congested metropolitan markets. The problem is information asymmetry. Regional opportunities require specialized knowledge that global analysts do not possess and cannot efficiently acquire.
+                                The problem is documented across development economics literature: <strong>information asymmetry</strong>. The OECD explicitly states that effective investment promotion works by "reducing information asymmetries and lowering administrative and investment costs." Regional opportunities require specialized knowledge that global analysts do not possess-and cannot efficiently acquire within deal timelines.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                Consider the arithmetic: a Singapore-based analyst evaluating a manufacturing opportunity in rural Brazil must synthesize municipal zoning regulations, state-level incentive programs, federal environmental frameworks, local labor dynamics, currency hedging requirements, and sovereign risk factors-often across multiple languages and legal traditions. The research burden makes the opportunity cost prohibitive before the opportunity itself is even understood.
+                                Consider the documented arithmetic: a Singapore-based analyst evaluating a manufacturing opportunity in rural Brazil must synthesize municipal zoning regulations, state-level incentive programs, federal environmental frameworks, local labor dynamics, currency hedging requirements, and sovereign risk factors-often across multiple languages and legal traditions. Brookings research confirms that proximity to cities provides an "economic buffer" precisely because it reduces this information burden. Remote regions lack that buffer.
                             </p>
+                            
+                            <div className="grid grid-cols-3 gap-6 my-12">
+                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
+                                    <p className="text-3xl font-light text-slate-900 mb-2">85%</p>
+                                    <p className="text-sm text-slate-600">of venture capital flows to metropolitan areas (representing ~55% of population)</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
+                                    <p className="text-3xl font-light text-slate-900 mb-2">3.5%</p>
+                                    <p className="text-sm text-slate-600">employment decline in non-adjacent rural counties vs 1.9% metro-adjacent</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
+                                    <p className="text-3xl font-light text-slate-900 mb-2">61%</p>
+                                    <p className="text-sm text-slate-600">of young people in remote areas advised to leave for opportunity elsewhere</p>
+                                </div>
+                            </div>
                             
                             <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-12">
                                 <p className="text-xl text-slate-800 leading-relaxed italic">
                                     "Capital does not lack curiosity. It lacks the architecture to act on curiosity at acceptable cost."
                                 </p>
+                                <p className="text-sm text-slate-500 mt-2">— BWGA AI Platform Philosophy</p>
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed">
-                                The result is a self-reinforcing cycle: regional teams cannot afford the consultants, analysts, and advisors required to package their opportunities to institutional standard. Investors cannot justify the due diligence expense for opportunities they cannot pre-qualify. Both sides wait for the other to move first. Neither moves. The opportunity window closes. The next generation inherits the same constraints.
+                                The result is a self-reinforcing cycle documented by development economists: regional teams cannot afford the consultants, analysts, and advisors required to package their opportunities to institutional standard. Investors cannot justify the due diligence expense for opportunities they cannot pre-qualify. Both sides wait for the other to move first. Neither moves. The opportunity window closes. The next generation inherits the same constraints.
                             </p>
                         </div>
                     </div>
                 </section>
                 
-                {/* WHY THIS EXISTS - Sharp & Direct */}
+                {/* EXISTING SYSTEMS - What's Out There */}
+                <section className="py-16 px-12 bg-slate-100">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Exists Today</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Systems That Serve Adjacent Needs-But Not This One</p>
+                        
+                        <div className="space-y-6">
+                            <p className="text-xl text-slate-700 leading-relaxed">
+                                Sophisticated tools exist for pieces of this puzzle. None address the complete challenge regional development teams face.
+                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                    <p className="font-medium text-slate-900 mb-2">Bloomberg Terminal / Refinitiv</p>
+                                    <p className="text-sm text-slate-600">Excellent for traded securities and macro data. Does not help a regional council package a greenfield manufacturing opportunity or generate investor-ready documentation.</p>
+                                </div>
+                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                    <p className="font-medium text-slate-900 mb-2">PitchBook / Crunchbase</p>
+                                    <p className="text-sm text-slate-600">Strong on venture-backed companies. Blind to government-led infrastructure, agricultural expansion, or public-private partnerships outside tech corridors.</p>
+                                </div>
+                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                    <p className="font-medium text-slate-900 mb-2">Management Consultancies</p>
+                                    <p className="text-sm text-slate-600">McKinsey, BCG, Deloitte produce exceptional work-at $500K+ per engagement. Regional councils with $50K discretionary budgets cannot access this tier.</p>
+                                </div>
+                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                    <p className="font-medium text-slate-900 mb-2">Investment Promotion Agencies</p>
+                                    <p className="text-sm text-slate-600">Government bodies doing important work, often understaffed and under-resourced. They need tools that multiply their capacity, not replace their judgment.</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-slate-900 text-white p-8 mt-8">
+                                <p className="text-xl font-light leading-relaxed">
+                                    <strong>The gap:</strong> No system exists that takes unstructured regional opportunity information-regardless of format or sophistication level-and transforms it into institutional-grade intelligence that governments, banks, and corporations can all trust, at a price point regional teams can afford.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* WHY I BUILT THIS - From Regional Experience */}
                 <section className="py-16 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light mb-4">Why We Built This</h2>
-                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-8">A Critical Gap That Nobody Was Filling</p>
+                        <h2 className="text-4xl font-light mb-4">Why I Built This</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-8">From Living in a Regional City-Watching the Pattern Repeat</p>
                         
                         <div className="space-y-6">
                             <p className="text-xl text-slate-200 leading-relaxed">
-                                Governments struggle to articulate investment opportunities in formats investors understand. Banks cannot justify due diligence costs on unfamiliar regions. Companies waste months on assessments that should take days. Everyone speaks different languages-literally and professionally.
+                                I live in regional Australia. I have watched the same pattern for years: talented local teams with genuine opportunities, unable to articulate them in formats that institutional capital understands. Investors interested in diversification, unable to justify the due diligence cost on unfamiliar territories. Both sides wanting the same outcome. Neither equipped to bridge the gap.
                             </p>
                             
                             <p className="text-lg text-slate-300 leading-relaxed">
-                                There was no single platform that could take raw project information-regardless of how it was presented-and transform it into institutional-grade intelligence that governments, banks, and corporations could all trust.
+                                Governments struggle to translate local knowledge into investment-grade documentation. Banks cannot deploy analysts to every regional opportunity that crosses their desk. Companies waste months on assessments that should take days. Everyone speaks different languages-literally and professionally.
+                            </p>
+                            
+                            <p className="text-lg text-slate-300 leading-relaxed">
+                                BWGA AI is not an improvement on an existing solution. It is the solution that was missing entirely. Built specifically for regional development-because that is where I live, and that is where the gap is most acute.
                             </p>
                             
                             <div className="bg-slate-800 p-6 border-l-4 border-slate-500">
                                 <p className="text-xl text-white italic">
-                                    "We built BWGA AI because the tools that should exist for regional development simply did not. This is not an improvement on an existing solution. This is the solution that was missing entirely."
+                                    "This platform exists because regional teams deserve the same quality of strategic intelligence that metropolitan investment banks take for granted-at a price point that does not require a grant application."
                                 </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* HOW IT WORKS - Simple & Clear */}
-                <section className="py-16 px-12 bg-white">
+                {/* THE PLATFORM OS - Complete Explanation */}
+                <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">How It Works</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Agentic AI That Thinks, Validates, and Delivers</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Nexus Intelligence OS</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">A Complete Operating System for Regional Investment Intelligence</p>
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                You provide your project information-in any format, at any skill level. The system does the rest.
+                                BWGA AI is not a chatbot. It is a complete operating system designed to solve the regional investment information problem from first principles. The platform serves all personas in the investment ecosystem-governments, investors, and corporate partners-through a unified interface that speaks each user's language while maintaining a single source of truth.
                             </p>
                             
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="bg-slate-50 p-6 text-center">
-                                    <div className="text-4xl font-light text-slate-900 mb-2">1</div>
-                                    <p className="font-medium text-slate-800 mb-2">You Input</p>
-                                    <p className="text-sm text-slate-600">Describe your project, opportunity, or question in plain language</p>
-                                </div>
-                                <div className="bg-slate-50 p-6 text-center">
-                                    <div className="text-4xl font-light text-slate-900 mb-2">2</div>
-                                    <p className="font-medium text-slate-800 mb-2">System Reasons</p>
-                                    <p className="text-sm text-slate-600">Five AI personas debate, validate, and stress-test your information</p>
-                                </div>
-                                <div className="bg-slate-50 p-6 text-center">
-                                    <div className="text-4xl font-light text-slate-900 mb-2">3</div>
-                                    <p className="font-medium text-slate-800 mb-2">You Execute</p>
-                                    <p className="text-sm text-slate-600">Receive board-ready documents, partner recommendations, risk analysis</p>
-                                </div>
+                            <div className="bg-slate-50 p-8 border-l-4 border-slate-400">
+                                <h3 className="text-xl font-medium text-slate-900 mb-4">Multi-Persona Architecture</h3>
+                                <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                                    The system recognizes that governments, investors, and corporations approach the same opportunity from different angles. A regional council asks "How do I attract investment?" An institutional investor asks "How do I assess this opportunity?" A corporate partner asks "How do I evaluate this market entry?"
+                                </p>
+                                <p className="text-lg text-slate-600 leading-relaxed">
+                                    BWGA AI answers all three questions from the same underlying intelligence layer-but tailors the output format, vocabulary, and emphasis to each user's decision framework. This is not cosmetic customization. It is fundamental to bridging the communication gap that keeps regional deals from closing.
+                                </p>
                             </div>
                             
-                            <div className="bg-slate-900 text-white p-8">
-                                <h3 className="text-xl font-light mb-4">NSIL: Nexus Strategic Intelligence Layer</h3>
-                                <p className="text-slate-300 leading-relaxed mb-4">
-                                    The brain behind BWGA AI is called NSIL-a governed reasoning architecture that ensures every output is evidence-based, auditable, and honest about its limitations. It does not guess. It does not hallucinate. It validates every claim against institutional data sources before making recommendations.
+                            <div className="bg-slate-50 p-8 border-l-4 border-slate-400">
+                                <h3 className="text-xl font-medium text-slate-900 mb-4">The Attract Workspace: Live & Reactive</h3>
+                                <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                                    The core interface is called <strong>Attract</strong>-a live workspace that reacts and works alongside you. Unlike static forms or one-way submissions, Attract operates as an active collaborator. As you input information, the system researches in real-time, clarifies ambiguities, surfaces critical questions, and builds the foundation for institutional-grade output.
                                 </p>
-                                <p className="text-slate-400 text-sm">
-                                    Five expert personas (Skeptic, Advocate, Regulator, Accountant, Operator) work in parallel to ensure no angle is missed and no risk is hidden.
+                                <p className="text-lg text-slate-600 leading-relaxed">
+                                    The BW Consult guidance layer walks you through the process step by step. It does not assume expertise. It does not require training. It meets you where you are and elevates your input to the standard that global capital requires.
                                 </p>
+                            </div>
+                            
+                            <div className="grid grid-cols-3 gap-6 mt-8">
+                                <div className="bg-slate-900 text-white p-6 text-center">
+                                    <div className="text-3xl mb-3">📥</div>
+                                    <p className="font-medium mb-2">You Input</p>
+                                    <p className="text-sm text-slate-300">Describe your project in plain language-any format, any skill level</p>
+                                </div>
+                                <div className="bg-slate-900 text-white p-6 text-center">
+                                    <div className="text-3xl mb-3">🔄</div>
+                                    <p className="font-medium mb-2">System Researches</p>
+                                    <p className="text-sm text-slate-300">Live research, clarification, validation-building your foundation in real-time</p>
+                                </div>
+                                <div className="bg-slate-900 text-white p-6 text-center">
+                                    <div className="text-3xl mb-3">📊</div>
+                                    <p className="font-medium mb-2">You Execute</p>
+                                    <p className="text-sm text-slate-300">Receive board-ready intelligence, partner matches, risk analysis</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* WHAT IT DELIVERS - Results Focus */}
-                <section className="py-16 px-12 bg-slate-50">
-                    <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">What You Get</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Functional System. Real Results. Fast.</p>
-                        
-                        <div className="grid grid-cols-2 gap-8 mb-8">
-                            <div className="bg-white p-6 border-l-4 border-slate-400">
-                                <p className="text-3xl font-light text-slate-900 mb-2">~30 minutes</p>
-                                <p className="text-slate-600">From project brief to draft investment memo</p>
-                            </div>
-                            <div className="bg-white p-6 border-l-4 border-slate-400">
-                                <p className="text-3xl font-light text-slate-900 mb-2">One platform</p>
-                                <p className="text-slate-600">Everything in one place-no fragmented consultants</p>
-                            </div>
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
-                                <p className="text-lg text-slate-700">Investment memos, term sheets, letters of intent-ready for board review</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
-                                <p className="text-lg text-slate-700">Partner matching with compatibility scores and risk profiles</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
-                                <p className="text-lg text-slate-700">Risk analysis that flags problems before they become deal-breakers</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
-                                <p className="text-lg text-slate-700">Complete audit trails-every claim traceable to evidence</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
-                                <p className="text-lg text-slate-700">Plain language outputs that any stakeholder can understand</p>
-                            </div>
-                        </div>
-                        
-                        <div className="mt-8 text-center">
-                            <button 
-                                onClick={() => setShowDocumentTypesModal(true)} 
-                                className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors text-lg font-light"
-                            >
-                                <FileText size={20} />
-                                See Full Document Catalog
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* THE REASONING ENGINE - Full Capability */}
+                {/* THE TECHNOLOGY - NSIL & Agentic AI */}
                 <section className="py-20 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light mb-4">The Reasoning Engine</h2>
-                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">Five Personas. Twenty-One Formulas. Evidence-Governed Outputs.</p>
+                        <h2 className="text-4xl font-light mb-4">The Technology Behind Attract</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">NSIL: The Nexus Strategic Intelligence Layer</p>
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-200 leading-relaxed">
-                                Most AI tells you what you want to hear. BWGA AI tells you what the evidence supports. It operates through three integrated layers: an adversarial boardroom, a mathematical backbone, and an evidence governance protocol.
+                                Behind the Attract workspace sits NSIL-a governed reasoning architecture that ensures every output is evidence-based, auditable, and honest about its limitations. NSIL is not a wrapper around a language model. It is a purpose-built orchestration layer that governs how AI capabilities are deployed for strategic decision support.
                             </p>
                             
-                            <div className="grid grid-cols-5 gap-4 my-12">
-                                <div className="bg-slate-800 p-4 text-center">
-                                    <div className="text-2xl mb-2">🔍</div>
-                                    <p className="font-medium text-white text-sm">The Skeptic</p>
-                                    <p className="text-xs text-slate-400 mt-1">Hunts hidden risks and unrealistic assumptions</p>
-                                </div>
-                                <div className="bg-slate-800 p-4 text-center">
-                                    <div className="text-2xl mb-2">💡</div>
-                                    <p className="font-medium text-white text-sm">The Advocate</p>
-                                    <p className="text-xs text-slate-400 mt-1">Identifies competitive advantages and timing windows</p>
-                                </div>
-                                <div className="bg-slate-800 p-4 text-center">
-                                    <div className="text-2xl mb-2">⚖️</div>
-                                    <p className="font-medium text-white text-sm">The Regulator</p>
-                                    <p className="text-xs text-slate-400 mt-1">Validates compliance and governance standards</p>
-                                </div>
-                                <div className="bg-slate-800 p-4 text-center">
-                                    <div className="text-2xl mb-2">📊</div>
-                                    <p className="font-medium text-white text-sm">The Accountant</p>
-                                    <p className="text-xs text-slate-400 mt-1">Stress-tests financials via Monte Carlo simulation</p>
-                                </div>
-                                <div className="bg-slate-800 p-4 text-center">
-                                    <div className="text-2xl mb-2">⚙️</div>
-                                    <p className="font-medium text-white text-sm">The Operator</p>
-                                    <p className="text-xs text-slate-400 mt-1">Assesses execution against infrastructure reality</p>
+                            <div className="bg-slate-800 p-8 border-l-4 border-slate-500">
+                                <h3 className="text-xl font-light mb-4">Agentic AI: Not a Chatbot-A Reasoning System</h3>
+                                <p className="text-slate-300 leading-relaxed mb-4">
+                                    BWGA AI operates through <strong>agentic architecture</strong>-meaning the system does not simply respond to prompts. It actively reasons, researches, validates, and iterates. When you describe an opportunity, the system:
+                                </p>
+                                <ul className="text-slate-300 space-y-2 ml-4">
+                                    <li>• <strong>Researches</strong> regulatory frameworks, market conditions, and precedent transactions</li>
+                                    <li>• <strong>Validates</strong> claims against institutional data sources</li>
+                                    <li>• <strong>Surfaces</strong> critical questions you may not have considered</li>
+                                    <li>• <strong>Stress-tests</strong> assumptions through adversarial debate</li>
+                                    <li>• <strong>Produces</strong> outputs only when evidence quality meets threshold</li>
+                                </ul>
+                            </div>
+                            
+                            <div className="bg-slate-800 p-8 border-l-4 border-slate-500">
+                                <h3 className="text-xl font-light mb-4">The Five-Persona Boardroom</h3>
+                                <p className="text-slate-300 leading-relaxed mb-4">
+                                    Every mandate is debated by five expert personas operating in parallel-each with a distinct analytical mandate:
+                                </p>
+                                <div className="grid grid-cols-5 gap-4 mt-6">
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">🔍</div>
+                                        <p className="font-medium text-white text-sm">The Skeptic</p>
+                                        <p className="text-xs text-slate-400 mt-1">Hunts hidden risks</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">💡</div>
+                                        <p className="font-medium text-white text-sm">The Advocate</p>
+                                        <p className="text-xs text-slate-400 mt-1">Finds advantages</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">⚖️</div>
+                                        <p className="font-medium text-white text-sm">The Regulator</p>
+                                        <p className="text-xs text-slate-400 mt-1">Validates compliance</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">📊</div>
+                                        <p className="font-medium text-white text-sm">The Accountant</p>
+                                        <p className="text-xs text-slate-400 mt-1">Stress-tests numbers</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">⚙️</div>
+                                        <p className="font-medium text-white text-sm">The Operator</p>
+                                        <p className="text-xs text-slate-400 mt-1">Assesses execution</p>
+                                    </div>
                                 </div>
                             </div>
                             
                             <p className="text-lg text-slate-300 leading-relaxed">
-                                These five personas debate every mandate in parallel. They surface contradictions, preserve disagreement, and show you the full transcript. You see where consensus exists and where conflict remains. The final decision belongs to you-but the intellectual labor of adversarial review has already been completed.
+                                These personas debate every input. They surface contradictions, preserve disagreement, and show you the full transcript. The value is not in a single score-it is in seeing where consensus exists and where conflict remains. The final decision belongs to you. The intellectual labor of adversarial review has already been completed.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* THE 21 FORMULAS - Automatic Engagement */}
+                <section className="py-20 px-12 bg-white">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Twenty-One Scoring Formulas</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Automatically Engaged. Mathematically Rigorous. Fully Transparent.</p>
+                        
+                        <div className="space-y-8">
+                            <p className="text-xl text-slate-700 leading-relaxed">
+                                Every opportunity is automatically scored across twenty-one proprietary formulas. You do not select which formulas apply-the system determines relevance based on your input and engages the appropriate scoring engines. These are not subjective ratings. They are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
                             </p>
                             
-                            <div className="bg-slate-800 p-6 border-l-4 border-slate-500">
-                                <p className="text-lg text-white italic">
-                                    "The value is not in the final score. The value is in seeing where the five personas disagree-because that disagreement surfaces the assumptions you have not yet tested."
+                            <div className="grid grid-cols-3 gap-6">
+                                <div className="bg-slate-50 p-6 border-t-4 border-blue-500">
+                                    <p className="font-medium text-slate-900 mb-2">SPI™ - Strategic Partnership Index</p>
+                                    <p className="text-sm text-slate-600">Quantifies counterparty reliability, alignment, and partnership viability</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-t-4 border-green-500">
+                                    <p className="font-medium text-slate-900 mb-2">RROI™ - Regional Return on Investment</p>
+                                    <p className="text-sm text-slate-600">Adjusts expected yields for location-specific risk premiums and market access</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-t-4 border-purple-500">
+                                    <p className="font-medium text-slate-900 mb-2">SEAM™ - Socio-Economic Alignment</p>
+                                    <p className="text-sm text-slate-600">Measures community benefit, sustainability, and social license to operate</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-t-4 border-amber-500">
+                                    <p className="font-medium text-slate-900 mb-2">IVAS™ - Investment Viability Assessment</p>
+                                    <p className="text-sm text-slate-600">Calculates capital deployment feasibility and execution probability</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-t-4 border-red-500">
+                                    <p className="font-medium text-slate-900 mb-2">SCF™ - Supply Chain Friction</p>
+                                    <p className="text-sm text-slate-600">Identifies logistics, infrastructure, and execution bottlenecks</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-t-4 border-slate-500">
+                                    <p className="font-medium text-slate-900 mb-2">+16 Derivative Indices</p>
+                                    <p className="text-sm text-slate-600">Risk, governance, ESG, execution readiness, regulatory complexity, and more</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-slate-900 text-white p-8 mt-8">
+                                <h3 className="text-xl font-light mb-4">Evidence Clamping Protocol</h3>
+                                <p className="text-slate-300 leading-relaxed">
+                                    When evidence quality is insufficient, formulas produce low scores with wide confidence bands. The system does not compensate with optimistic language. It flags the data gap and blocks document export until the gap is addressed. This is how institutional-grade intelligence maintains integrity under production conditions. The system tells you what it knows, what it does not know, and what you need to provide.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* THE 21 FORMULAS */}
-                <section className="py-20 px-12 bg-white">
+                {/* PROOF POINTS - The Pop-Ups That Prove It */}
+                <section className="py-16 px-12 bg-slate-50">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Mathematical Confidence</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Twenty-One Proprietary Scoring Formulas</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Evidence You Can Verify</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Interactive Proof of NSIL, Monte Carlo, and Agentic Reasoning</p>
                         
-                        <div className="space-y-8">
+                        <div className="space-y-6">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                Every opportunity is scored across twenty-one formulas. These are not subjective ratings-they are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
+                                We do not ask you to take our word for it. The platform includes interactive evidence modals that prove the technology operates as described:
                             </p>
                             
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">SPI™ - Strategic Partnership Index</p>
-                                    <p className="text-sm text-slate-600">Quantifies counterparty reliability and alignment</p>
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-white p-6 border border-slate-200 rounded-lg">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <BarChart3 size={24} className="text-blue-600" />
+                                        <h3 className="font-medium text-slate-900">Monte Carlo Evidence</h3>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mb-4">View the actual source code implementation. See 100+ iteration simulations. Examine P10/P50/P90 distribution outputs from real test scenarios.</p>
+                                    <button 
+                                        onClick={() => setShowMonteCarloEvidence(true)} 
+                                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                                    >
+                                        View Monte Carlo Evidence →
+                                    </button>
                                 </div>
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">RROI™ - Regional Return on Investment</p>
-                                    <p className="text-sm text-slate-600">Adjusts yields for location-specific risk premiums</p>
-                                </div>
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">SEAM™ - Socio-Economic Alignment Metric</p>
-                                    <p className="text-sm text-slate-600">Measures community benefit and sustainability</p>
-                                </div>
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">IVAS™ - Investment Viability Assessment</p>
-                                    <p className="text-sm text-slate-600">Calculates capital deployment feasibility</p>
-                                </div>
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">SCF™ - Supply Chain Friction</p>
-                                    <p className="text-sm text-slate-600">Identifies logistics and execution bottlenecks</p>
-                                </div>
-                                <div className="bg-slate-50 p-6">
-                                    <p className="font-medium text-slate-900 mb-2">+16 Derivative Indices</p>
-                                    <p className="text-sm text-slate-600">Risk, governance, ESG, execution, and more</p>
+                                <div className="bg-white p-6 border border-slate-200 rounded-lg">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <FileText size={24} className="text-green-600" />
+                                        <h3 className="font-medium text-slate-900">Document Factory</h3>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mb-4">Explore the complete catalog of auto-generated strategic documents across 10 categories-over 100 document types.</p>
+                                    <button 
+                                        onClick={() => setShowDocumentTypesModal(true)} 
+                                        className="text-sm text-green-600 hover:text-green-800 font-medium"
+                                    >
+                                        View Document Catalog →
+                                    </button>
                                 </div>
                             </div>
                             
-                            <div className="bg-slate-900 text-white p-8">
-                                <h3 className="text-xl font-light mb-4">Evidence Clamping Protocol</h3>
-                                <p className="text-slate-300 leading-relaxed">
-                                    When evidence quality is insufficient, formulas produce low scores with wide confidence bands. The system does not compensate with optimistic language. It flags the data gap and blocks document export until the gap is addressed. This is how institutional-grade intelligence maintains integrity under production conditions.
+                            <div className="bg-white p-6 border border-slate-200 rounded-lg">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <Eye size={24} className="text-purple-600" />
+                                    <h3 className="font-medium text-slate-900">Live Scenario Reports</h3>
+                                </div>
+                                <p className="text-sm text-slate-600 mb-4">
+                                    Click any of our 10 test scenarios (spanning 6 continents, 9 sectors, $811M deal value) to see a complete one-page strategic report-including next steps, recommended partners, risk analysis, and source citations. This is what the system produces. No mockups. No simulations. Actual output.
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* WHAT IT DELIVERS - Reports & Letters */}
+                <section className="py-16 px-12 bg-white">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">What You Receive</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Reports and Letters That Open Doors</p>
+                        
+                        <div className="space-y-8">
+                            <p className="text-xl text-slate-700 leading-relaxed">
+                                The goal is not analysis for its own sake. The goal is to break open a clear path to partnership. BWGA AI produces executable artifacts-documents that can be sent directly to investors, presented to boards, or submitted to funding bodies.
+                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-8 mb-8">
+                                <div className="bg-slate-50 p-6 border-l-4 border-green-500">
+                                    <p className="text-3xl font-light text-slate-900 mb-2">~30 minutes</p>
+                                    <p className="text-slate-600">From project brief to draft investment memo</p>
+                                </div>
+                                <div className="bg-slate-50 p-6 border-l-4 border-blue-500">
+                                    <p className="text-3xl font-light text-slate-900 mb-2">One platform</p>
+                                    <p className="text-slate-600">Everything in one place-no fragmented consultants</p>
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>Investment memos</strong> - structured for institutional review with executive summary, risk analysis, and financial projections</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>Letters of intent</strong> - professionally formatted, legally informed, ready for counterparty review</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>Partner matching reports</strong> - compatibility scores, risk profiles, recommended engagement sequences</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>Risk assessment briefings</strong> - flags problems before they become deal-breakers</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>Complete audit trails</strong> - every claim traceable to evidence, every formula transparent</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CheckCircle2 size={24} className="text-green-600 flex-shrink-0" />
+                                    <p className="text-lg text-slate-700"><strong>The Skeptic's Report</strong> - what your harshest critic would say, so you can address it first</p>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-8 text-center">
+                                <button 
+                                    onClick={() => setShowDocumentTypesModal(true)} 
+                                    className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors text-lg font-light"
+                                >
+                                    <FileText size={20} />
+                                    See Full Document Catalog (100+ Types)
+                                </button>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 {/* THE 10-STEP PROTOCOL */}
-                <section className="py-20 px-12 bg-slate-50">
+                <section className="py-20 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Ten-Step Protocol</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">From Strategic Intent to Executable Artifacts</p>
+                        <h2 className="text-4xl font-light mb-4">The Ten-Step Protocol</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">From Strategic Intent to Executable Artifacts</p>
                         
                         <div className="space-y-6">
-                            <p className="text-xl text-slate-700 leading-relaxed mb-8">
-                                Every mandate passes through a structured reasoning sequence that transforms raw ambition into board-ready intelligence. This is an institutional governance protocol that enforces intellectual honesty at every transition point.
+                            <p className="text-xl text-slate-200 leading-relaxed mb-8">
+                                Every mandate passes through a structured reasoning sequence that transforms raw ambition into board-ready intelligence. This is not a checklist-it is an institutional governance protocol that enforces intellectual honesty at every transition point.
                             </p>
                             
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 1</span>
-                                    <p className="text-slate-800">Adversarial Input Screening</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 1</span>
+                                    <p className="text-white">Adversarial Input Screening</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 2</span>
-                                    <p className="text-slate-800">Historical Contextualization</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 2</span>
+                                    <p className="text-white">Historical Contextualization</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 3</span>
-                                    <p className="text-slate-800">Five-Persona Boardroom Debate</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 3</span>
+                                    <p className="text-white">Five-Persona Boardroom Debate</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 4</span>
-                                    <p className="text-slate-800">Mathematical Quantification (21 Formulas)</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 4</span>
+                                    <p className="text-white">Mathematical Quantification (21 Formulas)</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 5</span>
-                                    <p className="text-slate-800">Monte Carlo Simulation</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 5</span>
+                                    <p className="text-white">Monte Carlo Simulation (100+ Iterations)</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 6</span>
-                                    <p className="text-slate-800">Evidence Quality Assessment</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 6</span>
+                                    <p className="text-white">Evidence Quality Assessment</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 7</span>
-                                    <p className="text-slate-800">Risk-Mitigation Mapping</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 7</span>
+                                    <p className="text-white">Risk-Mitigation Mapping</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 8</span>
-                                    <p className="text-slate-800">Partner Matching & Scoring</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 8</span>
+                                    <p className="text-white">Partner Matching & Scoring</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 9</span>
-                                    <p className="text-slate-800">Document Generation & Audit Trail</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 9</span>
+                                    <p className="text-white">Document Generation & Audit Trail</p>
                                 </div>
-                                <div className="bg-white p-4 border-l-4 border-slate-400">
-                                    <span className="text-sm font-medium text-slate-500">Step 10</span>
-                                    <p className="text-slate-800">Outcome Learning & Model Refinement</p>
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                    <span className="text-sm font-medium text-slate-400">Step 10</span>
+                                    <p className="text-white">Outcome Learning & Model Refinement</p>
                                 </div>
                             </div>
                             
-                            <p className="text-lg text-slate-600 leading-relaxed mt-8">
+                            <p className="text-lg text-slate-300 leading-relaxed mt-8">
                                 Strategic intent becomes executable documentation in approximately thirty minutes. Not because the system cuts corners-but because it performs the intellectual labor that traditionally requires weeks of consultant engagement, with mathematical rigor that survives committee scrutiny.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                {/* REGIONAL INTELLIGENCE CAPABILITIES */}
-                <section className="py-20 px-12 bg-slate-900 text-white">
+                {/* WHO THIS IS FOR - Not a Replacement */}
+                <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light mb-4">Regional Intelligence Capabilities</h2>
-                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">Execution Modules Built for Institutional Deployment</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who This Is For</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Not a Replacement-A Force Multiplier</p>
                         
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="bg-slate-800 p-6">
-                                <h3 className="text-lg font-medium text-white mb-3">Partner Discovery Engine</h3>
-                                <p className="text-sm text-slate-300">Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, MOUs, and partnership proposals automatically matched to counterparty capabilities.</p>
-                            </div>
-                            <div className="bg-slate-800 p-6">
-                                <h3 className="text-lg font-medium text-white mb-3">Multi-Scenario Simulation</h3>
-                                <p className="text-sm text-slate-300">Stress-tests activation paths through Monte Carlo simulation with 100+ iterations. Produces probabilistic outcomes with Value-at-Risk calculations and sensitivity analysis.</p>
-                            </div>
-                            <div className="bg-slate-800 p-6">
-                                <h3 className="text-lg font-medium text-white mb-3">Early-Warning Detection</h3>
-                                <p className="text-sm text-slate-300">Monitors for regulatory shifts, sanctions updates, and currency volatility that affect transaction viability. Detects policy drift and compliance risks before deals finalize.</p>
-                            </div>
-                            <div className="bg-slate-800 p-6">
-                                <h3 className="text-lg font-medium text-white mb-3">Due Diligence Intelligence</h3>
-                                <p className="text-sm text-slate-300">Comprehensive operational risk profiling including total cost of ownership analysis, execution feasibility assessment, and complete audit trail generation.</p>
+                        <div className="space-y-6 mb-12">
+                            <p className="text-xl text-slate-700 leading-relaxed">
+                                BWGA AI is not designed to replace investment professionals, development officers, or strategic advisors. It is designed to give them capabilities they currently cannot access-or cannot afford.
+                            </p>
+                            
+                            <div className="bg-slate-50 p-6 border-l-4 border-blue-500">
+                                <p className="text-lg text-slate-700 leading-relaxed">
+                                    <strong>The reality:</strong> A regional development officer with domain expertise but limited analyst resources can now produce institutional-grade investment documentation. An investor screening unfamiliar regions can now access structured pre-qualification intelligence. A corporation evaluating market entry can now generate due diligence frameworks in hours, not months.
+                                </p>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                {/* WHO IT SERVES - Direct Value Props */}
-                <section className="py-16 px-12 bg-white">
-                    <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who This Serves</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">One Platform. Three Critical Users. Shared Language.</p>
                         
                         <div className="space-y-8">
                             <div className="bg-slate-50 p-8">
@@ -1642,7 +1773,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <p className="text-lg text-slate-700 leading-relaxed mb-4">
                                     Stop losing investors to regions with better marketing. BWGA AI transforms your local knowledge into the structured intelligence that global capital requires. Generate investor-ready materials in minutes, not months. Respond to inquiries with evidence, not brochures.
                                 </p>
-                                <p className="text-slate-600 italic">"Finally, a tool that speaks the investor's language-without hiring expensive consultants."</p>
+                                <p className="text-slate-600 italic">"Finally, a tool that speaks the investor's language-without requiring expensive consultants."</p>
                             </div>
                             
                             <div className="bg-slate-50 p-8">
@@ -1667,7 +1798,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* PROVEN RESULTS */}
                 <section className="py-16 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-4xl font-light mb-8">Proven Across Real Scenarios</h2>
+                        <h2 className="text-4xl font-light mb-8">Validated Across Real Scenarios</h2>
                         
                         <div className="grid grid-cols-4 gap-6 mb-8">
                             <div>
@@ -1689,7 +1820,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         </div>
                         
                         <p className="text-lg text-slate-300 mb-8">
-                            From green hydrogen in Chile to coffee traceability in Ethiopia-tested, validated, and proven to catch risks that human analysts miss.
+                            From green hydrogen in Chile to coffee traceability in Ethiopia, housing PPPs in Brazil to indigenous data sovereignty platforms-tested, validated, and proven to surface risks that human analysts miss.
                         </p>
                         
                         <button 
@@ -1697,7 +1828,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-lg hover:bg-slate-100 transition-colors text-lg font-light"
                         >
                             <BarChart3 size={20} />
-                            Explore Test Results
+                            Explore Test Results & Evidence
                         </button>
                     </div>
                 </section>
