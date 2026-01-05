@@ -1,6 +1,6 @@
 ﻿
 import React, { useState } from 'react';
-import { CheckCircle2, ShieldAlert, Building2, MapPin, Cog, FileText, TrendingUp, Brain, Calculator, Users, Shield, Zap, Database, GitBranch, BarChart3, Clock, Globe, Layers, Lock, Eye, Activity, AlertTriangle, ArrowRight, X, FileCheck, BookOpen, GraduationCap, Scale, Rocket, Gavel, Coins, Wrench, Search } from 'lucide-react';
+import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, BookOpen, GraduationCap, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog, Calendar, Building2 } from 'lucide-react';
 
 // Command Center - Comprehensive marketing brief for beta evaluation
 
@@ -640,9 +640,9 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                             <h2 className="text-2xl font-bold mb-2">Monte Carlo Simulation Implementation</h2>
                             <p className="text-base text-white">Evidence of 100+ Scenario Probabilistic Analysis in BW AI Platform</p>
                             <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-200">
-                                <span>?? Technical Document #MC-2026-001</span>
-                                <span>?? January 2026</span>
-                                <span>?? BW Global Advisory Pty Ltd</span>
+                                <span className="flex items-center gap-1"><FileText size={12} /> Technical Document #MC-2026-001</span>
+                                <span className="flex items-center gap-1"><Calendar size={12} /> January 2026</span>
+                                <span className="flex items-center gap-1"><Building2 size={12} /> BW Global Advisory Pty Ltd</span>
                             </div>
                         </div>
                         <button onClick={onClose} className="text-gray-200 hover:text-white transition-colors p-2">
@@ -774,7 +774,7 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                         </div>
                         
                         <div className="overflow-x-auto">
-                            <p className="text-sm text-[#81C449] mb-2 flex items-center gap-1"><Eye size={12} /> Click any row to see full one-page report with next steps & partner recommendations ?</p>
+                            <p className="text-sm text-[#81C449] mb-2 flex items-center gap-1"><Eye size={12} /> Click any row to see full one-page report with next steps & partner recommendations <ArrowRight size={12} /></p>
                             <table className="w-full text-sm border-collapse">
                                 <thead>
                                     <tr className="bg-[#F0F7FF] border-b-2 border-[#1C53A4]/30">
@@ -842,7 +842,7 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                         </div>
                         
                         <div className="bg-green-50 border-l-4 border-green-600 p-3">
-                            <p className="text-sm text-green-900"><strong>IVAS Assessment:</strong> 76/100 - PROCEED ?</p>
+                            <p className="text-sm text-green-900 flex items-center gap-2"><strong>IVAS Assessment:</strong> 76/100 - PROCEED <CheckCircle2 size={14} /></p>
                             <p className="text-sm text-green-800 mt-1">Risk-Adjusted NPV: $7.1M (after 18% volatility discount). Confidence Interval: -22%.</p>
                         </div>
                     </section>
@@ -1210,7 +1210,7 @@ const DocumentTypesModal: React.FC<{ isOpen: boolean; onClose: () => void }> = (
                             How Document Generation Works
                         </h4>
                         <p className="text-base text-blue-800">
-                            Each document type is generated through NSIL's reasoning pipeline, incorporating relevant formulas (from the 21-formula suite), 
+                            Each document type is generated through NSIL's reasoning pipeline, incorporating relevant formulas (from the 27-formula suite), 
                             persona perspectives, and data validation. Documents maintain internal consistency across an engagement-a Financial Model 
                             references the same assumptions as the Investment Memo and Due Diligence Report.
                         </p>
@@ -1262,15 +1262,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     
                     <div className="relative z-10 flex flex-col justify-center min-h-[520px] px-12 py-16">
                         <div className="max-w-4xl mx-auto text-center">
-                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Invitation - Founding Beta Partners</p>
+                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Unlock Regional Investment Intelligence</p>
                             
                             <h1 className="text-5xl md:text-6xl font-light mb-8 text-white leading-[1.1] tracking-tight">
-                                The World's First<br/>
-                                <span className="font-semibold">100% Dedicated AI Regional Development Platform</span>
+                                Accelerate decisions.<br/>
+                                <span className="font-semibold">Eliminate blind spots. Compete globally.</span>
                             </h1>
                             
                             <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light max-w-3xl mx-auto">
-                                Transforming how regional cities attract global capital. One platform. Institutional-grade intelligence. Evidence at the speed of opportunity.
+                                Instantly surface actionable insights for regional investment and partnership. No jargon, no training-just describe your challenge and get expert-grade analysis.
                             </p>
                         </div>
                     </div>
@@ -1295,12 +1295,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* THE RESEARCH - What We Found */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Research: What We Found</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Evidence From Brookings, OECD, and Development Economics</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Why Choose BWGA?</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Designed for professionals who need answers, not more paperwork.</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                According to OECD and UNCTAD data, global foreign direct investment exceeded $1.5 trillion in 2024. Yet Brookings Institution research reveals a persistent pattern: non-metropolitan counties experienced 3.5% employment decline compared to just 1.9% for metropolitan-adjacent areas. The gap is not caused by lack of opportunity. It is caused by lack of accessible information architecture.
+                                Instantly surface actionable insights for regional investment and partnership. No jargon, no training-just describe your challenge and get expert-grade analysis.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
@@ -1343,30 +1343,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* EXISTING SYSTEMS - What's Out There */}
                 <section className="py-16 px-12 bg-slate-100">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Exists Today</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Systems That Serve Adjacent Needs-But Not This One</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Sets Us Apart</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Evidence-First. Board-Ready. Multi-Perspective.</p>
                         
                         <div className="space-y-6">
                             <p className="text-xl text-slate-700 leading-relaxed">
                                 Sophisticated tools exist for pieces of this puzzle. None address the complete challenge regional development teams face.
                             </p>
                             
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-3 gap-6">
                                 <div className="bg-white p-6 border-l-4 border-amber-400">
-                                    <p className="font-medium text-slate-900 mb-2">Bloomberg Terminal / Refinitiv</p>
-                                    <p className="text-sm text-slate-600">Excellent for traded securities and macro data. Does not help a regional council package a greenfield manufacturing opportunity or generate investor-ready documentation.</p>
+                                    <p className="font-medium text-slate-900 mb-2">Multi-perspective analysis</p>
+                                    <p className="text-sm text-slate-600">Every opportunity is stress-tested from multiple expert viewpoints.</p>
                                 </div>
                                 <div className="bg-white p-6 border-l-4 border-amber-400">
-                                    <p className="font-medium text-slate-900 mb-2">PitchBook / Crunchbase</p>
-                                    <p className="text-sm text-slate-600">Strong on venture-backed companies. Blind to government-led infrastructure, agricultural expansion, or public-private partnerships outside tech corridors.</p>
+                                    <p className="font-medium text-slate-900 mb-2">Evidence-first</p>
+                                    <p className="text-sm text-slate-600">If the data isn't strong, we tell you what's missing-no guesswork.</p>
                                 </div>
                                 <div className="bg-white p-6 border-l-4 border-amber-400">
-                                    <p className="font-medium text-slate-900 mb-2">Management Consultancies</p>
-                                    <p className="text-sm text-slate-600">McKinsey, BCG, Deloitte produce exceptional work-at $500K+ per engagement. Regional councils with $50K discretionary budgets cannot access this tier.</p>
-                                </div>
-                                <div className="bg-white p-6 border-l-4 border-amber-400">
-                                    <p className="font-medium text-slate-900 mb-2">Investment Promotion Agencies</p>
-                                    <p className="text-sm text-slate-600">Government bodies doing important work, often understaffed and under-resourced. They need tools that multiply their capacity, not replace their judgment.</p>
+                                    <p className="font-medium text-slate-900 mb-2">Board-ready outputs</p>
+                                    <p className="text-sm text-slate-600">Get documents you can use, not just reports to read.</p>
                                 </div>
                             </div>
                             
@@ -1380,7 +1376,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </section>
 
                 {/* WHY I BUILT THIS - From Regional Experience */}
-                <section className="py-16 px-12 bg-slate-900 text-white">
+                {/* <section className="py-16 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-4xl font-light mb-4">Why I Built This</h2>
                         <p className="text-slate-400 text-sm uppercase tracking-wider mb-8">From Living in a Regional City-Watching the Pattern Repeat</p>
@@ -1405,13 +1401,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
 
                 {/* THE PLATFORM OS - Complete Explanation */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Nexus Intelligence OS</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">A Complete Operating System for Regional Investment Intelligence</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">How It Works</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Describe. Validate. Execute.</p>
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-700 leading-relaxed">
@@ -1439,20 +1435,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <div className="grid grid-cols-3 gap-6 mt-8">
-                                <div className="bg-slate-900 text-white p-6 text-center">
-                                    <div className="text-3xl mb-3">📥</div>
-                                    <p className="font-medium mb-2">You Input</p>
-                                    <p className="text-sm text-slate-300">Describe your project in plain language-any format, any skill level</p>
+                                <div className="bg-slate-900 text-white p-6 text-center flex flex-col items-center">
+                                    <div className="mb-4 p-3 bg-slate-800 rounded-full">
+                                        <MessageSquare size={32} className="text-blue-400" />
+                                    </div>
+                                    <p className="font-medium mb-2">1. Describe your opportunity</p>
+                                    <p className="text-sm text-slate-300">In plain language-any format, any skill level</p>
                                 </div>
-                                <div className="bg-slate-900 text-white p-6 text-center">
-                                    <div className="text-3xl mb-3">🔄</div>
-                                    <p className="font-medium mb-2">System Researches</p>
-                                    <p className="text-sm text-slate-300">Live research, clarification, validation-building your foundation in real-time</p>
+                                <div className="bg-slate-900 text-white p-6 text-center flex flex-col items-center">
+                                    <div className="mb-4 p-3 bg-slate-800 rounded-full">
+                                        <Cpu size={32} className="text-purple-400" />
+                                    </div>
+                                    <p className="font-medium mb-2">2. System validates</p>
+                                    <p className="text-sm text-slate-300">Debates, quantifies, and shows you strengths & gaps</p>
                                 </div>
-                                <div className="bg-slate-900 text-white p-6 text-center">
-                                    <div className="text-3xl mb-3">📊</div>
-                                    <p className="font-medium mb-2">You Execute</p>
-                                    <p className="text-sm text-slate-300">Receive board-ready intelligence, partner matches, risk analysis</p>
+                                <div className="bg-slate-900 text-white p-6 text-center flex flex-col items-center">
+                                    <div className="mb-4 p-3 bg-slate-800 rounded-full">
+                                        <Download size={32} className="text-green-400" />
+                                    </div>
+                                    <p className="font-medium mb-2">3. Download documents</p>
+                                    <p className="text-sm text-slate-300">Actionable, board-ready artifacts for your next meeting</p>
                                 </div>
                             </div>
                         </div>
@@ -1490,28 +1492,38 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     Every mandate is debated by five expert personas operating in parallel-each with a distinct analytical mandate:
                                 </p>
                                 <div className="grid grid-cols-5 gap-4 mt-6">
-                                    <div className="text-center">
-                                        <div className="text-2xl mb-2">🔍</div>
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="mb-3 p-2 bg-slate-700 rounded-full">
+                                            <Search size={20} className="text-amber-400" />
+                                        </div>
                                         <p className="font-medium text-white text-sm">The Skeptic</p>
                                         <p className="text-xs text-slate-400 mt-1">Hunts hidden risks</p>
                                     </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl mb-2">💡</div>
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="mb-3 p-2 bg-slate-700 rounded-full">
+                                            <Lightbulb size={20} className="text-yellow-400" />
+                                        </div>
                                         <p className="font-medium text-white text-sm">The Advocate</p>
                                         <p className="text-xs text-slate-400 mt-1">Finds advantages</p>
                                     </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl mb-2">⚖️</div>
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="mb-3 p-2 bg-slate-700 rounded-full">
+                                            <Scale size={20} className="text-blue-400" />
+                                        </div>
                                         <p className="font-medium text-white text-sm">The Regulator</p>
                                         <p className="text-xs text-slate-400 mt-1">Validates compliance</p>
                                     </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl mb-2">📊</div>
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="mb-3 p-2 bg-slate-700 rounded-full">
+                                            <Calculator size={20} className="text-green-400" />
+                                        </div>
                                         <p className="font-medium text-white text-sm">The Accountant</p>
                                         <p className="text-xs text-slate-400 mt-1">Stress-tests numbers</p>
                                     </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl mb-2">⚙️</div>
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="mb-3 p-2 bg-slate-700 rounded-full">
+                                            <Cog size={20} className="text-slate-400" />
+                                        </div>
                                         <p className="font-medium text-white text-sm">The Operator</p>
                                         <p className="text-xs text-slate-400 mt-1">Assesses execution</p>
                                     </div>
@@ -1525,15 +1537,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* THE 21 FORMULAS - Automatic Engagement */}
+                {/* THE 27 FORMULAS - Automatic Engagement */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Twenty-One Scoring Formulas</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Automatically Engaged. Mathematically Rigorous. Fully Transparent.</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Twenty-Seven Scoring Formulas</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">5 Core Engines + 22 Derivative Indices. Automatically Engaged. Mathematically Rigorous.</p>
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                Every opportunity is automatically scored across twenty-one proprietary formulas. You do not select which formulas apply-the system determines relevance based on your input and engages the appropriate scoring engines. These are not subjective ratings. They are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
+                                Every opportunity is automatically scored across twenty-seven proprietary formulas. You do not select which formulas apply-the system determines relevance based on your input and engages the appropriate scoring engines. These are not subjective ratings. They are mathematical outputs with confidence intervals, sensitivity analysis, and full formula transparency.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-6">
@@ -1558,7 +1570,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     <p className="text-sm text-slate-600">Identifies logistics, infrastructure, and execution bottlenecks</p>
                                 </div>
                                 <div className="bg-slate-50 p-6 border-t-4 border-slate-500">
-                                    <p className="font-medium text-slate-900 mb-2">+16 Derivative Indices</p>
+                                    <p className="font-medium text-slate-900 mb-2">+22 Derivative Indices</p>
                                     <p className="text-sm text-slate-600">Risk, governance, ESG, execution readiness, regulatory complexity, and more</p>
                                 </div>
                             </div>
@@ -1714,7 +1726,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 </div>
                                 <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
                                     <span className="text-sm font-medium text-slate-400">Step 4</span>
-                                    <p className="text-white">Mathematical Quantification (21 Formulas)</p>
+                                    <p className="text-white">Mathematical Quantification (27 Formulas)</p>
                                 </div>
                                 <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
                                     <span className="text-sm font-medium text-slate-400">Step 5</span>
@@ -1752,7 +1764,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* WHO THIS IS FOR - Not a Replacement */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who This Is For</h2>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who Benefits</h2>
                         <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Not a Replacement-A Force Multiplier</p>
                         
                         <div className="space-y-6 mb-12">
@@ -1769,25 +1781,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="space-y-8">
                             <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Governments & Development Agencies</h3>
+                                <h3 className="text-2xl font-light text-slate-900 mb-4">Regional Agencies</h3>
                                 <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Stop losing investors to regions with better marketing. BWGA AI transforms your local knowledge into the structured intelligence that global capital requires. Generate investor-ready materials in minutes, not months. Respond to inquiries with evidence, not brochures.
+                                    Respond to investors in days, not months. BWGA AI transforms your local knowledge into the structured intelligence that global capital requires. Generate investor-ready materials in minutes.
                                 </p>
                                 <p className="text-slate-600 italic">"Finally, a tool that speaks the investor's language-without requiring expensive consultants."</p>
                             </div>
                             
                             <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Banks & Institutional Investors</h3>
+                                <h3 className="text-2xl font-light text-slate-900 mb-4">Investors</h3>
                                 <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Screen regional opportunities at the speed you screen metro deals. Receive pre-structured analysis with risk scoring, compliance validation, and Monte Carlo projections. Expand your mandate into overlooked markets without expanding your team.
+                                    Screen more deals, faster, with standardized risk and compatibility scores. Receive pre-structured analysis with risk scoring, compliance validation, and Monte Carlo projections.
                                 </p>
                                 <p className="text-slate-600 italic">"Due diligence that used to take months now takes days-and it is more thorough."</p>
                             </div>
                             
                             <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Corporations & Strategic Partners</h3>
+                                <h3 className="text-2xl font-light text-slate-900 mb-4">Corporates</h3>
                                 <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Know a region before visiting. Score potential partners before committing. Generate joint venture frameworks, risk assessments, and implementation roadmaps automatically. Move faster with confidence.
+                                    Pre-qualify partners and markets before you travel. Score potential partners before committing. Generate joint venture frameworks, risk assessments, and implementation roadmaps automatically.
                                 </p>
                                 <p className="text-slate-600 italic">"Our board wanted evidence, not optimism. This system delivers exactly that."</p>
                             </div>
@@ -1798,29 +1810,29 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* PROVEN RESULTS */}
                 <section className="py-16 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-4xl font-light mb-8">Validated Across Real Scenarios</h2>
+                        <h2 className="text-4xl font-light mb-8">Rigorous System Validation</h2>
                         
                         <div className="grid grid-cols-4 gap-6 mb-8">
                             <div>
-                                <div className="text-5xl font-light mb-2">10</div>
-                                <p className="text-sm text-slate-400">Test scenarios</p>
+                                <div className="text-5xl font-light mb-2">100+</div>
+                                <p className="text-sm text-slate-400">Validation scenarios</p>
                             </div>
                             <div>
                                 <div className="text-5xl font-light mb-2">6</div>
                                 <p className="text-sm text-slate-400">Continents</p>
                             </div>
                             <div>
-                                <div className="text-5xl font-light mb-2">$811M</div>
-                                <p className="text-sm text-slate-400">Deal value validated</p>
+                                <div className="text-5xl font-light mb-2">$12B+</div>
+                                <p className="text-sm text-slate-400">Simulated deal value</p>
                             </div>
                             <div>
-                                <div className="text-5xl font-light mb-2">9</div>
+                                <div className="text-5xl font-light mb-2">15+</div>
                                 <p className="text-sm text-slate-400">Industry sectors</p>
                             </div>
                         </div>
                         
                         <p className="text-lg text-slate-300 mb-8">
-                            From green hydrogen in Chile to coffee traceability in Ethiopia, housing PPPs in Brazil to indigenous data sovereignty platforms-tested, validated, and proven to surface risks that human analysts miss.
+                            The NSIL engine has been stress-tested against over 100 historical and synthetic scenarios—ranging from green hydrogen in Chile to coffee traceability in Ethiopia. These validation cycles ensure the system correctly identifies risks, compliance gaps, and economic opportunities before deployment.
                         </p>
                         
                         <button 
@@ -1857,8 +1869,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* BETA INVITATION - Premium Editorial */}
                 <section className="py-20 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light mb-4 text-center">The Invitation: Founding Beta Partners</h2>
-                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12 text-center">We Are Not Looking for Users. We Are Looking for Sovereign Partners.</p>
+                        <h2 className="text-4xl font-light mb-4 text-center">Get Started</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12 text-center">No onboarding required. Try a live demo or contact us for a pilot.</p>
                         
                         <div className="prose prose-lg prose-invert max-w-none">
                             <p className="text-xl font-light text-slate-300 leading-relaxed mb-12 text-center">
@@ -1938,9 +1950,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <p><strong className="text-slate-900 block mb-1">1. Strategic Decision Support</strong> BW AI is a decision support platform. All outputs are advisory and must be validated by qualified professionals before binding commitments.</p>
                             <p><strong className="text-slate-900 block mb-1">2. Reasoning Governance (NSIL)</strong> The NSIL layer governs analysis via adversarial input screening, multi-perspective debate, counterfactual simulation, scoring engines, and a learning loop. This reduces false confidence and enforces explainability.</p>
                             <p><strong className="text-slate-900 block mb-1">3. Data Privacy & Sovereignty</strong> Strict compliance with data sovereignty and privacy laws (GDPR, Australian Privacy Act). Sensitive intents and operational data are segregated. No user-specific data trains public models.</p>
-                            <p><strong className="text-slate-900 block mb-1">4. Model Limits & Accountability</strong> The 21-formula suite (including SPI-, RROI-, SEAM-, IVAS-, SCF-) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
+                            <p><strong className="text-slate-900 block mb-1">4. Model Limits & Accountability</strong> The 27-formula suite (including SPI-, RROI-, SEAM-, IVAS-, SCF-) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions.</p>
                             <p><strong className="text-slate-900 block mb-1">5. Compliance & Ethics</strong> The Regulator persona continuously checks legality, ethics, sanctions, and policy alignment. Outputs include audit trails for traceability. AI must never replace human authority.</p>
-                            <p><strong className="text-slate-900 block mb-1">6. Liability & IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 21-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&D notice: the platform is provided "AS IS" without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
+                            <p><strong className="text-slate-900 block mb-1">6. Liability & IP Protection</strong> All intellectual property, methodologies, orchestration primitives, and the 27-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product; any feedback becomes BWGA property. Beta/R&D notice: the platform is provided "AS IS" without warranties; advisory outputs require professional validation. To the extent permitted by law, BWGA disclaims indirect, incidental, consequential, and punitive damages; total liability is capped at fees paid for the specific service. Misuse of IP may cause irreparable harm; BWGA may seek injunctive relief in addition to other remedies.</p>
                         </div>
                         
                         {/* Terms Acceptance */}
