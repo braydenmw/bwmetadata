@@ -1545,7 +1545,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         <h2 className="text-4xl font-light text-slate-900 mb-4">Regional Intelligence Capabilities</h2>
                         <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Execution Modules Built for Institutional Deployment</p>
                         
-                        <div className="prose prose-lg max-w-none space-y-8">\n                            <div className="border-l-2 border-slate-300 pl-6">\n                                <p className="font-medium text-slate-900 mb-2">Partner Discovery Engine</p>\n                                <p className="text-lg text-slate-600 leading-relaxed">\n                                    Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, memoranda of understanding, and partnership proposals automatically matched to counterparty capabilities and cultural alignment.\n                                </p>\n                            </div>
+                        <div className="prose prose-lg max-w-none space-y-8">
+                            <div className="border-l-2 border-slate-300 pl-6">
+                                <p className="font-medium text-slate-900 mb-2">Partner Discovery Engine</p>
+                                <p className="text-lg text-slate-600 leading-relaxed">
+                                    Symbiotic matchmaking using Strategic Partnership Index scoring. Generates letters of intent, memoranda of understanding, and partnership proposals automatically matched to counterparty capabilities and cultural alignment.
+                                </p>
+                            </div>
                             
                             <div className="border-l-2 border-slate-300 pl-6">
                                 <p className="font-medium text-slate-900 mb-2">Multi-Scenario Simulation</p>
