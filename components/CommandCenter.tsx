@@ -1250,7 +1250,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             <div className="max-w-5xl w-full bg-white shadow-lg border border-[#1C53A4]/20 rounded-lg overflow-hidden flex flex-col" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
                 
                 {/* Hero - Premium Editorial Style */}
-                <section className="relative overflow-hidden min-h-[780px]">
+                <section className="relative overflow-hidden min-h-[520px]">
                     <div className="absolute inset-0">
                         <img 
                             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" 
@@ -1260,8 +1260,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
                     
-                    <div className="relative z-10 flex flex-col justify-center min-h-[780px] px-12 py-20">
-                        <div className="max-w-4xl mx-auto">
+                    <div className="relative z-10 flex flex-col justify-center min-h-[520px] px-12 py-16">
+                        <div className="max-w-4xl mx-auto text-center">
                             <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Invitation - Founding Beta Partners</p>
                             
                             <h1 className="text-5xl md:text-6xl font-light mb-8 text-white leading-[1.1] tracking-tight">
@@ -1269,41 +1269,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <span className="font-semibold">Global Regional Assistance Platform</span>
                             </h1>
                             
-                            <div className="my-8 py-8 border-l-2 border-slate-600 pl-8">
-                                <p className="text-2xl md:text-3xl text-slate-200 leading-relaxed font-light mb-6">
-                                    Regional cities power the real economy-agriculture, energy, manufacturing-yet eighty percent of global capital flows to the same saturated metro hubs.
-                                </p>
-                                <p className="text-xl text-slate-300 leading-relaxed font-light mb-6">
-                                    The barrier is not lack of potential. It is the asymmetric cost of understanding. For a global investor in New York or Singapore, the intellectual labor required to comprehend a project in a regional province is five times higher than comprehending one in a capital city. The data is fragmented across municipal databases, provincial agencies, and federal repositories. The risks are difficult to quantify without local knowledge. The comparable precedents do not exist in the analyst's usual reference library.
-                                </p>
-                                <p className="text-xl text-slate-300 leading-relaxed font-light mb-6">
-                                    When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city-no matter how compelling its fundamentals-never makes it to the investment committee agenda.
-                                </p>
-                                <p className="text-xl text-white italic leading-relaxed font-light">
-                                    "When they cannot compute the risk, they do not write the check. This is not a failure of capital availability. This is a failure of information architecture."
-                                </p>
-                            </div>
-                            
-                            <div className="text-lg text-slate-300 leading-relaxed space-y-6 font-light">
-                                <p>
-                                    The consequence is structural: metro areas experience capital congestion while regional economies operate below their infrastructure capacity. Bottlenecks form in cities. Greenfield sites remain undeveloped. The wealth gap between urban and regional communities widens not because regional opportunities lack merit, but because they lack the translation layer that makes them legible to institutional capital.
-                                </p>
-                                <p className="text-slate-400">
-                                    My name is Brayden Walls. I founded Brayden Walls Global Advisory after years advising regional governments and economic development agencies, watching the same pattern repeat: extraordinary opportunities lost because the cost of articulation exceeded the budget of ambition. BWGA AI is the solution I wished had existed.
-                                </p>
-                            </div>
+                            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light max-w-3xl mx-auto">
+                                Transforming how regional cities attract global capital. One platform. Institutional-grade intelligence. Evidence at the speed of opportunity.
+                            </p>
                         </div>
                     </div>
                 </section>
                 
-                {/* Photo Break - AI Technology */}
-                <section className="relative h-80 overflow-hidden">
-                    <img 
-                        src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1600&q=80" 
-                        alt="AI technology visualization" 
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-transparent"></div>
+                {/* Photo Collage Grid */}
+                <section className="grid grid-cols-4 h-64">
+                    <div className="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80" alt="Agricultural landscape" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div className="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&q=80" alt="Wind energy infrastructure" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div className="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Construction and development" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div className="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=80" alt="Regional harvesting" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
                 </section>
 
                 {/* THE PROBLEM - Editorial Narrative Style */}
@@ -1314,25 +1300,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                Regional cities power the real economy-agriculture, energy, manufacturing-yet eighty percent of global capital flows to the same saturated metro hubs.
+                                Every year, trillions of dollars flow into infrastructure, agriculture, energy, and manufacturing. Yet the communities that produce these assets rarely capture the investment premium they deserve.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                The barrier is not lack of potential. It is the asymmetric cost of understanding. For a global investor in New York or Singapore, the intellectual labor required to comprehend a project in a regional province is five times higher than comprehending one in a capital city. The data is fragmented across municipal databases, provincial agencies, and federal repositories. The risks are difficult to quantify without local knowledge. The comparable precedents do not exist in the analyst's usual reference library.
+                                The problem is not capital scarcity. Sovereign wealth funds, pension managers, and development finance institutions are actively seeking diversified, real-asset exposure outside congested metropolitan markets. The problem is information asymmetry. Regional opportunities require specialized knowledge that global analysts do not possess and cannot efficiently acquire.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                When the due diligence process for a regional opportunity takes months instead of weeks, the opportunity cost becomes prohibitive. Capital follows the path of least resistance. The analyst moves to the next metro deal in the queue. The regional city-no matter how compelling its fundamentals-never makes it to the investment committee agenda.
+                                Consider the arithmetic: a Singapore-based analyst evaluating a manufacturing opportunity in rural Brazil must synthesize municipal zoning regulations, state-level incentive programs, federal environmental frameworks, local labor dynamics, currency hedging requirements, and sovereign risk factors-often across multiple languages and legal traditions. The research burden makes the opportunity cost prohibitive before the opportunity itself is even understood.
                             </p>
                             
                             <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-12">
                                 <p className="text-xl text-slate-800 leading-relaxed italic">
-                                    "When they cannot compute the risk, they do not write the check. This is not a failure of capital availability. This is a failure of information architecture."
+                                    "Capital does not lack curiosity. It lacks the architecture to act on curiosity at acceptable cost."
                                 </p>
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed">
-                                The consequence is structural: metro areas experience capital congestion while regional economies operate below their infrastructure capacity. Bottlenecks form in cities. Greenfield sites remain undeveloped. The wealth gap between urban and regional communities widens not because regional opportunities lack merit, but because they lack the translation layer that makes them legible to institutional capital.
+                                The result is a self-reinforcing cycle: regional teams cannot afford the consultants, analysts, and advisors required to package their opportunities to institutional standard. Investors cannot justify the due diligence expense for opportunities they cannot pre-qualify. Both sides wait for the other to move first. Neither moves. The opportunity window closes. The next generation inherits the same constraints.
                             </p>
                         </div>
                     </div>
