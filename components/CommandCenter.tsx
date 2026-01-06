@@ -1,6 +1,6 @@
 ﻿
 import React, { useState } from 'react';
-import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, BookOpen, GraduationCap, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog, Calendar, Building2 } from 'lucide-react';
+import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, BookOpen, GraduationCap, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog, Calendar, Building2, Target } from 'lucide-react';
 
 // Command Center - Comprehensive marketing brief for beta evaluation
 
@@ -1104,6 +1104,139 @@ const ScenarioDetailModal: React.FC<{ scenario: typeof testScenarios[0] | null; 
     );
 };
 
+// Formulas Modal
+const FormulasModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                {/* Header */}
+                <div className="bg-gradient-to-r from-[#0D3A83] to-[#114899] text-white p-8">
+                    <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-3">
+                                <Calculator size={28} className="text-[#81C449]" />
+                                <span className="text-xs text-white uppercase tracking-wider">Mathematical Framework</span>
+                            </div>
+                            <h2 className="text-2xl font-bold mb-2">Twenty-Seven Scoring Formulas</h2>
+                            <p className="text-base text-white">Complete Catalog of BW AI Proprietary Scoring Engines</p>
+                            <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-200">
+                                <span className="flex items-center gap-1"><FileText size={12} /> Technical Document #FORM-2026-001</span>
+                                <span className="flex items-center gap-1"><Calendar size={12} /> January 2026</span>
+                                <span className="flex items-center gap-1"><Building2 size={12} /> BW Global Advisory Pty Ltd</span>
+                            </div>
+                        </div>
+                        <button onClick={onClose} className="text-gray-200 hover:text-white transition-colors p-2">
+                            <X size={24} />
+                        </button>
+                    </div>
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto p-8 bg-white">
+                    {/* Statement Formula */}
+                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
+                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3 flex items-center gap-2">
+                            <Calculator size={18} className="text-[#81C449]" />
+                            Core Formula Example
+                        </h3>
+                        <div className="bg-[#F0F7FF] p-4 rounded-lg border-l-4 border-[#81C449]">
+                            <p className="text-base font-mono text-[#0D3A83] mb-2">
+                                SPI™ = (Reliability Score × 0.4) + (Alignment Score × 0.35) + (Viability Score × 0.25)
+                            </p>
+                            <p className="text-sm text-[#2D2D2D]">
+                                Where Reliability Score is calculated from historical performance data, Alignment Score measures strategic fit, and Viability Score assesses execution feasibility. All scores are normalized 0-1 and weighted based on empirical validation across 100+ test scenarios.
+                            </p>
+                        </div>
+                    </section>
+                    
+                    {/* 5 Core Engines */}
+                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
+                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">5 Core Scoring Engines</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-slate-50 p-4 rounded-lg">
+                                <h4 className="font-bold text-[#0D3A83] mb-2">SPI™ - Strategic Partnership Index</h4>
+                                <p className="text-sm text-[#2D2D2D]">Quantifies counterparty reliability, alignment, and partnership viability</p>
+                            </div>
+                            <div className="bg-slate-50 p-4 rounded-lg">
+                                <h4 className="font-bold text-[#0D3A83] mb-2">RROI™ - Regional Return on Investment</h4>
+                                <p className="text-sm text-[#2D2D2D]">Adjusts expected yields for location-specific risk premiums and market access</p>
+                            </div>
+                            <div className="bg-slate-50 p-4 rounded-lg">
+                                <h4 className="font-bold text-[#0D3A83] mb-2">SEAM™ - Socio-Economic Alignment</h4>
+                                <p className="text-sm text-[#2D2D2D]">Measures community benefit, sustainability, and social license to operate</p>
+                            </div>
+                            <div className="bg-slate-50 p-4 rounded-lg">
+                                <h4 className="font-bold text-[#0D3A83] mb-2">IVAS™ - Investment Viability Assessment</h4>
+                                <p className="text-sm text-[#2D2D2D]">Calculates capital deployment feasibility and execution probability</p>
+                            </div>
+                            <div className="bg-slate-50 p-4 rounded-lg">
+                                <h4 className="font-bold text-[#0D3A83] mb-2">SCF™ - Supply Chain Friction</h4>
+                                <p className="text-sm text-[#2D2D2D]">Identifies logistics, infrastructure, and execution bottlenecks</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    {/* 22 Derivative Indices */}
+                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
+                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">22 Derivative Indices</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Risk Assessment Index</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Governance Quality Score</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">ESG Compliance Rating</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Execution Readiness</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Regulatory Complexity</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Market Volatility Index</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Currency Risk Factor</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Infrastructure Maturity</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Talent Availability Score</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Technology Adoption Rate</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Environmental Impact</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Social License Score</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Economic Multiplier</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Innovation Capacity</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Competitive Positioning</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Scalability Factor</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Exit Strategy Viability</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Partnership Synergy</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Time-to-Value Metric</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Resource Efficiency</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Sustainability Score</div>
+                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Impact Measurement</div>
+                        </div>
+                    </section>
+                    
+                    {/* What Makes BWGA Different */}
+                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6">
+                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3 flex items-center gap-2">
+                            <Target size={18} className="text-[#81C449]" />
+                            What Makes BWGA Different
+                        </h3>
+                        <p className="text-base text-[#2D2D2D] leading-relaxed">
+                            These 27 formulas are what set BWGA apart from any other system. We took the time to develop proprietary, mathematically rigorous scoring engines that automatically analyze every aspect of regional investment opportunities. Each formula has been validated across 100+ real-world scenarios, ensuring transparent, evidence-based insights that eliminate guesswork and accelerate decision-making for regional development professionals.
+                        </p>
+                    </section>
+                </div>
+                
+                {/* Footer */}
+                <div className="bg-[#0D3A83] text-white p-4 border-t-4 border-[#81C449]">
+                    <div className="flex items-center justify-between max-w-4xl mx-auto">
+                        <div className="text-sm text-gray-200">
+                            <span>BW AI Platform - Scoring Formulas Catalog</span>
+                            <span className="mx-3">|</span>
+                            <span>27 Proprietary Engines</span>
+                        </div>
+                        <button onClick={onClose} className="px-6 py-2 bg-[#81C449] text-[#0D3A83] rounded-lg text-sm font-bold hover:bg-[#81C449]/90 transition-colors">
+                            Close Catalog
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // Document Types Evidence Modal
 const DocumentTypesModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
@@ -1236,6 +1369,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
     const [showMonteCarloEvidence, setShowMonteCarloEvidence] = useState(false);
     const [showDocumentTypesModal, setShowDocumentTypesModal] = useState(false);
     const [selectedScenario, setSelectedScenario] = useState<typeof testScenarios[0] | null>(null);
+    const [showFormulasModal, setShowFormulasModal] = useState(false);
 
     return (
         <>
@@ -1245,6 +1379,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             onSelectScenario={(scenario) => setSelectedScenario(scenario)}
         />
         <DocumentTypesModal isOpen={showDocumentTypesModal} onClose={() => setShowDocumentTypesModal(false)} />
+        <FormulasModal isOpen={showFormulasModal} onClose={() => setShowFormulasModal(false)} />
         <ScenarioDetailModal scenario={selectedScenario} onClose={() => setSelectedScenario(null)} />
         <div className="h-full w-full flex-1 bg-white flex items-start justify-center p-6 pt-16 pb-24 overflow-y-auto" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif", fontSize: '12pt' }}>
             <div className="max-w-5xl w-full bg-white shadow-lg border border-[#1C53A4]/20 rounded-lg overflow-hidden flex flex-col" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
@@ -1573,6 +1708,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     <p className="font-medium text-slate-900 mb-2">+22 Derivative Indices</p>
                                     <p className="text-sm text-slate-600">Risk, governance, ESG, execution readiness, regulatory complexity, and more</p>
                                 </div>
+                            </div>
+                            
+                            <div className="mt-8 text-center">
+                                <button 
+                                    onClick={() => setShowFormulasModal(true)} 
+                                    className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors text-lg font-light"
+                                >
+                                    <Calculator size={20} />
+                                    View Complete Formulas Catalog
+                                </button>
                             </div>
                             
                             <div className="bg-slate-900 text-white p-8 mt-8">
