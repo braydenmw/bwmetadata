@@ -1495,13 +1495,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                BWGA AI is not a chatbot. It is a complete operating system designed to solve the regional investment information problem from first principles. The platform serves all personas in the investment ecosystem-governments, investors, and corporate partners-through a unified interface that speaks each user's language while maintaining a single source of truth.
+                                The platform serves distinct roles across the investment ecosystem—governments, investors, and corporate partners—through a unified interface. It acts as a translation layer, ensuring that local opportunities are presented with the rigorous data structure that global capital requires, while maintaining a single source of truth for all parties.
                             </p>
                             
                             <div className="bg-slate-50 p-8 border-l-4 border-slate-400">
-                                <h3 className="text-xl font-medium text-slate-900 mb-4">Multi-Persona Architecture</h3>
+                                <h3 className="text-xl font-medium text-slate-900 mb-4">Unified Intelligence, Tailored Perspectives</h3>
                                 <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                                    The system recognizes that governments, investors, and corporations approach the same opportunity from different angles. A regional council asks "How do I attract investment?" An institutional investor asks "How do I assess this opportunity?" A corporate partner asks "How do I evaluate this market entry?"
+                                    The system recognizes that different stakeholders approach the same opportunity with different questions. A regional council asks "How do I attract investment?" An institutional investor asks "How do I assess this opportunity?" A corporate partner asks "How do I evaluate market entry?"
                                 </p>
                                 <p className="text-lg text-slate-600 leading-relaxed">
                                     BWGA AI answers all three questions from the same underlying intelligence layer-but tailors the output format, vocabulary, and emphasis to each user's decision framework. This is not cosmetic customization. It is fundamental to bridging the communication gap that keeps regional deals from closing.
@@ -1584,9 +1584,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <div className="bg-slate-800 p-8 border-l-4 border-slate-500">
-                                <h3 className="text-xl font-light mb-4">Agentic AI: Not a Chatbot—A Reasoning System</h3>
+                                <h3 className="text-xl font-light mb-4">Agentic Architecture: Active Reasoning</h3>
                                 <p className="text-slate-300 leading-relaxed mb-4">
-                                    BWGA AI operates through <strong>agentic architecture</strong>—meaning the system does not simply respond to prompts. It actively reasons, researches, validates, and iterates. When you describe an opportunity, the system:
+                                    The system operates through an <strong>agentic framework</strong>—meaning it goes beyond simple prompt-and-response interactions. It actively reasons, researches, validates, and iterates. When you describe an opportunity, the system:
                                 </p>
                                 <ul className="text-slate-300 space-y-2 ml-4">
                                     <li>• <strong>Researches</strong> regulatory frameworks, market conditions, and precedent transactions</li>
