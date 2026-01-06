@@ -1295,46 +1295,46 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* THE RESEARCH - What We Found */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Why Choose BWGA?</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Designed for professionals who need answers, not more paperwork.</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Why Choose BWGA AI?</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Get clear insights without the complexity.</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                Instantly surface actionable insights for regional investment and partnership. No jargon, no training-just describe your challenge and get expert-grade analysis.
+                                Get expert analysis on regional investments instantly. Just describe your project—no special training needed.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                The problem is documented across development economics literature: <strong>information asymmetry</strong>. The OECD explicitly states that effective investment promotion works by "reducing information asymmetries and lowering administrative and investment costs." Regional opportunities require specialized knowledge that global analysts do not possess-and cannot efficiently acquire within deal timelines.
+                                The main challenge: Global investors struggle with local details. Remote regions have great opportunities, but the specialized knowledge is hard to access quickly.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                Consider the documented arithmetic: a Singapore-based analyst evaluating a manufacturing opportunity in rural Brazil must synthesize municipal zoning regulations, state-level incentive programs, federal environmental frameworks, local labor dynamics, currency hedging requirements, and sovereign risk factors-often across multiple languages and legal traditions. Brookings research confirms that proximity to cities provides an "economic buffer" precisely because it reduces this information burden. Remote regions lack that buffer.
+                                For example, checking out a factory in rural Brazil means understanding local laws, tax incentives, environmental rules, labor markets, currency risks, and more—often in different languages and systems.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-6 my-12">
                                 <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
                                     <p className="text-3xl font-light text-slate-900 mb-2">85%</p>
-                                    <p className="text-sm text-slate-600">of venture capital flows to metropolitan areas (representing ~55% of population)</p>
+                                    <p className="text-sm text-slate-600">of venture capital goes to cities (only 55% of population)</p>
                                 </div>
                                 <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
                                     <p className="text-3xl font-light text-slate-900 mb-2">3.5%</p>
-                                    <p className="text-sm text-slate-600">employment decline in non-adjacent rural counties vs 1.9% metro-adjacent</p>
+                                    <p className="text-sm text-slate-600">job loss in remote rural areas vs 1.9% near cities</p>
                                 </div>
                                 <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
                                     <p className="text-3xl font-light text-slate-900 mb-2">61%</p>
-                                    <p className="text-sm text-slate-600">of young people in remote areas advised to leave for opportunity elsewhere</p>
+                                    <p className="text-sm text-slate-600">young people in remote areas advised to move for jobs</p>
                                 </div>
                             </div>
                             
                             <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-12">
                                 <p className="text-xl text-slate-800 leading-relaxed italic">
-                                    "Capital does not lack curiosity. It lacks the architecture to act on curiosity at acceptable cost."
+                                    "Capital isn't short on ideas. It's short on affordable ways to explore them."
                                 </p>
                                 <p className="text-sm text-slate-500 mt-2">— BWGA AI Platform Philosophy</p>
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed">
-                                The result is a self-reinforcing cycle documented by development economists: regional teams cannot afford the consultants, analysts, and advisors required to package their opportunities to institutional standard. Investors cannot justify the due diligence expense for opportunities they cannot pre-qualify. Both sides wait for the other to move first. Neither moves. The opportunity window closes. The next generation inherits the same constraints.
+                                This creates a cycle: Regions can't afford experts to showcase opportunities. Investors skip deals they can't quickly evaluate. Both miss out, and the gap grows.
                             </p>
                         </div>
                     </div>
