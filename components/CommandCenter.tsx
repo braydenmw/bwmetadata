@@ -1448,9 +1448,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </p>
                                 </div>
                                 <div className="bg-white p-6 border-l-4 border-slate-900 shadow-sm hover:shadow-md transition-shadow">
-                                    <p className="font-medium text-slate-900 mb-2 text-lg">Artifacts, Not Advice</p>
+                                    <p className="font-medium text-slate-900 mb-2 text-lg">Actionable Documentation</p>
                                     <p className="text-sm text-slate-600 leading-relaxed">
-                                        Consultants sell time. We deliver assets. The system is engineered to bypass "general advice" and produce the specific financial and legal instruments—memos, risk registers, compliance matrices—that actually trigger capital allocation.
+                                        BWGA AI is designed to help you generate the kinds of structured documents—memos, risk registers, compliance matrices—that support real-world decision making and capital allocation. Our outputs are intended to complement, not replace, professional advice and due diligence.
                                     </p>
                                 </div>
                             </div>
