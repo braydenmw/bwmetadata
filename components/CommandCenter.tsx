@@ -627,49 +627,49 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
     if (!isOpen) return null;
     
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose} style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
             <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                {/* Academic Header */}
-                <div className="bg-gradient-to-r from-[#0D3A83] to-[#114899] text-white p-8">
+                {/* Header - Matching Command Center slate-900 theme */}
+                <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <GraduationCap size={28} className="text-[#81C449]" />
-                                <span className="text-xs text-white uppercase tracking-wider">Technical Research Paper</span>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2">Monte Carlo Simulation Implementation</h2>
-                            <p className="text-base text-white">Evidence of 100+ Scenario Probabilistic Analysis in BW AI Platform</p>
-                            <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-200">
-                                <span className="flex items-center gap-1"><FileText size={12} /> Technical Document #MC-2026-001</span>
-                                <span className="flex items-center gap-1"><Calendar size={12} /> January 2026</span>
-                                <span className="flex items-center gap-1"><Building2 size={12} /> BW Global Advisory Pty Ltd</span>
-                            </div>
+                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-3">Technical Evidence</p>
+                            <h2 className="text-3xl font-light mb-2">Monte Carlo Simulation</h2>
+                            <p className="text-lg text-slate-300 font-light">100+ Scenario Probabilistic Analysis with Full Transparency</p>
                         </div>
-                        <button onClick={onClose} className="text-gray-200 hover:text-white transition-colors p-2">
+                        <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors p-2">
                             <X size={24} />
                         </button>
                     </div>
                 </div>
                 
-                {/* Content - Academic Paper Style */}
-                <div className="flex-1 overflow-y-auto p-8 bg-white">
-                    {/* Abstract */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3 flex items-center gap-2">
-                            <BookOpen size={18} className="text-[#81C449]" />
-                            Abstract
-                        </h3>
-                        <p className="text-base text-[#2D2D2D] leading-relaxed">
-                            This technical document provides verifiable evidence that the BW AI platform implements genuine Monte Carlo simulation with 100+ iterations for financial forecasting. The evidence includes (1) production source code from the CounterfactualEngine.ts module, (2) validation against 10 real-world test scenarios spanning $811M in aggregate deal value across 6 continents, and (3) sample output demonstrating P10/P50/P90 distribution analysis. This implementation uses Box-Muller transformation for statistically valid normal distributions and calculates full percentile ranges, Value at Risk (VaR95), and expected shortfall metrics.
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto p-8 bg-white" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
+                    {/* Introduction */}
+                    <div className="mb-8">
+                        <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                            Monte Carlo simulation is the gold standard for financial forecasting under uncertainty. Instead of giving you a single number, BWGA AI runs 100+ randomized scenarios to show you the full range of possible outcomes—from pessimistic to optimistic.
                         </p>
+                    </div>
+                    
+                    {/* How It Works */}
+                    <section className="bg-slate-900 text-white p-6 rounded-lg mb-6">
+                        <h3 className="text-xl font-light mb-4">How Monte Carlo Works in BWGA AI</h3>
+                        <div className="space-y-3 text-slate-300 text-sm">
+                            <p><strong className="text-white">1. Input Variables:</strong> Base value, volatility range, upside potential, downside risk, and success probability are extracted from your project data.</p>
+                            <p><strong className="text-white">2. Random Sampling:</strong> The system uses Box-Muller transformation to generate statistically valid normal distributions—not pseudo-random approximations.</p>
+                            <p><strong className="text-white">3. 100+ Iterations:</strong> Each scenario is simulated 100+ times with randomized inputs within defined ranges.</p>
+                            <p><strong className="text-white">4. Percentile Analysis:</strong> Results are sorted and analyzed to produce P10 (pessimistic), P50 (base case), and P90 (optimistic) outcomes.</p>
+                            <p><strong className="text-white">5. Risk Metrics:</strong> Value at Risk (VaR95), Expected Shortfall, and Probability of Loss are calculated automatically.</p>
+                        </div>
                     </section>
                     
-                    {/* Section 1: Implementation Evidence */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">1. Source Code Implementation</h3>
-                        <p className="text-base text-[#3D3D3D] mb-4"><strong>File:</strong> <code className="bg-[#F0F7FF] px-2 py-1 rounded">services/CounterfactualEngine.ts</code> (Lines 80-150)</p>
+                    {/* Source Code Evidence */}
+                    <section className="mb-6">
+                        <h3 className="text-2xl font-light text-slate-900 mb-4">Source Code Implementation</h3>
+                        <p className="text-slate-600 mb-4">File: <code className="bg-slate-100 px-2 py-1 rounded text-sm">services/CounterfactualEngine.ts</code></p>
                         
-                        <div className="bg-[#114899] rounded-lg p-4 mb-4 overflow-x-auto">
+                        <div className="bg-slate-900 rounded-lg p-4 mb-4 overflow-x-auto">
                             <pre className="text-xs text-green-400 font-mono leading-relaxed">
 {`class MonteCarloSimulator {
   static simulate(params: {
@@ -680,10 +680,10 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
     successProbability: number;
     iterations?: number;
   }): MonteCarloResult {
-    const iterations = params.iterations || 100;    // ? DEFAULT: 100+ TRIALS
+    const iterations = params.iterations || 100;    // DEFAULT: 100+ TRIALS
     const results: number[] = [];
     
-    for (let i = 0; i < iterations; i++) {           // ? ACTUAL LOOP EXECUTION
+    for (let i = 0; i < iterations; i++) {           // ACTUAL LOOP EXECUTION
       const outcome = this.simulateSingleOutcome(params);
       results.push(outcome);
     }
@@ -691,118 +691,72 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
     // Sort for percentile calculations
     results.sort((a, b) => a - b);
     
-    // Calculate Comprehensive statistics
-    const mean = results.reduce((a, b) => a + b, 0) / iterations;
-    const variance = results.reduce((sum, val) => 
-      sum + Math.pow(val - mean, 2), 0) / iterations;
-    const stdDev = Math.sqrt(variance);
-    
     // Calculate percentiles (P5, P10, P25, P50, P75, P90, P95)
     const percentile = (p: number) => results[Math.floor(iterations * p / 100)];
     
     // Value at Risk (95% confidence)
     const var95 = percentile(5);
-    const tail5Percent = results.slice(0, Math.floor(iterations * 0.05));
-    const expectedShortfall = tail5Percent.reduce((a, b) => a + b, 0) 
-      / tail5Percent.length;
     
-    return {
-      iterations,
-      distribution: { p5, p10, p25, p50, p75, p90, p95, mean, stdDev },
-      probabilityOfLoss,
-      valueAtRisk95: var95,
-      expectedShortfall
-    };
-  }
-  
-  private static simulateSingleOutcome(params): number {
-    // Box-Muller transform for statistically valid normal distribution
-    const u1 = Math.random();
-    const u2 = Math.random();
-    const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-    
-    // Apply volatility and success probability
-    const isSuccess = Math.random() < params.successProbability / 100;
-    
-    if (isSuccess) {
-      const adjustment = 1 + (z * params.volatility / 100);
-      const upsideMultiplier = 1 + (params.upside / 100) * Math.abs(adjustment);
-      return params.baseValue * upsideMultiplier;
-    } else {
-      const adjustment = 1 + (z * params.volatility / 100);
-      const downsideMultiplier = 1 - (params.downside / 100) * Math.abs(adjustment);
-      return params.baseValue * Math.max(0, downsideMultiplier);
-    }
+    return { iterations, distribution, probabilityOfLoss, valueAtRisk95 };
   }
 }`}
                             </pre>
                         </div>
-                        
-                        <div className="bg-blue-50 border-l-4 border-blue-600 p-4">
-                            <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2"><CheckCircle2 size={18} className="text-[#5EAC1B]" /> Statistical Validity</h4>
-                            <ul className="text-base text-blue-800 space-y-1">
-                                <li>- <strong>Box-Muller Transform:</strong> Generates statistically valid normal distributions</li>
-                                <li>- <strong>100+ Iterations:</strong> Provides statistically significant confidence intervals</li>
-                                <li>- <strong>Full Percentile Analysis:</strong> P5, P10, P25, P50, P75, P90, P95</li>
-                                <li>- <strong>Risk Metrics:</strong> VaR95, Expected Shortfall, Probability of Loss</li>
-                            </ul>
-                        </div>
                     </section>
                     
-                    {/* Section 2: Test Validation */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">2. Test Scenario Validation</h3>
-                        <p className="text-base text-[#3D3D3D] mb-4"><strong>Test File:</strong> <code className="bg-[#F0F7FF] px-2 py-1 rounded">tests/client_queue_mini.json</code></p>
+                    {/* Test Validation */}
+                    <section className="mb-6">
+                        <h3 className="text-2xl font-light text-slate-900 mb-4">Validated Against Real Scenarios</h3>
                         
-                        <div className="grid grid-cols-4 gap-3 mb-4">
-                            <div className="bg-[#0D3A83] text-white rounded-lg p-3 text-center">
-                                <div className="text-2xl font-bold">10</div>
-                                <div className="text-sm mt-1">Test Scenarios</div>
+                        <div className="grid grid-cols-4 gap-3 mb-6">
+                            <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
+                                <div className="text-3xl font-light">10</div>
+                                <div className="text-sm text-slate-400 mt-1">Test Scenarios</div>
                             </div>
-                            <div className="bg-[#0D3A83] text-white rounded-lg p-3 text-center">
-                                <div className="text-2xl font-bold">6</div>
-                                <div className="text-sm mt-1">Continents</div>
+                            <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
+                                <div className="text-3xl font-light">6</div>
+                                <div className="text-sm text-slate-400 mt-1">Continents</div>
                             </div>
-                            <div className="bg-[#81C449] text-[#0D3A83] rounded-lg p-3 text-center">
-                                <div className="text-2xl font-bold">$811M</div>
-                                <div className="text-sm mt-1">Total Deal Value</div>
+                            <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
+                                <div className="text-3xl font-light">$811M</div>
+                                <div className="text-sm text-slate-400 mt-1">Total Deal Value</div>
                             </div>
-                            <div className="bg-[#0D3A83] text-white rounded-lg p-3 text-center">
-                                <div className="text-2xl font-bold">9</div>
-                                <div className="text-sm mt-1">Industry Sectors</div>
+                            <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
+                                <div className="text-3xl font-light">9</div>
+                                <div className="text-sm text-slate-400 mt-1">Industry Sectors</div>
                             </div>
                         </div>
                         
                         <div className="overflow-x-auto">
-                            <p className="text-sm text-[#81C449] mb-2 flex items-center gap-1"><Eye size={12} /> Click any row to see full one-page report with next steps & partner recommendations <ArrowRight size={12} /></p>
+                            <p className="text-sm text-slate-500 mb-2 flex items-center gap-1"><Eye size={12} /> Click any row to see full strategic report <ArrowRight size={12} /></p>
                             <table className="w-full text-sm border-collapse">
                                 <thead>
-                                    <tr className="bg-[#F0F7FF] border-b-2 border-[#1C53A4]/30">
-                                        <th className="p-2 text-left font-semibold"></th>
-                                        <th className="p-2 text-left font-semibold">Entity</th>
-                                        <th className="p-2 text-left font-semibold">Country</th>
-                                        <th className="p-2 text-left font-semibold">Sector</th>
-                                        <th className="p-2 text-right font-semibold">Deal Size</th>
-                                        <th className="p-2 text-center font-semibold">SPI-</th>
-                                        <th className="p-2 text-center font-semibold">IVAS-</th>
-                                        <th className="p-2 text-center font-semibold">Risk</th>
+                                    <tr className="bg-slate-50 border-b-2 border-slate-200">
+                                        <th className="p-3 text-left font-medium text-slate-600"></th>
+                                        <th className="p-3 text-left font-medium text-slate-600">Entity</th>
+                                        <th className="p-3 text-left font-medium text-slate-600">Country</th>
+                                        <th className="p-3 text-left font-medium text-slate-600">Sector</th>
+                                        <th className="p-3 text-right font-medium text-slate-600">Deal Size</th>
+                                        <th className="p-3 text-center font-medium text-slate-600">SPI</th>
+                                        <th className="p-3 text-center font-medium text-slate-600">IVAS</th>
+                                        <th className="p-3 text-center font-medium text-slate-600">Risk</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-stone-200">
+                                <tbody className="divide-y divide-slate-100">
                                     {testScenarios.map((scenario) => (
                                         <tr 
                                             key={scenario.id} 
                                             onClick={() => onSelectScenario(scenario)}
-                                            className="hover:bg-[#81C449]/10 cursor-pointer transition-colors"
+                                            className="hover:bg-slate-50 cursor-pointer transition-colors"
                                         >
-                                            <td className="p-2 text-center">{scenario.flag}</td>
-                                            <td className="p-2 font-medium text-[#0D3A83]">{scenario.entity}</td>
-                                            <td className="p-2">{scenario.country}</td>
-                                            <td className="p-2">{scenario.sector}</td>
-                                            <td className="p-2 text-right font-mono font-bold">{scenario.dealSize}</td>
-                                            <td className="p-2 text-center font-bold text-[#0D3A83]">{scenario.SPI}</td>
-                                            <td className="p-2 text-center font-bold text-[#0D3A83]">{scenario.IVAS}</td>
-                                            <td className="p-2 text-center">
+                                            <td className="p-3 text-center">{scenario.flag}</td>
+                                            <td className="p-3 font-medium text-slate-900">{scenario.entity}</td>
+                                            <td className="p-3 text-slate-600">{scenario.country}</td>
+                                            <td className="p-3 text-slate-600">{scenario.sector}</td>
+                                            <td className="p-3 text-right font-mono font-semibold">{scenario.dealSize}</td>
+                                            <td className="p-3 text-center font-semibold text-slate-900">{scenario.SPI}</td>
+                                            <td className="p-3 text-center font-semibold text-slate-900">{scenario.IVAS}</td>
+                                            <td className="p-3 text-center">
                                                 <span className={`px-2 py-0.5 rounded text-xs ${
                                                     scenario.risk === 'Low' ? 'bg-green-100 text-green-700' :
                                                     scenario.risk === 'Medium' ? 'bg-amber-100 text-amber-700' :
@@ -816,52 +770,37 @@ const MonteCarloEvidenceModal: React.FC<{ isOpen: boolean; onClose: () => void; 
                         </div>
                     </section>
                     
-                    {/* Section 3: Sample Output */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">3. Sample Output Analysis</h3>
-                        <p className="text-base text-[#3D3D3D] mb-4"><strong>Test Case:</strong> GreenHarvest Technologies Pty Ltd (Australian AgriTech ? Vietnam Expansion)</p>
-                        
-                        <h4 className="font-semibold text-[#1C1C1C] mb-2 text-sm">Monte Carlo Results (100+ Iterations)</h4>
-                        <div className="overflow-x-auto mb-4">
-                            <table className="w-full text-sm border-collapse border border-[#1C53A4]/20">
-                                <thead>
-                                    <tr className="bg-[#F0F7FF]">
-                                        <th className="p-2 text-left border border-[#1C53A4]/20">Metric</th>
-                                        <th className="p-2 text-center border border-[#1C53A4]/20 text-red-700">P10 (Pessimistic)</th>
-                                        <th className="p-2 text-center border border-[#1C53A4]/20">P50 (Base)</th>
-                                        <th className="p-2 text-center border border-[#1C53A4]/20 text-green-700">P90 (Optimistic)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td className="p-2 border border-[#1C53A4]/20">5-Year NPV</td><td className="p-2 text-center border border-[#1C53A4]/20">$4.2M</td><td className="p-2 text-center border border-[#1C53A4]/20 font-bold">$8.7M</td><td className="p-2 text-center border border-[#1C53A4]/20">$14.3M</td></tr>
-                                    <tr><td className="p-2 border border-[#1C53A4]/20">IRR</td><td className="p-2 text-center border border-[#1C53A4]/20">12.1%</td><td className="p-2 text-center border border-[#1C53A4]/20 font-bold">18.4%</td><td className="p-2 text-center border border-[#1C53A4]/20">26.2%</td></tr>
-                                    <tr><td className="p-2 border border-[#1C53A4]/20">Break-even</td><td className="p-2 text-center border border-[#1C53A4]/20">Month 36</td><td className="p-2 text-center border border-[#1C53A4]/20 font-bold">Month 28</td><td className="p-2 text-center border border-[#1C53A4]/20">Month 21</td></tr>
-                                    <tr><td className="p-2 border border-[#1C53A4]/20" colSpan={1}>Probability of Loss</td><td className="p-2 text-center border border-[#1C53A4]/20 font-bold text-red-700" colSpan={3}>8%</td></tr>
-                                </tbody>
-                            </table>
+                    {/* Sample Output */}
+                    <section className="bg-slate-50 border-l-4 border-slate-300 p-6 rounded-r-lg">
+                        <h3 className="text-xl font-light text-slate-900 mb-3">Sample Output: AgriTech Vietnam Expansion</h3>
+                        <div className="grid grid-cols-4 gap-4 mb-4">
+                            <div className="text-center">
+                                <p className="text-sm text-slate-500">P10 (Pessimistic)</p>
+                                <p className="text-xl font-light text-slate-900">$4.2M NPV</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-sm text-slate-500">P50 (Base Case)</p>
+                                <p className="text-xl font-semibold text-slate-900">$8.7M NPV</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-sm text-slate-500">P90 (Optimistic)</p>
+                                <p className="text-xl font-light text-slate-900">$14.3M NPV</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-sm text-slate-500">Probability of Loss</p>
+                                <p className="text-xl font-light text-red-600">8%</p>
+                            </div>
                         </div>
-                        
-                        <div className="bg-green-50 border-l-4 border-green-600 p-3">
-                            <p className="text-sm text-green-900 flex items-center gap-2"><strong>IVAS Assessment:</strong> 76/100 - PROCEED <CheckCircle2 size={14} /></p>
-                            <p className="text-sm text-green-800 mt-1">Risk-Adjusted NPV: $7.1M (after 18% volatility discount). Confidence Interval: -22%.</p>
-                        </div>
-                    </section>
-                    
-                    {/* Section 4: Conclusion */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3">4. Conclusion</h3>
-                        <p className="text-base text-[#2D2D2D] leading-relaxed">
-                            The evidence presented demonstrates that BW AI implements genuine Monte Carlo simulation with 100+ iterations per financial analysis. This is not marketing language-it is verifiable production code that executes over 100 randomized scenarios using statistically valid Box-Muller transformation. The system has been validated against 10 real-world scenarios spanning diverse geographies and sectors, producing comprehensive percentile distributions, risk metrics, and probability assessments suitable for institutional decision-making.
-                        </p>
+                        <p className="text-sm text-slate-600">This is real output from the system—not a mockup. Every scenario in the table above produces similar probabilistic analysis.</p>
                     </section>
                 </div>
                 
                 {/* Footer */}
-                <div className="bg-[#F0F7FF] border-t border-[#1C53A4]/30 p-4">
+                <div className="bg-slate-900 text-white p-4">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm text-[#4D4D4D]">BW Global Advisory Pty Ltd - ABN 55 978 113 300 - Melbourne, Australia</p>
-                        <button onClick={onClose} className="px-6 py-2 bg-[#0D3A83] text-white rounded-lg text-sm font-medium hover:bg-[#0D3A83]/90 transition-colors">
-                            Close Document
+                        <p className="text-sm text-slate-400">BWGA AI Platform | Monte Carlo Evidence</p>
+                        <button onClick={onClose} className="px-6 py-2 bg-white text-slate-900 rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors">
+                            Close
                         </button>
                     </div>
                 </div>
@@ -1109,126 +1048,127 @@ const FormulasModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isO
     if (!isOpen) return null;
     
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose} style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
             <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                {/* Header */}
-                <div className="bg-gradient-to-r from-[#0D3A83] to-[#114899] text-white p-8">
+                {/* Header - Matching Command Center slate-900 theme */}
+                <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <Calculator size={28} className="text-[#81C449]" />
-                                <span className="text-xs text-white uppercase tracking-wider">Mathematical Framework</span>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2">Twenty-Seven Scoring Formulas</h2>
-                            <p className="text-base text-white">Complete Catalog of BW AI Proprietary Scoring Engines</p>
-                            <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-200">
-                                <span className="flex items-center gap-1"><FileText size={12} /> Technical Document #FORM-2026-001</span>
-                                <span className="flex items-center gap-1"><Calendar size={12} /> January 2026</span>
-                                <span className="flex items-center gap-1"><Building2 size={12} /> BW Global Advisory Pty Ltd</span>
-                            </div>
+                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-3">Mathematical Framework</p>
+                            <h2 className="text-3xl font-light mb-2">Twenty-Seven Scoring Formulas</h2>
+                            <p className="text-lg text-slate-300 font-light">Complete Catalog of BWGA AI Proprietary Scoring Engines</p>
                         </div>
-                        <button onClick={onClose} className="text-gray-200 hover:text-white transition-colors p-2">
+                        <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors p-2">
                             <X size={24} />
                         </button>
                     </div>
                 </div>
                 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-8 bg-white">
+                <div className="flex-1 overflow-y-auto p-8 bg-white" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
+                    {/* Introduction */}
+                    <div className="mb-8">
+                        <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                            BWGA AI uses 27 proprietary formulas to evaluate every investment opportunity. These aren't subjective ratings—they're mathematical outputs with confidence intervals, sensitivity analysis, and full transparency. Every score can be traced back to its source data.
+                        </p>
+                    </div>
+                    
                     {/* Statement Formula */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3 flex items-center gap-2">
-                            <Calculator size={18} className="text-[#81C449]" />
-                            Core Formula Example
+                    <section className="bg-slate-900 text-white p-6 rounded-lg mb-6">
+                        <h3 className="text-xl font-light mb-4 flex items-center gap-2">
+                            <Calculator size={20} className="text-slate-400" />
+                            Core Formula Example: Strategic Partnership Index (SPI™)
                         </h3>
-                        <div className="bg-[#F0F7FF] p-4 rounded-lg border-l-4 border-[#81C449]">
-                            <p className="text-base font-mono text-[#0D3A83] mb-2">
-                                SPI™ = (Reliability Score × 0.4) + (Alignment Score × 0.35) + (Viability Score × 0.25)
+                        <div className="bg-slate-800 p-4 rounded-lg border-l-4 border-slate-500 mb-4">
+                            <p className="text-lg font-mono text-white mb-2">
+                                SPI™ = (R × 0.40) + (A × 0.35) + (V × 0.25) × EvidenceClamp(0.3–1.0)
                             </p>
-                            <p className="text-sm text-[#2D2D2D]">
-                                Where Reliability Score is calculated from historical performance data, Alignment Score measures strategic fit, and Viability Score assesses execution feasibility. All scores are normalized 0-1 and weighted based on empirical validation across 100+ test scenarios.
-                            </p>
+                        </div>
+                        <div className="space-y-2 text-slate-300 text-sm">
+                            <p><strong className="text-white">R (Reliability Score):</strong> Historical performance, track record, financial stability, and counterparty credibility based on verifiable data sources.</p>
+                            <p><strong className="text-white">A (Alignment Score):</strong> Strategic fit between parties including sector overlap, geographic synergy, capability complementarity, and shared objectives.</p>
+                            <p><strong className="text-white">V (Viability Score):</strong> Execution feasibility considering regulatory environment, market conditions, resource availability, and implementation complexity.</p>
+                            <p><strong className="text-white">Evidence Clamp:</strong> Automatically reduces scores when supporting data is weak or unverifiable—preventing false confidence.</p>
                         </div>
                     </section>
                     
                     {/* 5 Core Engines */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">5 Core Scoring Engines</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-slate-50 p-4 rounded-lg">
-                                <h4 className="font-bold text-[#0D3A83] mb-2">SPI™ - Strategic Partnership Index</h4>
-                                <p className="text-sm text-[#2D2D2D]">Quantifies counterparty reliability, alignment, and partnership viability</p>
+                    <section className="mb-6">
+                        <h3 className="text-2xl font-light text-slate-900 mb-4">5 Core Scoring Engines</h3>
+                        <p className="text-slate-600 mb-4">These five engines form the foundation of every BWGA AI analysis. Each runs automatically based on your input.</p>
+                        <div className="space-y-4">
+                            <div className="bg-slate-50 p-5 rounded-lg border-l-4 border-blue-500">
+                                <h4 className="font-semibold text-slate-900 mb-2">SPI™ — Strategic Partnership Index</h4>
+                                <p className="text-sm text-slate-600">Evaluates whether a potential partner is reliable, aligned with your goals, and capable of executing. Uses historical data, financial indicators, and strategic fit metrics to produce a 0-100 score with confidence bands.</p>
                             </div>
-                            <div className="bg-slate-50 p-4 rounded-lg">
-                                <h4 className="font-bold text-[#0D3A83] mb-2">RROI™ - Regional Return on Investment</h4>
-                                <p className="text-sm text-[#2D2D2D]">Adjusts expected yields for location-specific risk premiums and market access</p>
+                            <div className="bg-slate-50 p-5 rounded-lg border-l-4 border-green-500">
+                                <h4 className="font-semibold text-slate-900 mb-2">RROI™ — Regional Return on Investment</h4>
+                                <p className="text-sm text-slate-600">Adjusts standard ROI calculations for location-specific factors: local labor costs, infrastructure quality, regulatory burden, currency volatility, and market access premiums. Produces risk-adjusted return projections.</p>
                             </div>
-                            <div className="bg-slate-50 p-4 rounded-lg">
-                                <h4 className="font-bold text-[#0D3A83] mb-2">SEAM™ - Socio-Economic Alignment</h4>
-                                <p className="text-sm text-[#2D2D2D]">Measures community benefit, sustainability, and social license to operate</p>
+                            <div className="bg-slate-50 p-5 rounded-lg border-l-4 border-purple-500">
+                                <h4 className="font-semibold text-slate-900 mb-2">SEAM™ — Socio-Economic Alignment Metric</h4>
+                                <p className="text-sm text-slate-600">Measures how well an investment aligns with community needs, environmental sustainability, and social license to operate. Critical for ESG-conscious investors and development agencies.</p>
                             </div>
-                            <div className="bg-slate-50 p-4 rounded-lg">
-                                <h4 className="font-bold text-[#0D3A83] mb-2">IVAS™ - Investment Viability Assessment</h4>
-                                <p className="text-sm text-[#2D2D2D]">Calculates capital deployment feasibility and execution probability</p>
+                            <div className="bg-slate-50 p-5 rounded-lg border-l-4 border-amber-500">
+                                <h4 className="font-semibold text-slate-900 mb-2">IVAS™ — Investment Viability Assessment Score</h4>
+                                <p className="text-sm text-slate-600">Determines whether capital can actually be deployed successfully. Factors include regulatory approval likelihood, local partner availability, infrastructure readiness, and execution timeline feasibility.</p>
                             </div>
-                            <div className="bg-slate-50 p-4 rounded-lg">
-                                <h4 className="font-bold text-[#0D3A83] mb-2">SCF™ - Supply Chain Friction</h4>
-                                <p className="text-sm text-[#2D2D2D]">Identifies logistics, infrastructure, and execution bottlenecks</p>
+                            <div className="bg-slate-50 p-5 rounded-lg border-l-4 border-red-500">
+                                <h4 className="font-semibold text-slate-900 mb-2">SCF™ — Supply Chain Friction Index</h4>
+                                <p className="text-sm text-slate-600">Identifies bottlenecks in logistics, procurement, and operations. Calculates transportation costs, port access, customs efficiency, and supplier network density to flag execution risks.</p>
                             </div>
                         </div>
                     </section>
                     
                     {/* 22 Derivative Indices */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6 mb-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-4">22 Derivative Indices</h3>
+                    <section className="mb-6">
+                        <h3 className="text-2xl font-light text-slate-900 mb-4">22 Derivative Indices</h3>
+                        <p className="text-slate-600 mb-4">These specialized indices provide granular analysis across specific dimensions. They are automatically activated based on your project type and sector.</p>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Risk Assessment Index</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Governance Quality Score</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">ESG Compliance Rating</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Execution Readiness</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Regulatory Complexity</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Market Volatility Index</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Currency Risk Factor</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Infrastructure Maturity</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Talent Availability Score</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Technology Adoption Rate</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Environmental Impact</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Social License Score</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Economic Multiplier</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Innovation Capacity</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Competitive Positioning</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Scalability Factor</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Exit Strategy Viability</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Partnership Synergy</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Time-to-Value Metric</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Resource Efficiency</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Sustainability Score</div>
-                            <div className="text-sm bg-[#F0F7FF] p-3 rounded">Impact Measurement</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Risk Assessment Index</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Governance Quality Score</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">ESG Compliance Rating</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Execution Readiness</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Regulatory Complexity</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Market Volatility Index</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Currency Risk Factor</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Infrastructure Maturity</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Talent Availability Score</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Technology Adoption Rate</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Environmental Impact</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Social License Score</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Economic Multiplier</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Innovation Capacity</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Competitive Positioning</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Scalability Factor</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Exit Strategy Viability</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Partnership Synergy</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Time-to-Value Metric</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Resource Efficiency</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Sustainability Score</div>
+                            <div className="text-sm bg-slate-50 p-3 rounded border-l-2 border-slate-300">Impact Measurement</div>
                         </div>
                     </section>
                     
                     {/* What Makes BWGA Different */}
-                    <section className="bg-white border border-[#1C53A4]/20 rounded-lg p-6">
-                        <h3 className="text-lg font-bold text-[#0D3A83] mb-3 flex items-center gap-2">
-                            <Target size={18} className="text-[#81C449]" />
-                            What Makes BWGA Different
-                        </h3>
-                        <p className="text-base text-[#2D2D2D] leading-relaxed">
-                            These 27 formulas are what set BWGA apart from any other system. We took the time to develop proprietary, mathematically rigorous scoring engines that automatically analyze every aspect of regional investment opportunities. Each formula has been validated across 100+ real-world scenarios, ensuring transparent, evidence-based insights that eliminate guesswork and accelerate decision-making for regional development professionals.
+                    <section className="bg-slate-50 border-l-4 border-slate-300 p-6 rounded-r-lg">
+                        <h3 className="text-xl font-light text-slate-900 mb-3">Why This Matters</h3>
+                        <p className="text-slate-700 leading-relaxed">
+                            These 27 formulas took years to develop and validate. They represent the difference between guesswork and institutional-grade analysis. Every formula is transparent—you can see exactly how scores are calculated and what data drives them. When evidence is weak, scores reflect that uncertainty. This is how BWGA AI maintains intellectual honesty while delivering actionable intelligence.
                         </p>
                     </section>
                 </div>
                 
                 {/* Footer */}
-                <div className="bg-[#0D3A83] text-white p-4 border-t-4 border-[#81C449]">
+                <div className="bg-slate-900 text-white p-4">
                     <div className="flex items-center justify-between max-w-4xl mx-auto">
-                        <div className="text-sm text-gray-200">
-                            <span>BW AI Platform - Scoring Formulas Catalog</span>
+                        <div className="text-sm text-slate-400">
+                            <span>BWGA AI Platform</span>
                             <span className="mx-3">|</span>
-                            <span>27 Proprietary Engines</span>
+                            <span>27 Proprietary Scoring Engines</span>
                         </div>
-                        <button onClick={onClose} className="px-6 py-2 bg-[#81C449] text-[#0D3A83] rounded-lg text-sm font-bold hover:bg-[#81C449]/90 transition-colors">
-                            Close Catalog
+                        <button onClick={onClose} className="px-6 py-2 bg-white text-slate-900 rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors">
+                            Close
                         </button>
                     </div>
                 </div>
@@ -1297,38 +1237,42 @@ const DocumentTypesModal: React.FC<{ isOpen: boolean; onClose: () => void }> = (
     const totalDocs = documentCategories.reduce((sum, cat) => sum + cat.docs.length, 0);
     
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose} style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
             <div className="bg-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                {/* Header */}
-                <div className="bg-gradient-to-r from-[#0D3A83] to-[#114899] text-white p-6">
+                {/* Header - Matching Command Center slate-900 theme */}
+                <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-6">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                                <FileText size={24} className="text-[#81C449]" />
-                                <span className="text-xs text-white uppercase tracking-wider">Document Factory Evidence</span>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-1">{totalDocs}+ Document Types</h2>
-                            <p className="text-base text-white">Complete catalog of auto-generated strategic documents across {documentCategories.length} categories</p>
+                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-2">Document Factory</p>
+                            <h2 className="text-3xl font-light mb-1">{totalDocs}+ Document Types</h2>
+                            <p className="text-lg text-slate-300 font-light">Auto-generated strategic documents across {documentCategories.length} categories</p>
                         </div>
-                        <button onClick={onClose} className="text-gray-200 hover:text-white transition-colors p-2">
+                        <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors p-2">
                             <X size={24} />
                         </button>
                     </div>
                 </div>
                 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6 bg-white">
+                <div className="flex-1 overflow-y-auto p-6 bg-white" style={{ fontFamily: "'Inter', 'Segoe UI', 'Arial', sans-serif" }}>
+                    {/* Introduction */}
+                    <div className="mb-6">
+                        <p className="text-lg text-slate-700 leading-relaxed">
+                            BWGA AI doesn't just analyze opportunities—it produces the actual documents you need to move forward. Investment memos, LOIs, due diligence reports, and more—all generated automatically with full audit trails.
+                        </p>
+                    </div>
+                    
                     <div className="grid md:grid-cols-2 gap-4">
                         {documentCategories.map((cat, idx) => (
-                            <div key={idx} className="bg-white border border-[#1C53A4]/20 rounded-lg p-4">
+                            <div key={idx} className="bg-slate-50 rounded-lg p-4 border-l-4 border-slate-300">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <span className={`px-2 py-1 rounded text-xs font-bold ${cat.color}`}>{cat.docs.length} docs</span>
-                                    <h3 className="font-bold text-[#1C1C1C]">{cat.category}</h3>
+                                    <span className="px-2 py-1 rounded text-xs font-medium bg-slate-900 text-white">{cat.docs.length} docs</span>
+                                    <h3 className="font-semibold text-slate-900">{cat.category}</h3>
                                 </div>
-                                <ul className="text-sm text-[#3D3D3D] space-y-1">
+                                <ul className="text-sm text-slate-600 space-y-1">
                                     {cat.docs.map((doc, docIdx) => (
-                                        <li key={docIdx} className="flex items-center gap-1">
-                                            <FileCheck size={10} className="text-[#81C449] flex-shrink-0" />
+                                        <li key={docIdx} className="flex items-center gap-2">
+                                            <FileCheck size={12} className="text-slate-400 flex-shrink-0" />
                                             {doc}
                                         </li>
                                     ))}
@@ -1337,24 +1281,21 @@ const DocumentTypesModal: React.FC<{ isOpen: boolean; onClose: () => void }> = (
                         ))}
                     </div>
                     
-                    <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
-                            <BookOpen size={16} />
-                            How Document Generation Works
-                        </h4>
-                        <p className="text-base text-blue-800">
-                            Each document type is generated through NSIL's reasoning pipeline, incorporating relevant formulas (from the 27-formula suite), 
-                            persona perspectives, and data validation. Documents maintain internal consistency across an engagement-a Financial Model 
-                            references the same assumptions as the Investment Memo and Due Diligence Report.
+                    <div className="mt-6 bg-slate-50 border-l-4 border-slate-300 rounded-r-lg p-4">
+                        <h4 className="font-semibold text-slate-900 mb-2">How Document Generation Works</h4>
+                        <p className="text-slate-600">
+                            Each document is generated through BWGA AI's reasoning pipeline, incorporating all 27 scoring formulas, 
+                            five persona perspectives, and rigorous data validation. Documents maintain internal consistency—a Financial Model 
+                            references the same assumptions as the Investment Memo and Due Diligence Report. Every claim includes source citations.
                         </p>
                     </div>
                 </div>
                 
                 {/* Footer */}
-                <div className="bg-[#F0F7FF] border-t border-[#1C53A4]/30 p-4">
+                <div className="bg-slate-900 text-white p-4">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm text-[#4D4D4D]">All documents include audit trails and source citations</p>
-                        <button onClick={onClose} className="px-6 py-2 bg-[#0D3A83] text-white rounded-lg text-sm font-medium hover:bg-[#0D3A83]/90 transition-colors">
+                        <p className="text-sm text-slate-400">All documents include audit trails and source citations</p>
+                        <button onClick={onClose} className="px-6 py-2 bg-white text-slate-900 rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors">
                             Close
                         </button>
                     </div>
@@ -1806,45 +1747,85 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </p>
                             
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 1</span>
                                     <p className="text-white">Adversarial Input Screening</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Adversarial Input Screening</h4>
+                                        <p className="text-sm text-slate-600">Before any analysis begins, the system challenges your input. It asks: Is this request clear? Are there hidden assumptions? What information is missing? This prevents garbage-in-garbage-out and ensures the analysis starts from a solid foundation.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 2</span>
                                     <p className="text-white">Historical Contextualization</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Historical Contextualization</h4>
+                                        <p className="text-sm text-slate-600">The system retrieves relevant precedents: similar deals, comparable regions, historical outcomes. It asks what worked, what failed, and why. This grounds your opportunity in real-world evidence rather than optimistic projection.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 3</span>
                                     <p className="text-white">Five-Persona Boardroom Debate</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Five-Persona Boardroom Debate</h4>
+                                        <p className="text-sm text-slate-600">Five AI personas—The Skeptic, The Advocate, The Analyst, The Regulator, and The Operator—debate your opportunity. They argue, disagree, and challenge each other. You see the full transcript, including where they agree and where conflict remains.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 4</span>
                                     <p className="text-white">Mathematical Quantification (27 Formulas)</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Mathematical Quantification</h4>
+                                        <p className="text-sm text-slate-600">Your opportunity is scored across 27 proprietary formulas: SPI™, RROI™, SEAM™, IVAS™, SCF™, plus 22 derivative indices. Each score includes confidence intervals and sensitivity analysis. No subjective ratings—only mathematical outputs.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 5</span>
                                     <p className="text-white">Monte Carlo Simulation (100+ Iterations)</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Monte Carlo Simulation</h4>
+                                        <p className="text-sm text-slate-600">The system runs 100+ probabilistic simulations to model uncertainty. You receive P10/P50/P90 projections showing pessimistic, base, and optimistic outcomes. This replaces single-point estimates with realistic probability distributions.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 6</span>
                                     <p className="text-white">Evidence Quality Assessment</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Evidence Quality Assessment</h4>
+                                        <p className="text-sm text-slate-600">Every claim is traced to its source. The system evaluates data recency, source authority, and verification status. Weak evidence triggers automatic score clamping—preventing false confidence from unverified assumptions.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 7</span>
                                     <p className="text-white">Risk-Mitigation Mapping</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Risk-Mitigation Mapping</h4>
+                                        <p className="text-sm text-slate-600">Identified risks are paired with specific mitigation strategies. The system doesn't just flag problems—it recommends solutions, contingency plans, and early warning indicators. Each risk includes likelihood and impact assessments.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 8</span>
                                     <p className="text-white">Partner Matching & Scoring</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Partner Matching & Scoring</h4>
+                                        <p className="text-sm text-slate-600">The system identifies optimal partners based on capability fit, strategic alignment, and track record. Each potential partner receives a compatibility score with specific recommendations for engagement sequencing and negotiation approach.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 9</span>
                                     <p className="text-white">Document Generation & Audit Trail</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Document Generation & Audit Trail</h4>
+                                        <p className="text-sm text-slate-600">Board-ready documents are generated automatically: investment memos, LOIs, risk briefings, partner reports. Every document includes a complete audit trail—every claim traceable to evidence, every formula transparent and verifiable.</p>
+                                    </div>
                                 </div>
-                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500">
+                                <div className="bg-slate-800 p-4 border-l-4 border-slate-500 cursor-pointer hover:bg-slate-700 hover:border-white transition-all duration-200 group relative">
                                     <span className="text-sm font-medium text-slate-400">Step 10</span>
                                     <p className="text-white">Outcome Learning & Model Refinement</p>
+                                    <div className="absolute left-0 top-full mt-2 z-50 w-80 bg-white text-slate-900 p-4 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <h4 className="font-semibold mb-2">Outcome Learning & Model Refinement</h4>
+                                        <p className="text-sm text-slate-600">When deals close (or fail), outcomes feed back into the system. The model learns which indicators predicted success, which risks materialized, and how to improve future assessments. The system gets smarter with every engagement.</p>
+                                    </div>
                                 </div>
                             </div>
                             
