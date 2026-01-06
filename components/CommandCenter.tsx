@@ -1417,7 +1417,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                BWGA AI exists to bridge this gap. We transform unstructured regional opportunity information—regardless of format, language, or sophistication level—into institutional-grade intelligence that governments, banks, and corporations can trust. At a price point regional teams can actually afford.
+                                BWGA AI exists to bridge this gap. We transform unstructured regional opportunity information—regardless of format, language, or sophistication level—into institutional-grade intelligence that governments, banks, and corporations can rely on. At a price point regional teams can actually afford.
                             </p>
                         </div>
                     </div>
