@@ -2062,9 +2062,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <p className="text-2xl font-light text-slate-900 mb-1">Brayden Walls</p>
                                 <p className="text-slate-600 mb-4">Founder, BW Global Advisory</p>
                                 <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    I built BWGA AI after years watching the same pattern: regional opportunities lost because governments could not articulate them, investors could not assess them, and neither side had affordable tools to bridge the gap.
+                                    "We built this system because the gap between 'investable' and 'uninvestable' is often just a gap in information. I watched for years as incredible regional opportunities were passed over—not because the fundamentals were weak, but because the cost of verifying them was too high.
                                 </p>
-                                <p className="text-slate-600">
+                                <p className="text-lg text-slate-700 leading-relaxed mb-4">
+                                    BWGA AI exists to democratize institutional-grade due diligence. We believe that if you can articulate your value with the same rigor as a Wall Street firm, you can compete for the same capital. This platform gives you that rigor."
+                                </p>
+                                <p className="text-slate-500 text-sm mt-6">
                                     BW Global Advisory Pty Ltd | Melbourne, Australia | ABN 55 978 113 300
                                 </p>
                             </div>
