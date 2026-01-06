@@ -1425,26 +1425,32 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* WHAT SETS US APART */}
                 <section className="py-16 px-12 bg-slate-100">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Makes BWGA Different</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Evidence-First. Board-Ready. Multi-Perspective.</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">The BWGA Difference</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">From "Search" to "Strategic Reasoning"</p>
                         
                         <div className="space-y-6">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                Sophisticated tools exist for pieces of this puzzle—market research platforms, financial modeling software, regulatory databases. None address the complete challenge that regional development teams face: transforming raw local knowledge into investor-ready intelligence.
+                                Most tools help you find documents. Some help you write them. BWGA AI is different because it helps you <span className="font-semibold">reason</span> about them. We built a system that behaves like a senior investment committee member—not a passive search engine.
                             </p>
                             
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="bg-white p-6 border-l-4 border-slate-900">
-                                    <p className="font-medium text-slate-900 mb-2">Multi-perspective analysis</p>
-                                    <p className="text-sm text-slate-600">Five AI personas debate every opportunity—surfacing risks, advantages, compliance issues, and execution challenges before you present to stakeholders.</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="bg-white p-6 border-l-4 border-slate-900 shadow-sm hover:shadow-md transition-shadow">
+                                    <p className="font-medium text-slate-900 mb-2 text-lg">Adversarial by Design</p>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        We trained the system to disagree with you. While other tools try to be helpful, ours subjects every claim to adversarial review—mimicking the scrutiny of a credit committee. It finds the holes in your logic before the bank does.
+                                    </p>
                                 </div>
-                                <div className="bg-white p-6 border-l-4 border-slate-900">
-                                    <p className="font-medium text-slate-900 mb-2">Evidence-first approach</p>
-                                    <p className="text-sm text-slate-600">If the data isn't strong, we tell you exactly what's missing. Scores are clamped when evidence quality is low. No guesswork, no false confidence.</p>
+                                <div className="bg-white p-6 border-l-4 border-slate-900 shadow-sm hover:shadow-md transition-shadow">
+                                    <p className="font-medium text-slate-900 mb-2 text-lg">Removing the "Complexity Tax"</p>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        Regional deals fail because they are hard to understand—crossing languages, legal systems, and local regulations. Our system absorbs this complexity cost detailed below, synthesizing cross-domain factors into a single, verified investment thesis.
+                                    </p>
                                 </div>
-                                <div className="bg-white p-6 border-l-4 border-slate-900">
-                                    <p className="font-medium text-slate-900 mb-2">Board-ready outputs</p>
-                                    <p className="text-sm text-slate-600">Investment memos, LOIs, due diligence frameworks, partner assessments—documents you can send directly to decision-makers, not reports to file.</p>
+                                <div className="bg-white p-6 border-l-4 border-slate-900 shadow-sm hover:shadow-md transition-shadow">
+                                    <p className="font-medium text-slate-900 mb-2 text-lg">Artifacts, Not Advice</p>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        Consultants sell time. We deliver assets. The system is engineered to bypass "general advice" and produce the specific financial and legal instruments—memos, risk registers, compliance matrices—that actually trigger capital allocation.
+                                    </p>
                                 </div>
                             </div>
                         </div>
