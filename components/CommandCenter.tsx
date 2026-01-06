@@ -1338,15 +1338,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     
                     <div className="relative z-10 flex flex-col justify-center min-h-[520px] px-12 py-16">
                         <div className="max-w-4xl mx-auto text-center">
-                            <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mb-6">Unlock Regional Investment Intelligence</p>
                             
                             <h1 className="text-5xl md:text-6xl font-light mb-8 text-white leading-[1.1] tracking-tight">
-                                Accelerate decisions.<br/>
-                                <span className="font-semibold">Eliminate blind spots. Compete globally.</span>
+                                Regional investment is complex.<br/>
+                                <span className="font-semibold">We make it clear.</span>
                             </h1>
                             
                             <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light max-w-3xl mx-auto">
-                                Instantly surface actionable insights for regional investment and partnership. No jargon, no training-just describe your challenge and get expert-grade analysis.
+                                Assessing a project in a new region is usually slow, expensive, and full of blind spots. We fixed that. Just describe what you want to do in plain English, and we'll tell you if it's viable—backed by hard evidence, not opinion.
                             </p>
                         </div>
                     </div>
