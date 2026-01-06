@@ -1402,6 +1402,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         <p className="text-sm text-slate-400">of young people in regional areas advised to relocate for opportunity</p>
                                     </div>
                                 </div>
+                                <p className="text-xs text-slate-500 mt-4 text-center">* Statistics sourced from OECD regional development reports and venture capital industry analyses. Figures represent global averages and were accurate at the time of publication.</p>
                             </div>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
