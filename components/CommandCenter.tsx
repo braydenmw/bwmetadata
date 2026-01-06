@@ -1,6 +1,6 @@
 ﻿
 import React, { useState } from 'react';
-import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog } from 'lucide-react';
+import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog, Building2, Globe, Users, Briefcase } from 'lucide-react';
 
 // Command Center - Comprehensive marketing brief for beta evaluation
 
@@ -1380,11 +1380,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                From Sao Paulo's housing developments to Chile's green hydrogen valleys, from Ethiopia's coffee traceability initiatives to the Philippines' disaster resilience networks—regional economies hold extraordinary untapped opportunities. These places drive agricultural output, resource extraction, manufacturing capacity, and increasingly, innovation hubs that rival metropolitan centers.
+                                Every major global supply chain begins in a regional city. The food on our tables, the minerals in our phones, the energy powering our homes—it all originates in places that capital often ignores. These aren't just "remote areas"; they are the engine rooms of the global economy, driving agricultural output, resource security, and manufacturing capacity.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                Yet capital consistently overlooks them. Why? Because evaluating a regional opportunity requires synthesizing local regulations, cultural dynamics, infrastructure realities, labor markets, political landscapes, and sector-specific expertise—often across languages, legal systems, and time zones. The cost of understanding exceeds the cost of ignoring.
+                                Yet despite their critical importance, investment consistently overlooks them. Why? Because the distance between a capital city and a regional center isn't just measured in miles—it's measured in information gaps. Language barriers, local regulations, and opaque market data create a "complexity tax" that makes even the most profitable regional opportunities invisible to global investors.
                             </p>
                             
                             <div className="bg-slate-900 text-white p-8 my-8 rounded-lg">
@@ -1867,44 +1867,135 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* WHO THIS IS FOR - Not a Replacement */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who Benefits</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Not a Replacement-A Force Multiplier</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">Who This Is For</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Not a Replacement—A Force Multiplier for Every Skill Level</p>
                         
-                        <div className="space-y-6 mb-12">
-                            <p className="text-xl text-slate-700 leading-relaxed">
-                                BWGA AI is not designed to replace investment professionals, development officers, or strategic advisors. It is designed to give them capabilities they currently cannot access-or cannot afford.
+                        <div className="bg-slate-900 text-white p-8 rounded-lg shadow-xl mb-12">
+                            <h3 className="text-2xl font-light mb-4">The Universal Benefit</h3>
+                            <p className="text-slate-300 leading-relaxed text-lg">
+                                BWGA AI is not designed to replace investment professionals or development officers. It is designed to give them capabilities they currently cannot access. Whether you are a junior analyst learning the ropes or a veteran director managing a billion-dollar portfolio, the system adapts to your depth of inquiry.
                             </p>
-                            
-                            <div className="bg-slate-50 p-6 border-l-4 border-blue-500">
-                                <p className="text-lg text-slate-700 leading-relaxed">
-                                    <strong>The reality:</strong> A regional development officer with domain expertise but limited analyst resources can now produce institutional-grade investment documentation. An investor screening unfamiliar regions can now access structured pre-qualification intelligence. A corporation evaluating market entry can now generate due diligence frameworks in hours, not months.
-                                </p>
-                            </div>
                         </div>
                         
-                        <div className="space-y-8">
-                            <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Regional Agencies</h3>
-                                <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Respond to investors in days, not months. BWGA AI transforms your local knowledge into the structured intelligence that global capital requires. Generate investor-ready materials in minutes.
-                                </p>
-                                <p className="text-slate-600 italic">"Finally, a tool that speaks the investor's language-without requiring expensive consultants."</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Persona 1: Regional Governments */}
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 hover:shadow-lg transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-blue-100 text-blue-700 rounded-full">
+                                        <Building2 size={24} />
+                                    </div>
+                                    <h3 className="text-2xl font-light text-slate-900">Regional Agencies</h3>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        Transform local knowledge into the structured intelligence global capital requires.
+                                    </p>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Project Officer</p>
+                                        <p className="text-sm text-slate-800">Turn raw project data into polished, investor-ready executive summaries in minutes, not weeks.</p>
+                                    </div>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Director</p>
+                                        <p className="text-sm text-slate-800">Identify portfolio-wide gaps and ensure every project in your region meets global compliance standards before promotion.</p>
+                                    </div>
+                                    
+                                    <div className="bg-white p-4 rounded border border-slate-200 italic text-slate-600 text-sm">
+                                        "Finally, a tool that speaks the investor's language without requiring expensive consultants."
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Investors</h3>
-                                <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Screen more deals, faster, with standardized risk and compatibility scores. Receive pre-structured analysis with risk scoring, compliance validation, and Monte Carlo projections.
-                                </p>
-                                <p className="text-slate-600 italic">"Due diligence that used to take months now takes days-and it is more thorough."</p>
+                            {/* Persona 2: Investors */}
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 hover:shadow-lg transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-green-100 text-green-700 rounded-full">
+                                        <BarChart3 size={24} />
+                                    </div>
+                                    <h3 className="text-2xl font-light text-slate-900">Capital Allocators</h3>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        Screen deals globally with standardized risk and compatibility scoring.
+                                    </p>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Analyst</p>
+                                        <p className="text-sm text-slate-800">Rapidly pre-screen hundreds of opportunities using "Skeptic Mode" to find deal-breakers instantly.</p>
+                                    </div>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Partner</p>
+                                        <p className="text-sm text-slate-800">Receive board-ready standardized assessments that normalize risk across different jurisdictions and sectors.</p>
+                                    </div>
+                                    
+                                    <div className="bg-white p-4 rounded border border-slate-200 italic text-slate-600 text-sm">
+                                        "Due diligence that used to take months now takes days—and it is more thorough."
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div className="bg-slate-50 p-8">
-                                <h3 className="text-2xl font-light text-slate-900 mb-4">Corporates</h3>
-                                <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                    Pre-qualify partners and markets before you travel. Score potential partners before committing. Generate joint venture frameworks, risk assessments, and implementation roadmaps automatically.
-                                </p>
-                                <p className="text-slate-600 italic">"Our board wanted evidence, not optimism. This system delivers exactly that."</p>
+                            {/* Persona 3: Corporates */}
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 hover:shadow-lg transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-amber-100 text-amber-700 rounded-full">
+                                        <Briefcase size={24} />
+                                    </div>
+                                    <h3 className="text-2xl font-light text-slate-900">Corporate Strategy</h3>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        Pre-qualify partners and markets before committing resources or travel budget.
+                                    </p>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Expansion Manager</p>
+                                        <p className="text-sm text-slate-800">Generate local compliance checklists and supply chain friction assessments before site visits.</p>
+                                    </div>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Board</p>
+                                        <p className="text-sm text-slate-800">See evidence-backed market entry roadmaps that explicitly quantify "unknowns" and regulatory risk.</p>
+                                    </div>
+                                    
+                                    <div className="bg-white p-4 rounded border border-slate-200 italic text-slate-600 text-sm">
+                                        "Our board wanted evidence, not optimism. This system delivers exactly that."
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Persona 4: Advisors (New) */}
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 hover:shadow-lg transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-purple-100 text-purple-700 rounded-full">
+                                        <Users size={24} />
+                                    </div>
+                                    <h3 className="text-2xl font-light text-slate-900">Advisors & Consultants</h3>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        Augment your advisory practice with deep, forensic AI-driven research.
+                                    </p>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Consultant</p>
+                                        <p className="text-sm text-slate-800">Automate the initial 40 hours of market research and regulatory mapping to focus on high-value strategy.</p>
+                                    </div>
+                                    
+                                    <div className="border-t border-slate-200 pt-4">
+                                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">For the Principal</p>
+                                        <p className="text-sm text-slate-800">Deliver data-rich client value propositions that smaller firms typically cannot resource.</p>
+                                    </div>
+                                    
+                                    <div className="bg-white p-4 rounded border border-slate-200 italic text-slate-600 text-sm">
+                                        "Allows boutique firms to deliver Tier-1 strategy outputs at a fraction of the cost."
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
