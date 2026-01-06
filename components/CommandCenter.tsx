@@ -1,6 +1,6 @@
 ﻿
 import React, { useState } from 'react';
-import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, BookOpen, GraduationCap, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog, Calendar, Building2, Target } from 'lucide-react';
+import { CheckCircle2, ShieldAlert, FileText, BarChart3, Eye, ArrowRight, X, FileCheck, MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, Cog } from 'lucide-react';
 
 // Command Center - Comprehensive marketing brief for beta evaluation
 
@@ -1371,81 +1371,82 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* THE RESEARCH - What We Found */}
                 <section className="py-20 px-12 bg-white">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">Why Choose BWGA AI?</h2>
-                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Get clear insights without the complexity.</p>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">The Untapped Potential of Regional Cities</h2>
+                        <p className="text-slate-500 text-sm uppercase tracking-wider mb-12">Where Global Opportunity Meets Local Expertise</p>
                         
                         <div className="prose prose-lg max-w-none">
                             <p className="text-2xl font-light text-slate-700 leading-relaxed mb-8">
-                                Get expert analysis on regional investments instantly. Just describe your project—no special training needed.
+                                Regional cities are the backbone of national economies—and the most undervalued investment frontier on the planet.
                             </p>
                             
                             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                                The main challenge: Global investors struggle with local details. Remote regions have great opportunities, but the specialized knowledge is hard to access quickly.
+                                From Sao Paulo's housing developments to Chile's green hydrogen valleys, from Ethiopia's coffee traceability initiatives to the Philippines' disaster resilience networks—regional economies hold extraordinary untapped opportunities. These places drive agricultural output, resource extraction, manufacturing capacity, and increasingly, innovation hubs that rival metropolitan centers.
                             </p>
                             
-                            <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                                For example, checking out a factory in rural Brazil means understanding local laws, tax incentives, environmental rules, labor markets, currency risks, and more—often in different languages and systems.
+                            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+                                Yet capital consistently overlooks them. Why? Because evaluating a regional opportunity requires synthesizing local regulations, cultural dynamics, infrastructure realities, labor markets, political landscapes, and sector-specific expertise—often across languages, legal systems, and time zones. The cost of understanding exceeds the cost of ignoring.
                             </p>
                             
-                            <div className="grid grid-cols-3 gap-6 my-12">
-                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
-                                    <p className="text-3xl font-light text-slate-900 mb-2">85%</p>
-                                    <p className="text-sm text-slate-600">of venture capital goes to cities (only 55% of population)</p>
-                                </div>
-                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
-                                    <p className="text-3xl font-light text-slate-900 mb-2">3.5%</p>
-                                    <p className="text-sm text-slate-600">job loss in remote rural areas vs 1.9% near cities</p>
-                                </div>
-                                <div className="bg-slate-50 p-6 text-center border-t-4 border-slate-400">
-                                    <p className="text-3xl font-light text-slate-900 mb-2">61%</p>
-                                    <p className="text-sm text-slate-600">young people in remote areas advised to move for jobs</p>
+                            <div className="bg-slate-900 text-white p-8 my-8 rounded-lg">
+                                <h3 className="text-xl font-light mb-6 text-center">The Scale of the Opportunity Gap</h3>
+                                <div className="grid grid-cols-3 gap-6">
+                                    <div className="text-center">
+                                        <p className="text-4xl font-light mb-2">85%</p>
+                                        <p className="text-sm text-slate-400">of venture capital flows to metropolitan areas—serving only 55% of the population</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <p className="text-4xl font-light mb-2">3.5%</p>
+                                        <p className="text-sm text-slate-400">employment decline in remote regions vs 1.9% in metro-adjacent areas</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <p className="text-4xl font-light mb-2">61%</p>
+                                        <p className="text-sm text-slate-400">of young people in regional areas advised to relocate for opportunity</p>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-12">
+                            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+                                This is not a failure of potential. It's a failure of information architecture. Regional development teams lack the resources to package opportunities in formats that institutional capital recognizes. Global investors lack the bandwidth to conduct due diligence on unfamiliar territories. Both sides want the same outcome—successful partnerships that create jobs, build infrastructure, and generate returns.
+                            </p>
+                            
+                            <div className="bg-slate-50 border-l-4 border-slate-300 p-8 my-8">
                                 <p className="text-xl text-slate-800 leading-relaxed italic">
                                     "Capital isn't short on ideas. It's short on affordable ways to explore them."
                                 </p>
                                 <p className="text-sm text-slate-500 mt-2">— BWGA AI Platform Philosophy</p>
                             </div>
                             
-                            <p className="text-lg text-slate-600 leading-relaxed">
-                                This creates a cycle: Regions can't afford experts to showcase opportunities. Investors skip deals they can't quickly evaluate. Both miss out, and the gap grows.
+                            <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                                BWGA AI exists to bridge this gap. We transform unstructured regional opportunity information—regardless of format, language, or sophistication level—into institutional-grade intelligence that governments, banks, and corporations can trust. At a price point regional teams can actually afford.
                             </p>
                         </div>
                     </div>
                 </section>
                 
-                {/* EXISTING SYSTEMS - What's Out There */}
+                {/* WHAT SETS US APART */}
                 <section className="py-16 px-12 bg-slate-100">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Sets Us Apart</h2>
+                        <h2 className="text-4xl font-light text-slate-900 mb-4">What Makes BWGA Different</h2>
                         <p className="text-slate-500 text-sm uppercase tracking-wider mb-8">Evidence-First. Board-Ready. Multi-Perspective.</p>
                         
                         <div className="space-y-6">
                             <p className="text-xl text-slate-700 leading-relaxed">
-                                Sophisticated tools exist for pieces of this puzzle. None address the complete challenge regional development teams face.
+                                Sophisticated tools exist for pieces of this puzzle—market research platforms, financial modeling software, regulatory databases. None address the complete challenge that regional development teams face: transforming raw local knowledge into investor-ready intelligence.
                             </p>
                             
                             <div className="grid grid-cols-3 gap-6">
-                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                <div className="bg-white p-6 border-l-4 border-slate-900">
                                     <p className="font-medium text-slate-900 mb-2">Multi-perspective analysis</p>
-                                    <p className="text-sm text-slate-600">Every opportunity is stress-tested from multiple expert viewpoints.</p>
+                                    <p className="text-sm text-slate-600">Five AI personas debate every opportunity—surfacing risks, advantages, compliance issues, and execution challenges before you present to stakeholders.</p>
                                 </div>
-                                <div className="bg-white p-6 border-l-4 border-amber-400">
-                                    <p className="font-medium text-slate-900 mb-2">Evidence-first</p>
-                                    <p className="text-sm text-slate-600">If the data isn't strong, we tell you what's missing-no guesswork.</p>
+                                <div className="bg-white p-6 border-l-4 border-slate-900">
+                                    <p className="font-medium text-slate-900 mb-2">Evidence-first approach</p>
+                                    <p className="text-sm text-slate-600">If the data isn't strong, we tell you exactly what's missing. Scores are clamped when evidence quality is low. No guesswork, no false confidence.</p>
                                 </div>
-                                <div className="bg-white p-6 border-l-4 border-amber-400">
+                                <div className="bg-white p-6 border-l-4 border-slate-900">
                                     <p className="font-medium text-slate-900 mb-2">Board-ready outputs</p>
-                                    <p className="text-sm text-slate-600">Get documents you can use, not just reports to read.</p>
+                                    <p className="text-sm text-slate-600">Investment memos, LOIs, due diligence frameworks, partner assessments—documents you can send directly to decision-makers, not reports to file.</p>
                                 </div>
-                            </div>
-                            
-                            <div className="bg-slate-900 text-white p-8 mt-8">
-                                <p className="text-xl font-light leading-relaxed">
-                                    <strong>The gap:</strong> No system exists that takes unstructured regional opportunity information-regardless of format or sophistication level-and transforms it into institutional-grade intelligence that governments, banks, and corporations can all trust, at a price point regional teams can afford.
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -1537,21 +1538,48 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     </div>
                 </section>
 
-                {/* THE TECHNOLOGY - NSIL & Agentic AI */}
+                {/* THE TECHNOLOGY - Full Architecture */}
                 <section className="py-20 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-4xl font-light mb-4">The Technology Behind Attract</h2>
-                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">NSIL: The Nexus Strategic Intelligence Layer</p>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-12">A Complete Intelligence Architecture—Not Just Another AI Interface</p>
                         
                         <div className="space-y-8">
                             <p className="text-xl text-slate-200 leading-relaxed">
-                                Behind the Attract workspace sits NSIL-a governed reasoning architecture that ensures every output is evidence-based, auditable, and honest about its limitations. NSIL is not a wrapper around a language model. It is a purpose-built orchestration layer that governs how AI capabilities are deployed for strategic decision support.
+                                BWGA AI is not a chatbot, a report generator, or a simple wrapper around a language model. It is a <strong>multi-layered intelligence architecture</strong> purpose-built for high-stakes regional investment decisions. Every component—from governance protocols to mathematical scoring engines—was designed to meet the requirements of institutional capital, government agencies, and multinational corporations.
                             </p>
                             
+                            <div className="bg-slate-800 p-8 border-l-4 border-amber-400">
+                                <h3 className="text-xl font-light mb-4">Three Integrated Technology Layers</h3>
+                                <div className="space-y-6">
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-12 h-12 bg-amber-400 text-slate-900 rounded-full flex items-center justify-center font-bold">1</div>
+                                        <div>
+                                            <p className="font-medium text-white mb-1">NSIL - Nexus Strategic Intelligence Layer</p>
+                                            <p className="text-slate-300 text-sm">The governance and orchestration framework that ensures every output is evidence-based, auditable, and honest about its limitations. NSIL controls how AI capabilities are deployed, when outputs are blocked for insufficient evidence, and how confidence levels are communicated.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-12 h-12 bg-amber-400 text-slate-900 rounded-full flex items-center justify-center font-bold">2</div>
+                                        <div>
+                                            <p className="font-medium text-white mb-1">Five-Persona Agentic Framework</p>
+                                            <p className="text-slate-300 text-sm">A multi-perspective reasoning engine where five specialized AI personas—each with distinct analytical mandates—debate every opportunity in parallel. This is not sequential processing; it is genuine adversarial review that surfaces risks, advantages, compliance gaps, and execution challenges before you ever present to stakeholders.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-12 h-12 bg-amber-400 text-slate-900 rounded-full flex items-center justify-center font-bold">3</div>
+                                        <div>
+                                            <p className="font-medium text-white mb-1">27 Proprietary Scoring Formulas</p>
+                                            <p className="text-slate-300 text-sm">Mathematical engines that quantify partnership viability, regional ROI, social alignment, execution risk, and more. These are not subjective ratings—they are calculated outputs with confidence intervals, sensitivity analysis, and transparent methodologies that institutional due diligence teams can verify.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div className="bg-slate-800 p-8 border-l-4 border-slate-500">
-                                <h3 className="text-xl font-light mb-4">Agentic AI: Not a Chatbot-A Reasoning System</h3>
+                                <h3 className="text-xl font-light mb-4">Agentic AI: Not a Chatbot—A Reasoning System</h3>
                                 <p className="text-slate-300 leading-relaxed mb-4">
-                                    BWGA AI operates through <strong>agentic architecture</strong>-meaning the system does not simply respond to prompts. It actively reasons, researches, validates, and iterates. When you describe an opportunity, the system:
+                                    BWGA AI operates through <strong>agentic architecture</strong>—meaning the system does not simply respond to prompts. It actively reasons, researches, validates, and iterates. When you describe an opportunity, the system:
                                 </p>
                                 <ul className="text-slate-300 space-y-2 ml-4">
                                     <li>• <strong>Researches</strong> regulatory frameworks, market conditions, and precedent transactions</li>
@@ -1565,7 +1593,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div className="bg-slate-800 p-8 border-l-4 border-slate-500">
                                 <h3 className="text-xl font-light mb-4">The Five-Persona Boardroom</h3>
                                 <p className="text-slate-300 leading-relaxed mb-4">
-                                    Every mandate is debated by five expert personas operating in parallel-each with a distinct analytical mandate:
+                                    Every mandate is debated by five expert personas operating in parallel—each with a distinct analytical mandate:
                                 </p>
                                 <div className="grid grid-cols-5 gap-4 mt-6">
                                     <div className="text-center flex flex-col items-center">
@@ -1607,7 +1635,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                             
                             <p className="text-lg text-slate-300 leading-relaxed">
-                                These personas debate every input. They surface contradictions, preserve disagreement, and show you the full transcript. The value is not in a single score-it is in seeing where consensus exists and where conflict remains. The final decision belongs to you. The intellectual labor of adversarial review has already been completed.
+                                These personas debate every input. They surface contradictions, preserve disagreement, and show you the full transcript. The value is not in a single score—it is in seeing where consensus exists and where conflict remains. The final decision belongs to you. The intellectual labor of adversarial review has already been completed.
                             </p>
                         </div>
                     </div>
@@ -1885,30 +1913,42 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 {/* PROVEN RESULTS */}
                 <section className="py-16 px-12 bg-slate-900 text-white">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-4xl font-light mb-8">Rigorous System Validation</h2>
+                        <h2 className="text-4xl font-light mb-4">Rigorous System Validation</h2>
+                        <p className="text-slate-400 text-sm uppercase tracking-wider mb-8">Why We Stress-Tested Across 100+ Scenarios</p>
+                        
+                        <div className="bg-slate-800 p-8 mb-8 text-left">
+                            <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                                <strong className="text-white">The problem with AI for high-stakes decisions:</strong> Most systems work in demos but fail under production conditions. They produce confident-sounding outputs without understanding edge cases, regulatory nuances, or the difference between a viable opportunity and a compelling narrative.
+                            </p>
+                            <p className="text-lg text-slate-300 leading-relaxed">
+                                <strong className="text-white">Our solution:</strong> We subjected every scoring formula, every persona's reasoning chain, and every output template to adversarial stress testing—real historical scenarios where we knew the outcomes, synthetic edge cases designed to break the system, and cross-jurisdictional complexity that would challenge any human analyst team.
+                            </p>
+                        </div>
                         
                         <div className="grid grid-cols-4 gap-6 mb-8">
                             <div>
                                 <div className="text-5xl font-light mb-2">100+</div>
-                                <p className="text-sm text-slate-400">Validation scenarios</p>
+                                <p className="text-sm text-slate-400">Validation scenarios across historical and synthetic cases</p>
                             </div>
                             <div>
                                 <div className="text-5xl font-light mb-2">6</div>
-                                <p className="text-sm text-slate-400">Continents</p>
+                                <p className="text-sm text-slate-400">Continents with distinct regulatory frameworks tested</p>
                             </div>
                             <div>
                                 <div className="text-5xl font-light mb-2">$12B+</div>
-                                <p className="text-sm text-slate-400">Simulated deal value</p>
+                                <p className="text-sm text-slate-400">Simulated deal value to calibrate scoring accuracy</p>
                             </div>
                             <div>
                                 <div className="text-5xl font-light mb-2">15+</div>
-                                <p className="text-sm text-slate-400">Industry sectors</p>
+                                <p className="text-sm text-slate-400">Industry sectors from agriculture to deep tech</p>
                             </div>
                         </div>
                         
-                        <p className="text-lg text-slate-300 mb-8">
-                            The NSIL engine has been stress-tested against over 100 historical and synthetic scenarios—ranging from green hydrogen in Chile to coffee traceability in Ethiopia. These validation cycles ensure the system correctly identifies risks, compliance gaps, and economic opportunities before deployment.
-                        </p>
+                        <div className="bg-slate-800 p-6 mb-8 text-left">
+                            <p className="text-slate-300 leading-relaxed">
+                                <strong className="text-white">What this means for you:</strong> The formulas have been calibrated against real-world complexity. The personas have been trained to identify risks that only emerge in specific jurisdictional contexts. The evidence clamping protocols have been validated to prevent false confidence. When BWGA AI produces a score, it reflects genuine analytical rigor—not pattern-matched optimism.
+                            </p>
+                        </div>
                         
                         <button 
                             onClick={() => setShowMonteCarloEvidence(true)} 
