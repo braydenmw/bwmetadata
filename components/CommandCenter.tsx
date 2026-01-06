@@ -1454,6 +1454,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </p>
                                 </div>
                             </div>
+                            <p className="text-xs text-slate-500 mt-6 text-center">* The information and outputs provided by BWGA AI are for general guidance only and do not constitute formal financial, legal, or investment advice. Users should seek professional advice for specific decisions. All reasonable efforts are made to ensure accuracy, but no guarantee is made.</p>
                         </div>
                     </div>
                 </section>
