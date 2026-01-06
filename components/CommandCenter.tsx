@@ -1345,7 +1345,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </h1>
                             
                             <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light max-w-3xl mx-auto">
-                                Assessing a project in a new region is usually slow, expensive, and full of blind spots. We fixed that. Just describe what you want to do in plain English, and we'll tell you if it's viable—backed by hard evidence, not opinion.
+                                Exploring a project in a new region can be slow, expensive, and full of blind spots. BWGA AI brings clarity to the process—turning your plain-language description into a rigorous, evidence-based assessment, so you can move forward with confidence.
                             </p>
                         </div>
                     </div>
