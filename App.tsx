@@ -400,55 +400,67 @@ const App: React.FC = () => {
 
     const renderContent = () => {
         if (viewMode === 'user-manual') {
-            return <UserManual onLaunchOS={() => setViewMode('main')} />;
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <UserManual onLaunchOS={() => setViewMode('main')} />
+                </div>
+            );
         }
 
         if (viewMode === 'main') {
-            return <MainCanvas 
-                params={params}
-                setParams={setParams}
-                reportData={reportData}
-                isGenerating={isGeneratingReport}
-                generationPhase={genPhase}
-                generationProgress={genProgress}
-                onGenerate={handleGenerateReport}
-                reports={savedReports}
-                onOpenReport={loadReport}
-                onDeleteReport={deleteReport}
-                onNewAnalysis={startNewMission}
-                onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
-                onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
-                insights={combinedInsights}
-                autonomousMode={autonomousMode}
-                autonomousSuggestions={autonomousSuggestions}
-                isAutonomousThinking={isAutonomousThinking}
-            />;
+            return (
+                <div className="flex flex-1 w-full h-full overflow-hidden">
+                    <MainCanvas 
+                        params={params}
+                        setParams={setParams}
+                        reportData={reportData}
+                        isGenerating={isGeneratingReport}
+                        generationPhase={genPhase}
+                        generationProgress={genProgress}
+                        onGenerate={handleGenerateReport}
+                        reports={savedReports}
+                        onOpenReport={loadReport}
+                        onDeleteReport={deleteReport}
+                        onNewAnalysis={startNewMission}
+                        onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
+                        onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
+                        insights={combinedInsights}
+                        autonomousMode={autonomousMode}
+                        autonomousSuggestions={autonomousSuggestions}
+                        isAutonomousThinking={isAutonomousThinking}
+                    />
+                </div>
+            );
         }
         
         // Fallback or default view
-        return <MainCanvas 
-            params={params}
-            setParams={setParams}
-            reportData={reportData}
-            isGenerating={isGeneratingReport}
-            generationPhase={genPhase}
-            generationProgress={genProgress}
-            onGenerate={handleGenerateReport}
-            reports={savedReports}
-            onOpenReport={loadReport}
-            onDeleteReport={deleteReport}
-            onNewAnalysis={startNewMission}
-            onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
-            onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
-            insights={combinedInsights}
-            autonomousMode={autonomousMode}
-            autonomousSuggestions={autonomousSuggestions}
-            isAutonomousThinking={isAutonomousThinking}
-        />;
+        return (
+            <div className="flex flex-1 w-full h-full overflow-hidden">
+                <MainCanvas 
+                    params={params}
+                    setParams={setParams}
+                    reportData={reportData}
+                    isGenerating={isGeneratingReport}
+                    generationPhase={genPhase}
+                    generationProgress={genProgress}
+                    onGenerate={handleGenerateReport}
+                    reports={savedReports}
+                    onOpenReport={loadReport}
+                    onDeleteReport={deleteReport}
+                    onNewAnalysis={startNewMission}
+                    onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
+                    onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
+                    insights={combinedInsights}
+                    autonomousMode={autonomousMode}
+                    autonomousSuggestions={autonomousSuggestions}
+                    isAutonomousThinking={isAutonomousThinking}
+                />
+            </div>
+        );
     };
 
     return (
-        <div className="app-container bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen font-sans">
+        <div className="h-screen w-full bg-stone-50 font-sans text-stone-900 flex flex-col overflow-hidden">
             {renderContent()}
         </div>
     );
