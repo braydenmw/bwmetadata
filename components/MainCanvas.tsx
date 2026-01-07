@@ -4928,25 +4928,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                     {/* Doc Body */}
                     <div className="p-12 flex-1 font-serif text-stone-900">
-                        {/* Introduction */}
-                        <div className="mb-12 text-center">
-                            <h1 className="text-3xl font-bold text-stone-900 mb-2">A New Era for Regional Development Intelligence</h1>
-                            <p className="text-sm text-stone-600 leading-relaxed max-w-2xl mx-auto">
-                                Around the world, a persistent **Global Understanding Gap** obscures genuine opportunity. Fueled by fragmented data, outdated perceptions, and a lack of investor-grade tools, this gap systematically hinders development in the regional economies that form the backbone of national prosperity.
-                            </p>
-                        </div>
-
-                        {/* The Entire Meadow Philosophy */}
-                        <div className="mb-12 p-6 bg-slate-50 border border-slate-200 rounded-lg">
-                            <h2 className="text-xl font-bold text-slate-800 mb-2">The Entire Meadow Philosophy: A New Way to See</h2>
-                            <p className="text-sm text-slate-700 leading-relaxed">
-                                Most tools focus on the "bee and the flower"—the immediate transaction. This is dangerously incomplete.
-                            </p>
-                            <p className="text-sm text-slate-700 leading-relaxed mt-2">
-                                Nexus AI models the **entire meadow**: the full ecosystem, the hidden context, and all stakeholders. Real-world success depends on alignment with culture, regulation, and incentives—not just the deal itself. We built a system that sees the whole picture, because that’s the only way to deliver outcomes that last.
-                            </p>
-                        </div>
-
                         {/* 1. Identity Section */}
                         <div className="mb-12">
                             <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">01. Principal Entity</h2>
@@ -4958,7 +4939,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </div>
                                 </>
                             ) : (
-                                <p className="text-sm text-stone-400 italic">Awaiting entity profile...</p>
+                                <p className="text-sm text-stone-400 italic">No entity defined</p>
                             )}
                         </div>
 
@@ -4975,7 +4956,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     )}
                                 </>
                             ) : (
-                                <p className="text-sm text-stone-400 italic">Awaiting strategic mandate...</p>
+                                <p className="text-sm text-stone-400 italic">No mandate defined</p>
                             )}
                         </div>
 
@@ -4991,24 +4972,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-sm text-stone-400 italic">Awaiting partner personas...</p>
+                                <p className="text-sm text-stone-400 italic">No partner personas defined</p>
                             )}
-                        </div>
-
-                        {/* Example in Action */}
-                        <div className="mb-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-                            <h3 className="text-lg font-bold text-blue-900 mb-2">Example in Action: The 5-Persona Adversarial Debate</h3>
-                            <p className="text-sm text-blue-800 leading-relaxed">
-                                To eliminate bias and uncover blind spots, your strategy is debated by a team of five specialist AI personas. Imagine you propose a $10M investment in Vietnamese solar:
-                            </p>
-                            <ul className="list-disc list-inside text-sm text-blue-800 mt-3 space-y-1">
-                                <li>The **Advocate** highlights a 25% IRR...</li>
-                                <li>...but the **Accountant** immediately flags that your model misses currency hedging costs...</li>
-                                <li>...while the **Regulator** warns that new import tariffs could delay the project by 6 months.</li>
-                            </ul>
-                            <p className="text-sm text-blue-800 leading-relaxed mt-3 font-semibold">
-                                You see the full, unvarnished picture, not just the optimistic one.
-                            </p>
                         </div>
 
                         {/* 3. Market Context Section */}
@@ -5017,7 +4982,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             {enhancedReportData.marketAnalysis.content ? (
                                 <div className="text-sm text-stone-700 leading-relaxed whitespace-pre-line">{enhancedReportData.marketAnalysis.content}</div>
                             ) : (
-                                <p className="text-sm text-stone-400 italic">Awaiting market analysis...</p>
+                                <p className="text-sm text-stone-400 italic">No market data</p>
                             )}
 
                             {/* Display Computed Intelligence */}
@@ -5092,18 +5057,18 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             {enhancedReportData.risks.content ? (
                                 <div className="text-sm text-stone-700 leading-relaxed whitespace-pre-line">{enhancedReportData.risks.content}</div>
                             ) : (
-                                <p className="text-sm text-stone-400 italic">Awaiting risk assessment...</p>
+                                <p className="text-sm text-stone-400 italic">No risk data</p>
                             )}
                         </div>
 
                         <div className="mb-12">
                             <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">05. Advanced Analysis</h2>
-                            <p className="text-sm text-stone-400 italic">Awaiting advanced analysis...</p>
+                            <p className="text-sm text-stone-400 italic">No advanced analysis</p>
                         </div>
 
                         <div className="mb-12">
                             <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">06. Marketplace Opportunities</h2>
-                            <p className="text-sm text-stone-400 italic">Awaiting marketplace analysis...</p>
+                            <p className="text-sm text-stone-400 italic">No marketplace data</p>
                         </div>
                     </div>
 
