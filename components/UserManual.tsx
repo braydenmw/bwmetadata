@@ -82,7 +82,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <span className="font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">They deserve to be seen.</span>
             </h1>
             <p className="text-xl text-slate-200 leading-relaxed max-w-xl">
-              12 months of dedicated development. One purpose: giving regional areas the same strategic intelligence tools that major cities take for granted—so every community has a fighting chance to attract investment, build partnerships, and grow.
+              Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           
           <div className="prose prose-lg prose-slate max-w-none">
             <p className="text-xl text-slate-700 leading-relaxed mb-8 font-medium text-center italic">
-              "I've spent years living in and working with regional communities across Australia. I've seen firsthand how 
+              "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
               hard local governments, businesses, and everyday people work to build something meaningful—only to be 
               overlooked because they don't have the same resources or visibility as the major cities."
             </p>
