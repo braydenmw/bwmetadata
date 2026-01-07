@@ -110,7 +110,7 @@ const SupportProgramsDatabase: React.FC = () => {
       const bMatches = b.industry.includes(entityProfile.industry) && b.stage === entityProfile.stage ? 1 : 0;
       return bMatches - aMatches;
     });
-  }, [searchTerm, selectedFilters, entityProfile.industry, entityProfile.stage]);
+  }, [searchTerm, selectedFilters, entityProfile.industry, entityProfile.stage, allPrograms]);
 
   const toggleFilter = (category: string, value: string) => {
     setSelectedFilters(prev => {

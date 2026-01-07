@@ -109,7 +109,9 @@ export class ReportOrchestrator {
                 EventBus.publish({ type: 'ecosystemPulse', reportId: payload.metadata.reportId, signals: { alignment, bottlenecks, opportunities } });
             }
         }
-        catch { }
+        catch (error) {
+            console.warn('Error in report processing:', error);
+        }
         return payload;
     }
     static buildRegionProfile(params) {
