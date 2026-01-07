@@ -94,11 +94,16 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <h2 className="text-3xl font-light text-slate-900 mb-8 text-center">Why This Platform Exists</h2>
           
           <div className="prose prose-lg prose-slate max-w-none">
-            <p className="text-xl text-slate-700 leading-relaxed mb-8 font-medium text-center italic">
-              "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-              hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-              overlooked because they don't have the same resources or visibility as the major cities."
-            </p>
+            <div className="mb-12">
+              <p className="text-xl text-slate-700 leading-relaxed mb-4 font-medium text-center italic">
+                "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
+                hard local governments, businesses, and everyday people work to build something meaningful—only to be 
+                overlooked because they don't have the same resources or visibility as the major cities."
+              </p>
+              <p className="text-right text-2xl text-slate-800 mt-6" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                — Brayden Walls, Founder
+              </p>
+            </div>
             
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
               Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
