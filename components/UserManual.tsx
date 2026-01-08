@@ -1013,12 +1013,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* ARCHITECTURE MODAL - University Report Style with Full Documentation */}
       <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="Technical Architecture & Intelligence Framework">
         <div className="space-y-8 text-slate-700">
-          {/* Hero Header */}
-          <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-lg text-center">
-            <h2 className="text-2xl font-bold mb-3">BWGA's 27-Formula Suite: The World's Most Comprehensive Strategic Scoring Engine</h2>
-            <p className="text-slate-300 text-lg">Transforming raw data into board-grade intelligence through explainable, multi-agent reasoning and 27 proprietary formulas.</p>
-          </div>
-
           {/* Abstract */}
           <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-slate-600">
             <h3 className="font-bold text-slate-900 mb-2">Abstract</h3>
@@ -1028,6 +1022,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <p className="text-sm leading-relaxed">
               This paper documents the technical innovation, algorithmic foundations, and validation methodology that establishes BWGA Intelligence AI as a novel contribution to strategic decision-support systems.
             </p>
+          </div>
+
+          {/* Hero Header - Feature Showcase */}
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-lg text-center mb-8">
+            <div className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2">FEATURE SHOWCASE</div>
+            <h2 className="text-3xl font-bold mb-4">BWGA's 27-Formula Suite: The World's Most Comprehensive Strategic Scoring Engine</h2>
+            <p className="text-slate-300 text-lg max-w-3xl mx-auto">Transforming raw data into board-grade intelligence through explainable, multi-agent reasoning and 27 proprietary formulas.</p>
           </div>
 
           {/* Why This Has Never Existed - Innovation Statement */}
@@ -1063,6 +1064,46 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 </ul>
               </div>
             </div>
+            
+            {/* 27-Formula Suite Details */}
+            <div className="mt-6">
+              <h4 className="text-lg font-bold text-white mb-4">The 27-Formula Suite Breakdown</h4>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-slate-800 p-4 rounded-lg">
+                  <h5 className="font-semibold text-white mb-2 text-sm">Strategic Indices (4)</h5>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">BARNA</span><span className="text-slate-400">Entry barrier strength</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">NVI</span><span className="text-slate-400">Network value & connectivity</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">CRI</span><span className="text-slate-400">Country-level risk</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">FRS</span><span className="text-slate-400">Growth potential</span></div>
+                  </div>
+                </div>
+                <div className="bg-slate-800 p-4 rounded-lg">
+                  <h5 className="font-semibold text-white mb-2 text-sm">Operational Indices (8)</h5>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">CAP</span><span className="text-slate-400">Capability profile</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">AGI</span><span className="text-slate-400">Activation velocity</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">VCI</span><span className="text-slate-400">Value creation</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ATI</span><span className="text-slate-400">Asset transfer</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ESI</span><span className="text-slate-400">Ecosystem strength</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ISI</span><span className="text-slate-400">Integration speed</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">OSI</span><span className="text-slate-400">Operational synergy</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">TCO</span><span className="text-slate-400">Total cost ownership</span></div>
+                  </div>
+                </div>
+                <div className="bg-slate-800 p-4 rounded-lg">
+                  <h5 className="font-semibold text-white mb-2 text-sm">Risk Indices (4)</h5>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">PRI</span><span className="text-slate-400">Political stability</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">RNI</span><span className="text-slate-400">Regulatory complexity</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">SRA</span><span className="text-slate-400">Strategic risk</span></div>
+                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">IDV</span><span className="text-slate-400">Investment fragility</span></div>
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-slate-400 mt-3">These 16 specialized indices extend the 5 primary engines (SPI, RROI, SEAM, IVAS, SCF) for comprehensive strategic scoring.</p>
+            </div>
+            
             <div className="bg-slate-950 p-4 rounded-lg text-xs">
               <p className="text-slate-300">
                 <strong className="text-white">Key Innovation:</strong> BWGA is the first system to combine <em>neuro-symbolic reasoning</em> (LLM + formal logic), <em>multi-agent debate</em> (adversarial validation), and <em>quantified scoring</em> (mathematical indices) into a single decision-support architecture for cross-border partnership intelligence.
@@ -1324,15 +1365,9 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Formula Suite Overview */}
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">4. 27-Formula Suite Overview</h3>
-            <p className="mb-4 text-sm">Each formula is designed for boardroom clarity, regulatory compliance, and real-world decision impact. The suite combines 5 primary engines with 22 specialized indices to provide comprehensive strategic scoring that survives board scrutiny, partner negotiation, and regulatory review.</p>
-          </div>
-
           {/* Algorithm Performance */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">5. Algorithm Performance & Optimization</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-4">4. Algorithm Performance & Optimization</h3>
             
             <div className="bg-slate-900 text-white p-6 rounded-lg mb-4">
               <div className="grid md:grid-cols-4 gap-4 text-center mb-4">
