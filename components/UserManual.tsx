@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, BookOpen, Briefcase, Scale, TrendingUp, Zap, Lock, Eye, CheckCircle2 } from 'lucide-react';
+import { termsOfEngagement } from '../constants/commandCenterData';
 
 interface UserManualProps {
   onLaunchOS?: () => void;
@@ -57,6 +58,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [protocolDetail, setProtocolDetail] = useState<{ num: number; title: string; details: { subtitle: string; items: string[] }[] } | null>(null);
   const [expandedReport, setExpandedReport] = useState<number | null>(null);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const openProtocolDetail = (num: number, title: string, details: { subtitle: string; items: string[] }[]) => {
     setProtocolDetail({ num, title, details });
@@ -573,7 +576,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
             </p>
             <button 
-              onClick={() => onLaunchOS?.()}
+              onClick={() => setShowTermsModal(true)}
               className="px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-all inline-flex items-center gap-3 text-lg"
             >
               <Blocks className="w-6 h-6" />
@@ -3174,6 +3177,73 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">Adversarial Validation</h3>
               <p className="text-slate-600 text-sm">The platform's adversarial-by-design architecture ensures that strategies are stress-tested and challenged before deployment. The Skeptic persona and Counterfactual Lab actively try to break plans to expose fragile assumptions.</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* TERMS OF ENGAGEMENT MODAL */}
+      <Modal isOpen={showTermsModal} onClose={() => setShowTermsModal(false)} title="Terms of Engagement - BW Nexus AI">
+        <div className="space-y-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <Shield className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-semibold text-amber-800 text-sm">Important Legal Notice</h4>
+                <p className="text-amber-700 text-sm mt-1">
+                  Please read these terms carefully. By accessing the BW Nexus Intelligence OS, you agree to be bound by these terms and conditions.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            {termsOfEngagement.map((term, index) => (
+              <div key={index} className="border border-slate-200 rounded-lg p-4">
+                <h4 className="font-semibold text-slate-900 text-sm mb-2">{term.title}</h4>
+                <p className="text-slate-700 text-sm leading-relaxed">{term.content}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="border-t border-slate-200 pt-6">
+            <div className="flex items-start gap-3 mb-6">
+              <input
+                type="checkbox"
+                id="terms-acceptance"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-500"
+              />
+              <label htmlFor="terms-acceptance" className="text-sm text-slate-700 leading-relaxed">
+                I have read, understood, and agree to the Terms of Engagement for the BW Nexus Intelligence OS. I acknowledge that this is a decision support platform and all outputs are advisory in nature.
+              </label>
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowTermsModal(false);
+                  setTermsAccepted(false);
+                }}
+                className="px-4 py-2 text-slate-600 hover:text-slate-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (termsAccepted) {
+                    setShowTermsModal(false);
+                    setTermsAccepted(false);
+                    onLaunchOS?.();
+                  }
+                }}
+                disabled={!termsAccepted}
+                className="px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all inline-flex items-center gap-2"
+              >
+                <Blocks className="w-4 h-4" />
+                Accept & Launch OS
+              </button>
             </div>
           </div>
         </div>
