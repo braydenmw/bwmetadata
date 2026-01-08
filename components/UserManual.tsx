@@ -53,8 +53,8 @@ const ProtocolSection: React.FC<{
 
       {/* Tooltip */}
       {showTooltip && (
-        <div className="absolute z-50 w-80 p-4 bg-slate-900 text-white rounded-lg shadow-xl border border-slate-700 -top-2 left-full ml-2 transform -translate-y-1/2">
-          <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-slate-900"></div>
+        <div className="absolute z-50 w-80 p-4 bg-slate-900 text-white rounded-lg shadow-xl border border-slate-700 bottom-full left-1/2 transform -translate-x-1/2 mb-2">
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-slate-900"></div>
           <h4 className="font-semibold text-sm mb-3 text-slate-200">{title} - Data Requirements</h4>
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {fullDetails.map((section, idx) => (
