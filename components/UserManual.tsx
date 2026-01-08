@@ -1024,14 +1024,45 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </p>
           </div>
 
-          {/* Hero Header - Feature Showcase */}
+          {/* World First Introduction */}
+          <div className="bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 text-white p-8 rounded-lg mb-8">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl font-bold mb-6 text-slate-100">BWGA is More Than a Reactive System</h2>
+              <p className="text-lg text-slate-200 leading-relaxed mb-6">
+                This actually uses <strong className="text-white">formulas algentic AI new 27</strong> and <strong className="text-white">NSIL</strong> developed in a way never thought of before—joining all the dots together with the ideas that this is the start of developing something much bigger.
+              </p>
+              <div className="bg-slate-700/50 p-6 rounded-lg mb-6">
+                <p className="text-slate-200 text-lg leading-relaxed">
+                  <strong className="text-white">We have developed a world first:</strong> The first system to combine neuro-symbolic reasoning (LLM + formal logic), multi-agent debate (adversarial validation), and quantified scoring (mathematical indices) into a single decision-support architecture for cross-border partnership intelligence.
+                </p>
+              </div>
+              <p className="text-sm text-slate-400 italic">
+                This paper documents the technical innovation, algorithmic foundations, and validation methodology that establishes BWGA Intelligence AI as a novel contribution to strategic decision-support systems.
+              </p>
+            </div>
+          </div>
+
+          {/* FEATURE SHOWCASE */}
           <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-lg text-center mb-8">
             <div className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2">FEATURE SHOWCASE</div>
             <h2 className="text-3xl font-bold mb-4">BWGA's 27-Formula Suite: The World's Most Comprehensive Strategic Scoring Engine</h2>
             <p className="text-slate-300 text-lg max-w-3xl mx-auto">Transforming raw data into board-grade intelligence through explainable, multi-agent reasoning and 27 proprietary formulas.</p>
           </div>
 
-          {/* Why This Has Never Existed - Innovation Statement */}
+          {/* Representative Formula Display */}
+          <div className="bg-slate-900 text-white p-6 rounded-lg mb-8">
+            <h3 className="text-lg font-bold mb-4 text-center">Sample Formula: Success Probability Index (SPI™)</h3>
+            <div className="text-center mb-4">
+              <div className="font-mono text-lg bg-slate-800 p-4 rounded inline-block">
+                <span className="text-white">SPI</span> = Σ(<span className="text-slate-300">w<sub>i</sub></span> × <span className="text-slate-400">F<sub>i</sub></span>) / Σ<span className="text-slate-300">w<sub>i</sub></span>
+              </div>
+            </div>
+            <p className="text-sm text-slate-300 text-center">
+              <strong className="text-white">Purpose:</strong> Estimate likelihood of partnership/entry success using weighted strategic factors including Market Readiness, Partner Fit, Regulatory Clarity, Execution Feasibility, and Risk Alignment.
+            </p>
+          </div>
+
+          {/* Why This Technology Is Novel */}
           <div className="bg-slate-900 text-white p-6 rounded-lg">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <Zap className="w-5 h-5 text-slate-300" />
@@ -1064,46 +1095,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 </ul>
               </div>
             </div>
-            
-            {/* 27-Formula Suite Details */}
-            <div className="mt-6">
-              <h4 className="text-lg font-bold text-white mb-4">The 27-Formula Suite Breakdown</h4>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="bg-slate-800 p-4 rounded-lg">
-                  <h5 className="font-semibold text-white mb-2 text-sm">Strategic Indices (4)</h5>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">BARNA</span><span className="text-slate-400">Entry barrier strength</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">NVI</span><span className="text-slate-400">Network value & connectivity</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">CRI</span><span className="text-slate-400">Country-level risk</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">FRS</span><span className="text-slate-400">Growth potential</span></div>
-                  </div>
-                </div>
-                <div className="bg-slate-800 p-4 rounded-lg">
-                  <h5 className="font-semibold text-white mb-2 text-sm">Operational Indices (8)</h5>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">CAP</span><span className="text-slate-400">Capability profile</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">AGI</span><span className="text-slate-400">Activation velocity</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">VCI</span><span className="text-slate-400">Value creation</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ATI</span><span className="text-slate-400">Asset transfer</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ESI</span><span className="text-slate-400">Ecosystem strength</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">ISI</span><span className="text-slate-400">Integration speed</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">OSI</span><span className="text-slate-400">Operational synergy</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">TCO</span><span className="text-slate-400">Total cost ownership</span></div>
-                  </div>
-                </div>
-                <div className="bg-slate-800 p-4 rounded-lg">
-                  <h5 className="font-semibold text-white mb-2 text-sm">Risk Indices (4)</h5>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">PRI</span><span className="text-slate-400">Political stability</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">RNI</span><span className="text-slate-400">Regulatory complexity</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">SRA</span><span className="text-slate-400">Strategic risk</span></div>
-                    <div className="flex justify-between"><span className="font-mono font-bold text-slate-300">IDV</span><span className="text-slate-400">Investment fragility</span></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-xs text-slate-400 mt-3">These 16 specialized indices extend the 5 primary engines (SPI, RROI, SEAM, IVAS, SCF) for comprehensive strategic scoring.</p>
-            </div>
-            
+
             <div className="bg-slate-950 p-4 rounded-lg text-xs">
               <p className="text-slate-300">
                 <strong className="text-white">Key Innovation:</strong> BWGA is the first system to combine <em>neuro-symbolic reasoning</em> (LLM + formal logic), <em>multi-agent debate</em> (adversarial validation), and <em>quantified scoring</em> (mathematical indices) into a single decision-support architecture for cross-border partnership intelligence.
@@ -1111,7 +1103,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Comparison Table */}
+          {/* Competitive Comparison Matrix */}
           <div>
             <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
               <Scale className="w-5 h-5 text-slate-600" />
@@ -1152,104 +1144,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Core Formula Display with Full Mathematical Documentation */}
+          {/* NSIL (Nexus Strategic Intelligence Layer) */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">1. Primary Intelligence Engines (5 Core Formulas)</h3>
-            <p className="mb-4 text-sm">The system computes five primary scores using weighted factor analysis. Each formula produces a 0-100 score, grade banding, drivers, pressure points, and actionable levers.</p>
-            
-            <div className="space-y-4">
-              {/* SPI Formula */}
-              <div className="bg-slate-900 text-white p-5 rounded-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-slate-600 text-white text-xs font-bold px-2 py-1 rounded">SPI™</span>
-                  <span className="font-semibold">Success Probability Index</span>
-                </div>
-                <div className="font-mono text-sm mb-3 bg-slate-800 p-3 rounded">
-                  <span className="text-white">SPI</span> = Σ(<span className="text-slate-300">w<sub>i</sub></span> × <span className="text-slate-400">F<sub>i</sub></span>) / Σ<span className="text-slate-300">w<sub>i</sub></span>
-                </div>
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p><strong className="text-white">Purpose:</strong> Estimate likelihood of partnership/entry success using weighted strategic factors.</p>
-                  <p><strong className="text-white">Factors (F):</strong> MarketReadiness, PartnerFit, RegulatoryClarity, ExecutionFeasibility, RiskAlignment</p>
-                  <p><strong className="text-white">Weights (w):</strong> Dynamically adjusted based on strategy type and user risk profile (0.1 - 0.3 range)</p>
-                  <p><strong className="text-white">Output:</strong> Score 0-100, Grade (A-F), Top 3 Drivers, Top 3 Pressure Points, Recommended Levers</p>
-                </div>
-              </div>
-
-              {/* RROI Formula */}
-              <div className="bg-slate-900 text-white p-5 rounded-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-slate-600 text-white text-xs font-bold px-2 py-1 rounded">RROI™</span>
-                  <span className="font-semibold">Regional Return on Investment</span>
-                </div>
-                <div className="font-mono text-sm mb-3 bg-slate-800 p-3 rounded">
-                  <span className="text-white">RROI</span> = (<span className="text-slate-300">NPV</span> × (1 - <span className="text-slate-400">λ</span>) + <span className="text-slate-400">I</span> × <span className="text-slate-300">M</span>) / <span className="text-slate-400">C<sub>total</sub></span>
-                </div>
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p><strong className="text-white">Purpose:</strong> Project risk-adjusted ROI for a specific region, incorporating local multipliers.</p>
-                  <p><strong className="text-white">Variables:</strong> NPV = Net Present Value, λ = Regional Risk Factor (0-1), I = Incentives ($), M = Regional Multiplier, C = Total Cost</p>
-                  <p><strong className="text-white">Regional Factors:</strong> Labor costs, infrastructure quality, tax incentives, growth trajectory, currency stability</p>
-                  <p><strong className="text-white">Output:</strong> ROI multiple (e.g., 2.4x), P10/P50/P90 scenarios, Key assumptions, Sensitivity drivers</p>
-                </div>
-              </div>
-
-              {/* SEAM Formula */}
-              <div className="bg-slate-900 text-white p-5 rounded-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-slate-600 text-white text-xs font-bold px-2 py-1 rounded">SEAM™</span>
-                  <span className="font-semibold">Stakeholder Entity Alignment Matrix</span>
-                </div>
-                <div className="font-mono text-sm mb-3 bg-slate-800 p-3 rounded">
-                  <span className="text-white">SEAM</span> = Π<sup>n</sup><sub>i=1</sub> (<span className="text-slate-300">A<sub>i</sub></span> × <span className="text-slate-400">W<sub>i</sub></span>) / Σ<span className="text-slate-400">C<sub>j</sub></span>
-                </div>
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p><strong className="text-white">Purpose:</strong> Model the entire stakeholder ecosystem—incentives, conflicts, and influence networks.</p>
-                  <p><strong className="text-white">Variables:</strong> A = Alignment Score (1-10), W = Stakeholder Weight (influence level), C = Conflict Penalties</p>
-                  <p><strong className="text-white">Stakeholders Analyzed:</strong> Executive, Operational, Financial, Legal, Board/Investor, Customer, Employee</p>
-                  <p><strong className="text-white">Output:</strong> Alignment vs Conflict signals, Influence pressures, Recommended alignment actions</p>
-                </div>
-              </div>
-
-              {/* IVAS Formula */}
-              <div className="bg-slate-900 text-white p-5 rounded-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-slate-600 text-white text-xs font-bold px-2 py-1 rounded">IVAS™</span>
-                  <span className="font-semibold">Investment Validation Assessment Score</span>
-                </div>
-                <div className="font-mono text-sm mb-3 bg-slate-800 p-3 rounded">
-                  <span className="text-white">IVAS</span> = α(<span className="text-slate-300">R</span>) + β(<span className="text-slate-400">T</span>) - γ(<span className="text-slate-400">F</span>)
-                </div>
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p><strong className="text-white">Purpose:</strong> Stress-test activation timelines and friction using scenario ranges (P10/P50/P90).</p>
-                  <p><strong className="text-white">Variables:</strong> R = Readiness score, T = Timeline confidence, F = Friction factors, α/β/γ = Calibration weights</p>
-                  <p><strong className="text-white">Friction Factors:</strong> Regulatory delays, integration complexity, resource constraints, external dependencies</p>
-                  <p><strong className="text-white">Output:</strong> Time-to-activation profile, Gating factors, Activation risk flags, Go/No-Go gates</p>
-                </div>
-              </div>
-
-              {/* SCF Formula */}
-              <div className="bg-slate-900 text-white p-5 rounded-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-slate-600 text-white text-xs font-bold px-2 py-1 rounded">SCF™</span>
-                  <span className="font-semibold">Strategic Confidence Framework</span>
-                </div>
-                <div className="font-mono text-sm mb-3 bg-slate-800 p-3 rounded">
-                  <span className="text-white">SCF</span> = ω<sub>1</sub>(<span className="text-slate-300">SPI</span>) + ω<sub>2</sub>(<span className="text-slate-400">RROI</span>) + ω<sub>3</sub>(<span className="text-slate-300">SEAM</span>) + ω<sub>4</sub>(<span className="text-slate-400">D<sub>consensus</sub></span>)
-                </div>
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p><strong className="text-white">Purpose:</strong> Unify all scores + debate consensus into a single "board answer" with explicit rationale.</p>
-                  <p><strong className="text-white">Variables:</strong> SPI/RROI/SEAM from above, D = Debate consensus score, ω = Weighting factors</p>
-                  <p><strong className="text-white">Debate Input:</strong> Agreement level from 5-persona debate engine (0-100%)</p>
-                  <p><strong className="text-white">Output:</strong> Confidence grade (A-F), PROCEED / PAUSE / RE-STRUCTURE recommendation, Explicit rationale</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* NSIL Architecture */}
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">2. NSIL (Nexus Strategic Intelligence Layer)</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-4">NSIL (Nexus Strategic Intelligence Layer)</h3>
             <p className="mb-4 text-sm">NSIL is the reasoning layer that wraps around the scoring engines. It transforms user input into a structured strategic case through a five-phase pipeline.</p>
-            
+
             <div className="bg-slate-100 p-4 rounded-lg mb-4">
               <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-700">
                 <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
@@ -1278,7 +1177,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-slate-100">
@@ -1325,11 +1224,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Multi-Agent Debate */}
+          {/* Multi-Agent Reasoning Framework (5-Persona Debate) */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">3. Multi-Agent Reasoning Framework (5-Persona Debate)</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Multi-Agent Reasoning Framework (5-Persona Debate)</h3>
             <p className="mb-4 text-sm">Five specialist personas evaluate each strategy in parallel to prevent single-thread bias. This is a core innovation—no other system uses adversarial multi-agent debate for strategic validation.</p>
-            
+
             <div className="grid md:grid-cols-5 gap-3 mb-4">
               {[
                 { name: "Skeptic", code: "S", color: "bg-slate-700", role: "Finds deal-killers, over-optimism, hidden downside. Stress-tests assumptions.", questions: ["What could go wrong?", "What are we missing?", "Is this too good to be true?"] },
@@ -1365,10 +1264,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Algorithm Performance */}
+          {/* Algorithm Performance & Optimization */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">4. Algorithm Performance & Optimization</h3>
-            
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Algorithm Performance & Optimization</h3>
+
             <div className="bg-slate-900 text-white p-6 rounded-lg mb-4">
               <div className="grid md:grid-cols-4 gap-4 text-center mb-4">
                 <div>
@@ -1429,38 +1328,28 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               </table>
             </div>
 
-            <div className="mt-4 bg-slate-50 border border-slate-200 rounded-lg p-4">
-              <h4 className="font-semibold text-slate-900 mb-2 text-sm">DAG Formula Execution Order</h4>
-              <div className="font-mono text-xs text-slate-700 space-y-1">
-                <div><span className="text-slate-600 font-semibold">Level 0:</span> PRI, CRI, BARNA, TCO (independent - run in parallel)</div>
-                <div><span className="text-slate-600 font-semibold">Level 1:</span> SPI, RROI, SEAM (depend on Level 0)</div>
-                <div><span className="text-slate-600 font-semibold">Level 2:</span> IVAS, SCF (depend on Level 1)</div>
-                <div><span className="text-slate-600 font-semibold">Level 3:</span> 12 remaining derivative indices (depend on Level 2)</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Provenance & Audit */}
-          <div className="bg-slate-100 p-6 rounded-lg border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-slate-600" />
-              Provenance & Audit Trail
-            </h3>
-            <p className="text-sm text-slate-700 mb-3">
-              Every recommendation in BWGA Intelligence AI is fully traceable. The system maintains a complete provenance chain from user input → formula computation → debate evidence → final recommendation.
-            </p>
-            <div className="grid md:grid-cols-3 gap-4 text-xs">
-              <div className="bg-white p-3 rounded border border-slate-200">
-                <div className="font-semibold text-slate-900 mb-1">Input Provenance</div>
-                <p className="text-slate-600">Every data point tagged with source, timestamp, and confidence level</p>
-              </div>
-              <div className="bg-white p-3 rounded border border-slate-200">
-                <div className="font-semibold text-slate-900 mb-1">Computation Trace</div>
-                <p className="text-slate-600">Each formula shows inputs used, weights applied, intermediate values</p>
-              </div>
-              <div className="bg-white p-3 rounded border border-slate-200">
-                <div className="font-semibold text-slate-900 mb-1">Debate Evidence</div>
-                <p className="text-slate-600">Persona arguments preserved with supporting data and vote rationale</p>
+            {/* Provenance & Audit Trail */}
+            <div className="bg-slate-100 p-6 rounded-lg border border-slate-200 mt-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <Lock className="w-5 h-5 text-slate-600" />
+                Provenance & Audit Trail
+              </h3>
+              <p className="text-sm text-slate-700 mb-3">
+                Every recommendation in BWGA Intelligence AI is fully traceable. The system maintains a complete provenance chain from user input → formula computation → debate evidence → final recommendation.
+              </p>
+              <div className="grid md:grid-cols-3 gap-4 text-xs">
+                <div className="bg-white p-3 rounded border border-slate-200">
+                  <div className="font-semibold text-slate-900 mb-1">Input Provenance</div>
+                  <p className="text-slate-600">Every data point tagged with source, timestamp, and confidence level</p>
+                </div>
+                <div className="bg-white p-3 rounded border border-slate-200">
+                  <div className="font-semibold text-slate-900 mb-1">Computation Trace</div>
+                  <p className="text-slate-600">Each formula shows inputs used, weights applied, intermediate values</p>
+                </div>
+                <div className="bg-white p-3 rounded border border-slate-200">
+                  <div className="font-semibold text-slate-900 mb-1">Debate Evidence</div>
+                  <p className="text-slate-600">Persona arguments preserved with supporting data and vote rationale</p>
+                </div>
               </div>
             </div>
           </div>
