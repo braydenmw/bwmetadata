@@ -32,23 +32,21 @@ const ProtocolSection: React.FC<{
   desc: string;
   fullDetails: { subtitle: string; items: string[] }[];
   onOpenDetails: (num: number, title: string, details: { subtitle: string; items: string[] }[]) => void;
-  onHover: (details: { num: number; title: string; fullDetails: { subtitle: string; items: string[] }[] } | null) => void;
-}> = ({ num, title, desc, onOpenDetails, fullDetails, onHover }) => {
+}> = ({ num, title, desc, onOpenDetails, fullDetails }) => {
   return (
-    <div
-      className="relative cursor-pointer"
-      onClick={() => onOpenDetails(num, title, fullDetails)}
-      onMouseEnter={() => onHover({ num, title, fullDetails })}
-      onMouseLeave={() => onHover(null)}
-    >
-      <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium">{num}</span>
-          <span className="text-xs text-slate-400">Hover for info</span>
-        </div>
-        <h3 className="font-semibold text-slate-900 text-sm mb-2">{title}</h3>
-        <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+    <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+      <div className="flex items-center gap-3 mb-3">
+        <span className="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium">{num}</span>
+        <span className="text-xs text-slate-400">Step {num}</span>
       </div>
+      <h3 className="font-semibold text-slate-900 text-sm mb-2">{title}</h3>
+      <p className="text-xs text-slate-500 leading-relaxed mb-4">{desc}</p>
+      <button
+        onClick={() => onOpenDetails(num, title, fullDetails)}
+        className="w-full px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all"
+      >
+        Click here for details
+      </button>
     </div>
   );
 };
@@ -57,14 +55,9 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [protocolDetail, setProtocolDetail] = useState<{ num: number; title: string; details: { subtitle: string; items: string[] }[] } | null>(null);
   const [expandedReport, setExpandedReport] = useState<number | null>(null);
-  const [hoveredStep, setHoveredStep] = useState<{ num: number; title: string; fullDetails: { subtitle: string; items: string[] }[] } | null>(null);
 
   const openProtocolDetail = (num: number, title: string, details: { subtitle: string; items: string[] }[]) => {
     setProtocolDetail({ num, title, details });
-  };
-
-  const handleStepHover = (details: { num: number; title: string; fullDetails: { subtitle: string; items: string[] }[] } | null) => {
-    setHoveredStep(details);
   };
 
   return (
@@ -267,13 +260,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           </p>
           
           {/* Protocol Steps Grid - 2 rows of 5 in landscape */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-12">
             <ProtocolSection 
               num={1} 
               title="Identity & Foundation" 
               desc="Establish organizational credibility, legal structure, and competitive positioning."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Organization Core", items: ["Legal Entity Name & Registration", "Entity Type (Public/Private/Startup/NGO)", "Industry Classification (NAICS/SIC)", "Years in Operation", "Headquarters & Operating Regions"] },
                 { subtitle: "Organizational Capacity", items: ["Total Employees & Revenue Bands", "EBITDA / Net Income", "Market Share Analysis", "Profitability Trend Assessment"] },
@@ -286,7 +278,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Mandate & Strategy" 
               desc="Define strategic vision, objectives, target partner profile, and value proposition."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Strategic Vision", items: ["3-5 Year Outlook", "Market Expansion Goals", "Capability Acquisition Targets", "ESG/Sustainability Objectives"] },
                 { subtitle: "Core Problem", items: ["Problem We're Solving (measurable)", "Current State vs Desired State", "Why Now - Urgency Factors", "Cost of Inaction Analysis"] },
@@ -299,7 +290,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Market & Context" 
               desc="Analyze market dynamics, regulatory environment, and macro-economic factors."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Market Definition", items: ["TAM/SAM/SOM in $ and units", "Market Growth Rate (CAGR %)", "Market Maturity Stage", "Key Segments & Mix"] },
                 { subtitle: "Market Dynamics", items: ["Top 5 Market Trends", "Technology Disruption Threats", "Regulatory Headwinds/Tailwinds", "Buyer Decision Cycle"] },
@@ -312,7 +302,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Partners & Ecosystem" 
               desc="Map stakeholder landscape, alignment scores, and relationship dynamics."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Target Counterparties", items: ["Partner Name(s) & Size", "Partner Core Capabilities", "Partner Geographic Footprint", "Decision-Maker Contacts"] },
                 { subtitle: "Stakeholder Landscape", items: ["Executive Stakeholders", "Operational Stakeholders", "Legal/Compliance Stakeholders", "Board/Investor Interests"] },
@@ -325,7 +314,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Financial Model" 
               desc="Structure investment requirements, revenue projections, and ROI scenarios."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Investment Requirements", items: ["Capital Investment Needed ($)", "Investment Type (equity/debt/grant)", "Working Capital Needed", "Contingency Buffer %"] },
                 { subtitle: "Revenue Model", items: ["Revenue Streams (up to 3)", "Year 1/3/5 Revenue Targets", "Revenue Growth Rate %", "Recurring vs One-time Split"] },
@@ -338,7 +326,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Risk & Mitigation" 
               desc="Identify and quantify risks with probability/impact matrices and mitigation plans."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Risk Register", items: ["Top 5 Risks with Probability %", "Impact Assessment ($M)", "Mitigation Plan per Risk", "Risk Owner Assignment"] },
                 { subtitle: "Market Risks", items: ["Market Size Risk", "Competitive Response Risk", "Customer Acceptance Risk", "Technology Obsolescence"] },
@@ -351,7 +338,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Resources & Capability" 
               desc="Assess organizational readiness, team strength, and capability gaps."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Technology Stack", items: ["Core Technology Platform", "Integration Requirements", "IP/Patents Protected", "Scalability Assessment"] },
                 { subtitle: "Team & Talent", items: ["Executive Team Profiles", "Specialized Roles Needed", "Bench Strength Analysis", "External Advisor Needs"] },
@@ -364,7 +350,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Execution Plan" 
               desc="Define implementation roadmap, milestones, dependencies, and go/no-go gates."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Phase 1: Foundation (M1-3)", items: ["Key Milestones & Owners", "Decisions to Make", "Approvals Needed", "Budget Required"] },
                 { subtitle: "Phase 2: Ramp (M4-9)", items: ["Scaling Milestones", "Resource Ramp Plan", "Integration Checkpoints", "Performance Gates"] },
@@ -377,7 +362,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Governance & Monitoring" 
               desc="Establish oversight structure, decision matrices, and performance tracking."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Governance Structure", items: ["Steering Committee Members", "Working Groups Defined", "Decision Authority Matrix", "Escalation Path Protocol"] },
                 { subtitle: "Key Metrics", items: ["Financial KPIs (revenue, margin)", "Operational KPIs (efficiency)", "Strategic KPIs (market share)", "Health Indicators (engagement)"] },
@@ -390,7 +374,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               title="Scoring & Readiness" 
               desc="Final validation and readiness assessment with go/no-go recommendation."
               onOpenDetails={openProtocolDetail}
-              onHover={handleStepHover}
               fullDetails={[
                 { subtitle: "Completion Scoring", items: ["Green (Ready): >90% complete", "Yellow (In Progress): 70-90%", "Red (Not Ready): <70%", "Critical Fields Validation"] },
                 { subtitle: "Readiness Assessment", items: ["All Sections Reviewed", "No Red Flags Detected", "Key Gaps Identified", "Remediation Plan if Needed"] },
@@ -398,37 +381,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 { subtitle: "Next Steps", items: ["Immediate Actions Required", "Owner Assignments", "Timeline to Decision", "Stakeholder Communications"] }
               ]}
             />
-          </div>
-
-          {/* Horizontal Info Bar - appears below the grid when hovering */}
-          <div className={`bg-slate-900 rounded-xl p-6 mb-12 transition-all duration-300 ${hoveredStep ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} style={{ minHeight: '120px' }}>
-            {hoveredStep && (
-              <>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 bg-white text-slate-900 rounded-full flex items-center justify-center text-sm font-bold">{hoveredStep.num}</span>
-                  <h4 className="font-semibold text-lg text-white">{hoveredStep.title}</h4>
-                  <span className="text-xs text-slate-400 ml-auto">Click the step above for full details</span>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {hoveredStep.fullDetails.map((section, idx) => (
-                    <div key={idx} className="bg-slate-800/50 rounded-lg p-3">
-                      <h5 className="font-medium text-xs text-slate-300 mb-2 uppercase tracking-wide">{section.subtitle}</h5>
-                      <ul className="text-xs text-slate-400 space-y-1">
-                        {section.items.slice(0, 4).map((item, itemIdx) => (
-                          <li key={itemIdx} className="flex items-start gap-2">
-                            <span className="text-slate-500 mt-0.5">•</span>
-                            <span className="line-clamp-1">{item}</span>
-                          </li>
-                        ))}
-                        {section.items.length > 4 && (
-                          <li className="text-slate-500 italic">+{section.items.length - 4} more...</li>
-                        )}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
           </div>
           
           {/* Consolidated Stats Grid */}
