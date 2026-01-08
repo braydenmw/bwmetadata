@@ -3081,7 +3081,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-center md:text-left">
                 <p className="text-sm text-slate-400">
-                  © 2026 BW Global Advisory. All rights reserved.
+                  © 2026 BW Global Advisory. All rights reserved. | brayden@bwglobaladvis.info | +63 960 835 4283
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
                   Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia
