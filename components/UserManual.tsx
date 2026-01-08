@@ -3072,9 +3072,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <button onClick={() => setActiveModal('ethics')} className="block text-sm text-slate-400 hover:text-white transition-colors">
                   Ethical AI Framework
                 </button>
-                <button onClick={() => setActiveModal('architecture')} className="block text-sm text-slate-400 hover:text-white transition-colors">
-                  Technical Documentation
-                </button>
               </div>
             </div>
           </div>
