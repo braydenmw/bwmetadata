@@ -482,7 +482,7 @@ export const termsOfEngagement = [
     },
     {
         title: "4. Model Limits & Accountability",
-        content: "The 21-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions."
+        content: "The 27-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions."
     },
     {
         title: "5. Compliance & Ethics",
@@ -490,6 +490,6 @@ export const termsOfEngagement = [
     },
     {
         title: "6. Liability & IP Protection",
-        content: "All intellectual property, methodologies, orchestration primitives, and the 21-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product."
+        content: "All intellectual property, methodologies, orchestration primitives, and the 27-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product."
     }
 ];

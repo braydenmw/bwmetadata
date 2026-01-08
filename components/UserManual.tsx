@@ -145,7 +145,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 never navigated a cross-border partnership before, this system guides you every step of the way.
               </p>
               <p className="text-slate-600 leading-relaxed">
-                The technology is sophisticated—21 mathematical formulas, five AI personas stress-testing every decision, 
+                The technology is sophisticated—27 mathematical formulas, five AI personas stress-testing every decision, 
                 Monte Carlo simulations, and a Document Factory that produces over 200 document types and 150 letter templates. 
                 But you don't need to understand any of that to use it. The complexity is hidden. What you see is clarity.
               </p>
@@ -400,7 +400,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <p className="text-slate-300 text-sm mb-4">
                 After completing the <strong className="text-white">10-Step Intelligence Protocol</strong>, 
                 the platform generates a complete library of professional deliverables—fully populated with your 
-                specific data and scored using the 21-formula algorithm suite.
+                specific data and scored using the 27-formula algorithm suite.
               </p>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 <div className="bg-slate-800/60 rounded-lg p-3 border border-slate-700 text-center">
@@ -430,9 +430,9 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <Blocks className="w-6 h-6 text-slate-600" />
                 <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Technical Architecture</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Technical Architecture & Intelligence Framework</h3>
               <p className="text-slate-600 text-sm mb-6">
-                NSIL intelligence layer, 21-formula scoring suite, multi-agent reasoning system. Complete algorithmic 
+                NSIL intelligence layer, 27-formula scoring suite, multi-agent reasoning system. Complete algorithmic 
                 documentation and innovation statement explaining how the platform transforms inputs into intelligence.
               </p>
               <div className="grid grid-cols-2 gap-3 mb-6">
@@ -605,7 +605,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
             <p className="text-sm text-slate-300">
               Every document below is auto-generated from your 10-Step Protocol data, fully populated with your specific 
-              opportunity details, and scored using the 21-formula algorithm suite. Export to PDF, Word, or PowerPoint.
+              opportunity details, and scored using the 27-formula algorithm suite. Export to PDF, Word, or PowerPoint.
             </p>
           </div>
 
@@ -1003,7 +1003,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <div className="bg-slate-900 text-white rounded-lg p-6 text-center">
             <h4 className="font-bold text-lg mb-2">Complete the 10-Step Protocol to Generate Your Documents</h4>
             <p className="text-sm text-slate-300">
-              Every document is populated with your specific opportunity data, scored using our 21-formula suite, 
+              Every document is populated with your specific opportunity data, scored using our 27-formula suite, 
               and exportable in PDF, Word, PowerPoint, or Excel format.
             </p>
           </div>
@@ -1013,11 +1013,17 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* ARCHITECTURE MODAL - University Report Style with Full Documentation */}
       <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="Technical Architecture & Intelligence Framework">
         <div className="space-y-8 text-slate-700">
+          {/* Hero Header */}
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-lg text-center">
+            <h2 className="text-2xl font-bold mb-3">BWGA's 27-Formula Suite: The World's Most Comprehensive Strategic Scoring Engine</h2>
+            <p className="text-slate-300 text-lg">Transforming raw data into board-grade intelligence through explainable, multi-agent reasoning and 27 proprietary formulas.</p>
+          </div>
+
           {/* Abstract */}
           <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-slate-600">
             <h3 className="font-bold text-slate-900 mb-2">Abstract</h3>
             <p className="text-sm leading-relaxed mb-3">
-              BWGA Intelligence AI implements a <strong>neuro-symbolic reasoning architecture</strong> combining pattern recognition with explainable logic. The system employs a multi-agent debate framework, validated through a proprietary 21-formula scoring suite, to produce decision-grade intelligence that survives board scrutiny, partner negotiation, and regulatory review.
+              BWGA Intelligence AI implements a <strong>neuro-symbolic reasoning architecture</strong> combining pattern recognition with explainable logic. The system employs a multi-agent debate framework, validated through a proprietary 27-formula scoring suite, to produce decision-grade intelligence that survives board scrutiny, partner negotiation, and regulatory review.
             </p>
             <p className="text-sm leading-relaxed">
               This paper documents the technical innovation, algorithmic foundations, and validation methodology that establishes BWGA Intelligence AI as a novel contribution to strategic decision-support systems.
@@ -1050,7 +1056,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <ul className="text-xs text-slate-300 space-y-1">
                   <li>• <strong>Structured 10-section intake protocol</strong></li>
                   <li>• <strong>5-persona adversarial debate</strong></li>
-                  <li>• <strong>21-formula quantified scoring suite</strong></li>
+                  <li>• <strong>27-formula quantified scoring suite</strong></li>
                   <li>• <strong>SAT solver for contradiction detection</strong></li>
                   <li>• <strong>Full provenance chain for every recommendation</strong></li>
                   <li>• <strong>Explainable outputs with drivers & pressure points</strong></li>
@@ -1085,7 +1091,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   {[
                     { cap: "Structured Strategic Intake", gpt: "❌", consult: "⚠️ Manual", bi: "❌", bwga: "✅ 10-Section Protocol" },
                     { cap: "Multi-Perspective Validation", gpt: "❌ Single thread", consult: "⚠️ Team-dependent", bi: "❌", bwga: "✅ 5-Persona Debate" },
-                    { cap: "Quantified Scoring", gpt: "❌", consult: "⚠️ Subjective", bi: "⚠️ Metrics only", bwga: "✅ 21 Formulas" },
+                    { cap: "Quantified Scoring", gpt: "❌", consult: "⚠️ Subjective", bi: "⚠️ Metrics only", bwga: "✅ 27 Formulas" },
                     { cap: "Contradiction Detection", gpt: "❌", consult: "⚠️ Manual review", bi: "❌", bwga: "✅ SAT Solver" },
                     { cap: "Explainable Recommendations", gpt: "⚠️ Text only", consult: "⚠️ Narrative", bi: "❌", bwga: "✅ Drivers + Pressure Points" },
                     { cap: "Real-time Processing", gpt: "✅", consult: "❌ Weeks", bi: "✅", bwga: "✅ 1-3 seconds" },
@@ -1258,7 +1264,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   <tr className="border-t border-slate-200">
                     <td className="p-3 font-medium text-slate-700">Score</td>
                     <td className="p-3 font-mono text-xs bg-slate-50">DAGScheduler</td>
-                    <td className="p-3 text-xs">Directed Acyclic Graph executes 21 formulas in 4 parallel levels with memoization cache.</td>
+                    <td className="p-3 text-xs">Directed Acyclic Graph executes 27 formulas in 4 parallel levels with memoization cache.</td>
                     <td className="p-3 text-xs">Scores, grades, drivers, pressure points for all indices</td>
                   </tr>
                   <tr className="border-t border-slate-200 bg-slate-50">
@@ -1318,44 +1324,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* 16 Derivative Indices */}
+          {/* Formula Suite Overview */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">4. 16 Derivative Indices (Specialist Formulas)</h3>
-            <p className="mb-4 text-sm">These indices extend the 5 primary engines and explain <em>why</em> the strategy is strong/weak, and what to fix. Total: 5 + 16 = 21 formulas.</p>
-            
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900 mb-2 text-sm">Strategic Indices</h4>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">BARNA</span><span className="text-slate-600">Entry barrier strength (regulatory, capital, cultural)</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">NVI</span><span className="text-slate-600">Network value & ecosystem connectivity</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">CRI</span><span className="text-slate-600">Country-level political/economic risk</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">FRS</span><span className="text-slate-600">Flywheel/compounding growth potential</span></div>
-                </div>
-              </div>
-              <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900 mb-2 text-sm">Operational Indices</h4>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">CAP</span><span className="text-slate-600">Capability assessment profile</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">AGI</span><span className="text-slate-600">Activation velocity & gating factors</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">VCI</span><span className="text-slate-600">Value creation & synergy potential</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">ATI</span><span className="text-slate-600">Asset/IP transfer complexity</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">ESI</span><span className="text-slate-600">Ecosystem strength (suppliers, talent)</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">ISI</span><span className="text-slate-600">Integration speed post-deal</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">OSI</span><span className="text-slate-600">Operational synergy potential</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">TCO</span><span className="text-slate-600">Total cost of ownership (lifecycle)</span></div>
-                </div>
-              </div>
-              <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900 mb-2 text-sm">Risk Indices</h4>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">PRI</span><span className="text-slate-600">Political stability & sovereign risk</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">RNI</span><span className="text-slate-600">Regulatory navigation complexity</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">SRA</span><span className="text-slate-600">Strategic risk profile (market/timing)</span></div>
-                  <div className="flex justify-between"><span className="font-mono font-bold text-slate-700">IDV</span><span className="text-slate-600">Investment default variance (fragility)</span></div>
-                </div>
-              </div>
-            </div>
+            <h3 className="text-xl font-bold text-slate-900 mb-4">4. 27-Formula Suite Overview</h3>
+            <p className="mb-4 text-sm">Each formula is designed for boardroom clarity, regulatory compliance, and real-world decision impact. The suite combines 5 primary engines with 22 specialized indices to provide comprehensive strategic scoring that survives board scrutiny, partner negotiation, and regulatory review.</p>
           </div>
 
           {/* Algorithm Performance */}
@@ -1469,7 +1441,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <p className="text-slate-300 text-sm mb-4">
               These 12 reports were generated during system development, demonstrating exactly what you'll receive after 
               completing the <strong className="text-white">10-Step Intelligence Protocol</strong>. Each one applies the full 
-              21-formula scoring suite and 5-persona debate engine to produce board-ready strategic intelligence.
+              27-formula scoring suite and 5-persona debate engine to produce board-ready strategic intelligence.
             </p>
             <div className="bg-slate-800 rounded-lg p-4 mb-4">
               <div className="text-xs text-slate-400 uppercase tracking-wide mb-2">How These Were Created</div>
@@ -1481,7 +1453,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <span className="text-slate-500">→</span>
                 <div className="flex items-center gap-2">
                   <span className="bg-slate-700 rounded px-2 py-1 text-white font-semibold">2</span>
-                  <span>21 Algorithms Applied</span>
+                  <span>27 Algorithms Applied</span>
                 </div>
                 <span className="text-slate-500">→</span>
                 <div className="flex items-center gap-2">
@@ -1494,7 +1466,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <div className="bg-slate-800 px-3 py-2 rounded"><span className="text-xl font-bold block">12</span>Full Reports</div>
               <div className="bg-slate-800 px-3 py-2 rounded"><span className="text-xl font-bold block">8</span>Industries</div>
               <div className="bg-slate-800 px-3 py-2 rounded"><span className="text-xl font-bold block">6</span>Regions</div>
-              <div className="bg-slate-800 px-3 py-2 rounded"><span className="text-xl font-bold block">21</span>Formulas Applied</div>
+              <div className="bg-slate-800 px-3 py-2 rounded"><span className="text-xl font-bold block">27</span>Formulas Applied</div>
             </div>
           </div>
 
@@ -3121,7 +3093,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2">5. Intellectual Property</h3>
-              <p className="text-slate-600 text-sm">All algorithms, formulas, scoring methodologies, and system architecture are the exclusive intellectual property of BW Global Advisory. The 21-formula suite, NSIL architecture, and multi-persona reasoning system are proprietary innovations developed during R&D.</p>
+              <p className="text-slate-600 text-sm">All algorithms, formulas, scoring methodologies, and system architecture are the exclusive intellectual property of BW Global Advisory. The 27-formula suite, NSIL architecture, and multi-persona reasoning system are proprietary innovations developed during R&D.</p>
             </div>
           </div>
         </div>
