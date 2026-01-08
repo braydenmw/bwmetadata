@@ -495,16 +495,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               
               {/* Platform Description - From Doc 209 */}
               <div className="lg:col-span-2 relative">
-                <div className="absolute inset-0 bg-white/70 rounded-lg"></div>
-                <div className="relative z-10 text-black">
-                  <p className="text-slate-600 uppercase tracking-widest text-xs mb-3">BW GLOBAL ADVISORY</p>
-                  <h2 className="text-3xl font-light mb-4">A New Class of Strategic Intelligence Platform</h2>
-                  <p className="text-lg mb-4 leading-relaxed">
+                <div className="bg-white/80 rounded-xl p-6 backdrop-blur-sm">
+                  <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
+                  <h2 className="text-3xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
+                  <p className="text-lg mb-4 leading-relaxed text-black text-center">
                     BW Nexus AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
                     as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
                     constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
                   </p>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed text-slate-700 text-center">
                     The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
                     and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
                     previously accessible only to the world's largest organizations.
