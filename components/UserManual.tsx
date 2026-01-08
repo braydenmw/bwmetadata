@@ -603,10 +603,39 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <div><div className="text-2xl font-bold">150+</div><div className="text-xs text-slate-400">Letters</div></div>
               </div>
             </div>
-            <p className="text-sm text-slate-300">
-              Every document below is auto-generated from your 10-Step Protocol data, fully populated with your specific 
+            <p className="text-sm text-slate-300 mb-4">
+              Every document below is auto-generated from your 10-Step Protocol data, fully populated with your specific
               opportunity details, and scored using the 27-formula algorithm suite. Export to PDF, Word, or PowerPoint.
             </p>
+            <div className="bg-slate-800 rounded-lg p-4 mb-4">
+              <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
+                <FileCheck className="w-4 h-4" />
+                Flexible Report Lengths & Multiple Selections
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4 text-xs text-slate-300">
+                <div>
+                  <strong className="text-white">Report Length Options:</strong>
+                  <ul className="mt-1 space-y-1">
+                    <li>• 1-Page Executive Summary</li>
+                    <li>• 5-10 Page Strategic Brief</li>
+                    <li>• 20-50 Page Comprehensive Analysis</li>
+                    <li>• Multi-Paper Research Reports</li>
+                  </ul>
+                </div>
+                <div>
+                  <strong className="text-white">Selection Flexibility:</strong>
+                  <ul className="mt-1 space-y-1">
+                    <li>• Pick multiple reports to cover all areas</li>
+                    <li>• Select as many letters as needed</li>
+                    <li>• Mix document types for complete coverage</li>
+                    <li>• No limits on your approach to understanding</li>
+                  </ul>
+                </div>
+              </div>
+              <p className="text-xs text-slate-400 mt-3 italic">
+                You're not limited in how you understand and connect with ideal partners. Choose exactly what you need to build comprehensive strategic intelligence.
+              </p>
+            </div>
           </div>
 
           {/* STRATEGIC INTELLIGENCE REPORTS (25+ types) */}
