@@ -41,12 +41,14 @@ const ProtocolSection: React.FC<{
       </div>
       <h3 className="font-semibold text-slate-900 text-sm mb-2">{title}</h3>
       <p className="text-xs text-slate-500 leading-relaxed mb-4">{desc}</p>
-      <button
-        onClick={() => onOpenDetails(num, title, fullDetails)}
-        className="w-full px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all"
-      >
-        Click here for details
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => onOpenDetails(num, title, fullDetails)}
+          className="px-6 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
+        >
+          Click here for details
+        </button>
+      </div>
     </div>
   );
 };
