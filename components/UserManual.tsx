@@ -132,26 +132,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               communities ready to welcome them, and untapped potential waiting to be discovered.
             </p>
 
-            <div className="bg-slate-50 rounded-xl p-8 my-8 border border-slate-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Users className="w-5 h-5 text-slate-600" />
-                <span className="text-slate-500 uppercase tracking-widest text-xs">DESIGNED FOR EVERYONE</span>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-4">You Don't Need to Be an Expert. You Just Need to Try.</h3>
-              <p className="text-slate-600 leading-relaxed mb-4">
-                This platform was built to help people <strong>understand</strong>, help them <strong>communicate</strong> their 
-                value proposition clearly, and—most importantly—give them the confidence to <strong>simply try</strong>. 
-                Whether you're a first-time exporter, a regional council looking to attract investment, or someone who's 
-                never navigated a cross-border partnership before, this system guides you every step of the way.
-              </p>
-              <p className="text-slate-600 leading-relaxed">
-                The technology is sophisticated—27 mathematical formulas, five AI personas stress-testing every decision, 
-                Monte Carlo simulations, and a Document Factory that produces over 200 document types and 150 letter templates. 
-                But you don't need to understand any of that to use it. The complexity is hidden. What you see is clarity.
-              </p>
-            </div>
-
-            {/* Platform Introduction Section - Merged with DESIGNED FOR EVERYONE */}
+            {/* Platform Introduction Section - WHAT IT IS */}
             <div className="my-8 bg-gradient-to-br from-slate-700/90 via-slate-600/85 to-slate-700/90 rounded-2xl p-8 md:p-10 border border-slate-500 relative overflow-hidden">
               {/* Orange accent strips on left */}
               <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 via-amber-500 to-orange-600"></div>
@@ -198,6 +179,26 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* DESIGNED FOR EVERYONE - Reassurance section */}
+            <div className="bg-slate-50 rounded-xl p-8 my-8 border border-slate-200">
+              <div className="flex items-center gap-2 mb-4">
+                <Users className="w-5 h-5 text-slate-600" />
+                <span className="text-slate-500 uppercase tracking-widest text-xs">DESIGNED FOR EVERYONE</span>
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-4">You Don't Need to Be an Expert. You Just Need to Try.</h3>
+              <p className="text-slate-600 leading-relaxed mb-4">
+                This platform was built to help people <strong>understand</strong>, help them <strong>communicate</strong> their 
+                value proposition clearly, and—most importantly—give them the confidence to <strong>simply try</strong>. 
+                Whether you're a first-time exporter, a regional council looking to attract investment, or someone who's 
+                never navigated a cross-border partnership before, this system guides you every step of the way.
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                The technology is sophisticated—27 mathematical formulas, five AI personas stress-testing every decision, 
+                Monte Carlo simulations, and a Document Factory that produces over 200 document types and 150 letter templates. 
+                But you don't need to understand any of that to use it. The complexity is hidden. What you see is clarity.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 my-8">
