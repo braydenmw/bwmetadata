@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, BookOpen, Briefcase, Scale, TrendingUp, Zap, Lock, Eye, CheckCircle2 } from 'lucide-react';
+import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, BookOpen, Briefcase, Scale, TrendingUp, Eye, CheckCircle2 } from 'lucide-react';
 import { termsOfEngagement } from '../constants/commandCenterData';
 
 interface UserManualProps {
@@ -74,10 +74,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <img 
             src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80" 
             alt="Regional Country Town"
-            className="w-full h-full object-cover opacity-50"
+            className="w-full h-full object-cover opacity-70"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-900/50 to-slate-800/70"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-transparent to-slate-950/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-900/30 to-slate-800/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-slate-950/30"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 w-full">
@@ -152,30 +152,30 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 my-8">
-              <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500 border border-slate-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
-                  <Building2 className="w-4 h-4 text-slate-600" />
+                  <Building2 className="w-4 h-4 text-orange-600" />
                   <strong className="text-slate-800 text-sm">Regional Councils & RDAs</strong>
                 </div>
                 <p className="text-slate-500 text-sm">Tell your story, attract investment, and show the world what your community offers</p>
               </div>
-              <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500 border border-slate-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="w-4 h-4 text-slate-600" />
+                  <Shield className="w-4 h-4 text-orange-600" />
                   <strong className="text-slate-800 text-sm">State & Federal Agencies</strong>
                 </div>
                 <p className="text-slate-500 text-sm">Screen investments, support regional initiatives, and enable informed decisions</p>
               </div>
-              <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500 border border-slate-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
-                  <Globe className="w-4 h-4 text-slate-600" />
+                  <Globe className="w-4 h-4 text-orange-600" />
                   <strong className="text-slate-800 text-sm">Businesses Looking Regional</strong>
                 </div>
                 <p className="text-slate-500 text-sm">Discover opportunities beyond the capital cities—lower costs, supportive communities, room to grow</p>
               </div>
-              <div className="bg-white rounded-lg p-4 border border-slate-200">
+              <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500 border border-slate-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
-                  <Brain className="w-4 h-4 text-slate-600" />
+                  <Brain className="w-4 h-4 text-orange-600" />
                   <strong className="text-slate-800 text-sm">First-Time Exporters</strong>
                 </div>
                 <p className="text-slate-500 text-sm">Navigate international partnerships with guidance—no prior experience required</p>
@@ -192,57 +192,57 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       </section>
 
       {/* Partnership & Pilots Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white border-b border-slate-800">
+      <section className="py-20 bg-gradient-to-br from-amber-700 via-orange-700 to-amber-800 text-white border-b border-amber-900">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-slate-400 uppercase tracking-widest text-xs mb-3">NEXT STEPS</p>
+              <p className="text-amber-200 uppercase tracking-widest text-xs mb-3">NEXT STEPS</p>
               <h2 className="text-3xl font-light text-white mb-6">Partnership & Pilot Programs</h2>
-              <p className="text-slate-400 leading-relaxed mb-6">
+              <p className="text-amber-100 leading-relaxed mb-6">
                 The most effective way to demonstrate the value of BW Nexus AI is to apply it to real-world challenges. 
                 We propose collaborative partnerships through structured pilot programs.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-slate-700 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-4 h-4 text-slate-300" />
+                  <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <p className="text-white font-medium">Investment Screening Pilot</p>
-                    <p className="text-slate-400 text-sm">Use the platform for screening test cases with foreign investment review boards</p>
+                    <p className="text-amber-100 text-sm">Use the platform for screening test cases with foreign investment review boards</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-slate-700 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-4 h-4 text-slate-300" />
+                  <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <p className="text-white font-medium">Regional Development Pilot</p>
-                    <p className="text-slate-400 text-sm">Create investment prospectuses for target regions with economic development agencies</p>
+                    <p className="text-amber-100 text-sm">Create investment prospectuses for target regions with economic development agencies</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-slate-700 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-4 h-4 text-slate-300" />
+                  <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <p className="text-white font-medium">PPP Modeling Pilot</p>
-                    <p className="text-slate-400 text-sm">Model forthcoming Public-Private Partnerships with infrastructure ministries</p>
+                    <p className="text-amber-100 text-sm">Model forthcoming Public-Private Partnerships with infrastructure ministries</p>
                   </div>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-800/80 to-transparent rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-800/50 to-transparent rounded-2xl"></div>
               <img 
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80" 
-                alt="Business partnership meeting"
+                src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80" 
+                alt="Strategic partnership handshake"
                 className="w-full rounded-2xl object-cover h-80"
               />
               <div className="absolute bottom-6 left-6 right-6">
-                <div className="bg-slate-900/90 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-                  <p className="text-white font-medium mb-1">Vision for the Future</p>
-                  <p className="text-slate-400 text-sm">Deploy as a shared, national strategic asset—a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.</p>
+                <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 border border-amber-300">
+                  <p className="text-amber-800 font-medium mb-1">Vision for the Future</p>
+                  <p className="text-slate-600 text-sm">Deploy as a shared, national strategic asset—a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.</p>
                 </div>
               </div>
             </div>
@@ -391,25 +391,26 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           {/* Consolidated Stats Grid */}
           <div className="mt-12 grid md:grid-cols-2 gap-6">
             {/* Document Factory & Training Archive */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-8 text-white">
+            <div className="bg-gradient-to-br from-slate-700 to-slate-600 rounded-xl p-8 text-white relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 to-amber-500"></div>
               <div className="flex items-center gap-2 mb-4">
-                <FileText className="w-6 h-6 text-slate-400" />
-                <span className="text-slate-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
+                <FileText className="w-6 h-6 text-orange-400" />
+                <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
               </div>
               <h3 className="text-xl font-semibold mb-3">Document Factory</h3>
-              <p className="text-slate-300 text-sm mb-4">
+              <p className="text-slate-200 text-sm mb-4">
                 After completing the <strong className="text-white">10-Step Intelligence Protocol</strong>, 
                 the platform generates a complete library of professional deliverables—fully populated with your 
                 specific data and scored using the 27-formula algorithm suite.
               </p>
               <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="bg-slate-800/60 rounded-lg p-3 border border-slate-700 text-center">
-                  <div className="text-2xl font-bold text-white">200+</div>
-                  <div className="text-xs text-slate-400">Report & Document Types</div>
+                <div className="bg-white/10 rounded-lg p-3 border border-orange-400/30 text-center">
+                  <div className="text-2xl font-bold text-orange-400">200+</div>
+                  <div className="text-xs text-slate-300">Report & Document Types</div>
                 </div>
-                <div className="bg-slate-800/60 rounded-lg p-3 border border-slate-700 text-center">
-                  <div className="text-2xl font-bold text-white">150+</div>
-                  <div className="text-xs text-slate-400">Letter Templates</div>
+                <div className="bg-white/10 rounded-lg p-3 border border-orange-400/30 text-center">
+                  <div className="text-2xl font-bold text-orange-400">150+</div>
+                  <div className="text-xs text-slate-300">Letter Templates</div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -464,12 +465,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       <section className="py-20 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6">
           {/* Platform Introduction Section - From Doc 209 */}
-          <div className="mb-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 md:p-12 border border-slate-700 relative overflow-hidden">
-            {/* AI Neural Network Background */}
-            <div className="absolute inset-0 opacity-10">
+          <div className="mb-16 bg-gradient-to-br from-slate-700/90 via-slate-600/85 to-slate-700/90 rounded-2xl p-8 md:p-12 border border-slate-500 relative overflow-hidden">
+            {/* Orange accent strips on left */}
+            <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 via-amber-500 to-orange-600"></div>
+            <div className="absolute left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400/50 via-amber-400/50 to-orange-500/50"></div>
+            {/* Abstract tech pattern background */}
+            <div className="absolute inset-0 opacity-30">
               <img 
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80" 
-                alt="AI Neural Network"
+                src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80" 
+                alt="Abstract technology background"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -1039,349 +1043,371 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </Modal>
 
-      {/* ARCHITECTURE MODAL - University Report Style with Full Documentation */}
-      <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="Technical Architecture & Intelligence Framework">
-        <div className="space-y-8 text-slate-700">
-          {/* Abstract */}
-          <div className="bg-slate-50 p-6 rounded-lg border-l-4 border-slate-600">
-            <h3 className="font-bold text-slate-900 mb-2">Abstract</h3>
-            <p className="text-sm leading-relaxed mb-3">
-              BWGA Intelligence AI implements a <strong>neuro-symbolic reasoning architecture</strong> combining pattern recognition with explainable logic. The system employs a multi-agent debate framework, validated through a proprietary 27-formula scoring suite, to produce decision-grade intelligence that survives board scrutiny, partner negotiation, and regulatory review.
-            </p>
-            <p className="text-sm leading-relaxed">
-              This paper documents the technical innovation, algorithmic foundations, and validation methodology that establishes BWGA Intelligence AI as a novel contribution to strategic decision-support systems.
-            </p>
+      {/* ARCHITECTURE MODAL - Formal University Technical Report */}
+      <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="BWGA Intelligence AI: Technical Architecture Report">
+        <div className="space-y-6 text-slate-700 text-sm leading-relaxed">
+          
+          {/* Title Block */}
+          <div className="text-center border-b border-slate-300 pb-6">
+            <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Technical Report · January 2026</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">BWGA Intelligence AI</h2>
+            <h3 className="text-lg text-slate-700 mb-4">A Neuro-Symbolic Decision-Support Architecture for Cross-Border Partnership Intelligence</h3>
+            <p className="text-xs text-slate-500">Brayden Walls Global Advisory · Research & Development Division</p>
           </div>
 
-          {/* World First Introduction */}
-          <div className="bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 text-white p-8 rounded-lg mb-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl font-bold mb-6 text-slate-100">BWGA is More Than a Reactive System</h2>
-              <p className="text-lg text-slate-200 leading-relaxed mb-6">
-                This actually uses <strong className="text-white">formulas algentic AI new 27</strong> and <strong className="text-white">NSIL</strong> developed in a way never thought of before—joining all the dots together with the ideas that this is the start of developing something much bigger.
+          {/* Abstract */}
+          <div className="border-l-4 border-slate-400 pl-4 py-2 bg-slate-50">
+            <h4 className="font-bold text-slate-900 mb-2">Abstract</h4>
+            <p className="text-slate-700 mb-2">
+              This document presents the technical architecture of BWGA Intelligence AI, a decision-support system designed for cross-border partnership analysis and regional investment intelligence. The system integrates three core innovations: (1) a neuro-symbolic reasoning layer combining large language models with formal logic validation, (2) a multi-agent adversarial debate framework using five specialist personas, and (3) a 21-formula quantified scoring suite executed via directed acyclic graph (DAG) scheduling.
+            </p>
+            <p className="text-slate-700 mb-4">
+              Unlike conventional AI assistants that produce unstructured text, BWGA Intelligence AI generates auditable, explainable outputs where every recommendation is traceable to its inputs, scoring components, and debate evidence. This architecture addresses the limitations of both traditional consulting (slow, expensive, subjective) and generic AI tools (unstructured, unverifiable, hallucination-prone).
+            </p>
+            {/* Sample Formula */}
+            <div className="text-center py-4 border-t border-slate-300">
+              <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Sample Quantified Index</p>
+              <p className="text-base font-bold text-slate-900" style={{ fontSize: '16px' }}>
+                RROI = (1 − TCO) × 0.3 + CRI × 0.4 + DealMultiplier × 0.8
               </p>
-              <div className="bg-slate-700/50 p-6 rounded-lg mb-6">
-                <p className="text-slate-200 text-lg leading-relaxed">
-                  <strong className="text-white">We have developed a world first:</strong> The first system to combine neuro-symbolic reasoning (LLM + formal logic), multi-agent debate (adversarial validation), and quantified scoring (mathematical indices) into a single decision-support architecture for cross-border partnership intelligence.
-                </p>
-              </div>
-              <p className="text-sm text-slate-400 italic">
-                This paper documents the technical innovation, algorithmic foundations, and validation methodology that establishes BWGA Intelligence AI as a novel contribution to strategic decision-support systems.
+              <p className="text-xs text-slate-500 mt-2 italic">
+                Risk-adjusted Return on Investment: Inversely weighted cost efficiency plus country readiness plus deal scale factor
               </p>
             </div>
           </div>
 
-          {/* FEATURE SHOWCASE */}
-          <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-lg text-center mb-8">
-            <div className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2">FEATURE SHOWCASE</div>
-            <h2 className="text-3xl font-bold mb-4">BWGA's 27-Formula Suite: The World's Most Comprehensive Strategic Scoring Engine</h2>
-            <p className="text-slate-300 text-lg max-w-3xl mx-auto">Transforming raw data into board-grade intelligence through explainable, multi-agent reasoning and 27 proprietary formulas.</p>
+          {/* 1. Introduction */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">1. Introduction</h4>
+            <p className="mb-3">
+              Strategic decision-making in cross-border partnerships requires synthesis of diverse information: market conditions, regulatory environments, partner capabilities, risk factors, and financial projections. Traditional approaches rely on consulting teams who manually gather data, apply subjective frameworks, and produce narrative recommendations over weeks or months.
+            </p>
+            <p className="mb-3">
+              Recent advances in large language models (LLMs) offer speed and accessibility, but introduce new problems: outputs are unstructured, unverifiable, and prone to hallucination. There is no audit trail, no quantified scoring, and no mechanism to detect logical contradictions in user inputs or AI reasoning.
+            </p>
+            <p>
+              BWGA Intelligence AI addresses these gaps by implementing a hybrid architecture that preserves the generative capabilities of LLMs while adding structure, validation, and explainability. The system processes user inputs through a formal intake protocol, validates them for logical consistency, subjects strategic options to multi-perspective adversarial debate, scores outcomes using mathematical indices, and delivers recommendations with full provenance chains.
+            </p>
+          </div>
+
+          {/* 2. System Architecture */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">2. System Architecture Overview</h4>
+            <p className="mb-3">
+              The architecture comprises five integrated subsystems, collectively termed the <strong>Nexus Strategic Intelligence Layer (NSIL)</strong>:
+            </p>
+            <div className="bg-slate-100 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold">Phase</th>
+                    <th className="text-left py-2 font-semibold">Subsystem</th>
+                    <th className="text-left py-2 font-semibold">Function</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">1. Validate</td>
+                    <td className="py-2 font-mono">SATContradictionSolver</td>
+                    <td className="py-2">Checks user inputs for logical inconsistencies using DPLL satisfiability algorithm</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">2. Debate</td>
+                    <td className="py-2 font-mono">BayesianDebateEngine</td>
+                    <td className="py-2">Five-persona adversarial evaluation with Bayesian belief updating</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">3. Score</td>
+                    <td className="py-2 font-mono">DAGScheduler</td>
+                    <td className="py-2">Parallel execution of 21 quantified indices with dependency resolution</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">4. Synthesize</td>
+                    <td className="py-2 font-mono">DecisionTreeSynthesizer</td>
+                    <td className="py-2">Template selection and section ordering based on scores and context</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">5. Deliver</td>
+                    <td className="py-2 font-mono">ReportOrchestrator</td>
+                    <td className="py-2">Final assembly with provenance chain attachment</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Each phase produces structured outputs that feed into subsequent phases, creating a traceable pipeline from raw user input to final deliverable.
+            </p>
           </div>
 
           {/* Representative Formula Display */}
-          <div className="bg-slate-900 text-white p-6 rounded-lg mb-8">
-            <h3 className="text-lg font-bold mb-4 text-center">Sample Formula: Success Probability Index (SPI™)</h3>
-            <div className="text-center mb-4">
-              <div className="font-mono text-lg bg-slate-800 p-4 rounded inline-block">
-                <span className="text-white">SPI</span> = Σ(<span className="text-slate-300">w<sub>i</sub></span> × <span className="text-slate-400">F<sub>i</sub></span>) / Σ<span className="text-slate-300">w<sub>i</sub></span>
-              </div>
-            </div>
-            <p className="text-sm text-slate-300 text-center">
-              <strong className="text-white">Purpose:</strong> Estimate likelihood of partnership/entry success using weighted strategic factors including Market Readiness, Partner Fit, Regulatory Clarity, Execution Feasibility, and Risk Alignment.
-            </p>
-          </div>
-
-          {/* Why This Technology Is Novel */}
-          <div className="bg-slate-900 text-white p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-slate-300" />
-              Why This Technology Is Novel
-            </h3>
-            <p className="text-sm text-slate-300 mb-4">
-              Traditional strategic advisory relies on consultant intuition, static frameworks, and manual analysis. Existing AI tools (ChatGPT, Copilot, etc.) generate text but lack:
-            </p>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <h4 className="font-semibold text-white mb-2">What Exists Today</h4>
-                <ul className="text-xs text-slate-300 space-y-1">
-                  <li>• Generic LLMs with no domain structure</li>
-                  <li>• Single-perspective text generation</li>
-                  <li>• No quantified scoring frameworks</li>
-                  <li>• No contradiction detection</li>
-                  <li>• No audit trail or provenance</li>
-                  <li>• Hallucination-prone outputs</li>
-                </ul>
-              </div>
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <h4 className="font-semibold text-white mb-2">What BWGA Provides</h4>
-                <ul className="text-xs text-slate-300 space-y-1">
-                  <li>• <strong>Structured 10-section intake protocol</strong></li>
-                  <li>• <strong>5-persona adversarial debate</strong></li>
-                  <li>• <strong>27-formula quantified scoring suite</strong></li>
-                  <li>• <strong>SAT solver for contradiction detection</strong></li>
-                  <li>• <strong>Full provenance chain for every recommendation</strong></li>
-                  <li>• <strong>Explainable outputs with drivers & pressure points</strong></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-slate-950 p-4 rounded-lg text-xs">
-              <p className="text-slate-300">
-                <strong className="text-white">Key Innovation:</strong> BWGA is the first system to combine <em>neuro-symbolic reasoning</em> (LLM + formal logic), <em>multi-agent debate</em> (adversarial validation), and <em>quantified scoring</em> (mathematical indices) into a single decision-support architecture for cross-border partnership intelligence.
-              </p>
-            </div>
-          </div>
-
-          {/* Competitive Comparison Matrix */}
+          {/* 3. Quantified Scoring Suite */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <Scale className="w-5 h-5 text-slate-600" />
-              Competitive Comparison Matrix
-            </h3>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">3. Quantified Scoring Suite</h4>
+            <p className="mb-3">
+              The system implements 21 mathematically-defined indices organized into a directed acyclic graph (DAG). This structure enables parallel execution of independent formulas while respecting dependencies between composite indices.
+            </p>
+            
+            <p className="mb-3"><strong>3.1 Primary Indices (5)</strong></p>
+            <p className="mb-2">These are the highest-level strategic scores, synthesizing multiple subordinate indices:</p>
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold w-16">Index</th>
+                    <th className="text-left py-2 font-semibold">Full Name</th>
+                    <th className="text-left py-2 font-semibold">Function</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">SPI</td><td className="py-2">Success Probability Index</td><td className="py-2">Weighted synthesis of market, partner, regulatory, and execution readiness factors</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">RROI</td><td className="py-2">Regional Return on Investment</td><td className="py-2">Risk-adjusted ROI incorporating regional cost structures and opportunity size</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">SEAM</td><td className="py-2">Stakeholder Ecosystem Alignment Model</td><td className="py-2">Measures alignment, influence mapping, and incentive structure coherence</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">IVAS</td><td className="py-2">Implementation Velocity & Activation Score</td><td className="py-2">Activation readiness, implementation friction, and timeline realism</td></tr>
+                  <tr><td className="py-2 font-mono">SCF</td><td className="py-2">Strategic Consensus Factor</td><td className="py-2">Aggregates readiness, value capture potential, and stakeholder consensus</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mb-3"><strong>3.2 Foundation Indices (4)</strong></p>
+            <p className="mb-2">Independent indices computed at DAG Level 0 (no dependencies):</p>
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold w-16">Index</th>
+                    <th className="text-left py-2 font-semibold">Full Name</th>
+                    <th className="text-left py-2 font-semibold">Function</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">PRI</td><td className="py-2">Political Risk Index</td><td className="py-2">Political stability, regulatory environment, market stability assessment</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">CRI</td><td className="py-2">Country Risk Index</td><td className="py-2">Economic indicators, infrastructure quality, talent availability</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">BARNA</td><td className="py-2">Barriers & Regulatory Navigation Assessment</td><td className="py-2">Regulatory, competitive, capital, and cultural barriers</td></tr>
+                  <tr><td className="py-2 font-mono">TCO</td><td className="py-2">Total Cost of Ownership</td><td className="py-2">Operating costs, capital expenditure, compliance overhead</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mb-3"><strong>3.3 Derived Indices (8)</strong></p>
+            <p className="mb-2">Indices computed from foundation indices at DAG Levels 1-2:</p>
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold w-16">Index</th>
+                    <th className="text-left py-2 font-semibold">Full Name</th>
+                    <th className="text-left py-2 font-semibold">Dependencies</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">NVI</td><td className="py-2">Network Value Index</td><td className="py-2">BARNA</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">RNI</td><td className="py-2">Regulatory Navigation Index</td><td className="py-2">PRI</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">CAP</td><td className="py-2">Capability Readiness</td><td className="py-2">CRI</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">ESI</td><td className="py-2">Ecosystem Supplier Index</td><td className="py-2">NVI, BARNA</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">FRS</td><td className="py-2">Flywheel Resilience Score</td><td className="py-2">SPI, RROI</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">AGI</td><td className="py-2">Activation Gate Index</td><td className="py-2">IVAS</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">VCI</td><td className="py-2">Value Creation Index</td><td className="py-2">SEAM</td></tr>
+                  <tr><td className="py-2 font-mono">ATI</td><td className="py-2">Asset Transfer Index</td><td className="py-2">ESI, CAP</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mb-3"><strong>3.4 Terminal Indices (4)</strong></p>
+            <p className="mb-2">Final-stage indices computed at DAG Level 3:</p>
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold w-16">Index</th>
+                    <th className="text-left py-2 font-semibold">Full Name</th>
+                    <th className="text-left py-2 font-semibold">Dependencies</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">ISI</td><td className="py-2">Integration Speed Index</td><td className="py-2">SEAM, CAP</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">OSI</td><td className="py-2">Operational Synergy Index</td><td className="py-2">ESI, VCI</td></tr>
+                  <tr className="border-b border-slate-200"><td className="py-2 font-mono">SRA</td><td className="py-2">Sovereign Risk Assessment</td><td className="py-2">SCF, PRI</td></tr>
+                  <tr><td className="py-2 font-mono">IDV</td><td className="py-2">Index of Decision Variance</td><td className="py-2">SCF, RROI</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mb-3">
+              Each index produces a score (0-100), a letter grade (A+ through F), a list of component weights, and a set of driver explanations. This structure ensures that every score is fully explainable and auditable.
+            </p>
+          </div>
+
+          {/* 4. Multi-Agent Debate Framework */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">4. Multi-Agent Debate Framework</h4>
+            <p className="mb-3">
+              The system implements adversarial validation through a five-persona debate mechanism. Each persona represents a distinct analytical perspective, and all five evaluate every strategic option independently before a Bayesian consensus algorithm synthesizes their positions.
+            </p>
+            
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold w-24">Persona</th>
+                    <th className="text-left py-2 font-semibold">Analytical Focus</th>
+                    <th className="text-left py-2 font-semibold">Key Questions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2 font-semibold">Skeptic</td>
+                    <td className="py-2">Risk identification, assumption stress-testing, downside scenarios</td>
+                    <td className="py-2">"What could go wrong? What are we missing?"</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2 font-semibold">Advocate</td>
+                    <td className="py-2">Upside potential, synergies, optionality, value creation</td>
+                    <td className="py-2">"What's the opportunity? How do we maximize value?"</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2 font-semibold">Regulator</td>
+                    <td className="py-2">Compliance, legal pathways, sanctions, ethical constraints</td>
+                    <td className="py-2">"Is this permissible? What approvals are required?"</td>
+                  </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2 font-semibold">Accountant</td>
+                    <td className="py-2">Financial viability, cash flow, margins, economic sustainability</td>
+                    <td className="py-2">"Do the numbers work? When is break-even?"</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 font-semibold">Operator</td>
+                    <td className="py-2">Execution feasibility, team capacity, infrastructure, supply chain</td>
+                    <td className="py-2">"Can we actually do this? Do we have the resources?"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mb-3">
+              <strong>Consensus Algorithm:</strong> The debate engine uses Bayesian belief updating with an early stopping threshold. When 75% consensus is reached (typically in 2-3 rounds), the debate concludes. Unresolved disagreements are preserved as explicit decision points rather than being artificially resolved.
+            </p>
+          </div>
+
+          {/* 5. Validation & Contradiction Detection */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">5. Validation & Contradiction Detection</h4>
+            <p className="mb-3">
+              The system employs a SAT (Boolean Satisfiability) solver based on the DPLL algorithm to detect logical contradictions in user inputs. This addresses a common failure mode where users provide internally inconsistent requirements (e.g., "low risk, high ROI, fast timeline, minimal investment").
+            </p>
+            <p className="mb-3">
+              When contradictions are detected, the system generates specific warnings identifying which constraints are in tension, rather than proceeding with impossible assumptions.
+            </p>
+          </div>
+
+          {/* 6. Provenance & Auditability */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">6. Provenance & Auditability</h4>
+            <p className="mb-3">
+              Every recommendation produced by BWGA Intelligence AI includes a complete provenance chain. This chain links each output to:
+            </p>
+            <ul className="list-disc list-inside mb-3 text-slate-700">
+              <li><strong>Input Provenance:</strong> Source data, timestamp, and confidence level for each input parameter</li>
+              <li><strong>Computation Trace:</strong> Formula inputs, weights applied, intermediate values, and final scores</li>
+              <li><strong>Debate Evidence:</strong> Persona arguments, supporting data, vote rationale, and consensus metrics</li>
+            </ul>
+            <p>
+              This structure enables regulatory review, board scrutiny, and post-hoc analysis of decision rationale. It also facilitates outcome learning: when actual results become available, they can be compared against predictions to improve future scoring accuracy.
+            </p>
+          </div>
+
+          {/* 7. Comparative Analysis */}
+          <div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">7. Comparative Analysis</h4>
+            <p className="mb-4">
+              The following table compares BWGA Intelligence AI capabilities against alternative approaches:
+            </p>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
-                <thead className="bg-slate-900 text-white">
+              <table className="w-full text-xs border border-slate-200 rounded overflow-hidden">
+                <thead className="bg-slate-200">
                   <tr>
-                    <th className="p-3 text-left">Capability</th>
-                    <th className="p-3 text-center">Generic AI (GPT, Claude)</th>
-                    <th className="p-3 text-center">Consulting Firms</th>
-                    <th className="p-3 text-center">BI Dashboards</th>
-                    <th className="p-3 text-center bg-slate-700">BWGA Intelligence</th>
+                    <th className="p-2 text-left font-semibold">Capability</th>
+                    <th className="p-2 text-center font-semibold">Generic LLMs</th>
+                    <th className="p-2 text-center font-semibold">Consulting Firms</th>
+                    <th className="p-2 text-center font-semibold">BI Dashboards</th>
+                    <th className="p-2 text-center font-semibold bg-slate-300">BWGA</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { cap: "Structured Strategic Intake", gpt: "❌", consult: "⚠️ Manual", bi: "❌", bwga: "✅ 10-Section Protocol" },
-                    { cap: "Multi-Perspective Validation", gpt: "❌ Single thread", consult: "⚠️ Team-dependent", bi: "❌", bwga: "✅ 5-Persona Debate" },
-                    { cap: "Quantified Scoring", gpt: "❌", consult: "⚠️ Subjective", bi: "⚠️ Metrics only", bwga: "✅ 27 Formulas" },
-                    { cap: "Contradiction Detection", gpt: "❌", consult: "⚠️ Manual review", bi: "❌", bwga: "✅ SAT Solver" },
-                    { cap: "Explainable Recommendations", gpt: "⚠️ Text only", consult: "⚠️ Narrative", bi: "❌", bwga: "✅ Drivers + Pressure Points" },
-                    { cap: "Real-time Processing", gpt: "✅", consult: "❌ Weeks", bi: "✅", bwga: "✅ 1-3 seconds" },
-                    { cap: "Audit Trail / Provenance", gpt: "❌", consult: "⚠️ Documents", bi: "⚠️ Logs", bwga: "✅ Full Chain" },
-                    { cap: "Cost per Analysis", gpt: "$0.10", consult: "$50K-500K", bi: "N/A", bwga: "$50-500" },
-                  ].map((row, idx) => (
-                    <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                      <td className="p-3 font-medium border-t border-slate-200">{row.cap}</td>
-                      <td className="p-3 text-center border-t border-slate-200">{row.gpt}</td>
-                      <td className="p-3 text-center border-t border-slate-200">{row.consult}</td>
-                      <td className="p-3 text-center border-t border-slate-200">{row.bi}</td>
-                      <td className="p-3 text-center border-t border-slate-200 bg-slate-100 font-semibold text-slate-900">{row.bwga}</td>
-                    </tr>
-                  ))}
+                  <tr className="border-t border-slate-200"><td className="p-2">Structured Intake</td><td className="p-2 text-center">No</td><td className="p-2 text-center">Manual</td><td className="p-2 text-center">No</td><td className="p-2 text-center bg-slate-100 font-medium">10-Section Protocol</td></tr>
+                  <tr className="border-t border-slate-200"><td className="p-2">Multi-Perspective Validation</td><td className="p-2 text-center">No</td><td className="p-2 text-center">Team-dependent</td><td className="p-2 text-center">No</td><td className="p-2 text-center bg-slate-100 font-medium">5-Persona Debate</td></tr>
+                  <tr className="border-t border-slate-200"><td className="p-2">Quantified Scoring</td><td className="p-2 text-center">No</td><td className="p-2 text-center">Subjective</td><td className="p-2 text-center">Metrics only</td><td className="p-2 text-center bg-slate-100 font-medium">21 Indices</td></tr>
+                  <tr className="border-t border-slate-200"><td className="p-2">Contradiction Detection</td><td className="p-2 text-center">No</td><td className="p-2 text-center">Manual</td><td className="p-2 text-center">No</td><td className="p-2 text-center bg-slate-100 font-medium">SAT Solver</td></tr>
+                  <tr className="border-t border-slate-200"><td className="p-2">Audit Trail</td><td className="p-2 text-center">No</td><td className="p-2 text-center">Documents</td><td className="p-2 text-center">Logs</td><td className="p-2 text-center bg-slate-100 font-medium">Full Provenance</td></tr>
+                  <tr className="border-t border-slate-200"><td className="p-2">Processing Time</td><td className="p-2 text-center">Seconds</td><td className="p-2 text-center">Weeks</td><td className="p-2 text-center">Real-time</td><td className="p-2 text-center bg-slate-100 font-medium">1-3 seconds</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          {/* NSIL (Nexus Strategic Intelligence Layer) */}
+          {/* 8. Performance Characteristics */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">NSIL (Nexus Strategic Intelligence Layer)</h3>
-            <p className="mb-4 text-sm">NSIL is the reasoning layer that wraps around the scoring engines. It transforms user input into a structured strategic case through a five-phase pipeline.</p>
-
-            <div className="bg-slate-100 p-4 rounded-lg mb-4">
-              <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-700">
-                <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
-                  <div className="text-slate-600 text-lg mb-1">1</div>
-                  VALIDATE
-                </div>
-                <div className="text-slate-400">→</div>
-                <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
-                  <div className="text-slate-600 text-lg mb-1">2</div>
-                  DEBATE
-                </div>
-                <div className="text-slate-400">→</div>
-                <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
-                  <div className="text-slate-600 text-lg mb-1">3</div>
-                  SCORE
-                </div>
-                <div className="text-slate-400">→</div>
-                <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
-                  <div className="text-slate-600 text-lg mb-1">4</div>
-                  SYNTHESIZE
-                </div>
-                <div className="text-slate-400">→</div>
-                <div className="bg-white px-3 py-2 rounded border border-slate-300 text-center flex-1">
-                  <div className="text-slate-600 text-lg mb-1">5</div>
-                  DELIVER
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-              <table className="w-full text-sm">
-                <thead className="bg-slate-100">
-                  <tr>
-                    <th className="p-3 text-left font-semibold w-24">Phase</th>
-                    <th className="p-3 text-left font-semibold">Algorithm</th>
-                    <th className="p-3 text-left font-semibold">Function</th>
-                    <th className="p-3 text-left font-semibold">Output</th>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">8. Performance Characteristics</h4>
+            <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-4">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-slate-300">
+                    <th className="text-left py-2 font-semibold">Component</th>
+                    <th className="text-left py-2 font-semibold">Algorithm</th>
+                    <th className="text-left py-2 font-semibold">Performance Impact</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-medium text-slate-700">Validate</td>
-                    <td className="p-3 font-mono text-xs bg-slate-50">SATContradictionSolver</td>
-                    <td className="p-3 text-xs">DPLL algorithm checks inputs for logical inconsistencies (e.g., "low risk + high ROI + fast timeline" = impossible)</td>
-                    <td className="p-3 text-xs">Contradiction flags, missing field alerts, warning generation</td>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">Vector Memory</td>
+                    <td className="py-2">LSH + cosine similarity</td>
+                    <td className="py-2">O(log n) retrieval, 10-50x faster than linear search</td>
                   </tr>
-                  <tr className="border-t border-slate-200 bg-slate-50">
-                    <td className="p-3 font-medium text-slate-700">Debate</td>
-                    <td className="p-3 font-mono text-xs bg-white">BayesianDebateEngine</td>
-                    <td className="p-3 text-xs">5-persona Bayesian debate with belief updating. Early stopping at 75% consensus threshold. Typically stops in 2-3 rounds.</td>
-                    <td className="p-3 text-xs">Consensus score, disagreement points, evidence attachments</td>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">Debate Engine</td>
+                    <td className="py-2">Bayesian belief updating</td>
+                    <td className="py-2">Early stopping at 75% consensus (2-3 rounds typical)</td>
                   </tr>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-medium text-slate-700">Score</td>
-                    <td className="p-3 font-mono text-xs bg-slate-50">DAGScheduler</td>
-                    <td className="p-3 text-xs">Directed Acyclic Graph executes 27 formulas in 4 parallel levels with memoization cache.</td>
-                    <td className="p-3 text-xs">Scores, grades, drivers, pressure points for all indices</td>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">DAG Scheduler</td>
+                    <td className="py-2">Topological sort + memoization</td>
+                    <td className="py-2">4-level parallel execution, 3-5x speedup</td>
                   </tr>
-                  <tr className="border-t border-slate-200 bg-slate-50">
-                    <td className="p-3 font-medium text-slate-700">Synthesize</td>
-                    <td className="p-3 font-mono text-xs bg-white">DecisionTreeSynthesizer</td>
-                    <td className="p-3 text-xs">Selects optimal report template from 8 types based on scores and user context. 13 section types available.</td>
-                    <td className="p-3 text-xs">Structured recommendations, template selection, section ordering</td>
-                  </tr>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-medium text-slate-700">Deliver</td>
-                    <td className="p-3 font-mono text-xs bg-slate-50">ReportOrchestrator</td>
-                    <td className="p-3 text-xs">Assembles final payload with full provenance chain. Every recommendation traceable to inputs.</td>
-                    <td className="p-3 text-xs">Decision-ready deliverables with audit trail</td>
+                  <tr>
+                    <td className="py-2">Lazy Evaluation</td>
+                    <td className="py-2">On-demand computation</td>
+                    <td className="py-2">2-4x resource savings for unused indices</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          {/* Multi-Agent Reasoning Framework (5-Persona Debate) */}
+          {/* 9. Conclusion */}
           <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">Multi-Agent Reasoning Framework (5-Persona Debate)</h3>
-            <p className="mb-4 text-sm">Five specialist personas evaluate each strategy in parallel to prevent single-thread bias. This is a core innovation—no other system uses adversarial multi-agent debate for strategic validation.</p>
-
-            <div className="grid md:grid-cols-5 gap-3 mb-4">
-              {[
-                { name: "Skeptic", code: "S", color: "bg-slate-700", role: "Finds deal-killers, over-optimism, hidden downside. Stress-tests assumptions.", questions: ["What could go wrong?", "What are we missing?", "Is this too good to be true?"] },
-                { name: "Advocate", code: "A", color: "bg-slate-600", role: "Identifies upside, synergies, optionality, value levers. Makes the bull case.", questions: ["What's the upside?", "What synergies exist?", "How can we maximize value?"] },
-                { name: "Regulator", code: "R", color: "bg-slate-800", role: "Checks legal pathways, sanctions risk, ethical constraints. Compliance lens.", questions: ["Is this legal?", "What approvals needed?", "Are there sanctions risks?"] },
-                { name: "Accountant", code: "F", color: "bg-slate-500", role: "Validates cash flow logic, margins, economic durability. Numbers reality check.", questions: ["Do the numbers work?", "What's the margin?", "When do we break even?"] },
-                { name: "Operator", code: "O", color: "bg-slate-900", role: "Tests execution feasibility: team, supply chains, infrastructure. Can we actually do this?", questions: ["Can we execute?", "Do we have the team?", "What's the infrastructure?"] },
-              ].map((persona) => (
-                <div key={persona.name} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className={`w-12 h-12 ${persona.color} text-white rounded-full flex items-center justify-center mx-auto mb-3 text-lg font-bold`}>
-                    {persona.code}
-                  </div>
-                  <h4 className="font-semibold text-slate-900 text-center mb-2">{persona.name}</h4>
-                  <p className="text-xs text-slate-600 mb-2">{persona.role}</p>
-                  <div className="text-xs text-slate-500 italic">
-                    {persona.questions.map((q, i) => (
-                      <div key={i}>"{q}"</div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-slate-100 p-4 rounded-lg text-sm">
-              <h4 className="font-semibold text-slate-900 mb-2">Debate Process:</h4>
-              <ol className="text-xs text-slate-700 space-y-1 list-decimal list-inside">
-                <li>Each persona independently evaluates the strategy and attaches evidence</li>
-                <li>Bayesian belief network updates confidence based on persona votes</li>
-                <li>Disagreements are preserved as explicit decision points (no fake certainty)</li>
-                <li>Early stopping triggers when 75% consensus reached (typically 2-3 rounds vs 5)</li>
-                <li>Final synthesis includes: Agreements → High-confidence recommendations, Disagreements → Flagged for human judgment</li>
-              </ol>
-            </div>
+            <h4 className="font-bold text-slate-900 mb-3 text-base">9. Conclusion</h4>
+            <p className="mb-3">
+              BWGA Intelligence AI represents a novel approach to strategic decision-support that addresses fundamental limitations of both traditional consulting and generic AI tools. By combining neuro-symbolic reasoning, multi-agent adversarial debate, and quantified scoring with full provenance tracking, the system produces outputs that are:
+            </p>
+            <ul className="list-disc list-inside mb-3 text-slate-700">
+              <li>Explainable (every score traces to its inputs and reasoning)</li>
+              <li>Auditable (complete provenance chain for regulatory and board review)</li>
+              <li>Validated (multi-perspective debate prevents single-thread bias)</li>
+              <li>Quantified (mathematical indices replace subjective assessments)</li>
+              <li>Fast (seconds instead of weeks)</li>
+            </ul>
+            <p>
+              This architecture establishes a foundation for continued development toward sovereign-grade decision intelligence for cross-border partnerships and regional investment analysis.
+            </p>
           </div>
 
-          {/* Algorithm Performance & Optimization */}
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 mb-4">Algorithm Performance & Optimization</h3>
-
-            <div className="bg-slate-900 text-white p-6 rounded-lg mb-4">
-              <div className="grid md:grid-cols-4 gap-4 text-center mb-4">
-                <div>
-                  <div className="text-3xl font-bold text-white">1-3s</div>
-                  <div className="text-xs text-slate-400">Response Time</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white">5-15x</div>
-                  <div className="text-xs text-slate-400">Speedup vs Legacy</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white">O(log n)</div>
-                  <div className="text-xs text-slate-400">Vector Memory</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white">4 Levels</div>
-                  <div className="text-xs text-slate-400">DAG Parallelism</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-              <table className="w-full text-sm">
-                <thead className="bg-slate-100">
-                  <tr>
-                    <th className="p-3 text-left font-semibold">Algorithm Component</th>
-                    <th className="p-3 text-left font-semibold">Purpose</th>
-                    <th className="p-3 text-left font-semibold">Speed Impact</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-mono text-xs">VectorMemoryIndex</td>
-                    <td className="p-3 text-xs">O(log n) similarity search via LSH + cosine similarity</td>
-                    <td className="p-3 text-xs font-semibold text-slate-700">10-50x faster retrieval</td>
-                  </tr>
-                  <tr className="border-t border-slate-200 bg-slate-50">
-                    <td className="p-3 font-mono text-xs">BayesianDebateEngine</td>
-                    <td className="p-3 text-xs">Early stopping at 75% consensus (2-3 rounds vs 5)</td>
-                    <td className="p-3 text-xs font-semibold text-slate-700">2-3x faster debate</td>
-                  </tr>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-mono text-xs">DAGScheduler</td>
-                    <td className="p-3 text-xs">Parallel formula execution with memoization cache</td>
-                    <td className="p-3 text-xs font-semibold text-slate-700">3-5x faster scoring</td>
-                  </tr>
-                  <tr className="border-t border-slate-200 bg-slate-50">
-                    <td className="p-3 font-mono text-xs">LazyEvalEngine</td>
-                    <td className="p-3 text-xs">On-demand derivative index computation</td>
-                    <td className="p-3 text-xs font-semibold text-slate-700">2-4x resource savings</td>
-                  </tr>
-                  <tr className="border-t border-slate-200">
-                    <td className="p-3 font-mono text-xs">GradientRankingEngine</td>
-                    <td className="p-3 text-xs">Learning-to-rank for case relevance with online updates</td>
-                    <td className="p-3 text-xs font-semibold text-slate-700">2-3x better relevance</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* Provenance & Audit Trail */}
-            <div className="bg-slate-100 p-6 rounded-lg border border-slate-200 mt-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-                <Lock className="w-5 h-5 text-slate-600" />
-                Provenance & Audit Trail
-              </h3>
-              <p className="text-sm text-slate-700 mb-3">
-                Every recommendation in BWGA Intelligence AI is fully traceable. The system maintains a complete provenance chain from user input → formula computation → debate evidence → final recommendation.
-              </p>
-              <div className="grid md:grid-cols-3 gap-4 text-xs">
-                <div className="bg-white p-3 rounded border border-slate-200">
-                  <div className="font-semibold text-slate-900 mb-1">Input Provenance</div>
-                  <p className="text-slate-600">Every data point tagged with source, timestamp, and confidence level</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-slate-200">
-                  <div className="font-semibold text-slate-900 mb-1">Computation Trace</div>
-                  <p className="text-slate-600">Each formula shows inputs used, weights applied, intermediate values</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-slate-200">
-                  <div className="font-semibold text-slate-900 mb-1">Debate Evidence</div>
-                  <p className="text-slate-600">Persona arguments preserved with supporting data and vote rationale</p>
-                </div>
-              </div>
-            </div>
+          {/* References Footer */}
+          <div className="border-t border-slate-300 pt-4 mt-6">
+            <p className="text-xs text-slate-500 text-center">
+              BWGA Intelligence AI · Technical Architecture Report · Version 3.2 · January 2026<br/>
+              © 2026 Brayden Walls Global Advisory. All formulas and methodologies are proprietary.
+            </p>
           </div>
+
         </div>
       </Modal>
 
