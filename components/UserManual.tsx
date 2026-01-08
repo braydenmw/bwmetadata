@@ -151,6 +151,55 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               </p>
             </div>
 
+            {/* Platform Introduction Section - Merged with DESIGNED FOR EVERYONE */}
+            <div className="my-8 bg-gradient-to-br from-slate-700/90 via-slate-600/85 to-slate-700/90 rounded-2xl p-8 md:p-10 border border-slate-500 relative overflow-hidden">
+              {/* Orange accent strips on left */}
+              <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 via-amber-500 to-orange-600"></div>
+              <div className="absolute left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400/50 via-amber-400/50 to-orange-500/50"></div>
+              {/* Abstract tech pattern background */}
+              <div className="absolute inset-0 opacity-30">
+                <img 
+                  src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80" 
+                  alt="Abstract technology background"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              <div className="relative z-10 grid lg:grid-cols-3 gap-8 items-center">
+                {/* AI Visualization */}
+                <div className="relative flex justify-center">
+                  <div className="relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&q=80" 
+                      alt="AI Intelligence System"
+                      className="w-56 h-56 object-cover rounded-2xl border-2 border-slate-600 shadow-2xl"
+                    />
+                    <div className="absolute -bottom-4 -right-4 bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold border border-slate-600">
+                      NSIL Engine v3.2
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Platform Description */}
+                <div className="lg:col-span-2 relative">
+                  <div className="bg-white/85 rounded-xl p-6 backdrop-blur-sm">
+                    <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
+                    <h2 className="text-2xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
+                    <p className="text-base mb-4 leading-relaxed text-black text-center">
+                      BW Nexus AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
+                      as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
+                      constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
+                    </p>
+                    <p className="text-sm leading-relaxed text-slate-700 text-center">
+                      The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
+                      and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
+                      previously accessible only to the world's largest organizations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-4 my-8">
               <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500 border border-slate-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-2">
@@ -464,55 +513,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* Key Features Section with Modal Triggers */}
       <section className="py-20 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6">
-          {/* Platform Introduction Section - From Doc 209 */}
-          <div className="mb-16 bg-gradient-to-br from-slate-700/90 via-slate-600/85 to-slate-700/90 rounded-2xl p-8 md:p-12 border border-slate-500 relative overflow-hidden">
-            {/* Orange accent strips on left */}
-            <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 via-amber-500 to-orange-600"></div>
-            <div className="absolute left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400/50 via-amber-400/50 to-orange-500/50"></div>
-            {/* Abstract tech pattern background */}
-            <div className="absolute inset-0 opacity-30">
-              <img 
-                src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80" 
-                alt="Abstract technology background"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            
-            <div className="relative z-10 grid lg:grid-cols-3 gap-8 items-center">
-              {/* AI Visualization */}
-              <div className="relative flex justify-center">
-                <div className="relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&q=80" 
-                    alt="AI Intelligence System"
-                    className="w-64 h-64 object-cover rounded-2xl border-2 border-slate-600 shadow-2xl"
-                  />
-                  <div className="absolute -bottom-4 -right-4 bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold border border-slate-600">
-                    NSIL Engine v3.2
-                  </div>
-                </div>
-              </div>
-              
-              {/* Platform Description - From Doc 209 */}
-              <div className="lg:col-span-2 relative">
-                <div className="bg-white/80 rounded-xl p-6 backdrop-blur-sm">
-                  <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
-                  <h2 className="text-3xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
-                  <p className="text-lg mb-4 leading-relaxed text-black text-center">
-                    BW Nexus AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
-                    as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
-                    constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
-                  </p>
-                  <p className="leading-relaxed text-slate-700 text-center">
-                    The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
-                    and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
-                    previously accessible only to the world's largest organizations.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Regional Challenges & Solutions */}
           <div className="mb-16">
             <p className="text-slate-500 uppercase tracking-widest text-xs mb-3 text-center">SOLVING REAL PROBLEMS</p>
