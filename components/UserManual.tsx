@@ -34,14 +34,14 @@ const ProtocolSection: React.FC<{
   onOpenDetails: (num: number, title: string, details: { subtitle: string; items: string[] }[]) => void;
 }> = ({ num, title, desc, onOpenDetails, fullDetails }) => {
   return (
-    <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
+    <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full flex flex-col">
       <div className="flex items-center gap-3 mb-3">
         <span className="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium">{num}</span>
         <span className="text-xs text-slate-400">Step {num}</span>
       </div>
       <h3 className="font-semibold text-slate-900 text-sm mb-2">{title}</h3>
-      <p className="text-xs text-slate-500 leading-relaxed mb-4">{desc}</p>
-      <div className="flex justify-center mt-4">
+      <p className="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">{desc}</p>
+      <div className="flex justify-center">
         <button
           onClick={() => onOpenDetails(num, title, fullDetails)}
           className="px-6 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
