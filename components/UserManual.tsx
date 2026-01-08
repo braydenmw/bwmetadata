@@ -51,10 +51,10 @@ const ProtocolSection: React.FC<{
         <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
       </div>
 
-      {/* Tooltip */}
+      {/* Tooltip - appears below the card */}
       {showTooltip && (
-        <div className="absolute z-50 w-80 p-4 bg-slate-900 text-white rounded-lg shadow-xl border border-slate-700 bottom-full left-1/2 transform -translate-x-1/2 mb-2">
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-slate-900"></div>
+        <div className="absolute z-50 w-80 p-4 bg-slate-900 text-white rounded-lg shadow-xl border border-slate-700 top-full left-1/2 transform -translate-x-1/2 mt-2">
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-slate-900"></div>
           <h4 className="font-semibold text-sm mb-3 text-slate-200">{title} - Data Requirements</h4>
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {fullDetails.map((section, idx) => (
@@ -286,8 +286,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <span className="text-slate-500 font-medium">Click any step</span> to see the detailed data requirements.
           </p>
           
-          {/* Protocol Steps Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+          {/* Protocol Steps Grid - 2 rows of 5 in landscape */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-12">
             <ProtocolSection 
               num={1} 
               title="Identity & Foundation" 
