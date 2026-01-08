@@ -26,17 +26,21 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; chi
 };
 
 // Protocol Section with Click Modal (replacing hover)
-const ProtocolSection: React.FC<{ 
-  num: number; 
-  title: string; 
-  desc: string; 
+const ProtocolSection: React.FC<{
+  num: number;
+  title: string;
+  desc: string;
   fullDetails: { subtitle: string; items: string[] }[];
   onOpenDetails: (num: number, title: string, details: { subtitle: string; items: string[] }[]) => void;
 }> = ({ num, title, desc, onOpenDetails, fullDetails }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
   return (
-    <div 
+    <div
       className="relative cursor-pointer"
       onClick={() => onOpenDetails(num, title, fullDetails)}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
     >
       <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all h-full">
         <div className="flex items-center gap-3 mb-3">
@@ -46,6 +50,30 @@ const ProtocolSection: React.FC<{
         <h3 className="font-semibold text-slate-900 text-sm mb-2">{title}</h3>
         <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
       </div>
+
+      {/* Tooltip */}
+      {showTooltip && (
+        <div className="absolute z-50 w-80 p-4 bg-slate-900 text-white rounded-lg shadow-xl border border-slate-700 -top-2 left-full ml-2 transform -translate-y-1/2">
+          <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-slate-900"></div>
+          <h4 className="font-semibold text-sm mb-3 text-slate-200">{title} - Data Requirements</h4>
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            {fullDetails.map((section, idx) => (
+              <div key={idx}>
+                <h5 className="font-medium text-xs text-slate-300 mb-1 uppercase tracking-wide">{section.subtitle}</h5>
+                <ul className="text-xs text-slate-400 space-y-1">
+                  {section.items.map((item, itemIdx) => (
+                    <li key={itemIdx} className="flex items-start gap-2">
+                      <span className="text-slate-500 mt-0.5">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 mt-3 italic">Click to open full details modal</p>
+        </div>
+      )}
     </div>
   );
 };
