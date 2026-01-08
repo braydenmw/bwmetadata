@@ -494,19 +494,22 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               </div>
               
               {/* Platform Description - From Doc 209 */}
-              <div className="lg:col-span-2 text-white">
-                <p className="text-slate-400 uppercase tracking-widest text-xs mb-3">BW GLOBAL ADVISORY</p>
-                <h2 className="text-3xl font-light text-white mb-4">A New Class of Strategic Intelligence Platform</h2>
-                <p className="text-lg text-slate-300 mb-4 leading-relaxed">
-                  BW Nexus AI is a <strong className="text-white">Strategic Intelligence and Execution Platform</strong> that functions 
-                  as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
-                  constraints, risk appetite, and strategic goals — into a <strong className="text-white">live, interactive decision model</strong>.
-                </p>
-                <p className="text-slate-400 leading-relaxed">
-                  The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
-                  and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
-                  previously accessible only to the world's largest organizations.
-                </p>
+              <div className="lg:col-span-2 relative">
+                <div className="absolute inset-0 bg-white/70 rounded-lg"></div>
+                <div className="relative z-10 text-black">
+                  <p className="text-slate-600 uppercase tracking-widest text-xs mb-3">BW GLOBAL ADVISORY</p>
+                  <h2 className="text-3xl font-light mb-4">A New Class of Strategic Intelligence Platform</h2>
+                  <p className="text-lg mb-4 leading-relaxed">
+                    BW Nexus AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
+                    as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
+                    constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
+                  </p>
+                  <p className="leading-relaxed">
+                    The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
+                    and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
+                    previously accessible only to the world's largest organizations.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -1020,10 +1023,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <div className="p-2 bg-slate-50 rounded">Service Level Agreement</div>
               <div className="p-2 bg-slate-50 rounded">Supply Agreement</div>
               <div className="p-2 bg-slate-50 rounded">Off-take Agreement</div>
-              <div className="p-2 bg-slate-50 rounded">Employment Contract</div>
-              <div className="p-2 bg-slate-50 rounded">Consultancy Agreement</div>
-              <div className="p-2 bg-slate-50 rounded">IP Assignment</div>
-              <div className="p-2 bg-slate-50 rounded">Escrow Agreement</div>
               <div className="p-2 bg-slate-50 rounded">Guarantee Agreement</div>
               <div className="p-2 bg-slate-50 rounded">Security Agreement</div>
             </div>
