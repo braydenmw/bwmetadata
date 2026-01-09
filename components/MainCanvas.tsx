@@ -331,18 +331,41 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
     // Auto-scroll document preview when content changes
     useEffect(() => {
-        if (documentScrollRef.current) {
-            documentScrollRef.current.scrollTo({
-                top: documentScrollRef.current.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
+        // Removed auto-scroll to bottom - let users scroll manually from the top
+        // if (documentScrollRef.current) {
+        //     documentScrollRef.current.scrollTo({
+        //         top: documentScrollRef.current.scrollHeight,
+        //         behavior: 'smooth'
+        //     });
+        // }
     }, [params, reportData, injectedComponents]);
+
+    // Ensure document preview starts at top on component mount
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (documentScrollRef.current) {
+                documentScrollRef.current.scrollTop = 0;
+            }
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
 
     // Auto-scroll chat messages when new messages are added
     useEffect(() => {
         chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [chatMessages]);
+
+    // Ensure sidebar starts at top on component mount
+    useEffect(() => {
+        // Small delay to ensure DOM is ready
+        const timer = setTimeout(() => {
+            const sidebarContainer = document.querySelector('.flex-1.overflow-y-auto.custom-scrollbar');
+            if (sidebarContainer) {
+                sidebarContainer.scrollTop = 0;
+            }
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
 
     const scrollAdvisorPanelIntoView = useCallback(() => {
         setAdvisorExpanded(true);
