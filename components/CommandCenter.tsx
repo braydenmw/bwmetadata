@@ -13,6 +13,7 @@ interface CommandCenterProps {
 const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activePersona, setActivePersona] = useState<number | null>(null);
+    const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
     const personas = [
         { 
@@ -87,7 +88,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 rounded-full text-sm text-slate-300 mb-6">
                             <Shield size={16} className="text-green-400" />
-                            Nexus Strategic Intelligence Layer v6.0
+                            <span><strong>NSIL</strong> — Nexus Strategic Intelligence Layer v6.0</span>
                         </div>
                         <h1 className="text-5xl md:text-6xl font-light mb-6 leading-tight">
                             Institutional-Grade Intelligence<br />
@@ -97,6 +98,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             Transform unstructured opportunity briefs into board-ready analysis through 
                             adversarial reasoning, probabilistic finance, and complete audit transparency.
                         </p>
+                        <div className="mt-6 p-4 bg-slate-800/50 rounded-lg max-w-2xl mx-auto">
+                            <p className="text-sm text-slate-400 leading-relaxed">
+                                <strong className="text-green-400">NSIL (Nexus Strategic Intelligence Layer)</strong> is the governance architecture 
+                                that orchestrates 27 scoring formulas, 5 adversarial personas, and 100+ Monte Carlo simulations 
+                                into a unified decision-support system with complete audit transparency.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Key Stats */}
@@ -187,6 +195,172 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 Export investment memos, risk briefs, LOI templates—each with complete 
                                 audit trails and source citations.
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Technical Architecture & Intelligence Framework */}
+            <section className="py-16 px-8 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 rounded-full text-xs text-blue-300 mb-4">
+                            <GitBranch size={12} />
+                            Technical Deep Dive
+                        </div>
+                        <h2 className="text-3xl font-light mb-4">Technical Architecture & Intelligence Framework</h2>
+                        <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                            Under the hood: a 27-formula scoring suite powered by multi-agent adversarial reasoning, 
+                            probabilistic simulation, and evidence-clamped governance.
+                        </p>
+                    </div>
+
+                    {/* Architecture Layers */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-12">
+                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                    <Database size={20} className="text-blue-400" />
+                                </div>
+                                <h3 className="font-semibold">Input & Governance Layer</h3>
+                            </div>
+                            <ul className="space-y-2 text-sm text-slate-400">
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>10-step structured intake protocol</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Multi-select capability mapping</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Evidence quality validation gates</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Automatic gap detection & prompting</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                                    <Brain size={20} className="text-purple-400" />
+                                </div>
+                                <h3 className="font-semibold">Multi-Agent Reasoning Engine</h3>
+                            </div>
+                            <ul className="space-y-2 text-sm text-slate-400">
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>5 specialized adversarial personas</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Parallel debate orchestration</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Consensus & dissent tracking</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Full debate transcript capture</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                                    <BarChart3 size={20} className="text-green-400" />
+                                </div>
+                                <h3 className="font-semibold">Quantification & Output Layer</h3>
+                            </div>
+                            <ul className="space-y-2 text-sm text-slate-400">
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>27-formula scoring suite</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>100+ Monte Carlo simulations</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>P10/P50/P90 probability distributions</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                    <span>Board-ready document generation</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* 27 Formula Suite Breakdown */}
+                    <div className="bg-slate-800 rounded-lg p-8 mb-8">
+                        <h3 className="text-xl font-semibold mb-6 text-center">The 27-Formula Scoring Suite</h3>
+                        <div className="grid md:grid-cols-3 gap-8">
+                            <div>
+                                <h4 className="text-sm font-medium text-blue-400 mb-3">Core Indices (5)</h4>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li>• <strong className="text-white">SPI™</strong> — Strategic Partnership Index</li>
+                                    <li>• <strong className="text-white">RROI™</strong> — Regional Return on Investment</li>
+                                    <li>• <strong className="text-white">SEAM™</strong> — Socio-Economic Alignment Metric</li>
+                                    <li>• <strong className="text-white">IVAS™</strong> — Investment Viability Assessment</li>
+                                    <li>• <strong className="text-white">SCF™</strong> — Supply Chain Friction Index</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-medium text-purple-400 mb-3">Risk Derivatives (10)</h4>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li>• Political Stability Score</li>
+                                    <li>• Currency Volatility Index</li>
+                                    <li>• Operational Complexity Rating</li>
+                                    <li>• Legal/Regulatory Friction</li>
+                                    <li>• Environmental Risk Factor</li>
+                                    <li>• Reputational Risk Quotient</li>
+                                    <li>• Technology Dependency Score</li>
+                                    <li>• Concentration Risk Index</li>
+                                    <li>• Counterparty Risk Rating</li>
+                                    <li>• Market Timing Sensitivity</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-medium text-green-400 mb-3">Compatibility Metrics (12)</h4>
+                                <ul className="space-y-2 text-sm text-slate-400">
+                                    <li>• Partner Readiness Level (14 stages)</li>
+                                    <li>• Governance Quality Index</li>
+                                    <li>• ESG Compliance Score</li>
+                                    <li>• Execution Readiness Rating</li>
+                                    <li>• Infrastructure Maturity</li>
+                                    <li>• Cultural Alignment Score</li>
+                                    <li>• Strategic Fit Index</li>
+                                    <li>• Resource Complementarity</li>
+                                    <li>• Timeline Compatibility</li>
+                                    <li>• Value Creation Potential</li>
+                                    <li>• Exit Pathway Viability</li>
+                                    <li>• Long-term Sustainability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Evidence Clamping */}
+                    <div className="bg-amber-900/30 border border-amber-700/50 rounded-lg p-6">
+                        <div className="flex items-start gap-4">
+                            <AlertTriangle size={24} className="text-amber-400 flex-shrink-0 mt-1" />
+                            <div>
+                                <h4 className="font-semibold text-amber-300 mb-2">Evidence Clamping Protocol</h4>
+                                <p className="text-slate-300 text-sm leading-relaxed">
+                                    The NSIL governance layer automatically clamps scores when evidence quality is insufficient. 
+                                    Weak or missing data produces lower scores with wider confidence bands. The system never compensates 
+                                    with optimistic language—it explicitly flags what data is missing and can block document export 
+                                    until critical gaps are addressed. Every claim is traceable to its source.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -349,28 +523,69 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         <p className="text-lg text-slate-400">
                             Every mandate passes through a structured governance sequence that enforces intellectual honesty.
                         </p>
+                        <p className="text-sm text-slate-500 mt-2">Click any step to see details</p>
                     </div>
 
                     <div className="grid md:grid-cols-5 gap-4">
                         {[
-                            { step: 1, name: "Adversarial Input Screening", desc: "Challenge assumptions before analysis begins" },
-                            { step: 2, name: "Historical Contextualization", desc: "Retrieve precedents and comparable outcomes" },
-                            { step: 3, name: "Five-Persona Debate", desc: "Parallel adversarial review from multiple angles" },
-                            { step: 4, name: "Mathematical Quantification", desc: "Score across 27 proprietary formulas" },
-                            { step: 5, name: "Monte Carlo Simulation", desc: "100+ iterations for probabilistic outcomes" },
-                            { step: 6, name: "Evidence Quality Assessment", desc: "Trace every claim to its source" },
-                            { step: 7, name: "Risk-Mitigation Mapping", desc: "Pair risks with specific countermeasures" },
-                            { step: 8, name: "Partner Matching & Scoring", desc: "Identify optimal counterparties" },
-                            { step: 9, name: "Document Generation", desc: "Board-ready artifacts with audit trails" },
-                            { step: 10, name: "Outcome Learning", desc: "Feed results back to improve future assessments" }
+                            { step: 1, name: "Identity & Mandate", desc: "Define your organization and strategic objectives", details: "Establishes who you are, your organizational type, mandate authority, and key strategic objectives. This step ensures the system understands your context, regulatory environment, and decision-making constraints before analysis begins." },
+                            { step: 2, name: "Market & Sector Focus", desc: "Specify target industries and geographic regions", details: "Identifies your target markets, industry sectors, and geographic preferences. The system uses this to contextualize risk factors, regulatory requirements, and opportunity filters specific to your chosen domains." },
+                            { step: 3, name: "Partner Persona Mapping", desc: "Define ideal counterparty characteristics", details: "Creates a detailed profile of your ideal partner including size, capabilities, cultural alignment, and strategic fit. This enables the Partner Matching Engine to score compatibility across 14 readiness levels and 8+ fit criteria." },
+                            { step: 4, name: "Financial Parameters", desc: "Set investment bounds and return expectations", details: "Configures your financial envelope including minimum/maximum investment sizes, target IRR, acceptable risk tolerance, and funding sources. These parameters drive the Monte Carlo simulations and RROI calculations." },
+                            { step: 5, name: "Risk Profiling", desc: "Identify and prioritize risk categories", details: "Maps your risk tolerance across 10 categories (Political, Currency, Operational, etc.). The Risk Brief generation weights concerns based on your profile, and The Skeptic persona focuses adversarial review accordingly." },
+                            { step: 6, name: "Capability Assessment", desc: "Inventory your organizational strengths", details: "Documents your existing capabilities, resources, and competitive advantages. This enables gap analysis against partner requirements and ensures recommendations account for your execution capacity." },
+                            { step: 7, name: "Execution Preferences", desc: "Define deal structure and timeline expectations", details: "Specifies preferred partnership structures (JV, M&A, licensing, etc.), timeline constraints, governance requirements, and exit considerations. This shapes the LOI templates and investment memo recommendations." },
+                            { step: 8, name: "Governance Requirements", desc: "Outline compliance and approval frameworks", details: "Captures your internal approval processes, compliance requirements, stakeholder alignment needs, and reporting obligations. Ensures generated documents align with your organizational governance standards." },
+                            { step: 9, name: "Rate & Liquidity Settings", desc: "Configure financial modeling parameters", details: "Sets currency preferences, discount rates, liquidity requirements, and stress-test scenarios. These inputs drive the probabilistic financial analysis and Value at Risk calculations." },
+                            { step: 10, name: "Document Generation", desc: "Generate board-ready artifacts with audit trails", details: "Produces the complete suite of deliverables: Investment Memos, Risk Briefs, Partner Match Reports, LOI Templates, and Monte Carlo Analysis—each with full source citations and formula transparency." }
                         ].map((item) => (
-                            <div key={item.step} className="bg-slate-800 p-4 rounded-lg">
-                                <div className="text-xs text-slate-500 mb-1">Step {item.step}</div>
+                            <div 
+                                key={item.step} 
+                                className={`bg-slate-800 p-4 rounded-lg cursor-pointer transition-all hover:bg-slate-700 ${expandedStep === item.step ? 'ring-2 ring-blue-400' : ''}`}
+                                onClick={() => setExpandedStep(expandedStep === item.step ? null : item.step)}
+                            >
+                                <div className="flex items-center justify-between mb-1">
+                                    <div className="text-xs text-slate-500">Step {item.step}</div>
+                                    <Eye size={12} className={`${expandedStep === item.step ? 'text-blue-400' : 'text-slate-600'}`} />
+                                </div>
                                 <div className="font-medium text-sm mb-1">{item.name}</div>
                                 <div className="text-xs text-slate-400">{item.desc}</div>
                             </div>
                         ))}
                     </div>
+
+                    {/* Expanded Step Detail */}
+                    {expandedStep && (
+                        <div className="mt-6 bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-semibold">
+                                    {expandedStep}
+                                </div>
+                                <h3 className="text-lg font-semibold">
+                                    {[
+                                        "Identity & Mandate", "Market & Sector Focus", "Partner Persona Mapping",
+                                        "Financial Parameters", "Risk Profiling", "Capability Assessment",
+                                        "Execution Preferences", "Governance Requirements", "Rate & Liquidity Settings",
+                                        "Document Generation"
+                                    ][expandedStep - 1]}
+                                </h3>
+                            </div>
+                            <p className="text-slate-300 leading-relaxed">
+                                {[
+                                    "Establishes who you are, your organizational type, mandate authority, and key strategic objectives. This step ensures the system understands your context, regulatory environment, and decision-making constraints before analysis begins.",
+                                    "Identifies your target markets, industry sectors, and geographic preferences. The system uses this to contextualize risk factors, regulatory requirements, and opportunity filters specific to your chosen domains.",
+                                    "Creates a detailed profile of your ideal partner including size, capabilities, cultural alignment, and strategic fit. This enables the Partner Matching Engine to score compatibility across 14 readiness levels and 8+ fit criteria.",
+                                    "Configures your financial envelope including minimum/maximum investment sizes, target IRR, acceptable risk tolerance, and funding sources. These parameters drive the Monte Carlo simulations and RROI calculations.",
+                                    "Maps your risk tolerance across 10 categories (Political, Currency, Operational, etc.). The Risk Brief generation weights concerns based on your profile, and The Skeptic persona focuses adversarial review accordingly.",
+                                    "Documents your existing capabilities, resources, and competitive advantages. This enables gap analysis against partner requirements and ensures recommendations account for your execution capacity.",
+                                    "Specifies preferred partnership structures (JV, M&A, licensing, etc.), timeline constraints, governance requirements, and exit considerations. This shapes the LOI templates and investment memo recommendations.",
+                                    "Captures your internal approval processes, compliance requirements, stakeholder alignment needs, and reporting obligations. Ensures generated documents align with your organizational governance standards.",
+                                    "Sets currency preferences, discount rates, liquidity requirements, and stress-test scenarios. These inputs drive the probabilistic financial analysis and Value at Risk calculations.",
+                                    "Produces the complete suite of deliverables: Investment Memos, Risk Briefs, Partner Match Reports, LOI Templates, and Monte Carlo Analysis—each with full source citations and formula transparency."
+                                ][expandedStep - 1]}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </section>
 

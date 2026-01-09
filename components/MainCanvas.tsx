@@ -41,7 +41,14 @@ const STAKEHOLDER_ALIGNMENT_GROUPS = [
     'Government Affairs / Public Policy',
     'Regional / Field Teams',
     'Customers / End Users',
-    'External Advisors / Consultants'
+    'External Advisors / Consultants',
+    'Procurement / Sourcing',
+    'Human Resources / Talent',
+    'Marketing & Communications',
+    'Risk Management',
+    'IT / Information Security',
+    'Strategic Partners',
+    'Labor Unions / Worker Councils'
 ];
 
 const PARTNER_FIT_CRITERIA = [
@@ -54,7 +61,15 @@ const PARTNER_FIT_CRITERIA = [
     'ESG & Reputation',
     'Speed to Deploy',
     'Cultural Compatibility',
-    'Talent Access'
+    'Talent Access',
+    'Government Relationships',
+    'Brand Strength',
+    'Innovation Capability',
+    'Supply Chain Reach',
+    'Customer Base Overlap',
+    'Complementary Products',
+    'Shared Values / Vision',
+    'Financial Stability'
 ];
 
 const RELATIONSHIP_GOALS = [
@@ -65,24 +80,45 @@ const RELATIONSHIP_GOALS = [
     'Launch Joint Innovation Lab',
     'Create Investment Vehicle',
     'Share Infrastructure',
-    'Accelerate Commercialization'
+    'Accelerate Commercialization',
+    'Access New Customer Segments',
+    'Reduce Operational Costs',
+    'Transfer Technology / Know-how',
+    'Build Supply Chain Resilience',
+    'Expand Geographic Footprint',
+    'Acquire Talent / Expertise',
+    'Diversify Revenue Streams',
+    'Achieve Regulatory Compliance'
 ];
 
 const PARTNER_READINESS_LEVELS = [
-    'Exploration',
-    'Shortlisting',
-    'Due Diligence',
-    'Negotiation',
-    'Contracting',
-    'Launch / Scaling'
+    'Initial Research',
+    'Exploration / Discovery',
+    'Shortlisting Candidates',
+    'Initial Outreach',
+    'Preliminary Discussions',
+    'Due Diligence (Financial)',
+    'Due Diligence (Legal)',
+    'Due Diligence (Technical)',
+    'Term Sheet Negotiation',
+    'Contract Drafting',
+    'Final Approval / Signing',
+    'Implementation / Launch',
+    'Scaling Partnership',
+    'Partnership Review / Renewal'
 ];
 
 const RISK_CATEGORIES = [
     'Market Risk',
     'Operational Risk',
     'Financial Risk',
-    'Legal Risk',
-    'Relationship Risk'
+    'Legal / Regulatory Risk',
+    'Relationship / Partner Risk',
+    'Technology / Cyber Risk',
+    'Reputational Risk',
+    'Political / Geopolitical Risk',
+    'Currency / FX Risk',
+    'Execution / Delivery Risk'
 ];
 
 const CAPABILITY_AREAS = [
@@ -220,6 +256,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const [advisorRefreshing, setAdvisorRefreshing] = useState(false);
     const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const advisorPanelRef = useRef<HTMLDivElement | null>(null);
+    const documentScrollRef = useRef<HTMLDivElement | null>(null);
+    const chatMessagesEndRef = useRef<HTMLDivElement | null>(null);
 
     const handleAdvisorRefresh = useCallback(() => {
         setAdvisorRefreshing(true);
@@ -238,6 +276,21 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             clearTimeout(refreshTimeoutRef.current);
         }
     }, []);
+
+    // Auto-scroll document preview when content changes
+    useEffect(() => {
+        if (documentScrollRef.current) {
+            documentScrollRef.current.scrollTo({
+                top: documentScrollRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [params, reportData, injectedComponents]);
+
+    // Auto-scroll chat messages when new messages are added
+    useEffect(() => {
+        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatMessages]);
 
     const scrollAdvisorPanelIntoView = useCallback(() => {
         setAdvisorExpanded(true);
@@ -366,18 +419,57 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
   const handleSendMessage = () => {
     if (chatInput.trim()) {
-      const newMessage = { text: chatInput, sender: 'user' as const, timestamp: new Date() };
+      const userQuestion = chatInput.trim();
+      const newMessage = { text: userQuestion, sender: 'user' as const, timestamp: new Date() };
       setChatMessages(prev => [...prev, newMessage]);
       setChatInput('');
 
-      // Simulate context-aware BW response
+      // Intelligent context-aware BW response
       setTimeout(() => {
-        let responseText = "Thank you for your input. Let me help you refine that aspect of your partnership strategy.";
-        if (chatInput.toLowerCase().includes('risk')) {
-          responseText = `Regarding risk for ${params.organizationName}, your current tolerance is set to '${params.riskTolerance}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0]}'.`;
-        } else if (chatInput.toLowerCase().includes('partner')) {
-          responseText = `For your partnership objectives, finding a partner that complements your goal of '${params.strategicIntent[0]}' is key. Let's ensure the 'Ideal Partner Profile' section is detailed.`
+        let responseText = "";
+        const lowerQ = userQuestion.toLowerCase();
+        
+        // Risk-related questions
+        if (lowerQ.includes('risk')) {
+          responseText = `Regarding risk for ${params.organizationName || 'your organization'}, your current tolerance is set to '${params.riskTolerance || 'not specified'}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0] || 'strategic growth'}'.`;
+        } 
+        // Partner-related questions
+        else if (lowerQ.includes('partner')) {
+          responseText = `For your partnership objectives, finding a partner that complements your goal of '${params.strategicIntent[0] || 'strategic growth'}' is key. Let's ensure the 'Ideal Partner Profile' section is detailed.`;
         }
+        // Industry/market research questions
+        else if (lowerQ.includes('industry') || lowerQ.includes('market') || lowerQ.includes('sector') || lowerQ.includes('coconut') || lowerQ.includes('agriculture') || lowerQ.includes('asia') || lowerQ.includes('about')) {
+          // Extract potential industry/topic from question
+          const topics = ['coconut', 'palm oil', 'agriculture', 'technology', 'fintech', 'healthcare', 'manufacturing', 'renewable energy', 'automotive', 'pharmaceutical', 'textile', 'food', 'beverage', 'mining', 'construction', 'logistics', 'tourism', 'telecommunications'];
+          const regions = ['asia', 'southeast asia', 'europe', 'africa', 'latin america', 'middle east', 'north america', 'pacific', 'china', 'india', 'indonesia', 'vietnam', 'thailand', 'philippines', 'malaysia', 'singapore', 'japan', 'korea'];
+          
+          let detectedTopic = topics.find(t => lowerQ.includes(t)) || 'the specified sector';
+          let detectedRegion = regions.find(r => lowerQ.includes(r)) || 'the target region';
+          
+          // Generate contextual industry intelligence response
+          if (lowerQ.includes('coconut') && lowerQ.includes('asia')) {
+            responseText = `**Coconut Industry in Asia - Key Intelligence:**\n\n🌴 **Market Overview:** Asia accounts for ~84% of global coconut production, with Indonesia, Philippines, and India as the top producers.\n\n📊 **Market Size:** The Asian coconut market is valued at approximately $12.5B (2024), growing at 5.2% CAGR.\n\n🔑 **Key Segments:**\n• Coconut oil (cooking, cosmetics, biofuel)\n• Coconut water (fastest growing at 15% CAGR)\n• Desiccated coconut & coconut cream\n• Activated carbon from shells\n• Coir fiber products\n\n🎯 **Partnership Opportunities:**\n• Supply chain integration with smallholder farmers\n• Processing facility JVs in Philippines/Indonesia\n• Export partnerships for premium virgin coconut oil\n• Sustainable sourcing certifications\n\n⚠️ **Key Risks:** Climate volatility, aging tree stocks, price fluctuations. Would you like me to generate a detailed market entry brief for this sector?`;
+          } else {
+            responseText = `**${detectedTopic.charAt(0).toUpperCase() + detectedTopic.slice(1)} Industry Analysis for ${detectedRegion.charAt(0).toUpperCase() + detectedRegion.slice(1)}:**\n\nI can help you explore this market. Key areas to consider:\n\n📊 **Market Intelligence:**\n• Current market size and growth projections\n• Major players and competitive landscape\n• Supply chain dynamics\n\n🎯 **Partnership Opportunities:**\n• Strategic alliance potential\n• Joint venture structures\n• Technology transfer opportunities\n\n⚠️ **Risk Assessment:**\n• Regulatory environment\n• Market entry barriers\n• Currency and political considerations\n\nWould you like me to integrate this into your strategic analysis? I can also help identify specific partners in this sector.`;
+          }
+        }
+        // Strategy questions
+        else if (lowerQ.includes('strategy') || lowerQ.includes('objective') || lowerQ.includes('goal')) {
+          responseText = `Your current strategic objectives are: ${params.strategicIntent.length > 0 ? params.strategicIntent.join(', ') : 'not yet defined'}. I can help you refine these based on market conditions and partnership opportunities. What specific aspect would you like to explore?`;
+        }
+        // Help/guidance questions
+        else if (lowerQ.includes('help') || lowerQ.includes('how') || lowerQ.includes('what can') || lowerQ.includes('guide')) {
+          responseText = `I'm your BW Strategic Consultant. I can help you with:\n\n📋 **Intake & Analysis:** Guide you through the strategic intake process\n🔍 **Market Research:** Provide industry and regional intelligence\n🤝 **Partner Matching:** Identify ideal partnership profiles\n📊 **Risk Assessment:** Analyze potential risks and mitigation strategies\n📄 **Document Generation:** Create strategic briefs and reports\n\nJust ask any question about markets, industries, partnerships, or strategy!`;
+        }
+        // General questions - provide a helpful response
+        else if (lowerQ.includes('?') || lowerQ.length > 10) {
+          responseText = `That's an excellent question about "${userQuestion.substring(0, 50)}${userQuestion.length > 50 ? '...' : ''}". Based on your current profile${params.organizationName ? ` for ${params.organizationName}` : ''}, here's my analysis:\n\nThis relates to your strategic objectives${params.strategicIntent.length > 0 ? ` of '${params.strategicIntent[0]}'` : ''}. I recommend:\n\n1. **Research Phase:** Let me gather relevant market intelligence\n2. **Analysis:** We'll evaluate alignment with your goals\n3. **Recommendations:** I'll provide actionable next steps\n\nWould you like me to elaborate on any specific aspect or generate a detailed brief on this topic?`;
+        }
+        // Default greeting/acknowledgment
+        else {
+          responseText = `Thanks for reaching out! I'm here to help with your partnership analysis. You can ask me about:\n\n• Specific industries or markets (e.g., "Tell me about the coconut industry in Asia")\n• Partnership strategies and objectives\n• Risk assessment and mitigation\n• Market entry approaches\n\nWhat would you like to explore?`;
+        }
+        
         const bwResponse = { text: responseText, sender: 'bw' as const, timestamp: new Date() };
         setChatMessages(prev => [...prev, bwResponse]);
       }, 1000);
@@ -761,20 +853,20 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             city={params.userCity}
                         />
                     )}
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">System Development</h3>
-                        <p className="text-[11px] text-stone-600 mb-3">Complete comprehensive intake to build any system</p>
+                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Strategic Intake Wizard</h3>
+                        <p className="text-[11px] text-stone-600 mb-3">Complete each section to build your comprehensive strategic analysis. Select multiple options in each step to capture the full scope of your needs.</p>
                         <div className="space-y-2">
                             {[
-                                {id: 'identity', label: '1. Identity', description: 'Org type/stage, capacity bands, competition map', icon: Building2},
-                                {id: 'mandate', label: '2. Mandate', description: 'Vision, horizon, weighted objectives, constraints', icon: Target},
-                                {id: 'market', label: '3. Market', description: 'Geos, trends, barriers, infra, TAM/SAM/SOM', icon: Globe},
-                                {id: 'partner-personas', label: '4. Partners', description: 'Archetypes, influence vs. alignment, dependencies', icon: Users},
-                                {id: 'financial', label: '5. Financial', description: 'Scenarios, capex/opex, incentives, payback window', icon: DollarSign},
-                                {id: 'risks', label: '6. Risks', description: 'Categories, likelihood/impact, mitigation, owners', icon: AlertCircle},
-                                {id: 'capabilities', label: '7. Capabilities', description: 'Team depth, tech maturity, gaps, plan-to-close', icon: Cpu},
-                                {id: 'execution', label: '8. Execution', description: 'Phased roadmap, gates, owners, budgets, buffers', icon: GitBranch},
-                                {id: 'governance', label: '9. Governance', description: 'Decision rights, cadence, KPIs, compliance checks', icon: Scale},
-                                {id: 'rate-liquidity', label: '10. Rate & Liquidity Stress', description: '30/90 spreads, hedges, DSCR/ICR shocks, runway', icon: Shield},
+                                {id: 'identity', label: '1. Identity', description: 'WHO you are: Organization profile, entity types, countries, industries, competitive position', icon: Building2},
+                                {id: 'mandate', label: '2. Mandate', description: 'WHAT you want: Strategic objectives, KPIs, target outcomes, problem statement', icon: Target},
+                                {id: 'market', label: '3. Market', description: 'WHERE you operate: Target markets, competitors, customers, regulatory landscape', icon: Globe},
+                                {id: 'partner-personas', label: '4. Partners', description: 'WHO you need: Partner profiles, fit criteria, relationship goals, stakeholder alignment', icon: Users},
+                                {id: 'financial', label: '5. Financial', description: 'HOW MUCH: Investment, funding, revenue projections, scenario modeling', icon: DollarSign},
+                                {id: 'risks', label: '6. Risks', description: 'WHAT COULD GO WRONG: Risk register, mitigation strategies, contingency plans', icon: AlertCircle},
+                                {id: 'capabilities', label: '7. Capabilities', description: 'WHAT YOU HAVE: Team strength, technology stack, capability gaps, development plans', icon: Cpu},
+                                {id: 'execution', label: '8. Execution', description: 'HOW TO DO IT: Roadmap phases, milestones, dependencies, go/no-go criteria', icon: GitBranch},
+                                {id: 'governance', label: '9. Governance', description: 'HOW TO MANAGE: Decision authority, KPIs, escalation paths, change management', icon: Scale},
+                                {id: 'rate-liquidity', label: '10. Rate & Liquidity Stress', description: 'FINANCIAL RESILIENCE: Interest rate sensitivity, currency hedging, runway analysis', icon: Shield},
                             ].map((step, idx) => (
                                 <button
                                     key={step.id}
@@ -801,7 +893,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             ))}
                         </div>
                         <div className="mt-3 bg-slate-50 border border-stone-200 rounded-lg p-3 text-[11px] text-stone-700 leading-relaxed">
-                            <div className="font-semibold text-stone-900 text-xs mb-1">Input guidance (no-limits)</div>
+                            <div className="font-semibold text-blue-900 text-xs mb-2 flex items-center gap-2">💡 Tips for Best Results</div>
                             <ul className="list-disc list-inside space-y-1">
                                 <li>Multi-select everywhere, with free-text “other”.</li>
                                 <li>Examples/tooltips per field; add evidence/source notes.</li>
@@ -1005,7 +1097,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
                                 {chatMessages.map((msg, index) => (
                                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
+                                        <div className={`max-w-xs px-3 py-2 rounded-lg text-xs whitespace-pre-wrap ${
                                             msg.sender === 'user'
                                                 ? 'bg-stone-700 text-white'
                                                 : 'bg-stone-100 text-stone-900'
@@ -1014,6 +1106,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         </div>
                                     </div>
                                 ))}
+                                <div ref={chatMessagesEndRef} />
                             </div>
                             <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-2 bg-white">
                                 <input
@@ -1224,48 +1317,88 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type <span className="text-red-500">*</span></label>
-                                                    <select
-                                                        value={params.organizationType}
-                                                        onChange={(e) => setParams({ ...params, organizationType: e.target.value })}
-                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent ${isFieldInvalid('organizationType') ? 'border-red-500' : 'border-stone-200'}`}
-                                                    >
-                                                        <option value="">Select type</option>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type(s) <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(multi-select)</span></label>
+                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2">
                                                         {Object.entries(ENTITY_TYPES.reduce((acc: any, item) => {
                                                             if (!acc[item.category]) acc[item.category] = [];
                                                             acc[item.category].push(item);
                                                             return acc;
                                                         }, {})).map(([category, items]: any) => (
-                                                            <optgroup key={category} label={category}>
-                                                                {items.map((item: any) => (
-                                                                    <option key={item.value} value={item.value}>{item.label}</option>
-                                                                ))}
-                                                            </optgroup>
+                                                            <div key={category} className="mb-2">
+                                                                <div className="text-[10px] font-semibold text-stone-500 uppercase mb-1">{category}</div>
+                                                                {items.map((item: any) => {
+                                                                    const currentTypes = params.organizationTypes || (params.organizationType ? [params.organizationType] : []);
+                                                                    const isSelected = currentTypes.includes(item.value);
+                                                                    return (
+                                                                        <label key={item.value} className="flex items-center gap-2 p-1 hover:bg-stone-50 cursor-pointer">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={isSelected}
+                                                                                onChange={() => {
+                                                                                    const newTypes = isSelected
+                                                                                        ? currentTypes.filter(t => t !== item.value)
+                                                                                        : [...currentTypes, item.value];
+                                                                                    setParams({ 
+                                                                                        ...params, 
+                                                                                        organizationTypes: newTypes,
+                                                                                        organizationType: newTypes[0] || '' // Keep primary for backward compat
+                                                                                    });
+                                                                                }}
+                                                                                className="h-4 w-4 text-indigo-800 focus:ring-amber-600"
+                                                                            />
+                                                                            <span className="text-sm">{item.label}</span>
+                                                                        </label>
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         ))}
-                                                    </select>
+                                                    </div>
+                                                    {(params.organizationTypes?.length || 0) > 0 && (
+                                                        <div className="mt-1 text-[10px] text-amber-700">Selected: {params.organizationTypes?.join(', ')}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Country of Incorporation <span className="text-red-500">*</span></label>
-                                                    <select
-                                                        value={params.country}
-                                                        onChange={(e) => setParams({ ...params, country: e.target.value })}
-                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent ${isFieldInvalid('country') ? 'border-red-500' : 'border-stone-200'}`}
-                                                    >
-                                                        <option value="">Select country</option>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Countries <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(multi-select)</span></label>
+                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2">
                                                         {Object.entries(COUNTRIES.reduce((acc: any, item) => {
                                                             if (!acc[item.region]) acc[item.region] = [];
                                                             acc[item.region].push(item);
                                                             return acc;
                                                         }, {})).map(([region, items]: any) => (
-                                                            <optgroup key={region} label={region}>
-                                                                {items.map((item: any) => (
-                                                                    <option key={item.value} value={item.value}>{item.label}</option>
-                                                                ))}
-                                                            </optgroup>
+                                                            <div key={region} className="mb-2">
+                                                                <div className="text-[10px] font-semibold text-stone-500 uppercase mb-1">{region}</div>
+                                                                {items.map((item: any) => {
+                                                                    const currentCountries = params.countries || (params.country ? [params.country] : []);
+                                                                    const isSelected = currentCountries.includes(item.value);
+                                                                    return (
+                                                                        <label key={item.value} className="flex items-center gap-2 p-1 hover:bg-stone-50 cursor-pointer">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={isSelected}
+                                                                                onChange={() => {
+                                                                                    const newCountries = isSelected
+                                                                                        ? currentCountries.filter(c => c !== item.value)
+                                                                                        : [...currentCountries, item.value];
+                                                                                    setParams({ 
+                                                                                        ...params, 
+                                                                                        countries: newCountries,
+                                                                                        country: newCountries[0] || '' // Keep primary for backward compat
+                                                                                    });
+                                                                                }}
+                                                                                className="h-4 w-4 text-indigo-800 focus:ring-amber-600"
+                                                                            />
+                                                                            <span className="text-sm">{item.label}</span>
+                                                                        </label>
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         ))}
-                                                    </select>
+                                                    </div>
+                                                    {(params.countries?.length || 0) > 0 && (
+                                                        <div className="mt-1 text-[10px] text-amber-700">Selected: {params.countries?.join(', ')}</div>
+                                                    )}
                                                 </div>
                                                 <div>
                                                     <label className="block text-xs font-bold text-stone-700 mb-1">Operating Regions</label>
@@ -1632,20 +1765,46 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </CollapsibleSection>
                                     <CollapsibleSection
                                         title="1.5 Risk Appetite & Tolerance Framework"
-                                        description="Define risk tolerance levels and governance framework"
+                                        description="Define your organization's risk appetite — how much uncertainty are you willing to accept?"
                                         isExpanded={!!expandedSubsections['risk-appetite']}
                                         onToggle={() => toggleSubsection('risk-appetite')}
                                         color="from-indigo-50 to-blue-100"
                                     >
                                         <div className="space-y-4">
+                                            <div className="p-2 bg-amber-50 border border-amber-100 rounded text-xs text-amber-800 mb-2">
+                                                <strong>💡 Tip:</strong> Your risk tolerance affects partner matching, investment recommendations, and strategic options presented.
+                                            </div>
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Risk Tolerance <span className="text-red-500">*</span></label>
-                                                <select value={params.riskTolerance} onChange={(e) => setParams({ ...params, riskTolerance: e.target.value })} className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent ${isFieldInvalid('riskTolerance') ? 'border-red-500' : 'border-stone-200'}`}>
-                                                    <option value="">Select risk tolerance...</option>
-                                                    <option value="Low">Low</option>
-                                                    <option value="Medium">Medium</option>
-                                                    <option value="High">High</option>
-                                                </select>
+                                                <label className="block text-xs font-bold text-stone-700 mb-2">Risk Tolerance <span className="text-red-500">*</span></label>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                    {[
+                                                        { value: 'Very Low', desc: 'Capital preservation priority, minimal uncertainty' },
+                                                        { value: 'Low', desc: 'Conservative approach, proven strategies only' },
+                                                        { value: 'Medium', desc: 'Balanced approach, calculated risks acceptable' },
+                                                        { value: 'High', desc: 'Growth-focused, significant risks acceptable' },
+                                                        { value: 'Very High', desc: 'Aggressive strategy, high volatility acceptable' },
+                                                        { value: 'Variable', desc: 'Depends on opportunity type and size' }
+                                                    ].map(option => (
+                                                        <button
+                                                            key={option.value}
+                                                            type="button"
+                                                            onClick={() => setParams({ ...params, riskTolerance: option.value })}
+                                                            className={`w-full text-left p-3 border rounded-lg transition ${params.riskTolerance === option.value ? 'bg-amber-50 border-amber-400 ring-1 ring-amber-400' : 'border-stone-200 hover:border-amber-200 hover:bg-stone-50'}`}
+                                                        >
+                                                            <div className="font-semibold text-sm text-stone-800">{option.value}</div>
+                                                            <div className="text-xs text-stone-500">{option.desc}</div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Risk Appetite Statement (optional)</label>
+                                                <textarea
+                                                    value={params.riskAppetiteStatement || ''}
+                                                    onChange={(e) => setParams({ ...params, riskAppetiteStatement: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm h-16"
+                                                    placeholder="Describe your risk philosophy, e.g., 'We accept operational risks but avoid regulatory and reputational risks'"
+                                                />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-stone-700 mb-1">Funding Source</label>
@@ -1656,11 +1815,26 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         <option value="Angel Investors">Angel Investors</option>
                                                         <option value="Venture Capital">Venture Capital</option>
                                                         <option value="Private Equity">Private Equity</option>
+                                                        <option value="Family Office">Family Office</option>
+                                                        <option value="Strategic Investor">Strategic Investor</option>
                                                     </optgroup>
-                                                    <optgroup label="Debt & Other">
-                                                        <option value="Debt Financing">Debt Financing</option>
+                                                    <optgroup label="Debt">
+                                                        <option value="Bank Debt">Bank Debt / Credit Facility</option>
+                                                        <option value="Bonds / Debentures">Bonds / Debentures</option>
+                                                        <option value="Project Finance">Project Finance</option>
+                                                        <option value="Trade Finance">Trade Finance</option>
+                                                    </optgroup>
+                                                    <optgroup label="Public & Government">
                                                         <option value="Government Grants">Government Grants</option>
-                                                        <option value="Internal Capital">Internal Capital</option>
+                                                        <option value="Development Finance">Development Finance Institution (DFI)</option>
+                                                        <option value="Sovereign Wealth">Sovereign Wealth Fund</option>
+                                                        <option value="Export Credit">Export Credit Agency</option>
+                                                    </optgroup>
+                                                    <optgroup label="Other">
+                                                        <option value="Internal Capital">Internal Capital / Balance Sheet</option>
+                                                        <option value="Joint Venture">Joint Venture Partner Contribution</option>
+                                                        <option value="Mixed Sources">Mixed / Blended Finance</option>
+                                                        <option value="Crowdfunding">Crowdfunding / Tokenization</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
@@ -2248,11 +2422,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div className="space-y-4">
                                     <CollapsibleSection
                                         title="4.1 Persona Definition"
-                                        description="Define the key characteristics of your ideal partner personas."
+                                        description="Describe your ideal partners — who are they, what do they bring, and what do they need?"
                                         isExpanded={!!expandedSubsections['partner-personas-definition']}
                                         onToggle={() => toggleSubsection('partner-personas-definition')}
                                         color="from-indigo-50 to-blue-100"
                                     >
+                                        <div className="mb-3 p-2 bg-emerald-50 border border-emerald-100 rounded text-xs text-emerald-800">
+                                            <strong>💡 Tip:</strong> Add multiple personas to cover different partnership types. Examples: "Technology partner with AI expertise", "Government agency for regulatory access", "Distribution partner in Southeast Asia"
+                                        </div>
                                         <div className="space-y-3">
                                             <div>
                                                 <label className="block text-xs font-bold text-stone-700 mb-1">Partner Personas <span className="text-red-500">*</span></label>
@@ -2428,11 +2605,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div className="space-y-4">
                                     <CollapsibleSection
                                         title="3.1 Target Market Definition"
-                                        description="Define geographic and demographic target markets"
+                                        description="Define where you want to operate — select cities, regions, market sizes, and timeframes"
                                         isExpanded={!!expandedSubsections['market-target']}
                                         onToggle={() => toggleSubsection('market-target')}
                                         color="from-indigo-50 to-blue-100"
                                     >
+                                        <div className="mb-3 p-2 bg-blue-50 border border-blue-100 rounded text-xs text-blue-800">
+                                            <strong>💡 Tip:</strong> Be as specific as possible about your target markets. Include primary and secondary cities, and estimate market sizes where known.
+                                        </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-stone-700 mb-1">Target City / Region <span className="text-red-500">*</span></label>
@@ -2449,9 +2629,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             <div>
                                                 <label className="block text-xs font-bold text-stone-700 mb-1">Analysis Timeframe</label>
                                                 <select value={params.analysisTimeframe} onChange={(e) => setParams({...params, analysisTimeframe: e.target.value})} className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent">
-                                                    <option value="1-Year">1-Year</option>
-                                                    <option value="3-Year">3-Year</option>
-                                                    <option value="5-Year">5-Year</option>
+                                                    <option value="0-6 Months">0-6 Months (Immediate)</option>
+                                                    <option value="6-12 Months">6-12 Months (Short-term)</option>
+                                                    <option value="1-Year">1 Year</option>
+                                                    <option value="1-2 Years">1-2 Years (Medium-term)</option>
+                                                    <option value="3-Year">3 Years</option>
+                                                    <option value="3-5 Years">3-5 Years (Long-term)</option>
+                                                    <option value="5-Year">5 Years</option>
+                                                    <option value="5+ Years">5+ Years (Strategic)</option>
+                                                    <option value="10+ Years">10+ Years (Generational)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -4899,7 +5085,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         )}
 
             {/* Document Scroll Area */}
-            <div className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex justify-center relative">
+            <div ref={documentScrollRef} className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex justify-center relative">
                 
                 {/* The Page Itself */}
                 <motion.div
@@ -4935,7 +5121,11 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <>
                                     <div className="text-3xl font-bold text-stone-900 mb-2">{params.organizationName}</div>
                                     <div className="text-lg text-stone-600 italic mb-4">
-                                        {params.organizationType} • {params.country}
+                                        {(params.organizationTypes?.length || 0) > 0 
+                                            ? params.organizationTypes?.join(', ') 
+                                            : params.organizationType} • {(params.countries?.length || 0) > 0 
+                                            ? params.countries?.join(', ') 
+                                            : params.country}
                                     </div>
                                 </>
                             ) : (

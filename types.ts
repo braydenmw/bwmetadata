@@ -222,7 +222,9 @@ export interface ReportParameters {
   customDecisionAuthority?: string;
   customOrganizationSize?: string;
   region: string;
-  country: string;
+  country: string; // Primary country (backward compatible)
+  countries?: string[]; // Multiple countries for multi-select
+  organizationTypes?: string[]; // Multiple org types for multi-select
   industry: string[];
   nicheAreas?: string[];
   customIndustry: string;
