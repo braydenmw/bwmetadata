@@ -8,7 +8,8 @@ import {
     Zap, Users, Scale, GitBranch,
     FileText, BarChart3, Handshake, TrendingUp,
     Database, Calculator, PieChart, Activity, Cpu, AlertCircle,
-    X, Plus, MessageCircle, Send, User, ArrowRight, DollarSign, RefreshCw
+    X, Plus, MessageCircle, Send, User, ArrowRight, DollarSign, RefreshCw,
+    Volume2, VolumeX, Square
 } from 'lucide-react';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, toolCategories, RefinedIntake } from '../types';
@@ -250,6 +251,57 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     { text: "Hello! I'm your BW Consultant. How can I help you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // Voice synthesis function - speaks text aloud
+  const speakText = useCallback((text: string) => {
+    if (!voiceEnabled || typeof window === 'undefined') return;
+    
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    // Clean text for speech (remove markdown formatting)
+    const cleanText = text
+      .replace(/\*\*/g, '')
+      .replace(/\*/g, '')
+      .replace(/•/g, '')
+      .replace(/📋|🔍|🤝|📊|📄|🌴|🎯|⚠️|💡|✅/g, '')
+      .replace(/\n\n/g, '. ')
+      .replace(/\n/g, '. ');
+    
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    // Try to use a professional-sounding voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => 
+      v.name.includes('Google') || 
+      v.name.includes('Microsoft') || 
+      v.name.includes('Samantha') ||
+      v.lang.startsWith('en')
+    ) || voices[0];
+    
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    
+    window.speechSynthesis.speak(utterance);
+  }, [voiceEnabled]);
+
+  // Stop speaking function
+  const stopSpeaking = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  }, []);
     const { snapshot: advisorSnapshot, refresh: refreshAdvisorSnapshot } = useAdvisorSnapshot(params);
     const brainObservation = useBrainObserver(params);
     const [advisorExpanded, setAdvisorExpanded] = useState(true);
@@ -472,6 +524,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         
         const bwResponse = { text: responseText, sender: 'bw' as const, timestamp: new Date() };
         setChatMessages(prev => [...prev, bwResponse]);
+        
+        // Speak the response if voice is enabled
+        speakText(responseText);
       }, 1000);
     }
   };
@@ -1092,7 +1147,27 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                     {/* CONSULTANT CHAT - For questions anytime */}
                     <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Ask a Question</h3>
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Ask a Question</h3>
+                            <div className="flex items-center gap-1">
+                                {isSpeaking && (
+                                    <button
+                                        onClick={stopSpeaking}
+                                        className="p-1 rounded bg-red-100 text-red-600 hover:bg-red-200 transition-all"
+                                        title="Stop speaking"
+                                    >
+                                        <Square size={12} />
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => setVoiceEnabled(!voiceEnabled)}
+                                    className={`p-1 rounded transition-all ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'} hover:bg-stone-200`}
+                                    title={voiceEnabled ? 'Voice enabled - click to disable' : 'Enable voice responses'}
+                                >
+                                    {voiceEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
+                                </button>
+                            </div>
+                        </div>
                         <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-48">
                             <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
                                 {chatMessages.map((msg, index) => (
