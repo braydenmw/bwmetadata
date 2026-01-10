@@ -17,7 +17,7 @@ export default function CopilotSidebar({ caseId, currentContext }: {
   currentContext?: { phase?: string; params?: ReportParameters }
 }) {
   const [messages, setMessages] = useState<string[]>([
-    '🧠 BW Nexus Copilot — Dynamic Strategic Partner',
+    '🧠 BWGA AI Copilot — Dynamic Strategic Partner',
     'I\'m analyzing your mission in real-time. Here are my initial insights:'
   ]);
   const [loading, setLoading] = useState(false);
@@ -130,9 +130,9 @@ export default function CopilotSidebar({ caseId, currentContext }: {
   return (
     <div className="w-80 p-4 border-l border-stone-200 bg-white h-full flex flex-col shrink-0">
       <div className="flex justify-between items-center mb-4">
-        <h4 className="font-bold text-stone-900 flex items-center gap-2">
+          <h4 className="font-bold text-stone-900 flex items-center gap-2">
           <BrainCircuit className="w-5 h-5 text-blue-600" />
-          Nexus Copilot
+          BWGA AI Copilot
         </h4>
         <button
           onClick={() => setIsAutonomous(!isAutonomous)}

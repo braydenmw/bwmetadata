@@ -43,7 +43,7 @@ export const LegalInfoHub: React.FC<LegalInfoHubProps> = ({ onBack, initialSecti
                         <LayoutGrid className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <h1 className="font-serif font-bold text-stone-900 leading-none">BW Nexus</h1>
+                        <h1 className="font-serif font-bold text-stone-900 leading-none">BWGA AI</h1>
                         <span className="text-[10px] text-blue-600 font-bold uppercase tracking-widest">Governance Center</span>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ export const LegalInfoHub: React.FC<LegalInfoHubProps> = ({ onBack, initialSecti
                         </div>
                         <div className="prose prose-stone max-w-none text-sm leading-relaxed text-stone-700">
                             <p>
-                                BWGA Nexus was built as a response to repeated field observations that emerging regions are structurally excluded not because they lack value, but because they lack visibility and governance translation.
+                                BWGA AI was built as a response to repeated field observations that emerging regions are structurally excluded not because they lack value, but because they lack visibility and governance translation.
                             </p>
                         </div>
                     </section>

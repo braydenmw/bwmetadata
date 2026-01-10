@@ -625,7 +625,7 @@ npm install @google-cloud/translate
 ---
 
 ### **10. API for Developers** (Not Built)
-**Opportunity:** Let other apps consume BW Nexus intelligence
+**Opportunity:** Let other apps consume BWGA AI intelligence
 **Endpoints:**
 ```
 POST /api/analyze-deal

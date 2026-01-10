@@ -25,9 +25,9 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
     // Initial Welcome Message
     useEffect(() => {
         setMessages([{
-            sender: 'copilot',
-            text: "I'm your BW Nexus Copilot. I can analyze your objectives, find partners, or assess risks in real-time. How can I assist?"
-        }]);
+                sender: 'copilot',
+                text: "I'm your BWGA AI Copilot. I can analyze your objectives, find partners, or assess risks in real-time. How can I assist?"
+            }]);
     }, []);
 
     const handleSendMessage = async (textOverride?: string) => {
@@ -118,7 +118,7 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
                     BW
                 </div>
                 <div>
-                    <h3 className="text-sm font-bold text-stone-900">BW Nexus Copilot</h3>
+                    <h3 className="text-sm font-bold text-stone-900">BWGA AI Copilot</h3>
                     <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span className="text-[10px] text-stone-500 font-medium uppercase tracking-wide">Live Assistant</span>

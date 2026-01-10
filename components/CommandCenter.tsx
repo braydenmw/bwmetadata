@@ -88,7 +88,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 rounded-full text-sm text-slate-300 mb-6">
                             <Shield size={16} className="text-green-400" />
-                            <span><strong>NSIL</strong> — Nexus Strategic Intelligence Layer v6.0</span>
+                            <span><strong>NSIL</strong> — Nexus Strategic Intelligence Layer: The Ten-Step Protocol v6.0</span>
                         </div>
                         <h1 className="text-5xl md:text-6xl font-light mb-6 leading-tight">
                             Institutional-Grade Intelligence<br />
@@ -210,8 +210,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         </div>
                         <h2 className="text-3xl font-light mb-4">Technical Architecture & Intelligence Framework</h2>
                         <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                            Under the hood: a 27-formula scoring suite powered by multi-agent adversarial reasoning, 
-                            probabilistic simulation, and evidence-clamped governance.
+                            Before NSIL can analyze, the platform employs a comprehensive Technical Architecture & Intelligence Framework. 
+                            The NSIL intelligence layer integrates a 27-formula scoring suite with multi-agent reasoning systems, 
+                            delivering complete algorithmic documentation and innovation statements that explain how unstructured inputs 
+                            are transformed into institutional-grade intelligence through systematic analysis and probabilistic modeling.
                         </p>
                     </div>
 
@@ -370,10 +372,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             <section className="py-16 px-8 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light text-slate-900 mb-4">The Five-Persona Boardroom</h2>
+                        <h2 className="text-3xl font-light text-slate-900 mb-4">The 5-Layer NSIL Autonomous Reasoning Architecture</h2>
                         <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                            Every opportunity is debated by five specialized AI reviewers operating in parallel. 
-                            They disagree, challenge assumptions, and surface blind spots—before your stakeholders do.
+                            The NSIL framework operates through five interconnected layers of autonomous reasoning, 
+                            culminating in the 5 AI Personas adversarial debate system. Each layer builds upon the previous, 
+                            ensuring comprehensive analysis that surfaces risks, opportunities, and strategic insights before 
+                            human stakeholders review the opportunity.
                         </p>
                     </div>
 

@@ -4,7 +4,6 @@
 **Test Scenario:** International renewable energy company seeking strategic partnership in the Philippines  
 **Platform Version:** NSIL v6.0
 
----
 
 ## 📋 TEST COMPANY PROFILE
 

@@ -167,7 +167,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                     <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
                     <h2 className="text-2xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
                     <p className="text-base mb-4 leading-relaxed text-black text-center">
-                      BW Nexus AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
+                      BWGA AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
                       as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
                       constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
                     </p>
@@ -248,8 +248,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <div>
               <p className="text-amber-200 uppercase tracking-widest text-xs mb-3">NEXT STEPS</p>
               <h2 className="text-3xl font-light text-white mb-6">Partnership & Pilot Programs</h2>
-              <p className="text-amber-100 leading-relaxed mb-6">
-                The most effective way to demonstrate the value of BW Nexus AI is to apply it to real-world challenges. 
+                <p className="text-amber-100 leading-relaxed mb-6">
+                The most effective way to demonstrate the value of BWGA AI is to apply it to real-world challenges. 
                 We propose collaborative partnerships through structured pilot programs.
               </p>
               <div className="space-y-4">
@@ -2999,10 +2999,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             <div>
               <h4 className="font-semibold mb-4 text-slate-200">Development Status</h4>
               <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <p className="text-xs text-slate-400 mb-2">CURRENT PHASE</p>
+                  <p className="text-xs text-slate-400 mb-2">CURRENT PHASE</p>
                 <p className="text-sm text-white font-medium mb-3">Research & Development</p>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  BW Nexus AI is currently in active R&D phase, operating under Brayden Walls as a registered 
+                  BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered 
                   Australian sole trader. The platform is being developed for future commercial deployment 
                   to government and enterprise clients.
                 </p>
@@ -3130,7 +3130,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       </Modal>
 
       {/* TERMS OF ENGAGEMENT MODAL */}
-      <Modal isOpen={showTermsModal} onClose={() => setShowTermsModal(false)} title="Terms of Engagement - BW Nexus AI">
+      <Modal isOpen={showTermsModal} onClose={() => setShowTermsModal(false)} title="Terms of Engagement - BWGA AI">
         <div className="space-y-6">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
@@ -3138,7 +3138,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <div>
                 <h4 className="font-semibold text-amber-800 text-sm">Important Legal Notice</h4>
                 <p className="text-amber-700 text-sm mt-1">
-                  Please read these terms carefully. By accessing the BW Nexus Intelligence OS, you agree to be bound by these terms and conditions.
+                  Please read these terms carefully. By accessing the BWGA AI OS, you agree to be bound by these terms and conditions.
                 </p>
               </div>
             </div>
@@ -3163,7 +3163,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 className="mt-1 w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-500"
               />
               <label htmlFor="terms-acceptance" className="text-sm text-slate-700 leading-relaxed">
-                I have read, understood, and agree to the Terms of Engagement for the BW Nexus Intelligence OS. I acknowledge that this is a decision support platform and all outputs are advisory in nature.
+                I have read, understood, and agree to the Terms of Engagement for the BWGA AI OS. I acknowledge that this is a decision support platform and all outputs are advisory in nature.
               </label>
             </div>
 

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import {
     Building2, Target, ShieldCheck, Shield,
@@ -350,9 +350,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         return () => clearTimeout(timer);
     }, []);
 
-    // Auto-scroll chat messages when new messages are added
+    // Auto-scroll chat messages when new messages are added (only within chat container)
     useEffect(() => {
-        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, [chatMessages]);
 
     // Ensure sidebar starts at top on component mount
@@ -915,10 +915,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
             <div className="flex-1 overflow-y-auto custom-scrollbar">
                 <div className="p-5 space-y-4">
-                    {/* COMPREHENSIVE SYSTEM INTAKE: 10 Sections */}
-                    <div>
-
-                    {/* Contextual AI Assistant (fixed, follows active step) */}
+                    {/* Contextual AI Assistant (shows when a step is active) */}
                     {activeModal && onChangeViewMode && (
                         <ContextualAIAssistant
                             activeStep={activeModal}
@@ -931,6 +928,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             city={params.userCity}
                         />
                     )}
+                    
+                    {/* STRATEGIC INTAKE WIZARD: 10 Sections */}
+                    <div>
                         <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Strategic Intake Wizard</h3>
                         <p className="text-[11px] text-stone-600 mb-3">Complete each section to build your comprehensive strategic analysis. Select multiple options in each step to capture the full scope of your needs.</p>
                         <div className="space-y-2">
@@ -970,143 +970,129 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 </button>
                             ))}
                         </div>
-                        <div className="mt-3 bg-slate-50 border border-stone-200 rounded-lg p-3 text-[11px] text-stone-700 leading-relaxed">
-                            <div className="font-semibold text-blue-900 text-xs mb-2 flex items-center gap-2">💡 Tips for Best Results</div>
-                            <ul className="list-disc list-inside space-y-1">
-                                <li>Multi-select everywhere, with free-text “other”.</li>
-                                <li>Examples/tooltips per field; add evidence/source notes.</li>
-                                <li>Support scenarios (financial, risk) and staged roadmaps.</li>
-                                <li>Use sliders/chips for speed + always a free-text override.</li>
-                                <li>Soft validation: surface missing info gently; show section progress.</li>
-                                <li>Include “known unknowns” and “assumptions” in every section.</li>
-                            </ul>
+                        {/* Dynamic AI Recommendations */}
+                        <details className="mt-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                            <summary className="p-2 cursor-pointer flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Cpu size={12} className="text-blue-600" />
+                                    <span className="text-xs font-semibold text-blue-900">System Thinking</span>
+                                </div>
+                            </summary>
+                            <div className="px-3 pb-2 text-[11px] text-blue-800 space-y-1">
+                                {completeness < 30 && <p>Start with Identity</p>}
+                                {completeness >= 30 && completeness < 60 && <p>Add Financial data</p>}
+                                {completeness >= 60 && <p>Great progress!</p>}
+                            </div>
+                        </details>
+                    </div>
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
+                    {/* ASK A QUESTION - Before document upload */}
+                    <div>
+                        <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Ask a Question</h3>
+                            <div className="flex items-center gap-1">
+                                {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-100 text-red-600"><Square size={10} /></button>}
+                                <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
+                                    {voiceEnabled ? <Volume2 size={10} /> : <VolumeX size={10} />}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-80">
+                            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
+                                {chatMessages.length === 0 ? (
+                                    <div className="text-stone-400 text-center py-4">
+                                        <div className="text-lg mb-1">💬</div>
+                                        <div>Ask about your analysis, documents, or strategy...</div>
+                                    </div>
+                                ) : chatMessages.map((msg, index) => (
+                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[85%] px-3 py-2 rounded-lg whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-stone-700 text-white' : 'bg-stone-100 text-stone-900'}`}>{msg.text}</div>
+                                    </div>
+                                ))}
+                                <div ref={chatMessagesEndRef} />
+                            </div>
+                            <div className="border-t border-stone-200 flex items-center gap-2 px-3 py-2 bg-stone-50">
+                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Type your question..." className="flex-1 text-sm border border-stone-300 rounded-lg px-3 py-2 bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500" />
+                                <button onClick={handleSendMessage} className="p-2 bg-stone-700 text-white rounded-lg hover:bg-stone-800"><Send size={16} /></button>
+                            </div>
                         </div>
                     </div>
 
                     <div className="w-full h-px bg-stone-200"></div>
 
-                    {/* DOCUMENT UPLOAD - Prominent button */}
+                    {/* DOCUMENT UPLOAD */}
                     <div>
-                        <div className="mb-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-                            <div className="text-xs font-bold text-indigo-900 mb-1 flex items-center gap-2">
-                                <FileText size={14} className="text-indigo-600" />
-                                Supporting Documents
-                            </div>
-                            <p className="text-xs text-indigo-800 leading-relaxed">
-                                Upload RFPs, mandates, briefing decks, or clearance letters. This is a second avenue to add more documents if required. The BW Consultant will analyze these documents to provide deeper, more contextual recommendations tailored to your specific situation.
-                            </p>
-                        </div>
                         <button
                             onClick={() => setShowDocumentUpload(true)}
-                            className="w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
+                            className="w-full px-3 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-700"
                         >
-                            <FileText size={16} />
+                            <FileText size={14} />
                             Upload Documents
                         </button>
                         {(params.ingestedDocuments?.length || 0) > 0 && (
                             <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-800">
-                                <div className="font-semibold">{params.ingestedDocuments!.length} document{params.ingestedDocuments!.length > 1 ? 's' : ''} uploaded</div>
+                                {params.ingestedDocuments!.length} document{params.ingestedDocuments!.length > 1 ? 's' : ''} uploaded
                             </div>
                         )}
                     </div>
 
                     <div className="w-full h-px bg-stone-200"></div>
 
-                    {/* ACTION CENTER: Primary CTAs */}
+                    {/* ACTIONS - Compact */}
                     <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Actions</h3>
-                        <div className="space-y-2">
+                        <div className="flex gap-2">
                             <button
                                 onClick={onGenerate}
                                 disabled={completeness < 50}
-                                className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
-                                    completeness >= 50
-                                        ? 'bg-stone-700 text-white hover:bg-stone-800'
-                                        : 'bg-stone-100 text-stone-500 cursor-not-allowed'
-                                }`}
-                                title={completeness < 50 ? 'Complete intake steps first' : 'Generate draft report'}
+                                className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 ${completeness >= 50 ? 'bg-stone-700 text-white hover:bg-stone-800' : 'bg-stone-100 text-stone-400 cursor-not-allowed'}`}
                             >
-                                <FileText size={14} />
-                                Generate Draft
+                                <Zap size={14} />
+                                Generate
                             </button>
                             <button
                                 onClick={() => setShowDocGenSuite(true)}
                                 disabled={!canLaunchDocSuite}
-                                className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
-                                    canLaunchDocSuite
-                                        ? 'border border-amber-300 text-amber-600 hover:bg-amber-50'
-                                        : 'border border-stone-200 text-stone-400 cursor-not-allowed'
-                                }`}
-                                title={canLaunchDocSuite ? 'Generate official documents' : 'Set country, city, partner first'}
+                                className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 ${canLaunchDocSuite ? 'border border-amber-300 text-amber-600 hover:bg-amber-50' : 'border border-stone-200 text-stone-400 cursor-not-allowed'}`}
                             >
                                 <Download size={14} />
-                                Generate Docs
+                                Docs
                             </button>
                         </div>
                         {!canLaunchDocSuite && (
-                            <div className="mt-2 p-2 rounded-lg bg-indigo-50 border border-indigo-200">
-                                <div className="text-xs text-indigo-800">
-                                    <strong>To unlock docs:</strong> Set organization country, target city, and partner in Intake.
-                                </div>
-                            </div>
+                            <p className="text-[10px] text-stone-500 mt-1">Set country, city, partner to unlock docs</p>
                         )}
                     </div>
 
                     <div className="w-full h-px bg-stone-200"></div>
 
-                    <div className="p-4 rounded-xl border border-stone-200 bg-white shadow-sm space-y-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">Summary Blueprint</div>
-                                <p className="text-xs text-stone-600 mt-1">Follow these checkpoints to reach a decision-ready report.</p>
+                    {/* SUMMARY BLUEPRINT - Compact status bar */}
+                    <details className="rounded-lg border border-stone-200 bg-white overflow-hidden">
+                        <summary className="cursor-pointer px-3 py-2 flex items-center justify-between hover:bg-stone-50">
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Blueprint</span>
+                                <div className="flex gap-1">
+                                    {summaryBlueprint.map(step => (
+                                        <div key={step.id} className={`w-2 h-2 rounded-full ${step.complete ? 'bg-emerald-500' : step.id === 'draft' && !readinessForDraft ? 'bg-stone-300' : 'bg-amber-400'}`} title={step.label}></div>
+                                    ))}
+                                </div>
+                                <span className="text-[10px] text-stone-500">{summaryBlueprint.filter(s => s.complete).length}/{summaryBlueprint.length}</span>
                             </div>
-                            <button
-                                onClick={scrollAdvisorPanelIntoView}
-                                className="text-[11px] font-semibold text-amber-600 hover:underline"
-                            >
-                                View Advisor
-                            </button>
-                        </div>
-                        <div className="space-y-3">
+                            <span className="text-[10px] text-stone-400">expand</span>
+                        </summary>
+                        <div className="p-2 border-t border-stone-100 space-y-2 bg-stone-50">
                             {summaryBlueprint.map(step => {
-                                const statusLabel = step.complete ? 'Ready' : step.id === 'draft' && !readinessForDraft ? 'Locked' : 'Next';
-                                const statusClass = step.complete
-                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                    : statusLabel === 'Locked'
-                                        ? 'bg-stone-100 text-stone-500 border-stone-200'
-                                        : 'bg-amber-50 text-amber-700 border-amber-200';
+                                const isLocked = step.id === 'draft' && !readinessForDraft;
                                 return (
-                                    <div key={step.id} className="p-3 border border-stone-200 rounded-lg bg-white/70">
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div>
-                                                <div className="text-xs font-semibold text-stone-900">{step.label}</div>
-                                                <p className="text-[11px] text-stone-600 mt-1 leading-snug">{step.description}</p>
-                                            </div>
-                                            <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full border ${statusClass}`}>
-                                                {statusLabel}
-                                            </span>
-                                        </div>
-                                        <button
-                                            onClick={step.onClick}
-                                            disabled={Boolean((step as any).disabled)}
-                                            className={`mt-2 w-full text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-colors ${
-                                                (step as any).disabled
-                                                    ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                                                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                                            }`}
-                                        >
-                                            {step.cta}
-                                        </button>
-                                    </div>
+                                    <button key={step.id} onClick={step.onClick} disabled={Boolean((step as any).disabled)} className={`w-full text-left px-2 py-1.5 rounded flex items-center justify-between text-[11px] ${step.complete ? 'bg-emerald-50 text-emerald-800' : isLocked ? 'bg-stone-100 text-stone-400' : 'bg-amber-50 text-amber-800 hover:bg-amber-100'}`}>
+                                        <span>{step.label}</span>
+                                        <span className="text-[9px] font-bold uppercase">{step.complete ? '✓' : isLocked ? 'Locked' : 'Next'}</span>
+                                    </button>
                                 );
                             })}
                         </div>
-                        <div className="text-[11px] text-stone-500 border border-dashed border-stone-200 rounded-lg p-3 bg-stone-50">
-                            {params.ingestedDocuments?.length
-                                ? `${params.ingestedDocuments.length} evidence file${params.ingestedDocuments.length > 1 ? 's' : ''} attached. The document intelligence pipeline will auto-reference them inside the draft.`
-                                : 'Upload briefing packets so the advisor can quote real precedent-ready evidence inside the summary.'}
-                        </div>
-                    </div>
+                    </details>
 
                     {isDraftFinalized && (
                         <>
@@ -1166,165 +1152,48 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         </>
                     )}
 
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* CONSULTANT CHAT - For questions anytime */}
-                    <div>
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Ask a Question</h3>
-                            <div className="flex items-center gap-1">
-                                {isSpeaking && (
-                                    <button
-                                        onClick={stopSpeaking}
-                                        className="p-1 rounded bg-red-100 text-red-600 hover:bg-red-200 transition-all"
-                                        title="Stop speaking"
-                                    >
-                                        <Square size={12} />
-                                    </button>
-                                )}
-                                <button
-                                    onClick={() => setVoiceEnabled(!voiceEnabled)}
-                                    className={`p-1 rounded transition-all ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'} hover:bg-stone-200`}
-                                    title={voiceEnabled ? 'Voice enabled - click to disable' : 'Enable voice responses'}
-                                >
-                                    {voiceEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-48">
-                            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
-                                {chatMessages.map((msg, index) => (
-                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-xs px-3 py-2 rounded-lg text-xs whitespace-pre-wrap ${
-                                            msg.sender === 'user'
-                                                ? 'bg-stone-700 text-white'
-                                                : 'bg-stone-100 text-stone-900'
-                                        }`}>
-                                            {msg.text}
-                                        </div>
+                    {/* BRAIN INTELLIGENCE - Compact live alerts, only shown when there's content */}
+                    {(brainObservation.isThinking || brainObservation.globalSignals.length > 0 || brainObservation.suggestions.length > 0 || brainObservation.scores.composite !== null) && (
+                        <>
+                            <div className="w-full h-px bg-stone-200"></div>
+                            <details className="rounded-lg border border-indigo-200 bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden" open>
+                                <summary className="cursor-pointer px-3 py-2 flex items-center justify-between hover:bg-indigo-100/50">
+                                    <div className="flex items-center gap-2">
+                                        {brainObservation.isThinking && <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>}
+                                        <span className="text-[10px] font-bold uppercase tracking-wide text-indigo-700">Brain</span>
+                                        {brainObservation.scores.composite !== null && (
+                                            <span className="text-xs font-bold text-amber-600">{Math.round(brainObservation.scores.composite)}%</span>
+                                        )}
+                                        {brainObservation.globalSignals.length > 0 && (
+                                            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-indigo-200 text-indigo-800">{brainObservation.globalSignals.length} alerts</span>
+                                        )}
                                     </div>
-                                ))}
-                                <div ref={chatMessagesEndRef} />
-                            </div>
-                            <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-2 bg-white">
-                                <input
-                                    type="text"
-                                    value={chatInput}
-                                    onChange={(e) => setChatInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    placeholder="Ask..."
-                                    className="flex-1 text-xs border border-stone-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-300 focus:border-transparent bg-white"
-                                />
-                                <button
-                                    onClick={handleSendMessage}
-                                    className="px-2 py-1 bg-stone-700 text-white rounded hover:bg-stone-800 transition-all"
-                                >
-                                    <Send size={12} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* BRAIN INTELLIGENCE - Always visible, powered by useBrainObserver */}
-                    <div className="w-full h-px bg-stone-200"></div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-3">
-                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Brain Intelligence</h3>
-                            {brainObservation.isThinking && (
-                                <div className="flex items-center gap-1">
-                                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                                    <span className="text-[10px] text-amber-600 font-medium">Analyzing...</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Live Scores */}
-                        {(brainObservation.scores.spi !== null || brainObservation.scores.rroi !== null) && (
-                            <div className="mb-3 p-2 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
-                                <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Live Scores</div>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {brainObservation.scores.spi !== null && (
-                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
-                                            <div className="text-[10px] text-stone-500">SPI</div>
-                                            <div className="text-sm font-bold text-indigo-700">{Math.round(brainObservation.scores.spi)}</div>
+                                    <span className="text-[10px] text-indigo-400">details</span>
+                                </summary>
+                                <div className="p-2 border-t border-indigo-100 space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                                    {/* Compact Scores Row */}
+                                    {(brainObservation.scores.spi !== null || brainObservation.scores.rroi !== null) && (
+                                        <div className="flex gap-2 text-[10px]">
+                                            {brainObservation.scores.spi !== null && <span className="px-2 py-0.5 bg-white rounded border">SPI: <b className="text-indigo-700">{Math.round(brainObservation.scores.spi)}</b></span>}
+                                            {brainObservation.scores.rroi !== null && <span className="px-2 py-0.5 bg-white rounded border">RROI: <b className="text-emerald-700">{Math.round(brainObservation.scores.rroi)}</b></span>}
+                                            {brainObservation.scores.seam !== null && <span className="px-2 py-0.5 bg-white rounded border">SEAM: <b className="text-purple-700">{Math.round(brainObservation.scores.seam)}</b></span>}
                                         </div>
                                     )}
-                                    {brainObservation.scores.rroi !== null && (
-                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
-                                            <div className="text-[10px] text-stone-500">RROI</div>
-                                            <div className="text-sm font-bold text-emerald-700">{Math.round(brainObservation.scores.rroi)}</div>
-                                        </div>
-                                    )}
-                                    {brainObservation.scores.seam !== null && (
-                                        <div className="text-center p-1.5 bg-white rounded border border-indigo-100">
-                                            <div className="text-[10px] text-stone-500">SEAM</div>
-                                            <div className="text-sm font-bold text-purple-700">{Math.round(brainObservation.scores.seam)}</div>
-                                        </div>
-                                    )}
-                                    {brainObservation.scores.composite !== null && (
-                                        <div className="text-center p-1.5 bg-white rounded border border-amber-200">
-                                            <div className="text-[10px] text-stone-500">Overall</div>
-                                            <div className="text-sm font-bold text-amber-700">{Math.round(brainObservation.scores.composite)}</div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Brain Suggestions */}
-                        {brainObservation.suggestions.length > 0 && (
-                            <div className="mb-3">
-                                <div className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide mb-2">Next Steps</div>
-                                <div className="space-y-1">
-                                    {brainObservation.suggestions.map((suggestion, index) => (
-                                        <div key={index} className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 rounded px-2 py-1">
-                                            {suggestion}
+                                    {/* Suggestions as single lines */}
+                                    {brainObservation.suggestions.map((s, i) => (
+                                        <div key={i} className="text-[11px] text-emerald-800 flex items-center gap-1"><span className="text-emerald-500">→</span> {s}</div>
+                                    ))}
+                                    {/* Signals as compact alerts */}
+                                    {brainObservation.globalSignals.slice(0, 4).map((signal, i) => (
+                                        <div key={i} className={`text-[11px] px-2 py-1 rounded flex items-start gap-2 ${signal.severity === 'critical' ? 'bg-rose-100 text-rose-800' : signal.severity === 'warning' ? 'bg-amber-100 text-amber-800' : 'bg-white text-stone-700'}`}>
+                                            <span className={`mt-0.5 w-1.5 h-1.5 rounded-full shrink-0 ${signal.severity === 'critical' ? 'bg-rose-500' : signal.severity === 'warning' ? 'bg-amber-500' : 'bg-indigo-500'}`}></span>
+                                            <span><b>{signal.title}</b> — {signal.description}</span>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
-
-                        {/* Brain Signals */}
-                        {brainObservation.globalSignals.length > 0 && (
-                            <div>
-                                <div className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wide mb-2">Live Signals</div>
-                                <div className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
-                                    {brainObservation.globalSignals.slice(0, 5).map((signal, index) => (
-                                        <div key={index} className={`p-2 rounded-lg border ${
-                                            signal.severity === 'success' ? 'bg-emerald-50 border-emerald-200' :
-                                            signal.severity === 'warning' ? 'bg-amber-50 border-amber-200' :
-                                            signal.severity === 'critical' ? 'bg-rose-50 border-rose-200' :
-                                            'bg-indigo-50 border-indigo-200'
-                                        }`}>
-                                            <div className="flex items-start gap-2">
-                                                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                                                    signal.severity === 'success' ? 'bg-emerald-500' :
-                                                    signal.severity === 'warning' ? 'bg-amber-500' :
-                                                    signal.severity === 'critical' ? 'bg-rose-500' :
-                                                    'bg-indigo-500'
-                                                }`}></div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-[11px] font-semibold text-stone-900">{signal.title}</div>
-                                                    <div className="text-[10px] text-stone-600 mt-0.5">{signal.description}</div>
-                                                    {signal.actionable && (
-                                                        <div className="text-[10px] text-amber-600 mt-1 font-medium">→ {signal.actionable}</div>
-                                                    )}
-                                                    <div className="text-[9px] text-stone-400 mt-1">{signal.source} • {signal.confidence}% confidence</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {brainObservation.globalSignals.length === 0 && brainObservation.suggestions.length === 0 && !brainObservation.isThinking && (
-                            <div className="text-[11px] text-stone-500 italic p-2 bg-stone-50 rounded border border-stone-200">
-                                Start filling in the Identity section to activate brain intelligence. The system will analyze your inputs in real-time.
-                            </div>
-                        )}
-                    </div>
+                            </details>
+                        </>
+                    )}
 
                     {/* Legacy autonomous mode - kept for backward compatibility */}
                     {autonomousMode && insights.filter(i => i.isAutonomous).length > 0 && (
@@ -1454,6 +1323,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                     {(params.organizationTypes?.length || 0) > 0 && (
                                                         <div className="mt-1 text-[10px] text-amber-700">Selected: {params.organizationTypes?.join(', ')}</div>
                                                     )}
+                                                    <div className="mt-2 flex gap-1">
+                                                        <input type="text" placeholder="Add custom type..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.organizationTypes || []; if (!curr.includes(val)) setParams({...params, organizationTypes: [...curr, val], organizationType: curr[0] || val}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                        <span className="text-[9px] text-stone-400 self-center">↵</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1497,6 +1370,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                     {(params.countries?.length || 0) > 0 && (
                                                         <div className="mt-1 text-[10px] text-amber-700">Selected: {params.countries?.join(', ')}</div>
                                                     )}
+                                                    <div className="mt-2 flex gap-1">
+                                                        <input type="text" placeholder="Add custom country..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.countries || []; if (!curr.includes(val)) setParams({...params, countries: [...curr, val], country: curr[0] || val}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                        <span className="text-[9px] text-stone-400 self-center">↵</span>
+                                                    </div>
                                                 </div>
                                                 <div>
                                                     <label className="block text-xs font-bold text-stone-700 mb-1">Operating Regions</label>
@@ -1723,6 +1600,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         </label>
                                                     ))}
                                                 </div>
+                                                <div className="mt-2 flex gap-1">
+                                                    <input type="text" placeholder="Add custom industry..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.industry || []; if (!curr.includes(val)) setParams({...params, industry: [...curr, val]}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                    <span className="text-[9px] text-stone-400 self-center">↵</span>
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-stone-700 mb-1">Niche Areas or Specializations</label>
@@ -1935,6 +1816,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         <option value="Crowdfunding">Crowdfunding / Tokenization</option>
                                                     </optgroup>
                                                 </select>
+                                                <div className="mt-2 flex gap-1">
+                                                    <input type="text" placeholder="Or enter custom source..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { setParams({...params, fundingSource: (e.target as HTMLInputElement).value.trim()}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                    <span className="text-[9px] text-stone-400 self-center">↵</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </CollapsibleSection>
@@ -2168,6 +2053,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                             <span className="text-xs text-stone-700 leading-snug">{obj}</span>
                                                         </label>
                                                     ))}
+                                                </div>
+                                                <div className="mt-2 flex gap-1">
+                                                    <input type="text" placeholder="Add custom objective..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.strategicObjectives || []; if (!curr.includes(val)) setParams({...params, strategicObjectives: [...curr, val]}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                    <span className="text-[9px] text-stone-400 self-center">↵</span>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2595,6 +2484,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                             </button>
                                                         );
                                                     })}
+                                                </div>
+                                                <div className="mt-2 flex gap-1">
+                                                    <input type="text" placeholder="Add custom group..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.stakeholderAlignment || []; if (!curr.includes(val)) setParams({...params, stakeholderAlignment: [...curr, val]}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                    <span className="text-[9px] text-stone-400 self-center">↵</span>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
