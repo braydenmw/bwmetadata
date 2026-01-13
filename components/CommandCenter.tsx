@@ -3,7 +3,7 @@ import {
     CheckCircle2, ShieldAlert, FileText, BarChart3, ArrowRight, X, 
     MessageSquare, Cpu, Download, Search, Lightbulb, Scale, Calculator, 
     Cog, Building2, Globe, Users, Briefcase, Brain, Target, Shield,
-    TrendingUp, FileCheck, Zap, Eye, AlertTriangle, Database, GitBranch
+    TrendingUp, FileCheck, Zap, Eye, AlertTriangle, Database, GitBranch, CreditCard
 } from 'lucide-react';
 
 interface CommandCenterProps {
@@ -681,6 +681,64 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 Augment your practice with deep, forensic AI-driven research.
                             </p>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Beta Access & Partnership */}
+            <section className="py-16 px-8 bg-gradient-to-br from-slate-100 to-slate-200 border-t border-slate-300">
+                <div className="max-w-4xl mx-auto text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm text-slate-600 mb-6 shadow-sm border border-slate-200">
+                        <Shield size={16} className="text-blue-500" />
+                        <span>BWGA Intelligence AI</span>
+                    </div>
+                    
+                    <h2 className="text-3xl font-light text-slate-900 mb-2">
+                        Strategic Partnership Intelligence
+                    </h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                        BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade 
+                        AI systems for cross-border investment and regional economic development.
+                    </p>
+
+                    <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200 max-w-xl mx-auto">
+                        <h3 className="text-xl font-medium text-slate-900 mb-2">
+                            Beta Support Contribution
+                        </h3>
+                        <div className="text-4xl font-light text-slate-900 mb-4">
+                            $100 <span className="text-lg text-slate-500">AUD</span>
+                        </div>
+                        
+                        <ul className="text-sm text-slate-600 text-left mb-6 space-y-2 max-w-xs mx-auto">
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">&#10003;</span>
+                                <span>Early access to BWGA Intelligence AI beta</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">&#10003;</span>
+                                <span>Priority onboarding and setup support</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">&#10003;</span>
+                                <span>Direct feedback channel with development team</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-500 mt-0.5">&#10003;</span>
+                                <span>100% refundable if not accepted into beta</span>
+                            </li>
+                        </ul>
+
+                        <button 
+                            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all shadow-md hover:shadow-lg cursor-pointer"
+                        >
+                            <CreditCard size={18} />
+                            Join Beta Program
+                        </button>
+
+                        <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                            This is a beta support contribution, not an investment or equity purchase.<br />
+                            Full refund available if your application is not accepted.
+                        </p>
                     </div>
                 </div>
             </section>

@@ -547,64 +547,56 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* Key Features Section with Modal Triggers */}
       <section className="py-20 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6">
-          {/* Regional Challenges & Solutions */}
+          {/* Regional Growth Commitment */}
           <div className="mb-16">
             <p className="text-slate-500 uppercase tracking-widest text-xs mb-3 text-center">SOLVING REAL PROBLEMS</p>
             <h2 className="text-3xl font-light text-slate-900 mb-4 text-center">Regional Challenges, Intelligent Solutions</h2>
-            <p className="text-lg text-slate-500 mb-10 max-w-3xl mx-auto text-center">
-              The platform was built to address the specific barriers that prevent global capital from reaching regional communities.
+            <p className="text-lg text-slate-600 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
+              This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential.
             </p>
+            <p className="text-lg text-slate-600 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
+              BWGA Intelligence AI is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that <strong className="text-slate-900">10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report system—it's a practical bridge between global decision-makers and real opportunities on the ground.
+            </p>
+            <p className="text-lg text-slate-600 mb-10 max-w-3xl mx-auto text-center leading-relaxed">
+              What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluated—anywhere in the world.
+            </p>
+            
+            {/* Highlights */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1 */}
               <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <Globe className="w-5 h-5 text-slate-600" />
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="w-5 h-5 text-blue-600" />
                 </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Regional Invisibility</h4>
-                <p className="text-xs text-slate-500 mb-3">Regional opportunities lack structured data for global comparison.</p>
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Solution</p>
-                  <p className="text-sm font-medium text-slate-900">RROI™ Regional Scoring</p>
-                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-2">Elevating Regional Opportunity</h4>
+                <p className="text-xs text-slate-500">A platform built to translate local potential into global decision frameworks.</p>
               </div>
               
               {/* Card 2 */}
               <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="w-5 h-5 text-slate-600" />
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <BarChart3 className="w-5 h-5 text-green-600" />
                 </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Partnership Risks</h4>
-                <p className="text-xs text-slate-500 mb-3">Cultural and governance gaps remain invisible until failure.</p>
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Solution</p>
-                  <p className="text-sm font-medium text-slate-900">SEAM™ Ecosystem Analysis</p>
-                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-2">Uncertainty to Clarity</h4>
+                <p className="text-xs text-slate-500">Structured intelligence that turns complexity into usable, board-ready analysis.</p>
               </div>
               
               {/* Card 3 */}
               <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-5 h-5 text-slate-600" />
+                <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="w-5 h-5 text-amber-600" />
                 </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Optimistic Forecasts</h4>
-                <p className="text-xs text-slate-500 mb-3">Single-point projections collapse when reality deviates.</p>
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Solution</p>
-                  <p className="text-sm font-medium text-slate-900">Monte Carlo Simulation</p>
-                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-2">10% Regional Reinvestment</h4>
+                <p className="text-xs text-slate-500">A commitment to reinvest 10% of all paid access into regional growth initiatives.</p>
               </div>
               
               {/* Card 4 */}
               <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-5 h-5 text-slate-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="w-5 h-5 text-purple-600" />
                 </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Analyst Bottleneck</h4>
-                <p className="text-xs text-slate-500 mb-3">Manual research takes weeks and costs prohibitive fees.</p>
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Solution</p>
-                  <p className="text-sm font-medium text-slate-900">Multi-Persona AI Debate</p>
-                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-2">Decisions That Move Forward</h4>
+                <p className="text-xs text-slate-500">A system designed not just to report, but to help decisions move forward responsibly.</p>
               </div>
             </div>
           </div>
