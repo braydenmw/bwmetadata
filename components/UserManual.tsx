@@ -546,75 +546,90 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
 
       {/* Key Features Section with Modal Triggers */}
       <section className="py-20 border-b border-slate-100">
-        <div className="max-w-6xl mx-auto px-6">
-          {/* Regional Growth Commitment */}
+        <div className="max-w-full">
+          {/* Regional Growth Commitment - with photo banner */}
           <div className="mb-16">
-            <p className="text-slate-500 uppercase tracking-widest text-xs mb-3 text-center">SOLVING REAL PROBLEMS</p>
-            <h2 className="text-3xl font-light text-slate-900 mb-4 text-center">Regional Challenges, Intelligent Solutions</h2>
-            <p className="text-lg text-slate-600 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
-              This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential.
-            </p>
-            <p className="text-lg text-slate-600 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
-              BWGA Intelligence AI is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that <strong className="text-slate-900">10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report system—it's a practical bridge between global decision-makers and real opportunities on the ground.
-            </p>
-            <p className="text-lg text-slate-600 mb-10 max-w-3xl mx-auto text-center leading-relaxed">
-              What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluated—anywhere in the world.
-            </p>
-            
-            {/* Highlights */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Card 1 */}
-              <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <Globe className="w-5 h-5 text-blue-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-2">Elevating Regional Opportunity</h4>
-                <p className="text-xs text-slate-500">A platform built to translate local potential into global decision frameworks.</p>
-              </div>
+            {/* Photo Banner with Text Overlay - Full Width */}
+            <div 
+              className="relative w-full overflow-hidden mb-10"
+              style={{
+                backgroundImage: 'url(https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=2400)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              {/* Dark overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-slate-800/60 to-slate-900/70"></div>
               
-              {/* Card 2 */}
-              <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-5 h-5 text-green-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-2">Uncertainty to Clarity</h4>
-                <p className="text-xs text-slate-500">Structured intelligence that turns complexity into usable, board-ready analysis.</p>
-              </div>
-              
-              {/* Card 3 */}
-              <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="w-5 h-5 text-amber-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-2">10% Regional Reinvestment</h4>
-                <p className="text-xs text-slate-500">A commitment to reinvest 10% of all paid access into regional growth initiatives.</p>
-              </div>
-              
-              {/* Card 4 */}
-              <div className="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-lg transition-all">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-5 h-5 text-purple-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-2">Decisions That Move Forward</h4>
-                <p className="text-xs text-slate-500">A system designed not just to report, but to help decisions move forward responsibly.</p>
+              {/* Content */}
+              <div className="relative z-10 py-16 px-8 md:px-16">
+                <p className="text-blue-400 uppercase tracking-widest text-xs mb-3 text-center font-medium">SOLVING REAL PROBLEMS</p>
+                <h2 className="text-3xl md:text-4xl font-light text-white mb-6 text-center">Regional Challenges, Intelligent Solutions</h2>
+                
+                <p className="text-lg text-slate-200 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
+                  This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential.
+                </p>
+                <p className="text-lg text-slate-200 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
+                  BWGA Intelligence AI is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that <strong className="text-white">10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report system—it's a practical bridge between global decision-makers and real opportunities on the ground.
+                </p>
+                <p className="text-lg text-slate-300 max-w-3xl mx-auto text-center leading-relaxed">
+                  What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluated—anywhere in the world.
+                </p>
               </div>
             </div>
           </div>
+          
+          {/* Caption-style Highlights */}
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Globe className="w-5 h-5 text-blue-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">Elevating Regional Opportunity</h4>
+                <p className="text-xs text-slate-500">Translate local potential into global decision frameworks.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <BarChart3 className="w-5 h-5 text-green-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">Uncertainty to Clarity</h4>
+                <p className="text-xs text-slate-500">Complexity into usable, board-ready analysis.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Shield className="w-5 h-5 text-amber-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">10% Regional Reinvestment</h4>
+                <p className="text-xs text-slate-500">Reinvesting in regional growth initiatives.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="w-5 h-5 text-purple-600" />
+                </div>
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">Decisions That Move Forward</h4>
+                <p className="text-xs text-slate-500">Helping decisions move forward responsibly.</p>
+              </div>
+            </div>
 
-          {/* Launch Platform CTA */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-10 text-center border border-slate-700">
-            <h3 className="text-2xl font-light text-white mb-3">Ready to Experience the Platform?</h3>
-            <p className="text-slate-400 mb-6 max-w-xl mx-auto">
-              Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
-            </p>
-            <button 
-              onClick={() => setShowTermsModal(true)}
-              className="px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-all inline-flex items-center gap-3 text-lg"
-            >
-              <Blocks className="w-6 h-6" />
-              Launch Intelligence OS
-            </button>
-            <p className="text-slate-500 text-xs mt-4">By accessing the platform, you agree to our Terms & Conditions</p>
+            {/* Launch Platform CTA */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-10 text-center border border-slate-700 mt-16">
+              <h3 className="text-2xl font-light text-white mb-3">Ready to Experience the Platform?</h3>
+              <p className="text-slate-400 mb-6 max-w-xl mx-auto">
+                Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
+              </p>
+              <button 
+                onClick={() => setShowTermsModal(true)}
+                className="px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-all inline-flex items-center gap-3 text-lg"
+              >
+                <Blocks className="w-6 h-6" />
+                Launch Intelligence OS
+              </button>
+              <p className="text-slate-500 text-xs mt-4">By accessing the platform, you agree to our Terms & Conditions</p>
+            </div>
           </div>
         </div>
       </section>
