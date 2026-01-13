@@ -209,11 +209,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             Technical Deep Dive
                         </div>
                         <h2 className="text-3xl font-light mb-4">Technical Architecture & Intelligence Framework</h2>
+                        <div className="inline-block bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 mb-4">
+                            <span className="text-lg font-bold text-white">NSIL</span>
+                            <span className="text-slate-300 ml-2">— Nexus Strategic Intelligence Layer</span>
+                        </div>
                         <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                            Before NSIL can analyze, the platform employs a comprehensive Technical Architecture & Intelligence Framework. 
-                            The NSIL intelligence layer integrates a 27-formula scoring suite with multi-agent reasoning systems, 
-                            delivering complete algorithmic documentation and innovation statements that explain how unstructured inputs 
-                            are transformed into institutional-grade intelligence through systematic analysis and probabilistic modeling.
+                            The proprietary AI reasoning engine that powers the platform. NSIL integrates a 27-formula scoring suite 
+                            with multi-agent reasoning systems, transforming unstructured inputs into institutional-grade intelligence 
+                            through autonomous analysis, adversarial debate, and probabilistic modeling. Every conclusion includes 
+                            complete audit trails and source citations.
                         </p>
                     </div>
 
@@ -373,6 +377,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-light text-slate-900 mb-4">The 5-Layer NSIL Autonomous Reasoning Architecture</h2>
+                        <div className="inline-block bg-indigo-100 border border-indigo-200 rounded-lg px-4 py-2 mb-4">
+                            <span className="text-sm font-bold text-indigo-800">NSIL</span>
+                            <span className="text-indigo-600 ml-2">= Nexus Strategic Intelligence Layer</span>
+                        </div>
                         <p className="text-lg text-slate-600 max-w-3xl mx-auto">
                             The NSIL framework operates through five interconnected layers of autonomous reasoning, 
                             culminating in the 5 AI Personas adversarial debate system. Each layer builds upon the previous, 

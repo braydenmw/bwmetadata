@@ -306,9 +306,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <p className="text-slate-500 uppercase tracking-widest text-xs mb-3 text-center">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
           <h2 className="text-3xl font-light text-slate-900 mb-4 text-center">The Ten-Step Protocol</h2>
           <p className="text-lg text-slate-500 mb-4 max-w-3xl mx-auto text-center">
-            Before NSIL can analyze, it must understand. This professional-grade intake framework guides you through 
-            every critical dimension of your strategic plan—forcing clarity, eliminating blind spots, and ensuring the 
-            AI reasoning engine works with complete, well-structured inputs.
+            Before <strong className="text-slate-700">NSIL (Nexus Strategic Intelligence Layer)</strong> can analyze, it must understand. 
+            This professional-grade intake framework guides you through every critical dimension of your strategic plan—forcing clarity, 
+            eliminating blind spots, and ensuring the AI reasoning engine works with complete, well-structured inputs.
+          </p>
+          <p className="text-xs text-slate-400 mb-4 max-w-xl mx-auto text-center">
+            <span className="text-indigo-500">→</span> For more on how NSIL transforms your inputs into intelligence, see the 
+            <button onClick={() => setActiveModal('architecture')} className="text-indigo-600 hover:underline font-medium ml-1">Technical Architecture</button> section below.
           </p>
           <p className="text-sm text-slate-400 mb-8 max-w-2xl mx-auto text-center">
             <span className="text-slate-500 font-medium">Click any step</span> to see the detailed data requirements.
@@ -481,30 +485,59 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <Blocks className="w-6 h-6 text-slate-600" />
                 <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Technical Architecture & Intelligence Framework</h3>
-              <p className="text-slate-600 text-sm mb-6">
-                NSIL intelligence layer, 27-formula scoring suite, multi-agent reasoning system. Complete algorithmic 
-                documentation and innovation statement explaining how the platform transforms inputs into intelligence.
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Technical Architecture & Intelligence Framework</h3>
+              <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-bold text-slate-900">NSIL</span>
+                    <span className="text-sm text-slate-600"> — Nexus Strategic Intelligence Layer</span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  The proprietary AI reasoning engine that powers the entire platform. NSIL transforms unstructured business inputs into 
+                  institutional-grade intelligence through autonomous analysis, adversarial debate, and probabilistic modeling.
+                </p>
+              </div>
+              <p className="text-slate-600 text-sm mb-5">
+                Built on a <strong>27-formula scoring suite</strong> and <strong>multi-agent reasoning system</strong>, NSIL provides 
+                complete algorithmic documentation and audit trails explaining exactly how conclusions are reached.
               </p>
               <div className="grid grid-cols-2 gap-3 mb-6">
                 <div className="bg-white p-4 rounded-lg border border-slate-200">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Brain className="w-4 h-4 text-slate-600" />
-                    <span className="text-sm font-semibold text-slate-900">5-Layer NSIL</span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm font-semibold text-slate-900">5-Layer NSIL Architecture</span>
                   </div>
-                  <p className="text-xs text-slate-500">Autonomous reasoning architecture</p>
+                  <p className="text-xs text-slate-500 mb-2">Autonomous reasoning from input to insight</p>
+                  <ul className="text-[10px] text-slate-400 space-y-0.5">
+                    <li>• Input & Governance Layer</li>
+                    <li>• Multi-Agent Reasoning Engine</li>
+                    <li>• Quantitative Scoring Suite</li>
+                    <li>• Output Intelligence Layer</li>
+                    <li>• Continuous Learning Feedback</li>
+                  </ul>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-slate-200">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Users className="w-4 h-4 text-slate-600" />
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users className="w-4 h-4 text-purple-600" />
                     <span className="text-sm font-semibold text-slate-900">5 AI Personas</span>
                   </div>
-                  <p className="text-xs text-slate-500">Adversarial debate system</p>
+                  <p className="text-xs text-slate-500 mb-2">Adversarial debate system</p>
+                  <ul className="text-[10px] text-slate-400 space-y-0.5">
+                    <li>• The Advocate (Opportunity)</li>
+                    <li>• The Skeptic (Risk)</li>
+                    <li>• The Regulator (Compliance)</li>
+                    <li>• The Accountant (Finance)</li>
+                    <li>• The Operator (Execution)</li>
+                  </ul>
                 </div>
               </div>
               <button onClick={() => setActiveModal('architecture')} className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all inline-flex items-center gap-2">
                 <Blocks className="w-4 h-4" />
-                View Full Architecture
+                View Full Architecture & 27 Formulas
               </button>
             </div>
           </div>
