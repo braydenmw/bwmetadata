@@ -166,15 +166,19 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   <div className="bg-white/85 rounded-xl p-6 backdrop-blur-sm">
                     <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
                     <h2 className="text-2xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
+                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2 mb-4 text-center">
+                      <span className="text-xs font-semibold text-indigo-700">DOMAIN-SPECIFIC AGENTIC AI</span>
+                      <span className="text-xs text-indigo-600 ml-2">— Purpose-built for regional investment & partnership intelligence</span>
+                    </div>
                     <p className="text-base mb-4 leading-relaxed text-black text-center">
-                      BWGA AI is a <strong>Strategic Intelligence and Execution Platform</strong> that functions 
-                      as a digital consultant combined with a high-end document automation factory. It transforms your inputs — mission, 
-                      constraints, risk appetite, and strategic goals — into a <strong>live, interactive decision model</strong>.
+                      BWGA AI is a <strong>Domain-Specific Agentic Intelligence Platform</strong> that functions 
+                      as a digital consultant combined with a high-end document automation factory. Unlike general-purpose AI, 
+                      this system is engineered exclusively for regional investment analysis, partnership evaluation, and strategic due diligence.
                     </p>
                     <p className="text-sm leading-relaxed text-slate-700 text-center">
-                      The platform does not simply store data; it reads it, simulates outcomes, stress-tests assumptions, finds hidden risks, 
-                      and proposes auditable, evidence-backed fixes. It delivers in minutes what once took months, providing analytical depth 
-                      previously accessible only to the world's largest organizations.
+                      The platform autonomously reads your inputs, simulates outcomes, stress-tests assumptions through adversarial debate, 
+                      finds hidden risks, and proposes auditable, evidence-backed recommendations. It delivers in minutes what once took months, 
+                      providing institutional-grade analytical depth previously accessible only to the world's largest organizations.
                     </p>
                   </div>
                 </div>
@@ -442,103 +446,97 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             />
           </div>
           
-          {/* Consolidated Stats Grid */}
-          <div className="mt-12 grid md:grid-cols-2 gap-6">
-            {/* Document Factory & Training Archive */}
-            <div className="bg-gradient-to-br from-slate-700 to-slate-600 rounded-xl p-8 text-white relative overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 to-amber-500"></div>
-              <div className="flex items-center gap-2 mb-4">
-                <FileText className="w-6 h-6 text-orange-400" />
-                <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Document Factory</h3>
-              <p className="text-slate-200 text-sm mb-4">
-                After completing the <strong className="text-white">10-Step Intelligence Protocol</strong>, 
-                the platform generates a complete library of professional deliverables—fully populated with your 
-                specific data and scored using the 27-formula algorithm suite.
+          {/* Intelligence System Banner */}
+          <div className="mt-12 border-4 border-slate-400 rounded-2xl p-6 bg-white">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-light text-slate-900 mb-2">From Rough Brief to Board-Ready Package</h2>
+              <p className="text-slate-600 max-w-3xl mx-auto">
+                Describe your opportunity in plain language. The platform applies institutional-grade analysis—five AI personas debate your case, 
+                27 formulas score viability, and 100+ simulations stress-test uncertainty. You receive auditable, board-ready deliverables in minutes.
               </p>
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="bg-white/10 rounded-lg p-3 border border-orange-400/30 text-center">
-                  <div className="text-2xl font-bold text-orange-400">200+</div>
-                  <div className="text-xs text-slate-300">Report & Document Types</div>
-                </div>
-                <div className="bg-white/10 rounded-lg p-3 border border-orange-400/30 text-center">
-                  <div className="text-2xl font-bold text-orange-400">150+</div>
-                  <div className="text-xs text-slate-300">Letter Templates</div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <button onClick={() => setActiveModal('outputs')} className="flex-1 px-5 py-2.5 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-2">
-                  <Eye className="w-4 h-4" />
-                  View Full Catalog
-                </button>
-                <button onClick={() => setActiveModal('testing')} className="flex-1 px-5 py-2.5 bg-slate-700 text-white text-sm font-medium rounded-lg hover:bg-slate-600 transition-all inline-flex items-center justify-center gap-2 border border-slate-600">
-                  <BookOpen className="w-4 h-4" />
-                  12 Sample Reports
-                </button>
-              </div>
             </div>
-            
-            {/* Technical Architecture */}
-            <div className="bg-slate-100 rounded-xl p-8 border border-slate-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Blocks className="w-6 h-6 text-slate-600" />
-                <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Technical Architecture & Intelligence Framework</h3>
-              <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+
+            <div className="grid md:grid-cols-2 gap-5">
+              {/* Document Factory */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl p-5 text-white relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-500 to-amber-500"></div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                    <Brain className="w-4 h-4 text-indigo-600" />
-                  </div>
-                  <div>
-                    <span className="text-sm font-bold text-slate-900">NSIL</span>
-                    <span className="text-sm text-slate-600"> — Nexus Strategic Intelligence Layer</span>
-                  </div>
+                  <FileText className="w-5 h-5 text-orange-400" />
+                  <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  The proprietary AI reasoning engine that powers the entire platform. NSIL transforms unstructured business inputs into 
-                  institutional-grade intelligence through autonomous analysis, adversarial debate, and probabilistic modeling.
+                <h3 className="text-lg font-semibold mb-2">Document Factory</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Complete the guided intake protocol, and the platform generates a full suite of professional documents—investment memos, 
+                  risk assessments, partnership briefs, LOI templates—each scored and fully populated with your data. No consulting fees. No waiting weeks.
                 </p>
-              </div>
-              <p className="text-slate-600 text-sm mb-5">
-                Built on a <strong>27-formula scoring suite</strong> and <strong>multi-agent reasoning system</strong>, NSIL provides 
-                complete algorithmic documentation and audit trails explaining exactly how conclusions are reached.
-              </p>
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="bg-white p-4 rounded-lg border border-slate-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Brain className="w-4 h-4 text-indigo-600" />
-                    <span className="text-sm font-semibold text-slate-900">5-Layer NSIL Architecture</span>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
+                    <div className="text-xl font-bold text-orange-400">200+</div>
+                    <div className="text-[11px] text-slate-300">Report & Document Types</div>
                   </div>
-                  <p className="text-xs text-slate-500 mb-2">Autonomous reasoning from input to insight</p>
-                  <ul className="text-[10px] text-slate-400 space-y-0.5">
-                    <li>• Input & Governance Layer</li>
-                    <li>• Multi-Agent Reasoning Engine</li>
-                    <li>• Quantitative Scoring Suite</li>
-                    <li>• Output Intelligence Layer</li>
-                    <li>• Continuous Learning Feedback</li>
-                  </ul>
+                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
+                    <div className="text-xl font-bold text-orange-400">150+</div>
+                    <div className="text-[11px] text-slate-300">Letter Templates</div>
+                  </div>
                 </div>
-                <div className="bg-white p-4 rounded-lg border border-slate-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users className="w-4 h-4 text-purple-600" />
-                    <span className="text-sm font-semibold text-slate-900">5 AI Personas</span>
-                  </div>
-                  <p className="text-xs text-slate-500 mb-2">Adversarial debate system</p>
-                  <ul className="text-[10px] text-slate-400 space-y-0.5">
-                    <li>• The Advocate (Opportunity)</li>
-                    <li>• The Skeptic (Risk)</li>
-                    <li>• The Regulator (Compliance)</li>
-                    <li>• The Accountant (Finance)</li>
-                    <li>• The Operator (Execution)</li>
-                  </ul>
+                <div className="flex gap-2">
+                  <button onClick={() => setActiveModal('outputs')} className="flex-1 px-3 py-2 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-2">
+                    <Eye className="w-4 h-4" />
+                    View Full Catalog
+                  </button>
+                  <button onClick={() => setActiveModal('testing')} className="flex-1 px-3 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-500 transition-all inline-flex items-center justify-center gap-2 border border-slate-500">
+                    <BookOpen className="w-4 h-4" />
+                    12 Sample Reports
+                  </button>
                 </div>
               </div>
-              <button onClick={() => setActiveModal('architecture')} className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all inline-flex items-center gap-2">
-                <Blocks className="w-4 h-4" />
-                View Full Architecture & 27 Formulas
-              </button>
+              
+              {/* Technical Architecture */}
+              <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Blocks className="w-5 h-5 text-slate-600" />
+                  <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">NSIL — Nexus Strategic Intelligence Layer</h3>
+                <p className="text-slate-600 text-sm mb-3">
+                  The proprietary reasoning engine behind every analysis. NSIL doesn't just generate text—it runs structured debates between 
+                  five specialized AI personas, applies 27 mathematical formulas to score your opportunity, and executes Monte Carlo simulations 
+                  to model what could go wrong. Every conclusion comes with a complete audit trail: which formula, which inputs, which persona raised the flag.
+                </p>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Brain className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-semibold text-slate-900">5-Layer Architecture</span>
+                    </div>
+                    <ul className="text-[11px] text-slate-500 space-y-0">
+                      <li>• Input & Governance</li>
+                      <li>• Multi-Agent Reasoning</li>
+                      <li>• Quantitative Scoring</li>
+                      <li>• Output Intelligence</li>
+                      <li>• Continuous Learning</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Users className="w-4 h-4 text-purple-600" />
+                      <span className="text-xs font-semibold text-slate-900">5 AI Personas</span>
+                    </div>
+                    <ul className="text-[11px] text-slate-500 space-y-0">
+                      <li>• Advocate (Opportunity)</li>
+                      <li>• Skeptic (Risk)</li>
+                      <li>• Regulator (Compliance)</li>
+                      <li>• Accountant (Finance)</li>
+                      <li>• Operator (Execution)</li>
+                    </ul>
+                  </div>
+                </div>
+                <button onClick={() => setActiveModal('architecture')} className="w-full px-3 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all inline-flex items-center justify-center gap-2">
+                  <Blocks className="w-4 h-4" />
+                  View Full Architecture & 27 Formulas
+                </button>
+              </div>
             </div>
           </div>
         </div>
