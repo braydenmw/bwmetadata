@@ -1266,26 +1266,43 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div className="space-y-4">
                                     <CollapsibleSection
                                         title="1.1 Entity Profile & Legal Structure"
-                                        description="Define organization type, jurisdiction, and legal framework"
+                                        description="Tell us who you are—legal name, address, and entity type. This information anchors all analysis."
                                         isExpanded={!!expandedSubsections['identity-entity']}
                                         onToggle={() => toggleSubsection('identity-entity')}
                                         color="from-indigo-50 to-blue-100"
                                      >
                                         <div className="space-y-4">
+                                            {/* Organization Name */}
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Organization Name <span className="text-red-500">*</span></label>
+                                                <p className="text-[10px] text-stone-500 mb-1.5">Full legal name as registered (e.g., "Acme Holdings Pty Ltd" not "Acme")</p>
+                                                <input
+                                                    type="text"
+                                                    value={params.organizationName}
+                                                    onChange={(e) => setParams({ ...params, organizationName: e.target.value })}
+                                                    className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent ${isFieldInvalid('organizationName') ? 'border-red-500' : 'border-stone-200'}`}
+                                                    placeholder="e.g., Philippine National Oil Company, Vestas Wind Systems A/S"
+                                                />
+                                            </div>
+                                            
+                                            {/* Registered Address */}
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Registered Address <span className="text-red-500">*</span></label>
+                                                <p className="text-[10px] text-stone-500 mb-1.5">Official business address for legal correspondence</p>
+                                                <textarea
+                                                    value={params.organizationAddress || ''}
+                                                    onChange={(e) => setParams({ ...params, organizationAddress: e.target.value })}
+                                                    className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent h-16"
+                                                    placeholder="e.g., 123 Energy Park Drive, Suite 400, Manila 1000, Philippines"
+                                                />
+                                            </div>
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {/* Legal Entity Type */}
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Organization Name <span className="text-red-500">*</span></label>
-                                                    <input
-                                                        type="text"
-                                                        value={params.organizationName}
-                                                        onChange={(e) => setParams({ ...params, organizationName: e.target.value })}
-                                                        className={`w-full p-2 border rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent ${isFieldInvalid('organizationName') ? 'border-red-500' : 'border-stone-200'}`}
-                                                        placeholder="Enter organization name"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type(s) <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(multi-select)</span></label>
-                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2">
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Legal Entity Type(s) <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(select all that apply)</span></label>
+                                                    <p className="text-[10px] text-stone-500 mb-1.5">How is your organization legally structured? Select one or more.</p>
+                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2 bg-white">
                                                         {Object.entries(ENTITY_TYPES.reduce((acc: any, item) => {
                                                             if (!acc[item.category]) acc[item.category] = [];
                                                             acc[item.category].push(item);
@@ -1324,15 +1341,17 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         <div className="mt-1 text-[10px] text-amber-700">Selected: {params.organizationTypes?.join(', ')}</div>
                                                     )}
                                                     <div className="mt-2 flex gap-1">
-                                                        <input type="text" placeholder="Add custom type..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.organizationTypes || []; if (!curr.includes(val)) setParams({...params, organizationTypes: [...curr, val], organizationType: curr[0] || val}); (e.target as HTMLInputElement).value = ''; }}} />
+                                                        <input type="text" placeholder="Not listed? Type and press Enter..." className="flex-1 text-xs p-1 border border-dashed border-stone-300 rounded" onKeyDown={(e) => { if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) { const val = (e.target as HTMLInputElement).value.trim(); const curr = params.organizationTypes || []; if (!curr.includes(val)) setParams({...params, organizationTypes: [...curr, val], organizationType: curr[0] || val}); (e.target as HTMLInputElement).value = ''; }}} />
                                                         <span className="text-[9px] text-stone-400 self-center">↵</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {/* Country of Registration */}
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Countries <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(multi-select)</span></label>
-                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2">
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Country of Registration <span className="text-red-500">*</span> <span className="text-stone-400 font-normal">(select all jurisdictions)</span></label>
+                                                    <p className="text-[10px] text-stone-500 mb-1.5">Where is your entity legally incorporated or registered?</p>
+                                                    <div className="max-h-48 overflow-y-auto border border-stone-200 rounded p-2 bg-white">
                                                         {Object.entries(COUNTRIES.reduce((acc: any, item) => {
                                                             if (!acc[item.region]) acc[item.region] = [];
                                                             acc[item.region].push(item);
@@ -1375,20 +1394,24 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         <span className="text-[9px] text-stone-400 self-center">↵</span>
                                                     </div>
                                                 </div>
+                                                {/* Operating Regions */}
                                                 <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Operating Regions</label>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Operating Regions / Markets</label>
+                                                    <p className="text-[10px] text-stone-500 mb-1.5">Where do you actively conduct business? (separate with commas)</p>
                                                     <input
                                                         type="text"
                                                         value={params.region || ''}
                                                         onChange={(e) => setParams({ ...params, region: e.target.value })}
                                                         className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent"
-                                                        placeholder="e.g., North America, Southeast Asia"
+                                                        placeholder="e.g., Greater Manila, Visayas, ASEAN, North America"
                                                     />
                                                 </div>
                                             </div>
+
+                                            {/* Entity Classification */}
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Entity Classification</label>
-                                                <p className="text-[11px] text-stone-500 mb-2">Identify who owns this mandate so the advisor can pull the right precedents.</p>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Entity Ownership / Classification <span className="text-red-500">*</span></label>
+                                                <p className="text-[10px] text-stone-500 mb-2">Who ultimately owns or controls this entity? This shapes which regulatory precedents and deal structures apply.</p>
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                                     {ENTITY_CLASSIFICATIONS.map(option => {
                                                         const isActive = params.entityClassification === option.value;
@@ -1406,49 +1429,61 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                     })}
                                                 </div>
                                             </div>
+
+                                            {/* Parent Organization */}
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 <div>
                                                     <label className="block text-xs font-bold text-stone-700 mb-1">Parent Ministry / Holding Company</label>
+                                                    <p className="text-[10px] text-stone-500 mb-1.5">If you report to a government ministry or parent company, name it here</p>
                                                     <input
                                                         type="text"
                                                         value={params.parentAgency || ''}
                                                         onChange={(e) => setParams({ ...params, parentAgency: e.target.value })}
                                                         className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent"
-                                                        placeholder="e.g., Ministry of Trade, Global HQ"
+                                                        placeholder="e.g., Department of Energy, PNOC Holdings Inc."
                                                     />
                                                 </div>
                                                 <div>
                                                     <label className="block text-xs font-bold text-stone-700 mb-1">Operating Unit / Department</label>
+                                                    <p className="text-[10px] text-stone-500 mb-1.5">Which division or team is driving this initiative?</p>
                                                     <input
                                                         type="text"
                                                         value={params.operatingUnit || ''}
                                                         onChange={(e) => setParams({ ...params, operatingUnit: e.target.value })}
                                                         className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent"
-                                                        placeholder="e.g., Infrastructure Delivery Office"
+                                                        placeholder="e.g., Strategic Partnerships Division, Infrastructure Delivery Office"
                                                     />
                                                 </div>
                                             </div>
+
+                                            {/* Mission Request */}
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">What are you asking Nexus AI to clear or assist with?</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">What are you asking Nexus AI to help with? <span className="text-red-500">*</span></label>
+                                                <p className="text-[10px] text-stone-500 mb-1.5">Describe your objective in plain language—no jargon required. What outcome do you need?</p>
                                                 <textarea
                                                     value={params.missionRequestSummary || ''}
                                                     onChange={(e) => setParams({ ...params, missionRequestSummary: e.target.value })}
                                                     className="w-full p-3 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent h-24"
-                                                    placeholder="e.g., Need a rapid-read dossier to brief the cabinet on a tri-lateral port modernization JV."
+                                                    placeholder="e.g., Evaluate a wind farm JV with a Danish OEM for our Visayas expansion. Need board-ready analysis in 48 hours."
                                                 />
-                                                <p className="text-[11px] text-stone-500 mt-1">Spell it out like you would brief a chief of staff—no jargon required.</p>
                                             </div>
+
+                                            {/* Experience Background */}
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Where are you starting from?</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Your Background / Experience Level</label>
+                                                <p className="text-[10px] text-stone-500 mb-1.5">Help us calibrate the depth and tone of guidance. Are you new to this or a veteran?</p>
                                                 <textarea
                                                     value={params.assistanceBackground || ''}
                                                     onChange={(e) => setParams({ ...params, assistanceBackground: e.target.value })}
                                                     className="w-full p-3 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-amber-600 focus:border-transparent h-20"
-                                                    placeholder="e.g., First time running a strategic partnership search / 30 years leading sovereign deals."
+                                                    placeholder="e.g., 15 years in energy sector, first time structuring a cross-border JV / New to PPP deals, need step-by-step guidance"
                                                 />
                                             </div>
+
+                                            {/* Guidance Mode */}
                                             <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-2">How much guidance do you need?</label>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Preferred Guidance Level</label>
+                                                <p className="text-[10px] text-stone-500 mb-2">Choose how much hand-holding vs. autonomy you want from the platform</p>
                                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                                     {GUIDANCE_MODES.map(option => {
                                                         const isActive = (params.intakeGuidanceMode || 'collaborative') === option.value;
