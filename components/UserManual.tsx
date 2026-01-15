@@ -68,7 +68,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
   return (
     <div className="bg-white text-slate-800 min-h-screen" style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
       {/* Hero Section - Large with country town photo blend */}
-      <header className="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 text-white min-h-[85vh] flex items-center overflow-hidden">
+      <header className="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 text-white">
         {/* Country Town Background */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -80,7 +80,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-slate-950/30"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-16 w-full">
           <div className="max-w-3xl">
             <p className="text-slate-300 uppercase tracking-widest text-sm mb-6">BRAYDEN WALLS GLOBAL ADVISORY</p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-8 leading-tight tracking-tight">
@@ -92,55 +92,46 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </p>
           </div>
         </div>
+        
+        {/* White strip box - positioned at bottom of hero, half in photo */}
+        <div className="relative z-20 max-w-4xl ml-auto mr-6 px-6 pb-0 -mb-24">
+          <div className="bg-white p-8 shadow-xl border-4 border-black text-center">
+            <p className="text-slate-500 uppercase tracking-widest text-xs mb-6 font-semibold">WHY THIS PLATFORM EXISTS</p>
+            <p className="text-slate-700 text-lg leading-relaxed italic max-w-3xl mx-auto mb-4">
+              "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
+              hard local governments, businesses, and everyday people work to build something meaningful—only to be 
+              overlooked because they don't have the same resources or visibility as the major cities."
+            </p>
+            <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
+              — Brayden Walls, Founder
+            </p>
+          </div>
+        </div>
       </header>
 
-      {/* About BWGA Introduction - Two Column Layout */}
-      <section className="py-16 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-5 gap-8 items-start">
-            
-            {/* LEFT SIDE: Main Content (3 columns) */}
-            <div className="lg:col-span-3">
-              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
-                Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
-                industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
-                or telling their story to the world—they're often left without the tools that capital cities take for granted.
-              </p>
+      {/* Content section below hero */}
+      <section className="bg-white pt-48 pb-16">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+            Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
+            industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
+            or telling their story to the world—they're often left without the tools that capital cities take for granted.
+          </p>
 
-              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
-                That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
-                Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
-                specifically to help regional development, partnerships, and growth. Every formula, every document template, 
-                every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
-                that multinational corporations use.
-              </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+            That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
+            Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
+            specifically to help regional development, partnerships, and growth. Every formula, every document template, 
+            every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
+            that multinational corporations use.
+          </p>
 
-              <p className="text-lg text-slate-600 leading-relaxed text-justify">
-                The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
-                country towns deserves global attention. And the people who've only ever known big cities need to understand 
-                that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
-                communities ready to welcome them, and untapped potential waiting to be discovered.
-              </p>
-            </div>
-            
-            {/* RIGHT SIDE: Feature Window (2 columns) */}
-            <div className="lg:col-span-2">
-              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl border border-slate-700">
-                <h3 className="text-xl font-light text-white mb-4 text-center">Why This Platform Exists</h3>
-                <div className="border-l-4 border-orange-500 pl-4 mb-4">
-                  <p className="text-slate-300 leading-relaxed italic text-sm">
-                    "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-                    hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-                    overlooked because they don't have the same resources or visibility as the major cities."
-                  </p>
-                </div>
-                <p className="text-right text-lg text-orange-400" style={{ fontFamily: "'Dancing Script', cursive" }}>
-                  — Brayden Walls, Founder
-                </p>
-              </div>
-            </div>
-            
-          </div>
+          <p className="text-lg text-slate-600 leading-relaxed text-justify">
+            The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
+            country towns deserves global attention. And the people who've only ever known big cities need to understand 
+            that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
+            communities ready to welcome them, and untapped potential waiting to be discovered.
+          </p>
         </div>
       </section>
 
@@ -228,39 +219,60 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   </p>
                 </div>
               </div>
+            </div>
+        </section>
 
-              {/* WHO IT'S FOR - Simple List */}
-              <div className="text-center mb-12">
-                <p className="text-slate-500 uppercase tracking-widest text-xs mb-6 font-semibold">WHO THIS IS BUILT FOR</p>
-                <p className="text-slate-700 text-lg leading-relaxed">
-                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
-                </p>
-              </div>
-
-              {/* TRANSITION TO TECHNICAL SECTION */}
-              <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 text-center">
-                <p className="text-slate-400 leading-relaxed mb-3 text-sm">
-                  If you're still reading, then what's below is what makes it all happen—and what I'm working to make available to the world.
-                </p>
-                <p className="text-white font-medium text-lg leading-relaxed max-w-3xl mx-auto">
-                  The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
-                  Monte Carlo simulations, and a Document Factory producing 200+ document types. 
-                  But you don't need to understand any of that to use it.
-                </p>
-                <p className="text-2xl font-light text-white mt-4">
-                  The complexity is hidden. <span className="text-orange-400 font-medium">What you see is clarity.</span>
-                </p>
-              </div>
-
-              {/* Closing statement */}
-              <div className="mt-10 text-center">
-                <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">
+        {/* WHO THIS IS BUILT FOR - Photo Banner with White Strip Section */}
+        <section className="relative w-full">
+          {/* Background image - only covers top portion */}
+          <div className="absolute inset-x-0 top-0 h-[60%]">
+            <img 
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" 
+              alt="City skyline background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-800/80 to-slate-900/90"></div>
+          </div>
+          
+          {/* White background for bottom portion */}
+          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-white"></div>
+          
+          {/* Upper content in photo banner */}
+          <div className="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
+            <p className="text-slate-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
+            <p className="text-white text-xl leading-relaxed mb-8">
+              Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
+            </p>
+            <p className="text-slate-300 leading-relaxed max-w-3xl mx-auto">
+              Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the industries 
+              that keep economies running. Yet when it comes to attracting investment, forming partnerships, or telling their 
+              story to the world—they're often left without the tools that capital cities take for granted.
+            </p>
+          </div>
+          
+          {/* White strip container - straddles photo and white background */}
+          <div className="relative z-20 max-w-4xl ml-auto mr-6 px-6 -mt-10 pb-16">
+            <div className="bg-white p-8 shadow-xl border-4 border-black">
+              <p className="text-slate-500 leading-relaxed mb-4 text-center text-sm">
+                If you're still reading, then what's below is what makes it all happen—and what I'm working to make available to the world.
+              </p>
+              <p className="text-slate-800 font-medium text-lg leading-relaxed text-center max-w-3xl mx-auto mb-4">
+                The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
+                Monte Carlo simulations, and a Document Factory producing 200+ document types. 
+                But you don't need to understand any of that to use it.
+              </p>
+              <p className="text-2xl font-light text-slate-900 text-center mb-6">
+                The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
+              </p>
+              <div className="border-t border-slate-200 pt-6">
+                <p className="text-slate-600 leading-relaxed text-center max-w-3xl mx-auto">
                   This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
                   thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
                   chance to be seen, understood, and chosen.
                 </p>
               </div>
             </div>
+          </div>
         </section>
 
       {/* Partnership & Pilots Section */}
