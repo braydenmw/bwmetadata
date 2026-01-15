@@ -94,43 +94,52 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </header>
 
-      {/* About BWGA Introduction */}
-      <section className="py-20 border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-light text-slate-900 mb-8 text-center">Why This Platform Exists</h2>
-          
-          <div className="prose prose-lg prose-slate max-w-none">
-            <div className="mb-12">
-              <p className="text-xl text-slate-700 leading-relaxed mb-4 font-medium text-center italic">
-                "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-                hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-                overlooked because they don't have the same resources or visibility as the major cities."
+      {/* About BWGA Introduction - Two Column Layout */}
+      <section className="py-16 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-5 gap-8 items-start">
+            
+            {/* LEFT SIDE: Main Content (3 columns) */}
+            <div className="lg:col-span-3">
+              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+                Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
+                industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
+                or telling their story to the world—they're often left without the tools that capital cities take for granted.
               </p>
-              <p className="text-right text-2xl text-slate-800 mt-6" style={{ fontFamily: "'Dancing Script', cursive" }}>
-                — Brayden Walls, Founder
+
+              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+                That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
+                Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
+                specifically to help regional development, partnerships, and growth. Every formula, every document template, 
+                every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
+                that multinational corporations use.
+              </p>
+
+              <p className="text-lg text-slate-600 leading-relaxed text-justify">
+                The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
+                country towns deserves global attention. And the people who've only ever known big cities need to understand 
+                that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
+                communities ready to welcome them, and untapped potential waiting to be discovered.
               </p>
             </div>
             
-            <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
-              industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
-              or telling their story to the world—they're often left without the tools that capital cities take for granted.
-            </p>
-
-            <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
-              Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
-              specifically to help regional development, partnerships, and growth. Every formula, every document template, 
-              every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
-              that multinational corporations use.
-            </p>
-
-            <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
-              country towns deserves global attention. And the people who've only ever known big cities need to understand 
-              that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
-              communities ready to welcome them, and untapped potential waiting to be discovered.
-            </p>
+            {/* RIGHT SIDE: Feature Window (2 columns) */}
+            <div className="lg:col-span-2">
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl border border-slate-700">
+                <h3 className="text-xl font-light text-white mb-4 text-center">Why This Platform Exists</h3>
+                <div className="border-l-4 border-orange-500 pl-4 mb-4">
+                  <p className="text-slate-300 leading-relaxed italic text-sm">
+                    "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
+                    hard local governments, businesses, and everyday people work to build something meaningful—only to be 
+                    overlooked because they don't have the same resources or visibility as the major cities."
+                  </p>
+                </div>
+                <p className="text-right text-lg text-orange-400" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                  — Brayden Walls, Founder
+                </p>
+              </div>
+            </div>
+            
           </div>
         </div>
       </section>
@@ -195,17 +204,22 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <span className="text-slate-500 uppercase tracking-widest text-xs">DESIGNED FOR EVERYONE</span>
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-4">You Don't Need to Be an Expert. You Just Need to Try.</h3>
-              <p className="text-slate-600 leading-relaxed mb-4">
-                This platform was built to help people <strong>understand</strong>, help them <strong>communicate</strong> their 
-                value proposition clearly, and—most importantly—give them the confidence to <strong>simply try</strong>. 
-                Whether you're a first-time exporter, a regional council looking to attract investment, or someone who's 
-                never navigated a cross-border partnership before, this system guides you every step of the way.
+              <p className="text-slate-600 leading-relaxed mb-4 text-justify">
+                I designed and built this strategic intelligence system to address a challenge I've observed repeatedly across countries and regions: 
+                the difficulty of effectively connecting regional cities and overlooked areas to investment, support, and serious consideration—despite 
+                the very real potential that exists on the ground.
               </p>
-              <p className="text-slate-600 leading-relaxed">
-                The technology is sophisticated—27 mathematical formulas, five AI personas stress-testing every decision, 
-                Monte Carlo simulations, and a Document Factory that produces over 200 document types and 150 letter templates. 
-                But you don't need to understand any of that to use it. The complexity is hidden. What you see is clarity.
+              <p className="text-slate-600 leading-relaxed mb-4 text-justify">
+                Yes, the system is over-engineered. But there is no single answer. We may seek the same outcomes, yet our paths are different. 
+                What works for one will likely fail another. That's precisely why I built this for <strong>everyone</strong>—to give people the 
+                confidence to understand their opportunity, the respect that comes from taking time to think it through properly, and the 
+                courage to act instead of making decisions without real thought.
               </p>
+            </div>
+
+            {/* WHO IT'S FOR */}
+            <div className="mb-6">
+              <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 text-center">WHO THIS IS BUILT FOR</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 my-8">
@@ -239,7 +253,19 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               </div>
             </div>
 
-            <p className="text-lg text-slate-600 leading-relaxed">
+            {/* TRANSITION TO TECHNICAL SECTION */}
+            <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 my-8 text-center">
+              <p className="text-slate-300 leading-relaxed mb-2">
+                If you're still reading, then what's below is what makes it all happen—and what I'm working to make available to the world.
+              </p>
+              <p className="text-white font-medium">
+                The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, Monte Carlo simulations, 
+                and a Document Factory producing 200+ document types. But you don't need to understand any of that to use it. 
+                <span className="text-orange-400"> The complexity is hidden. What you see is clarity.</span>
+              </p>
+            </div>
+
+            <p className="text-lg text-slate-600 leading-relaxed text-justify">
               This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
               thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
               chance to be seen, understood, and chosen.
@@ -308,6 +334,102 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* 10-Section Protocol - Consolidated */}
       <section className="py-20 bg-slate-50 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6">
+          
+          {/* Intelligence System Banner - FIRST */}
+          <div className="mb-16 border-4 border-slate-400 rounded-2xl p-6 bg-white">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-light text-slate-900 mb-2">From Rough Brief to Board-Ready Package</h2>
+              <p className="text-slate-600 max-w-3xl mx-auto">
+                Describe your opportunity in plain language. The platform applies institutional-grade analysis—five AI personas debate your case, 
+                27 formulas score viability, and 100+ simulations stress-test uncertainty. You receive auditable, board-ready deliverables in minutes.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-5">
+              {/* Document Factory */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl p-5 text-white relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-500 to-amber-500"></div>
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText className="w-5 h-5 text-orange-400" />
+                  <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Document Factory</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Complete the guided intake protocol, and the platform generates a full suite of professional documents—investment memos, 
+                  risk assessments, partnership briefs, LOI templates—each scored and fully populated with your data. No consulting fees. No waiting weeks.
+                </p>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
+                    <div className="text-xl font-bold text-orange-400">200+</div>
+                    <div className="text-[11px] text-slate-300">Report & Document Types</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
+                    <div className="text-xl font-bold text-orange-400">150+</div>
+                    <div className="text-[11px] text-slate-300">Letter Templates</div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => setActiveModal('outputs')} className="flex-1 px-3 py-2 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-2">
+                    <Eye className="w-4 h-4" />
+                    View Full Catalog
+                  </button>
+                  <button onClick={() => setActiveModal('testing')} className="flex-1 px-3 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-500 transition-all inline-flex items-center justify-center gap-2 border border-slate-500">
+                    <BookOpen className="w-4 h-4" />
+                    12 Sample Reports
+                  </button>
+                </div>
+              </div>
+              
+              {/* Technical Architecture */}
+              <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Blocks className="w-5 h-5 text-slate-600" />
+                  <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">NSIL — Nexus Strategic Intelligence Layer</h3>
+                <p className="text-slate-600 text-sm mb-3">
+                  The proprietary reasoning engine behind every analysis. NSIL doesn't just generate text—it runs structured debates between 
+                  five specialized AI personas, applies 27 mathematical formulas to score your opportunity, and executes Monte Carlo simulations 
+                  to model what could go wrong. Every conclusion comes with a complete audit trail: which formula, which inputs, which persona raised the flag.
+                </p>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Brain className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-semibold text-slate-900">5-Layer Architecture</span>
+                    </div>
+                    <ul className="text-[11px] text-slate-500 space-y-0">
+                      <li>• Input & Governance</li>
+                      <li>• Multi-Agent Reasoning</li>
+                      <li>• Quantitative Scoring</li>
+                      <li>• Output Intelligence</li>
+                      <li>• Continuous Learning</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Users className="w-4 h-4 text-purple-600" />
+                      <span className="text-xs font-semibold text-slate-900">5 AI Personas</span>
+                    </div>
+                    <ul className="text-[11px] text-slate-500 space-y-0">
+                      <li>• Advocate (Opportunity)</li>
+                      <li>• Skeptic (Risk)</li>
+                      <li>• Regulator (Compliance)</li>
+                      <li>• Accountant (Finance)</li>
+                      <li>• Operator (Execution)</li>
+                    </ul>
+                  </div>
+                </div>
+                <button onClick={() => setActiveModal('architecture')} className="w-full px-3 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all inline-flex items-center justify-center gap-2">
+                  <Blocks className="w-4 h-4" />
+                  View Full Architecture & 27 Formulas
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Ten-Step Protocol - SECOND */}
           <p className="text-slate-500 uppercase tracking-widest text-xs mb-3 text-center">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
           <h2 className="text-3xl font-light text-slate-900 mb-4 text-center">The Ten-Step Protocol</h2>
           <p className="text-lg text-slate-500 mb-4 max-w-3xl mx-auto text-center">
@@ -317,7 +439,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           </p>
           <p className="text-xs text-slate-400 mb-4 max-w-xl mx-auto text-center">
             <span className="text-indigo-500">→</span> For more on how NSIL transforms your inputs into intelligence, see the 
-            <button onClick={() => setActiveModal('architecture')} className="text-indigo-600 hover:underline font-medium ml-1">Technical Architecture</button> section below.
+            <button onClick={() => setActiveModal('architecture')} className="text-indigo-600 hover:underline font-medium ml-1">Technical Architecture</button> section above.
           </p>
           <p className="text-sm text-slate-400 mb-8 max-w-2xl mx-auto text-center">
             <span className="text-slate-500 font-medium">Click any step</span> to see the detailed data requirements.
@@ -445,100 +567,6 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 { subtitle: "Next Steps", items: ["Immediate Actions Required", "Owner Assignments", "Timeline to Decision", "Stakeholder Communications"] }
               ]}
             />
-          </div>
-          
-          {/* Intelligence System Banner */}
-          <div className="mt-12 border-4 border-slate-400 rounded-2xl p-6 bg-white">
-            {/* Header */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-light text-slate-900 mb-2">From Rough Brief to Board-Ready Package</h2>
-              <p className="text-slate-600 max-w-3xl mx-auto">
-                Describe your opportunity in plain language. The platform applies institutional-grade analysis—five AI personas debate your case, 
-                27 formulas score viability, and 100+ simulations stress-test uncertainty. You receive auditable, board-ready deliverables in minutes.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-5">
-              {/* Document Factory */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl p-5 text-white relative overflow-hidden">
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-500 to-amber-500"></div>
-                <div className="flex items-center gap-2 mb-2">
-                  <FileText className="w-5 h-5 text-orange-400" />
-                  <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Document Factory</h3>
-                <p className="text-slate-300 text-sm mb-3">
-                  Complete the guided intake protocol, and the platform generates a full suite of professional documents—investment memos, 
-                  risk assessments, partnership briefs, LOI templates—each scored and fully populated with your data. No consulting fees. No waiting weeks.
-                </p>
-                <div className="grid grid-cols-2 gap-2 mb-3">
-                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
-                    <div className="text-xl font-bold text-orange-400">200+</div>
-                    <div className="text-[11px] text-slate-300">Report & Document Types</div>
-                  </div>
-                  <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
-                    <div className="text-xl font-bold text-orange-400">150+</div>
-                    <div className="text-[11px] text-slate-300">Letter Templates</div>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button onClick={() => setActiveModal('outputs')} className="flex-1 px-3 py-2 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-2">
-                    <Eye className="w-4 h-4" />
-                    View Full Catalog
-                  </button>
-                  <button onClick={() => setActiveModal('testing')} className="flex-1 px-3 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-500 transition-all inline-flex items-center justify-center gap-2 border border-slate-500">
-                    <BookOpen className="w-4 h-4" />
-                    12 Sample Reports
-                  </button>
-                </div>
-              </div>
-              
-              {/* Technical Architecture */}
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Blocks className="w-5 h-5 text-slate-600" />
-                  <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">NSIL — Nexus Strategic Intelligence Layer</h3>
-                <p className="text-slate-600 text-sm mb-3">
-                  The proprietary reasoning engine behind every analysis. NSIL doesn't just generate text—it runs structured debates between 
-                  five specialized AI personas, applies 27 mathematical formulas to score your opportunity, and executes Monte Carlo simulations 
-                  to model what could go wrong. Every conclusion comes with a complete audit trail: which formula, which inputs, which persona raised the flag.
-                </p>
-                <div className="grid grid-cols-2 gap-2 mb-3">
-                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Brain className="w-4 h-4 text-indigo-600" />
-                      <span className="text-xs font-semibold text-slate-900">5-Layer Architecture</span>
-                    </div>
-                    <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Input & Governance</li>
-                      <li>• Multi-Agent Reasoning</li>
-                      <li>• Quantitative Scoring</li>
-                      <li>• Output Intelligence</li>
-                      <li>• Continuous Learning</li>
-                    </ul>
-                  </div>
-                  <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Users className="w-4 h-4 text-purple-600" />
-                      <span className="text-xs font-semibold text-slate-900">5 AI Personas</span>
-                    </div>
-                    <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Advocate (Opportunity)</li>
-                      <li>• Skeptic (Risk)</li>
-                      <li>• Regulator (Compliance)</li>
-                      <li>• Accountant (Finance)</li>
-                      <li>• Operator (Execution)</li>
-                    </ul>
-                  </div>
-                </div>
-                <button onClick={() => setActiveModal('architecture')} className="w-full px-3 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-all inline-flex items-center justify-center gap-2">
-                  <Blocks className="w-4 h-4" />
-                  View Full Architecture & 27 Formulas
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </section>
