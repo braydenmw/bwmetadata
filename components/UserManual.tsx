@@ -131,60 +131,63 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
               communities ready to welcome them, and untapped potential waiting to be discovered.
             </p>
+          </div>
+        </div>
+      </section>
 
-            {/* Platform Introduction Section - WHAT IT IS */}
-            <div className="my-8 bg-gradient-to-br from-slate-700/90 via-slate-600/85 to-slate-700/90 rounded-2xl p-8 md:p-10 border border-slate-500 relative overflow-hidden">
-              {/* Orange accent strips on left */}
-              <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-orange-500 via-amber-500 to-orange-600"></div>
-              <div className="absolute left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400/50 via-amber-400/50 to-orange-500/50"></div>
-              {/* Abstract tech pattern background */}
-              <div className="absolute inset-0 opacity-30">
-                <img 
-                  src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80" 
-                  alt="Abstract technology background"
-                  className="w-full h-full object-cover"
-                />
+        {/* FULL-WIDTH PLATFORM BANNER */}
+        <section className="relative w-full">
+          {/* Full-width background image */}
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1920&q=80" 
+              alt="Abstract technology background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
+          </div>
+          
+          <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
+            <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
+              {/* AI Visualization */}
+              <div className="relative flex-shrink-0">
+                <div className="relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80" 
+                    alt="AI Intelligence System"
+                    className="w-72 h-72 object-cover rounded-2xl border-2 border-slate-400 shadow-2xl"
+                  />
+                  <div className="absolute -bottom-4 -right-4 bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold border border-slate-500">
+                    NSIL Engine v3.2
+                  </div>
+                </div>
               </div>
               
-              <div className="relative z-10 grid lg:grid-cols-3 gap-8 items-center">
-                {/* AI Visualization */}
-                <div className="relative flex justify-center">
-                  <div className="relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&q=80" 
-                      alt="AI Intelligence System"
-                      className="w-56 h-56 object-cover rounded-2xl border-2 border-slate-600 shadow-2xl"
-                    />
-                    <div className="absolute -bottom-4 -right-4 bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold border border-slate-600">
-                      NSIL Engine v3.2
-                    </div>
-                  </div>
+              {/* Platform Description */}
+              <div className="text-center lg:text-left max-w-2xl">
+                <p className="text-slate-300 uppercase tracking-widest text-xs mb-3">BW GLOBAL ADVISORY</p>
+                <h2 className="text-3xl font-light mb-4 text-white">A New Class of Strategic Intelligence Platform</h2>
+                <div className="inline-block bg-indigo-500/20 border border-indigo-400/40 rounded-lg px-4 py-2 mb-5">
+                  <span className="text-sm font-semibold text-indigo-300">DOMAIN-SPECIFIC AGENTIC AI</span>
+                  <span className="text-sm text-indigo-200 ml-2">— Purpose-built for regional investment & partnership intelligence</span>
                 </div>
-                
-                {/* Platform Description */}
-                <div className="lg:col-span-2 relative">
-                  <div className="bg-white/85 rounded-xl p-6 backdrop-blur-sm">
-                    <p className="text-slate-600 uppercase tracking-widest text-xs mb-3 text-center">BW GLOBAL ADVISORY</p>
-                    <h2 className="text-2xl font-light mb-4 text-black text-center">A New Class of Strategic Intelligence Platform</h2>
-                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2 mb-4 text-center">
-                      <span className="text-xs font-semibold text-indigo-700">DOMAIN-SPECIFIC AGENTIC AI</span>
-                      <span className="text-xs text-indigo-600 ml-2">— Purpose-built for regional investment & partnership intelligence</span>
-                    </div>
-                    <p className="text-base mb-4 leading-relaxed text-black text-center">
-                      BWGA AI is a <strong>Domain-Specific Agentic Intelligence Platform</strong> that functions 
-                      as a digital consultant combined with a high-end document automation factory. Unlike general-purpose AI, 
-                      this system is engineered exclusively for regional investment analysis, partnership evaluation, and strategic due diligence.
-                    </p>
-                    <p className="text-sm leading-relaxed text-slate-700 text-center">
-                      The platform autonomously reads your inputs, simulates outcomes, stress-tests assumptions through adversarial debate, 
-                      finds hidden risks, and proposes auditable, evidence-backed recommendations. It delivers in minutes what once took months, 
-                      providing institutional-grade analytical depth previously accessible only to the world's largest organizations.
-                    </p>
-                  </div>
-                </div>
+                <p className="text-base mb-4 leading-relaxed text-white">
+                  BWGA AI is a <strong className="text-orange-300">Domain-Specific Agentic Intelligence Platform</strong> that functions 
+                  as a digital consultant combined with a high-end document automation factory. Unlike general-purpose AI, 
+                  this system is engineered exclusively for regional investment analysis, partnership evaluation, and strategic due diligence.
+                </p>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  The platform autonomously reads your inputs, simulates outcomes, stress-tests assumptions through adversarial debate, 
+                  finds hidden risks, and proposes auditable, evidence-backed recommendations. It delivers in minutes what once took months, 
+                  providing institutional-grade analytical depth previously accessible only to the world's largest organizations.
+                </p>
               </div>
             </div>
+          </div>
+        </section>
 
+        {/* Continue content section */}
+        <section className="max-w-6xl mx-auto px-6 py-8">
             {/* DESIGNED FOR EVERYONE - Reassurance section */}
             <div className="bg-slate-50 rounded-xl p-8 my-8 border border-slate-200">
               <div className="flex items-center gap-2 mb-4">
@@ -241,9 +244,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
               chance to be seen, understood, and chosen.
             </p>
-          </div>
-        </div>
-      </section>
+        </section>
 
       {/* Partnership & Pilots Section */}
       <section className="py-20 bg-gradient-to-br from-amber-700 via-orange-700 to-amber-800 text-white border-b border-amber-900">
@@ -576,44 +577,9 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               </div>
             </div>
           </div>
-          
-          {/* Caption-style Highlights */}
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Globe className="w-5 h-5 text-blue-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Elevating Regional Opportunity</h4>
-                <p className="text-xs text-slate-500">Translate local potential into global decision frameworks.</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <BarChart3 className="w-5 h-5 text-green-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Uncertainty to Clarity</h4>
-                <p className="text-xs text-slate-500">Complexity into usable, board-ready analysis.</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Shield className="w-5 h-5 text-amber-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">10% Regional Reinvestment</h4>
-                <p className="text-xs text-slate-500">Reinvesting in regional growth initiatives.</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="w-5 h-5 text-purple-600" />
-                </div>
-                <h4 className="font-semibold text-slate-900 text-sm mb-1">Decisions That Move Forward</h4>
-                <p className="text-xs text-slate-500">Helping decisions move forward responsibly.</p>
-              </div>
-            </div>
 
             {/* Launch Platform CTA */}
+            <div className="max-w-6xl mx-auto px-6">
             <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-10 text-center border border-slate-700 mt-16">
               <h3 className="text-2xl font-light text-white mb-3">Ready to Experience the Platform?</h3>
               <p className="text-slate-400 mb-6 max-w-xl mx-auto">
