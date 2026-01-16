@@ -224,59 +224,59 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
 
         {/* WHO THIS IS BUILT FOR - Photo Banner with White Strip Section */}
         <section className="relative w-full">
-          {/* Background image - only covers top portion */}
-          <div className="absolute inset-x-0 top-0 h-[60%]">
+          {/* Background image - covers full section */}
+          <div className="absolute inset-0">
             <img 
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" 
-              alt="City skyline background"
+              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" 
+              alt="Global network background"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-800/80 to-slate-900/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
           </div>
           
-          {/* White background for bottom portion */}
-          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-white"></div>
-          
-          {/* Upper content in photo banner */}
-          <div className="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
-            <p className="text-slate-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
-            <p className="text-white text-xl leading-relaxed mb-8">
-              Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
-            </p>
-            <p className="text-slate-300 leading-relaxed max-w-3xl mx-auto">
-              Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the industries 
-              that keep economies running. Yet when it comes to attracting investment, forming partnerships, or telling their 
-              story to the world—they're often left without the tools that capital cities take for granted.
-            </p>
-          </div>
-          
-          {/* White strip container - straddles photo and white background */}
-          <div className="relative z-20 max-w-4xl ml-auto mr-6 px-6 -mt-10 pb-16">
-            <div className="bg-white p-8 shadow-xl border-4 border-black">
-              <p className="text-slate-500 leading-relaxed mb-4 text-center text-sm">
-                If you're still reading, then what's below is what makes it all happen—and what I'm working to make available to the world.
-              </p>
-              <p className="text-slate-800 font-medium text-lg leading-relaxed text-center max-w-3xl mx-auto mb-4">
-                The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
-                Monte Carlo simulations, and a Document Factory producing 200+ document types. 
-                But you don't need to understand any of that to use it.
-              </p>
-              <p className="text-2xl font-light text-slate-900 text-center mb-6">
-                The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
-              </p>
-              <div className="border-t border-slate-200 pt-6">
-                <p className="text-slate-600 leading-relaxed text-center max-w-3xl mx-auto">
-                  This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
-                  thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
-                  chance to be seen, understood, and chosen.
+          {/* Side by side layout - content left, box right */}
+          <div className="relative z-10 max-w-6xl mx-auto px-6 pt-16 pb-16">
+            <div className="grid lg:grid-cols-2 gap-6 items-start">
+              {/* Left side - WHO THIS IS BUILT FOR content */}
+              <div className="text-left">
+                <p className="text-slate-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
+                <p className="text-white text-xl leading-relaxed mb-6">
+                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
                 </p>
+                <p className="text-slate-300 leading-relaxed">
+                  Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
+                  a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
+                  gives you the analytical firepower and document automation that was once reserved for major corporations.
+                </p>
+              </div>
+              
+              {/* Right side - White box */}
+              <div className="bg-white p-6 shadow-xl border-4 border-black">
+                <p className="text-slate-500 leading-relaxed mb-3 text-center text-sm">
+                  Behind the simplicity is serious technology—purpose-built for regional intelligence.
+                </p>
+                <p className="text-slate-800 font-medium text-base leading-relaxed text-center mb-3">
+                  The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
+                  Monte Carlo simulations, and a Document Factory producing 200+ document types. 
+                  But you don't need to understand any of that to use it.
+                </p>
+                <p className="text-xl font-light text-slate-900 text-center mb-4">
+                  The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
+                </p>
+                <div className="border-t border-slate-200 pt-4">
+                  <p className="text-slate-600 leading-relaxed text-center text-sm">
+                    This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
+                    thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
+                    chance to be seen, understood, and chosen.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
       {/* Partnership & Pilots Section */}
-      <section className="py-20 bg-gradient-to-br from-amber-700 via-orange-700 to-amber-800 text-white border-b border-amber-900">
+      <section className="py-12 bg-gradient-to-br from-amber-700 via-orange-700 to-amber-800 text-white border-b border-amber-900">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
