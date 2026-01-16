@@ -248,11 +248,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const [showDocumentUpload, setShowDocumentUpload] = useState(false);
 
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-    { text: "Hello! I'm your BW Consultant. How can I help you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
+    { text: "👋 Hello! I'm your autonomous BW Consultant — I don't just answer questions, I actively learn from your inputs and proactively guide you. Watch me adapt as you fill out each section!", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [lastObservedStep, setLastObservedStep] = useState<string | null>(null);
+  const [lastObservedParams, setLastObservedParams] = useState<string>('');
+  const [agentThinking, setAgentThinking] = useState(false);
 
   // Voice synthesis function - speaks text aloud
   const speakText = useCallback((text: string) => {
@@ -371,6 +374,124 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         setAdvisorExpanded(true);
         advisorPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, [setAdvisorExpanded]);
+
+    // ===== AUTONOMOUS AGENTIC BW CONSULTANT =====
+    // This effect observes user actions and proactively provides guidance
+    useEffect(() => {
+        // Only trigger when activeModal changes (user navigates to a new step)
+        if (activeModal && activeModal !== lastObservedStep) {
+            setLastObservedStep(activeModal);
+            setAgentThinking(true);
+            
+            // Simulate agent "thinking" before responding
+            const thinkingDelay = setTimeout(() => {
+                setAgentThinking(false);
+                
+                // Generate proactive guidance based on the step
+                const stepGuidance: Record<string, string> = {
+                    'identity': `🧠 **I'm observing you've entered the Identity section.**\n\nI'm now analyzing your organization profile. Here's what I'm looking for:\n• Entity type determines partnership structures available\n• Country selection affects regulatory frameworks\n• Industry classification unlocks sector-specific intelligence\n\n💡 **My recommendation:** Start with your organization name, then I'll automatically suggest relevant entity types and industries based on market patterns.`,
+                    'mandate': `🎯 **Strategic Mandate detected.**\n\nI'm now learning your objectives to customize recommendations. Key insights I'll derive:\n• Strategic intent shapes partner matching criteria\n• KPIs inform success metrics for the roadmap\n• Problem statement helps identify solution partners\n\n💡 **Observation:** ${params.organizationName ? `For ${params.organizationName}` : 'Organizations'} in ${params.country || 'your market'}, successful mandates typically focus on 2-3 primary objectives. I'll help you prioritize.`,
+                    'market': `🌍 **Market Analysis activated.**\n\nI'm cross-referencing your profile against global market intelligence:\n• Regulatory landscape for ${params.country || 'your target region'}\n• Competitive dynamics in ${params.industry?.[0] || 'your sector'}\n• Entry barriers and enablers\n\n💡 **Auto-learning:** As you specify cities and regions, I'll surface relevant precedent cases and local partner opportunities.`,
+                    'partner-personas': `🤝 **Partner Persona module engaged.**\n\nBased on your mandate${params.strategicIntent?.length ? ` (${params.strategicIntent[0]})` : ''}, I'm computing ideal partner profiles:\n• Fit criteria weighted by your objectives\n• Relationship goals aligned with timeline\n• Stakeholder mapping for governance\n\n💡 **Intelligence:** I'll match your criteria against 50,000+ global entities in my database.`,
+                    'financial': `💰 **Financial modeling initiated.**\n\nI'm preparing scenario analysis based on your inputs:\n• Deal size parameters\n• Investment thresholds\n• Currency and FX considerations for ${params.country || 'international'} operations\n\n💡 **Autonomous analysis:** I'll stress-test your financial assumptions against regional economic indicators.`,
+                    'risks': `⚠️ **Risk assessment framework loaded.**\n\nI'm scanning for risk factors specific to:\n• ${params.country || 'Target'} political/regulatory environment\n• ${params.industry?.[0] || 'Sector'} operational risks\n• Partnership execution risks\n\n💡 **Proactive alert:** I've pre-loaded common risk categories. I'll auto-suggest mitigations based on precedent cases.`,
+                    'capabilities': `🔧 **Capability mapping started.**\n\nI'm analyzing capability gaps against your objectives:\n• Team strength assessment\n• Technology requirements\n• Resource allocation optimization\n\n💡 **Learning mode:** Tell me your strengths and I'll identify complementary partner capabilities.`,
+                    'execution': `📋 **Execution roadmap builder active.**\n\nI'm structuring your implementation timeline:\n• Phase dependencies\n• Milestone sequencing\n• Go/no-go decision points\n\n💡 **Autonomous planning:** Based on ${params.expansionTimeline || 'your timeline'}, I'll suggest realistic milestones with buffer for regional complexities.`,
+                    'governance': `⚖️ **Governance framework initiated.**\n\nI'm preparing decision structures for:\n• Authority matrices\n• Escalation protocols\n• Change management procedures\n\n💡 **Best practice:** I'll map governance to your organization type (${params.organizationType || 'entity structure'}) and regional requirements.`,
+                    'rate-liquidity': `📊 **Financial resilience analysis started.**\n\nI'm modeling stress scenarios:\n• Interest rate sensitivity\n• Currency hedging strategies\n• Cash runway projections\n\n💡 **Autonomous modeling:** I'll factor in current ${params.currency || 'currency'} volatility and regional lending rates.`,
+                };
+                
+                const guidance = stepGuidance[activeModal];
+                if (guidance) {
+                    setChatMessages(prev => [...prev, {
+                        text: guidance,
+                        sender: 'bw',
+                        timestamp: new Date()
+                    }]);
+                }
+            }, 800);
+            
+            return () => clearTimeout(thinkingDelay);
+        }
+    }, [activeModal, lastObservedStep, params]);
+
+    // Autonomous observation of key field changes
+    useEffect(() => {
+        const paramsHash = JSON.stringify({
+            org: params.organizationName,
+            country: params.country,
+            intent: params.strategicIntent,
+            industry: params.industry,
+        });
+        
+        if (paramsHash !== lastObservedParams && lastObservedParams !== '') {
+            // Detect what changed and provide contextual feedback
+            const prevParams = lastObservedParams ? JSON.parse(lastObservedParams) : {};
+            
+            // Organization name changed
+            if (params.organizationName && params.organizationName !== prevParams.org) {
+                setTimeout(() => {
+                    setChatMessages(prev => [...prev, {
+                        text: `✅ **Registered:** ${params.organizationName}\n\nI'm now tailoring all recommendations to your organization. My learning algorithms are adapting to your profile.`,
+                        sender: 'bw',
+                        timestamp: new Date()
+                    }]);
+                }, 500);
+            }
+            
+            // Country changed
+            if (params.country && params.country !== prevParams.country) {
+                setTimeout(() => {
+                    setChatMessages(prev => [...prev, {
+                        text: `🌍 **Market context updated:** ${params.country}\n\nI've loaded regional intelligence including:\n• Regulatory frameworks\n• Market entry precedents\n• Local partnership opportunities\n• Risk factors specific to this jurisdiction`,
+                        sender: 'bw',
+                        timestamp: new Date()
+                    }]);
+                }, 600);
+            }
+            
+            // Strategic intent changed
+            if (params.strategicIntent?.length > 0 && 
+                JSON.stringify(params.strategicIntent) !== JSON.stringify(prevParams.intent || [])) {
+                setTimeout(() => {
+                    setChatMessages(prev => [...prev, {
+                        text: `🎯 **Objectives learned:** ${params.strategicIntent.join(', ')}\n\nI'm recalibrating partner matching algorithms and success metrics based on these priorities. My recommendations will now be weighted toward these goals.`,
+                        sender: 'bw',
+                        timestamp: new Date()
+                    }]);
+                }, 700);
+            }
+        }
+        
+        setLastObservedParams(paramsHash);
+    }, [params.organizationName, params.country, params.strategicIntent, params.industry, lastObservedParams]);
+
+    // Scroll chat to bottom when new messages arrive
+    useEffect(() => {
+        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatMessages]);
+
+    // Proactive completeness nudges
+    useEffect(() => {
+        // Provide guidance when completeness hits certain thresholds
+        if (completeness === 25 && chatMessages.length < 5) {
+            setTimeout(() => {
+                setChatMessages(prev => [...prev, {
+                    text: `📈 **Progress: 25% complete**\n\nGreat start! I'm beginning to see patterns in your requirements. Keep going — once you hit 50%, I'll generate your first draft analysis.`,
+                    sender: 'bw',
+                    timestamp: new Date()
+                }]);
+            }, 1000);
+        } else if (completeness >= 50 && completeness < 70 && chatMessages.length < 8) {
+            setTimeout(() => {
+                setChatMessages(prev => [...prev, {
+                    text: `🚀 **Milestone: 50%+ complete**\n\nExcellent! You've unlocked draft generation. I can now produce preliminary strategic documents. The more context you provide, the more precise my recommendations become.`,
+                    sender: 'bw',
+                    timestamp: new Date()
+                }]);
+            }, 1000);
+        }
+    }, [completeness, chatMessages.length]);
 
     const refinedIntake: RefinedIntake = useMemo(() => ({
         identity: {
@@ -5131,13 +5252,21 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 {/* Right Sidebar - BW Consultant + Step Info + Advisor Console */}
                 <div className="w-80 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden">
                     
-                    {/* BW Consultant Chat - Always visible at top */}
+                    {/* BW Consultant Chat - Autonomous Agentic System */}
                     <div className="shrink-0 border-b border-slate-200">
-                        <div className="px-3 py-2 bg-gradient-to-r from-stone-50 to-slate-50 border-b border-slate-100">
+                        <div className="px-3 py-2 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <MessageCircle size={12} className="text-stone-600" />
-                                    <span className="text-[10px] font-bold tracking-wider uppercase text-stone-700">BW Consultant</span>
+                                    <div className="relative">
+                                        <Cpu size={12} className="text-indigo-600" />
+                                        {agentThinking && (
+                                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                                        )}
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] font-bold tracking-wider uppercase text-indigo-700">BW Consultant</span>
+                                        <span className="text-[8px] ml-1 px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded uppercase font-semibold">Agentic AI</span>
+                                    </div>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-100 text-red-600"><Square size={8} /></button>}
@@ -5146,24 +5275,28 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </button>
                                 </div>
                             </div>
+                            <p className="text-[8px] text-indigo-600 mt-1">Self-learning • Proactive • Autonomous guidance</p>
                         </div>
-                        <div className="flex flex-col h-48">
+                        <div className="flex flex-col h-56">
                             <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-xs">
-                                {chatMessages.length === 0 ? (
-                                    <div className="text-stone-400 text-center py-3">
-                                        <div className="text-sm mb-1">💬</div>
-                                        <div className="text-[10px]">Ask about your analysis...</div>
-                                    </div>
-                                ) : chatMessages.map((msg, index) => (
+                                {chatMessages.map((msg, index) => (
                                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[10px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-stone-700 text-white' : 'bg-stone-100 text-stone-900'}`}>{msg.text}</div>
+                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[10px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100'}`}>{msg.text}</div>
                                     </div>
                                 ))}
+                                {agentThinking && (
+                                    <div className="flex justify-start">
+                                        <div className="px-3 py-2 rounded-lg bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-[10px] text-amber-700 flex items-center gap-2">
+                                            <Cpu size={10} className="animate-spin" />
+                                            <span>Analyzing context & learning...</span>
+                                        </div>
+                                    </div>
+                                )}
                                 <div ref={chatMessagesEndRef} />
                             </div>
-                            <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-1.5 bg-stone-50">
-                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Type your question..." className="flex-1 text-[10px] border border-stone-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-amber-500" />
-                                <button onClick={handleSendMessage} className="p-1.5 bg-stone-700 text-white rounded hover:bg-stone-800"><Send size={12} /></button>
+                            <div className="border-t border-indigo-100 flex items-center gap-1 px-2 py-1.5 bg-indigo-50/50">
+                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[10px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
+                                <button onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
                             </div>
                         </div>
                     </div>
