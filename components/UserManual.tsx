@@ -80,7 +80,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-slate-950/30"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-16 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24 w-full">
           <div className="max-w-3xl">
             <p className="text-slate-300 uppercase tracking-widest text-sm mb-6">BRAYDEN WALLS GLOBAL ADVISORY</p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-8 leading-tight tracking-tight">
@@ -92,46 +92,51 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </p>
           </div>
         </div>
-        
-        {/* White strip box - positioned at bottom of hero, half in photo */}
-        <div className="relative z-20 max-w-4xl ml-auto mr-6 px-6 pb-0 -mb-24">
-          <div className="bg-white p-8 shadow-xl border-4 border-black text-center">
-            <p className="text-slate-500 uppercase tracking-widest text-xs mb-6 font-semibold">WHY THIS PLATFORM EXISTS</p>
-            <p className="text-slate-700 text-lg leading-relaxed italic max-w-3xl mx-auto mb-4">
-              "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-              hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-              overlooked because they don't have the same resources or visibility as the major cities."
-            </p>
-            <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
-              — Brayden Walls, Founder
-            </p>
-          </div>
-        </div>
       </header>
 
-      {/* Content section below hero */}
-      <section className="bg-white pt-48 pb-16">
+      {/* Content section with founder box on right */}
+      <section className="bg-white pt-8 pb-16">
         <div className="max-w-6xl mx-auto px-6">
-          <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
-            Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
-            industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
-            or telling their story to the world—they're often left without the tools that capital cities take for granted.
-          </p>
+          <div className="grid lg:grid-cols-5 gap-8 items-start">
+            {/* Left side - Main content (3 columns) */}
+            <div className="lg:col-span-3">
+              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+                Regional areas are the backbone of every nation. They grow the food, mine the resources, and host the 
+                industries that keep economies running. Yet when it comes to attracting investment, forming partnerships, 
+                or telling their story to the world—they're often left without the tools that capital cities take for granted.
+              </p>
 
-          <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
-            That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
-            Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
-            specifically to help regional development, partnerships, and growth. Every formula, every document template, 
-            every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
-            that multinational corporations use.
-          </p>
+              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
+                That's why I spent <strong className="text-slate-900">12 months</strong> building this platform from the ground up. 
+                Not as a side project. Not as a quick startup. But as a <strong className="text-slate-900">fully dedicated system</strong> designed 
+                specifically to help regional development, partnerships, and growth. Every formula, every document template, 
+                every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower 
+                that multinational corporations use.
+              </p>
 
-          <p className="text-lg text-slate-600 leading-relaxed text-justify">
-            The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
-            country towns deserves global attention. And the people who've only ever known big cities need to understand 
-            that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
-            communities ready to welcome them, and untapped potential waiting to be discovered.
-          </p>
+              <p className="text-lg text-slate-600 leading-relaxed text-justify">
+                The efforts by regional governments and local businesses deserve to be seen. The innovation happening in 
+                country towns deserves global attention. And the people who've only ever known big cities need to understand 
+                that there's something remarkable happening beyond the skylines—opportunities they've never considered, 
+                communities ready to welcome them, and untapped potential waiting to be discovered.
+              </p>
+            </div>
+            
+            {/* Right side - Founder box (2 columns), overlapping hero above */}
+            <div className="lg:col-span-2 lg:-mt-32 relative z-30">
+              <div className="bg-white p-6 shadow-xl border-4 border-black text-center">
+                <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">WHY THIS PLATFORM EXISTS</p>
+                <p className="text-slate-700 text-base leading-relaxed italic mb-4">
+                  "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
+                  hard local governments, businesses, and everyday people work to build something meaningful—only to be 
+                  overlooked because they don't have the same resources or visibility as the major cities."
+                </p>
+                <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                  — Brayden Walls, Founder
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
