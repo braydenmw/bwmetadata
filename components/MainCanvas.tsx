@@ -4975,145 +4975,11 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 </div>
             </div>
 
-                        {(!identityComplete || !advisorSnapshot) && (
-                            <div className="w-full px-8 mt-4">
-                                <div className="bg-white border border-dashed border-blue-200 rounded-2xl p-6 text-center text-sm text-slate-600">
-                                    Complete the Identity intake so the Advisor Console can match you with relevant precedents and KPIs.
-                                </div>
-                            </div>
-                        )}
-
-                        {identityComplete && advisorSnapshot && (
-                            <div className="w-full px-8 mt-4">
-                                <div className="bg-white border border-blue-100 rounded-2xl shadow-md overflow-hidden">
-                                    <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100">
-                                        <div>
-                                            <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-blue-700">Advisor Console</div>
-                                            <p className="text-xs text-slate-600">Global intelligence synthesized from precedent programs</p>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                className="px-3 py-1 text-[11px] font-semibold border border-blue-300 text-blue-700 rounded-lg flex items-center gap-1 hover:bg-blue-50"
-                                                onClick={handleAdvisorRefresh}
-                                            >
-                                                <RefreshCw size={12} className={advisorRefreshing ? 'animate-spin' : ''} />
-                                                Refresh Intel
-                                            </button>
-                                            <button
-                                                className="px-3 py-1 text-[11px] font-semibold border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50"
-                                                onClick={() => setAdvisorExpanded(prev => !prev)}
-                                            >
-                                                {advisorExpanded ? 'Hide Panel' : 'Show Panel'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {advisorExpanded && (
-                                        <div className="p-5 space-y-5">
-                                            <p className="text-sm text-slate-700 leading-relaxed">{advisorSnapshot.summary}</p>
-
-                                            <div className="grid gap-4 md:grid-cols-2">
-                                                <div>
-                                                    <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">Priority Moves</div>
-                                                    {advisorSnapshot.priorityMoves.length > 0 ? (
-                                                        <ul className="space-y-2 text-sm text-slate-700">
-                                                            {advisorSnapshot.priorityMoves.map((move, idx) => (
-                                                                <li key={idx} className="flex items-start gap-2">
-                                                                    <ArrowRight size={12} className="text-blue-500 mt-0.5" />
-                                                                    <span>{move}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    ) : (
-                                                        <p className="text-xs text-slate-500">Complete more intake data to unlock guided actions.</p>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">Reference Engagements</div>
-                                                    {advisorSnapshot.engagements.length > 0 ? (
-                                                        <div className="space-y-3">
-                                                            {advisorSnapshot.engagements.map((engagement) => (
-                                                                <div key={engagement.id} className="p-3 border border-slate-200 rounded-xl bg-gradient-to-br from-white to-slate-50">
-                                                                    <div className="text-sm font-semibold text-slate-900">{engagement.scenario}</div>
-                                                                    <div className="text-[11px] text-slate-500">{engagement.region} • {engagement.era}</div>
-                                                                    <div className="flex flex-wrap gap-2 mt-2 text-[11px] text-slate-600">
-                                                                        {engagement.metrics?.capitalMobilized !== undefined && (
-                                                                            <span className="px-2 py-0.5 border border-slate-200 rounded-full bg-white">Capital {formatCapitalFigure(engagement.metrics.capitalMobilized)}</span>
-                                                                        )}
-                                                                        {engagement.metrics?.timeToDeployMonths !== undefined && (
-                                                                            <span className="px-2 py-0.5 border border-slate-200 rounded-full bg-white">Deploy {formatMonths(engagement.metrics.timeToDeployMonths)}</span>
-                                                                        )}
-                                                                        {engagement.metrics?.partnersInvolved !== undefined && (
-                                                                            <span className="px-2 py-0.5 border border-slate-200 rounded-full bg-white">{engagement.metrics.partnersInvolved} partners</span>
-                                                                        )}
-                                                                    </div>
-                                                                    {(engagement.playbook?.length ?? 0) > 0 && (
-                                                                        <ul className="mt-2 text-[11px] text-slate-600 list-disc pl-4 space-y-1">
-                                                                            {engagement.playbook!.slice(0, 2).map((play, idx) => (
-                                                                                <li key={`${engagement.id}-play-${idx}`}>{play}</li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    )}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <p className="text-xs text-slate-500">Add market specifics to match precedents from the intelligence graph.</p>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {advisorSnapshot.signals.length > 0 && (
-                                                <div>
-                                                    <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">Signals</div>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {advisorSnapshot.signals.map((signal, idx) => (
-                                                            <span
-                                                                key={`${signal.type}-${idx}`}
-                                                                className={`text-[11px] border px-2 py-1 rounded-full ${getSignalBadgeClass(signal.type)}`}
-                                                            >
-                                                                <strong className="mr-1">{signal.type.toUpperCase()}:</strong>
-                                                                {signal.description}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            <div className="grid gap-4 md:grid-cols-3">
-                                                {[{
-                                                    id: 'battlePlan',
-                                                    artifact: advisorSnapshot.artifacts.battlePlan,
-                                                    border: 'border-blue-200',
-                                                }, {
-                                                    id: 'riskBrief',
-                                                    artifact: advisorSnapshot.artifacts.riskBrief,
-                                                    border: 'border-rose-200',
-                                                }, {
-                                                    id: 'opportunityScan',
-                                                    artifact: advisorSnapshot.artifacts.opportunityScan,
-                                                    border: 'border-emerald-200',
-                                                }].map(({ id, artifact, border }) => (
-                                                    <div key={id} className={`p-4 rounded-xl bg-white border ${border} shadow-sm`}>
-                                                        <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-1">{artifact.title}</div>
-                                                        <p className="text-sm text-slate-700 leading-relaxed">{artifact.narrative}</p>
-                                                        <ul className="mt-3 list-disc pl-4 space-y-1 text-[12px] text-slate-600">
-                                                            {artifact.bullets.map((bullet, idx) => (
-                                                                <li key={`${id}-bullet-${idx}`}>{bullet}</li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-            {/* Document Scroll Area */}
-            <div ref={documentScrollRef} className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex justify-center relative">
+            {/* Document Scroll Area - Main content with scrolling */}
+            <div ref={documentScrollRef} className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex gap-6 relative">
                 
-                {/* The Page Itself */}
+                {/* The Page Itself - Left side */}
+                <div className="flex-1 flex justify-center">
                 <motion.div
                     layout
                     className="bg-white w-full max-w-4xl min-h-[1123px] shadow-2xl shadow-slate-900/10 flex flex-col relative"
@@ -5294,6 +5160,87 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         <span>Page 1 of 1</span>
                     </div>
                 </motion.div>
+                </div>
+
+                {/* Advisor Console - Right Sidebar (Compact) */}
+                {identityComplete && advisorSnapshot && (
+                    <div className="w-72 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden">
+                        <div className="px-4 py-3 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100 shrink-0">
+                            <div className="flex items-center justify-between">
+                                <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-blue-700">Advisor Console</div>
+                                <button
+                                    className="p-1 text-[10px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
+                                    onClick={handleAdvisorRefresh}
+                                    title="Refresh Intel"
+                                >
+                                    <RefreshCw size={10} className={advisorRefreshing ? 'animate-spin' : ''} />
+                                </button>
+                            </div>
+                            <p className="text-[10px] text-slate-500 mt-1">Global intelligence synthesis</p>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
+                            {/* Summary */}
+                            <p className="text-slate-600 leading-relaxed text-[11px]">{advisorSnapshot.summary}</p>
+
+                            {/* Priority Moves */}
+                            {advisorSnapshot.priorityMoves.length > 0 && (
+                                <div>
+                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
+                                    <ul className="space-y-1">
+                                        {advisorSnapshot.priorityMoves.slice(0, 3).map((move, idx) => (
+                                            <li key={idx} className="flex items-start gap-1 text-[10px] text-slate-600">
+                                                <ArrowRight size={10} className="text-blue-500 mt-0.5 shrink-0" />
+                                                <span>{move}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Reference Engagements (compact) */}
+                            {advisorSnapshot.engagements.length > 0 && (
+                                <div>
+                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
+                                    <div className="space-y-2">
+                                        {advisorSnapshot.engagements.slice(0, 2).map((engagement) => (
+                                            <div key={engagement.id} className="p-2 border border-slate-100 rounded-lg bg-slate-50">
+                                                <div className="text-[10px] font-semibold text-slate-800">{engagement.scenario}</div>
+                                                <div className="text-[9px] text-slate-500">{engagement.region} • {engagement.era}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Signals */}
+                            {advisorSnapshot.signals.length > 0 && (
+                                <div>
+                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
+                                    <div className="flex flex-wrap gap-1">
+                                        {advisorSnapshot.signals.slice(0, 4).map((signal, idx) => (
+                                            <span
+                                                key={`${signal.type}-${idx}`}
+                                                className={`text-[9px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
+                                            >
+                                                {signal.type.toUpperCase()}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Incomplete state message */}
+                {(!identityComplete || !advisorSnapshot) && (
+                    <div className="w-64 shrink-0 bg-white border-l border-slate-200 flex items-center justify-center p-4">
+                        <div className="text-center text-[10px] text-slate-500">
+                            Complete the Identity intake to enable Advisor Console
+                        </div>
+                    </div>
+                )}
 
                 {isDraftFinalized && (
                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
