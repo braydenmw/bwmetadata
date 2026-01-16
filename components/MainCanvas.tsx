@@ -988,40 +988,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                     <div className="w-full h-px bg-stone-200"></div>
 
-                    {/* ASK A QUESTION - Before document upload */}
-                    <div>
-                        <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider">Ask a Question</h3>
-                            <div className="flex items-center gap-1">
-                                {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-100 text-red-600"><Square size={10} /></button>}
-                                <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
-                                    {voiceEnabled ? <Volume2 size={10} /> : <VolumeX size={10} />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-80">
-                            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
-                                {chatMessages.length === 0 ? (
-                                    <div className="text-stone-400 text-center py-4">
-                                        <div className="text-lg mb-1">💬</div>
-                                        <div>Ask about your analysis, documents, or strategy...</div>
-                                    </div>
-                                ) : chatMessages.map((msg, index) => (
-                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-[85%] px-3 py-2 rounded-lg whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-stone-700 text-white' : 'bg-stone-100 text-stone-900'}`}>{msg.text}</div>
-                                    </div>
-                                ))}
-                                <div ref={chatMessagesEndRef} />
-                            </div>
-                            <div className="border-t border-stone-200 flex items-center gap-2 px-3 py-2 bg-stone-50">
-                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Type your question..." className="flex-1 text-sm border border-stone-300 rounded-lg px-3 py-2 bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500" />
-                                <button onClick={handleSendMessage} className="p-2 bg-stone-700 text-white rounded-lg hover:bg-stone-800"><Send size={16} /></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="w-full h-px bg-stone-200"></div>
-
                     {/* DOCUMENT UPLOAD */}
                     <div>
                         <button
@@ -5162,85 +5128,163 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 </motion.div>
                 </div>
 
-                {/* Advisor Console - Right Sidebar (Compact) */}
-                {identityComplete && advisorSnapshot && (
-                    <div className="w-72 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden">
-                        <div className="px-4 py-3 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100 shrink-0">
+                {/* Right Sidebar - BW Consultant + Step Info + Advisor Console */}
+                <div className="w-80 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden">
+                    
+                    {/* BW Consultant Chat - Always visible at top */}
+                    <div className="shrink-0 border-b border-slate-200">
+                        <div className="px-3 py-2 bg-gradient-to-r from-stone-50 to-slate-50 border-b border-slate-100">
                             <div className="flex items-center justify-between">
-                                <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-blue-700">Advisor Console</div>
-                                <button
-                                    className="p-1 text-[10px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
-                                    onClick={handleAdvisorRefresh}
-                                    title="Refresh Intel"
-                                >
-                                    <RefreshCw size={10} className={advisorRefreshing ? 'animate-spin' : ''} />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    <MessageCircle size={12} className="text-stone-600" />
+                                    <span className="text-[10px] font-bold tracking-wider uppercase text-stone-700">BW Consultant</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-100 text-red-600"><Square size={8} /></button>}
+                                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
+                                        {voiceEnabled ? <Volume2 size={10} /> : <VolumeX size={10} />}
+                                    </button>
+                                </div>
                             </div>
-                            <p className="text-[10px] text-slate-500 mt-1">Global intelligence synthesis</p>
                         </div>
+                        <div className="flex flex-col h-48">
+                            <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-xs">
+                                {chatMessages.length === 0 ? (
+                                    <div className="text-stone-400 text-center py-3">
+                                        <div className="text-sm mb-1">💬</div>
+                                        <div className="text-[10px]">Ask about your analysis...</div>
+                                    </div>
+                                ) : chatMessages.map((msg, index) => (
+                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[10px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-stone-700 text-white' : 'bg-stone-100 text-stone-900'}`}>{msg.text}</div>
+                                    </div>
+                                ))}
+                                <div ref={chatMessagesEndRef} />
+                            </div>
+                            <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-1.5 bg-stone-50">
+                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Type your question..." className="flex-1 text-[10px] border border-stone-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-amber-500" />
+                                <button onClick={handleSendMessage} className="p-1.5 bg-stone-700 text-white rounded hover:bg-stone-800"><Send size={12} /></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Step-Related Information */}
+                    <div className="shrink-0 border-b border-slate-200 p-3">
+                        <div className="text-[9px] font-bold tracking-wider uppercase text-slate-500 mb-2">Current Step Guidance</div>
+                        {activeModal ? (
+                            <div className="space-y-2">
+                                <div className="p-2 bg-amber-50 border border-amber-200 rounded text-[10px] text-amber-800">
+                                    <strong className="block mb-1">{activeModal.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</strong>
+                                    {activeModal === 'identity' && 'Define your organization profile, entity types, and geographic presence.'}
+                                    {activeModal === 'mandate' && 'Establish strategic objectives, KPIs, and problem statements.'}
+                                    {activeModal === 'market' && 'Specify target markets, competitors, and regulatory landscape.'}
+                                    {activeModal === 'partner-personas' && 'Define ideal partner profiles, fit criteria, and relationship goals.'}
+                                    {activeModal === 'financial' && 'Set investment parameters, funding sources, and revenue projections.'}
+                                    {activeModal === 'risks' && 'Identify risks, mitigation strategies, and contingency plans.'}
+                                    {activeModal === 'capabilities' && 'Document team strengths, technology stack, and capability gaps.'}
+                                    {activeModal === 'execution' && 'Plan roadmap phases, milestones, and go/no-go criteria.'}
+                                    {activeModal === 'governance' && 'Establish decision authority, KPIs, and escalation paths.'}
+                                    {activeModal === 'rate-liquidity' && 'Analyze interest rate sensitivity and financial resilience.'}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="text-[10px] text-slate-500 italic">Select a step from the wizard to see guidance</div>
+                        )}
+                    </div>
+
+                    {/* Advisor Console - Collapsible */}
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        <button
+                            onClick={() => setAdvisorExpanded(!advisorExpanded)}
+                            className="shrink-0 px-3 py-2 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100 flex items-center justify-between hover:bg-indigo-100 transition-colors"
+                        >
+                            <div>
+                                <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-blue-700">Advisor Console</div>
+                                <p className="text-[9px] text-slate-500">Global intelligence synthesis</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                {identityComplete && advisorSnapshot && (
+                                    <button
+                                        className="p-1 text-[10px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
+                                        onClick={(e) => { e.stopPropagation(); handleAdvisorRefresh(); }}
+                                        title="Refresh Intel"
+                                    >
+                                        <RefreshCw size={10} className={advisorRefreshing ? 'animate-spin' : ''} />
+                                    </button>
+                                )}
+                                <div className={`text-[9px] px-2 py-0.5 rounded font-semibold ${advisorExpanded ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                                    {advisorExpanded ? 'ON' : 'OFF'}
+                                </div>
+                            </div>
+                        </button>
                         
-                        <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
-                            {/* Summary */}
-                            <p className="text-slate-600 leading-relaxed text-[11px]">{advisorSnapshot.summary}</p>
+                        {advisorExpanded && identityComplete && advisorSnapshot && (
+                            <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
+                                <p className="text-slate-600 leading-relaxed text-[10px]">{advisorSnapshot.summary}</p>
 
-                            {/* Priority Moves */}
-                            {advisorSnapshot.priorityMoves.length > 0 && (
-                                <div>
-                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
-                                    <ul className="space-y-1">
-                                        {advisorSnapshot.priorityMoves.slice(0, 3).map((move, idx) => (
-                                            <li key={idx} className="flex items-start gap-1 text-[10px] text-slate-600">
-                                                <ArrowRight size={10} className="text-blue-500 mt-0.5 shrink-0" />
-                                                <span>{move}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            {/* Reference Engagements (compact) */}
-                            {advisorSnapshot.engagements.length > 0 && (
-                                <div>
-                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
-                                    <div className="space-y-2">
-                                        {advisorSnapshot.engagements.slice(0, 2).map((engagement) => (
-                                            <div key={engagement.id} className="p-2 border border-slate-100 rounded-lg bg-slate-50">
-                                                <div className="text-[10px] font-semibold text-slate-800">{engagement.scenario}</div>
-                                                <div className="text-[9px] text-slate-500">{engagement.region} • {engagement.era}</div>
-                                            </div>
-                                        ))}
+                                {advisorSnapshot.priorityMoves.length > 0 && (
+                                    <div>
+                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
+                                        <ul className="space-y-1">
+                                            {advisorSnapshot.priorityMoves.slice(0, 3).map((move, idx) => (
+                                                <li key={idx} className="flex items-start gap-1 text-[10px] text-slate-600">
+                                                    <ArrowRight size={10} className="text-blue-500 mt-0.5 shrink-0" />
+                                                    <span>{move}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
-                            {/* Signals */}
-                            {advisorSnapshot.signals.length > 0 && (
-                                <div>
-                                    <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
-                                    <div className="flex flex-wrap gap-1">
-                                        {advisorSnapshot.signals.slice(0, 4).map((signal, idx) => (
-                                            <span
-                                                key={`${signal.type}-${idx}`}
-                                                className={`text-[9px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
-                                            >
-                                                {signal.type.toUpperCase()}
-                                            </span>
-                                        ))}
+                                {advisorSnapshot.engagements.length > 0 && (
+                                    <div>
+                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
+                                        <div className="space-y-2">
+                                            {advisorSnapshot.engagements.slice(0, 2).map((engagement) => (
+                                                <div key={engagement.id} className="p-2 border border-slate-100 rounded-lg bg-slate-50">
+                                                    <div className="text-[10px] font-semibold text-slate-800">{engagement.scenario}</div>
+                                                    <div className="text-[9px] text-slate-500">{engagement.region} • {engagement.era}</div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}
+                                )}
 
-                {/* Incomplete state message */}
-                {(!identityComplete || !advisorSnapshot) && (
-                    <div className="w-64 shrink-0 bg-white border-l border-slate-200 flex items-center justify-center p-4">
-                        <div className="text-center text-[10px] text-slate-500">
-                            Complete the Identity intake to enable Advisor Console
-                        </div>
+                                {advisorSnapshot.signals.length > 0 && (
+                                    <div>
+                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
+                                        <div className="flex flex-wrap gap-1">
+                                            {advisorSnapshot.signals.slice(0, 4).map((signal, idx) => (
+                                                <span
+                                                    key={`${signal.type}-${idx}`}
+                                                    className={`text-[9px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
+                                                >
+                                                    {signal.type.toUpperCase()}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {advisorExpanded && (!identityComplete || !advisorSnapshot) && (
+                            <div className="flex-1 flex items-center justify-center p-4">
+                                <div className="text-center text-[10px] text-slate-500">
+                                    Complete the Identity intake to enable intelligence
+                                </div>
+                            </div>
+                        )}
+
+                        {!advisorExpanded && (
+                            <div className="flex-1 flex items-center justify-center p-4">
+                                <div className="text-center text-[10px] text-slate-400">
+                                    Advisor Console is OFF
+                                </div>
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
 
                 {isDraftFinalized && (
                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
