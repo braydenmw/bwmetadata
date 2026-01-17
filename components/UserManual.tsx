@@ -130,131 +130,83 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </section>
 
-        {/* BWGA INTELLIGENCE AI - Full Width with Side Column */}
+        {/* THE STORY OF BWGA - Full Width with Side Column */}
         <section className="bg-white py-16 border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-              {/* Left side - Main content (8 columns) */}
-              <div className="lg:col-span-8">
-                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">BWGA INTELLIGENCE AI</p>
-                <h2 className="text-3xl md:text-4xl font-light text-slate-900 mb-6">The World's First Sovereign-Grade<br/>Intelligence Operating System</h2>
+            <div className="grid lg:grid-cols-12 gap-6 items-stretch">
+              {/* Left side - Main content (9 columns) */}
+              <div className="lg:col-span-9">
+                {/* Section 1: The Story of BWGA */}
+                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">OUR ORIGIN</p>
+                <h2 className="text-3xl md:text-4xl font-light text-slate-900 mb-6">The Story of BWGA</h2>
                 
-                <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
-                  <strong className="text-slate-900">Most strategic AI systems are built in Silicon Valley boardrooms.</strong> Designed for Fortune 500 companies with perfect data. This system was built in the trenches—architected from the ground up in a small coastal city on the edge of the developing world.
+                <p className="text-lg text-slate-700 leading-relaxed mb-4 text-justify">
+                  Brayden Walls Global Advisory (BWGA) wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
                 </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                  We watched dedicated regional leaders—mayors, entrepreneurs, and councils—work tirelessly to attract investment, only to be ignored because they couldn't speak the "language" of global capital. We didn't just wrap a skin around ChatGPT. We realized that standard AI models are just text generators—they can write a poem, but they can't structure a billion-dollar infrastructure deal.
+                <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                  For years, we watched dedicated regional leaders—mayors, local entrepreneurs, and councils—work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
                 </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-8 text-justify">
-                  So, we built a new engine from scratch: the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It was designed with one specific purpose: to give the overlooked underdog the same analytical firepower as a Wall Street bank—answering the three hardest questions in business: <em>"Is this opportunity real?" "Will it survive contact with reality?" "How do we prove it to the world?"</em>
+                <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                  We realized the problem wasn't their ideas; it was their language. Wall Street and global investors speak a specific dialect of risk matrices, financial models, and feasibility studies. If you can't speak that language, you don't get a seat at the table. Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents for them. Regional communities simply couldn't afford that admission fee, so they were left behind.
+                </p>
+                <p className="text-base text-slate-600 leading-relaxed mb-6 text-justify">
+                  <strong className="text-slate-900">We built BWGA to break that barrier.</strong> Our mission is simple: to give the underdog—the regional council, the local business, the emerging exporter—the same strategic firepower as a multinational corporation.
                 </p>
 
-                <div className="border-t border-slate-200 pt-8">
-                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE ADVERSARIAL ENGINE</p>
-                  <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
-                    <strong className="text-slate-900">When you submit a strategy, the system doesn't agree with you.</strong> It splits into 5 Specialized AI Personas that debate your project behind the scenes. They don't just process data; they argue—until your strategy has survived its first fight.
+                {/* Section 2: What BWGA AI Actually Is */}
+                <div className="border-t border-slate-200 pt-6">
+                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE TECHNOLOGY</p>
+                  <h3 className="text-2xl font-light text-slate-900 mb-4">What BWGA AI Actually Is</h3>
+                  
+                  <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                    To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
                   </p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                    Investors trust numbers, not words. BWGA AI applies <strong className="text-slate-900">27 Proprietary Formulas</strong> to score your project—calculating your Success Probability Index (SPI™), Regional Return on Investment (RROI™), and Stakeholder Alignment (SEAM™). Every recommendation includes a <strong className="text-slate-900">Provenance Chain</strong>: you can see exactly which formula was used, which data point triggered a risk, and which persona raised an objection.
-                  </p>
-                  <p className="text-base text-slate-600 leading-relaxed text-justify">
-                    You don't get a chat window response. You get a <strong className="text-slate-900">Document Factory</strong>—instantly generating institutional-grade Investment Prospectuses, Risk Assessment Matrices, Legal Frameworks (LOIs, MOUs), and Grant Applications that look like they came from a top-tier consulting firm.
+                  <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                    So, we built <strong className="text-slate-900">BWGA Intelligence AI</strong>. It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a <strong className="text-slate-900">digital boardroom</strong>. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine. We call this the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly.
                   </p>
                 </div>
 
-                {/* Bottom Line - bridges the gap */}
-                <div className="border-t border-slate-200 pt-8 mt-8">
+                {/* Section 3: Why This Is Different (The "Magic") - Full Script in White Boxes */}
+                <div className="border-t border-slate-200 pt-6 mt-4">
+                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE DIFFERENCE</p>
+                  <h3 className="text-2xl font-light text-slate-900 mb-4">Why This Is Different <span className="text-slate-400">(The "Magic")</span></h3>
+                  
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
+                    BWGA AI doesn't just generate text like other AI; it puts your ideas through a <strong className="text-slate-900">digital gauntlet</strong>, rigorously stress-testing them. This stems from a fundamental design philosophy that contrasts sharply with most AI-driven strategic tools:
+                  </p>
+                  
+                  <p className="text-lg text-slate-900 font-bold mb-2">Beyond Echo Chambers</p>
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">Unlike generic Large Language Models (LLMs) such as ChatGPT or Bard, which are designed to be helpful and agreeable, BWGA AI is built for adversarial reasoning. These LLMs can generate business plans, but independent analysis reveals a tendency to confirm user biases and a lack of critical evaluation. They are optimized for language prediction, not strategic validation. BWGA AI, in contrast, actively seeks weaknesses.</p>
+
+                  <p className="text-lg text-slate-900 font-bold mb-2">Consultant-Level Scrutiny, Automated</p>
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
+
+                  <p className="text-lg text-slate-900 font-bold mb-2">Quantified, Not Just "Considered"</p>
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 27 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
+
+                  <p className="text-lg text-slate-900 font-bold mb-2">Simulating Real-World Pressure</p>
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">The combination of these personas and the rigid scoring creates a simulation of a real-world investment committee. The AI isn't just "generating content"; it's processing, debating, and scoring your idea as if it were in a high-stakes pitch.</p>
+
+                  
                   <p className="text-base text-slate-600 leading-relaxed text-justify">
-                    It bridges the gap between local ambition and global standard—ensuring that a lack of expensive consultants is no longer an excuse for failure. The first system that allows a regional player to sit at the global table and be taken seriously from day one.
+                    This multi-faceted, adversarial approach, combined with its quantitative rigor, sets BWGA AI apart, offering a level of strategic validation that's simply not available in most other AI-driven systems or through traditional, less accessible consulting avenues.
+                  </p>
+                </div>
+
+                {/* Section 4: Why This Matters */}
+                <div className="border-t border-slate-200 pt-6 mt-4">
+                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE IMPACT</p>
+                  <h3 className="text-2xl font-light text-slate-900 mb-4">Why This Matters</h3>
+                  
+                  <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                    This system changes the game because it <strong className="text-slate-900">turns ambition into proof</strong>. Instead of a rough idea, you walk away with <strong className="text-slate-900">institutional-grade documentation</strong>—Investment Prospectuses, Risk Assessments, and Legal Frameworks—that look like they came from a top-tier firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
+                  </p>
+                  <p className="text-base text-slate-700 leading-relaxed text-justify">
+                    <strong className="text-slate-900">This is the massive difference:</strong> It means a small town in regional Australia or a startup in Southeast Asia can finally compete on a level playing field with the biggest players in the world. It removes the "consultant tax" and ensures that great projects are judged on their merit, not on who they know or how much they paid for advice.
                   </p>
                 </div>
               </div>
               
-              {/* Right side - Fixed Lego Block Column (full height) */}
-              <div className="lg:col-span-4">
-                <div className="bg-slate-900 rounded-xl overflow-hidden h-full flex flex-col">
-                  {/* Header */}
-                  <div className="p-5 text-center border-b border-slate-700">
-                    <p className="text-slate-400 uppercase tracking-widest text-xs mb-1">WHY IT'S DIFFERENT</p>
-                    <p className="text-white font-light text-xl">No Other System Does This</p>
-                  </div>
-
-                  {/* Lego Blocks Grid - Unique Differentiators */}
-                  <div className="p-4 flex-1 flex flex-col gap-2">
-                    {/* Row 1 - Key differentiator */}
-                    <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-lg p-4">
-                      <p className="text-white font-bold text-base mb-1">ARGUES WITH ITSELF</p>
-                      <p className="text-orange-100 text-sm">Other AI agrees with you. Ours debates internally before answering.</p>
-                    </div>
-                    
-                    {/* Row 2 - Two blocks */}
-                    <div className="flex gap-2">
-                      <div className="bg-cyan-600 rounded-lg p-3 flex-1">
-                        <p className="text-white font-bold text-base mb-1">MATH, NOT WORDS</p>
-                        <p className="text-cyan-100 text-sm">Scores with formulas, not opinions</p>
-                      </div>
-                      <div className="bg-pink-600 rounded-lg p-3 w-32">
-                        <p className="text-white font-bold text-base mb-1">TRACEABLE</p>
-                        <p className="text-pink-100 text-sm">Every claim auditable</p>
-                      </div>
-                    </div>
-                    
-                    {/* Row 3 - Full width */}
-                    <div className="bg-emerald-600 rounded-lg p-3">
-                      <p className="text-white font-bold text-base mb-1">BUILT FOR THE UNDERDOG</p>
-                      <p className="text-emerald-100 text-sm">Not Silicon Valley. Built in regional Australia for regional communities.</p>
-                    </div>
-                    
-                    {/* Row 4 - Two blocks different sizes */}
-                    <div className="flex gap-2">
-                      <div className="bg-purple-600 rounded-lg p-3 flex-1">
-                        <p className="text-white font-bold text-base mb-1">SOVEREIGN-GRADE</p>
-                        <p className="text-purple-100 text-sm">Government & institutional rigor</p>
-                      </div>
-                      <div className="bg-blue-600 rounded-lg p-3 w-32">
-                        <p className="text-white font-bold text-sm mb-1">NO HALLUCINATION</p>
-                        <p className="text-blue-100 text-xs">Logic-locked</p>
-                      </div>
-                    </div>
-                    
-                    {/* Row 5 - Full width tall */}
-                    <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg p-4">
-                      <p className="text-white font-bold text-base mb-1">DOCUMENTS, NOT CHAT</p>
-                      <p className="text-indigo-100 text-sm">Outputs board-ready prospectuses, not conversation snippets</p>
-                    </div>
-                    
-                    {/* Row 6 - Three small blocks */}
-                    <div className="flex gap-2">
-                      <div className="bg-red-600 rounded-lg p-3 flex-1">
-                        <p className="text-white font-bold text-sm">$50K VALUE</p>
-                        <p className="text-red-100 text-xs">Consultant-grade</p>
-                      </div>
-                      <div className="bg-yellow-500 rounded-lg p-3 flex-1">
-                        <p className="text-white font-bold text-sm">MINUTES</p>
-                        <p className="text-yellow-100 text-xs">Not months</p>
-                      </div>
-                      <div className="bg-green-600 rounded-lg p-3 flex-1">
-                        <p className="text-white font-bold text-sm">24/7</p>
-                        <p className="text-green-100 text-xs">Always on</p>
-                      </div>
-                    </div>
-
-                    {/* Row 7 - Full width */}
-                    <div className="bg-slate-700 rounded-lg p-3 flex-1">
-                      <p className="text-slate-300 font-bold text-sm uppercase tracking-wide mb-1">NEURO-SYMBOLIC</p>
-                      <p className="text-slate-400 text-sm">First system to fuse AI creativity with mathematical proof</p>
-                    </div>
-                  </div>
-
-                  {/* Hero Statement at Bottom - 16px white */}
-                  <div className="bg-slate-800 p-6 border-t border-slate-700 mt-auto">
-                    <p className="text-white text-center leading-relaxed" style={{ fontSize: '16px' }}>
-                      <strong>BWGA AI is not a chatbot.</strong><br/>
-                      <span className="text-slate-300">It is a reasoning engine.</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
