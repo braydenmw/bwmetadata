@@ -130,76 +130,141 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </section>
 
-        {/* FULL-WIDTH PLATFORM BANNER - THE HEART OF THE PAGE */}
-        <section className="relative w-full">
-          {/* Full-width background image - Dark tech themed */}
-          <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" 
-              alt="Digital world technology"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-slate-900/95"></div>
-          </div>
-          
-          <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
-            {/* Header */}
-            <div className="text-center mb-14">
-              <h2 className="text-4xl md:text-5xl font-light mb-6 text-white">What is BWGA AI?</h2>
-              <p className="text-xl text-white leading-relaxed">
-                An enterprise-grade partnership intelligence and deal feasibility platform—<br/>
-                <span className="font-medium">built entirely for regional development.</span>
-              </p>
-            </div>
-
-            {/* THE STORY - 3 Square Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-14">
+        {/* BWGA INTELLIGENCE AI - Section 1: The Origin Story */}
+        <section className="bg-white py-16 border-b border-slate-200">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid lg:grid-cols-5 gap-8 items-start">
+              {/* Left side - Main content (3 columns) */}
+              <div className="lg:col-span-3">
+                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">BWGA INTELLIGENCE AI</p>
+                <h2 className="text-3xl md:text-4xl font-light text-slate-900 mb-6">The World's First Sovereign-Grade<br/>Intelligence Operating System</h2>
+                <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
+                  <strong className="text-slate-900">Most strategic AI systems are built in Silicon Valley boardrooms.</strong> Designed for Fortune 500 companies with perfect data. This system was built in the trenches—architected from the ground up in a small coastal city on the edge of the developing world.
+                </p>
+                <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
+                  We watched dedicated regional leaders—mayors, entrepreneurs, and councils—work tirelessly to attract investment, only to be ignored because they couldn't speak the "language" of global capital. We didn't just wrap a skin around ChatGPT. We realized that standard AI models are just text generators—they can write a poem, but they can't structure a billion-dollar infrastructure deal.
+                </p>
+                <p className="text-base text-slate-600 leading-relaxed text-justify">
+                  So, we built a new engine from scratch: the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It was designed with one specific purpose: to give the overlooked underdog the same analytical firepower as a Wall Street bank—answering the three hardest questions in business: <em>"Is this opportunity real?" "Will it survive contact with reality?" "How do we prove it to the world?"</em>
+                </p>
+              </div>
               
-              {/* FROM IDEA */}
-              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
-                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
-                  <span className="text-white font-semibold uppercase tracking-widest text-sm">From Idea</span>
+              {/* Right side - Photo box (2 columns) */}
+              <div className="lg:col-span-2">
+                <div className="bg-slate-900 rounded-xl overflow-hidden shadow-xl">
+                  <img 
+                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop" 
+                    alt="Global intelligence network" 
+                    className="w-full h-48 object-cover opacity-80"
+                  />
+                  <div className="p-5">
+                    <p className="text-slate-400 uppercase tracking-widest text-xs mb-2">BUILT DIFFERENT</p>
+                    <p className="text-white text-sm leading-relaxed">
+                      Not a chatbot. A reasoning engine that combines AI creativity with the rigid laws of mathematics and logic.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 leading-relaxed">
-                  BWGA AI didn't start as software. It started as an observation—that the communities supplying the world with food, resources, energy, and labor are the same communities denied the tools to compete for their share of global investment.
-                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Divider Line */}
+        <div className="border-b-4 border-slate-900"></div>
+
+        {/* BWGA INTELLIGENCE AI - Section 2: How It Works */}
+        <section className="bg-slate-100 py-16">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid lg:grid-cols-5 gap-8 items-start">
+              {/* Left side - Photo box (2 columns) */}
+              <div className="lg:col-span-2 order-2 lg:order-1">
+                <div className="bg-white rounded-xl overflow-hidden shadow-xl border border-slate-200">
+                  <img 
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" 
+                    alt="Data analytics dashboard" 
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-5">
+                    <p className="text-slate-500 uppercase tracking-widest text-xs mb-2">THE BRAIN</p>
+                    <p className="text-slate-700 text-sm leading-relaxed">
+                      5 AI Personas debate your project. 27 formulas score it. Every recommendation is traceable.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* TO THEORY */}
-              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
-                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
-                  <span className="text-white font-semibold uppercase tracking-widest text-sm">To Theory</span>
-                </div>
-                <p className="text-white/90 leading-relaxed">
-                  That observation became a theory: What if there was a system built entirely—100%—for regional development? Not adapted from corporate tools. Not borrowed from city-focused platforms. Purpose-built from the ground up for the regions that keep nations running.
+              {/* Right side - Main content (3 columns) */}
+              <div className="lg:col-span-3 order-1 lg:order-2">
+                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE ADVERSARIAL ENGINE</p>
+                <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
+                  <strong className="text-slate-900">When you submit a strategy, the system doesn't agree with you.</strong> It splits into 5 Specialized AI Personas that debate your project behind the scenes. They don't just process data; they argue—until your strategy has survived its first fight.
                 </p>
-              </div>
-
-              {/* TO REALITY */}
-              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
-                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
-                  <span className="text-white font-semibold uppercase tracking-widest text-sm">To Reality</span>
-                </div>
-                <p className="text-white/90 leading-relaxed mb-3">
-                  That theory is now real. What started as words became logic. Logic became reasoning. Reasoning became a system that thinks harder than the teams it's built to serve.
+                <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
+                  Investors trust numbers, not words. BWGA AI applies <strong className="text-slate-900">27 Proprietary Formulas</strong> to score your project—calculating your Success Probability Index (SPI™), Regional Return on Investment (RROI™), and Stakeholder Alignment (SEAM™). Every recommendation includes a <strong className="text-slate-900">Provenance Chain</strong>: you can see exactly which formula was used, which data point triggered a risk, and which persona raised an objection.
                 </p>
-                <p className="text-white font-medium italic">
-                  This isn't software. It's the first mind ever built for regional development.
+                <p className="text-base text-slate-600 leading-relaxed text-justify">
+                  You don't get a chat window response. You get a <strong className="text-slate-900">Document Factory</strong>—instantly generating institutional-grade Investment Prospectuses, Risk Assessment Matrices, Legal Frameworks (LOIs, MOUs), and Grant Applications that look like they came from a top-tier consulting firm.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* CLOSING STATEMENT */}
-            <div className="text-center border-t border-white/20 pt-12">
-              <h3 className="text-2xl md:text-3xl font-light text-white mb-6 leading-tight">
-                The First Self-Thinking Agentic System<br/>
-                <span className="font-medium">Dedicated Entirely to Regional Development.</span>
-              </h3>
-              <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
-                Not a chatbot. Not a consultant. Not adapted from corporate software.<br/>
-                <span className="text-white font-medium">A strategic intelligence workflow built for the cities, councils, and communities that power the world.</span>
-              </p>
+        {/* Key Features Window */}
+        <section className="bg-slate-900 py-12">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-8">
+              <p className="text-slate-400 uppercase tracking-widest text-xs mb-2">CORE CAPABILITIES</p>
+              <h3 className="text-2xl font-light text-white">What Makes This Different</h3>
             </div>
+            <div className="grid md:grid-cols-5 gap-4">
+              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
+                <p className="text-green-400 font-semibold text-sm mb-2">The Advocate</p>
+                <p className="text-slate-400 text-xs">Fights for the upside</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
+                <p className="text-red-400 font-semibold text-sm mb-2">The Skeptic</p>
+                <p className="text-slate-400 text-xs">Tries to kill the deal</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
+                <p className="text-blue-400 font-semibold text-sm mb-2">The Regulator</p>
+                <p className="text-slate-400 text-xs">Checks legal compliance</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
+                <p className="text-yellow-400 font-semibold text-sm mb-2">The Accountant</p>
+                <p className="text-slate-400 text-xs">Demands the cash flow</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
+                <p className="text-purple-400 font-semibold text-sm mb-2">The Operator</p>
+                <p className="text-slate-400 text-xs">Checks team capacity</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4 mt-4">
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+                <p className="text-orange-400 font-semibold text-xs mb-1">27 FORMULAS</p>
+                <p className="text-slate-300 text-xs">SPI™ · RROI™ · SEAM™ and more</p>
+              </div>
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+                <p className="text-cyan-400 font-semibold text-xs mb-1">AUDIT TRAIL</p>
+                <p className="text-slate-300 text-xs">Court-defensible provenance chain</p>
+              </div>
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+                <p className="text-pink-400 font-semibold text-xs mb-1">DOCUMENT FACTORY</p>
+                <p className="text-slate-300 text-xs">Prospectuses · Matrices · Legal</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Final Caption */}
+        <section className="bg-white py-10 border-b border-slate-200">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <p className="text-lg text-slate-800 leading-relaxed font-medium mb-3">
+              BWGA AI is not a chatbot. It is a reasoning engine.
+            </p>
+            <p className="text-base text-slate-600 leading-relaxed">
+              It bridges the gap between local ambition and global standard—ensuring that a lack of expensive consultants is no longer an excuse for failure. The first system that allows a regional player to sit at the global table and be taken seriously from day one.
+            </p>
           </div>
         </section>
 
@@ -219,9 +284,9 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               {/* Opening paragraph - full width */}
               <div className="max-w-4xl mx-auto mb-10">
                 <p className="text-slate-600 leading-relaxed text-center text-lg">
-                  I designed and built this strategic intelligence system to address a challenge I've observed repeatedly across countries and regions: 
-                  the difficulty of effectively connecting regional cities and overlooked areas to investment, support, and serious consideration—despite 
-                  the very real potential that exists on the ground.
+                  Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. 
+                  It was built for the person staring at a blank page, wondering where to even start—and for the 
+                  experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
                 </p>
               </div>
 
@@ -239,14 +304,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                   </p>
                 </div>
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <p className="text-indigo-600 uppercase tracking-widest text-xs mb-3 font-semibold">BEHIND THE SIMPLICITY</p>
+                  <p className="text-indigo-600 uppercase tracking-widest text-xs mb-3 font-semibold">THE SYSTEM DOES WHAT YOU SHOULDN'T HAVE TO</p>
                   <p className="text-slate-800 font-medium mb-3">
-                    The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
-                    Monte Carlo simulations, and a Document Factory producing 200+ document types.
+                    Structure your thinking. Score your viability. Stress-test your assumptions. Build your documents.
                   </p>
                   <p className="text-slate-600 leading-relaxed">
-                    But you don't need to understand any of that to use it. The complexity is hidden. 
-                    <span className="text-slate-900 font-medium"> What you see is clarity.</span>
+                    You focus on your opportunity. The platform handles the analysis, the formatting, and the professional presentation 
+                    that makes decision-makers take you seriously.
                   </p>
                 </div>
               </div>
@@ -254,10 +318,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               {/* Closing paragraph - full width */}
               <div className="max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8 border border-slate-200">
                 <p className="text-slate-700 leading-relaxed text-center text-lg">
-                  Yes, the system is over-engineered. But there is no single answer. We may seek the same outcomes, yet our paths are different. 
-                  What works for one will likely fail another. That's precisely why I built this for <strong className="text-slate-900">everyone</strong>—to give people the 
-                  confidence to understand their opportunity, the respect that comes from taking time to think it through properly, and the 
-                  courage to act instead of making decisions without real thought.
+                  The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. 
+                  But you don't need to understand any of that. <strong className="text-slate-900">The complexity is hidden. What you see is clarity.</strong>
                 </p>
               </div>
             </div>
