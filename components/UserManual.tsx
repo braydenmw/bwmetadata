@@ -130,37 +130,127 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </section>
 
-        {/* BWGA INTELLIGENCE AI - Section 1: The Origin Story */}
+        {/* BWGA INTELLIGENCE AI - Full Width with Side Column */}
         <section className="bg-white py-16 border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid lg:grid-cols-5 gap-8 items-start">
-              {/* Left side - Main content (3 columns) */}
-              <div className="lg:col-span-3">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+              {/* Left side - Main content (8 columns) */}
+              <div className="lg:col-span-8">
                 <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">BWGA INTELLIGENCE AI</p>
                 <h2 className="text-3xl md:text-4xl font-light text-slate-900 mb-6">The World's First Sovereign-Grade<br/>Intelligence Operating System</h2>
+                
                 <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
                   <strong className="text-slate-900">Most strategic AI systems are built in Silicon Valley boardrooms.</strong> Designed for Fortune 500 companies with perfect data. This system was built in the trenches—architected from the ground up in a small coastal city on the edge of the developing world.
                 </p>
                 <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
                   We watched dedicated regional leaders—mayors, entrepreneurs, and councils—work tirelessly to attract investment, only to be ignored because they couldn't speak the "language" of global capital. We didn't just wrap a skin around ChatGPT. We realized that standard AI models are just text generators—they can write a poem, but they can't structure a billion-dollar infrastructure deal.
                 </p>
-                <p className="text-base text-slate-600 leading-relaxed text-justify">
+                <p className="text-base text-slate-600 leading-relaxed mb-8 text-justify">
                   So, we built a new engine from scratch: the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It was designed with one specific purpose: to give the overlooked underdog the same analytical firepower as a Wall Street bank—answering the three hardest questions in business: <em>"Is this opportunity real?" "Will it survive contact with reality?" "How do we prove it to the world?"</em>
                 </p>
+
+                <div className="border-t border-slate-200 pt-8">
+                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE ADVERSARIAL ENGINE</p>
+                  <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
+                    <strong className="text-slate-900">When you submit a strategy, the system doesn't agree with you.</strong> It splits into 5 Specialized AI Personas that debate your project behind the scenes. They don't just process data; they argue—until your strategy has survived its first fight.
+                  </p>
+                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
+                    Investors trust numbers, not words. BWGA AI applies <strong className="text-slate-900">27 Proprietary Formulas</strong> to score your project—calculating your Success Probability Index (SPI™), Regional Return on Investment (RROI™), and Stakeholder Alignment (SEAM™). Every recommendation includes a <strong className="text-slate-900">Provenance Chain</strong>: you can see exactly which formula was used, which data point triggered a risk, and which persona raised an objection.
+                  </p>
+                  <p className="text-base text-slate-600 leading-relaxed text-justify">
+                    You don't get a chat window response. You get a <strong className="text-slate-900">Document Factory</strong>—instantly generating institutional-grade Investment Prospectuses, Risk Assessment Matrices, Legal Frameworks (LOIs, MOUs), and Grant Applications that look like they came from a top-tier consulting firm.
+                  </p>
+                </div>
+
+                {/* Bottom Line - bridges the gap */}
+                <div className="border-t border-slate-200 pt-8 mt-8">
+                  <p className="text-base text-slate-600 leading-relaxed text-justify">
+                    It bridges the gap between local ambition and global standard—ensuring that a lack of expensive consultants is no longer an excuse for failure. The first system that allows a regional player to sit at the global table and be taken seriously from day one.
+                  </p>
+                </div>
               </div>
               
-              {/* Right side - Photo box (2 columns) */}
-              <div className="lg:col-span-2">
-                <div className="bg-slate-900 rounded-xl overflow-hidden shadow-xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop" 
-                    alt="Global intelligence network" 
-                    className="w-full h-48 object-cover opacity-80"
-                  />
-                  <div className="p-5">
-                    <p className="text-slate-400 uppercase tracking-widest text-xs mb-2">BUILT DIFFERENT</p>
-                    <p className="text-white text-sm leading-relaxed">
-                      Not a chatbot. A reasoning engine that combines AI creativity with the rigid laws of mathematics and logic.
+              {/* Right side - Fixed Lego Block Column (full height) */}
+              <div className="lg:col-span-4">
+                <div className="bg-slate-900 rounded-xl overflow-hidden h-full flex flex-col">
+                  {/* Header */}
+                  <div className="p-5 text-center border-b border-slate-700">
+                    <p className="text-slate-400 uppercase tracking-widest text-xs mb-1">WHY IT'S DIFFERENT</p>
+                    <p className="text-white font-light text-xl">No Other System Does This</p>
+                  </div>
+
+                  {/* Lego Blocks Grid - Unique Differentiators */}
+                  <div className="p-4 flex-1 flex flex-col gap-2">
+                    {/* Row 1 - Key differentiator */}
+                    <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-lg p-4">
+                      <p className="text-white font-bold text-base mb-1">ARGUES WITH ITSELF</p>
+                      <p className="text-orange-100 text-sm">Other AI agrees with you. Ours debates internally before answering.</p>
+                    </div>
+                    
+                    {/* Row 2 - Two blocks */}
+                    <div className="flex gap-2">
+                      <div className="bg-cyan-600 rounded-lg p-3 flex-1">
+                        <p className="text-white font-bold text-base mb-1">MATH, NOT WORDS</p>
+                        <p className="text-cyan-100 text-sm">Scores with formulas, not opinions</p>
+                      </div>
+                      <div className="bg-pink-600 rounded-lg p-3 w-32">
+                        <p className="text-white font-bold text-base mb-1">TRACEABLE</p>
+                        <p className="text-pink-100 text-sm">Every claim auditable</p>
+                      </div>
+                    </div>
+                    
+                    {/* Row 3 - Full width */}
+                    <div className="bg-emerald-600 rounded-lg p-3">
+                      <p className="text-white font-bold text-base mb-1">BUILT FOR THE UNDERDOG</p>
+                      <p className="text-emerald-100 text-sm">Not Silicon Valley. Built in regional Australia for regional communities.</p>
+                    </div>
+                    
+                    {/* Row 4 - Two blocks different sizes */}
+                    <div className="flex gap-2">
+                      <div className="bg-purple-600 rounded-lg p-3 flex-1">
+                        <p className="text-white font-bold text-base mb-1">SOVEREIGN-GRADE</p>
+                        <p className="text-purple-100 text-sm">Government & institutional rigor</p>
+                      </div>
+                      <div className="bg-blue-600 rounded-lg p-3 w-32">
+                        <p className="text-white font-bold text-sm mb-1">NO HALLUCINATION</p>
+                        <p className="text-blue-100 text-xs">Logic-locked</p>
+                      </div>
+                    </div>
+                    
+                    {/* Row 5 - Full width tall */}
+                    <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg p-4">
+                      <p className="text-white font-bold text-base mb-1">DOCUMENTS, NOT CHAT</p>
+                      <p className="text-indigo-100 text-sm">Outputs board-ready prospectuses, not conversation snippets</p>
+                    </div>
+                    
+                    {/* Row 6 - Three small blocks */}
+                    <div className="flex gap-2">
+                      <div className="bg-red-600 rounded-lg p-3 flex-1">
+                        <p className="text-white font-bold text-sm">$50K VALUE</p>
+                        <p className="text-red-100 text-xs">Consultant-grade</p>
+                      </div>
+                      <div className="bg-yellow-500 rounded-lg p-3 flex-1">
+                        <p className="text-white font-bold text-sm">MINUTES</p>
+                        <p className="text-yellow-100 text-xs">Not months</p>
+                      </div>
+                      <div className="bg-green-600 rounded-lg p-3 flex-1">
+                        <p className="text-white font-bold text-sm">24/7</p>
+                        <p className="text-green-100 text-xs">Always on</p>
+                      </div>
+                    </div>
+
+                    {/* Row 7 - Full width */}
+                    <div className="bg-slate-700 rounded-lg p-3 flex-1">
+                      <p className="text-slate-300 font-bold text-sm uppercase tracking-wide mb-1">NEURO-SYMBOLIC</p>
+                      <p className="text-slate-400 text-sm">First system to fuse AI creativity with mathematical proof</p>
+                    </div>
+                  </div>
+
+                  {/* Hero Statement at Bottom - 16px white */}
+                  <div className="bg-slate-800 p-6 border-t border-slate-700 mt-auto">
+                    <p className="text-white text-center leading-relaxed" style={{ fontSize: '16px' }}>
+                      <strong>BWGA AI is not a chatbot.</strong><br/>
+                      <span className="text-slate-300">It is a reasoning engine.</span>
                     </p>
                   </div>
                 </div>
@@ -169,160 +259,65 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           </div>
         </section>
 
-        {/* Divider Line */}
-        <div className="border-b-4 border-slate-900"></div>
-
-        {/* BWGA INTELLIGENCE AI - Section 2: How It Works */}
-        <section className="bg-slate-100 py-16">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid lg:grid-cols-5 gap-8 items-start">
-              {/* Left side - Photo box (2 columns) */}
-              <div className="lg:col-span-2 order-2 lg:order-1">
-                <div className="bg-white rounded-xl overflow-hidden shadow-xl border border-slate-200">
-                  <img 
-                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" 
-                    alt="Data analytics dashboard" 
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-5">
-                    <p className="text-slate-500 uppercase tracking-widest text-xs mb-2">THE BRAIN</p>
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      5 AI Personas debate your project. 27 formulas score it. Every recommendation is traceable.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right side - Main content (3 columns) */}
-              <div className="lg:col-span-3 order-1 lg:order-2">
-                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE ADVERSARIAL ENGINE</p>
-                <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
-                  <strong className="text-slate-900">When you submit a strategy, the system doesn't agree with you.</strong> It splits into 5 Specialized AI Personas that debate your project behind the scenes. They don't just process data; they argue—until your strategy has survived its first fight.
-                </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                  Investors trust numbers, not words. BWGA AI applies <strong className="text-slate-900">27 Proprietary Formulas</strong> to score your project—calculating your Success Probability Index (SPI™), Regional Return on Investment (RROI™), and Stakeholder Alignment (SEAM™). Every recommendation includes a <strong className="text-slate-900">Provenance Chain</strong>: you can see exactly which formula was used, which data point triggered a risk, and which persona raised an objection.
-                </p>
-                <p className="text-base text-slate-600 leading-relaxed text-justify">
-                  You don't get a chat window response. You get a <strong className="text-slate-900">Document Factory</strong>—instantly generating institutional-grade Investment Prospectuses, Risk Assessment Matrices, Legal Frameworks (LOIs, MOUs), and Grant Applications that look like they came from a top-tier consulting firm.
-                </p>
-              </div>
-            </div>
+        {/* DESIGNED FOR EVERYONE - Photo Banner */}
+        <section className="relative py-20 overflow-hidden">
+          {/* Background Photo - People collaboration */}
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&h=800&fit=crop" 
+              alt="Team collaboration" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-slate-900/75"></div>
           </div>
-        </section>
-
-        {/* Key Features Window */}
-        <section className="bg-slate-900 py-12">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-8">
-              <p className="text-slate-400 uppercase tracking-widest text-xs mb-2">CORE CAPABILITIES</p>
-              <h3 className="text-2xl font-light text-white">What Makes This Different</h3>
+          
+          {/* Content */}
+          <div className="relative max-w-5xl mx-auto px-6 text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl mb-6 shadow-lg">
+              <Users className="w-7 h-7 text-white" />
             </div>
-            <div className="grid md:grid-cols-5 gap-4">
-              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
-                <p className="text-green-400 font-semibold text-sm mb-2">The Advocate</p>
-                <p className="text-slate-400 text-xs">Fights for the upside</p>
-              </div>
-              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
-                <p className="text-red-400 font-semibold text-sm mb-2">The Skeptic</p>
-                <p className="text-slate-400 text-xs">Tries to kill the deal</p>
-              </div>
-              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
-                <p className="text-blue-400 font-semibold text-sm mb-2">The Regulator</p>
-                <p className="text-slate-400 text-xs">Checks legal compliance</p>
-              </div>
-              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
-                <p className="text-yellow-400 font-semibold text-sm mb-2">The Accountant</p>
-                <p className="text-slate-400 text-xs">Demands the cash flow</p>
-              </div>
-              <div className="bg-slate-800 rounded-xl p-5 text-center border border-slate-700">
-                <p className="text-purple-400 font-semibold text-sm mb-2">The Operator</p>
-                <p className="text-slate-400 text-xs">Checks team capacity</p>
-              </div>
-            </div>
-            <div className="grid md:grid-cols-3 gap-4 mt-4">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-                <p className="text-orange-400 font-semibold text-xs mb-1">27 FORMULAS</p>
-                <p className="text-slate-300 text-xs">SPI™ · RROI™ · SEAM™ and more</p>
-              </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-                <p className="text-cyan-400 font-semibold text-xs mb-1">AUDIT TRAIL</p>
-                <p className="text-slate-300 text-xs">Court-defensible provenance chain</p>
-              </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-                <p className="text-pink-400 font-semibold text-xs mb-1">DOCUMENT FACTORY</p>
-                <p className="text-slate-300 text-xs">Prospectuses · Matrices · Legal</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Final Caption */}
-        <section className="bg-white py-10 border-b border-slate-200">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <p className="text-lg text-slate-800 leading-relaxed font-medium mb-3">
-              BWGA AI is not a chatbot. It is a reasoning engine.
+            <p className="text-orange-400 uppercase tracking-widest text-xs mb-3 font-semibold">DESIGNED FOR EVERYONE</p>
+            <h3 className="text-3xl md:text-4xl font-light text-white mb-6">You Don't Need to Be an Expert.<br/><span className="font-medium">You Just Need to Try.</span></h3>
+            
+            <p className="text-slate-200 leading-relaxed text-base mb-10 max-w-3xl mx-auto">
+              Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. 
+              It was built for the person staring at a blank page, wondering where to even start—and for the 
+              experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
             </p>
-            <p className="text-base text-slate-600 leading-relaxed">
-              It bridges the gap between local ambition and global standard—ensuring that a lack of expensive consultants is no longer an excuse for failure. The first system that allows a regional player to sit at the global table and be taken seriously from day one.
-            </p>
-          </div>
-        </section>
 
-        {/* Continue content section */}
-        <section className="max-w-6xl mx-auto px-6 py-8">
-            {/* DESIGNED FOR EVERYONE - Enhanced Visual Section */}
-            <div className="my-12">
-              {/* Header with decorative elements */}
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl mb-4 shadow-lg">
-                  <Users className="w-7 h-7 text-white" />
-                </div>
-                <p className="text-orange-600 uppercase tracking-widest text-xs mb-2 font-semibold">DESIGNED FOR EVERYONE</p>
-                <h3 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert.<br/><span className="font-medium">You Just Need to Try.</span></h3>
-              </div>
-
-              {/* Opening paragraph - full width */}
-              <div className="max-w-4xl mx-auto mb-10">
-                <p className="text-slate-600 leading-relaxed text-center text-lg">
-                  Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. 
-                  It was built for the person staring at a blank page, wondering where to even start—and for the 
-                  experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
+            {/* Two boxes side by side */}
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 text-left">
+                <p className="text-orange-400 uppercase tracking-widest text-xs mb-3 font-semibold">WHO THIS IS BUILT FOR</p>
+                <p className="text-white font-medium mb-3 text-base">
+                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
+                </p>
+                <p className="text-slate-200 text-base leading-relaxed">
+                  Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
+                  a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
+                  gives you the analytical firepower and document automation that was once reserved for major corporations.
                 </p>
               </div>
-
-              {/* Two-column content layout - WHO THIS IS BUILT FOR */}
-              <div className="grid lg:grid-cols-2 gap-8 mb-10">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <p className="text-orange-600 uppercase tracking-widest text-xs mb-3 font-semibold">WHO THIS IS BUILT FOR</p>
-                  <p className="text-slate-800 font-medium mb-3">
-                    Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
-                  </p>
-                  <p className="text-slate-600 leading-relaxed">
-                    Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
-                    a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
-                    gives you the analytical firepower and document automation that was once reserved for major corporations.
-                  </p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <p className="text-indigo-600 uppercase tracking-widest text-xs mb-3 font-semibold">THE SYSTEM DOES WHAT YOU SHOULDN'T HAVE TO</p>
-                  <p className="text-slate-800 font-medium mb-3">
-                    Structure your thinking. Score your viability. Stress-test your assumptions. Build your documents.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed">
-                    You focus on your opportunity. The platform handles the analysis, the formatting, and the professional presentation 
-                    that makes decision-makers take you seriously.
-                  </p>
-                </div>
-              </div>
-
-              {/* Closing paragraph - full width */}
-              <div className="max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8 border border-slate-200">
-                <p className="text-slate-700 leading-relaxed text-center text-lg">
-                  The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. 
-                  But you don't need to understand any of that. <strong className="text-slate-900">The complexity is hidden. What you see is clarity.</strong>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 text-left">
+                <p className="text-indigo-400 uppercase tracking-widest text-xs mb-3 font-semibold">THE SYSTEM DOES WHAT YOU SHOULDN'T HAVE TO</p>
+                <p className="text-white font-medium mb-3 text-base">
+                  Structure your thinking. Score your viability. Stress-test your assumptions. Build your documents.
+                </p>
+                <p className="text-slate-200 text-base leading-relaxed">
+                  You focus on your opportunity. The platform handles the analysis, the formatting, and the professional presentation 
+                  that makes decision-makers take you seriously.
                 </p>
               </div>
             </div>
+
+            {/* Closing statement */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-3xl mx-auto">
+              <p className="text-slate-100 leading-relaxed text-base">
+                The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. 
+                But you don't need to understand any of that. <strong className="text-white">The complexity is hidden. What you see is clarity.</strong>
+              </p>
+            </div>
+          </div>
         </section>
 
       {/* Partnership & Pilots Section */}
@@ -391,11 +386,18 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           {/* Intelligence System Banner - FIRST */}
           <div className="mb-16 border-4 border-slate-400 rounded-2xl p-6 bg-white">
             {/* Header */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-light text-slate-900 mb-2">From Rough Brief to Board-Ready Package</h2>
-              <p className="text-slate-600 max-w-3xl mx-auto">
-                Describe your opportunity in plain language. The platform applies institutional-grade analysis—five AI personas debate your case, 
-                27 formulas score viability, and 100+ simulations stress-test uncertainty. You receive auditable, board-ready deliverables in minutes.
+            <div className="text-center mb-8">
+              <p className="text-slate-500 uppercase tracking-widest text-xs mb-2">THE INTELLIGENCE PIPELINE</p>
+              <h2 className="text-2xl font-light text-slate-900 mb-4">From Rough Brief to Board-Ready Package</h2>
+              <p className="text-slate-600 max-w-4xl mx-auto text-base leading-relaxed mb-4">
+                Most AI tools take your input and generate a response. This system takes your input and <strong className="text-slate-900">interrogates it</strong>. 
+                It doesn't ask "what do you want me to write?"—it asks "is this opportunity real, and can you prove it?"
+              </p>
+              <p className="text-slate-600 max-w-4xl mx-auto text-base leading-relaxed">
+                The pipeline works in three stages: <strong className="text-slate-900">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), 
+                <strong className="text-slate-900">Adversarial Analysis</strong> (five AI personas debate your case while 27 formulas score it mathematically), 
+                and <strong className="text-slate-900">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). 
+                What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
               </p>
             </div>
 
@@ -405,12 +407,22 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-500 to-amber-500"></div>
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="w-5 h-5 text-orange-400" />
-                  <span className="text-orange-400 uppercase tracking-widest text-xs">10-STEP PROTOCOL → OUTPUTS</span>
+                  <span className="text-orange-400 uppercase tracking-widest text-xs">INSTITUTIONAL-GRADE OUTPUTS</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Document Factory</h3>
-                <p className="text-slate-300 text-sm mb-3">
-                  Complete the guided intake protocol, and the platform generates a full suite of professional documents—investment memos, 
-                  risk assessments, partnership briefs, LOI templates—each scored and fully populated with your data. No consulting fees. No waiting weeks.
+                <h3 className="text-lg font-semibold mb-3">The Document Factory</h3>
+                <p className="text-slate-300 text-sm mb-3 leading-relaxed">
+                  <strong className="text-white">Why it exists:</strong> Regional projects fail not because they lack merit, but because they lack presentation. 
+                  Investors and government bodies expect documents that look like they came from McKinsey or Deloitte. 
+                  Without institutional-grade formatting, credible projects get dismissed.
+                </p>
+                <p className="text-slate-300 text-sm mb-3 leading-relaxed">
+                  <strong className="text-white">How it works:</strong> The Document Factory doesn't just fill in templates—it synthesizes your 10-Step Protocol data 
+                  with NSIL's analysis scores, persona debate outcomes, and risk simulations into cohesive narratives. Every document includes 
+                  embedded provenance: the specific formulas used, the confidence intervals, and the audit trail for every claim.
+                </p>
+                <p className="text-slate-300 text-sm mb-4 leading-relaxed">
+                  <strong className="text-white">What you get:</strong> Investment Prospectuses, Risk Assessment Matrices, Partnership Briefs, LOI/MOU Templates, 
+                  Grant Applications, Due Diligence Packs—all scored, cross-referenced, and ready for board-level presentation.
                 </p>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
@@ -434,17 +446,29 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 </div>
               </div>
               
-              {/* Technical Architecture */}
+              {/* Technical Architecture - NSIL */}
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Blocks className="w-5 h-5 text-slate-600" />
-                  <span className="text-slate-500 uppercase tracking-widest text-xs">TECHNICAL FOUNDATION</span>
+                  <span className="text-slate-500 uppercase tracking-widest text-xs">THE REASONING ENGINE</span>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">NSIL — Nexus Strategic Intelligence Layer</h3>
-                <p className="text-slate-600 text-sm mb-3">
-                  The proprietary reasoning engine behind every analysis. NSIL doesn't just generate text—it runs structured debates between 
-                  five specialized AI personas, applies 27 mathematical formulas to score your opportunity, and executes Monte Carlo simulations 
-                  to model what could go wrong. Every conclusion comes with a complete audit trail: which formula, which inputs, which persona raised the flag.
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">NSIL — Nexus Strategic Intelligence Layer</h3>
+                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
+                  <strong className="text-slate-900">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. 
+                  It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan 
+                  for an impossible idea because it has no mechanism to challenge assumptions.
+                </p>
+                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
+                  <strong className="text-slate-900">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity 
+                  with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized 
+                  AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that <em>argue with each other</em>. Only after reaching 
+                  consensus does it generate conclusions—and those conclusions are scored by 27 proprietary formulas including SPI™ (Success Probability Index), 
+                  RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                </p>
+                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
+                  <strong className="text-slate-900">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, 
+                  and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly 
+                  why the system reached each conclusion.
                 </p>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-white p-2.5 rounded-lg border border-slate-200">
@@ -453,11 +477,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                       <span className="text-xs font-semibold text-slate-900">5-Layer Architecture</span>
                     </div>
                     <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Input & Governance</li>
-                      <li>• Multi-Agent Reasoning</li>
-                      <li>• Quantitative Scoring</li>
-                      <li>• Output Intelligence</li>
-                      <li>• Continuous Learning</li>
+                      <li>• Input Validation & Governance</li>
+                      <li>• Multi-Agent Adversarial Debate</li>
+                      <li>• Quantitative Formula Scoring</li>
+                      <li>• Monte Carlo Stress Testing</li>
+                      <li>• Output Synthesis & Provenance</li>
                     </ul>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-slate-200">
@@ -466,11 +490,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                       <span className="text-xs font-semibold text-slate-900">5 AI Personas</span>
                     </div>
                     <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Advocate (Opportunity)</li>
-                      <li>• Skeptic (Risk)</li>
-                      <li>• Regulator (Compliance)</li>
-                      <li>• Accountant (Finance)</li>
-                      <li>• Operator (Execution)</li>
+                      <li>• Advocate — finds the upside</li>
+                      <li>• Skeptic — attacks weak points</li>
+                      <li>• Regulator — checks compliance</li>
+                      <li>• Accountant — validates numbers</li>
+                      <li>• Operator — tests execution</li>
                     </ul>
                   </div>
                 </div>
