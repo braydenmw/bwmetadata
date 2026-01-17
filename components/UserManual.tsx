@@ -93,29 +93,38 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </header>
 
-      {/* Content section with founder box on right */}
-      <section className="bg-white pt-8 pb-16">
+      {/* WHO WE ARE - Company Profile */}
+      <section className="bg-white pt-12 pb-8">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-5 gap-8 items-start">
-            {/* Left side - Main content (3 columns) */}
-            <div className="lg:col-span-3">
-              <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">FROM ROUGH BRIEF TO BOARD-READY PACKAGE</p>
-              <p className="text-lg text-slate-600 leading-relaxed mb-6 text-justify">
-                Describe your opportunity in plain language. The platform applies institutional-grade analysis—five AI personas debate your case, 27 formulas score viability, and 100+ simulations stress-test uncertainty. You receive auditable, board-ready deliverables in minutes.
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            {/* Left side - Company Profile */}
+            <div>
+              <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">WHO WE ARE</p>
+              <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                BW Global Advisory is a strategic intelligence firm founded on a single, powerful observation: regional communities around the world are the backbone of their nations, yet they are systematically denied the tools to compete for global investment and partnerships.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed mb-4">
+                BWGA wasn't conceived in a boardroom. It was born in a small coastal city on the edge of the Mindanao jungles, from 12 months of firsthand experience watching dedicated regional leaders struggle to be seen.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed">
+                They had vision, drive, and genuine opportunity—but lacked the resources to translate their potential into the language that global investors understand. We built this company to change that.
               </p>
             </div>
             
-            {/* Right side - Founder box (2 columns), overlapping hero above */}
-            <div className="lg:col-span-2 lg:-mt-32 relative z-30">
+            {/* Right side - Founder box, overlapping hero above */}
+            <div className="lg:-mt-32 relative z-30">
               <div className="bg-white p-6 shadow-xl border-4 border-black text-center">
-                <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">WHY THIS PLATFORM EXISTS</p>
+                <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">FROM THE FOUNDER</p>
                 <p className="text-slate-700 text-base leading-relaxed italic mb-4">
-                  "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-                  hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-                  overlooked because they don't have the same resources or visibility as the major cities."
+                  "I've watched incredible local leaders work tirelessly, only to be overlooked because they didn't have the resources of major city firms. I built this platform to give them a fair shot—to translate their hard work into the language of opportunity and ensure they are seen, understood, and chosen."
                 </p>
                 <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
                   — Brayden Walls, Founder
+                </p>
+              </div>
+              <div className="bg-slate-100 p-4 mt-4 rounded-lg border border-slate-200">
+                <p className="text-slate-700 text-sm leading-relaxed text-center">
+                  <strong className="text-slate-900">Our Mission:</strong> Level the playing field by giving regional governments, economic development agencies, and local businesses the same strategic firepower that multinational corporations take for granted.
                 </p>
               </div>
             </div>
@@ -172,90 +181,104 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           </div>
         </section>
 
-        {/* Continue content section */}
-        <section className="max-w-6xl mx-auto px-6 py-8">
-            {/* DESIGNED FOR EVERYONE - Enhanced Visual Section */}
-            <div className="my-12">
-              {/* Header with decorative elements */}
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl mb-4 shadow-lg">
-                  <Users className="w-7 h-7 text-white" />
-                </div>
-                <p className="text-orange-600 uppercase tracking-widest text-xs mb-2 font-semibold">DESIGNED FOR EVERYONE</p>
-                <h3 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert.<br/><span className="font-medium">You Just Need to Try.</span></h3>
-              </div>
-
-              {/* Two-column content layout */}
-              <div className="grid lg:grid-cols-2 gap-8 mb-12">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <div className="w-10 h-1 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-4"></div>
-                  <p className="text-slate-600 leading-relaxed text-justify">
-                    I designed and built this strategic intelligence system to address a challenge I've observed repeatedly across countries and regions: 
-                    the difficulty of effectively connecting regional cities and overlooked areas to investment, support, and serious consideration—despite 
-                    the very real potential that exists on the ground.
-                  </p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <div className="w-10 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mb-4"></div>
-                  <p className="text-slate-600 leading-relaxed text-justify">
-                    Yes, the system is over-engineered. But there is no single answer. We may seek the same outcomes, yet our paths are different. 
-                    What works for one will likely fail another. That's precisely why I built this for <strong className="text-slate-900">everyone</strong>—to give people the 
-                    confidence to understand their opportunity, the respect that comes from taking time to think it through properly, and the 
-                    courage to act instead of making decisions without real thought.
-                  </p>
-                </div>
-              </div>
-            </div>
-        </section>
-
-        {/* WHO THIS IS BUILT FOR - Photo Banner with White Strip Section */}
+        {/* DESIGNED FOR EVERYONE - Merged Full Section */}
         <section className="relative w-full">
-          {/* Background image - covers full section */}
+          {/* Background image */}
           <div className="absolute inset-0">
             <img 
               src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" 
               alt="Global network background"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-800/90 to-slate-900/95"></div>
           </div>
           
-          {/* Side by side layout - content left, box right */}
-          <div className="relative z-10 max-w-6xl mx-auto px-6 pt-16 pb-16">
-            <div className="grid lg:grid-cols-2 gap-6 items-start">
-              {/* Left side - WHO THIS IS BUILT FOR content */}
-              <div className="text-left">
-                <p className="text-slate-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
-                <p className="text-white text-xl leading-relaxed mb-6">
-                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
+          <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
+            {/* Header */}
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl mb-4 shadow-lg">
+                <Users className="w-7 h-7 text-white" />
+              </div>
+              <p className="text-orange-400 uppercase tracking-widest text-xs mb-2 font-semibold">DESIGNED FOR EVERYONE</p>
+              <h3 className="text-3xl md:text-4xl font-light text-white">You Don't Need to Be an Expert.<br/><span className="font-medium">You Just Need to Try.</span></h3>
+            </div>
+
+            {/* Intro paragraph */}
+            <div className="max-w-3xl mx-auto mb-12">
+              <p className="text-slate-300 leading-relaxed text-lg text-center">
+                This system was built for people who know their opportunity but don't have a team of advisers behind them. You answer clear questions about your project. The platform handles the structure, the analysis, and the professional language. Behind the scenes, it runs 27 mathematical formulas and simulates scenarios—but you don't need to understand any of that.
+              </p>
+            </div>
+
+            {/* Side-by-side: Hero statement LEFT + HOW IT WORKS RIGHT */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-12">
+              {/* Left - Hero Statement */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                <p className="text-orange-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
+                <p className="text-white text-xl font-medium leading-relaxed mb-4">
+                  Regional Councils & EDAs · Government Agencies · Businesses & Entrepreneurs · First-Time Exporters
                 </p>
                 <p className="text-slate-300 leading-relaxed">
-                  Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
-                  a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
-                  gives you the analytical firepower and document automation that was once reserved for major corporations.
+                  If you're driving opportunity outside the major hubs, this is your toolkit. Attract new industries, secure partnerships, expand into new markets, or get investment for your next move—backed by data-driven proposals that rival the big firms.
                 </p>
               </div>
               
-              {/* Right side - White box */}
-              <div className="bg-white p-6 shadow-xl border-4 border-black">
-                <p className="text-slate-500 leading-relaxed mb-3 text-center text-sm">
-                  Behind the simplicity is serious technology—purpose-built for regional intelligence.
-                </p>
-                <p className="text-slate-800 font-medium text-base leading-relaxed text-center mb-3">
-                  The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
-                  Monte Carlo simulations, and a Document Factory producing 200+ document types. 
-                  But you don't need to understand any of that to use it.
-                </p>
-                <p className="text-xl font-light text-slate-900 text-center mb-4">
-                  The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
-                </p>
-                <div className="border-t border-slate-200 pt-4">
-                  <p className="text-slate-600 leading-relaxed text-center text-sm">
-                    This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
-                    thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
-                    chance to be seen, understood, and chosen.
-                  </p>
+              {/* Right - HOW IT WORKS */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                <p className="text-orange-400 uppercase tracking-widest text-xs mb-4 font-semibold">HOW IT WORKS</p>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    <p className="text-white text-sm leading-relaxed pt-1">Answer plain-language questions about your project.</p>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    <p className="text-white text-sm leading-relaxed pt-1">Our AI stress-tests your plan with expert personas and scoring algorithms.</p>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    <p className="text-white text-sm leading-relaxed pt-1">Generate institutional-grade documents—investment memos, risk assessments, partner briefs—ready to send.</p>
+                  </div>
                 </div>
+                <div className="mt-6 pt-4 border-t border-white/20">
+                  <p className="text-orange-300 font-medium">No consulting fees. No waiting months.</p>
+                  <p className="text-slate-400 text-sm mt-1">What used to cost hundreds of thousands of dollars now takes minutes.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Commitment statement */}
+            <div className="max-w-3xl mx-auto mb-12">
+              <p className="text-slate-300 leading-relaxed text-lg text-center">
+                You just need to show up and be honest about what you're trying to do. This isn't just software—it's a commitment to making sure strong regional projects aren't ignored because they didn't have access to the right tools. Every community deserves a fair chance to be seen, understood, and chosen.
+              </p>
+            </div>
+            
+            {/* Technology description box */}
+            <div className="bg-white p-8 shadow-xl border-4 border-black max-w-2xl mx-auto">
+              <p className="text-slate-500 leading-relaxed mb-4 text-center">
+                Behind the simplicity is serious technology—purpose-built for regional intelligence.
+              </p>
+              <p className="text-slate-800 font-medium text-lg leading-relaxed text-center mb-4">
+                The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
+                Monte Carlo simulations, and a Document Factory producing 200+ document types. 
+                But you don't need to understand any of that to use it.
+              </p>
+              <p className="text-2xl font-light text-slate-900 text-center mb-6">
+                The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
+              </p>
+              <div className="border-t border-slate-200 pt-6">
+                <p className="text-slate-600 leading-relaxed text-center">
+                  This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
+                  thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
+                  chance to be seen, understood, and chosen.
+                </p>
               </div>
             </div>
           </div>

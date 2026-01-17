@@ -1,4 +1,4 @@
-import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare } from '../types';
+import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot } from '../types';
 import { calculateSPI, generateRROI, generateSEAM, generateSymbioticMatches, runEthicalSafeguards } from './engine';
 import { MarketDiversificationEngine } from './engine';
 import { runOpportunityOrchestration } from './engine';
@@ -9,6 +9,7 @@ import AdvancedIndexService from './MissingFormulasEngine';
 import AdversarialReasoningService from './AdversarialReasoningService';
 import { EventBus } from './EventBus';
 import { GovernanceService } from './GovernanceService';
+import { optimizedAgenticBrain, computeFrontierIntelligence } from './algorithms';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -34,7 +35,8 @@ export class ReportOrchestrator {
       tcoResult,
       criResult,
       advancedIndices,
-      adversarialStack
+      adversarialStack,
+      agenticBrainResult
     ] = await Promise.all([
       calculateSPI(params),
       generateRROI(params),
@@ -47,12 +49,23 @@ export class ReportOrchestrator {
       DerivedIndexService.calculateTCO(params),
       DerivedIndexService.calculateCRI(params),
       AdvancedIndexService.computeIndices(params),
-      AdversarialReasoningService.generate(params)
+      AdversarialReasoningService.generate(params),
+      optimizedAgenticBrain.think(params).catch(() => null)
     ]);
 
     console.log('DEBUG: All engines completed');
 
     // Build the structured payload
+    const agenticBrainSnapshot = agenticBrainResult ? this.toAgenticBrainSnapshot(agenticBrainResult) : undefined;
+    const frontierIntelligence = await computeFrontierIntelligence(params, {
+      spi: spiResult,
+      rroi: rroiResult,
+      seam: seamResult,
+      advancedIndices,
+      adversarialConfidence: adversarialStack.adversarialConfidence,
+      agenticBrain: agenticBrainSnapshot
+    });
+
     const payload: ReportPayload = {
       metadata: {
         requesterType: params.organizationType,
@@ -105,7 +118,9 @@ export class ReportOrchestrator {
         motivationAnalysis: adversarialStack.motivation,
         counterfactuals: adversarialStack.counterfactuals,
         outcomeLearning: adversarialStack.outcomeLearning,
-        adversarialConfidence: adversarialStack.adversarialConfidence
+        adversarialConfidence: adversarialStack.adversarialConfidence,
+        agenticBrain: agenticBrainSnapshot,
+        frontierIntelligence
       }
     };
 
@@ -142,6 +157,27 @@ export class ReportOrchestrator {
       console.warn('Error processing report ecosystem pulse:', error);
     }
     return payload;
+  }
+
+  private static toAgenticBrainSnapshot(result: any): AgenticBrainSnapshot {
+    return {
+      proceedSignal: result.executiveBrief.proceedSignal,
+      headline: result.executiveBrief.headline,
+      consensusStrength: result.executiveBrief.consensusStrength,
+      topDrivers: result.executiveBrief.topDrivers || [],
+      topRisks: result.executiveBrief.topRisks || [],
+      nextActions: result.executiveBrief.nextActions || [],
+      performance: {
+        totalTimeMs: result.performance.totalTimeMs,
+        inputValidationMs: result.performance.inputValidationMs,
+        memoryRetrievalMs: result.performance.memoryRetrievalMs,
+        reasoningMs: result.performance.reasoningMs,
+        synthesisMs: result.performance.synthesisMs,
+        speedupFactor: result.performance.speedupFactor
+      },
+      trustScore: result.inputValidation.trustScore,
+      contradictions: result.inputValidation.contradictions?.contradictions?.length || 0
+    };
   }
 
   private static buildRegionProfile(params: ReportParameters): RegionProfile {

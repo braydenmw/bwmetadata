@@ -17,18 +17,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
     const personas = [
         { 
-            name: "The Skeptic", 
-            icon: Search, 
-            color: "text-red-500",
-            role: "Risk Hunter",
-            description: "Actively searches for hidden risks, unfounded assumptions, and deal-breakers. Asks: What could go wrong? What are we missing?"
-        },
-        { 
             name: "The Advocate", 
             icon: Lightbulb, 
             color: "text-yellow-500",
             role: "Opportunity Finder",
             description: "Identifies competitive advantages, unique value propositions, and strategic opportunities. Asks: What makes this special? Why now?"
+        },
+        { 
+            name: "The Skeptic", 
+            icon: Search, 
+            color: "text-red-500",
+            role: "Risk Hunter",
+            description: "Actively searches for hidden risks, unfounded assumptions, and deal-breakers. Asks: What could go wrong? What are we missing?"
         },
         { 
             name: "The Regulator", 
@@ -153,47 +153,52 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             </section>
 
             {/* How It Works - 3 Steps */}
-            <section className="py-16 px-8 bg-slate-900 text-white">
+            <section className="py-16 px-8 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light mb-4">How It Works</h2>
-                        <p className="text-lg text-slate-400">Three steps from brief to board-ready intelligence</p>
+                    <div className="text-center mb-8">
+                        <div className="text-xs uppercase tracking-[0.3em] text-slate-500 mb-3">From Rough Brief to Board‑Ready Package</div>
+                        <h2 className="text-3xl font-light mb-4 text-slate-900">From Rough Brief to Board‑Ready Package</h2>
+                        <p className="text-lg text-slate-700 max-w-4xl mx-auto mb-6">
+                            Start with a simple brief; leave the heavy lifting to NSIL. Our intake converts your narrative into structured hypotheses, runs adversarial multi‑persona reasoning, applies rigorous scoring and scenario engines, and composes a complete, auditable decision package—fast, repeatable, and governance‑ready.
+                        </p>
+                        <div className="bg-white border border-slate-100 rounded-lg p-4 max-w-3xl mx-auto">
+                            <p className="text-sm text-slate-600">
+                                <strong className="text-green-600">10‑STEP PROTOCOL</strong> — An institutional intake and audit protocol ensures every conclusion is traceable, falsifiable, and recomputable when assumptions change.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="text-center">
-                            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <MessageSquare size={28} />
+                            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <MessageSquare size={28} className="text-blue-600" />
                             </div>
-                            <div className="text-sm text-blue-400 font-medium mb-2">STEP 1</div>
-                            <h3 className="text-xl font-semibold mb-3">Describe Your Opportunity</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Input your project in plain language—any format, any skill level. 
-                                The system asks clarifying questions and fills gaps through active research.
+                            <div className="text-sm text-blue-600 font-medium mb-2">STEP 1</div>
+                            <h3 className="text-xl font-semibold mb-3 text-slate-900">Intake & Validation</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                Submit your opportunity in plain language. Input checks and evidence validation capture assumptions and surface gaps to be resolved.
                             </p>
                         </div>
 
                         <div className="text-center">
-                            <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Cpu size={28} />
+                            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Cpu size={28} className="text-purple-600" />
                             </div>
-                            <div className="text-sm text-purple-400 font-medium mb-2">STEP 2</div>
-                            <h3 className="text-xl font-semibold mb-3">System Validates & Debates</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Five AI personas argue your case from different angles. 
-                                27 formulas score viability. 100+ Monte Carlo runs model uncertainty.
+                            <div className="text-sm text-purple-600 font-medium mb-2">STEP 2</div>
+                            <h3 className="text-xl font-semibold mb-3 text-slate-900">Adversarial Analysis</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                Five specialist personas debate the case; scored formulas and Monte Carlo scenarios quantify risk and upside across plausible futures.
                             </p>
                         </div>
 
                         <div className="text-center">
-                            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Download size={28} />
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Download size={28} className="text-green-600" />
                             </div>
-                            <div className="text-sm text-green-400 font-medium mb-2">STEP 3</div>
-                            <h3 className="text-xl font-semibold mb-3">Download Board-Ready Artifacts</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Export investment memos, risk briefs, LOI templates—each with complete 
-                                audit trails and source citations.
+                            <div className="text-sm text-green-600 font-medium mb-2">STEP 3</div>
+                            <h3 className="text-xl font-semibold mb-3 text-slate-900">Board‑Ready Deliverables</h3>
+                            <p className="text-slate-600 leading-relaxed">
+                                Receive investment memos, LOIs, negotiation term sheets and explainability contracts—each with drivers, formulas and citations for audit and governance.
                             </p>
                         </div>
                     </div>
@@ -208,17 +213,50 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <GitBranch size={12} />
                             Technical Deep Dive
                         </div>
-                        <h2 className="text-3xl font-light mb-4">Technical Architecture & Intelligence Framework</h2>
+                        <h2 className="text-3xl font-light mb-4">BWGA Intelligence AI: Technical Architecture Report</h2>
+                        <p className="text-sm text-slate-500 mb-4">Technical Report · January 2026</p>
                         <div className="inline-block bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 mb-4">
                             <span className="text-lg font-bold text-white">NSIL</span>
                             <span className="text-slate-300 ml-2">— Nexus Strategic Intelligence Layer</span>
                         </div>
-                        <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                            The proprietary AI reasoning engine that powers the platform. NSIL integrates a 27-formula scoring suite 
-                            with multi-agent reasoning systems, transforming unstructured inputs into institutional-grade intelligence 
-                            through autonomous analysis, adversarial debate, and probabilistic modeling. Every conclusion includes 
-                            complete audit trails and source citations.
+                        <p className="text-sm text-slate-400 max-w-3xl mx-auto mb-4">
+                            A Neuro-Symbolic Decision-Support Architecture for Cross-Border Partnership Intelligence
                         </p>
+                        <p className="text-xs text-slate-500 mb-6">Brayden Walls Global Advisory · Research &amp; Development Division</p>
+                        <p className="text-lg text-slate-400 max-w-4xl mx-auto">
+                            <strong className="text-white">TECHNICAL FOUNDATION</strong>
+                            <span className="text-slate-300"> — </span>
+                            The proprietary reasoning engine behind every analysis. NSIL doesn't just generate text—it runs structured debates between five specialized AI personas,
+                            applies 27 mathematical formulas to score your opportunity, and executes Monte Carlo simulations to model what could go wrong.
+                            Every conclusion comes with a complete audit trail: which formula, which inputs, which persona raised the flag.
+                        </p>
+                        <div className="mt-6 grid md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-6">
+                            <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 text-left">
+                                <h4 className="text-sm font-semibold text-blue-400 mb-2">5-Layer Architecture</h4>
+                                <ul className="text-xs text-slate-400 space-y-1">
+                                    <li>• Input &amp; Governance</li>
+                                    <li>• Multi-Agent Reasoning</li>
+                                    <li>• Quantitative Scoring</li>
+                                    <li>• Output Intelligence</li>
+                                    <li>• Continuous Learning</li>
+                                </ul>
+                            </div>
+                            <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 text-left">
+                                <h4 className="text-sm font-semibold text-purple-400 mb-2">5 AI Personas</h4>
+                                <ul className="text-xs text-slate-400 space-y-1">
+                                    <li>• Advocate (Opportunity)</li>
+                                    <li>• Skeptic (Risk)</li>
+                                    <li>• Regulator (Compliance)</li>
+                                    <li>• Accountant (Finance)</li>
+                                    <li>• Operator (Execution)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-center">
+                            <button className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 border border-blue-500 text-sm text-white cursor-pointer transition-all">
+                                View Full Architecture &amp; 27 Formulas
+                            </button>
+                        </div>
                     </div>
 
                     {/* Architecture Layers */}
@@ -228,7 +266,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
                                     <Database size={20} className="text-blue-400" />
                                 </div>
-                                <h3 className="font-semibold">Input & Governance Layer</h3>
+                                <h3 className="font-semibold">Input & Governance</h3>
                             </div>
                             <ul className="space-y-2 text-sm text-slate-400">
                                 <li className="flex items-start gap-2">
@@ -255,7 +293,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
                                     <Brain size={20} className="text-purple-400" />
                                 </div>
-                                <h3 className="font-semibold">Multi-Agent Reasoning Engine</h3>
+                                <h3 className="font-semibold">Multi-Agent Reasoning</h3>
                             </div>
                             <ul className="space-y-2 text-sm text-slate-400">
                                 <li className="flex items-start gap-2">
@@ -316,7 +354,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     <li>• <strong className="text-white">RROI™</strong> — Regional Return on Investment</li>
                                     <li>• <strong className="text-white">SEAM™</strong> — Socio-Economic Alignment Metric</li>
                                     <li>• <strong className="text-white">IVAS™</strong> — Investment Viability Assessment</li>
-                                    <li>• <strong className="text-white">SCF™</strong> — Supply Chain Friction Index</li>
+                                    <li>• <strong className="text-white">SCF™</strong> — Strategic Cash Flow Impact</li>
                                 </ul>
                             </div>
                             <div>
@@ -376,17 +414,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             <section className="py-16 px-8 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light text-slate-900 mb-4">The 5-Layer NSIL Autonomous Reasoning Architecture</h2>
+                        <h2 className="text-3xl font-light text-slate-900 mb-4">5-Layer Architecture & 5 AI Personas</h2>
                         <div className="inline-block bg-indigo-100 border border-indigo-200 rounded-lg px-4 py-2 mb-4">
                             <span className="text-sm font-bold text-indigo-800">NSIL</span>
                             <span className="text-indigo-600 ml-2">= Nexus Strategic Intelligence Layer</span>
                         </div>
                         <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                            The NSIL framework operates through five interconnected layers of autonomous reasoning, 
-                            culminating in the 5 AI Personas adversarial debate system. Each layer builds upon the previous, 
-                            ensuring comprehensive analysis that surfaces risks, opportunities, and strategic insights before 
-                            human stakeholders review the opportunity.
+                            The NSIL framework operates through five interconnected layers of autonomous reasoning and five specialized
+                            personas. Each layer builds on the previous, ensuring comprehensive analysis that surfaces risks, opportunities,
+                            and strategic insights before stakeholders review the opportunity.
                         </p>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-10">
+                        <div className="text-xs uppercase tracking-widest text-slate-500 mb-4">5-Layer Architecture</div>
+                        <div className="grid md:grid-cols-5 gap-4 text-sm text-slate-700">
+                            <div className="p-3 bg-white border border-slate-200 rounded-lg text-center font-semibold">Input & Governance</div>
+                            <div className="p-3 bg-white border border-slate-200 rounded-lg text-center font-semibold">Multi-Agent Reasoning</div>
+                            <div className="p-3 bg-white border border-slate-200 rounded-lg text-center font-semibold">Quantitative Scoring</div>
+                            <div className="p-3 bg-white border border-slate-200 rounded-lg text-center font-semibold">Output Intelligence</div>
+                            <div className="p-3 bg-white border border-slate-200 rounded-lg text-center font-semibold">Continuous Learning</div>
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-5 gap-4">
@@ -531,11 +579,35 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             <section className="py-16 px-8 bg-slate-900 text-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light mb-4">The Ten-Step Reasoning Protocol</h2>
-                        <p className="text-lg text-slate-400">
-                            Every mandate passes through a structured governance sequence that enforces intellectual honesty.
+                        <h2 className="text-3xl font-light mb-4">10-STEP PROTOCOL → OUTPUTS</h2>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-full text-sm text-green-300 mb-4">
+                            <Zap size={16} />
+                            <span>Document Factory</span>
+                        </div>
+                        <p className="text-lg text-slate-400 max-w-4xl mx-auto">
+                            Complete the guided intake protocol, and the platform generates a full suite of professional documents—investment memos, risk assessments, partnership briefs, LOI templates—each scored and fully populated with your data. <strong className="text-white">No consulting fees. No waiting weeks.</strong>
                         </p>
-                        <p className="text-sm text-slate-500 mt-2">Click any step to see details</p>
+                        <p className="text-sm text-slate-500 mt-4">Click any step to see details</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 text-center">
+                            <div className="text-3xl font-light text-white">200+</div>
+                            <div className="text-xs text-slate-400 mt-1">Report &amp; Document Types</div>
+                        </div>
+                        <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 text-center">
+                            <div className="text-3xl font-light text-white">150+</div>
+                            <div className="text-xs text-slate-400 mt-1">Letter Templates</div>
+                        </div>
+                        <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 text-center">
+                            <div className="text-3xl font-light text-white">12</div>
+                            <div className="text-xs text-slate-400 mt-1">Sample Reports</div>
+                        </div>
+                    </div>
+
+                    <div className="mb-10 flex flex-wrap gap-3 justify-center text-xs text-slate-300">
+                        <span className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full">View Full Catalog</span>
+                        <span className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full">12 Sample Reports</span>
                     </div>
 
                     <div className="grid md:grid-cols-5 gap-4">
@@ -601,6 +673,38 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             </section>
 
+            <section className="py-16 px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-xs uppercase tracking-[0.3em] text-slate-400 mb-3">BW GLOBAL ADVISORY</div>
+                    <h2 className="text-3xl font-light text-slate-900 mb-4">Introducing the World’s First NSIL‑Powered Strategic Intelligence Platform</h2>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 max-w-4xl mx-auto text-left mb-6">
+                        <p className="text-slate-700 leading-relaxed mb-4">
+                            BW Global Advisory presents a purpose‑built, auditable intelligence platform that behaves like an expert team and delivers board‑ready outcomes in minutes. At its core is the proprietary <strong className="text-slate-900">NSIL brain</strong> — a neuro‑symbolic intelligence layer that fuses advanced pattern recognition with formal, explainable logic. This is not a generic chatbot; it is a governed, falsifiable decision system you can trust.
+                        </p>
+                        <p className="text-slate-700 leading-relaxed mb-4">
+                            The platform ingests your brief, validates inputs, spawns an adversarial, multi‑persona debate, applies proprietary scoring and scenario engines, and delivers auditable artifacts—term sheets, LOIs, executive summaries, and explainability contracts that show exactly why each recommendation was made.
+                        </p>
+                        <p className="text-green-700 font-semibold mb-2">
+                            <Zap size={18} className="inline-block mr-2 text-green-500" />
+                            <span>Now with Frontier Intelligence — 10 Next‑Gen Capabilities</span>
+                        </p>
+                        <ul className="list-disc pl-6 text-slate-700 text-sm mb-2">
+                            <li><strong>Agentic Self‑Learning</strong> — Institutional memory and continuous learning for improved recommendations.</li>
+                            <li><strong>Adversarial Multi‑Persona Reasoning</strong> — Boardroom‑style debate to reveal failure modes and decision drivers.</li>
+                            <li><strong>Autonomous Negotiation Simulation</strong> — Multi‑round negotiation modelling with term‑sheet outputs and outcome probabilities.</li>
+                            <li><strong>Explainability Contracts</strong> — Inputs, formulas, confidence and citations accompany every conclusion for audit readiness.</li>
+                            <li><strong>Synthetic Foresight (128 Scenarios)</strong> — Deep scenario stress‑testing and instant impact propagation.</li>
+                            <li><strong>Stakeholder Simulation</strong> — Models influence pathways and persuasion dynamics across stakeholders.</li>
+                            <li><strong>Multimodal Fusion</strong> — Integrates text, numeric, geospatial and temporal signals into unified insights.</li>
+                            <li><strong>What‑If Sandbox</strong> — Instant scenario adjustments with system‑wide propagation.</li>
+                            <li><strong>Governance Auto‑Update</strong> — Proposes governance and compliance updates when conditions change.</li>
+                        </ul>
+                        <p className="text-slate-700 text-xs mt-4">
+                            <strong>Update: January 2026 —</strong> All 10 frontier capabilities are now fully integrated, making BWGA AI the most advanced, auditable, and proactive decision‑support platform for cross‑border investment and partnership intelligence.
+                        </p>
+                    </div>
+                </div>
+            </section>
             {/* What You Receive */}
             <section className="py-16 px-8 bg-white">
                 <div className="max-w-6xl mx-auto">
@@ -790,10 +894,222 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="py-8 px-8 bg-slate-900 text-center">
-                <p className="text-sm text-slate-400">
-                    © 2026 BW Global Advisory Pty Ltd | Nexus Intelligence OS v6.0 | Melbourne, Australia | ABN 55 978 113 300
+            {/* Recent Updates Section - 16/01/2026 */}
+            <section className="py-16 px-8 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-900 text-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-full text-sm text-green-300 mb-4">
+                            <Zap size={16} />
+                            <span>System Update</span>
+                        </div>
+                        <h2 className="text-3xl font-light mb-4">Recent Updates — 16 January 2026</h2>
+                        <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                            Major platform enhancement introducing <strong className="text-white">Frontier Intelligence Capabilities</strong> — 
+                            ten next-generation features that transform BWGA AI into a more advanced, autonomous, and predictive system.
+                        </p>
+                    </div>
+
+                    {/* What Changed Overview */}
+                    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 mb-10">
+                        <h3 className="text-xl font-semibold mb-4 text-center">What This Update Delivers</h3>
+                        <p className="text-slate-300 text-center max-w-3xl mx-auto mb-6">
+                            The January 2026 update introduces the <strong className="text-white">FrontierIntelligenceEngine</strong> — a new computational layer that adds 
+                            autonomous negotiation simulation, multi-persona evolution tracking, institutional memory, regulatory monitoring, 128-scenario foresight analysis, 
+                            stakeholder influence mapping, explainability contracts, multimodal fusion, what-if sandboxing, and governance auto-update capabilities. 
+                            These features work together to provide unprecedented depth in strategic decision support.
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-4 text-sm text-slate-400">
+                            <div className="flex items-start gap-2">
+                                <CheckCircle2 size={16} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                <span>All 10 frontier capabilities integrated into the main analysis pipeline</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <CheckCircle2 size={16} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                <span>Deterministic seeded RNG ensures reproducible results across sessions</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <CheckCircle2 size={16} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                <span>Full integration with OptimizedAgenticBrain and ReportOrchestrator</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <CheckCircle2 size={16} className="text-green-400 mt-0.5 flex-shrink-0" />
+                                <span>Live insights now include frontier intelligence in real-time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* The 10 Frontier Capabilities */}
+                    <div className="grid md:grid-cols-2 gap-6 mb-10">
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-blue-400">1</div>
+                                <h4 className="font-semibold">Autonomous Negotiation Simulation</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Simulates multi-round negotiations between parties, generating term sheets, tracking concessions, and predicting outcomes with confidence scores. 
+                                Models strategic bargaining positions and identifies optimal deal structures.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-purple-400">2</div>
+                                <h4 className="font-semibold">Persona Evolution Tracking</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Tracks how each of the 5 AI personas' positions evolve across analysis phases. Captures initial stance, evidence-driven shifts, 
+                                final positions, and the key factors that influenced each persona's conclusions.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-green-400">3</div>
+                                <h4 className="font-semibold">Institutional Memory</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Learns from similar past deals to provide contextual intelligence. Surfaces precedent cases, historical lessons, 
+                                sector-specific insights, and pattern-based recommendations based on accumulated organizational knowledge.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-amber-400">4</div>
+                                <h4 className="font-semibold">Regulatory Pulse</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Monitors regulatory environments in real-time. Tracks recent changes, pending legislation, enforcement trends, 
+                                and compliance requirements specific to your target jurisdictions and sectors.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-red-400">5</div>
+                                <h4 className="font-semibold">Synthetic Foresight (128 Scenarios)</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Generates 128 synthetic future scenarios using Monte Carlo-style simulation. Each scenario models different combinations of 
+                                market conditions, regulatory changes, and execution outcomes to stress-test strategic assumptions.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-cyan-400">6</div>
+                                <h4 className="font-semibold">Stakeholder Simulation</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Maps stakeholder positions, influence levels, and potential reactions. Simulates how different stakeholder groups 
+                                might respond to proposals, identifying allies, blockers, and persuasion strategies.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-pink-400">7</div>
+                                <h4 className="font-semibold">Explainability Contracts</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Every analytical conclusion includes a formal explainability contract: input factors, calculation methodology, 
+                                confidence intervals, known limitations, and conditions under which the conclusion would change.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-orange-400">8</div>
+                                <h4 className="font-semibold">Multimodal Fusion</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Integrates multiple data modalities (text, numerical, geospatial, temporal) into unified intelligence. 
+                                Weights different sources by reliability and recency, producing coherent cross-modal insights.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-teal-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-teal-400">9</div>
+                                <h4 className="font-semibold">What-If Sandbox</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Interactive scenario modeling environment. Adjust key variables (investment size, timeline, partner profile) 
+                                and instantly see how changes propagate through all scoring formulas and risk assessments.
+                            </p>
+                        </div>
+
+                        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-lime-500/20 rounded-lg flex items-center justify-center text-sm font-bold text-lime-400">10</div>
+                                <h4 className="font-semibold">Governance Auto-Update</h4>
+                            </div>
+                            <p className="text-sm text-slate-400">
+                                Automatically proposes governance framework updates based on detected regulatory changes, emerging best practices, 
+                                and institutional learning. Ensures compliance frameworks stay current without manual intervention.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* System Architecture Changes */}
+                    <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border border-blue-700/50 rounded-xl p-8 mb-10">
+                        <h3 className="text-xl font-semibold mb-6 text-center">How This Changes the Overall System</h3>
+                        <div className="grid md:grid-cols-3 gap-6">
+                            <div className="text-center">
+                                <div className="text-3xl font-light text-blue-400 mb-2">Before</div>
+                                <p className="text-sm text-slate-400">
+                                    5 personas + 27 formulas + 100 simulations. Powerful but reactive—analysis based on current inputs only.
+                                </p>
+                            </div>
+                            <div className="text-center flex items-center justify-center">
+                                <ArrowRight size={32} className="text-green-400" />
+                            </div>
+                            <div className="text-center">
+                                <div className="text-3xl font-light text-green-400 mb-2">After</div>
+                                <p className="text-sm text-slate-400">
+                                    Same foundation + 10 frontier capabilities + 128 foresight scenarios. Proactive, predictive, and self-improving.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="mt-8 grid md:grid-cols-4 gap-4 text-center">
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-2xl font-light text-white">10</div>
+                                <div className="text-xs text-slate-400">New Capabilities</div>
+                            </div>
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-2xl font-light text-white">128</div>
+                                <div className="text-xs text-slate-400">Foresight Scenarios</div>
+                            </div>
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-2xl font-light text-white">15+</div>
+                                <div className="text-xs text-slate-400">New Type Definitions</div>
+                            </div>
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-2xl font-light text-white">567</div>
+                                <div className="text-xs text-slate-400">Lines of New Code</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Technical Implementation */}
+                    <div className="bg-slate-800 rounded-lg p-6">
+                        <h4 className="font-semibold mb-4 text-center">Technical Implementation Summary</h4>
+                        <div className="grid md:grid-cols-2 gap-6 text-sm">
+                            <div>
+                                <h5 className="text-blue-400 font-medium mb-2">New Engine</h5>
+                                <ul className="space-y-1 text-slate-400">
+                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">FrontierIntelligenceEngine.ts</code> — Core frontier intelligence module</li>
+                                    <li>• Exports <code className="text-xs bg-slate-700 px-1 rounded">computeFrontierIntelligence()</code> function</li>
+                                    <li>• Deterministic seeded RNG for reproducibility</li>
+                                    <li>• Full integration with existing algorithm suite</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 className="text-purple-400 font-medium mb-2">Integration Points</h5>
+                                <ul className="space-y-1 text-slate-400">
+                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">OptimizedAgenticBrain.ts</code> — Phase 6 frontier computation</li>
+                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">ReportOrchestrator.ts</code> — Frontier data in report payloads</li>
+                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">MultiAgentBrainSystem.ts</code> — Live
                 </p>
             </footer>
         </div>

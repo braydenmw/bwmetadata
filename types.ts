@@ -608,6 +608,40 @@ export interface OSIResult extends DerivedIndexBase {
   resilienceDrivers: string[];
 }
 
+export interface LAIResult extends DerivedIndexBase {
+  advisoryBias: 'overstated' | 'aligned' | 'understated';
+  gapScore: number;
+}
+
+export interface SAEResult extends DerivedIndexBase {
+  exposureBand: 'low' | 'medium' | 'high' | 'critical';
+  watchlists: string[];
+  requiredControls: string[];
+}
+
+export interface PPLResult extends DerivedIndexBase {
+  approvalProbability: number;
+  leadTimeDays: { p50: number; p90: number };
+  criticalAgencies: string[];
+}
+
+export interface CLOResult extends DerivedIndexBase {
+  licenseBand: 'secure' | 'watch' | 'fragile';
+  engagementActions: string[];
+  grievanceSignals: string[];
+}
+
+export interface DVSResult extends DerivedIndexBase {
+  sensitivityRanked: Array<{ driver: string; impactScore: number }>;
+  topLevers: string[];
+}
+
+export interface CSRResult extends DerivedIndexBase {
+  resilienceBand: 'strong' | 'moderate' | 'weak';
+  covenantHeadroom: number;
+  stressFactors: string[];
+}
+
 export interface RNIResult extends DerivedIndexBase {
   clearancePath: string[];
   policyWatchlist: string[];
@@ -647,6 +681,144 @@ export interface FRSResult extends DerivedIndexBase {
   signals: string[];
 }
 
+export interface AgenticBrainSnapshot {
+  proceedSignal: 'proceed' | 'pause' | 'restructure' | 'reject';
+  headline: string;
+  consensusStrength: number;
+  topDrivers: string[];
+  topRisks: string[];
+  nextActions: string[];
+  performance: {
+    totalTimeMs: number;
+    inputValidationMs: number;
+    memoryRetrievalMs: number;
+    reasoningMs: number;
+    synthesisMs: number;
+    speedupFactor: number;
+  };
+  trustScore: number;
+  contradictions: number;
+}
+
+export interface NegotiationTermSheet {
+  equitySplit: number;
+  debtShare: number;
+  governanceSeats: number;
+  performanceMilestones: string[];
+  protectionClauses: string[];
+  valuationMultiple: number;
+}
+
+export interface NegotiationRound {
+  round: number;
+  bwgaOffer: NegotiationTermSheet;
+  counterOffer: NegotiationTermSheet;
+  convergenceScore: number;
+}
+
+export interface NegotiationOutcome {
+  agreementProbability: number;
+  finalTerms: NegotiationTermSheet;
+  rounds: NegotiationRound[];
+  negotiationStrategy: string;
+}
+
+export interface PersonaEvolutionSnapshot {
+  basePersonas: string[];
+  emergentPersonas: Array<{ name: string; focus: string; weight: number }>;
+  retirementSignals: string[];
+  evolutionRationale: string[];
+}
+
+export interface InstitutionalMemorySnapshot {
+  memoryStrength: number;
+  relevantPatterns: Array<{ id: string; era: string; region: string; outcome: string; lesson: string }>;
+  crossDomainAnalogies: string[];
+  learnedRules: string[];
+}
+
+export interface RegulatoryPulse {
+  trend: 'tightening' | 'stable' | 'relaxing';
+  frictionIndex: number;
+  nextReviewWindowMonths: number;
+  complianceSignals: string[];
+}
+
+export interface ForesightScenario {
+  name: string;
+  probability: number;
+  impactScore: number;
+  keyDrivers: string[];
+  mitigation: string[];
+}
+
+export interface SyntheticForesightResult {
+  topScenarios: ForesightScenario[];
+  blackSwanMonitor: string[];
+  robustnessScore: number;
+}
+
+export interface StakeholderPosition {
+  stakeholder: string;
+  influence: number;
+  stance: 'supportive' | 'neutral' | 'opposed';
+  likelyActions: string[];
+}
+
+export interface StakeholderSimulationResult {
+  positions: StakeholderPosition[];
+  coalitionMap: string[];
+  negotiationLeverage: string[];
+}
+
+export interface ExplainabilityContract {
+  assumptions: string[];
+  evidenceSources: string[];
+  formulaTrace: string[];
+  personaTrace: string[];
+  changeTriggers: string[];
+  legalDefensibility: string[];
+}
+
+export interface ModalityFusionResult {
+  modalities: Array<{ type: string; coverage: number; signalStrength: number }>;
+  fusionConfidence: number;
+  blindSpots: string[];
+}
+
+export interface WhatIfLeverImpact {
+  lever: string;
+  currentValue: number;
+  delta: number;
+  predictedImpact: { spi: number; rroi: number; seam: number };
+}
+
+export interface WhatIfSandboxResult {
+  levers: WhatIfLeverImpact[];
+  bestLevers: string[];
+  riskWarnings: string[];
+}
+
+export interface GovernanceAutoUpdateResult {
+  policyUpdates: string[];
+  auditControls: string[];
+  governanceScore: number;
+  nextReviewDate: string;
+}
+
+export interface FrontierIntelligenceResult {
+  negotiation: NegotiationOutcome;
+  personaEvolution: PersonaEvolutionSnapshot;
+  institutionalMemory: InstitutionalMemorySnapshot;
+  regulatoryPulse: RegulatoryPulse;
+  syntheticForesight: SyntheticForesightResult;
+  stakeholderSimulation: StakeholderSimulationResult;
+  explainabilityContract: ExplainabilityContract;
+  modalityFusion: ModalityFusionResult;
+  whatIfSandbox: WhatIfSandboxResult;
+  governanceAutoUpdate: GovernanceAutoUpdateResult;
+}
+
 export interface AdvancedIndexResults {
   barna: BARNAResult;
   nvi: NVIResult;
@@ -663,6 +835,12 @@ export interface AdvancedIndexResults {
   rdbi: RDBIResult;
   afc: AFCResult;
   frs: FRSResult;
+  lai: LAIResult;
+  sae: SAEResult;
+  ppl: PPLResult;
+  clo: CLOResult;
+  dvs: DVSResult;
+  csr: CSRResult;
 }
 
 export interface AdversarialInputCheck {
@@ -959,6 +1137,8 @@ export interface ReportData {
     counterfactuals?: CounterfactualLabResult;
     outcomeLearning?: OutcomeLearningSnapshot;
     adversarialConfidence?: AdversarialConfidenceResult;
+    agenticBrain?: AgenticBrainSnapshot;
+    frontierIntelligence?: FrontierIntelligenceResult;
   };
 }
 
@@ -1054,6 +1234,7 @@ export interface ReportPayload {
     counterfactuals?: CounterfactualLabResult;
     outcomeLearning?: OutcomeLearningSnapshot;
     adversarialConfidence?: AdversarialConfidenceResult;
+    agenticBrain?: AgenticBrainSnapshot;
   };
 }
 

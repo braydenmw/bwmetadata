@@ -22,6 +22,7 @@ import { evaluateDocReadiness } from '../services/intakeMapping';
 import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';
 import useBrainObserver, { BrainSignal } from '../hooks/useBrainObserver';
 import ContextualAIAssistant from './ContextualAIAssistant';
+import { LiveReportBuilder, type LiveReportState } from '../services/MultiAgentBrainSystem';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -256,6 +257,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [lastObservedStep, setLastObservedStep] = useState<string | null>(null);
   const [lastObservedParams, setLastObservedParams] = useState<string>('');
   const [agentThinking, setAgentThinking] = useState(false);
+    const [liveAgenticState, setLiveAgenticState] = useState<LiveReportState | null>(null);
+    const liveAgenticTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Voice synthesis function - speaks text aloud
   const speakText = useCallback((text: string) => {
@@ -492,6 +495,28 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             }, 1000);
         }
     }, [completeness, chatMessages.length]);
+
+    // Live multi-agent builder sync (drives autonomous live report insights)
+    useEffect(() => {
+        const reportId = params.id || 'live-report';
+        if (liveAgenticTimerRef.current) {
+            clearTimeout(liveAgenticTimerRef.current);
+        }
+        liveAgenticTimerRef.current = setTimeout(async () => {
+            try {
+                const state = await LiveReportBuilder.updateFromParams(reportId, params);
+                setLiveAgenticState(state);
+            } catch (error) {
+                console.warn('Live multi-agent sync failed', error);
+            }
+        }, 900);
+
+        return () => {
+            if (liveAgenticTimerRef.current) {
+                clearTimeout(liveAgenticTimerRef.current);
+            }
+        };
+    }, [params, activeModal]);
 
     const refinedIntake: RefinedIntake = useMemo(() => ({
         identity: {
@@ -5324,6 +5349,36 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             <div className="text-[10px] text-slate-500 italic">Select a step from the wizard to see guidance</div>
                         )}
                     </div>
+
+                    {/* Live Multi-Agent Summary */}
+                    {liveAgenticState && (
+                        <div className="shrink-0 border-b border-slate-200 p-3">
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="text-[9px] font-bold tracking-wider uppercase text-indigo-600">Live Multi-Agent Summary</div>
+                                <div className="text-[9px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-semibold">
+                                    {liveAgenticState.completeness}%
+                                </div>
+                            </div>
+                            {liveAgenticState.generatedSummary ? (
+                                <div className="text-[10px] text-slate-600 leading-relaxed">
+                                    {liveAgenticState.generatedSummary}
+                                </div>
+                            ) : (
+                                <div className="text-[10px] text-slate-500 italic">Auto-summary unlocks at 50% completeness.</div>
+                            )}
+
+                            {liveAgenticState.aiInsights.length > 0 && (
+                                <div className="mt-3 space-y-2">
+                                    {liveAgenticState.aiInsights.slice(0, 3).map((insight) => (
+                                        <div key={insight.id} className="p-2 bg-indigo-50 border border-indigo-100 rounded">
+                                            <div className="text-[10px] font-semibold text-indigo-800">{insight.title}</div>
+                                            <div className="text-[10px] text-indigo-700 mt-1">{insight.description}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {/* Advisor Console - Collapsible */}
                     <div className="flex-1 flex flex-col overflow-hidden">

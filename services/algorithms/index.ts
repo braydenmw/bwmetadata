@@ -104,6 +104,13 @@ export {
   type AgenticBrainResult
 } from './OptimizedAgenticBrain';
 
+// Frontier Intelligence Engine - Next-gen capabilities
+export {
+  computeFrontierIntelligence,
+  type FrontierIntelligenceResult,
+  type FrontierIntelligenceInputs
+} from './FrontierIntelligenceEngine';
+
 // ============================================================================
 // CONVENIENCE FUNCTIONS
 // ============================================================================

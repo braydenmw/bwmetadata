@@ -17,6 +17,12 @@ import {
   RDBIResult,
   AFCResult,
   FRSResult,
+  LAIResult,
+  SAEResult,
+  PPLResult,
+  CLOResult,
+  DVSResult,
+  CSRResult,
   CompositeScoreResult,
   InsightBand
 } from '../types';
@@ -79,7 +85,13 @@ class AdvancedIndexService {
       idv: this.computeIDV(params, composite, liveData.profile?.region),
       rdbi: this.computeRDBI(params, composite),
       afc: this.computeAFC(params, composite),
-      frs: this.computeFRS(params, composite)
+      frs: this.computeFRS(params, composite),
+      lai: this.computeLAI(params, composite, liveData.profile?.region),
+      sae: this.computeSAE(params, composite),
+      ppl: this.computePPL(params, composite, liveData.economics?.easeOfBusiness),
+      clo: this.computeCLO(params, composite),
+      dvs: this.computeDVS(params, composite),
+      csr: this.computeCSR(params, composite, liveData.economics?.inflation)
     };
   }
 
@@ -673,6 +685,210 @@ class AdvancedIndexService {
       sustainingRisk,
       compoundingHalfLifeMonths,
       signals
+    };
+  }
+
+  private static computeLAI(params: ReportParameters, composite: CompositeScoreResult, region?: string): LAIResult {
+    const advisoryIndex = clamp(composite.components.riskFactors, 15, 95);
+    const observedIndex = clamp(100 - composite.components.politicalStability, 10, 90);
+    const gap = advisoryIndex - observedIndex;
+    const gapScore = clamp(100 - Math.abs(gap), 0, 100);
+    const advisoryBias = gap > 8 ? 'overstated' : gap < -8 ? 'understated' : 'aligned';
+
+    const drivers = [
+      `Advisory proxy ${Math.round(advisoryIndex)}/100`,
+      `Observed risk proxy ${Math.round(observedIndex)}/100`,
+      `Region focus ${regionLabel(params)}`
+    ];
+
+    const pressurePoints = advisoryBias === 'overstated'
+      ? ['Narrative risk exceeds observed indicators; validate with on-ground telemetry']
+      : advisoryBias === 'understated'
+        ? ['Observed risk exceeds advisory tone; elevate security posture']
+        : [];
+
+    const recommendation = advisoryBias === 'aligned'
+      ? 'Maintain current advisory posture; continue quarterly validation.'
+      : 'Cross-check advisories with incident telemetry and local partner reporting.';
+
+    return {
+      score: gapScore,
+      band: determineBand(gapScore),
+      drivers,
+      pressurePoints,
+      recommendation,
+      dataSources: composite.dataSources,
+      advisoryBias,
+      gapScore
+    };
+  }
+
+  private static computeSAE(params: ReportParameters, composite: CompositeScoreResult): SAEResult {
+    const regulatory = clamp(composite.components.regulatory, 10, 95);
+    const risk = clamp(composite.components.riskFactors, 10, 95);
+    const exposureScore = clamp(100 - (regulatory * 0.45 + risk * 0.55), 5, 100);
+    const exposureBand: SAEResult['exposureBand'] = exposureScore >= 75 ? 'low' : exposureScore >= 55 ? 'medium' : exposureScore >= 35 ? 'high' : 'critical';
+
+    const watchlists = [] as string[];
+    if (params.country) watchlists.push(`${params.country} sanctions screening`);
+    if ((params.partnerPersonas?.length || 0) > 0) watchlists.push('Counterparty ownership graph review');
+
+    const requiredControls = [
+      'KYC/UBO verification',
+      'Transaction monitoring thresholds',
+      'Periodic sanctions refresh'
+    ];
+
+    const drivers = [
+      `Regulatory readiness ${Math.round(regulatory)}/100`,
+      `Macro risk load ${Math.round(risk)}/100`
+    ];
+
+    const pressurePoints = exposureBand === 'low' ? [] : ['Elevated AML exposure requires enhanced diligence cadence'];
+    const recommendation = exposureBand === 'low'
+      ? 'Standard AML controls sufficient; maintain quarterly reviews.'
+      : 'Activate enhanced AML review and independent sanctions screening before term sheet.';
+
+    return {
+      score: exposureScore,
+      band: determineBand(exposureScore),
+      drivers,
+      pressurePoints,
+      recommendation,
+      dataSources: composite.dataSources,
+      exposureBand,
+      watchlists,
+      requiredControls
+    };
+  }
+
+  private static computePPL(params: ReportParameters, composite: CompositeScoreResult, easeOfBusiness?: number | null): PPLResult {
+    const regulatory = clamp(composite.components.regulatory, 15, 95);
+    const ease = easeOfBusiness ?? 60;
+    const approvalProbability = clamp(Math.round((regulatory * 0.6 + ease * 0.4)), 10, 95);
+    const baseLead = Math.round(180 - (regulatory + ease) * 0.9);
+    const p50 = clamp(baseLead, 45, 240);
+    const p90 = clamp(Math.round(p50 * 1.6), 90, 360);
+
+    const criticalAgencies = [
+      'Investment authority',
+      'Sector regulator',
+      params.industry?.[0] ? `${params.industry[0]} licensing board` : 'Local licensing board'
+    ];
+
+    const drivers = [
+      `Regulatory readiness ${Math.round(regulatory)}/100`,
+      `Ease of business ${Math.round(ease)}/100`
+    ];
+
+    const pressurePoints = approvalProbability < 55 ? ['Permit probability below baseline; prepare contingency phasing'] : [];
+    const recommendation = approvalProbability >= 70
+      ? 'Submit consolidated approval pack to compress agency cycle time.'
+      : 'Engage local counsel early and stage approvals to protect timeline.';
+
+    return {
+      score: approvalProbability,
+      band: determineBand(approvalProbability),
+      drivers,
+      pressurePoints,
+      recommendation,
+      dataSources: composite.dataSources,
+      approvalProbability,
+      leadTimeDays: { p50, p90 },
+      criticalAgencies
+    };
+  }
+
+  private static computeCLO(params: ReportParameters, composite: CompositeScoreResult): CLOResult {
+    const sustainability = clamp(composite.components.sustainability, 10, 95);
+    const stakeholderFactor = clamp((params.stakeholderAlignment?.length || 0) * 6, 0, 30);
+    const score = clamp(Math.round(sustainability * 0.7 + stakeholderFactor * 0.3), 10, 98);
+    const licenseBand: CLOResult['licenseBand'] = score >= 75 ? 'secure' : score >= 55 ? 'watch' : 'fragile';
+
+    const grievanceSignals = score < 60 ? ['Community benefit narrative not yet anchored'] : [];
+    const engagementActions = [
+      'Map community stakeholders and influence nodes',
+      'Publish localized benefit statement',
+      'Schedule quarterly townhall feedback loops'
+    ];
+
+    const drivers = [
+      `Sustainability index ${Math.round(sustainability)}/100`,
+      `Stakeholder alignment count ${params.stakeholderAlignment?.length || 0}`
+    ];
+
+    const pressurePoints = licenseBand === 'fragile' ? ['License risk elevated; require community engagement sprint'] : [];
+    const recommendation = licenseBand === 'secure'
+      ? 'Maintain community transparency dashboard; monitor sentiment quarterly.'
+      : 'Invest in local engagement plan before capital deployment.';
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers,
+      pressurePoints,
+      recommendation,
+      dataSources: composite.dataSources,
+      licenseBand,
+      engagementActions,
+      grievanceSignals
+    };
+  }
+
+  private static computeDVS(params: ReportParameters, composite: CompositeScoreResult): DVSResult {
+    const drivers = ['Volume', 'Price', 'Cost', 'FX'];
+    const impacts = drivers.map(driver => ({
+      driver,
+      impactScore: clamp(Math.round(40 + Math.random() * 55 + (composite.components.marketAccess - 60) * 0.2), 10, 100)
+    }));
+
+    const ranked = impacts.sort((a, b) => b.impactScore - a.impactScore);
+    const topLevers = ranked.slice(0, 3).map(r => `${r.driver} sensitivity ${r.impactScore}/100`);
+    const score = Math.round(ranked.reduce((sum, r) => sum + r.impactScore, 0) / ranked.length);
+
+    return {
+      score: clamp(score, 0, 100),
+      band: determineBand(score),
+      drivers: ranked.map(r => `${r.driver} impact ${r.impactScore}/100`),
+      pressurePoints: score < 55 ? ['Valuation highly sensitive to core drivers; hedge exposures'] : [],
+      recommendation: score >= 65 ? 'Prioritize top two levers in valuation model negotiations.' : 'Deploy hedges or phased pricing to buffer valuation swings.',
+      dataSources: composite.dataSources,
+      sensitivityRanked: ranked,
+      topLevers
+    };
+  }
+
+  private static computeCSR(params: ReportParameters, composite: CompositeScoreResult, inflation?: number | null): CSRResult {
+    const risk = clamp(composite.components.riskFactors, 15, 95);
+    const inflationScore = clamp(100 - (inflation ?? 5) * 4, 40, 95);
+    const resilienceScore = clamp(Math.round((100 - risk) * 0.6 + inflationScore * 0.4), 10, 98);
+    const resilienceBand: CSRResult['resilienceBand'] = resilienceScore >= 75 ? 'strong' : resilienceScore >= 55 ? 'moderate' : 'weak';
+    const covenantHeadroom = clamp(Math.round(resilienceScore - 15), 5, 90);
+
+    const stressFactors = [] as string[];
+    if (resilienceScore < 60) stressFactors.push('Debt service coverage compresses under rate shock');
+    if ((params.currency || '').toUpperCase() !== 'USD') stressFactors.push('FX exposure requires hedge collar');
+
+    const drivers = [
+      `Risk load ${Math.round(risk)}/100`,
+      `Inflation resilience ${Math.round(inflationScore)}/100`
+    ];
+
+    const pressurePoints = resilienceBand === 'weak' ? ['Capital stack requires structural de-risking'] : [];
+    const recommendation = resilienceBand === 'strong'
+      ? 'Maintain current capital mix; monitor covenants quarterly.'
+      : 'Rebalance capital stack with longer tenor or partial guarantees.';
+
+    return {
+      score: resilienceScore,
+      band: determineBand(resilienceScore),
+      drivers,
+      pressurePoints,
+      recommendation,
+      dataSources: composite.dataSources,
+      resilienceBand,
+      covenantHeadroom,
+      stressFactors
     };
   }
 }

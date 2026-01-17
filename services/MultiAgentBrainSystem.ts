@@ -17,6 +17,7 @@
 
 import { ReportParameters, ReportData, CopilotInsight, RefinedIntake } from '../types';
 import CompositeScoreService from './CompositeScoreService';
+import { computeFrontierIntelligence } from './algorithms';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES & INTERFACES
@@ -796,6 +797,97 @@ export class LiveReportBuilder {
     return state;
   }
 
+  /**
+   * Bulk sync from params to live report state (single-pass multi-agent update)
+   */
+  static async updateFromParams(reportId: string, params: ReportParameters): Promise<LiveReportState> {
+    let state = this.activeReports.get(reportId);
+    if (!state) {
+      state = this.initReport(reportId);
+    }
+
+    const sections: LiveReportState['sections'] = {
+      identity: {
+        complete: false,
+        data: {
+          organizationName: params.organizationName,
+          organizationType: params.organizationType,
+          country: params.country,
+          region: params.region,
+          industry: params.industry,
+          userCity: params.userCity
+        }
+      },
+      mandate: {
+        complete: false,
+        data: {
+          strategicIntent: params.strategicIntent,
+          problemStatement: params.problemStatement,
+          strategicObjectives: params.strategicObjectives
+        }
+      },
+      market: {
+        complete: false,
+        data: {
+          targetMarkets: (params.countries?.length ? params.countries : (params.country ? [params.country] : [])),
+          industry: params.industry,
+          region: params.region,
+          userCity: params.userCity
+        }
+      },
+      partners: {
+        complete: false,
+        data: {
+          partnerPersonas: params.partnerPersonas,
+          partnerFitCriteria: params.partnerFitCriteria,
+          stakeholderAlignment: params.stakeholderAlignment
+        }
+      },
+      financial: {
+        complete: false,
+        data: {
+          dealSize: params.dealSize,
+          riskTolerance: params.riskTolerance,
+          fundingSource: params.fundingSource,
+          revenueBand: params.revenueBand
+        }
+      },
+      risks: {
+        complete: false,
+        data: {
+          riskFactors: params.riskRegister?.length ? params.riskRegister : (params.riskTolerance ? [params.riskTolerance] : [])
+        }
+      },
+      intelligence: {
+        complete: false,
+        data: {
+          documentedSources: (params.ingestedDocuments || []).map(doc => doc.filename)
+        }
+      }
+    };
+
+    (Object.keys(sections) as Array<keyof LiveReportState['sections']>).forEach((key) => {
+      const payload = sections[key];
+      payload.complete = this.isSectionComplete(key, payload.data);
+      state!.sections[key] = payload;
+    });
+
+    const completeSections = Object.values(state.sections).filter(s => s.complete).length;
+    state.completeness = Math.round((completeSections / 7) * 100);
+    state.lastUpdated = new Date().toISOString();
+
+    if (state.completeness >= 30) {
+      state.aiInsights = await this.generateLiveInsights(state, params);
+    }
+
+    if (state.completeness >= 50) {
+      state.generatedSummary = await this.generateLiveSummary(state, params);
+    }
+
+    this.activeReports.set(reportId, state);
+    return state;
+  }
+
   private static isSectionComplete(section: string, data: any): boolean {
     const requiredFields: Record<string, string[]> = {
       identity: ['organizationName', 'organizationType', 'country'],
@@ -847,6 +939,23 @@ export class LiveReportBuilder {
         description: pattern.lessons[0],
         confidence: pattern.applicabilityScore
       });
+    });
+
+    const composite = await CompositeScoreService.getScores(params);
+    const frontier = await computeFrontierIntelligence(params, { composite });
+    insights.push({
+      id: 'frontier-negotiation',
+      type: 'strategy',
+      title: 'Frontier Negotiation Path',
+      description: `${frontier.negotiation.negotiationStrategy} — agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
+      confidence: frontier.negotiation.agreementProbability / 100
+    });
+    insights.push({
+      id: 'frontier-foresight',
+      type: 'risk',
+      title: 'Synthetic Foresight Watch',
+      description: frontier.syntheticForesight.topScenarios[0]?.name || 'Synthetic foresight analysis completed',
+      confidence: frontier.syntheticForesight.robustnessScore / 100
     });
 
     // Add completeness-based insights

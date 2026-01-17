@@ -36,6 +36,8 @@ import { dagScheduler, DAGExecutionResult } from './DAGScheduler';
 import { lazyEvalEngine, LazyEvalStats } from './LazyEvalEngine';
 import { decisionTreeSynthesizer, SynthesisResult } from './DecisionTreeSynthesizer';
 import { gradientRankingEngine, RankedCase } from './GradientRankingEngine';
+import { computeFrontierIntelligence } from './FrontierIntelligenceEngine';
+import { CompositeScoreService } from '../CompositeScoreService';
 
 // ============================================================================
 // TYPES
@@ -107,6 +109,8 @@ export interface AgenticBrainResult {
     synthesisMs: number;
     speedupFactor: number;
   };
+  // Frontier intelligence
+  frontierIntelligence?: Awaited<ReturnType<typeof computeFrontierIntelligence>>;
 }
 
 // ============================================================================
@@ -279,13 +283,17 @@ export class OptimizedAgenticBrain {
     // ========================================================================
     // PHASE 6: GENERATE INSIGHTS FOR UI
     // ========================================================================
+    const composite = await CompositeScoreService.getScores(params);
+    const frontierIntelligence = await computeFrontierIntelligence(params, { composite });
+
     const insights = this.buildInsights(
       runId,
       params,
       executiveBrief,
       memory,
       reasoning,
-      synthesis
+      synthesis,
+      frontierIntelligence
     );
 
     // ========================================================================
@@ -313,7 +321,8 @@ export class OptimizedAgenticBrain {
       synthesis,
       executiveBrief,
       insights,
-      performance
+      performance,
+      frontierIntelligence
     };
   }
 
@@ -458,7 +467,8 @@ export class OptimizedAgenticBrain {
     brief: AgenticBrainResult['executiveBrief'],
     memory: AgenticBrainResult['memory'],
     reasoning: AgenticBrainResult['reasoning'],
-    _synthesis: AgenticBrainResult['synthesis']
+    _synthesis: AgenticBrainResult['synthesis'],
+    frontier?: AgenticBrainResult['frontierIntelligence']
   ): CopilotInsight[] {
     const insights: CopilotInsight[] = [];
 
@@ -533,6 +543,25 @@ export class OptimizedAgenticBrain {
           `Lazy evaluation saved: ${reasoning.lazyStats.computationSavedMs}ms`
         ].join('\n'),
         confidence: 95,
+        isAutonomous: true
+      });
+    }
+
+    if (frontier) {
+      insights.push({
+        id: `${runId}-frontier-negotiation`,
+        type: 'strategy',
+        title: 'Frontier Negotiation Strategy',
+        description: `${frontier.negotiation.negotiationStrategy} — agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
+        confidence: frontier.negotiation.agreementProbability / 100,
+        isAutonomous: true
+      });
+      insights.push({
+        id: `${runId}-frontier-foresight`,
+        type: 'risk',
+        title: 'Synthetic Foresight Watch',
+        description: frontier.syntheticForesight.topScenarios[0]?.name || 'Synthetic foresight analysis completed',
+        confidence: frontier.syntheticForesight.robustnessScore / 100,
         isAutonomous: true
       });
     }
