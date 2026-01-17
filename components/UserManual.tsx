@@ -112,82 +112,93 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
                 If you've ever watched a regional community work twice as hard for half the recognition, you understand the problem. The capability exists. The potential is real. What's missing are the tools to translate that into the language investors and partners expect.
               </p>
-
-              <p className="text-base text-slate-700 leading-relaxed text-justify font-medium">
-                We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use—so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
-              </p>
             </div>
             
             {/* Right side - Founder box (2 columns), overlapping hero above */}
             <div className="lg:col-span-2 lg:-mt-32 relative z-30">
               <div className="bg-white p-6 shadow-xl border-4 border-black text-center">
                 <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">WHY THIS PLATFORM EXISTS</p>
-                <p className="text-slate-700 text-base leading-relaxed italic mb-4">
-                  "I've spent years living in and researching regional communities across the Philippine Mindanao. I've seen firsthand how 
-                  hard local governments, businesses, and everyday people work to build something meaningful—only to be 
-                  overlooked because they don't have the same resources or visibility as the major cities."
+                <p className="text-slate-900 text-base leading-relaxed font-bold mb-4">
+                  We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use—so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
                 </p>
                 <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
                   — Brayden Walls, Founder
                 </p>
-                <div className="border-t border-slate-200 mt-4 pt-4">
-                  <p className="text-slate-900 text-base leading-relaxed font-bold">
-                    We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use—so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-        {/* FULL-WIDTH PLATFORM BANNER */}
+        {/* FULL-WIDTH PLATFORM BANNER - THE HEART OF THE PAGE */}
         <section className="relative w-full">
-          {/* Full-width background image */}
+          {/* Full-width background image - Dark tech themed */}
           <div className="absolute inset-0">
             <img 
-              src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1920&q=80" 
-              alt="Abstract technology background"
+              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" 
+              alt="Digital world technology"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
+            <div className="absolute inset-0 bg-slate-900/95"></div>
           </div>
           
           <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
-            <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
-              {/* AI Visualization */}
-              <div className="relative flex-shrink-0">
-                <div className="relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80" 
-                    alt="AI Intelligence System"
-                    className="w-72 h-72 object-cover rounded-2xl border-2 border-slate-400 shadow-2xl"
-                  />
-                  <div className="absolute -bottom-4 -right-4 bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold border border-slate-500">
-                    NSIL Engine v3.2
-                  </div>
-                </div>
-              </div>
+            {/* Header */}
+            <div className="text-center mb-14">
+              <h2 className="text-4xl md:text-5xl font-light mb-6 text-white">What is BWGA AI?</h2>
+              <p className="text-xl text-white leading-relaxed">
+                An enterprise-grade partnership intelligence and deal feasibility platform—<br/>
+                <span className="font-medium">built entirely for regional development.</span>
+              </p>
+            </div>
+
+            {/* THE STORY - 3 Square Cards */}
+            <div className="grid md:grid-cols-3 gap-6 mb-14">
               
-              {/* Platform Description */}
-              <div className="text-center lg:text-left max-w-2xl">
-                <p className="text-slate-300 uppercase tracking-widest text-xs mb-3">BW GLOBAL ADVISORY</p>
-                <h2 className="text-3xl font-light mb-4 text-white">A New Class of Strategic Intelligence Platform</h2>
-                <div className="inline-block bg-indigo-500/20 border border-indigo-400/40 rounded-lg px-4 py-2 mb-5">
-                  <span className="text-sm font-semibold text-indigo-300">DOMAIN-SPECIFIC AGENTIC AI</span>
-                  <span className="text-sm text-indigo-200 ml-2">— Purpose-built for regional investment & partnership intelligence</span>
+              {/* FROM IDEA */}
+              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
+                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
+                  <span className="text-white font-semibold uppercase tracking-widest text-sm">From Idea</span>
                 </div>
-                <p className="text-base mb-4 leading-relaxed text-white">
-                  BWGA AI is a <strong className="text-orange-300">Domain-Specific Agentic Intelligence Platform</strong> that functions 
-                  as a digital consultant combined with a high-end document automation factory. Unlike general-purpose AI, 
-                  this system is engineered exclusively for regional investment analysis, partnership evaluation, and strategic due diligence.
-                </p>
-                <p className="text-sm leading-relaxed text-slate-300">
-                  The platform autonomously reads your inputs, simulates outcomes, stress-tests assumptions through adversarial debate, 
-                  finds hidden risks, and proposes auditable, evidence-backed recommendations. It delivers in minutes what once took months, 
-                  providing institutional-grade analytical depth previously accessible only to the world's largest organizations.
+                <p className="text-white/90 leading-relaxed">
+                  BWGA AI didn't start as software. It started as an observation—that the communities supplying the world with food, resources, energy, and labor are the same communities denied the tools to compete for their share of global investment.
                 </p>
               </div>
+
+              {/* TO THEORY */}
+              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
+                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
+                  <span className="text-white font-semibold uppercase tracking-widest text-sm">To Theory</span>
+                </div>
+                <p className="text-white/90 leading-relaxed">
+                  That observation became a theory: What if there was a system built entirely—100%—for regional development? Not adapted from corporate tools. Not borrowed from city-focused platforms. Purpose-built from the ground up for the regions that keep nations running.
+                </p>
+              </div>
+
+              {/* TO REALITY */}
+              <div className="bg-white/10 border border-white/20 rounded-xl p-6">
+                <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 mb-5 inline-block">
+                  <span className="text-white font-semibold uppercase tracking-widest text-sm">To Reality</span>
+                </div>
+                <p className="text-white/90 leading-relaxed mb-3">
+                  That theory is now real. What started as words became logic. Logic became reasoning. Reasoning became a system that thinks harder than the teams it's built to serve.
+                </p>
+                <p className="text-white font-medium italic">
+                  This isn't software. It's the first mind ever built for regional development.
+                </p>
+              </div>
+            </div>
+
+            {/* CLOSING STATEMENT */}
+            <div className="text-center border-t border-white/20 pt-12">
+              <h3 className="text-2xl md:text-3xl font-light text-white mb-6 leading-tight">
+                The First Self-Thinking Agentic System<br/>
+                <span className="font-medium">Dedicated Entirely to Regional Development.</span>
+              </h3>
+              <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
+                Not a chatbot. Not a consultant. Not adapted from corporate software.<br/>
+                <span className="text-white font-medium">A strategic intelligence workflow built for the cities, councils, and communities that power the world.</span>
+              </p>
             </div>
           </div>
         </section>
