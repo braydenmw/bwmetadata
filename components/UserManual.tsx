@@ -216,80 +216,51 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 <h3 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert.<br/><span className="font-medium">You Just Need to Try.</span></h3>
               </div>
 
-              {/* Two-column content layout */}
-              <div className="grid lg:grid-cols-2 gap-8 mb-12">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <div className="w-10 h-1 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-4"></div>
-                  <p className="text-slate-600 leading-relaxed text-justify">
-                    I designed and built this strategic intelligence system to address a challenge I've observed repeatedly across countries and regions: 
-                    the difficulty of effectively connecting regional cities and overlooked areas to investment, support, and serious consideration—despite 
-                    the very real potential that exists on the ground.
-                  </p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <div className="w-10 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mb-4"></div>
-                  <p className="text-slate-600 leading-relaxed text-justify">
-                    Yes, the system is over-engineered. But there is no single answer. We may seek the same outcomes, yet our paths are different. 
-                    What works for one will likely fail another. That's precisely why I built this for <strong className="text-slate-900">everyone</strong>—to give people the 
-                    confidence to understand their opportunity, the respect that comes from taking time to think it through properly, and the 
-                    courage to act instead of making decisions without real thought.
-                  </p>
-                </div>
+              {/* Opening paragraph - full width */}
+              <div className="max-w-4xl mx-auto mb-10">
+                <p className="text-slate-600 leading-relaxed text-center text-lg">
+                  I designed and built this strategic intelligence system to address a challenge I've observed repeatedly across countries and regions: 
+                  the difficulty of effectively connecting regional cities and overlooked areas to investment, support, and serious consideration—despite 
+                  the very real potential that exists on the ground.
+                </p>
               </div>
-            </div>
-        </section>
 
-        {/* WHO THIS IS BUILT FOR - Photo Banner with White Strip Section */}
-        <section className="relative w-full">
-          {/* Background image - covers full section */}
-          <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" 
-              alt="Global network background"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-800/85 to-slate-900/90"></div>
-          </div>
-          
-          {/* Side by side layout - content left, box right */}
-          <div className="relative z-10 max-w-6xl mx-auto px-6 pt-16 pb-16">
-            <div className="grid lg:grid-cols-2 gap-6 items-start">
-              {/* Left side - WHO THIS IS BUILT FOR content */}
-              <div className="text-left">
-                <p className="text-slate-400 uppercase tracking-widest text-xs mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
-                <p className="text-white text-xl leading-relaxed mb-6">
-                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
-                </p>
-                <p className="text-slate-300 leading-relaxed">
-                  Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
-                  a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
-                  gives you the analytical firepower and document automation that was once reserved for major corporations.
-                </p>
-              </div>
-              
-              {/* Right side - White box */}
-              <div className="bg-white p-6 shadow-xl border-4 border-black">
-                <p className="text-slate-500 leading-relaxed mb-3 text-center text-sm">
-                  Behind the simplicity is serious technology—purpose-built for regional intelligence.
-                </p>
-                <p className="text-slate-800 font-medium text-base leading-relaxed text-center mb-3">
-                  The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
-                  Monte Carlo simulations, and a Document Factory producing 200+ document types. 
-                  But you don't need to understand any of that to use it.
-                </p>
-                <p className="text-xl font-light text-slate-900 text-center mb-4">
-                  The complexity is hidden. <span className="text-orange-500 font-medium">What you see is clarity.</span>
-                </p>
-                <div className="border-t border-slate-200 pt-4">
-                  <p className="text-slate-600 leading-relaxed text-center text-sm">
-                    This isn't just software. It's a commitment to leveling the playing field. Because when regional areas 
-                    thrive, the whole nation benefits. And every community—no matter how far from the city—deserves the 
-                    chance to be seen, understood, and chosen.
+              {/* Two-column content layout - WHO THIS IS BUILT FOR */}
+              <div className="grid lg:grid-cols-2 gap-8 mb-10">
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                  <p className="text-orange-600 uppercase tracking-widest text-xs mb-3 font-semibold">WHO THIS IS BUILT FOR</p>
+                  <p className="text-slate-800 font-medium mb-3">
+                    Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
+                  </p>
+                  <p className="text-slate-600 leading-relaxed">
+                    Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
+                    a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
+                    gives you the analytical firepower and document automation that was once reserved for major corporations.
+                  </p>
+                </div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                  <p className="text-indigo-600 uppercase tracking-widest text-xs mb-3 font-semibold">BEHIND THE SIMPLICITY</p>
+                  <p className="text-slate-800 font-medium mb-3">
+                    The technology is sophisticated: 27 mathematical formulas, five AI personas stress-testing every decision, 
+                    Monte Carlo simulations, and a Document Factory producing 200+ document types.
+                  </p>
+                  <p className="text-slate-600 leading-relaxed">
+                    But you don't need to understand any of that to use it. The complexity is hidden. 
+                    <span className="text-slate-900 font-medium"> What you see is clarity.</span>
                   </p>
                 </div>
               </div>
+
+              {/* Closing paragraph - full width */}
+              <div className="max-w-4xl mx-auto bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                <p className="text-slate-700 leading-relaxed text-center text-lg">
+                  Yes, the system is over-engineered. But there is no single answer. We may seek the same outcomes, yet our paths are different. 
+                  What works for one will likely fail another. That's precisely why I built this for <strong className="text-slate-900">everyone</strong>—to give people the 
+                  confidence to understand their opportunity, the respect that comes from taking time to think it through properly, and the 
+                  courage to act instead of making decisions without real thought.
+                </p>
+              </div>
             </div>
-          </div>
         </section>
 
       {/* Partnership & Pilots Section */}
