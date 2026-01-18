@@ -67,25 +67,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             </nav>
 
-            {/* Hero Section */}
-            <section className="relative pt-28 pb-16 px-4">
+            {/* Hero Section - Overlaps into Mountain Image */}
+            <section className="relative pt-32 pb-0 px-4 z-20">
                 <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-transparent" />
-                <div className="relative z-10 max-w-4xl mx-auto text-center">
-                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-4 font-semibold">
+                <div className="relative z-10 max-w-4xl mx-auto text-center mb-[-80px]">
+                    <p className="text-amber-400 uppercase tracking-[0.3em] text-sm md:text-base mb-6 font-semibold">
                         BRAYDEN WALLS GLOBAL ADVISORY
                     </p>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-light leading-tight mb-4">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight mb-6">
                         Regional communities are the backbone of every nation.
-                        <span className="block text-amber-400 mt-2">They deserve to be seen.</span>
+                        <span className="block text-amber-400 mt-3">They deserve to be seen.</span>
                     </h1>
-                    <p className="text-sm md:text-base text-white/60 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed mb-8">
                         Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
                     </p>
+                    
                 </div>
             </section>
 
             {/* Image Break 1 - Regional Community */}
-            <div className="relative h-48 md:h-64 overflow-hidden">
+            <div className="relative h-64 md:h-80 overflow-hidden">
                 <img 
                     src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=400&fit=crop" 
                     alt="Regional landscape" 
