@@ -239,7 +239,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <h3 className="text-base font-medium">Quantified, Not Just "Considered"</h3>
                             </div>
                             <p className="text-sm text-white/70 leading-relaxed">
-                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 27 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
+                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 30 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
                             </p>
                         </div>
 
@@ -348,7 +348,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                         </div>
                         <p className="text-xs text-white/50 text-center">
-                            The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
+                            The technology behind this is complex—30 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
                         </p>
                     </div>
                 </div>
@@ -512,14 +512,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     {/* THE REASONING ENGINE */}
                     <div className="mb-8">
                         <p className="text-xs text-amber-400 uppercase tracking-wider mb-4 font-semibold">THE REASONING ENGINE</p>
-                        <h3 className="text-lg font-light mb-4">NSIL — Nexus Strategic Intelligence Layer</h3>
+                        <h3 className="text-lg font-light mb-6">NSIL — Nexus Strategic Intelligence Layer</h3>
+                        
+                        {/* Formula Box - Full Width */}
+                        <div className="bg-black/40 border border-amber-500/30 rounded-xl p-6 mb-8">
+                            <p className="text-xs text-amber-400 uppercase tracking-wider mb-3 font-semibold">Sample Formula: Success Probability Index</p>
+                            <div className="font-mono text-base md:text-lg text-white/90 mb-4">
+                                <p>SPI = Σ(wᵢ × Sᵢ) × (1 - R<sub>composite</sub>) × A<sub>alignment</sub></p>
+                            </div>
+                            <p className="text-xs text-white/50 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
+                            <div className="border-t border-white/10 pt-4">
+                                <p className="text-sm text-white/70 italic">"This isn't smoke and mirrors. Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results."</p>
+                            </div>
+                        </div>
                         
                         <div className="space-y-4 text-sm text-white/70 mb-6">
                             <p>
                                 <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
                             </p>
                             <p>
-                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 27 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 30 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
                             </p>
                         </div>
 
@@ -558,19 +570,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
                         >
                             <GitBranch size={16} />
-                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 27 Formulas'}
+                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 30 Formulas'}
                         </button>
 
                         {showFormulas && (
                             <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 27 Proprietary Formulas</h4>
+                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 30 Proprietary Formulas</h4>
                                 
                                 <div className="mb-4">
                                     <h5 className="text-xs font-semibold text-white mb-2">5-Layer Processing Architecture</h5>
                                     <ol className="space-y-2 text-xs text-white/70">
                                         <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
                                         <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
-                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 27 proprietary formulas calculate hard metrics</li>
+                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 30 proprietary formulas calculate hard metrics</li>
                                         <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
                                         <li><strong className="text-white">Layer 5:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions</li>
                                     </ol>
