@@ -83,8 +83,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
         <div className="h-full w-full flex-1 bg-slate-50 overflow-y-auto" style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
             
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-                <div className="max-w-6xl mx-auto px-8 py-20">
+            <section 
+                className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden"
+                style={{
+                    backgroundImage: `linear-gradient(to bottom right, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.88)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+            >
+                <div className="max-w-6xl mx-auto px-8 py-20 relative z-10">
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 rounded-full text-sm text-slate-300 mb-6">
                             <Shield size={16} className="text-green-400" />
@@ -148,6 +155,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <p className="text-sm text-slate-600 leading-relaxed">{cap.description}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Regional Investment Visual Divider */}
+            <section 
+                className="h-64 relative overflow-hidden"
+                style={{
+                    backgroundImage: `linear-gradient(to right, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed'
+                }}
+            >
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-white px-8">
+                        <p className="text-3xl font-light mb-2">Connecting Capital to Communities</p>
+                        <p className="text-lg text-slate-200 opacity-90">Strategic intelligence for emerging markets and regional development</p>
                     </div>
                 </div>
             </section>
@@ -413,8 +438,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             {/* The Five-Persona Framework */}
             <section className="py-16 px-8 bg-white">
                 <div className="max-w-6xl mx-auto">
+                    {/* Team/AI Visualization Header */}
+                    <div className="relative mb-12 rounded-2xl overflow-hidden">
+                        <img 
+                            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80" 
+                            alt="Strategic team collaboration"
+                            className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent flex items-center">
+                            <div className="px-8">
+                                <h2 className="text-3xl font-light text-white mb-2">5-Layer Architecture & 5 AI Personas</h2>
+                                <p className="text-slate-200 max-w-xl">Expert-level reasoning from multiple perspectives, working in concert</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light text-slate-900 mb-4">5-Layer Architecture & 5 AI Personas</h2>
                         <div className="inline-block bg-indigo-100 border border-indigo-200 rounded-lg px-4 py-2 mb-4">
                             <span className="text-sm font-bold text-indigo-800">NSIL</span>
                             <span className="text-indigo-600 ml-2">= Nexus Strategic Intelligence Layer</span>
@@ -746,44 +785,102 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             </section>
 
-            {/* Who This Is For */}
+            {/* Who This Is Built For */}
             <section className="py-16 px-8 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-light text-slate-900 mb-4">Who This Is For</h2>
-                        <p className="text-lg text-slate-600">
-                            Not a replacement for professionals—a force multiplier for every skill level.
+                        <h2 className="text-3xl font-light text-slate-900 mb-4">Who This Is Built For</h2>
+                        <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                            Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform gives you the analytical firepower and document automation that was once reserved for major corporations.
                         </p>
                     </div>
 
                     <div className="grid md:grid-cols-4 gap-6">
-                        <div className="bg-white p-6 rounded-lg border border-slate-200">
-                            <Building2 size={32} className="text-blue-600 mb-4" />
-                            <h3 className="font-semibold text-slate-900 mb-2">Regional Agencies</h3>
-                            <p className="text-sm text-slate-600">
-                                Transform local knowledge into the structured intelligence global capital requires.
+                        <div className="bg-white border border-slate-200 overflow-hidden group hover:shadow-lg transition-shadow">
+                            <div className="h-32 overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&q=80" 
+                                    alt="Regional development"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                            <div className="p-6">
+                                <Building2 size={32} className="text-blue-600 mb-4" />
+                                <h3 className="font-semibold text-slate-900 mb-2">Regional Councils & RDAs</h3>
+                                <p className="text-sm text-slate-600">
+                                    Attract new industries with professional investment-ready proposals and regional analysis.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="bg-white border border-slate-200 overflow-hidden group hover:shadow-lg transition-shadow">
+                            <div className="h-32 overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=80" 
+                                    alt="Government agencies"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                            <div className="p-6">
+                                <TrendingUp size={32} className="text-green-600 mb-4" />
+                                <h3 className="font-semibold text-slate-900 mb-2">State & Federal Agencies</h3>
+                                <p className="text-sm text-slate-600">
+                                    Evaluate investment proposals with standardized risk scoring and audit-ready documentation.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="bg-white border border-slate-200 overflow-hidden group hover:shadow-lg transition-shadow">
+                            <div className="h-32 overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80" 
+                                    alt="Business expansion"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                            <div className="p-6">
+                                <Briefcase size={32} className="text-amber-600 mb-4" />
+                                <h3 className="font-semibold text-slate-900 mb-2">Businesses Looking Regional</h3>
+                                <p className="text-sm text-slate-600">
+                                    Explore regional expansion opportunities with pre-qualified partner and market analysis.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="bg-white border border-slate-200 overflow-hidden group hover:shadow-lg transition-shadow">
+                            <div className="h-32 overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&q=80" 
+                                    alt="First-time exporters"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                            <div className="p-6">
+                                <Users size={32} className="text-purple-600 mb-4" />
+                                <h3 className="font-semibold text-slate-900 mb-2">First-Time Exporters</h3>
+                                <p className="text-sm text-slate-600">
+                                    Enter international markets with confidence using structured export readiness analysis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* The System Does What You Shouldn't Have To */}
+                    <div className="mt-16 bg-slate-900 text-white p-10">
+                        <div className="text-center mb-8">
+                            <h3 className="text-2xl font-light mb-4">The System Does What You Shouldn't Have To</h3>
+                            <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+                                Structure your thinking. Score your viability. Stress-test your assumptions. Build your documents.
                             </p>
                         </div>
-                        <div className="bg-white p-6 rounded-lg border border-slate-200">
-                            <TrendingUp size={32} className="text-green-600 mb-4" />
-                            <h3 className="font-semibold text-slate-900 mb-2">Capital Allocators</h3>
-                            <p className="text-sm text-slate-600">
-                                Screen deals globally with standardized risk and compatibility scoring.
-                            </p>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg border border-slate-200">
-                            <Briefcase size={32} className="text-amber-600 mb-4" />
-                            <h3 className="font-semibold text-slate-900 mb-2">Corporate Strategy</h3>
-                            <p className="text-sm text-slate-600">
-                                Pre-qualify partners and markets before committing resources.
-                            </p>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg border border-slate-200">
-                            <Users size={32} className="text-purple-600 mb-4" />
-                            <h3 className="font-semibold text-slate-900 mb-2">Advisors</h3>
-                            <p className="text-sm text-slate-600">
-                                Augment your practice with deep, forensic AI-driven research.
-                            </p>
+                        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                            <div className="text-center">
+                                <p className="text-slate-300 leading-relaxed">
+                                    You focus on your opportunity. The platform handles the analysis, the formatting, and the professional presentation that makes decision-makers take you seriously.
+                                </p>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-slate-300 leading-relaxed">
+                                    The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. <strong className="text-white">The complexity is hidden. What you see is clarity.</strong>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -895,7 +992,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
             </section>
 
             {/* Recent Updates Section - 16/01/2026 */}
-            <section className="py-16 px-8 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-900 text-white">
+            <section 
+                className="py-16 px-8 relative overflow-hidden text-white"
+                style={{
+                    backgroundImage: `linear-gradient(to bottom right, rgba(49, 46, 129, 0.95), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+            >
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-full text-sm text-green-300 mb-4">
@@ -1109,8 +1213,68 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <ul className="space-y-1 text-slate-400">
                                     <li>• <code className="text-xs bg-slate-700 px-1 rounded">OptimizedAgenticBrain.ts</code> — Phase 6 frontier computation</li>
                                     <li>• <code className="text-xs bg-slate-700 px-1 rounded">ReportOrchestrator.ts</code> — Frontier data in report payloads</li>
-                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">MultiAgentBrainSystem.ts</code> — Live
-                </p>
+                                    <li>• <code className="text-xs bg-slate-700 px-1 rounded">MultiAgentBrainSystem.ts</code> — Live insights integration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Global Reach Visual Footer */}
+            <section 
+                className="h-72 relative overflow-hidden"
+                style={{
+                    backgroundImage: `linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed'
+                }}
+            >
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-white px-8">
+                        <p className="text-4xl font-light mb-4">Intelligence Without Borders</p>
+                        <p className="text-lg text-slate-300 max-w-2xl mx-auto">Connecting regional opportunities to global capital through institutional-grade strategic analysis</p>
+                        <div className="mt-6 flex justify-center gap-8 text-sm text-slate-400">
+                            <span>🌏 Asia-Pacific</span>
+                            <span>🌍 Europe & Africa</span>
+                            <span>🌎 Americas</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-slate-900 text-white py-12 px-8">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                        <div>
+                            <h4 className="font-semibold mb-4">BW Global Advisory</h4>
+                            <p className="text-sm text-slate-400">
+                                Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="font-semibold mb-4">Platform</h4>
+                            <ul className="text-sm text-slate-400 space-y-2">
+                                <li>NSIL Intelligence Layer</li>
+                                <li>27-Formula Suite</li>
+                                <li>5-Persona Framework</li>
+                                <li>Monte Carlo Simulation</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="font-semibold mb-4">Contact</h4>
+                            <p className="text-sm text-slate-400">
+                                For partnership inquiries and beta access, reach out through our platform portal.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+                        <p>© 2024-2026 BW Global Advisory Pty Ltd. All rights reserved.</p>
+                        <p className="mt-2">NSIL™ and the 27-Formula Suite are proprietary technologies of BW Global Advisory.</p>
+                    </div>
+                </div>
             </footer>
         </div>
     );

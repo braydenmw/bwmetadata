@@ -67,18 +67,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
 
   return (
     <div className="bg-white text-slate-800 min-h-screen" style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
-      {/* Hero Section - Large with country town photo blend */}
+      {/* Hero Section - Large with gradient background */}
       <header className="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 text-white">
-        {/* Country Town Background */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80" 
-            alt="Regional Country Town"
-            className="w-full h-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-900/30 to-slate-800/50"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-slate-950/30"></div>
-        </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24 w-full">
           <div className="max-w-3xl">
@@ -130,67 +120,77 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
         </div>
       </section>
 
-        {/* THE STORY OF BWGA - Full Width with Side Column */}
-        <section className="bg-white py-16 border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-12 gap-6 items-stretch">
-              {/* Left side - Main content (9 columns) */}
-              <div className="lg:col-span-9">
-                {/* Section 1: The Story of BWGA */}
-                <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">OUR ORIGIN</p>
-                <h2 className="text-3xl md:text-4xl font-light text-slate-900 mb-6">The Story of BWGA</h2>
-                
-                <p className="text-lg text-slate-700 leading-relaxed mb-4 text-justify">
-                  Brayden Walls Global Advisory (BWGA) wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
-                </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                  For years, we watched dedicated regional leaders—mayors, local entrepreneurs, and councils—work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
-                </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                  We realized the problem wasn't their ideas; it was their language. Wall Street and global investors speak a specific dialect of risk matrices, financial models, and feasibility studies. If you can't speak that language, you don't get a seat at the table. Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents for them. Regional communities simply couldn't afford that admission fee, so they were left behind.
-                </p>
-                <p className="text-base text-slate-600 leading-relaxed mb-6 text-justify">
-                  <strong className="text-slate-900">We built BWGA to break that barrier.</strong> Our mission is simple: to give the underdog—the regional council, the local business, the emerging exporter—the same strategic firepower as a multinational corporation.
-                </p>
-
-                {/* Section 2: What BWGA AI Actually Is */}
-                <div className="border-t border-slate-200 pt-6">
-                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE TECHNOLOGY</p>
-                  <h3 className="text-2xl font-light text-slate-900 mb-4">What BWGA AI Actually Is</h3>
-                  
-                  <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                    To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
-                  </p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                    So, we built <strong className="text-slate-900">BWGA Intelligence AI</strong>. It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a <strong className="text-slate-900">digital boardroom</strong>. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine. We call this the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly.
-                  </p>
+      {/* THE STORY OF BWGA - Full Width with Side Column */}
+      <section className="bg-white py-16 border-b border-slate-200">
+          {/* Full-width banner across the entire page */}
+          <div className="relative w-full min-h-[32rem] overflow-hidden shadow-lg mb-8 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900">
+            <div className="relative z-10 flex items-center justify-center h-full px-4 py-12">
+              <div className="w-full max-w-4xl text-center">
+                <div className="bg-white/60 backdrop-blur-sm rounded-lg p-10 md:p-16 shadow-lg">
+                  <p className="text-slate-600 uppercase tracking-widest text-xs mb-3">OUR ORIGIN</p>
+                  <h2 className="text-4xl md:text-5xl font-light text-slate-900 mb-6">The Story of BWGA</h2>
+                  <div className="space-y-6 text-left max-w-3xl mx-auto">
+                    <p className="text-lg text-slate-800 leading-relaxed text-justify">
+                      Brayden Walls Global Advisory (BWGA) wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed text-justify">
+                      For years, we watched dedicated regional leaders—mayors, local entrepreneurs, and councils—work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed text-justify">
+                      We realized the problem wasn't their ideas; it was their language. Wall Street and global investors speak a specific dialect of risk matrices, financial models, and feasibility studies. If you can't speak that language, you don't get a seat at the table. Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents for them. Regional communities simply couldn't afford that admission fee, so they were left behind.
+                    </p>
+                    <p className="text-base text-slate-700 leading-relaxed text-justify">
+                      We built BWGA to break that barrier. Our mission is simple: to give the underdog—the regional council, the local business, the emerging exporter—the same strategic firepower as a multinational corporation.
+                    </p>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6">
+
+          {/* Section 2: What BWGA AI Actually Is - Full Width */}
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="border-t border-slate-200 pt-6">
+              <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE TECHNOLOGY</p>
+              <h3 className="text-2xl font-light text-slate-900 mb-4">What BWGA AI Actually Is</h3>
+              <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                So, we built <strong className="text-slate-900">BWGA Intelligence AI</strong>. It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a <strong className="text-slate-900">digital boardroom</strong>. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine. We call this the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-6 items-stretch">
+            {/* Left side - Main content (9 columns) */}
+            <div className="lg:col-span-9">
 
                 {/* Section 3: Why This Is Different (The "Magic") - Full Script in White Boxes */}
                 <div className="border-t border-slate-200 pt-6 mt-4">
-                  <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE DIFFERENCE</p>
-                  <h3 className="text-2xl font-light text-slate-900 mb-4">Why This Is Different <span className="text-slate-400">(The "Magic")</span></h3>
-                  
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                    BWGA AI doesn't just generate text like other AI; it puts your ideas through a <strong className="text-slate-900">digital gauntlet</strong>, rigorously stress-testing them. This stems from a fundamental design philosophy that contrasts sharply with most AI-driven strategic tools:
-                  </p>
-                  
-                  <p className="text-lg text-slate-900 font-bold mb-2">Beyond Echo Chambers</p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">Unlike generic Large Language Models (LLMs) such as ChatGPT or Bard, which are designed to be helpful and agreeable, BWGA AI is built for adversarial reasoning. These LLMs can generate business plans, but independent analysis reveals a tendency to confirm user biases and a lack of critical evaluation. They are optimized for language prediction, not strategic validation. BWGA AI, in contrast, actively seeks weaknesses.</p>
+                  <div className="flex flex-col md:flex-row gap-8 items-start">
+                    <div className="flex-1">
+                      <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE DIFFERENCE</p>
+                      <h3 className="text-2xl font-light text-slate-900 mb-4">Why This Is Different <span className="text-slate-400">(The "Magic")</span></h3>
+                      <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
+                        BWGA AI doesn't just generate text like other AI; it puts your ideas through a <strong className="text-slate-900">digital gauntlet</strong>, rigorously stress-testing them. This stems from a fundamental design philosophy that contrasts sharply with most AI-driven strategic tools:
+                      </p>
+                      <p className="text-lg text-slate-900 font-bold mb-2">Beyond Echo Chambers</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Unlike generic Large Language Models (LLMs) such as ChatGPT or Bard, which are designed to be helpful and agreeable, BWGA AI is built for adversarial reasoning. These LLMs can generate business plans, but independent analysis reveals a tendency to confirm user biases and a lack of critical evaluation. They are optimized for language prediction, not strategic validation. BWGA AI, in contrast, actively seeks weaknesses.</p>
+                      <p className="text-lg text-slate-900 font-bold mb-2">Consultant-Level Scrutiny, Automated</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
+                      <p className="text-lg text-slate-900 font-bold mb-2">Quantified, Not Just "Considered"</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 27 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
+                      <p className="text-lg text-slate-900 font-bold mb-2">Simulating Real-World Pressure</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">The combination of these personas and the rigid scoring creates a simulation of a real-world investment committee. The AI isn't just "generating content"; it's processing, debating, and scoring your idea as if it were in a high-stakes pitch.</p>
+                      <p className="text-base text-slate-600 leading-relaxed text-justify">
+                        This multi-faceted, adversarial approach, combined with its quantitative rigor, sets BWGA AI apart, offering a level of strategic validation that's simply not available in most other AI-driven systems or through traditional, less accessible consulting avenues.
+                      </p>
+                    </div>
 
-                  <p className="text-lg text-slate-900 font-bold mb-2">Consultant-Level Scrutiny, Automated</p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
-
-                  <p className="text-lg text-slate-900 font-bold mb-2">Quantified, Not Just "Considered"</p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 27 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
-
-                  <p className="text-lg text-slate-900 font-bold mb-2">Simulating Real-World Pressure</p>
-                  <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">The combination of these personas and the rigid scoring creates a simulation of a real-world investment committee. The AI isn't just "generating content"; it's processing, debating, and scoring your idea as if it were in a high-stakes pitch.</p>
-
-                  
-                  <p className="text-base text-slate-600 leading-relaxed text-justify">
-                    This multi-faceted, adversarial approach, combined with its quantitative rigor, sets BWGA AI apart, offering a level of strategic validation that's simply not available in most other AI-driven systems or through traditional, less accessible consulting avenues.
-                  </p>
+                  </div>
                 </div>
 
                 {/* Section 4: Why This Matters */}
@@ -211,17 +211,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
           </div>
         </section>
 
-        {/* DESIGNED FOR EVERYONE - Photo Banner */}
-        <section className="relative py-20 overflow-hidden">
-          {/* Background Photo - People collaboration */}
-          <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&h=800&fit=crop" 
-              alt="Team collaboration" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-slate-900/75"></div>
-          </div>
+        {/* DESIGNED FOR EVERYONE - Gradient Banner */}
+        <section className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
           
           {/* Content */}
           <div className="relative max-w-5xl mx-auto px-6 text-center">
@@ -313,14 +304,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-800/50 to-transparent rounded-2xl"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80" 
-                alt="Strategic partnership handshake"
-                className="w-full rounded-2xl object-cover h-80"
-              />
-              <div className="absolute bottom-6 left-6 right-6">
+            <div className="relative bg-gradient-to-br from-amber-700 to-amber-900 rounded-2xl h-80 flex items-end">
+              <div className="p-6">
                 <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 border border-amber-300">
                   <p className="text-amber-800 font-medium mb-1">Vision for the Future</p>
                   <p className="text-slate-600 text-sm">Deploy as a shared, national strategic asset—a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.</p>
@@ -391,36 +376,36 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
                     <Eye className="w-4 h-4" />
                     View Full Catalog
                   </button>
-                  <button onClick={() => setActiveModal('testing')} className="flex-1 px-3 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-500 transition-all inline-flex items-center justify-center gap-2 border border-slate-500">
-                    <BookOpen className="w-4 h-4" />
-                    12 Sample Reports
-                  </button>
                 </div>
-              </div>
-              
-              {/* Technical Architecture - NSIL */}
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Blocks className="w-5 h-5 text-slate-600" />
-                  <span className="text-slate-500 uppercase tracking-widest text-xs">THE REASONING ENGINE</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-3">NSIL — Nexus Strategic Intelligence Layer</h3>
-                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
-                  <strong className="text-slate-900">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. 
-                  It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan 
-                  for an impossible idea because it has no mechanism to challenge assumptions.
-                </p>
-                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
-                  <strong className="text-slate-900">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity 
-                  with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized 
-                  AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that <em>argue with each other</em>. Only after reaching 
-                  consensus does it generate conclusions—and those conclusions are scored by 27 proprietary formulas including SPI™ (Success Probability Index), 
-                  RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
-                </p>
-                <p className="text-slate-600 text-sm mb-3 leading-relaxed">
+                <p>
                   <strong className="text-slate-900">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, 
                   and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly 
                   why the system reached each conclusion.
+                </p>
+                <div className="flex gap-2">
+                  <button onClick={() => setActiveModal('outputs')} className="flex-1 px-3 py-2 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-2">
+                    <Eye className="w-4 h-4" />
+                    View Full Catalog
+                  </button>
+                </div>
+              </div>
+
+              {/* Reasoning Engine */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl p-5 text-white relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-purple-500 to-indigo-500"></div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain className="w-5 h-5 text-purple-400" />
+                  <span className="text-purple-400 uppercase tracking-widest text-xs">THE REASONING ENGINE</span>
+                </div>
+                <h3 className="text-lg font-semibold mb-3">NSIL — Nexus Strategic Intelligence Layer</h3>
+                <p className="text-slate-300 text-sm mb-3 leading-relaxed">
+                  <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
+                </p>
+                <p className="text-slate-300 text-sm mb-3 leading-relaxed">
+                  <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 27 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                </p>
+                <p className="text-slate-300 text-sm mb-4 leading-relaxed">
+                  <strong className="text-white">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
                 </p>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-white p-2.5 rounded-lg border border-slate-200">
@@ -603,19 +588,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
       {/* Key Features Section with Modal Triggers */}
       <section className="py-20 border-b border-slate-100">
         <div className="max-w-full">
-          {/* Regional Growth Commitment - with photo banner */}
+          {/* Regional Growth Commitment - with gradient banner */}
           <div className="mb-16">
-            {/* Photo Banner with Text Overlay - Full Width */}
+            {/* Gradient Banner with Text Overlay - Full Width */}
             <div 
-              className="relative w-full overflow-hidden mb-10"
-              style={{
-                backgroundImage: 'url(https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=2400)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
+              className="relative w-full overflow-hidden mb-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
             >
-              {/* Dark overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-slate-800/60 to-slate-900/70"></div>
               
               {/* Content */}
               <div className="relative z-10 py-16 px-8 md:px-16">
@@ -635,7 +613,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-            {/* Launch Platform CTA */}
+          {/* Launch Platform CTA */}
             <div className="max-w-6xl mx-auto px-6">
             <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-10 text-center border border-slate-700 mt-16">
               <h3 className="text-2xl font-light text-white mb-3">Ready to Experience the Platform?</h3>
@@ -2802,7 +2780,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Regional Coverage with Photos */}
+          {/* Regional Coverage */}
           <div>
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               <Globe className="w-5 h-5 text-slate-600" />
@@ -2810,87 +2788,39 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </h3>
             <div className="grid md:grid-cols-3 gap-4">
               {/* Asia Pacific */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&q=80" 
-                  alt="Asia Pacific"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Asia-Pacific</h4>
-                  <p className="text-xs text-slate-300">Vietnam, Singapore, Japan, Australia, China, Indonesia, Thailand, Philippines, Korea, Malaysia, India</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Asia-Pacific</h4>
+                <p className="text-xs text-slate-300">Vietnam, Singapore, Japan, Australia, China, Indonesia, Thailand, Philippines, Korea, Malaysia, India</p>
               </div>
 
               {/* Middle East */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=80" 
-                  alt="Middle East"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Middle East & GCC</h4>
-                  <p className="text-xs text-slate-300">UAE, Saudi Arabia, Qatar, Bahrain, Kuwait, Oman, Jordan, Egypt, Israel, Turkey</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Middle East & GCC</h4>
+                <p className="text-xs text-slate-300">UAE, Saudi Arabia, Qatar, Bahrain, Kuwait, Oman, Jordan, Egypt, Israel, Turkey</p>
               </div>
 
               {/* Europe */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400&q=80" 
-                  alt="Europe"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Europe & UK</h4>
-                  <p className="text-xs text-slate-300">Ireland, Germany, UK, France, Netherlands, Switzerland, Poland, Spain, Italy, Nordics</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Europe & UK</h4>
+                <p className="text-xs text-slate-300">Ireland, Germany, UK, France, Netherlands, Switzerland, Poland, Spain, Italy, Nordics</p>
               </div>
 
               {/* Africa */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=400&q=80" 
-                  alt="Africa"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Africa</h4>
-                  <p className="text-xs text-slate-300">Kenya, Tanzania, Nigeria, South Africa, Mozambique, Angola, Ghana, Rwanda, Ethiopia, Egypt</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Africa</h4>
+                <p className="text-xs text-slate-300">Kenya, Tanzania, Nigeria, South Africa, Mozambique, Angola, Ghana, Rwanda, Ethiopia, Egypt</p>
               </div>
 
               {/* Americas */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1483653364400-eedcfb9f1f88?w=400&q=80" 
-                  alt="Americas"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Americas</h4>
-                  <p className="text-xs text-slate-300">USA, Canada, Mexico, Brazil, Chile, Colombia, Argentina, Peru, Panama</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Americas</h4>
+                <p className="text-xs text-slate-300">USA, Canada, Mexico, Brazil, Chile, Colombia, Argentina, Peru, Panama</p>
               </div>
 
               {/* Regional Farm/Agriculture Focus */}
-              <div className="relative group overflow-hidden rounded-xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80" 
-                  alt="Agriculture Regions"
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Agricultural Regions</h4>
-                  <p className="text-xs text-slate-300">Specialized in regional agribusiness corridors, farmland investment, and agricultural technology transfer</p>
-                </div>
+              <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Agricultural Regions</h4>
+                <p className="text-xs text-slate-300">Specialized in regional agribusiness corridors, farmland investment, and agricultural technology transfer</p>
               </div>
             </div>
           </div>
@@ -2925,33 +2855,17 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
             </div>
           </div>
 
-          {/* Workers and Team Photos Section */}
+          {/* Workers and Team Section */}
           <div className="bg-slate-100 rounded-xl p-6">
             <h3 className="text-xl font-bold text-slate-900 mb-4">On-the-Ground Intelligence</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="relative rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=600&q=80" 
-                  alt="Farm workers"
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Agricultural Operations</h4>
-                  <p className="text-xs text-slate-300">From smallholder cooperatives to industrial agribusiness, our intelligence covers the full spectrum of agricultural investment scenarios.</p>
-                </div>
+              <div className="rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Agricultural Operations</h4>
+                <p className="text-sm text-slate-300">From smallholder cooperatives to industrial agribusiness, our intelligence covers the full spectrum of agricultural investment scenarios.</p>
               </div>
-              <div className="relative rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" 
-                  alt="Factory workers"
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="font-bold text-white">Manufacturing & Industrial</h4>
-                  <p className="text-xs text-slate-300">Labor cost analysis, skill availability, infrastructure quality, and supply chain integration for manufacturing investments.</p>
-                </div>
+              <div className="rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 p-4">
+                <h4 className="font-bold text-white mb-2">Manufacturing & Industrial</h4>
+                <p className="text-sm text-slate-300">Labor cost analysis, skill availability, infrastructure quality, and supply chain integration for manufacturing investments.</p>
               </div>
             </div>
           </div>
