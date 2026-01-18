@@ -474,6 +474,17 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [chatMessages]);
 
+    // Completeness calculation - must be defined before useEffects that depend on it
+    const completeness = React.useMemo(() => {
+        const total = Object.values(REQUIRED_FIELDS).flat().length;
+        let filled = 0;
+        Object.values(REQUIRED_FIELDS).flat().forEach(field => {
+            const value = params[field as keyof ReportParameters];
+            if (Array.isArray(value) ? value.length > 0 : Boolean(value)) filled += 1;
+        });
+        return Math.round((filled / Math.max(total, 1)) * 100);
+    }, [params]);
+
     // Proactive completeness nudges
     useEffect(() => {
         // Provide guidance when completeness hits certain thresholds
@@ -546,16 +557,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
     const docReadiness = useMemo(() => evaluateDocReadiness(refinedIntake), [refinedIntake]);
     const canLaunchDocSuite = docReadiness['executive-summary'] === 'ready' || docReadiness['entry-advisory'] === 'ready';
-
-    const completeness = React.useMemo(() => {
-        const total = Object.values(REQUIRED_FIELDS).flat().length;
-        let filled = 0;
-        Object.values(REQUIRED_FIELDS).flat().forEach(field => {
-            const value = params[field as keyof ReportParameters];
-            if (Array.isArray(value) ? value.length > 0 : Boolean(value)) filled += 1;
-        });
-        return Math.round((filled / Math.max(total, 1)) * 100);
-    }, [params]);
 
     const isStepComplete = (stepId: string) => {
         if (!REQUIRED_FIELDS[stepId]) return false;

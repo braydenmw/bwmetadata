@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, BookOpen, Briefcase, Scale, TrendingUp, Eye, CheckCircle2 } from 'lucide-react';
+import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, Briefcase, Scale, TrendingUp, Eye, CheckCircle2 } from 'lucide-react';
 import { termsOfEngagement } from '../constants/commandCenterData';
 
 interface UserManualProps {
   onLaunchOS?: () => void;
+  onOpenCommandCenter?: () => void;
 }
 
 // Modal Component
@@ -54,7 +55,7 @@ const ProtocolSection: React.FC<{
   );
 };
 
-const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
+const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [protocolDetail, setProtocolDetail] = useState<{ num: number; title: string; details: { subtitle: string; items: string[] }[] } | null>(null);
   const [expandedReport, setExpandedReport] = useState<number | null>(null);
@@ -620,13 +621,22 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS }) => {
               <p className="text-slate-400 mb-6 max-w-xl mx-auto">
                 Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
               </p>
-              <button 
-                onClick={() => setShowTermsModal(true)}
-                className="px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-all inline-flex items-center gap-3 text-lg"
-              >
-                <Blocks className="w-6 h-6" />
-                Launch Intelligence OS
-              </button>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button 
+                    onClick={() => onOpenCommandCenter?.()}
+                    className="px-8 py-4 bg-transparent text-white font-semibold border border-slate-600 rounded-lg hover:bg-slate-800/60 transition-all inline-flex items-center justify-center gap-3 text-lg"
+                  >
+                    <Eye className="w-6 h-6" />
+                    View Command Center
+                  </button>
+                  <button 
+                    onClick={() => setShowTermsModal(true)}
+                    className="px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-all inline-flex items-center justify-center gap-3 text-lg"
+                  >
+                    <Blocks className="w-6 h-6" />
+                    Launch Intelligence OS
+                  </button>
+                </div>
               <p className="text-slate-500 text-xs mt-4">By accessing the platform, you agree to our Terms & Conditions</p>
             </div>
           </div>

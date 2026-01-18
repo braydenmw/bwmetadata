@@ -9,6 +9,7 @@ import {
 import { INITIAL_PARAMETERS } from './constants';
 import MainCanvas from './components/MainCanvas';
 import UserManual from './components/UserManual';
+import CommandCenter from './components/CommandCenter';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
@@ -35,12 +36,12 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'report-generator';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator';
 
 const App: React.FC = () => {
     // --- STATE ---
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
-    const [viewMode, setViewMode] = useState<ViewMode>('user-manual');
+    const [viewMode, setViewMode] = useState<ViewMode>('command-center');
     const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
 
     useEffect(() => {
@@ -402,7 +403,18 @@ const App: React.FC = () => {
         if (viewMode === 'user-manual') {
             return (
                 <div className="w-full h-full overflow-y-auto">
-                    <UserManual onLaunchOS={() => setViewMode('main')} />
+                    <UserManual
+                        onLaunchOS={() => setViewMode('main')}
+                        onOpenCommandCenter={() => setViewMode('command-center')}
+                    />
+                </div>
+            );
+        }
+
+        if (viewMode === 'command-center') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <CommandCenter onEnterPlatform={() => setViewMode('main')} />
                 </div>
             );
         }
