@@ -471,11 +471,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         setLastObservedParams(paramsHash);
     }, [params.organizationName, params.country, params.strategicIntent, params.industry, lastObservedParams]);
 
-    // Scroll chat to bottom when new messages arrive
-    useEffect(() => {
-        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [chatMessages]);
-
     // Completeness calculation - must be defined before useEffects that depend on it
     const completeness = React.useMemo(() => {
         const total = Object.values(REQUIRED_FIELDS).flat().length;
