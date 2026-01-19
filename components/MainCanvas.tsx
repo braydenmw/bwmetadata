@@ -316,6 +316,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const advisorPanelRef = useRef<HTMLDivElement | null>(null);
     const documentScrollRef = useRef<HTMLDivElement | null>(null);
     const chatMessagesEndRef = useRef<HTMLDivElement | null>(null);
+    const chatScrollRef = useRef<HTMLDivElement | null>(null);
 
     const handleAdvisorRefresh = useCallback(() => {
         setAdvisorRefreshing(true);
@@ -358,7 +359,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
     // Auto-scroll chat messages when new messages are added (only within chat container)
     useEffect(() => {
-        chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (!chatScrollRef.current) return;
+        chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
     }, [chatMessages]);
 
     // Ensure sidebar starts at top on component mount
@@ -5304,7 +5306,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             <p className="text-[8px] text-indigo-600 mt-1">Self-learning • Proactive • Autonomous guidance</p>
                         </div>
                         <div className="flex flex-col h-56">
-                            <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-xs">
+                            <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-xs">
                                 {chatMessages.map((msg, index) => (
                                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[10px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100'}`}>{msg.text}</div>
