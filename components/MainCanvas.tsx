@@ -315,6 +315,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const advisorPanelRef = useRef<HTMLDivElement | null>(null);
     const documentScrollRef = useRef<HTMLDivElement | null>(null);
+    const documentScrollPositionRef = useRef(0);
     const chatMessagesEndRef = useRef<HTMLDivElement | null>(null);
     const chatScrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -356,6 +357,21 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         }, 100);
         return () => clearTimeout(timer);
     }, []);
+
+    const handleDocumentScroll = useCallback(() => {
+        if (!documentScrollRef.current) return;
+        documentScrollPositionRef.current = documentScrollRef.current.scrollTop;
+    }, []);
+
+    // Keep Live Document Preview scroll stable when chat updates
+    useEffect(() => {
+        if (!documentScrollRef.current) return;
+        const restore = () => {
+            if (!documentScrollRef.current) return;
+            documentScrollRef.current.scrollTop = documentScrollPositionRef.current;
+        };
+        requestAnimationFrame(restore);
+    }, [chatMessages]);
 
     // Auto-scroll chat messages when new messages are added (only within chat container)
     useEffect(() => {
@@ -5086,7 +5102,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             </div>
 
             {/* Document Scroll Area - Main content with scrolling */}
-            <div ref={documentScrollRef} className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex gap-6 relative">
+            <div ref={documentScrollRef} onScroll={handleDocumentScroll} className="flex-1 w-full overflow-y-auto custom-scrollbar p-8 flex gap-6 relative">
                 
                 {/* The Page Itself - Left side */}
                 <div className="flex-1 flex justify-center">
