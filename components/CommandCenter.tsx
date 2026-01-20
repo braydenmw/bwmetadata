@@ -594,7 +594,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <div className="grid md:grid-cols-3 gap-4">
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Core Indices</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• SPI™ — Success Probability Index</li>
                                             <li>• RROI™ — Regional Return on Investment</li>
                                             <li>• SEAM™ — Stakeholder Alignment Matrix</li>
@@ -604,7 +604,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Risk Formulas</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• CRPS — Composite Risk Priority Score</li>
                                             <li>• RME — Risk Mitigation Effectiveness</li>
                                             <li>• VaR — Value at Risk</li>
@@ -614,7 +614,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Financial Metrics</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• IRR — Internal Rate of Return</li>
                                             <li>• NPV — Net Present Value</li>
                                             <li>• WACC — Weighted Cost of Capital</li>
@@ -624,7 +624,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Operational Scores</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• ORS — Organizational Readiness</li>
                                             <li>• TCS — Team Capability Score</li>
                                             <li>• EEI — Execution Efficiency Index</li>
@@ -634,7 +634,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Market Formulas</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• MPI — Market Penetration Index</li>
                                             <li>• CAI — Competitive Advantage Index</li>
                                             <li>• TAM — Total Addressable Market</li>
@@ -644,7 +644,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
                                     <div>
                                         <h5 className="text-xs font-semibold text-white mb-2">Governance Metrics</h5>
-                                        <ul className="space-y-1 text-[10px] text-white/70">
+                                        <ul className="space-y-1 text-xs text-white/70">
                                             <li>• GCI — Governance Confidence Index</li>
                                             <li>• CCS — Compliance Certainty Score</li>
                                             <li>• TPI — Transparency Index</li>
@@ -671,7 +671,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     </div>
 
                                     <h5 className="text-xs font-semibold text-white mb-3">Why These Formulas Were Created</h5>
-                                    <div className="space-y-3 text-[10px] text-white/70">
+                                    <div className="space-y-3 text-xs text-white/70">
                                         <p>
                                             <strong className="text-amber-400">Core Indices (SPI, RROI, SEAM, PVI, RRI):</strong> No single metric existed that weighted strategic, financial, operational, and stakeholder factors into one auditable score. Standard ROI ignores regional context — jobs, supply chains, community resilience. These indices were built to give decision-makers comparable, region-aware numbers.
                                         </p>
@@ -729,7 +729,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     }`}>
                                         {item.step}
                                     </div>
-                                    <span className="text-[10px] text-white/50">Step {item.step}</span>
+                                    <span className="text-xs text-white/50">Step {item.step}</span>
                                 </div>
                                 <h4 className="text-xs font-medium leading-tight">{item.title}</h4>
                             </button>
@@ -801,7 +801,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <Shield size={14} className="text-amber-400" />
                                 Terms of Engagement
                             </h4>
-                            <div className="max-h-32 overflow-y-auto space-y-2 text-[10px] text-white/60 pr-2">
+                            <div className="max-h-32 overflow-y-auto space-y-2 text-xs text-white/60 pr-2">
                                 <p><strong className="text-white/80">1. Strategic Decision Support:</strong> BW AI is a decision support platform. All outputs are advisory.</p>
                                 <p><strong className="text-white/80">2. Reasoning Governance:</strong> NSIL layer governs analysis via adversarial input screening.</p>
                                 <p><strong className="text-white/80">3. Data Privacy:</strong> Strict compliance with GDPR, Australian Privacy Act.</p>
@@ -854,7 +854,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <p className="text-xs text-white/60 mb-4">
                                 BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
                             </p>
-                            <div className="flex gap-3 text-[10px] text-white/50">
+                            <div className="flex gap-3 text-xs text-white/50">
                                 <a href="#" className="hover:text-white">Terms & Conditions</a>
                                 <a href="#" className="hover:text-white">Privacy Policy</a>
                                 <a href="#" className="hover:text-white">Ethical AI Framework</a>
@@ -869,10 +869,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 <div className="max-w-4xl mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="text-center md:text-left">
-                            <p className="text-[10px] text-white/40">© 2026 BW Global Advisory. All rights reserved.</p>
-                            <p className="text-[10px] text-white/30">Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia</p>
+                            <p className="text-xs text-white/40">© 2026 BW Global Advisory. All rights reserved.</p>
+                            <p className="text-xs text-white/30">Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia</p>
                         </div>
-                        <div className="flex items-center gap-3 text-[10px] text-white/40">
+                        <div className="flex items-center gap-3 text-xs text-white/40">
                             <span className="flex items-center gap-1">
                                 <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                                 Nexus Intelligence OS v6.0
