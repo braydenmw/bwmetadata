@@ -412,7 +412,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>
                         </p>
                         <p className="text-sm text-white/70 leading-relaxed">
-                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 27 formulas score it mathematically), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
+                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 30 formulas score it mathematically), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
                         </p>
                     </div>
 
@@ -572,6 +572,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <GitBranch size={16} />
                             {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 30 Formulas'}
                         </button>
+                        <p className="text-sm text-amber-400 text-center mt-3 font-medium">
+                            ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
+                        </p>
 
                         {showFormulas && (
                             <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
@@ -648,6 +651,45 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• ARI — Audit Readiness Index</li>
                                             <li>• ESG — Environmental Social Governance</li>
                                         </ul>
+                                    </div>
+                                </div>
+
+                                {/* WORLD-FIRST PROOF SECTION */}
+                                <div className="mt-6 pt-6 border-t border-white/10">
+                                    <h5 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
+                                    
+                                    <div className="bg-black/30 rounded-lg p-4 mb-4">
+                                        <p className="text-xs text-white/80 mb-3">
+                                            <strong className="text-white">Multi-agent AI frameworks exist</strong> — tools like Microsoft AutoGen, CrewAI, and LangGraph allow developers to build systems where AI agents collaborate. But these are <em>developer toolkits</em>, not end-user products. They have no built-in scoring, no document generation, no regional development focus.
+                                        </p>
+                                        <p className="text-xs text-white/80 mb-3">
+                                            <strong className="text-white">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters.
+                                        </p>
+                                        <p className="text-xs text-white/80">
+                                            <strong className="text-white">To our knowledge, no publicly available platform combines:</strong> multi-persona adversarial analysis, quantitative viability indices, Monte Carlo stress testing, and automated institutional-grade document generation with audit trails — purpose-built for regional economic development.
+                                        </p>
+                                    </div>
+
+                                    <h5 className="text-xs font-semibold text-white mb-3">Why These Formulas Were Created</h5>
+                                    <div className="space-y-3 text-[10px] text-white/70">
+                                        <p>
+                                            <strong className="text-amber-400">Core Indices (SPI, RROI, SEAM, PVI, RRI):</strong> No single metric existed that weighted strategic, financial, operational, and stakeholder factors into one auditable score. Standard ROI ignores regional context — jobs, supply chains, community resilience. These indices were built to give decision-makers comparable, region-aware numbers.
+                                        </p>
+                                        <p>
+                                            <strong className="text-amber-400">Risk Formulas (CRPS, RME, VaR, SRCI, PRS):</strong> Not all risks are equal. CRPS prioritizes by probability × impact. RME scores whether mitigations are credible, not just listed. SRCI addresses post-pandemic supply chain vulnerabilities. PRS quantifies political risk for emerging markets.
+                                        </p>
+                                        <p>
+                                            <strong className="text-amber-400">Operational Scores (ORS, TCS, EEI, CGI, LCI):</strong> Great ideas fail with weak teams. These scores assess organizational capability, leadership credibility, and execution readiness — factors investors demand but regional projects rarely quantify.
+                                        </p>
+                                        <p>
+                                            <strong className="text-amber-400">Market & Governance Metrics:</strong> Defensible market sizing (TAM/SAM), competitive differentiation (CAI), and governance confidence (GCI, ESG) — increasingly required for institutional capital but rarely automated.
+                                        </p>
+                                    </div>
+
+                                    <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                                        <p className="text-xs text-white/90 italic">
+                                            "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail."
+                                        </p>
                                     </div>
                                 </div>
                             </div>
