@@ -12,6 +12,9 @@ import {
   ISIResult,
   OSIResult,
   RNIResult,
+  RFIResult,
+  PSSResult,
+  CISResult,
   SRAResult,
   IDVResult,
   RDBIResult,
@@ -81,6 +84,9 @@ class AdvancedIndexService {
       isi: this.computeISI(params, composite),
       osi: this.computeOSI(params, composite),
       rni: this.computeRNI(params, composite),
+      rfi: this.computeRFI(params, composite, liveData.economics?.easeOfBusiness),
+      pss: this.computePSS(params, composite),
+      cis: this.computeCIS(params, composite),
       sra: this.computeSRA(params, composite, liveData.economics?.inflation),
       idv: this.computeIDV(params, composite, liveData.profile?.region),
       rdbi: this.computeRDBI(params, composite),
@@ -375,6 +381,144 @@ class AdvancedIndexService {
       clearancePath,
       policyWatchlist: ['Upcoming digital competition rules', 'Carbon border adjustments'],
       complianceEffort: score >= 70 ? 'light' : score >= 55 ? 'moderate' : 'heavy'
+    };
+  }
+
+  private static computeRFI(params: ReportParameters, composite: CompositeScoreResult, easeOfBusiness?: number): RFIResult {
+    let score = clamp(
+      (composite.components.regulatory * 0.4) +
+      (composite.components.digitalReadiness * 0.25) +
+      (composite.components.politicalStability * 0.2) +
+      (composite.components.marketAccess * 0.15),
+      15,
+      95
+    );
+
+    if (params.procurementMode) score += 3;
+    if (params.complianceEvidence) score += 3;
+    if (params.governanceModels?.length) score += 2;
+    if (composite.components.riskFactors > 65) score -= 5;
+
+    const frictionIndex = clamp(100 - score + (composite.components.riskFactors - 50) * 0.3, 5, 95);
+
+    const bottlenecks: string[] = [];
+    if (composite.components.regulatory < 55) bottlenecks.push('Low regulatory transparency');
+    if (composite.components.digitalReadiness < 55) bottlenecks.push('Manual processing still dominant');
+    if (!params.procurementMode) bottlenecks.push('Procurement path undefined');
+    if (!params.complianceEvidence) bottlenecks.push('Compliance evidence not documented');
+
+    const approvalWindowDays = {
+      p50: Math.round(30 + frictionIndex * 1.1),
+      p90: Math.round((30 + frictionIndex * 1.1) * 1.7)
+    };
+
+    const drivers = [
+      `Regulatory clarity ${Math.round(composite.components.regulatory)}/100`,
+      `Digital readiness ${Math.round(composite.components.digitalReadiness)}/100`,
+      `Political stability ${Math.round(composite.components.politicalStability)}/100`
+    ];
+    if (typeof easeOfBusiness === 'number') drivers.push(`Ease of business ${Math.round(easeOfBusiness)}/100`);
+
+    return {
+      score: clamp(score, 0, 100),
+      band: determineBand(score),
+      drivers,
+      pressurePoints: bottlenecks,
+      recommendation: score >= 70
+        ? 'Sequence filings early and lock regulatory sponsors to compress approvals.'
+        : 'Engage local regulatory counsel and front-load permits to reduce friction.',
+      dataSources: this.buildSources(composite),
+      frictionIndex,
+      approvalWindowDays,
+      bottlenecks
+    };
+  }
+
+  private static computePSS(params: ReportParameters, composite: CompositeScoreResult): PSSResult {
+    let sensitivity = clamp(
+      ((100 - composite.components.politicalStability) * 0.45) +
+      (composite.components.riskFactors * 0.35) +
+      ((100 - composite.components.regulatory) * 0.2),
+      10,
+      95
+    );
+
+    if ((params.politicalSensitivities?.length || 0) > 0) sensitivity += 4;
+    if (params.riskTolerance === 'low' || params.riskTolerance === 'very_low') sensitivity += 4;
+    if (params.riskTolerance === 'high' || params.riskTolerance === 'very_high') sensitivity -= 3;
+
+    sensitivity = clamp(sensitivity, 5, 98);
+    const score = clamp(100 - sensitivity, 5, 95);
+
+    const shockScenarios: string[] = [];
+    if (composite.components.marketAccess < 55) shockScenarios.push('Trade access tightening');
+    if (composite.components.digitalReadiness < 55) shockScenarios.push('Data-localization enforcement');
+    if (composite.components.politicalStability < 55) shockScenarios.push('Policy turnover / incentive rollback');
+    if (!shockScenarios.length) shockScenarios.push('Baseline policy continuity (low shock probability)');
+
+    const riskAdjustedDelta = Math.round((sensitivity / 100) * 30);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Policy stability ${Math.round(composite.components.politicalStability)}/100`,
+        `Regulatory certainty ${Math.round(composite.components.regulatory)}/100`
+      ],
+      pressurePoints: sensitivity > 60 ? ['High exposure to policy shocks'] : [],
+      recommendation: score >= 65
+        ? 'Maintain policy radar and embed review triggers into governance cadence.'
+        : 'Hedge policy exposure (staged capex, contingent incentives, FX buffers).',
+      dataSources: this.buildSources(composite),
+      sensitivity,
+      shockScenarios,
+      riskAdjustedDelta
+    };
+  }
+
+  private static computeCIS(params: ReportParameters, composite: CompositeScoreResult): CISResult {
+    let score = 55;
+    const depth = (params.dueDiligenceDepth || '').toLowerCase();
+
+    if (depth.includes('deep') || depth.includes('enhanced')) score += 6;
+    if (depth.includes('light')) score -= 4;
+    if (params.complianceEvidence) score += 4;
+    if (params.partnerEngagementNotes) score += 3;
+    if ((params.partnerPersonas?.length || 0) > 0) score += 4;
+    if ((params.partnerFitCriteria?.length || 0) > 0) score += 3;
+    if (composite.components.regulatory < 55) score -= 5;
+    if (composite.components.politicalStability < 50) score -= 4;
+
+    score = clamp(score, 15, 95);
+
+    const verificationSignals: string[] = [];
+    if (depth) verificationSignals.push(`Diligence depth: ${params.dueDiligenceDepth}`);
+    if (params.complianceEvidence) verificationSignals.push('Compliance evidence provided');
+    if ((params.partnerPersonas?.length || 0) > 0) verificationSignals.push(`${params.partnerPersonas?.length} partner personas mapped`);
+    if ((params.partnerFitCriteria?.length || 0) > 0) verificationSignals.push(`${params.partnerFitCriteria?.length} partner fit criteria defined`);
+
+    const pressurePoints: string[] = [];
+    if (!params.partnerEngagementNotes) pressurePoints.push('Partner engagement notes missing');
+    if (!params.complianceEvidence) pressurePoints.push('Compliance evidence not recorded');
+    if ((params.partnerPersonas?.length || 0) === 0) pressurePoints.push('No partner personas documented');
+
+    const integrityBand = score >= 80 ? 'verified' : score >= 60 ? 'watch' : 'high-risk';
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Regulatory quality ${Math.round(composite.components.regulatory)}/100`,
+        `Political stability ${Math.round(composite.components.politicalStability)}/100`
+      ],
+      pressurePoints,
+      recommendation: integrityBand === 'high-risk'
+        ? 'Run enhanced KYC, adverse media checks, and require escrow protections.'
+        : 'Proceed with structured governance clauses and periodic integrity reviews.',
+      dataSources: this.buildSources(composite),
+      integrityBand,
+      redFlagCount: pressurePoints.length,
+      verificationSignals
     };
   }
 

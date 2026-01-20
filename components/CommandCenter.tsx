@@ -16,10 +16,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
     const tenStepProtocol = [
         { step: 1, title: "Identity & Foundation", description: "Establish organizational credibility, legal structure, and competitive positioning.", details: ["Organization name, type, and legal structure", "Registration/incorporation details", "Key leadership and governance structure", "Historical track record and credentials", "Competitive positioning statement", "Core competencies and differentiators"] },
         { step: 2, title: "Mandate & Strategy", description: "Define strategic vision, objectives, target partner profile, and value proposition.", details: ["Strategic vision and mission alignment", "Short, medium, and long-term objectives", "Target partner/investor profile", "Value proposition articulation", "Strategic fit assessment criteria", "Success metrics and KPIs"] },
-        { step: 3, title: "Market & Context", description: "Analyze market dynamics, regulatory environment, and macro-economic factors.", details: ["Market size and growth projections", "Competitive landscape analysis", "Regulatory environment assessment", "Macro-economic factors and trends", "Industry-specific dynamics", "Regional context and opportunities"] },
-        { step: 4, title: "Partners & Ecosystem", description: "Map stakeholder landscape, alignment scores, and relationship dynamics.", details: ["Stakeholder identification and mapping", "Alignment score calculations", "Relationship strength assessment", "Ecosystem dependencies", "Partnership synergy analysis", "Stakeholder communication strategy"] },
+        { step: 3, title: "Market & Context", description: "Analyze market dynamics, regulatory environment, and macro-economic factors.", details: ["Market size and growth projections", "Competitive landscape analysis", "Regulatory environment assessment", "Regulatory Friction Index (RFI) scoring", "Macro-economic factors and trends", "Industry-specific dynamics", "Regional context and opportunities"] },
+        { step: 4, title: "Partners & Ecosystem", description: "Map stakeholder landscape, alignment scores, and relationship dynamics.", details: ["Stakeholder identification and mapping", "Counterparty Integrity Score (CIS) verification", "Alignment score calculations", "Relationship strength assessment", "Ecosystem dependencies", "Partnership synergy analysis", "Stakeholder communication strategy"] },
         { step: 5, title: "Financial Model", description: "Structure investment requirements, revenue projections, and ROI scenarios.", details: ["Investment requirements breakdown", "Revenue model and projections", "Cost structure analysis", "ROI scenario modeling (base/best/worst)", "Funding sources and terms", "Financial sustainability metrics"] },
-        { step: 6, title: "Risk & Mitigation", description: "Identify and quantify risks with probability/impact matrices and mitigation plans.", details: ["Risk identification and categorization", "Probability and impact assessment", "Risk matrix visualization", "Mitigation strategies per risk", "Contingency planning", "Risk monitoring framework"] },
+        { step: 6, title: "Risk & Mitigation", description: "Identify and quantify risks with probability/impact matrices and mitigation plans.", details: ["Risk identification and categorization", "Probability and impact assessment", "Risk matrix visualization", "Policy Shock Sensitivity (PSS) scenarios", "Mitigation strategies per risk", "Contingency planning", "Risk monitoring framework"] },
         { step: 7, title: "Resources & Capability", description: "Assess organizational readiness, team strength, and capability gaps.", details: ["Current resource inventory", "Team capabilities assessment", "Capability gap analysis", "Training and development needs", "Resource acquisition strategy", "Organizational readiness score"] },
         { step: 8, title: "Execution Plan", description: "Define implementation roadmap, milestones, dependencies, and go/no-go gates.", details: ["Implementation roadmap with phases", "Milestone definitions and timelines", "Dependency mapping", "Go/no-go decision gates", "Resource allocation per phase", "Critical path identification"] },
         { step: 9, title: "Governance & Monitoring", description: "Establish oversight structure, decision matrices, and performance tracking.", details: ["Governance structure design", "Decision-making authority matrix", "Reporting cadence and format", "Performance tracking metrics", "Escalation procedures", "Audit and compliance framework"] },
@@ -239,7 +239,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <h3 className="text-base font-medium">Quantified, Not Just "Considered"</h3>
                             </div>
                             <p className="text-sm text-white/70 leading-relaxed">
-                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 30 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
+                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 33 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
                             </p>
                         </div>
 
@@ -348,7 +348,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                         </div>
                         <p className="text-xs text-white/50 text-center">
-                            The technology behind this is complex—30 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
+                            The technology behind this is complex—33 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
                         </p>
                     </div>
                 </div>
@@ -412,7 +412,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>
                         </p>
                         <p className="text-sm text-white/70 leading-relaxed">
-                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 30 formulas score it mathematically), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
+                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 33 formulas score it mathematically), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
                         </p>
                     </div>
 
@@ -531,7 +531,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
                             </p>
                             <p>
-                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 30 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 33 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
                             </p>
                         </div>
 
@@ -570,7 +570,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
                         >
                             <GitBranch size={16} />
-                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 30 Formulas'}
+                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 33 Formulas'}
                         </button>
                         <p className="text-sm text-amber-400 text-center mt-3 font-medium">
                             ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
@@ -578,14 +578,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
                         {showFormulas && (
                             <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 30 Proprietary Formulas</h4>
+                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 33 Proprietary Formulas</h4>
                                 
                                 <div className="mb-4">
                                     <h5 className="text-xs font-semibold text-white mb-2">5-Layer Processing Architecture</h5>
                                     <ol className="space-y-2 text-xs text-white/70">
                                         <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
                                         <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
-                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 30 proprietary formulas calculate hard metrics</li>
+                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 33 proprietary formulas calculate hard metrics</li>
                                         <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
                                         <li><strong className="text-white">Layer 5:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions</li>
                                     </ol>
@@ -609,6 +609,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• RME — Risk Mitigation Effectiveness</li>
                                             <li>• VaR — Value at Risk</li>
                                             <li>• SRCI — Supply Chain Risk Index</li>
+                                            <li>• PSS — Policy Shock Sensitivity</li>
                                             <li>• PRS — Political Risk Score</li>
                                         </ul>
                                     </div>
@@ -649,6 +650,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• CCS — Compliance Certainty Score</li>
                                             <li>• TPI — Transparency Index</li>
                                             <li>• ARI — Audit Readiness Index</li>
+                                            <li>• RFI — Regulatory Friction Index</li>
+                                            <li>• CIS — Counterparty Integrity Score</li>
                                             <li>• ESG — Environmental Social Governance</li>
                                         </ul>
                                     </div>
@@ -677,6 +680,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         </p>
                                         <p>
                                             <strong className="text-amber-400">Risk Formulas (CRPS, RME, VaR, SRCI, PRS):</strong> Not all risks are equal. CRPS prioritizes by probability × impact. RME scores whether mitigations are credible, not just listed. SRCI addresses post-pandemic supply chain vulnerabilities. PRS quantifies political risk for emerging markets.
+                                        </p>
+                                        <p>
+                                            <strong className="text-amber-400">Regulatory & Integrity Metrics (RFI, PSS, CIS):</strong> RFI measures approval friction and regulatory drag; PSS simulates exposure to policy shocks; CIS verifies partner integrity using verifiable signals. These close the gap between "paper viability" and real-world execution risk.
                                         </p>
                                         <p>
                                             <strong className="text-amber-400">Operational Scores (ORS, TCS, EEI, CGI, LCI):</strong> Great ideas fail with weak teams. These scores assess organizational capability, leadership credibility, and execution readiness — factors investors demand but regional projects rarely quantify.

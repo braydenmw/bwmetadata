@@ -484,6 +484,24 @@ export interface RNIResult extends DerivedIndexBase {
     policyWatchlist: string[];
     complianceEffort: 'light' | 'moderate' | 'heavy';
 }
+export interface RFIResult extends DerivedIndexBase {
+    frictionIndex: number;
+    approvalWindowDays: {
+        p50: number;
+        p90: number;
+    };
+    bottlenecks: string[];
+}
+export interface PSSResult extends DerivedIndexBase {
+    sensitivity: number;
+    shockScenarios: string[];
+    riskAdjustedDelta: number;
+}
+export interface CISResult extends DerivedIndexBase {
+    integrityBand: 'verified' | 'watch' | 'high-risk';
+    redFlagCount: number;
+    verificationSignals: string[];
+}
 export interface SRAResult extends DerivedIndexBase {
     sovereignRiskBand: 'secure' | 'watch' | 'distressed';
     macroSignals: string[];
@@ -662,6 +680,9 @@ export interface AdvancedIndexResults {
     isi: ISIResult;
     osi: OSIResult;
     rni: RNIResult;
+    rfi: RFIResult;
+    pss: PSSResult;
+    cis: CISResult;
     sra: SRAResult;
     idv: IDVResult;
     rdbi: RDBIResult;
