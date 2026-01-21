@@ -301,6 +301,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. It was built for the person staring at a blank page, wondering where to even start—and for the experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
                     </p>
 
+                    {/* Preferred Guidance Level Explanation */}
+                    <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-5 rounded-r-xl mb-8">
+                        <p className="text-xs text-amber-400 uppercase tracking-wider mb-3 font-semibold">PREFERRED GUIDANCE LEVEL</p>
+                        <p className="text-sm text-white/80 leading-relaxed mb-4">
+                            Before you begin, you choose how much guidance you want. This isn't a one-size-fits-all system—it's built to meet you where you are.
+                        </p>
+                        <div className="grid md:grid-cols-3 gap-4 mb-4">
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                <p className="text-amber-400 font-semibold text-sm mb-1">🧭 Orientation Mode</p>
+                                <p className="text-xs text-white/60">Full explanations, step-by-step walkthroughs, and contextual help at every turn. Ideal for first-time users, community groups, or anyone new to strategic planning.</p>
+                            </div>
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                <p className="text-amber-400 font-semibold text-sm mb-1">🤝 Collaborative Mode</p>
+                                <p className="text-xs text-white/60">Balanced guidance with smart suggestions. You drive the process while the system surfaces insights. Built for teams, regional councils, and growing businesses.</p>
+                            </div>
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                <p className="text-amber-400 font-semibold text-sm mb-1">⚡ Expert Mode</p>
+                                <p className="text-xs text-white/60">Streamlined interface, minimal hand-holding, full access to advanced controls. Designed for experienced operators, government analysts, and corporate development teams.</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-white/50">
+                            Your guidance level can be changed at any time from the sidebar. The system adapts its explanations, prompts, and recommendations accordingly—so you're never overwhelmed, and never slowed down.
+                        </p>
+                    </div>
+
                     <div className="mb-8">
                         <p className="text-xs text-amber-400 uppercase tracking-wider mb-4 font-semibold">WHO THIS IS BUILT FOR</p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

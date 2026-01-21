@@ -1088,11 +1088,36 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             city={params.userCity}
                         />
                     )}
+
+                    {/* Preferred Guidance Level */}
+                    <div className="bg-white border border-stone-200 rounded-lg p-3">
+                        <div className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Preferred Guidance Level</div>
+                        <p className="text-[11px] text-stone-600 mb-2">Choose how much hand-holding vs. autonomy you want from the platform. This sets how each step prompts you and what depth the system expects.</p>
+                        <div className="grid grid-cols-1 gap-2">
+                            {GUIDANCE_MODES.map(option => {
+                                const isActive = (params.intakeGuidanceMode || 'collaborative') === option.value;
+                                return (
+                                    <button
+                                        key={option.value}
+                                        type="button"
+                                        onClick={() => setParams({ ...params, intakeGuidanceMode: option.value as ReportParameters['intakeGuidanceMode'] })}
+                                        className={`w-full border rounded-lg px-3 py-2 text-left text-sm transition ${isActive ? 'border-blue-600 bg-blue-600/10 text-blue-900 shadow-sm' : 'border-stone-200 hover:border-blue-200 hover:bg-stone-50'}`}
+                                    >
+                                        <div className="font-semibold">{option.label}</div>
+                                        <p className="text-[11px] text-stone-500 leading-snug">{option.description}</p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <div className="mt-2 text-[11px] text-stone-600">
+                            The system keeps the 10 critical steps intact, but adapts the depth and guidance so every user reaches the same standard.
+                        </div>
+                    </div>
                     
                     {/* STRATEGIC INTAKE WIZARD: 10 Sections */}
                     <div>
                         <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Strategic Intake Wizard</h3>
-                        <p className="text-[11px] text-stone-600 mb-3">Complete each section to build your comprehensive strategic analysis. Select multiple options in each step to capture the full scope of your needs.</p>
+                        <p className="text-[11px] text-stone-600 mb-3">Complete each section to build your comprehensive strategic analysis. Select multiple options in each step to capture the full scope of your needs. Guidance level above calibrates how deeply each step prompts you.</p>
                         <div className="space-y-2">
                             {[
                                 {id: 'identity', label: '1. Identity', description: 'WHO you are: Organization profile, entity types, countries, industries, competitive position', icon: Building2},
@@ -1606,30 +1631,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                 />
                                             </div>
 
-                                            {/* Guidance Mode */}
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Preferred Guidance Level</label>
-                                                <p className="text-[10px] text-stone-500 mb-2">Choose how much hand-holding vs. autonomy you want from the platform</p>
-                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                                    {GUIDANCE_MODES.map(option => {
-                                                        const isActive = (params.intakeGuidanceMode || 'collaborative') === option.value;
-                                                        return (
-                                                            <button
-                                                                key={option.value}
-                                                                type="button"
-                                                                onClick={() => setParams({ ...params, intakeGuidanceMode: option.value as ReportParameters['intakeGuidanceMode'] })}
-                                                                className={`w-full border rounded-lg px-3 py-2 text-left text-sm transition ${isActive ? 'border-blue-600 bg-blue-600/10 text-blue-900 shadow-sm' : 'border-stone-200 hover:border-blue-200 hover:bg-stone-50'}`}
-                                                            >
-                                                                <div className="font-semibold">{option.label}</div>
-                                                                <p className="text-[11px] text-stone-500 leading-snug">{option.description}</p>
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                                <div className="mt-2 p-3 bg-stone-50 border border-stone-200 rounded text-[11px] text-stone-600">
-                                                    Whether this is your first time or your hundredth, the advisor adapts the questioning depth so you never feel stuck.
-                                                </div>
-                                            </div>
                                             <div className="border border-dashed border-blue-200 rounded-xl p-4 bg-blue-50/30">
                                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                                     <div>
