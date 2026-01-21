@@ -181,7 +181,11 @@ export class IntelligentDocumentGenerator {
       ]
     };
     
-    return templates[config.audience] || templates.general;
+    const base = templates[config.audience] || templates.general;
+    if (config.focusAreas?.includes('blind-spot-audit') && !base.includes('blind-spot-audit')) {
+      return [...base, 'blind-spot-audit'];
+    }
+    return base;
   }
 
   /**
@@ -257,7 +261,8 @@ export class IntelligentDocumentGenerator {
       'methodology': () => this.generateMethodology(),
       'data-analysis': () => this.generateDataAnalysis(reportData),
       'technical-risks': () => this.generateTechnicalRisks(reportData),
-      'appendix': () => this.generateAppendix(params, reportData)
+      'appendix': () => this.generateAppendix(params, reportData),
+      'blind-spot-audit': () => this.generateBlindSpotAudit(params, reportData)
     };
     
     const generator = generators[sectionId];
@@ -509,6 +514,58 @@ Each identified risk should have:
 2. Mitigation actions
 3. Contingency plans
 4. Assigned ownership`;
+  }
+
+  private generateBlindSpotAudit(params: ReportParameters, reportData: ReportData): string {
+    const indices = reportData.computedIntelligence?.advancedIndices;
+    const seq = indices?.seq?.score ?? 'N/A';
+    const fms = indices?.fms?.score ?? 'N/A';
+    const dcs = indices?.dcs?.score ?? 'N/A';
+    const dqs = indices?.dqs?.score ?? 'N/A';
+    const gcs = indices?.gcs?.score ?? 'N/A';
+
+    const gapSignals = [
+      !(params.milestonePlan) ? 'Milestone sequencing not documented' : null,
+      !(params.cashFlowTiming) ? 'Cashflow timing not mapped to capex/opex' : null,
+      !(params.complianceEvidence) ? 'Compliance evidence missing or unverified' : null,
+      !(params.governanceModels?.length) ? 'Governance model not documented' : null,
+      !(params.ingestedDocuments?.length) ? 'Evidence coverage is thin' : null,
+      !(params.partnerEngagementNotes) ? 'Counterparty engagement notes missing' : null
+    ].filter(Boolean) as string[];
+
+    const blindSpotList = gapSignals.length
+      ? gapSignals.map(gap => `- ${gap}`).join('\n')
+      : '- No critical blind spots flagged with current inputs';
+
+    return `## Blind Spot Audit
+
+### Why this exists
+Most reports focus on what is known. This audit isolates what is **not** proven yet: sequencing risks, verification gaps, timing drift, and structural weaknesses that frequently cause deals to fail despite strong narratives.
+
+### Unbiased formulas applied
+- **SEQ (Sequencing Integrity)**: dependency order + gate completeness − acceleration penalty
+- **FMS (Funding Match Score)**: revenue timing ÷ (capex + opex burn)
+- **DCS (Dependency Concentration)**: 100 − single-point dependency concentration
+- **DQS (Data Quality Score)**: 0.5·coverage + 0.25·freshness + 0.25·verifiability
+- **GCS (Governance Clarity)**: (decision rights + exit clarity) ÷ 2
+
+### Blind spot scores
+- SEQ: ${seq}
+- FMS: ${fms}
+- DCS: ${dcs}
+- DQS: ${dqs}
+- GCS: ${gcs}
+
+### Primary blind spots flagged
+${blindSpotList}
+
+### Recommended hardening actions
+1. Lock sequencing with dependency gates and stage-gated approvals.
+2. Align funding tranches to cashflow timing; protect buffers for delays.
+3. Expand verification signals (KYC, adverse media, ownership checks).
+4. Diversify suppliers/approvals to remove single-point failures.
+5. Codify decision rights and exit clauses before commitment.
+6. Refresh data sources and expand evidence coverage before signing.`;
   }
 
   private generateTeamExecution(params: ReportParameters): string {

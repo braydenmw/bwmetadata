@@ -412,6 +412,7 @@ export type ExtendedDocumentType =
   
   // === RISK & DUE DILIGENCE ===
   | 'risk-assessment'                  // Comprehensive risk review
+  | 'blind-spot-audit'                  // Blind spot audit
   | 'risk-register'                    // Risk inventory
   | 'risk-mitigation-plan'             // Risk controls
   | 'due-diligence-request'            // Information request
@@ -747,6 +748,23 @@ export const EXTENDED_DOCUMENT_TEMPLATES: DocumentTemplate[] = [
     targetAudience: ['Risk Committee', 'Board', 'Insurers'],
     sections: ['Executive Summary', 'Risk Register', 'Political Risk', 'Market Risk', 'Operational Risk', 'Financial Risk', 'Legal Risk', 'Mitigation Plan', 'Monitoring Framework'],
     aiCapabilities: ['Historical risk analysis', 'Monte Carlo simulation', 'Precedent matching', 'Ethics check'],
+  },
+  {
+    id: 'blind-spot-audit',
+    title: 'Blind Spot Audit',
+    description: 'Unbiased audit that surfaces hidden failure modes, sequencing gaps, and verification risks',
+    category: 'risk',
+    defaultPageLength: 5,
+    minPageLength: 3,
+    maxPageLength: 20,
+    timeToGenerate: '< 4 min',
+    requiredInputs: ['entityName', 'jurisdiction', 'counterparty'],
+    optionalInputs: ['financials', 'timeline', 'governance', 'evidence'],
+    outputFormats: ['pdf', 'docx'],
+    useCases: ['Pre-signing review', 'Deal risk hardening', 'Board diligence'],
+    targetAudience: ['Executive', 'Board', 'Risk Committee'],
+    sections: ['Purpose', 'Formula Scores', 'Blind Spot Findings', 'Timing & Sequencing Risks', 'Verification Gaps', 'Dependency Risks', 'Governance Weaknesses', 'Hardening Actions'],
+    aiCapabilities: ['Bias detection', 'Dependency analysis', 'Formula scoring', 'Evidence validation'],
   },
   {
     id: 'financial-model',

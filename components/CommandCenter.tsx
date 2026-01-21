@@ -239,7 +239,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <h3 className="text-base font-medium">Quantified, Not Just "Considered"</h3>
                             </div>
                             <p className="text-sm text-white/70 leading-relaxed">
-                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 33 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
+                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 38 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
                             </p>
                         </div>
 
@@ -348,7 +348,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             </div>
                         </div>
                         <p className="text-xs text-white/50 text-center">
-                            The technology behind this is complex—33 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
+                            The technology behind this is complex—38 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
                         </p>
                     </div>
                 </div>
@@ -412,7 +412,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>
                         </p>
                         <p className="text-sm text-white/70 leading-relaxed">
-                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 33 formulas score it mathematically), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
+                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 38 formulas score it mathematically, including the Blind Spot Audit suite: SEQ, FMS, DCS, DQS, GCS), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
                         </p>
                     </div>
 
@@ -531,7 +531,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
                             </p>
                             <p>
-                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 33 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 38 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                            </p>
+                            <p>
+                                <strong className="text-white">The other-side test:</strong> NSIL doesn’t just model your case—it models the other parties involved. It scores counterparty integrity (CIS), regulatory drag (RFI), and asymmetric incentives, then runs a Blind Spot Audit to expose where a deal can fail even when the narrative looks strong.
                             </p>
                         </div>
 
@@ -570,7 +573,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
                         >
                             <GitBranch size={16} />
-                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 33 Formulas'}
+                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 38 Formulas'}
                         </button>
                         <p className="text-sm text-amber-400 text-center mt-3 font-medium">
                             ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
@@ -578,14 +581,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
                         {showFormulas && (
                             <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 33 Proprietary Formulas</h4>
+                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 38 Proprietary Formulas</h4>
                                 
                                 <div className="mb-4">
                                     <h5 className="text-xs font-semibold text-white mb-2">5-Layer Processing Architecture</h5>
                                     <ol className="space-y-2 text-xs text-white/70">
                                         <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
                                         <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
-                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 33 proprietary formulas calculate hard metrics</li>
+                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 38 proprietary formulas calculate hard metrics</li>
                                         <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
                                         <li><strong className="text-white">Layer 5:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions</li>
                                     </ol>
@@ -609,6 +612,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• RME — Risk Mitigation Effectiveness</li>
                                             <li>• VaR — Value at Risk</li>
                                             <li>• SRCI — Supply Chain Risk Index</li>
+                                            <li>• DCS — Dependency Concentration Score</li>
                                             <li>• PSS — Policy Shock Sensitivity</li>
                                             <li>• PRS — Political Risk Score</li>
                                         </ul>
@@ -620,6 +624,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• NPV — Net Present Value</li>
                                             <li>• WACC — Weighted Cost of Capital</li>
                                             <li>• DSCR — Debt Service Coverage</li>
+                                            <li>• FMS — Funding Match Score</li>
                                             <li>• ROE — Return on Equity</li>
                                         </ul>
                                     </div>
@@ -629,6 +634,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• ORS — Organizational Readiness</li>
                                             <li>• TCS — Team Capability Score</li>
                                             <li>• EEI — Execution Efficiency Index</li>
+                                            <li>• SEQ — Sequencing Integrity Score</li>
                                             <li>• CGI — Capability Gap Index</li>
                                             <li>• LCI — Leadership Confidence Index</li>
                                         </ul>
@@ -650,6 +656,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                             <li>• CCS — Compliance Certainty Score</li>
                                             <li>• TPI — Transparency Index</li>
                                             <li>• ARI — Audit Readiness Index</li>
+                                            <li>• DQS — Data Quality Score</li>
+                                            <li>• GCS — Governance Clarity Score</li>
                                             <li>• RFI — Regulatory Friction Index</li>
                                             <li>• CIS — Counterparty Integrity Score</li>
                                             <li>• ESG — Environmental Social Governance</li>
@@ -683,6 +691,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                         </p>
                                         <p>
                                             <strong className="text-amber-400">Regulatory & Integrity Metrics (RFI, PSS, CIS):</strong> RFI measures approval friction and regulatory drag; PSS simulates exposure to policy shocks; CIS verifies partner integrity using verifiable signals. These close the gap between "paper viability" and real-world execution risk.
+                                        </p>
+                                        <p>
+                                            <strong className="text-amber-400">Blind Spot Audit Metrics (SEQ, FMS, DCS, DQS, GCS):</strong> These formulas quantify sequencing integrity, funding timing mismatch, dependency concentration, data confidence, and governance clarity — the controllable failure points that most deals miss.
                                         </p>
                                         <p>
                                             <strong className="text-amber-400">Operational Scores (ORS, TCS, EEI, CGI, LCI):</strong> Great ideas fail with weak teams. These scores assess organizational capability, leadership credibility, and execution readiness — factors investors demand but regional projects rarely quantify.

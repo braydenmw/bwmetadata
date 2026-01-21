@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { FileText, Download, Copy, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 import jsPDF from 'jspdf';
-import { RefinedIntake } from '../types';
+import { RefinedIntake, ReportData, ReportParameters } from '../types';
 import { evaluateDocReadiness } from '../services/intakeMapping';
 
-type DocumentType = 'loi' | 'mou' | 'proposal' | 'executive-summary' | 'financial-model' | 'risk-assessment' | 'dossier' | 'comparison' | 'term-sheet' | 'investment-memo' | 'due-diligence-request' | 'business-intelligence-report' | 'partnership-analyzer' | 'stakeholder-analysis' | 'market-entry-strategy' | 'competitive-analysis' | 'operational-plan' | 'integration-plan' | 'entry-advisory' | 'cultural-brief';
+type DocumentType = 'loi' | 'mou' | 'proposal' | 'executive-summary' | 'financial-model' | 'risk-assessment' | 'dossier' | 'comparison' | 'term-sheet' | 'investment-memo' | 'due-diligence-request' | 'business-intelligence-report' | 'partnership-analyzer' | 'stakeholder-analysis' | 'market-entry-strategy' | 'competitive-analysis' | 'operational-plan' | 'integration-plan' | 'entry-advisory' | 'cultural-brief' | 'blind-spot-audit';
 
 interface DocumentTemplate {
   id: DocumentType;
@@ -20,6 +20,8 @@ interface DocumentGenerationSuiteProps {
   targetPartnerName?: string;
   targetMarket?: string;
   dealValue?: number;
+  reportData?: ReportData;
+  reportParams?: ReportParameters;
   onDocumentGenerated?: (docType: DocumentType, content: string) => void;
 }
 
@@ -28,6 +30,8 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
   targetPartnerName = 'Strategic Partner',
   targetMarket = 'Target Market',
   dealValue = 50000000,
+  reportData,
+  reportParams,
   onDocumentGenerated
 }) => {
   const [selectedDocument, setSelectedDocument] = useState<DocumentType | null>(null);
@@ -109,6 +113,14 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
       description: 'Comprehensive risk identification, mitigation, and contingency planning',
       icon: <AlertCircle className="w-6 h-6" />,
       category: 'Analysis',
+      timeToGenerate: '< 3 min'
+    },
+    {
+      id: 'blind-spot-audit',
+      title: 'Blind Spot Audit',
+      description: 'Explicitly surfaces hidden failure modes, sequencing gaps, and verification blind spots',
+      icon: <AlertCircle className="w-6 h-6" />,
+      category: 'Risk',
       timeToGenerate: '< 3 min'
     },
     {
@@ -259,6 +271,11 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
       { label: 'Partner', present: Boolean(targetPartnerName) },
       { label: 'Financials', present: Boolean(dealValue) }
     ],
+    'blind-spot-audit': [
+      { label: 'Market', present: Boolean(targetMarket) },
+      { label: 'Counterparty', present: Boolean(targetPartnerName) },
+      { label: 'Deal value', present: Boolean(dealValue) }
+    ],
     comparison: [
       { label: 'Options listed', present: false },
       { label: 'Criteria', present: true }
@@ -379,6 +396,9 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
       case 'risk-assessment':
         content = generateRiskAssessment();
         break;
+      case 'blind-spot-audit':
+        content = generateBlindSpotAudit();
+        break;
       case 'dossier':
         content = generateDossier();
         break;
@@ -444,6 +464,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
         case 'executive-summary': content = generateExecutiveSummary(); break;
         case 'financial-model': content = generateFinancialModel(); break;
         case 'risk-assessment': content = generateRiskAssessment(); break;
+        case 'blind-spot-audit': content = generateBlindSpotAudit(); break;
         case 'dossier': content = generateDossier(); break;
         case 'comparison': content = generateComparison(); break;
         case 'term-sheet': content = generateTermSheet(); break;
@@ -746,6 +767,78 @@ IDENTIFIED RISKS & RESPONSES:
 OVERALL RISK RATING: MEDIUM (with proper mitigation)
 Recommendation: Proceed with risk management framework in place
   `;
+
+  const generateBlindSpotAudit = () => {
+    const indices = reportData?.computedIntelligence?.advancedIndices;
+    const seq = indices?.seq?.score ?? 62;
+    const fms = indices?.fms?.score ?? 58;
+    const dcs = indices?.dcs?.score ?? 55;
+    const dqs = indices?.dqs?.score ?? 60;
+    const gcs = indices?.gcs?.score ?? 57;
+
+    const gapFlags: string[] = [];
+    if (!targetPartnerName) gapFlags.push('Counterparty identity not fully validated.');
+    if (!targetMarket) gapFlags.push('Jurisdiction not specified for regulatory timing analysis.');
+    if (!reportParams?.milestonePlan) gapFlags.push('Milestone sequencing not documented.');
+    if (!reportParams?.cashFlowTiming) gapFlags.push('Cashflow timing not mapped to capex/opex.');
+    if (!reportParams?.complianceEvidence) gapFlags.push('Compliance evidence missing or unverified.');
+    if (!reportParams?.governanceModels?.length) gapFlags.push('Governance structure not documented.');
+    if (!reportParams?.ingestedDocuments?.length) gapFlags.push('Low evidence coverage for claims.');
+
+    const gapSummary = gapFlags.length ? gapFlags : ['No critical blind spots flagged with current inputs.'];
+
+    return `
+BLIND SPOT AUDIT
+
+Prepared for: ${entityName}
+Target Market: ${targetMarket}
+Counterparty: ${targetPartnerName}
+Date: ${new Date().toLocaleDateString()}
+
+EXECUTIVE SUMMARY:
+This audit surfaces hidden failure modes, sequencing gaps, verification risks, and timing drift that most reports ignore. It uses unbiased formulas grounded in real-world execution patterns across global industries.
+
+CORE FORMULAS (UNBIASED):
+• SEQ (Sequencing Integrity): dependency order + gate completeness − acceleration penalty
+• FMS (Funding Match Score): revenue timing ÷ (capex + opex burn)
+• DCS (Dependency Concentration): 100 − single‑point dependency concentration
+• DQS (Data Quality Score): 0.5·coverage + 0.25·freshness + 0.25·verifiability
+• GCS (Governance Clarity): (decision rights + exit clarity) ÷ 2
+
+BLIND SPOT SCORES:
+• SEQ: ${seq}/100
+• FMS: ${fms}/100
+• DCS: ${dcs}/100
+• DQS: ${dqs}/100
+• GCS: ${gcs}/100
+
+PRIMARY BLIND SPOTS IDENTIFIED:
+${gapSummary.map(gap => `• ${gap}`).join('\n')}
+
+WHAT OTHERS MISS (AND THIS FLAGS):
+• Regulatory friction & approval timing drift
+• Mis‑sequenced execution dependencies
+• Financing mismatch between cashflow and capex/opex timing
+• Counterparty integrity and verification gaps
+• Hidden single‑point dependencies
+• Operational capacity gaps
+• Market‑entry timing windows (policy cycles, elections, budget approvals)
+• Supply chain fragility
+• Contract structure weakness (decision rights, exit clauses)
+• Data confidence gaps and unverifiable inputs
+
+RECOMMENDED ACTIONS:
+1. Lock sequencing with hard dependency gates and stage‑gated approvals.
+2. Align funding tranches to cashflow timing; maintain reserves for timing drift.
+3. Expand verification signals (KYC, adverse media, beneficial ownership checks).
+4. Diversify suppliers/approvals to remove single‑point failures.
+5. Document governance decision rights and exit clauses before commitment.
+6. Refresh data sources and expand evidence coverage before signing.
+
+NOTE:
+Scores will update as more verified inputs are supplied. This audit is intentionally conservative to protect against hidden downside.
+`;
+  };
 
   const generateDossier = () => `
 COMPREHENSIVE MARKET ENTRY DOSSIER

@@ -15,6 +15,11 @@ import {
   RFIResult,
   PSSResult,
   CISResult,
+  SEQResult,
+  FMSResult,
+  DCSResult,
+  DQSResult,
+  GCSResult,
   SRAResult,
   IDVResult,
   RDBIResult,
@@ -68,6 +73,18 @@ const parseDealSizeUSD = (dealSize?: string, custom?: string): number => {
   return 50_000_000;
 };
 
+const parseCurrencyUSD = (value?: string): number => {
+  if (!value) return 0;
+  const numeric = Number(value.replace(/[^0-9.]/g, ''));
+  if (Number.isFinite(numeric) && numeric > 0) {
+    if (/b/i.test(value)) return numeric * 1_000_000_000;
+    if (/m/i.test(value)) return numeric * 1_000_000;
+    if (/k/i.test(value)) return numeric * 1_000;
+    return numeric;
+  }
+  return 0;
+};
+
 class AdvancedIndexService {
   static async computeIndices(params: ReportParameters): Promise<AdvancedIndexResults> {
     const composite = await CompositeScoreService.getScores(params);
@@ -87,6 +104,11 @@ class AdvancedIndexService {
       rfi: this.computeRFI(params, composite, liveData.economics?.easeOfBusiness),
       pss: this.computePSS(params, composite),
       cis: this.computeCIS(params, composite),
+      seq: this.computeSEQ(params, composite),
+      fms: this.computeFMS(params, composite),
+      dcs: this.computeDCS(params, composite),
+      dqs: this.computeDQS(params, composite),
+      gcs: this.computeGCS(params, composite),
       sra: this.computeSRA(params, composite, liveData.economics?.inflation),
       idv: this.computeIDV(params, composite, liveData.profile?.region),
       rdbi: this.computeRDBI(params, composite),
@@ -519,6 +541,203 @@ class AdvancedIndexService {
       integrityBand,
       redFlagCount: pressurePoints.length,
       verificationSignals
+    };
+  }
+
+  private static computeSEQ(params: ReportParameters, composite: CompositeScoreResult): SEQResult {
+    let score = 60;
+    const sequencingRisks: string[] = [];
+
+    if (params.milestonePlan) score += 8;
+    else sequencingRisks.push('No milestone plan defined to lock task sequencing.');
+
+    if ((params.financialStages?.length || 0) >= 2) score += 6;
+    else sequencingRisks.push('No staged financing plan to align milestones to funding.');
+
+    if (params.riskMonitoringProcess) score += 4;
+    else sequencingRisks.push('Risk monitoring cadence not defined.');
+
+    if (params.procurementMode) score += 3;
+    else sequencingRisks.push('Procurement path not locked; approvals may drift.');
+
+    if (params.expansionTimeline?.includes('0_6')) score -= 6;
+    if (composite.components.infrastructure < 55) sequencingRisks.push('Infrastructure readiness below threshold; dependencies may slip.');
+    if (!params.contingencyPlans) sequencingRisks.push('No contingency plan to resequence on disruption.');
+
+    const dependencyMap = [
+      'Permits → Procurement → Mobilization',
+      'Funding release → Capex build → Talent onboarding',
+      'Pilot launch → KPI validation → Scale decision'
+    ];
+
+    score = clamp(score, 15, 95);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Regulatory readiness ${Math.round(composite.components.regulatory)}/100`,
+        `Infrastructure readiness ${Math.round(composite.components.infrastructure)}/100`
+      ],
+      pressurePoints: sequencingRisks,
+      recommendation: score >= 70
+        ? 'Lock dependency order with gated approvals and stage-gate checks.'
+        : 'Re-sequence plan with explicit dependency gates before capital drawdown.',
+      dataSources: composite.dataSources,
+      dependencyMap,
+      sequencingRisks
+    };
+  }
+
+  private static computeFMS(params: ReportParameters, composite: CompositeScoreResult): FMSResult {
+    const revenueYear1 = parseCurrencyUSD(params.revenueYear1);
+    const opexYear1 = parseCurrencyUSD(params.opexYear1);
+    const cogsYear1 = parseCurrencyUSD(params.cogsYear1);
+    const capex = parseCurrencyUSD(params.totalInvestment) || parseDealSizeUSD(params.dealSize, params.customDealSize);
+    const operatingNeed = opexYear1 + cogsYear1;
+    const coverageDenominator = Math.max(1, operatingNeed + capex * 0.25);
+    const fundingCoverageRatio = revenueYear1 / coverageDenominator;
+    const cashflowGapUSD = Math.max(0, coverageDenominator - revenueYear1);
+
+    let score = clamp(55 + (fundingCoverageRatio * 40), 10, 95);
+    if (params.fundingSource === 'Internal Cashflow') score += 4;
+    if (params.cashFlowTiming) score += 3;
+    if (!params.cashFlowTiming) score -= 4;
+
+    const timingMisalignments: string[] = [];
+    if (fundingCoverageRatio < 0.9) timingMisalignments.push('Revenue timing lags capex + opex burn profile.');
+    if (!params.paybackPeriod) timingMisalignments.push('Payback period not defined against funding schedule.');
+    if (!params.revenueStreams) timingMisalignments.push('Revenue streams not documented for year-1 coverage.');
+
+    score = clamp(score, 10, 95);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Funding coverage ratio ${(fundingCoverageRatio * 100).toFixed(0)}%`,
+        `Cashflow gap $${Math.round(cashflowGapUSD / 1_000_000)}M`
+      ],
+      pressurePoints: timingMisalignments,
+      recommendation: score >= 70
+        ? 'Align drawdowns with revenue milestones; keep reserves for timing slippage.'
+        : 'Re-time capex and renegotiate funding tranches to close cashflow gaps.',
+      dataSources: composite.dataSources,
+      fundingCoverageRatio: Number(fundingCoverageRatio.toFixed(2)),
+      cashflowGapUSD: Math.round(cashflowGapUSD),
+      timingMisalignments
+    };
+  }
+
+  private static computeDCS(params: ReportParameters, composite: CompositeScoreResult): DCSResult {
+    const dependencyCount = (params.partnerCapabilities?.length || 0)
+      + (params.integrationSystems?.length || 0)
+      + (params.governanceModels?.length || 0)
+      + (params.riskOwners?.length || 0);
+
+    const dependencyConcentration = clamp(100 - dependencyCount * 10, 10, 95);
+    const singlePointFailures: string[] = [];
+
+    if ((params.partnerCapabilities?.length || 0) <= 1) singlePointFailures.push('Partner capability stack is concentrated in a single provider.');
+    if ((params.integrationSystems?.length || 0) <= 1) singlePointFailures.push('Operational systems dependency concentrated in one platform.');
+    if (!params.procurementMode) singlePointFailures.push('Procurement contingency options not documented.');
+    if (composite.components.supplyChain < 55) singlePointFailures.push('Supply chain resilience below threshold.');
+
+    const score = clamp(100 - dependencyConcentration + (composite.components.supplyChain - 50) * 0.4, 10, 95);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Dependency concentration ${Math.round(dependencyConcentration)}/100`,
+        `Supply chain resilience ${Math.round(composite.components.supplyChain)}/100`
+      ],
+      pressurePoints: singlePointFailures,
+      recommendation: score >= 70
+        ? 'Maintain multi-vendor redundancy and alternate approvals.'
+        : 'Diversify suppliers and approvals to reduce single-point failures.',
+      dataSources: composite.dataSources,
+      dependencyConcentration,
+      singlePointFailures
+    };
+  }
+
+  private static computeDQS(params: ReportParameters, composite: CompositeScoreResult): DQSResult {
+    const coverageScore = clamp(
+      ((params.ingestedDocuments?.length || 0) * 12)
+      + ((params.comparativeContext?.length || 0) * 6)
+      + ((composite.dataSources?.length || 0) * 6),
+      10,
+      100
+    );
+
+    let freshnessScore = 55;
+    if (params.dueDiligenceDepth === 'Deep') freshnessScore += 15;
+    if (params.dueDiligenceDepth === 'Light') freshnessScore -= 10;
+
+    let verifiabilityScore = 45;
+    if (params.complianceEvidence) verifiabilityScore += 20;
+    if (params.partnerEngagementNotes) verifiabilityScore += 10;
+
+    const dataGaps: string[] = [];
+    if ((params.ingestedDocuments?.length || 0) < 2) dataGaps.push('Limited documentary evidence ingested.');
+    if ((composite.dataSources?.length || 0) < 3) dataGaps.push('Sparse external data sources; refresh recommended.');
+    if (!params.complianceEvidence) dataGaps.push('Compliance evidence missing or unverified.');
+
+    const score = clamp((coverageScore * 0.5) + (freshnessScore * 0.25) + (verifiabilityScore * 0.25), 10, 95);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Coverage ${Math.round(coverageScore)}/100`,
+        `Verifiability ${Math.round(verifiabilityScore)}/100`
+      ],
+      pressurePoints: dataGaps,
+      recommendation: score >= 70
+        ? 'Maintain data refresh cadence and evidence logs.'
+        : 'Expand evidence set and validate sources before commitment.',
+      dataSources: composite.dataSources,
+      coverageScore: Math.round(coverageScore),
+      freshnessScore: Math.round(freshnessScore),
+      verifiabilityScore: Math.round(verifiabilityScore),
+      dataGaps
+    };
+  }
+
+  private static computeGCS(params: ReportParameters, composite: CompositeScoreResult): GCSResult {
+    let decisionClarityScore = 45;
+    let exitClarityScore = 45;
+    const governanceRisks: string[] = [];
+
+    if (params.decisionAuthority) decisionClarityScore += 20;
+    else governanceRisks.push('Decision authority not defined.');
+
+    if (params.governanceModels?.length) decisionClarityScore += 10;
+    else governanceRisks.push('Governance model not documented.');
+
+    if (params.relationshipStage) exitClarityScore += 10;
+    if (params.partnerEngagementNotes) exitClarityScore += 5;
+    if (!params.alignmentPlan) governanceRisks.push('Alignment plan missing; escalation path unclear.');
+    if (!params.riskOwners?.length) governanceRisks.push('No named risk owners for governance escalation.');
+
+    const score = clamp((decisionClarityScore + exitClarityScore) / 2 + (composite.components.politicalStability - 50) * 0.2, 15, 95);
+
+    return {
+      score,
+      band: determineBand(score),
+      drivers: [
+        `Decision clarity ${Math.round(decisionClarityScore)}/100`,
+        `Governance stability ${Math.round(composite.components.politicalStability)}/100`
+      ],
+      pressurePoints: governanceRisks,
+      recommendation: score >= 70
+        ? 'Codify decision rights and exit clauses before final negotiations.'
+        : 'Define governance, decision rights, and exit triggers to reduce ambiguity.',
+      dataSources: composite.dataSources,
+      decisionClarityScore: Math.round(decisionClarityScore),
+      exitClarityScore: Math.round(exitClarityScore),
+      governanceRisks
     };
   }
 

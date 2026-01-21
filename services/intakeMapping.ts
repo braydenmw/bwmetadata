@@ -44,5 +44,6 @@ export function evaluateDocReadiness(intake: RefinedIntake): Record<string, DocR
     'financial-model': hasBudget ? 'ready' : 'missing-fields',
     'entry-advisory': hasMarket ? 'ready' : 'missing-fields',
     'cultural-brief': hasMarket ? 'ready' : 'missing-fields',
+    'blind-spot-audit': hasMarket ? 'ready' : 'missing-fields',
   };
 }

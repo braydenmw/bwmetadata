@@ -5064,6 +5064,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     <DocumentGenerationSuite
                         entityName={params.organizationName}
                         targetMarket={params.userCity}
+                        reportData={enhancedReportData}
+                        reportParams={params}
                     />
                 </div>
             </div>

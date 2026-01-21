@@ -502,6 +502,30 @@ export interface CISResult extends DerivedIndexBase {
     redFlagCount: number;
     verificationSignals: string[];
 }
+export interface SEQResult extends DerivedIndexBase {
+    dependencyMap: string[];
+    sequencingRisks: string[];
+}
+export interface FMSResult extends DerivedIndexBase {
+    fundingCoverageRatio: number;
+    cashflowGapUSD: number;
+    timingMisalignments: string[];
+}
+export interface DCSResult extends DerivedIndexBase {
+    dependencyConcentration: number;
+    singlePointFailures: string[];
+}
+export interface DQSResult extends DerivedIndexBase {
+    coverageScore: number;
+    freshnessScore: number;
+    verifiabilityScore: number;
+    dataGaps: string[];
+}
+export interface GCSResult extends DerivedIndexBase {
+    decisionClarityScore: number;
+    exitClarityScore: number;
+    governanceRisks: string[];
+}
 export interface SRAResult extends DerivedIndexBase {
     sovereignRiskBand: 'secure' | 'watch' | 'distressed';
     macroSignals: string[];
@@ -683,6 +707,11 @@ export interface AdvancedIndexResults {
     rfi: RFIResult;
     pss: PSSResult;
     cis: CISResult;
+    seq: SEQResult;
+    fms: FMSResult;
+    dcs: DCSResult;
+    dqs: DQSResult;
+    gcs: GCSResult;
     sra: SRAResult;
     idv: IDVResult;
     rdbi: RDBIResult;
