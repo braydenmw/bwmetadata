@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3 } from 'lucide-react';
+import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { deepLocationResearch, type ResearchProgress, type DeepResearchResult, type SourceCitation, type SimilarCity } from '../services/deepLocationResearchService';
+import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService';
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -126,7 +126,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [isResearching, setIsResearching] = useState(false);
   const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
   const [liveProfile, setLiveProfile] = useState<CityProfile | null>(null);
-  const [researchResult, setResearchResult] = useState<DeepResearchResult | null>(null);
+  const [researchResult, setResearchResult] = useState<MultiSourceResult | null>(null);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     overview: true,
@@ -200,7 +200,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       // Use existing profile
       handleSelectProfile(existingMatch);
     } else {
-      // Start DEEP research for new location
+      // Start MULTI-SOURCE research for new location
       setHasSelection(true);
       setActiveProfileId(null);
       setLiveProfile(null);
@@ -209,24 +209,24 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       setSearchResults([]);
       setLoadingError(null);
       setIsResearching(true);
-      setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting comprehensive research...' });
+      setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
       
       try {
-        // Use deep location research - REAL DATA EXTRACTION
-        const result = await deepLocationResearch(trimmedQuery, (progress) => {
+        // Use multi-source research - GOOGLE, WORLD BANK, GOVERNMENT SOURCES
+        const result = await multiSourceResearch(trimmedQuery, (progress) => {
           setResearchProgress(progress);
         });
         
         if (result) {
           setLiveProfile(result.profile);
           setResearchResult(result);
-          setResearchProgress({ stage: 'Complete', progress: 100, message: 'Research complete!' });
+          setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete! ${result.sources.length} sources compiled.` });
         } else {
           setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
           setHasSelection(false);
         }
       } catch (error) {
-        console.error('Deep research error:', error);
+        console.error('Multi-source research error:', error);
         const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
         if (isNetworkError || !navigator.onLine) {
           setLoadingError('Unable to connect to research services. Please check your internet connection.');
@@ -671,17 +671,27 @@ th { background: #f1f5f9; }
             {/* Research Status */}
             <div className="bg-black/40 rounded-lg p-3 text-[11px] font-mono text-slate-400">
               <div className="flex items-center gap-2">
-                <span className="text-purple-400">●</span>
-                <span>Extracting real data from Wikipedia, Wikidata, and public sources...</span>
+                <span className="text-emerald-400">●</span>
+                <span>Searching government websites, World Bank, and official sources...</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-purple-400">●</span>
-                <span>Compiling narratives, leadership profiles, and economic analysis</span>
+                <span className="text-blue-400">●</span>
+                <span>Cross-referencing data from international organizations</span>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-amber-400">●</span>
+                <span>Compiling verified economic data and leadership profiles</span>
               </div>
               {researchProgress?.substage && (
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-amber-400">→</span>
-                  <span className="text-amber-300">{researchProgress.substage}</span>
+                  <span className="text-purple-400">→</span>
+                  <span className="text-purple-300">Currently: {researchProgress.substage}</span>
+                </div>
+              )}
+              {researchProgress?.sourcesFound && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-cyan-400">✓</span>
+                  <span className="text-cyan-300">{researchProgress.sourcesFound} authoritative sources found</span>
                 </div>
               )}
             </div>
@@ -745,7 +755,14 @@ th { background: #f1f5f9; }
                       }`}>
                         Data Quality: {researchResult.dataQuality.completeness}%
                       </span>
-                      <span className="text-[10px] text-slate-500">{researchResult.dataQuality.sourcesCount} sources verified</span>
+                      <span className="text-[10px] text-slate-500">
+                        {researchResult.dataQuality.governmentSourcesUsed + researchResult.dataQuality.internationalSourcesUsed + researchResult.dataQuality.newsSourcesUsed} sources
+                      </span>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                        researchResult.dataQuality.primarySourcePercentage >= 60 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+                      }`}>
+                        {researchResult.dataQuality.primarySourcePercentage}% primary
+                      </span>
                     </div>
                   )}
                 </div>
@@ -815,12 +832,22 @@ th { background: #f1f5f9; }
               )}
 
               {/* Investment Case */}
-              {researchResult?.narratives?.investmentCase && (
+              {researchResult?.narratives?.investment && (
                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 mb-6">
                   <div className="text-[11px] uppercase tracking-wider text-amber-400 mb-2 font-semibold flex items-center gap-2">
                     <Target className="w-4 h-4" /> Investment Case
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.investmentCase}</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.investment}</p>
+                </div>
+              )}
+
+              {/* Infrastructure */}
+              {researchResult?.narratives?.infrastructure && (
+                <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-xl p-4 mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-cyan-400 mb-2 font-semibold flex items-center gap-2">
+                    <Zap className="w-4 h-4" /> Infrastructure & Connectivity
+                  </div>
+                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.infrastructure}</p>
                 </div>
               )}
 
@@ -828,11 +855,11 @@ th { background: #f1f5f9; }
                 <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-2 font-semibold">Evidence & Verification</div>
                 <p className="text-xs text-emerald-200/80 leading-relaxed">
                   {researchResult?.dataQuality?.leaderDataVerified 
-                    ? 'Leadership data has been verified against Wikipedia and Wikidata sources. '
-                    : 'Leadership data is being compiled from available sources. '}
+                    ? 'Leadership data has been verified against government and official sources. '
+                    : 'Leadership data is being compiled from official sources. '}
                   {researchResult?.sources?.length 
-                    ? `This report cites ${researchResult.sources.length} verified sources.`
-                    : 'Evidence is derived from official government portals, public statistics releases, and verified updates.'}
+                    ? `This report cites ${researchResult.sources.length} sources including ${researchResult.dataQuality?.governmentSourcesUsed || 0} government and ${researchResult.dataQuality?.internationalSourcesUsed || 0} international organizations (World Bank, etc.).`
+                    : 'Evidence is derived from official government portals, World Bank data, and verified updates.'}
                 </p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
@@ -1352,8 +1379,40 @@ th { background: #f1f5f9; }
                 </button>
                 {expandedSections.sources && (
                   <div className="mt-4 space-y-3">
+                    {/* Data Quality Summary */}
+                    {researchResult.dataQuality && (
+                      <div className="p-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-emerald-500/30 rounded-xl mb-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Shield className="w-5 h-5 text-emerald-400" />
+                          <span className="text-sm font-semibold text-emerald-300">Source Verification Summary</span>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                          <div className="p-2 bg-black/30 rounded-lg">
+                            <div className="text-lg font-bold text-emerald-400">{researchResult.dataQuality.governmentSourcesUsed}</div>
+                            <div className="text-[10px] text-slate-400">Government Sources</div>
+                          </div>
+                          <div className="p-2 bg-black/30 rounded-lg">
+                            <div className="text-lg font-bold text-blue-400">{researchResult.dataQuality.internationalSourcesUsed}</div>
+                            <div className="text-[10px] text-slate-400">World Bank / Int'l Orgs</div>
+                          </div>
+                          <div className="p-2 bg-black/30 rounded-lg">
+                            <div className="text-lg font-bold text-amber-400">{researchResult.dataQuality.newsSourcesUsed}</div>
+                            <div className="text-[10px] text-slate-400">News Sources</div>
+                          </div>
+                          <div className="p-2 bg-black/30 rounded-lg">
+                            <div className="text-lg font-bold text-cyan-400">{researchResult.dataQuality.primarySourcePercentage}%</div>
+                            <div className="text-[10px] text-slate-400">Primary Source %</div>
+                          </div>
+                        </div>
+                        <div className="mt-3 text-xs text-slate-400">
+                          <span className="text-emerald-300">✓</span> Primary sources (government, World Bank, int'l organizations) prioritized over secondary sources.
+                        </div>
+                      </div>
+                    )}
+                    
                     <p className="text-xs text-slate-400 mb-4">
-                      All information in this report is sourced from verified public sources. Click any source to view the original.
+                      Data sourced from official government websites, World Bank, international organizations, and verified news outlets. 
+                      Each source is rated for reliability. Click any source to view the original.
                     </p>
                     <div className="grid md:grid-cols-2 gap-3">
                       {researchResult.sources.map((source: SourceCitation, idx: number) => (
@@ -1365,21 +1424,45 @@ th { background: #f1f5f9; }
                           className="p-3 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:bg-blue-500/5 transition-all group"
                         >
                           <div className="flex items-start gap-3">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
-                              source.type === 'wikipedia' ? 'bg-slate-700 text-white' :
-                              source.type === 'news' ? 'bg-red-500/20 text-red-300' :
+                            <div className={`w-10 h-10 rounded-lg flex flex-col items-center justify-center text-xs font-bold ${
                               source.type === 'government' ? 'bg-emerald-500/20 text-emerald-300' :
-                              'bg-blue-500/20 text-blue-300'
+                              source.type === 'worldbank' ? 'bg-blue-500/20 text-blue-300' :
+                              source.type === 'international' ? 'bg-cyan-500/20 text-cyan-300' :
+                              source.type === 'statistics' ? 'bg-purple-500/20 text-purple-300' :
+                              source.type === 'news' ? 'bg-amber-500/20 text-amber-300' :
+                              source.type === 'research' ? 'bg-pink-500/20 text-pink-300' :
+                              'bg-slate-700 text-white'
                             }`}>
-                              {source.type === 'wikipedia' ? 'W' :
-                               source.type === 'news' ? 'N' :
-                               source.type === 'government' ? 'G' : 'D'}
+                              {source.type === 'government' ? <Building2 className="w-4 h-4" /> :
+                               source.type === 'worldbank' ? <Globe className="w-4 h-4" /> :
+                               source.type === 'international' ? <Globe className="w-4 h-4" /> :
+                               source.type === 'statistics' ? <BarChart3 className="w-4 h-4" /> :
+                               source.type === 'news' ? <Newspaper className="w-4 h-4" /> :
+                               <FileText className="w-4 h-4" />}
+                              <span className="text-[8px] mt-0.5">
+                                {source.reliability === 'high' ? '★★★' : source.reliability === 'medium' ? '★★' : '★'}
+                              </span>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors truncate">
-                                {source.title}
+                              <div className="flex items-center gap-2">
+                                <div className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors truncate">
+                                  {source.title}
+                                </div>
+                                <span className={`text-[8px] px-1.5 py-0.5 rounded-full ${
+                                  source.reliability === 'high' ? 'bg-emerald-500/20 text-emerald-300' :
+                                  source.reliability === 'medium' ? 'bg-amber-500/20 text-amber-300' :
+                                  'bg-slate-700 text-slate-300'
+                                }`}>
+                                  {source.reliability?.toUpperCase()}
+                                </span>
                               </div>
-                              <div className="text-[10px] text-slate-400 mt-0.5">{source.relevance}</div>
+                              <div className="text-[10px] text-slate-300 mt-0.5 capitalize">
+                                {source.type === 'worldbank' ? 'World Bank' : source.type}
+                                {source.organization ? ` · ${source.organization}` : ''}
+                              </div>
+                              {source.dataExtracted && (
+                                <div className="text-[10px] text-slate-400 mt-1 line-clamp-2">{source.dataExtracted}</div>
+                              )}
                               <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
                                 <Link2 className="w-3 h-3" />
                                 <span className="truncate">{new URL(source.url).hostname}</span>
@@ -1391,6 +1474,13 @@ th { background: #f1f5f9; }
                         </a>
                       ))}
                     </div>
+                    
+                    {/* Research Summary */}
+                    {researchResult.researchSummary && (
+                      <div className="mt-4 p-3 bg-slate-900/50 rounded-lg">
+                        <div className="text-xs text-slate-400">{researchResult.researchSummary}</div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
