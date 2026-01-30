@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { comprehensiveLiveSearch, type LiveLocationSearchProgress } from '../services/liveLocationSearchService';
+import { deepLocationResearch, type ResearchProgress, type DeepResearchResult, type SourceCitation, type SimilarCity } from '../services/deepLocationResearchService';
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -124,8 +124,9 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   
   // Live research state
   const [isResearching, setIsResearching] = useState(false);
-  const [researchProgress, setResearchProgress] = useState<LiveLocationSearchProgress | null>(null);
+  const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
   const [liveProfile, setLiveProfile] = useState<CityProfile | null>(null);
+  const [researchResult, setResearchResult] = useState<DeepResearchResult | null>(null);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     overview: true,
@@ -133,7 +134,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     infrastructure: true,
     demographics: true,
     leadership: true,
-    live: true
+    live: true,
+    sources: true,
+    similar: true,
+    narratives: true
   });
 
   const toggleSection = (section: string) => {
@@ -196,36 +200,38 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       // Use existing profile
       handleSelectProfile(existingMatch);
     } else {
-      // Start LIVE research for new location
+      // Start DEEP research for new location
       setHasSelection(true);
       setActiveProfileId(null);
       setLiveProfile(null);
+      setResearchResult(null);
       setSearchQuery('');
       setSearchResults([]);
       setLoadingError(null);
       setIsResearching(true);
-      setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Initializing live search...' });
+      setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting comprehensive research...' });
       
       try {
-        // Use comprehensive live search - NO MOCKED DATA
-        const result = await comprehensiveLiveSearch(trimmedQuery, (progress) => {
+        // Use deep location research - REAL DATA EXTRACTION
+        const result = await deepLocationResearch(trimmedQuery, (progress) => {
           setResearchProgress(progress);
         });
         
         if (result) {
-          setLiveProfile(result);
-          setResearchProgress({ stage: 'complete', progress: 100, message: 'Live profile loaded!' });
+          setLiveProfile(result.profile);
+          setResearchResult(result);
+          setResearchProgress({ stage: 'Complete', progress: 100, message: 'Research complete!' });
         } else {
           setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
           setHasSelection(false);
         }
       } catch (error) {
-        console.error('Live search error:', error);
+        console.error('Deep research error:', error);
         const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
         if (isNetworkError || !navigator.onLine) {
-          setLoadingError('Unable to connect to search services. Please check your internet connection.');
+          setLoadingError('Unable to connect to research services. Please check your internet connection.');
         } else {
-          setLoadingError('Search failed. Please try again.');
+          setLoadingError('Research failed. Please try again.');
         }
         setHasSelection(false);
       } finally {
@@ -258,6 +264,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setActiveProfileId(null);
     setHasSelection(false);
     setLiveProfile(null);
+    setResearchResult(null);
     setIsResearching(false);
     setResearchProgress(null);
     setLoadingError(null);
@@ -615,8 +622,8 @@ th { background: #f1f5f9; }
                   <Loader2 className="w-3 h-3 text-purple-300 absolute -bottom-1 -right-1 animate-spin" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-purple-300">Live Search in Progress</h2>
-                  <p className="text-xs text-slate-400">{researchProgress?.message || 'Searching...'}</p>
+                  <h2 className="text-lg font-semibold text-purple-300">Deep Research in Progress</h2>
+                  <p className="text-xs text-slate-400">{researchProgress?.message || 'Researching...'}</p>
                 </div>
               </div>
               <div className="text-right">
@@ -633,46 +640,50 @@ th { background: #f1f5f9; }
               />
             </div>
             
-            {/* Live Search Stages */}
+            {/* Research Stages */}
             <div className="grid md:grid-cols-6 gap-2 mb-4">
-              {['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].map(stage => {
-                const stageProgress = researchProgress?.stage === stage ? 'active' 
-                  : (['complete', 'error'].includes(researchProgress?.stage || '') || 
-                     ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(stage) < 
-                     ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(researchProgress?.stage || '')) 
-                    ? 'complete' : 'pending';
+              {['Initializing Research', 'Gathering Intelligence', 'Leadership Research', 'Economic Analysis', 'News & Developments', 'Compiling Report'].map((stage, idx) => {
+                const stages = ['Initializing Research', 'Gathering Intelligence', 'Leadership Research', 'Economic Analysis', 'News & Developments', 'Compiling Report', 'Comparative Analysis', 'Complete'];
+                const currentIdx = stages.findIndex(s => researchProgress?.stage?.includes(s.split(' ')[0]) || researchProgress?.stage === s);
+                const stageStatus = idx < currentIdx ? 'complete' : idx === currentIdx ? 'active' : 'pending';
                 return (
                   <div 
                     key={stage}
                     className={`p-2 rounded-lg border text-xs text-center ${
-                      stageProgress === 'complete'
+                      stageStatus === 'complete'
                         ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                        : stageProgress === 'active'
+                        : stageStatus === 'active'
                           ? 'border-purple-500/30 bg-purple-500/10 text-purple-300'
                           : 'border-slate-700 text-slate-500'
                     }`}
                   >
                     <div className="flex items-center justify-center gap-1">
-                      {stageProgress === 'complete' && <CheckCircle2 className="w-3 h-3" />}
-                      {stageProgress === 'active' && <Loader2 className="w-3 h-3 animate-spin" />}
-                      {stageProgress === 'pending' && <Clock className="w-3 h-3" />}
-                      <span className="capitalize">{stage.replace('-', ' ')}</span>
+                      {stageStatus === 'complete' && <CheckCircle2 className="w-3 h-3" />}
+                      {stageStatus === 'active' && <Loader2 className="w-3 h-3 animate-spin" />}
+                      {stageStatus === 'pending' && <Clock className="w-3 h-3" />}
+                      <span className="text-[10px]">{stage.split(' ')[0]}</span>
                     </div>
                   </div>
                 );
               })}
             </div>
             
-            {/* Live Search Status */}
+            {/* Research Status */}
             <div className="bg-black/40 rounded-lg p-3 text-[11px] font-mono text-slate-400">
               <div className="flex items-center gap-2">
                 <span className="text-purple-400">●</span>
-                <span>Fetching real-time data from Google, Wikipedia, and public APIs...</span>
+                <span>Extracting real data from Wikipedia, Wikidata, and public sources...</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-purple-400">●</span>
-                <span>No mocked data - all information is live and current</span>
+                <span>Compiling narratives, leadership profiles, and economic analysis</span>
               </div>
+              {researchProgress?.substage && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-amber-400">→</span>
+                  <span className="text-amber-300">{researchProgress.substage}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -725,6 +736,18 @@ th { background: #f1f5f9; }
                   <h2 className="text-3xl font-bold">{activeProfile.city}</h2>
                   <p className="text-slate-400">{activeProfile.region} · {activeProfile.country}</p>
                   <p className="text-xs text-slate-500 mt-1">Est. {activeProfile.established} · {activeProfile.timezone}</p>
+                  {researchResult?.dataQuality && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`text-[10px] px-2 py-1 rounded-full ${
+                        researchResult.dataQuality.completeness >= 70 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                        researchResult.dataQuality.completeness >= 40 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                        'bg-red-500/20 text-red-300 border border-red-500/30'
+                      }`}>
+                        Data Quality: {researchResult.dataQuality.completeness}%
+                      </span>
+                      <span className="text-[10px] text-slate-500">{researchResult.dataQuality.sourcesCount} sources verified</span>
+                    </div>
+                  )}
                 </div>
                 <div className="text-right">
                   <div className="text-4xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
@@ -737,28 +760,79 @@ th { background: #f1f5f9; }
                   </button>
                 </div>
               </div>
-              <p className="text-sm text-slate-300 leading-relaxed mb-4">
-                {activeProfile.city} is known for {activeProfile.knownFor.slice(0, 3).join(', ')} and serves as a strategic hub in {activeProfile.region}. 
-                With direct access via {activeProfile.globalMarketAccess.toLowerCase()}, the city focuses on {activeProfile.keySectors.slice(0, 4).join(', ')}.
-              </p>
-              <div className="space-y-3 text-sm text-slate-300 leading-relaxed mb-6">
-                {buildNarrative(activeProfile).overview.map((paragraph, idx) => (
-                  <p key={`overview-${idx}`}>{paragraph}</p>
-                ))}
+              
+              {/* Overview Narrative - Use research result if available */}
+              <div className="space-y-4 text-sm text-slate-300 leading-relaxed mb-6">
+                {researchResult?.narratives?.overview ? (
+                  <p>{researchResult.narratives.overview}</p>
+                ) : (
+                  <>
+                    <p>
+                      {activeProfile.city} is known for {activeProfile.knownFor.slice(0, 3).join(', ')} and serves as a strategic hub in {activeProfile.region}. 
+                      With direct access via {activeProfile.globalMarketAccess.toLowerCase()}, the city focuses on {activeProfile.keySectors.slice(0, 4).join(', ')}.
+                    </p>
+                    {buildNarrative(activeProfile).overview.map((paragraph, idx) => (
+                      <p key={`overview-${idx}`}>{paragraph}</p>
+                    ))}
+                  </>
+                )}
               </div>
+
+              {/* Historical Context */}
               <div className="bg-black/30 border border-white/10 rounded-xl p-4 mb-6">
-                <div className="text-[11px] uppercase tracking-wider text-amber-400 mb-2 font-semibold">Historical Context</div>
+                <div className="text-[11px] uppercase tracking-wider text-amber-400 mb-2 font-semibold flex items-center gap-2">
+                  <History className="w-4 h-4" /> Historical Context
+                </div>
                 <div className="space-y-3 text-sm text-slate-300 leading-relaxed">
-                  {buildNarrative(activeProfile).historical.map((paragraph, idx) => (
-                    <p key={`history-${idx}`}>{paragraph}</p>
-                  ))}
+                  {researchResult?.narratives?.history ? (
+                    <p>{researchResult.narratives.history}</p>
+                  ) : (
+                    buildNarrative(activeProfile).historical.map((paragraph, idx) => (
+                      <p key={`history-${idx}`}>{paragraph}</p>
+                    ))
+                  )}
                 </div>
               </div>
+
+              {/* Economic Analysis */}
+              {researchResult?.narratives?.economy && (
+                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-emerald-400 mb-2 font-semibold flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" /> Economic Analysis
+                  </div>
+                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.economy}</p>
+                </div>
+              )}
+
+              {/* Governance Context */}
+              {researchResult?.narratives?.governance && (
+                <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4 mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-purple-400 mb-2 font-semibold flex items-center gap-2">
+                    <Landmark className="w-4 h-4" /> Governance Overview
+                  </div>
+                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.governance}</p>
+                </div>
+              )}
+
+              {/* Investment Case */}
+              {researchResult?.narratives?.investmentCase && (
+                <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-amber-400 mb-2 font-semibold flex items-center gap-2">
+                    <Target className="w-4 h-4" /> Investment Case
+                  </div>
+                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.investmentCase}</p>
+                </div>
+              )}
+
               <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 mb-6">
                 <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-2 font-semibold">Evidence & Verification</div>
                 <p className="text-xs text-emerald-200/80 leading-relaxed">
-                  Evidence for this profile is derived from official government portals, public statistics releases, and verified leadership updates. 
-                  When available, the system references executive orders, infrastructure plans, budget releases, and published development programs to validate claims.
+                  {researchResult?.dataQuality?.leaderDataVerified 
+                    ? 'Leadership data has been verified against Wikipedia and Wikidata sources. '
+                    : 'Leadership data is being compiled from available sources. '}
+                  {researchResult?.sources?.length 
+                    ? `This report cites ${researchResult.sources.length} verified sources.`
+                    : 'Evidence is derived from official government portals, public statistics releases, and verified updates.'}
                 </p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
@@ -817,13 +891,16 @@ th { background: #f1f5f9; }
                           <div className="font-semibold text-white">{leader.name}</div>
                           <div className="text-xs text-slate-400">{leader.role}</div>
                           <div className="text-[10px] text-slate-500">{leader.tenure}</div>
+                          {leader.party && (
+                            <div className="text-[10px] text-purple-300 mt-1">{leader.party}</div>
+                          )}
                           {leader.photoVerified && (
                             <div className="text-[10px] text-emerald-300 mt-1 flex items-center gap-1">
                               <CheckCircle2 className="w-3 h-3" /> Photo verified
                             </div>
                           )}
                           {!leader.imageUrl && !leader.photoUrl && (
-                            <div className="text-[10px] text-amber-300 mt-1">Official photo pending verification</div>
+                            <div className="text-[10px] text-amber-300 mt-1">Official photo pending</div>
                           )}
                           {leader.sourceUrl && (
                             <a href={leader.sourceUrl} target="_blank" rel="noreferrer" 
@@ -835,12 +912,24 @@ th { background: #f1f5f9; }
                           {leader.internationalEngagementFocus && (
                             <div className="text-[10px] text-purple-300 mt-1">🌍 Int'l Engagement Focus</div>
                           )}
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="text-xs text-amber-400 font-semibold">{leader.rating.toFixed(1)}/10</span>
-                            <span className="text-[10px] text-slate-500">Performance</span>
-                          </div>
                         </div>
                       </div>
+                      {/* Full Bio Preview */}
+                      {leader.fullBio && (
+                        <div className="mt-3 p-2 bg-black/30 rounded-lg">
+                          <p className="text-[11px] text-slate-400 line-clamp-3">{leader.fullBio}</p>
+                        </div>
+                      )}
+                      {/* Achievements Preview */}
+                      {leader.achievements && leader.achievements.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {leader.achievements.slice(0, 2).map((ach, idx) => (
+                            <span key={idx} className="text-[9px] px-2 py-0.5 bg-emerald-500/10 text-emerald-300 rounded-full">
+                              ✓ {ach.substring(0, 40)}{ach.length > 40 ? '...' : ''}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       <div className="mt-3 text-[10px] text-purple-300 flex items-center gap-1">
                         Click for full bio, news & projects →
                       </div>
@@ -1250,6 +1339,111 @@ th { background: #f1f5f9; }
                 </div>
               )}
             </div>
+
+            {/* ===================== SOURCES & CITATIONS SECTION ===================== */}
+            {researchResult?.sources && researchResult.sources.length > 0 && (
+              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+                <button
+                  onClick={() => toggleSection('sources')}
+                  className="w-full flex items-center justify-between"
+                >
+                  <SectionHeader icon={BookOpen} title="Research Sources & Citations" color="text-blue-400" />
+                  {expandedSections.sources ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                </button>
+                {expandedSections.sources && (
+                  <div className="mt-4 space-y-3">
+                    <p className="text-xs text-slate-400 mb-4">
+                      All information in this report is sourced from verified public sources. Click any source to view the original.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {researchResult.sources.map((source: SourceCitation, idx: number) => (
+                        <a
+                          key={idx}
+                          href={source.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-3 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:bg-blue-500/5 transition-all group"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
+                              source.type === 'wikipedia' ? 'bg-slate-700 text-white' :
+                              source.type === 'news' ? 'bg-red-500/20 text-red-300' :
+                              source.type === 'government' ? 'bg-emerald-500/20 text-emerald-300' :
+                              'bg-blue-500/20 text-blue-300'
+                            }`}>
+                              {source.type === 'wikipedia' ? 'W' :
+                               source.type === 'news' ? 'N' :
+                               source.type === 'government' ? 'G' : 'D'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors truncate">
+                                {source.title}
+                              </div>
+                              <div className="text-[10px] text-slate-400 mt-0.5">{source.relevance}</div>
+                              <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
+                                <Link2 className="w-3 h-3" />
+                                <span className="truncate">{new URL(source.url).hostname}</span>
+                                <span>· {source.accessDate}</span>
+                              </div>
+                            </div>
+                            <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-blue-400" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ===================== SIMILAR CITIES COMPARISON ===================== */}
+            {researchResult?.similarCities && researchResult.similarCities.length > 0 && (
+              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+                <button
+                  onClick={() => toggleSection('similar')}
+                  className="w-full flex items-center justify-between"
+                >
+                  <SectionHeader icon={Globe} title="Compare Similar Cities" color="text-cyan-400" />
+                  {expandedSections.similar ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                </button>
+                {expandedSections.similar && (
+                  <div className="mt-4">
+                    <p className="text-xs text-slate-400 mb-4">
+                      These cities share similar characteristics and may be relevant for comparison or alternative investment opportunities.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {researchResult.similarCities.map((similar: SimilarCity, idx: number) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSearchSubmit(`${similar.city}, ${similar.country}`)}
+                          className="text-left p-4 border border-slate-800 rounded-xl hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all group"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="text-lg font-semibold text-white group-hover:text-cyan-300">
+                                {similar.city}
+                              </div>
+                              <div className="text-xs text-slate-400">{similar.region}, {similar.country}</div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-cyan-400">{similar.similarity}%</div>
+                              <div className="text-[10px] text-slate-500">Similarity</div>
+                            </div>
+                          </div>
+                          <div className="mt-3 p-2 bg-black/30 rounded-lg">
+                            <div className="text-[11px] text-slate-300">{similar.reason}</div>
+                            <div className="text-[10px] text-cyan-300 mt-1">{similar.keyMetric}</div>
+                          </div>
+                          <div className="mt-2 text-[10px] text-cyan-300 flex items-center gap-1">
+                            <Search className="w-3 h-3" /> Click to research this city →
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ) : null}
       </div>
@@ -1307,12 +1501,12 @@ th { background: #f1f5f9; }
             {/* Content */}
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* Biography */}
-              {activeLeader.bio && (
+              {(activeLeader.bio || activeLeader.fullBio) && (
                 <div className="bg-slate-900/50 border border-white/10 rounded-xl p-4">
                   <h4 className="text-sm font-semibold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
                     <FileText className="w-4 h-4" /> Biography
                   </h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">{activeLeader.bio}</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">{activeLeader.fullBio || activeLeader.bio}</p>
                 </div>
               )}
 

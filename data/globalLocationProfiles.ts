@@ -35,6 +35,8 @@ export interface CityLeader {
   officeAddress?: string;
   // Enhanced bio fields
   bio?: string;
+  fullBio?: string;          // Detailed biography from research
+  party?: string;            // Political party affiliation
   education?: string[];
   politicalParty?: string;
   previousPositions?: string[];
