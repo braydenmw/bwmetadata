@@ -611,23 +611,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
                                     </div>
                                 )}
-                                
-                                {/* Quick Location Examples */}
-                                {!locationResult && !isResearchingLocation && (
-                                    <div className="flex flex-wrap gap-2">
-                                        {['Tokyo, Japan', 'Sydney, Australia', 'Manila, Philippines', 'London, UK'].map(loc => (
-                                            <button
-                                                key={loc}
-                                                onClick={() => {
-                                                    setLocationQuery(loc);
-                                                }}
-                                                className="text-[10px] px-2 py-1 bg-white/5 border border-white/10 rounded-full text-white/50 hover:text-white hover:border-white/30"
-                                            >
-                                                {loc}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
