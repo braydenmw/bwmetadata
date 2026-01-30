@@ -96,7 +96,7 @@ export async function googleSearch(query: string, num: number = 10): Promise<Liv
 
     if (response.ok) {
       const data = await response.json();
-      return (data.organic || []).map((r: any, idx: number) => ({
+      return (data.organic || []).map((r: { title?: string; link?: string; snippet?: string; position?: number; imageUrl?: string; date?: string }, idx: number) => ({
         title: r.title || '',
         link: r.link || '',
         snippet: r.snippet || '',
@@ -105,7 +105,7 @@ export async function googleSearch(query: string, num: number = 10): Promise<Liv
         date: r.date
       }));
     }
-  } catch (_e) {
+  } catch {
     console.warn('Backend search failed, trying DuckDuckGo fallback');
   }
 
@@ -128,7 +128,7 @@ export async function googleSearch(query: string, num: number = 10): Promise<Liv
     }
 
     if (ddgData.RelatedTopics) {
-      ddgData.RelatedTopics.slice(0, 8).forEach((topic: any, idx: number) => {
+      ddgData.RelatedTopics.slice(0, 8).forEach((topic: { Text?: string; FirstURL?: string }, idx: number) => {
         if (topic.Text && topic.FirstURL) {
           results.push({
             title: topic.Text.split(' - ')[0] || topic.Text.substring(0, 60),
@@ -160,7 +160,7 @@ export async function googleNewsSearch(query: string): Promise<LiveSearchResult[
 
     if (response.ok) {
       const data = await response.json();
-      return (data.news || data.organic || []).map((r: any, idx: number) => ({
+      return (data.news || data.organic || []).map((r: { title?: string; link?: string; snippet?: string; description?: string; date?: string }, idx: number) => ({
         title: r.title || '',
         link: r.link || '',
         snippet: r.snippet || r.description || '',
@@ -168,7 +168,7 @@ export async function googleNewsSearch(query: string): Promise<LiveSearchResult[
         date: r.date
       }));
     }
-  } catch (_e) {
+  } catch {
     console.warn('News search failed');
   }
   return [];
@@ -207,7 +207,7 @@ export async function getWikipediaInfo(locationName: string): Promise<WikipediaI
       fullUrl: page.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`,
       pageId: page.pageid
     };
-  } catch (_e) {
+  } catch {
     console.error('Wikipedia fetch failed');
     return null;
   }
@@ -216,7 +216,7 @@ export async function getWikipediaInfo(locationName: string): Promise<WikipediaI
 /**
  * Get Wikidata information for structured data
  */
-export async function getWikidataInfo(locationName: string): Promise<Record<string, any> | null> {
+export async function getWikidataInfo(locationName: string): Promise<Record<string, unknown> | null> {
   try {
     // Search Wikidata
     const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(locationName)}&language=en&format=json&origin=*`;
@@ -233,7 +233,7 @@ export async function getWikidataInfo(locationName: string): Promise<Record<stri
     const entityData = await entityResponse.json();
 
     return entityData.entities?.[entityId] || null;
-  } catch (_e) {
+  } catch {
     console.error('Wikidata fetch failed');
     return null;
   }
@@ -287,7 +287,8 @@ export async function searchCityLeadership(cityName: string, country: string): P
 /**
  * Extract leader name and role from a search snippet
  */
-function extractLeaderFromSnippet(snippet: string, title: string, _city: string): LeaderSearchResult | null {
+function extractLeaderFromSnippet(snippet: string, title: string, _city?: string): LeaderSearchResult | null {
+  void _city; // Reserved for future use
   const text = `${title} ${snippet}`.toLowerCase();
   
   // Common patterns for finding leaders
@@ -351,7 +352,7 @@ async function searchWikipediaForLeaders(cityName: string, country: string): Pro
         leaders.push(extracted);
       }
     }
-  } catch (_e) {
+  } catch {
     console.warn('Wikipedia leader search failed');
   }
 
@@ -364,9 +365,10 @@ async function searchWikipediaForLeaders(cityName: string, country: string): Pro
 export async function searchLeaderPhoto(leaderName: string, role: string, city: string): Promise<string | null> {
   try {
     // First try Wikidata for Commons images
-    const wikidataInfo = await getWikidataInfo(leaderName);
-    if (wikidataInfo?.claims?.P18?.[0]?.mainsnak?.datavalue?.value) {
-      const filename = wikidataInfo.claims.P18[0].mainsnak.datavalue.value;
+    const wikidataInfo = await getWikidataInfo(leaderName) as Record<string, unknown> | null;
+    const claims = wikidataInfo?.claims as Record<string, Array<{ mainsnak?: { datavalue?: { value?: string } } }>> | undefined;
+    if (claims?.P18?.[0]?.mainsnak?.datavalue?.value) {
+      const filename = claims.P18[0].mainsnak.datavalue.value;
       // Convert to Wikimedia Commons URL
       const md5 = await hashString(filename);
       return `https://upload.wikimedia.org/wikipedia/commons/${md5[0]}/${md5.substring(0, 2)}/${encodeURIComponent(filename)}`;
@@ -385,7 +387,7 @@ export async function searchLeaderPhoto(leaderName: string, role: string, city: 
         return result.imageUrl;
       }
     }
-  } catch (_e) {
+  } catch {
     console.warn('Photo search failed for:', leaderName);
   }
   
@@ -410,7 +412,7 @@ async function hashString(str: string): Promise<string> {
 /**
  * Get country information from REST Countries API
  */
-export async function getCountryInfo(countryName: string): Promise<Record<string, any> | null> {
+export async function getCountryInfo(countryName: string): Promise<Record<string, unknown> | null> {
   try {
     const response = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`);
     if (!response.ok) {
@@ -424,7 +426,7 @@ export async function getCountryInfo(countryName: string): Promise<Record<string
     }
     const data = await response.json();
     return data[0];
-  } catch (_e) {
+  } catch {
     console.error('Country info fetch failed');
     return null;
   }
@@ -550,7 +552,7 @@ export async function geocodeLocation(query: string): Promise<{
       country: address.country || '',
       countryCode: (address.country_code || '').toUpperCase()
     };
-  } catch (_e) {
+  } catch {
     console.error('Geocoding failed');
     return null;
   }
@@ -756,7 +758,7 @@ export async function comprehensiveLiveSearch(
         exportVolume: 'See trade data',
         majorIndustries: economicInfo.industries.length > 0 ? economicInfo.industries : ['See economic surveys'],
         topExports: ['See trade data'],
-        tradePartners: countryInfo?.borders || ['Regional partners']
+        tradePartners: (countryInfo?.borders as string[] | undefined) || ['Regional partners']
       },
 
       infrastructure: {

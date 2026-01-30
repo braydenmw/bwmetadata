@@ -450,7 +450,8 @@ Based on available data and AI analysis, the market demonstrates:
 - Regulatory environment trending favorably`;
   }
 
-  private generateFinancialProjections(params: ReportParameters, reportData: ReportData): string {
+  private generateFinancialProjections(params: ReportParameters, _reportData: ReportData): string {
+    void _reportData; // Reserved for enhanced financial analysis
     return `## Financial Projections
 
 ### Investment Overview
@@ -634,7 +635,8 @@ ${params.organizationName || 'Our organization'} seeks to establish a strategic 
 Analysis confidence: ${reportData.confidenceScores?.overall || 70}%`;
   }
 
-  private generateValueProposition(params: ReportParameters, reportData: ReportData): string {
+  private generateValueProposition(params: ReportParameters, _reportData: ReportData): string {
+    void _reportData; // Reserved for data-driven value propositions
     return `## Value Proposition
 
 ### What We Bring
@@ -657,7 +659,8 @@ ${params.organizationName || 'Our organization'} contributes:
 4. Economies of scale`;
   }
 
-  private generateSynergies(params: ReportParameters, reportData: ReportData): string {
+  private generateSynergies(_params: ReportParameters, _reportData: ReportData): string {
+    void _params; void _reportData; // Reserved for enhanced synergy analysis
     return `## Synergies
 
 ### Revenue Synergies
@@ -702,7 +705,8 @@ Based on the strategic intent (${params.strategicIntent?.[0] || 'partnership'}) 
 - Regular performance reviews`;
   }
 
-  private generateImplementationPlan(params: ReportParameters): string {
+  private generateImplementationPlan(_params: ReportParameters): string {
+    void _params; // Reserved for parameter-driven implementation
     return `## Implementation Plan
 
 ### Phase 1: Foundation (0-3 months)
@@ -774,7 +778,8 @@ To evaluate and recommend optimal approaches for achieving strategic objectives 
 This analysis combines AI-powered insights with structured evaluation frameworks to deliver actionable recommendations.`;
   }
 
-  private generateBackground(params: ReportParameters, reportData: ReportData): string {
+  private generateBackground(params: ReportParameters, _reportData: ReportData): string {
+    void _reportData; // Reserved for data-enhanced background
     return `## Background
 
 ### Organization Overview
@@ -821,7 +826,8 @@ ${keyFindings || 'Findings will be populated as analysis completes.'}
 ${reportData.executiveSummary?.content || 'Supporting data pending.'}`;
   }
 
-  private generateConclusion(params: ReportParameters, reportData: ReportData, insights: CopilotInsight[]): string {
+  private generateConclusion(params: ReportParameters, reportData: ReportData, _insights: CopilotInsight[]): string {
+    void _insights; // Reserved for insight-driven conclusions
     const confidence = reportData.confidenceScores?.overall || 70;
     
     return `## Conclusion
@@ -899,7 +905,8 @@ ${reportData.financials?.content || 'Statistical analysis pending data completio
 AI-identified patterns from historical cases inform risk and opportunity assessments.`;
   }
 
-  private generateTechnicalRisks(reportData: ReportData): string {
+  private generateTechnicalRisks(_reportData: ReportData): string {
+    void _reportData; // Reserved for data-driven risk analysis
     return `## Technical Risks
 
 ### Data Risks
@@ -943,7 +950,8 @@ See Technical Summary for detailed methodology.
 - **NSIL**: Nexus Strategic Intelligence Layer`;
   }
 
-  private generateGenericSection(sectionId: string, params: ReportParameters): string {
+  private generateGenericSection(sectionId: string, _params: ReportParameters): string {
+    void _params; // Reserved for parameter-driven content
     return `## ${this.formatSectionTitle(sectionId)}
 
 Content for this section is being generated based on available data.
@@ -972,7 +980,8 @@ Content for this section is being generated based on available data.
     return enhancements;
   }
 
-  private enhanceSection(section: DocumentSection, config: DocumentConfig): AIEnhancement | null {
+  private enhanceSection(section: DocumentSection, _config: DocumentConfig): AIEnhancement | null {
+    void _config; // Reserved for config-driven enhancement
     // Simple enhancement logic - in production, this would call AI
     if (section.content.length < 200) {
       return {
@@ -1021,7 +1030,8 @@ Content for this section is being generated based on available data.
     return 50;
   }
 
-  private generateSuggestions(sectionId: string, quality: ContentQuality, params: ReportParameters): string[] {
+  private generateSuggestions(_sectionId: string, quality: ContentQuality, _params: ReportParameters): string[] {
+    void _sectionId; void _params; // Reserved for context-aware suggestions
     const suggestions: string[] = [];
     
     if (quality.completeness < 70) {
