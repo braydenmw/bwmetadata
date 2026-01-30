@@ -1,17 +1,56 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
+import { locationResearchManager, useLocationResearch, geocodeLocation } from '../services/agenticLocationIntelligence';
 
 // Command Center - Complete BWGA Landing Page
 
 interface CommandCenterProps {
     onEnterPlatform?: () => void;
+    onOpenGlobalLocationIntel?: () => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
+    
+    // Global Location Intelligence state
+    const [locationQuery, setLocationQuery] = useState('');
+    const [isResearchingLocation, setIsResearchingLocation] = useState(false);
+    const [researchSessionId, setResearchSessionId] = useState<string | null>(null);
+    const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
+    
+    // Use the research hook
+    const researchSession = useLocationResearch(researchSessionId);
+    
+    // Handle location search
+    const handleLocationSearch = async () => {
+        if (!locationQuery.trim()) return;
+        setIsResearchingLocation(true);
+        setLocationResult(null);
+        
+        try {
+            // Geocode first
+            const geo = await geocodeLocation(locationQuery);
+            if (geo) {
+                setLocationResult({ city: geo.city, country: geo.country, lat: geo.latitude, lon: geo.longitude });
+            }
+            
+            // Start research
+            const session = await locationResearchManager.startResearch(locationQuery);
+            setResearchSessionId(session.id);
+        } catch (error) {
+            console.error('Location research error:', error);
+        }
+    };
+    
+    // Watch for research completion
+    React.useEffect(() => {
+        if (researchSession?.status === 'complete') {
+            setIsResearchingLocation(false);
+        }
+    }, [researchSession?.status]);
 
     const tenStepProtocol = [
         { step: 1, title: "Identity & Foundation", description: "Establish organizational credibility, legal structure, and competitive positioning.", details: ["Organization name, type, and legal structure", "Registration/incorporation details", "Key leadership and governance structure", "Historical track record and credentials", "Competitive positioning statement", "Core competencies and differentiators"] },
@@ -58,12 +97,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         <button onClick={() => scrollToSection('protocol')} className="hover:text-white transition-colors">10-Step Protocol</button>
                         <button onClick={() => scrollToSection('pilots')} className="hover:text-white transition-colors">Partnerships</button>
                     </div>
-                    <button 
-                        onClick={() => scrollToSection('launch')}
-                        className="px-4 py-2 bg-amber-500 text-black rounded-full text-xs font-semibold hover:bg-amber-400 transition-colors"
-                    >
-                        Launch OS
-                    </button>
+                    
                 </div>
             </nav>
 
@@ -432,6 +466,164 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE INTELLIGENCE PIPELINE</p>
                     <h2 className="text-xl md:text-2xl font-light mb-6">From Rough Brief to Board-Ready Package</h2>
                     
+                    {/* GLOBAL LOCATION INTELLIGENCE - Split Window Panel */}
+                    <div className="bg-gradient-to-br from-slate-900 to-[#0f0f0f] border border-amber-500/30 rounded-2xl overflow-hidden mb-10">
+                        <div className="grid md:grid-cols-2">
+                            {/* Left Side - Photo */}
+                            <div className="relative h-64 md:h-auto min-h-[300px]">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop" 
+                                    alt="Global Intelligence Network" 
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0f0f0f]" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent" />
+                                <div className="absolute bottom-4 left-4 right-4">
+                                    <div className="flex items-center gap-2 text-amber-400 text-xs uppercase tracking-wider font-semibold">
+                                        <Globe className="w-4 h-4" />
+                                        Global Coverage
+                                    </div>
+                                    <p className="text-white/70 text-sm mt-1">190+ Countries • Real-Time Data</p>
+                                </div>
+                            </div>
+                            
+                            {/* Right Side - Information & Search */}
+                            <div className="p-6 md:p-8 flex flex-col justify-center">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/40 rounded-xl flex items-center justify-center">
+                                        <MapPin className="w-5 h-5 text-amber-400" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-white">Global Location Intelligence</h3>
+                                        <p className="text-xs text-white/50">AI-Powered Research Agent</p>
+                                    </div>
+                                </div>
+                                
+                                <p className="text-sm text-white/70 mb-4 leading-relaxed">
+                                    Search <strong className="text-white">any location worldwide</strong>—cities, regions, or countries. 
+                                    Our AI agent researches leadership, economy, infrastructure, demographics, and investment opportunities in real-time.
+                                </p>
+                                
+                                <div className="space-y-3 text-xs text-white/60 mb-5">
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                        <span>Political leadership & government structure</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                        <span>Economic indicators & trade data</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                        <span>Infrastructure & investment incentives</span>
+                                    </div>
+                                </div>
+                                
+                                {/* Search Input */}
+                                <div className="relative mb-4">
+                                    <input
+                                        type="text"
+                                        value={locationQuery}
+                                        onChange={(e) => setLocationQuery(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
+                                        placeholder="Enter any city, region, or country..."
+                                        disabled={isResearchingLocation}
+                                        className="w-full px-4 py-3 pr-24 bg-black/40 border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400 text-sm"
+                                    />
+                                    <button
+                                        onClick={handleLocationSearch}
+                                        disabled={!locationQuery.trim() || isResearchingLocation}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-semibold rounded-lg hover:bg-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                                    >
+                                        {isResearchingLocation ? (
+                                            <>
+                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                                Researching
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Search className="w-3 h-3" />
+                                                Research
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                                
+                                {/* Research Progress */}
+                                {isResearchingLocation && researchSession && (
+                                    <div className="bg-black/40 border border-purple-500/30 rounded-xl p-4 mb-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-xs text-purple-300 font-semibold">AI Agent Researching...</span>
+                                            <span className="text-xs text-purple-400">{Math.round(researchSession.progress)}%</span>
+                                        </div>
+                                        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                            <div 
+                                                className="h-full bg-gradient-to-r from-purple-500 to-amber-500 rounded-full transition-all duration-500"
+                                                style={{ width: `${researchSession.progress}%` }}
+                                            />
+                                        </div>
+                                        <div className="mt-2 flex flex-wrap gap-1">
+                                            {researchSession.tasks.slice(0, 4).map(task => (
+                                                <span 
+                                                    key={task.id}
+                                                    className={`text-[10px] px-2 py-0.5 rounded-full ${
+                                                        task.status === 'complete' ? 'bg-emerald-500/20 text-emerald-300' :
+                                                        task.status === 'searching' ? 'bg-purple-500/20 text-purple-300' :
+                                                        'bg-slate-700 text-slate-400'
+                                                    }`}
+                                                >
+                                                    {task.category}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Result Preview */}
+                                {locationResult && !isResearchingLocation && (
+                                    <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-sm font-semibold text-white">{locationResult.city}, {locationResult.country}</p>
+                                                <p className="text-xs text-white/50">Research complete • Click to view full report</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    localStorage.setItem('gli-target', `${locationResult.city}, ${locationResult.country}`);
+                                                    if (onOpenGlobalLocationIntel) {
+                                                        onOpenGlobalLocationIntel();
+                                                    } else if (onEnterPlatform) {
+                                                        onEnterPlatform();
+                                                    }
+                                                }}
+                                                className="px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs rounded-lg hover:bg-emerald-500/30 flex items-center gap-1"
+                                            >
+                                                View Report <ExternalLink className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Quick Location Examples */}
+                                {!locationResult && !isResearchingLocation && (
+                                    <div className="flex flex-wrap gap-2">
+                                        {['Tokyo, Japan', 'Sydney, Australia', 'Manila, Philippines', 'London, UK'].map(loc => (
+                                            <button
+                                                key={loc}
+                                                onClick={() => {
+                                                    setLocationQuery(loc);
+                                                }}
+                                                className="text-[10px] px-2 py-1 bg-white/5 border border-white/10 rounded-full text-white/50 hover:text-white hover:border-white/30"
+                                            >
+                                                {loc}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
                         <p className="text-sm text-white/70 leading-relaxed mb-4">
                             Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>

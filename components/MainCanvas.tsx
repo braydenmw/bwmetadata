@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import {
     Building2, Target, ShieldCheck, Shield,
-    Download, Printer, Globe,
+    Download, Printer, Globe, MapPin,
     Check, CheckCircle,
     Network, History,
     Zap, Users, Scale, GitBranch,
@@ -17,6 +17,7 @@ import DocumentGenerationSuite from './DocumentGenerationSuite';
 import { DocumentUploadModal } from './DocumentUploadModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ENTITY_TYPES, COUNTRIES, INDUSTRIES } from '../constants/businessData';
+import { CITY_PROFILES } from '../data/globalLocationProfiles';
 import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS, PRIORITY_THEMES, TARGET_INCENTIVES, STRATEGIC_LENSES, POLITICAL_SENSITIVITIES } from '../constants';
 import { evaluateDocReadiness } from '../services/intakeMapping';
 import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';
@@ -248,14 +249,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
     const [showDocumentUpload, setShowDocumentUpload] = useState(false);
 
-  const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
+    const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date, action?: { label: string; type: 'open-gli' | 'open-docs' }}>>([
     { text: "👋 Hello! I'm your autonomous BW Consultant — I don't just answer questions, I actively learn from your inputs and proactively guide you. Watch me adapt as you fill out each section!", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [lastObservedStep, setLastObservedStep] = useState<string | null>(null);
-  const [lastObservedParams, setLastObservedParams] = useState<string>('');
+    const lastObservedStepRef = useRef<string | null>(null);
+    const lastObservedParamsRef = useRef<string>('');
   const [agentThinking, setAgentThinking] = useState(false);
     const [liveAgenticState, setLiveAgenticState] = useState<LiveReportState | null>(null);
     const liveAgenticTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -400,9 +401,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     // This effect observes user actions and proactively provides guidance
     useEffect(() => {
         // Only trigger when activeModal changes (user navigates to a new step)
-        if (activeModal && activeModal !== lastObservedStep) {
-            setLastObservedStep(activeModal);
-            setAgentThinking(true);
+        if (activeModal && activeModal !== lastObservedStepRef.current) {
+            lastObservedStepRef.current = activeModal;
+            const startThinking = setTimeout(() => setAgentThinking(true), 0);
             
             // Simulate agent "thinking" before responding
             const thinkingDelay = setTimeout(() => {
@@ -432,9 +433,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 }
             }, 800);
             
-            return () => clearTimeout(thinkingDelay);
+            return () => {
+                clearTimeout(startThinking);
+                clearTimeout(thinkingDelay);
+            };
         }
-    }, [activeModal, lastObservedStep, params]);
+    }, [activeModal, params]);
 
     // Autonomous observation of key field changes
     useEffect(() => {
@@ -445,9 +449,9 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             industry: params.industry,
         });
         
-        if (paramsHash !== lastObservedParams && lastObservedParams !== '') {
+        if (paramsHash !== lastObservedParamsRef.current && lastObservedParamsRef.current !== '') {
             // Detect what changed and provide contextual feedback
-            const prevParams = lastObservedParams ? JSON.parse(lastObservedParams) : {};
+            const prevParams = lastObservedParamsRef.current ? JSON.parse(lastObservedParamsRef.current) : {};
             
             // Organization name changed
             if (params.organizationName && params.organizationName !== prevParams.org) {
@@ -484,8 +488,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             }
         }
         
-        setLastObservedParams(paramsHash);
-    }, [params.organizationName, params.country, params.strategicIntent, params.industry, lastObservedParams]);
+        lastObservedParamsRef.current = paramsHash;
+    }, [params.organizationName, params.country, params.strategicIntent, params.industry]);
 
     // Completeness calculation - must be defined before useEffects that depend on it
     const completeness = React.useMemo(() => {
@@ -586,6 +590,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const strategyComplete = isStepComplete('mandate') && isStepComplete('market');
     const nextStrategyModal = !isStepComplete('mandate') ? 'mandate' : 'market';
     const readinessForDraft = identityComplete && strategyComplete && completeness >= 50;
+    
 
   const toggleSubsection = (key: string) => {
     setExpandedSubsections(prev => ({ ...prev, [key]: !prev[key] }));
@@ -598,6 +603,16 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             ? currentArray.filter(item => item !== value)
             : [...currentArray, value];
         setParams({ ...params, [field]: updatedArray } as ReportParameters);
+    };
+
+    const handleOpenGlobalLocationReport = () => {
+        const target = (params.userCity || params.country || '').trim();
+        if (target) {
+            localStorage.setItem('gli-target', target);
+        }
+        if (onChangeViewMode) {
+            onChangeViewMode('global-location-intel');
+        }
     };
 
     const upsertRiskRegister = useCallback((category: string, field: keyof ReportParameters['riskRegister'][number], value: string) => {
@@ -652,7 +667,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         });
     }, [params, setParams]);
 
-  const handleSendMessage = () => {
+    const handleSendMessage = () => {
     if (chatInput.trim()) {
       const userQuestion = chatInput.trim();
       const newMessage = { text: userQuestion, sender: 'user' as const, timestamp: new Date() };
@@ -660,12 +675,66 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
       setChatInput('');
 
       // Intelligent context-aware BW response
-      setTimeout(() => {
+            setTimeout(() => {
         let responseText = "";
         const lowerQ = userQuestion.toLowerCase();
+                const matchLocationProfile = () => {
+                    const cityMatch = CITY_PROFILES.find(profile => lowerQ.includes(profile.city.toLowerCase()));
+                    if (cityMatch) return cityMatch;
+                    const regionMatch = CITY_PROFILES.find(profile => lowerQ.includes(profile.region.toLowerCase()));
+                    if (regionMatch) return regionMatch;
+                    const countryMatches = CITY_PROFILES.filter(profile => lowerQ.includes(profile.country.toLowerCase()));
+                    if (countryMatches.length > 0) return countryMatches[0];
+                    return undefined;
+                };
+                const locationProfile = matchLocationProfile();
         
-        // Risk-related questions
-        if (lowerQ.includes('risk')) {
+                // Location intelligence questions
+                if (locationProfile) {
+                    const headline = `${locationProfile.city}, ${locationProfile.country}`;
+                    responseText = `**Global Location Intelligence Brief: ${headline}**\n\n` +
+                        `**Known for:** ${locationProfile.knownFor.join(', ')}\n` +
+                        `**Strategic advantages:** ${locationProfile.strategicAdvantages.join(', ')}\n` +
+                        `**Key sectors:** ${locationProfile.keySectors.join(', ')}\n` +
+                        `**Ease of doing business:** ${locationProfile.easeOfDoingBusiness}\n` +
+                        `**Global market access:** ${locationProfile.globalMarketAccess}\n\n` +
+                        `**Operational profile (0-100):**\n` +
+                        `• Infrastructure: ${locationProfile.infrastructureScore}\n` +
+                        `• Regulatory friction (lower is better): ${locationProfile.regulatoryFriction}\n` +
+                        `• Political stability: ${locationProfile.politicalStability}\n` +
+                        `• Labor pool depth: ${locationProfile.laborPool}\n` +
+                        `• Investment momentum: ${locationProfile.investmentMomentum}\n\n` +
+                        `**Official sources:** ${locationProfile.governmentLinks?.map(link => link.label).join(', ') || 'Government statistical portals'}\n\n` +
+                        `I’ve queued the full location report. You can open the full brief now and choose whether to include it in the final report.`;
+
+                    setParams({
+                        ...params,
+                        userCity: locationProfile.city,
+                        country: params.country || locationProfile.country,
+                        region: params.region || locationProfile.region
+                    });
+                }
+                else if (lowerQ.includes('location') || lowerQ.includes('city') || lowerQ.includes('region') || lowerQ.includes('place')) {
+                    responseText = `I can generate a full Global Location Intelligence brief. Please specify the target city/region (e.g., "Cebu City" or "Townsville") and I will queue the full report with official sources.`;
+                }
+                // Document/letter/report requests
+                else if (
+                    lowerQ.includes('letter') ||
+                    lowerQ.includes('report') ||
+                    lowerQ.includes('proposal') ||
+                    lowerQ.includes('mou') ||
+                    lowerQ.includes('loi') ||
+                    lowerQ.includes('memo') ||
+                    lowerQ.includes('brief') ||
+                    lowerQ.includes('term sheet') ||
+                    lowerQ.includes('executive summary') ||
+                    lowerQ.includes('due diligence')
+                ) {
+                    responseText = `I can draft that now. To tailor the document, tell me:\n\n1) **Document type** (LOI, MOU, proposal, executive summary, due diligence request, term sheet)\n2) **Audience** (government, investor, partner, internal board)\n3) **Tone** (formal, neutral, assertive)\n4) **Deadline**\n\nI’ve opened the Docs Suite so you can generate and export the letter/report immediately.`;
+                    setShowDocGenSuite(true);
+                }
+                // Risk-related questions
+                else if (lowerQ.includes('risk')) {
           responseText = `Regarding risk for ${params.organizationName || 'your organization'}, your current tolerance is set to '${params.riskTolerance || 'not specified'}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0] || 'strategic growth'}'.`;
         } 
         // Partner-related questions
@@ -705,7 +774,18 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
           responseText = `Thanks for reaching out! I'm here to help with your partnership analysis. You can ask me about:\n\n• Specific industries or markets (e.g., "Tell me about the coconut industry in Asia")\n• Partnership strategies and objectives\n• Risk assessment and mitigation\n• Market entry approaches\n\nWhat would you like to explore?`;
         }
         
-        const bwResponse = { text: responseText, sender: 'bw' as const, timestamp: new Date() };
+                const shouldSuggestGLI = Boolean(onChangeViewMode) && (Boolean(locationProfile) || lowerQ.includes('location') || lowerQ.includes('city') || lowerQ.includes('region') || lowerQ.includes('place'));
+                const shouldSuggestDocs = lowerQ.includes('letter') || lowerQ.includes('report') || lowerQ.includes('proposal') || lowerQ.includes('mou') || lowerQ.includes('loi') || lowerQ.includes('memo') || lowerQ.includes('brief') || lowerQ.includes('term sheet') || lowerQ.includes('executive summary') || lowerQ.includes('due diligence');
+                const bwResponse = {
+                    text: responseText,
+                    sender: 'bw' as const,
+                    timestamp: new Date(),
+                    action: shouldSuggestDocs
+                        ? { label: 'Open Docs Suite', type: 'open-docs' as const }
+                        : shouldSuggestGLI
+                            ? { label: locationProfile ? `Open ${locationProfile.city} full brief` : 'Open Global Location Intelligence', type: 'open-gli' as const }
+                            : undefined
+                };
         setChatMessages(prev => [...prev, bwResponse]);
         
         // Speak the response if voice is enabled
@@ -897,6 +977,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         case 'content':
           appendContent('executiveSummary', `**Content Enhancement:**\n- The narrative of this report has been automatically enhanced for clarity, flow, and impact.`);
           break;
+
+                case 'global-location-intel':
+                    appendContent('marketAnalysis', `**Global Location Intelligence Brief (${params.userCity || params.country || 'Target Location'}):**\n- Snapshot scope: demographics, infrastructure, utilities, logistics corridors, regulatory friction, incentives, FDI activity, labor availability, education pipeline, land availability, real estate cost, safety, governance transparency, digital connectivity, climate exposure.\n- Verification policy: official government and primary statistical sources only; validate against latest releases before use.`);
+                    break;
       }
     });
 
@@ -1113,7 +1197,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             The system keeps the 10 critical steps intact, but adapts the depth and guidance so every user reaches the same standard.
                         </div>
                     </div>
-                    
+
+                    {/* Global Location Intelligence */}
                     {/* STRATEGIC INTAKE WIZARD: 10 Sections */}
                     <div>
                         <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Strategic Intake Wizard</h3>
@@ -1285,6 +1370,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             { id: 'regulatory-landscape', label: 'Regulatory', icon: Scale },
                                             { id: 'market-disruption', label: 'Market Disruption', icon: Zap },
                                             { id: 'competitive-positioning', label: 'Competitive Pos', icon: Target },
+                                            { id: 'global-location-intel', label: 'GLI Brief', icon: MapPin },
                                         ].map(option => (
                                             <label key={option.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-xs transition-all ${selectedIntelligenceEnhancements.includes(option.id) ? 'bg-amber-50 border border-amber-200' : 'hover:bg-stone-50'}`}>
                                                 <input
@@ -5121,15 +5207,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 bg-gradient-to-r from-blue-800 to-slate-700 text-white flex items-center justify-center font-serif font-bold text-2xl">N</div>
                             <div>
-                                <div className="text-[10px] font-bold tracking-[0.3em] text-slate-500 uppercase mb-1">BWGA Intelligence</div>
+                                <div className="text-[11px] font-bold tracking-[0.3em] text-slate-500 uppercase mb-1">BWGA Intelligence</div>
                                 <div className="text-xl font-serif font-bold text-slate-900 tracking-tight">
                                     Strategic Roadmap
                                 </div>
                             </div>
                         </div>
                         <div className="text-right">
-                            <div className="text-[10px] text-blue-700 uppercase font-bold tracking-wider mb-1">Confidential Draft</div>
-                            <div className="text-xs font-mono text-slate-500">{new Date().toLocaleDateString()}</div>
+                            <div className="text-[11px] text-blue-700 uppercase font-bold tracking-wider mb-1">Confidential Draft</div>
+                            <div className="text-[11px] font-mono text-slate-500">{new Date().toLocaleDateString()}</div>
                         </div>
                     </div>
 
@@ -5137,7 +5223,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     <div className="p-12 flex-1 font-serif text-stone-900">
                         {/* 1. Identity Section */}
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">01. Principal Entity</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">01. Principal Entity</h2>
                             {params.organizationName ? (
                                 <>
                                     <div className="text-3xl font-bold text-stone-900 mb-2">{params.organizationName}</div>
@@ -5156,7 +5242,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                         {/* 2. Mandate Section */}
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">02. Strategic Mandate</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">02. Strategic Mandate</h2>
                             {params.strategicIntent.length > 0 ? (
                                 <>
                                     <div className="text-sm font-bold text-stone-900 uppercase mb-2">Primary Objectives: {params.strategicIntent.join(', ')}</div>
@@ -5173,7 +5259,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                         {/* Partner Personas Section */}
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">03. Partner Personas</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">03. Partner Personas</h2>
                             {params.partnerPersonas && params.partnerPersonas.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {params.partnerPersonas.map((persona, index) => (
@@ -5189,7 +5275,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                         {/* 3. Market Context Section */}
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">03. Market Context</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">03. Market Context</h2>
                             {enhancedReportData.marketAnalysis.content ? (
                                 <div className="text-sm text-stone-700 leading-relaxed whitespace-pre-line">{enhancedReportData.marketAnalysis.content}</div>
                             ) : (
@@ -5201,7 +5287,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                     <h3 className="text-sm font-bold text-blue-900 mb-3">Computed Intelligence</h3>
 
-                                    <div className="grid grid-cols-2 gap-4 text-xs">
+                                    <div className="grid grid-cols-2 gap-4 text-[11px]">
                                         <div>
                                             <span className="font-semibold">RROI:</span> {reportData.computedIntelligence?.rroi?.overallScore ?? 'N/A'}/100
                                         </div>
@@ -5223,15 +5309,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </div>
 
                                     <div className="mt-3">
-                                        <span className="font-semibold text-xs">Top Symbiotic Partners:</span>
-                                        <ul className="text-xs mt-1">
+                                        <span className="font-semibold text-[11px]">Top Symbiotic Partners:</span>
+                                        <ul className="text-[11px] mt-1">
                                             {reportData.computedIntelligence?.symbioticPartners?.slice(0, 2).map((partner, idx: number) => (
                                                 <li key={idx} className="text-stone-700">• {partner.entityName} (Score: {partner.symbiosisScore})</li>
                                             ))}
                                         </ul>
                                     </div>
 
-                                    <div className="mt-4 flex flex-wrap gap-2 text-[10px] text-stone-600">
+                                    <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-stone-600">
                                         <span className="px-2 py-1 bg-white border border-blue-100 rounded-full">Confidence: {reportData.confidenceScores?.overall ?? '—'}/100</span>
                                         <span className="px-2 py-1 bg-white border border-blue-100 rounded-full">Economic: {reportData.confidenceScores?.economicReadiness ?? '—'}</span>
                                         <span className="px-2 py-1 bg-white border border-blue-100 rounded-full">Political: {reportData.confidenceScores?.politicalStability ?? '—'}</span>
@@ -5239,7 +5325,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </div>
 
                                     {reportData.computedIntelligence?.provenance && (
-                                        <div className="mt-3 text-[10px] text-stone-600">
+                                        <div className="mt-3 text-[11px] text-stone-600">
                                             <div className="font-semibold text-stone-700 mb-1">Traceability</div>
                                             <ul className="space-y-1">
                                                 {reportData.computedIntelligence.provenance.map((p, idx) => (
@@ -5264,7 +5350,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                         {/* 4. Risk & Historical */}
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">04. Risk & Historical Validation</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">04. Risk & Historical Validation</h2>
                             {enhancedReportData.risks.content ? (
                                 <div className="text-sm text-stone-700 leading-relaxed whitespace-pre-line">{enhancedReportData.risks.content}</div>
                             ) : (
@@ -5273,18 +5359,18 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         </div>
 
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">05. Advanced Analysis</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">05. Advanced Analysis</h2>
                             <p className="text-sm text-stone-400 italic">No advanced analysis</p>
                         </div>
 
                         <div className="mb-12">
-                            <h2 className="text-[10px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">06. Marketplace Opportunities</h2>
+                            <h2 className="text-[11px] font-sans font-bold text-stone-400 uppercase tracking-widest mb-4 border-b border-stone-100 pb-2">06. Marketplace Opportunities</h2>
                             <p className="text-sm text-stone-400 italic">No marketplace data</p>
                         </div>
                     </div>
 
                     {/* Doc Footer */}
-                    <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[9px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
+                    <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[11px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
                         <span>Generated by Nexus Core v4.2</span>
                         <span>Page 1 of 1</span>
                     </div>
@@ -5292,7 +5378,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 </div>
 
                 {/* Right Sidebar - BW Consultant + Step Info + Advisor Console */}
-                <div className="w-80 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden">
+                <div className="w-96 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full min-h-0 overflow-y-auto">
                     
                     {/* BW Consultant Chat - Autonomous Agentic System */}
                     <div className="shrink-0 border-b border-slate-200">
@@ -5306,8 +5392,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         )}
                                     </div>
                                     <div>
-                                        <span className="text-[10px] font-bold tracking-wider uppercase text-indigo-700">BW Consultant</span>
-                                        <span className="text-[8px] ml-1 px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded uppercase font-semibold">Agentic AI</span>
+                                        <span className="text-[11px] font-bold tracking-wider uppercase text-indigo-700">BW Consultant</span>
+                                        <span className="text-[11px] ml-1 px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded uppercase font-semibold">Agentic AI</span>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-1">
@@ -5317,18 +5403,36 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </button>
                                 </div>
                             </div>
-                            <p className="text-[8px] text-indigo-600 mt-1">Self-learning • Proactive • Autonomous guidance</p>
+                            <p className="text-[11px] text-indigo-600 mt-1">Self-learning • Proactive • Autonomous guidance</p>
                         </div>
                         <div className="flex flex-col h-56">
-                            <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-xs">
+                            <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-[11px]">
                                 {chatMessages.map((msg, index) => (
                                     <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[10px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100'}`}>{msg.text}</div>
+                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[11px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100'}`}>
+                                            {msg.text}
+                                            {msg.action?.type === 'open-gli' && (
+                                                <button
+                                                    onClick={handleOpenGlobalLocationReport}
+                                                    className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded-md hover:bg-amber-400"
+                                                >
+                                                    {msg.action.label}
+                                                </button>
+                                            )}
+                                            {msg.action?.type === 'open-docs' && (
+                                                <button
+                                                    onClick={() => setShowDocGenSuite(true)}
+                                                    className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-blue-600 text-white rounded-md hover:bg-blue-500"
+                                                >
+                                                    {msg.action.label}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                                 {agentThinking && (
                                     <div className="flex justify-start">
-                                        <div className="px-3 py-2 rounded-lg bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-[10px] text-amber-700 flex items-center gap-2">
+                                        <div className="px-3 py-2 rounded-lg bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-[11px] text-amber-700 flex items-center gap-2">
                                             <Cpu size={10} className="animate-spin" />
                                             <span>Analyzing context & learning...</span>
                                         </div>
@@ -5337,18 +5441,49 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div ref={chatMessagesEndRef} />
                             </div>
                             <div className="border-t border-indigo-100 flex items-center gap-1 px-2 py-1.5 bg-indigo-50/50">
-                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[10px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
+                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[11px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
                                 <button onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
                             </div>
                         </div>
                     </div>
 
+                    {onChangeViewMode && (
+                        <div className="shrink-0 border-b border-slate-200 p-3">
+                            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2">
+                                <MapPin size={12} className="text-amber-500" />
+                                Global Location Intelligence
+                            </div>
+
+                            <p className="text-[11px] text-slate-600 mb-2">
+                                Want a full intelligence report on where you plan to do business? Enter the city/region below.
+                            </p>
+
+                            <input
+                                type="text"
+                                value={params.userCity || ''}
+                                onChange={(e) => setParams({ ...params, userCity: e.target.value })}
+                                placeholder="Enter target city or region"
+                                className="w-full mb-3 text-[11px] border border-slate-200 rounded px-2 py-2 bg-white focus:ring-1 focus:ring-amber-500"
+                            />
+
+                            <button
+                                onClick={handleOpenGlobalLocationReport}
+                                className="w-full px-3 py-2 text-[11px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded-lg hover:bg-amber-400"
+                            >
+                                Open Full Location Report
+                            </button>
+                            <div className="mt-2 text-[11px] text-slate-500">
+                                BW Consultant can refine the location brief and reuse it across reports.
+                            </div>
+                        </div>
+                    )}
+
                     {/* Step-Related Information */}
                     <div className="shrink-0 border-b border-slate-200 p-3">
-                        <div className="text-[9px] font-bold tracking-wider uppercase text-slate-500 mb-2">Current Step Guidance</div>
+                        <div className="text-[11px] font-bold tracking-wider uppercase text-slate-500 mb-2">Current Step Guidance</div>
                         {activeModal ? (
                             <div className="space-y-2">
-                                <div className="p-2 bg-amber-50 border border-amber-200 rounded text-[10px] text-amber-800">
+                                <div className="p-2 bg-amber-50 border border-amber-200 rounded text-[11px] text-amber-800">
                                     <strong className="block mb-1">{activeModal.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</strong>
                                     {activeModal === 'identity' && 'Define your organization profile, entity types, and geographic presence.'}
                                     {activeModal === 'mandate' && 'Establish strategic objectives, KPIs, and problem statements.'}
@@ -5363,7 +5498,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 </div>
                             </div>
                         ) : (
-                            <div className="text-[10px] text-slate-500 italic">Select a step from the wizard to see guidance</div>
+                            <div className="text-[11px] text-slate-500 italic">Select a step from the wizard to see guidance</div>
                         )}
                     </div>
 
@@ -5371,25 +5506,25 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     {liveAgenticState && (
                         <div className="shrink-0 border-b border-slate-200 p-3">
                             <div className="flex items-center justify-between mb-2">
-                                <div className="text-[9px] font-bold tracking-wider uppercase text-indigo-600">Live Multi-Agent Summary</div>
-                                <div className="text-[9px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-semibold">
+                                <div className="text-[11px] font-bold tracking-wider uppercase text-indigo-600">Live Multi-Agent Summary</div>
+                                <div className="text-[11px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-semibold">
                                     {liveAgenticState.completeness}%
                                 </div>
                             </div>
                             {liveAgenticState.generatedSummary ? (
-                                <div className="text-[10px] text-slate-600 leading-relaxed">
+                                <div className="text-[11px] text-slate-600 leading-relaxed">
                                     {liveAgenticState.generatedSummary}
                                 </div>
                             ) : (
-                                <div className="text-[10px] text-slate-500 italic">Auto-summary unlocks at 50% completeness.</div>
+                                <div className="text-[11px] text-slate-500 italic">Auto-summary unlocks at 50% completeness.</div>
                             )}
 
                             {liveAgenticState.aiInsights.length > 0 && (
                                 <div className="mt-3 space-y-2">
                                     {liveAgenticState.aiInsights.slice(0, 3).map((insight) => (
                                         <div key={insight.id} className="p-2 bg-indigo-50 border border-indigo-100 rounded">
-                                            <div className="text-[10px] font-semibold text-indigo-800">{insight.title}</div>
-                                            <div className="text-[10px] text-indigo-700 mt-1">{insight.description}</div>
+                                            <div className="text-[11px] font-semibold text-indigo-800">{insight.title}</div>
+                                            <div className="text-[11px] text-indigo-700 mt-1">{insight.description}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -5404,35 +5539,35 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             className="shrink-0 px-3 py-2 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100 flex items-center justify-between hover:bg-indigo-100 transition-colors"
                         >
                             <div>
-                                <div className="text-[9px] font-bold tracking-[0.15em] uppercase text-blue-700">Advisor Console</div>
-                                <p className="text-[9px] text-slate-500">Global intelligence synthesis</p>
+                                <div className="text-[11px] font-bold tracking-[0.15em] uppercase text-blue-700">Advisor Console</div>
+                                <p className="text-[11px] text-slate-500">Global intelligence synthesis</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 {identityComplete && advisorSnapshot && (
                                     <button
-                                        className="p-1 text-[10px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
+                                        className="p-1 text-[11px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
                                         onClick={(e) => { e.stopPropagation(); handleAdvisorRefresh(); }}
                                         title="Refresh Intel"
                                     >
                                         <RefreshCw size={10} className={advisorRefreshing ? 'animate-spin' : ''} />
                                     </button>
                                 )}
-                                <div className={`text-[9px] px-2 py-0.5 rounded font-semibold ${advisorExpanded ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                                <div className={`text-[11px] px-2 py-0.5 rounded font-semibold ${advisorExpanded ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
                                     {advisorExpanded ? 'ON' : 'OFF'}
                                 </div>
                             </div>
                         </button>
                         
                         {advisorExpanded && identityComplete && advisorSnapshot && (
-                            <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
-                                <p className="text-slate-600 leading-relaxed text-[10px]">{advisorSnapshot.summary}</p>
+                            <div className="flex-1 overflow-y-auto p-3 space-y-3 text-[11px]">
+                                <p className="text-slate-600 leading-relaxed text-[11px]">{advisorSnapshot.summary}</p>
 
                                 {advisorSnapshot.priorityMoves.length > 0 && (
                                     <div>
-                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
+                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
                                         <ul className="space-y-1">
                                             {advisorSnapshot.priorityMoves.slice(0, 3).map((move, idx) => (
-                                                <li key={idx} className="flex items-start gap-1 text-[10px] text-slate-600">
+                                                <li key={idx} className="flex items-start gap-1 text-[11px] text-slate-600">
                                                     <ArrowRight size={10} className="text-blue-500 mt-0.5 shrink-0" />
                                                     <span>{move}</span>
                                                 </li>
@@ -5443,12 +5578,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                                 {advisorSnapshot.engagements.length > 0 && (
                                     <div>
-                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
+                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
                                         <div className="space-y-2">
                                             {advisorSnapshot.engagements.slice(0, 2).map((engagement) => (
                                                 <div key={engagement.id} className="p-2 border border-slate-100 rounded-lg bg-slate-50">
-                                                    <div className="text-[10px] font-semibold text-slate-800">{engagement.scenario}</div>
-                                                    <div className="text-[9px] text-slate-500">{engagement.region} • {engagement.era}</div>
+                                                    <div className="text-[11px] font-semibold text-slate-800">{engagement.scenario}</div>
+                                                    <div className="text-[11px] text-slate-500">{engagement.region} • {engagement.era}</div>
                                                 </div>
                                             ))}
                                         </div>
@@ -5457,12 +5592,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                                 {advisorSnapshot.signals.length > 0 && (
                                     <div>
-                                        <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
+                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
                                         <div className="flex flex-wrap gap-1">
                                             {advisorSnapshot.signals.slice(0, 4).map((signal, idx) => (
                                                 <span
                                                     key={`${signal.type}-${idx}`}
-                                                    className={`text-[9px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
+                                                    className={`text-[11px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
                                                 >
                                                     {signal.type.toUpperCase()}
                                                 </span>
@@ -5475,15 +5610,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                         {advisorExpanded && (!identityComplete || !advisorSnapshot) && (
                             <div className="flex-1 flex items-center justify-center p-4">
-                                <div className="text-center text-[10px] text-slate-500">
-                                    Complete the Identity intake to enable intelligence
+                                <div className="text-center text-[11px] text-slate-500">
+                                    Complete the Identity intake to enable as there is more space
                                 </div>
                             </div>
                         )}
 
                         {!advisorExpanded && (
                             <div className="flex-1 flex items-center justify-center p-4">
-                                <div className="text-center text-[10px] text-slate-400">
+                                <div className="text-center text-[11px] text-slate-400">
                                     Advisor Console is OFF
                                 </div>
                             </div>

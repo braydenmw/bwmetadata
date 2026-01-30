@@ -10,6 +10,7 @@ import { INITIAL_PARAMETERS } from './constants';
 import MainCanvas from './components/MainCanvas';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
+import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
@@ -36,7 +37,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -414,7 +415,10 @@ const App: React.FC = () => {
         if (viewMode === 'command-center') {
             return (
                 <div className="w-full h-full overflow-y-auto">
-                    <CommandCenter onEnterPlatform={() => setViewMode('main')} />
+                    <CommandCenter
+                        onEnterPlatform={() => setViewMode('main')}
+                        onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
+                    />
                 </div>
             );
         }
@@ -440,6 +444,17 @@ const App: React.FC = () => {
                         autonomousMode={autonomousMode}
                         autonomousSuggestions={autonomousSuggestions}
                         isAutonomousThinking={isAutonomousThinking}
+                    />
+                </div>
+            );
+        }
+
+        if (viewMode === 'global-location-intel') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <GlobalLocationIntelligence
+                        onBack={() => setViewMode('main')}
+                        onOpenCommandCenter={() => setViewMode('command-center')}
                     />
                 </div>
             );
