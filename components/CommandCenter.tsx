@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
-import { comprehensiveLiveSearch, type LiveLocationSearchProgress } from '../services/liveLocationSearchService';
+import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService';
 
 // Command Center - Complete BWGA Landing Page
 
@@ -18,28 +18,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     // Global Location Intelligence state - LIVE SEARCH
     const [locationQuery, setLocationQuery] = useState('');
     const [isResearchingLocation, setIsResearchingLocation] = useState(false);
-    const [researchProgress, setResearchProgress] = useState<LiveLocationSearchProgress | null>(null);
+    const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     
-    // Handle location search - LIVE
+    // Handle location search - LIVE (Multi-Source: World Bank, Government, Google)
     const handleLocationSearch = async () => {
         if (!locationQuery.trim()) return;
         setIsResearchingLocation(true);
         setLocationResult(null);
-        setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Starting live search...' });
+        setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Starting live multi-source research...' });
         
         try {
-            // Use comprehensive live search - NO MOCKED DATA
-            const result = await comprehensiveLiveSearch(locationQuery, (progress) => {
+            // Use multi-source research - World Bank, Government, Google - NO MOCKED DATA
+            const result = await multiSourceResearch(locationQuery, (progress) => {
                 setResearchProgress(progress);
             });
             
-            if (result) {
+            if (result && result.profile) {
                 setLocationResult({ 
-                    city: result.city, 
-                    country: result.country, 
-                    lat: result.latitude, 
-                    lon: result.longitude 
+                    city: result.profile.city, 
+                    country: result.profile.country, 
+                    lat: result.profile.latitude || 0, 
+                    lon: result.profile.longitude || 0 
                 });
             }
         } catch (error) {
@@ -582,7 +582,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             })}
                                         </div>
                                         <div className="mt-2 text-[10px] text-white/40">
-                                            Fetching real-time data from Google, Wikipedia, and public APIs...
+                                            Fetching real-time data from World Bank, government sources, and public APIs...
                                         </div>
                                     </div>
                                 )}

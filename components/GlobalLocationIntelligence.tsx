@@ -1,24 +1,8 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2 } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService';
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
-
-type LeafletComponent = React.ComponentType<Record<string, unknown>>;
-
-const MapContainerAny = MapContainer as unknown as LeafletComponent;
-const TileLayerAny = TileLayer as unknown as LeafletComponent;
-const MarkerAny = Marker as unknown as LeafletComponent;
-const PopupAny = Popup as unknown as LeafletComponent;
 
 // Helper components declared outside main component to avoid re-creation on render
 const ScoreBar: React.FC<{ label: string; value: number; max?: number }> = ({ label, value, max = 100 }) => (
@@ -98,15 +82,6 @@ const buildNarrative = (profile: CityProfile) => {
   return { overview, historical };
 };
 
-// Map controller component to handle dynamic map centering
-const MapController: React.FC<{ center: [number, number]; zoom: number }> = ({ center, zoom }) => {
-  const map = useMap();
-  useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
-  }, [map, center, zoom]);
-  return null;
-};
-
 interface GlobalLocationIntelligenceProps {
   onBack?: () => void;
   onOpenCommandCenter?: () => void;
@@ -166,79 +141,49 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     return profiles.find(profile => profile.id === activeProfileId) || null;
   }, [activeProfileId, profiles, liveProfile, hasSelection]);
 
-  const mapCenter: [number, number] = activeProfile?.latitude && activeProfile?.longitude
-    ? [activeProfile.latitude, activeProfile.longitude]
-    : [20, 0];
-
-  const mapZoom = activeProfile?.latitude && activeProfile?.longitude ? 12 : 2;
-
-  // Select an existing profile
-  const handleSelectProfile = useCallback((profile: CityProfile) => {
-    setActiveProfileId(profile.id);
-    setHasSelection(true);
-    setLiveProfile(null);
-    setIsResearching(false);
-    setResearchProgress(null);
-    setSearchQuery('');
-    setSearchResults([]);
-  }, []);
-
   // Handle search submission - LIVE SEARCH
   const handleSearchSubmit = useCallback(async (query: string) => {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
-    // First check existing profiles
-    const normalized = trimmedQuery.toLowerCase();
-    const existingMatch = profiles.find(profile =>
-      profile.city.toLowerCase().includes(normalized) ||
-      profile.region.toLowerCase().includes(normalized) ||
-      profile.country.toLowerCase().includes(normalized)
-    );
-
-    if (existingMatch) {
-      // Use existing profile
-      handleSelectProfile(existingMatch);
-    } else {
-      // Start MULTI-SOURCE research for new location
-      setHasSelection(true);
-      setActiveProfileId(null);
-      setLiveProfile(null);
-      setResearchResult(null);
-      setSearchQuery('');
-      setSearchResults([]);
-      setLoadingError(null);
-      setIsResearching(true);
-      setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
+    // ALWAYS do live research - never use static placeholder data
+    setHasSelection(true);
+    setActiveProfileId(null);
+    setLiveProfile(null);
+    setResearchResult(null);
+    setSearchQuery('');
+    setSearchResults([]);
+    setLoadingError(null);
+    setIsResearching(true);
+    setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
+    
+    try {
+      // Use multi-source research - GOOGLE, WORLD BANK, GOVERNMENT SOURCES
+      const result = await multiSourceResearch(trimmedQuery, (progress) => {
+        setResearchProgress(progress);
+      });
       
-      try {
-        // Use multi-source research - GOOGLE, WORLD BANK, GOVERNMENT SOURCES
-        const result = await multiSourceResearch(trimmedQuery, (progress) => {
-          setResearchProgress(progress);
-        });
-        
-        if (result) {
-          setLiveProfile(result.profile);
-          setResearchResult(result);
-          setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete! ${result.sources.length} sources compiled.` });
-        } else {
-          setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
-          setHasSelection(false);
-        }
-      } catch (error) {
-        console.error('Multi-source research error:', error);
-        const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
-        if (isNetworkError || !navigator.onLine) {
-          setLoadingError('Unable to connect to research services. Please check your internet connection.');
-        } else {
-          setLoadingError('Research failed. Please try again.');
-        }
+      if (result) {
+        setLiveProfile(result.profile);
+        setResearchResult(result);
+        setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete! ${result.sources.length} sources compiled.` });
+      } else {
+        setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
         setHasSelection(false);
-      } finally {
-        setIsResearching(false);
       }
+    } catch (error) {
+      console.error('Multi-source research error:', error);
+      const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+      if (isNetworkError || !navigator.onLine) {
+        setLoadingError('Unable to connect to research services. Please check your internet connection.');
+      } else {
+        setLoadingError('Research failed. Please try again.');
+      }
+      setHasSelection(false);
+    } finally {
+      setIsResearching(false);
     }
-  }, [profiles, handleSelectProfile]);
+  }, []);
 
   // Load existing profiles
   useEffect(() => {
@@ -458,12 +403,12 @@ th { background: #f1f5f9; }
                 {searchResults.length > 0 && !isResearching && (
                   <div className="absolute z-10 mt-2 w-full bg-[#0a0a0a] border border-white/10 rounded-lg shadow-lg max-h-64 overflow-y-auto">
                     <div className="px-3 py-2 text-[10px] uppercase text-slate-500 border-b border-white/10">
-                      Existing Profiles (Click to view)
+                      Matching Locations (Click to research live)
                     </div>
                     {searchResults.map(result => (
                       <button
                         key={result.id}
-                        onClick={() => handleSelectProfile(result)}
+                        onClick={() => handleSearchSubmit(`${result.city}, ${result.country}`)}
                         className="w-full text-left px-4 py-3 hover:bg-amber-500/10 border-b border-white/5 last:border-b-0"
                       >
                         <div className="text-white font-semibold">{result.city}</div>
@@ -542,73 +487,69 @@ th { background: #f1f5f9; }
               </div>
             )}
           </div>
-          <div className="h-[450px] rounded-xl border border-slate-800 overflow-hidden">
-            <MapContainerAny
-              center={mapCenter}
-              zoom={mapZoom}
-              className="h-full w-full"
-              scrollWheelZoom={!hasSelection}
-              dragging={!hasSelection}
-              doubleClickZoom={!hasSelection}
-              zoomControl={!hasSelection}
-              touchZoom={!hasSelection}
-            >
-              <MapController center={mapCenter} zoom={mapZoom} />
-              <TileLayerAny
-                attribution='&copy; OpenStreetMap contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {/* Show all profiles as markers when no selection */}
-              {!hasSelection && profiles.map(profile => (
-                <MarkerAny
-                  key={profile.id}
-                  position={[profile.latitude, profile.longitude]}
-                  eventHandlers={{
-                    click: () => handleSelectProfile(profile)
+          {/* Static Map Image - Better Performance */}
+          <div className="h-[450px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
+            {activeProfile?.latitude && activeProfile?.longitude ? (
+              <>
+                <img
+                  src={`https://static-maps.yandex.ru/1.x/?ll=${activeProfile.longitude},${activeProfile.latitude}&z=11&l=map&size=650,450`}
+                  alt={`Map of ${activeProfile.city}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to OpenStreetMap static
+                    (e.target as HTMLImageElement).src = `https://www.openstreetmap.org/export/embed.html?bbox=${activeProfile.longitude! - 0.1}%2C${activeProfile.latitude! - 0.1}%2C${activeProfile.longitude! + 0.1}%2C${activeProfile.latitude! + 0.1}&layer=mapnik`;
                   }}
-                >
-                  <PopupAny>
-                    <div className="text-sm p-1">
-                      <div className="font-bold text-base">{profile.city}</div>
-                      <div className="text-xs text-slate-600">{profile.region}, {profile.country}</div>
-                      <div className="text-xs mt-1">Score: {computeCompositeScore(profile)}/100</div>
-                    </div>
-                  </PopupAny>
-                </MarkerAny>
-              ))}
-              {/* Fixed map for selected profile with key highlights */}
-              {hasSelection && activeProfile && activeProfile.latitude && (
-                <MarkerAny position={[activeProfile.latitude, activeProfile.longitude]}>
-                  <PopupAny autoClose={false} closeOnClick={false}>
-                    <div className="text-sm p-1 min-w-[220px]">
-                      <div className="font-bold text-base">{activeProfile.city}</div>
-                      <div className="text-xs text-slate-600">{activeProfile.region}, {activeProfile.country}</div>
-                      <div className="mt-2 grid grid-cols-2 gap-2 text-[10px] text-slate-700">
-                        <div className="bg-slate-100 rounded p-2">
-                          <div className="text-slate-500">Composite</div>
-                          <div className="font-semibold">{computeCompositeScore(activeProfile)}/100</div>
-                        </div>
-                        <div className="bg-slate-100 rounded p-2">
-                          <div className="text-slate-500">Population</div>
-                          <div className="font-semibold">{activeProfile.demographics?.population || 'N/A'}</div>
-                        </div>
-                        <div className="bg-slate-100 rounded p-2">
-                          <div className="text-slate-500">Top Sectors</div>
-                          <div className="font-semibold">{activeProfile.keySectors?.slice(0, 2).join(', ') || 'N/A'}</div>
-                        </div>
-                        <div className="bg-slate-100 rounded p-2">
-                          <div className="text-slate-500">Momentum</div>
-                          <div className="font-semibold">{activeProfile.investmentMomentum ?? 'N/A'}</div>
-                        </div>
-                      </div>
-                      <div className="mt-2 text-[10px] text-slate-600">
-                        Highlights: {activeProfile.knownFor?.slice(0, 2).join(', ') || 'N/A'}
+                />
+                {/* Map Overlay with Location Info */}
+                <div className="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="text-lg font-bold text-white">{activeProfile.city}</div>
+                      <div className="text-sm text-slate-400">{activeProfile.region}, {activeProfile.country}</div>
+                      <div className="text-xs text-slate-500 mt-1">
+                        {activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°
                       </div>
                     </div>
-                  </PopupAny>
-                </MarkerAny>
-              )}
-            </MapContainerAny>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
+                      <div className="text-[10px] text-slate-500 uppercase">Score</div>
+                    </div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-4 gap-2 text-[10px]">
+                    <div className="bg-slate-800 rounded p-2 text-center">
+                      <div className="text-slate-400">Population</div>
+                      <div className="text-white font-semibold">{activeProfile.demographics?.population || 'N/A'}</div>
+                    </div>
+                    <div className="bg-slate-800 rounded p-2 text-center">
+                      <div className="text-slate-400">Sectors</div>
+                      <div className="text-white font-semibold">{activeProfile.keySectors?.length || 0}</div>
+                    </div>
+                    <div className="bg-slate-800 rounded p-2 text-center">
+                      <div className="text-slate-400">Momentum</div>
+                      <div className="text-white font-semibold">{activeProfile.investmentMomentum ?? 'N/A'}</div>
+                    </div>
+                    <div className="bg-slate-800 rounded p-2 text-center">
+                      <div className="text-slate-400">Infrastructure</div>
+                      <div className="text-white font-semibold">{activeProfile.infrastructureScore ?? 'N/A'}</div>
+                    </div>
+                  </div>
+                </div>
+                {/* Map Pin Indicator */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full">
+                  <div className="flex flex-col items-center">
+                    <MapPin className="w-8 h-8 text-red-500 drop-shadow-lg" />
+                    <div className="w-2 h-2 bg-red-500 rounded-full -mt-1 shadow-lg" />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="text-center text-slate-500">
+                  <Globe className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                  <p>Search for a location to view map</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -720,12 +661,12 @@ th { background: #f1f5f9; }
             {/* Quick Access to Existing Profiles */}
             {profiles.length > 0 && (
               <div>
-                <h3 className="text-xs uppercase tracking-wider text-slate-500 mb-4">Quick Access: Pre-Researched Locations</h3>
+                <h3 className="text-xs uppercase tracking-wider text-slate-500 mb-4">Quick Access: Search Locations</h3>
                 <div className="flex flex-wrap justify-center gap-2">
                   {profiles.slice(0, 6).map(profile => (
                     <button
                       key={profile.id}
-                      onClick={() => handleSelectProfile(profile)}
+                      onClick={() => handleSearchSubmit(`${profile.city}, ${profile.country}`)}
                       className="px-4 py-2 text-sm bg-amber-500/10 border border-amber-500/30 rounded-lg hover:bg-amber-500/20 text-amber-300"
                     >
                       {profile.city}, {profile.country}
