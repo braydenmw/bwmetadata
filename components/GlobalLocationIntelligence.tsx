@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { locationResearchManager, useLocationResearch, geocodeLocation } from '../services/agenticLocationIntelligence';
+import { comprehensiveLiveSearch, type LiveLocationSearchProgress } from '../services/liveLocationSearchService';
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -70,6 +70,10 @@ const SectionHeader: React.FC<{ icon: React.ElementType; title: string; color?: 
 );
 
 const buildNarrative = (profile: CityProfile) => {
+  // Check if we have live Wikipedia data (stored in _rawWikiExtract) - reserved for future use
+  const _wikiExtract = (profile as unknown as { _rawWikiExtract?: string })._rawWikiExtract;
+  void _wikiExtract; // Will be used for enhanced narratives
+  
   const knownFor = profile.knownFor?.slice(0, 3).join(', ') || 'strategic trade and regional services';
   const sectors = profile.keySectors?.slice(0, 4).join(', ') || 'diversified commerce and services';
   const access = profile.globalMarketAccess || 'regional corridors and maritime routes';
@@ -92,78 +96,6 @@ const buildNarrative = (profile: CityProfile) => {
   ];
 
   return { overview, historical };
-};
-
-const buildPlaceholderProfile = (geo: { city: string; region: string; country: string; latitude: number; longitude: number; timezone?: string; }) => {
-  return {
-    id: `live-${Date.now()}`,
-    city: geo.city,
-    region: geo.region,
-    country: geo.country,
-    latitude: geo.latitude,
-    longitude: geo.longitude,
-    timezone: geo.timezone || 'Researching...',
-    established: 'Research in progress',
-    areaSize: 'Researching...',
-    climate: 'Researching...',
-    currency: 'Researching...',
-    businessHours: 'Researching...',
-    globalMarketAccess: 'Researching...',
-    engagementScore: 50,
-    overlookedScore: 50,
-    infrastructureScore: 50,
-    regulatoryFriction: 50,
-    politicalStability: 50,
-    laborPool: 50,
-    costOfDoing: 50,
-    investmentMomentum: 50,
-    knownFor: ['Research in progress'],
-    strategicAdvantages: ['Research in progress'],
-    keySectors: ['Research in progress'],
-    investmentPrograms: ['Research in progress'],
-    foreignCompanies: ['Research in progress'],
-    leaders: [
-      {
-        id: 'leader-live',
-        name: 'Researching official leadership',
-        role: 'Executive Leadership',
-        tenure: 'Current',
-        achievements: ['Research in progress'],
-        rating: 0,
-        internationalEngagementFocus: false,
-      }
-    ],
-    demographics: {
-      population: 'Researching...',
-      populationGrowth: 'Researching...',
-      medianAge: 'Researching...',
-      literacyRate: 'Researching...',
-      workingAgePopulation: 'Researching...',
-      universitiesColleges: 0,
-      graduatesPerYear: 'Researching...',
-    },
-    economics: {
-      gdpLocal: 'Researching...',
-      gdpGrowthRate: 'Researching...',
-      employmentRate: 'Researching...',
-      avgIncome: 'Researching...',
-      exportVolume: 'Researching...',
-      majorIndustries: ['Researching...'],
-      topExports: ['Researching...'],
-      tradePartners: ['Researching...'],
-    },
-    infrastructure: {
-      airports: [{ name: 'Researching...', type: 'Unknown' }],
-      seaports: [{ name: 'Researching...', type: 'Unknown' }],
-      highways: ['Researching...'],
-      railways: ['Researching...'],
-      powerCapacity: 'Researching...',
-      internetPenetration: 'Researching...',
-      specialEconomicZones: ['Researching...'],
-      industrialParks: ['Researching...'],
-    },
-    governmentLinks: [{ label: 'Official Government Portal (pending)', url: '#' }],
-  } as CityProfile;
 };
 
 // Map controller component to handle dynamic map centering
@@ -190,9 +122,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [hasSelection, setHasSelection] = useState(false);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   
-  // Agentic research state
-  const [researchSessionId, setResearchSessionId] = useState<string | null>(null);
-  const [dynamicProfile, setDynamicProfile] = useState<Partial<CityProfile> | null>(null);
+  // Live research state
+  const [isResearching, setIsResearching] = useState(false);
+  const [researchProgress, setResearchProgress] = useState<LiveLocationSearchProgress | null>(null);
+  const [liveProfile, setLiveProfile] = useState<CityProfile | null>(null);
   
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     overview: true,
@@ -202,9 +135,6 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     leadership: true,
     live: true
   });
-  
-  // Use the agentic research hook
-  const researchSession = useLocationResearch(researchSessionId);
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -223,17 +153,14 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     runSearch();
   }, [searchQuery]);
 
-  // Get active profile (either from existing data or dynamic research)
+  // Get active profile (either from existing data or live research)
   const activeProfile = useMemo(() => {
-    const resolvedDynamic = researchSession?.profile || dynamicProfile;
-    if (resolvedDynamic && hasSelection && !activeProfileId) {
-      return resolvedDynamic as CityProfile;
+    if (liveProfile && hasSelection && !activeProfileId) {
+      return liveProfile;
     }
     if (!activeProfileId) return null;
     return profiles.find(profile => profile.id === activeProfileId) || null;
-  }, [activeProfileId, profiles, dynamicProfile, researchSession?.profile, hasSelection]);
-
-  const isResearching = !!researchSessionId && researchSession?.status !== 'complete' && researchSession?.status !== 'error';
+  }, [activeProfileId, profiles, liveProfile, hasSelection]);
 
   const mapCenter: [number, number] = activeProfile?.latitude && activeProfile?.longitude
     ? [activeProfile.latitude, activeProfile.longitude]
@@ -245,13 +172,14 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const handleSelectProfile = useCallback((profile: CityProfile) => {
     setActiveProfileId(profile.id);
     setHasSelection(true);
-    setDynamicProfile(null);
-    setResearchSessionId(null);
+    setLiveProfile(null);
+    setIsResearching(false);
+    setResearchProgress(null);
     setSearchQuery('');
     setSearchResults([]);
   }, []);
 
-  // Handle search submission - either match existing or start research
+  // Handle search submission - LIVE SEARCH
   const handleSearchSubmit = useCallback(async (query: string) => {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
@@ -268,46 +196,40 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       // Use existing profile
       handleSelectProfile(existingMatch);
     } else {
-      // Start agentic research for new location
+      // Start LIVE research for new location
       setHasSelection(true);
       setActiveProfileId(null);
-      setDynamicProfile(null);
+      setLiveProfile(null);
       setSearchQuery('');
       setSearchResults([]);
-      setLoadingError(null); // Clear previous errors
+      setLoadingError(null);
+      setIsResearching(true);
+      setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Initializing live search...' });
       
       try {
-        // Geocode first to update map immediately
-        const geo = await geocodeLocation(trimmedQuery);
-        if (geo) {
-          setDynamicProfile(buildPlaceholderProfile({
-            city: geo.city,
-            region: geo.region,
-            country: geo.country,
-            latitude: geo.latitude,
-            longitude: geo.longitude,
-            timezone: geo.timezone
-          }));
-        } else {
-          // Location not found
-          setLoadingError(`Location "${trimmedQuery}" not found. Please try a different search term.`);
-          setHasSelection(false);
-          return;
-        }
+        // Use comprehensive live search - NO MOCKED DATA
+        const result = await comprehensiveLiveSearch(trimmedQuery, (progress) => {
+          setResearchProgress(progress);
+        });
         
-        // Start research session
-        const session = await locationResearchManager.startResearch(trimmedQuery);
-        setResearchSessionId(session.id);
+        if (result) {
+          setLiveProfile(result);
+          setResearchProgress({ stage: 'complete', progress: 100, message: 'Live profile loaded!' });
+        } else {
+          setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
+          setHasSelection(false);
+        }
       } catch (error) {
-        // Network error or API failure
-        console.error('Search error:', error);
+        console.error('Live search error:', error);
         const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
         if (isNetworkError || !navigator.onLine) {
-          setLoadingError('Unable to connect to location services. Please check your internet connection and try again.');
+          setLoadingError('Unable to connect to search services. Please check your internet connection.');
         } else {
-          setLoadingError('An error occurred while searching. Please try again.');
+          setLoadingError('Search failed. Please try again.');
         }
         setHasSelection(false);
+      } finally {
+        setIsResearching(false);
       }
     }
   }, [profiles, handleSelectProfile]);
@@ -335,8 +257,9 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const handleClearSelection = () => {
     setActiveProfileId(null);
     setHasSelection(false);
-    setDynamicProfile(null);
-    setResearchSessionId(null);
+    setLiveProfile(null);
+    setIsResearching(false);
+    setResearchProgress(null);
     setLoadingError(null);
   };
 
@@ -683,7 +606,7 @@ th { background: #f1f5f9; }
         </div>
 
         {/* Research Progress Panel */}
-        {isResearching && researchSession && (
+        {isResearching && researchProgress && (
           <div className="bg-[#0f0f0f] border border-purple-500/30 rounded-2xl p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -692,13 +615,13 @@ th { background: #f1f5f9; }
                   <Loader2 className="w-3 h-3 text-purple-300 absolute -bottom-1 -right-1 animate-spin" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-purple-300">AI Agent Researching</h2>
-                  <p className="text-xs text-slate-400">{researchSession.query.query}</p>
+                  <h2 className="text-lg font-semibold text-purple-300">Live Search in Progress</h2>
+                  <p className="text-xs text-slate-400">{researchProgress?.message || 'Searching...'}</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-purple-400">{Math.round(researchSession.progress)}%</div>
-                <div className="text-[10px] text-slate-400 uppercase">{researchSession.status}</div>
+                <div className="text-2xl font-bold text-purple-400">{Math.round(researchProgress?.progress || 0)}%</div>
+                <div className="text-[10px] text-slate-400 uppercase">{researchProgress?.stage || 'initializing'}</div>
               </div>
             </div>
             
@@ -706,52 +629,50 @@ th { background: #f1f5f9; }
             <div className="h-2 bg-slate-800 rounded-full overflow-hidden mb-4">
               <div 
                 className="h-full bg-gradient-to-r from-purple-500 to-purple-300 rounded-full transition-all duration-500"
-                style={{ width: `${researchSession.progress}%` }}
+                style={{ width: `${researchProgress?.progress || 0}%` }}
               />
             </div>
             
-            {/* Research Tasks */}
-            <div className="grid md:grid-cols-4 gap-2 mb-4">
-              {researchSession.tasks.map(task => (
-                <div 
-                  key={task.id}
-                  className={`p-2 rounded-lg border text-xs ${
-                    task.status === 'complete' 
-                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                      : task.status === 'searching' || task.status === 'processing'
-                        ? 'border-purple-500/30 bg-purple-500/10 text-purple-300'
-                        : task.status === 'error'
-                          ? 'border-red-500/30 bg-red-500/10 text-red-300'
+            {/* Live Search Stages */}
+            <div className="grid md:grid-cols-6 gap-2 mb-4">
+              {['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].map(stage => {
+                const stageProgress = researchProgress?.stage === stage ? 'active' 
+                  : (['complete', 'error'].includes(researchProgress?.stage || '') || 
+                     ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(stage) < 
+                     ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(researchProgress?.stage || '')) 
+                    ? 'complete' : 'pending';
+                return (
+                  <div 
+                    key={stage}
+                    className={`p-2 rounded-lg border text-xs text-center ${
+                      stageProgress === 'complete'
+                        ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                        : stageProgress === 'active'
+                          ? 'border-purple-500/30 bg-purple-500/10 text-purple-300'
                           : 'border-slate-700 text-slate-500'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    {task.status === 'complete' && <CheckCircle2 className="w-3 h-3" />}
-                    {(task.status === 'searching' || task.status === 'processing') && <Loader2 className="w-3 h-3 animate-spin" />}
-                    {task.status === 'error' && <AlertCircle className="w-3 h-3" />}
-                    {task.status === 'pending' && <Clock className="w-3 h-3" />}
-                    <span className="capitalize">{task.category}</span>
+                    }`}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      {stageProgress === 'complete' && <CheckCircle2 className="w-3 h-3" />}
+                      {stageProgress === 'active' && <Loader2 className="w-3 h-3 animate-spin" />}
+                      {stageProgress === 'pending' && <Clock className="w-3 h-3" />}
+                      <span className="capitalize">{stage.replace('-', ' ')}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
-            {/* Research Log */}
-            <div className="bg-black/40 rounded-lg p-3 max-h-32 overflow-y-auto text-[11px] font-mono">
-              {researchSession.logs.slice(-8).map((log, i) => (
-                <div 
-                  key={i}
-                  className={`flex items-start gap-2 py-0.5 ${
-                    log.level === 'success' ? 'text-emerald-400' :
-                    log.level === 'error' ? 'text-red-400' :
-                    log.level === 'warning' ? 'text-amber-400' :
-                    'text-slate-400'
-                  }`}
-                >
-                  <span className="text-slate-600">[{new Date(log.timestamp).toLocaleTimeString()}]</span>
-                  <span>{log.message}</span>
-                </div>
-              ))}
+            {/* Live Search Status */}
+            <div className="bg-black/40 rounded-lg p-3 text-[11px] font-mono text-slate-400">
+              <div className="flex items-center gap-2">
+                <span className="text-purple-400">●</span>
+                <span>Fetching real-time data from Google, Wikipedia, and public APIs...</span>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-purple-400">●</span>
+                <span>No mocked data - all information is live and current</span>
+              </div>
             </div>
           </div>
         )}
@@ -878,11 +799,14 @@ th { background: #f1f5f9; }
                       className="text-left p-4 border border-white/10 rounded-xl hover:border-purple-400/50 transition-all bg-slate-900/50"
                     >
                       <div className="flex items-start gap-4">
-                        {leader.imageUrl ? (
+                        {(leader.imageUrl || leader.photoUrl) ? (
                           <img
-                            src={leader.imageUrl}
+                            src={leader.imageUrl || leader.photoUrl}
                             alt={leader.name}
                             className="w-16 h-16 rounded-full object-cover border-2 border-purple-500/30"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
                           />
                         ) : (
                           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500/40 to-purple-600/40 flex items-center justify-center text-lg font-bold">
@@ -893,8 +817,20 @@ th { background: #f1f5f9; }
                           <div className="font-semibold text-white">{leader.name}</div>
                           <div className="text-xs text-slate-400">{leader.role}</div>
                           <div className="text-[10px] text-slate-500">{leader.tenure}</div>
-                          {!leader.imageUrl && (
+                          {leader.photoVerified && (
+                            <div className="text-[10px] text-emerald-300 mt-1 flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3" /> Photo verified
+                            </div>
+                          )}
+                          {!leader.imageUrl && !leader.photoUrl && (
                             <div className="text-[10px] text-amber-300 mt-1">Official photo pending verification</div>
+                          )}
+                          {leader.sourceUrl && (
+                            <a href={leader.sourceUrl} target="_blank" rel="noreferrer" 
+                               className="text-[10px] text-blue-400 hover:underline mt-1 block truncate"
+                               onClick={(e) => e.stopPropagation()}>
+                              Source: {new URL(leader.sourceUrl).hostname}
+                            </a>
                           )}
                           {leader.internationalEngagementFocus && (
                             <div className="text-[10px] text-purple-300 mt-1">🌍 Int'l Engagement Focus</div>

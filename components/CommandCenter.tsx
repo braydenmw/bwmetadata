@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
-import { locationResearchManager, useLocationResearch, geocodeLocation } from '../services/agenticLocationIntelligence';
+import { comprehensiveLiveSearch, type LiveLocationSearchProgress } from '../services/liveLocationSearchService';
 
 // Command Center - Complete BWGA Landing Page
 
@@ -15,42 +15,40 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [showCatalog, setShowCatalog] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
     
-    // Global Location Intelligence state
+    // Global Location Intelligence state - LIVE SEARCH
     const [locationQuery, setLocationQuery] = useState('');
     const [isResearchingLocation, setIsResearchingLocation] = useState(false);
-    const [researchSessionId, setResearchSessionId] = useState<string | null>(null);
+    const [researchProgress, setResearchProgress] = useState<LiveLocationSearchProgress | null>(null);
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     
-    // Use the research hook
-    const researchSession = useLocationResearch(researchSessionId);
-    
-    // Handle location search
+    // Handle location search - LIVE
     const handleLocationSearch = async () => {
         if (!locationQuery.trim()) return;
         setIsResearchingLocation(true);
         setLocationResult(null);
+        setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Starting live search...' });
         
         try {
-            // Geocode first
-            const geo = await geocodeLocation(locationQuery);
-            if (geo) {
-                setLocationResult({ city: geo.city, country: geo.country, lat: geo.latitude, lon: geo.longitude });
-            }
+            // Use comprehensive live search - NO MOCKED DATA
+            const result = await comprehensiveLiveSearch(locationQuery, (progress) => {
+                setResearchProgress(progress);
+            });
             
-            // Start research
-            const session = await locationResearchManager.startResearch(locationQuery);
-            setResearchSessionId(session.id);
+            if (result) {
+                setLocationResult({ 
+                    city: result.city, 
+                    country: result.country, 
+                    lat: result.latitude, 
+                    lon: result.longitude 
+                });
+            }
         } catch (error) {
             console.error('Location research error:', error);
-        }
-    };
-    
-    // Watch for research completion
-    React.useEffect(() => {
-        if (researchSession?.status === 'complete') {
+            setResearchProgress({ stage: 'error', progress: 0, message: 'Search failed' });
+        } finally {
             setIsResearchingLocation(false);
         }
-    }, [researchSession?.status]);
+    };
 
     const tenStepProtocol = [
         { step: 1, title: "Identity & Foundation", description: "Establish organizational credibility, legal structure, and competitive positioning.", details: ["Organization name, type, and legal structure", "Registration/incorporation details", "Key leadership and governance structure", "Historical track record and credentials", "Competitive positioning statement", "Core competencies and differentiators"] },
@@ -549,32 +547,42 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </button>
                                 </div>
                                 
-                                {/* Research Progress */}
-                                {isResearchingLocation && researchSession && (
+                                {/* Research Progress - LIVE */}
+                                {isResearchingLocation && researchProgress && (
                                     <div className="bg-black/40 border border-purple-500/30 rounded-xl p-4 mb-4">
                                         <div className="flex items-center justify-between mb-2">
-                                            <span className="text-xs text-purple-300 font-semibold">AI Agent Researching...</span>
-                                            <span className="text-xs text-purple-400">{Math.round(researchSession.progress)}%</span>
+                                            <span className="text-xs text-purple-300 font-semibold">🔴 Live Search: {researchProgress.message}</span>
+                                            <span className="text-xs text-purple-400">{Math.round(researchProgress.progress)}%</span>
                                         </div>
                                         <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
                                             <div 
                                                 className="h-full bg-gradient-to-r from-purple-500 to-amber-500 rounded-full transition-all duration-500"
-                                                style={{ width: `${researchSession.progress}%` }}
+                                                style={{ width: `${researchProgress.progress}%` }}
                                             />
                                         </div>
                                         <div className="mt-2 flex flex-wrap gap-1">
-                                            {researchSession.tasks.slice(0, 4).map(task => (
-                                                <span 
-                                                    key={task.id}
-                                                    className={`text-[10px] px-2 py-0.5 rounded-full ${
-                                                        task.status === 'complete' ? 'bg-emerald-500/20 text-emerald-300' :
-                                                        task.status === 'searching' ? 'bg-purple-500/20 text-purple-300' :
-                                                        'bg-slate-700 text-slate-400'
-                                                    }`}
-                                                >
-                                                    {task.category}
-                                                </span>
-                                            ))}
+                                            {['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].map(stage => {
+                                                const stageIdx = ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(stage);
+                                                const currentIdx = ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos', 'complete', 'error'].indexOf(researchProgress.stage);
+                                                const isComplete = currentIdx > stageIdx;
+                                                const isActive = researchProgress.stage === stage;
+                                                
+                                                return (
+                                                    <span 
+                                                        key={stage}
+                                                        className={`text-[10px] px-2 py-0.5 rounded-full ${
+                                                            isComplete ? 'bg-emerald-500/20 text-emerald-300' :
+                                                            isActive ? 'bg-purple-500/20 text-purple-300' :
+                                                            'bg-slate-700 text-slate-400'
+                                                        }`}
+                                                    >
+                                                        {stage.replace('-', ' ')}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="mt-2 text-[10px] text-white/40">
+                                            Fetching real-time data from Google, Wikipedia, and public APIs...
                                         </div>
                                     </div>
                                 )}

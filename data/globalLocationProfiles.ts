@@ -24,6 +24,10 @@ export interface CityLeader {
   achievements: string[];
   rating: number;
   imageUrl?: string;
+  photoUrl?: string;         // Live search photo URL
+  photoSource?: string;      // Where the photo came from (Wikipedia, etc)
+  photoVerified?: boolean;   // Whether photo was found from official source
+  sourceUrl?: string;        // URL where leader info was found
   internationalEngagementFocus?: boolean;
   photoSourceUrl?: string;
   contactEmail?: string;
@@ -135,6 +139,15 @@ export interface CityProfile {
   taxIncentives?: string[];
   laborLaws?: string[];
   environmentalRegulations?: string[];
+  // Live search additional fields
+  recentNews?: Array<{
+    date: string;
+    title: string;
+    summary: string;
+    source: string;
+    link: string;
+  }>;
+  _rawWikiExtract?: string; // Raw Wikipedia extract for narrative building
 }
 
 export const SECTOR_FILTERS = [
