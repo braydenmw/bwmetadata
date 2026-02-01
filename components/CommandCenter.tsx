@@ -1022,7 +1022,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">SOLVING REAL PROBLEMS</p>
                     <h2 className="text-xl md:text-2xl font-light mb-6">Regional Challenges, Intelligent Solutions</h2>
                     
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed mb-8">
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed mb-2">
                         <p>
                             This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential.
                         </p>
@@ -1037,8 +1037,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* FOOTER INFO SECTION */}
-            <section id="footer-info" className="py-16 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
+            <section id="footer-info" className="py-8 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
                 <div className="max-w-4xl mx-auto">
+                        <p className="text-lg font-semibold text-white mb-6">
+                            Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
+                        </p>
+
                         {/* Terms of Engagement */}
                         <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 text-left">
                             <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
@@ -1080,10 +1084,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             Launch Intelligence OS
                             <ArrowRight size={20} />
                         </button>
-
-                        <p className="text-sm text-white/60 mb-8 text-left">
-                            Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
-                        </p>
 
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                             <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">BWGA Intelligence AI</h4>
