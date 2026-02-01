@@ -17,7 +17,7 @@ import DocumentGenerationSuite from './DocumentGenerationSuite';
 import { DocumentUploadModal } from './DocumentUploadModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ENTITY_TYPES, COUNTRIES, INDUSTRIES } from '../constants/businessData';
-import { CITY_PROFILES } from '../data/globalLocationProfiles';
+import { CITY_PROFILES } from '../data/globalLocationProfiles.ts';
 import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS, PRIORITY_THEMES, TARGET_INCENTIVES, STRATEGIC_LENSES, POLITICAL_SENSITIVITIES } from '../constants';
 import { evaluateDocReadiness } from '../services/intakeMapping';
 import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';

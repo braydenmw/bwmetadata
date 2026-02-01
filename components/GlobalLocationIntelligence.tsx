@@ -2,7 +2,8 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2 } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService';
+import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService_v2';
+import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 
 // Helper components declared outside main component to avoid re-creation on render
 const ScoreBar: React.FC<{ label: string; value: number; max?: number }> = ({ label, value, max = 100 }) => (
@@ -82,6 +83,9 @@ const buildNarrative = (profile: CityProfile) => {
   return { overview, historical };
 };
 
+const buildStaticMapUrl = (lat: number, lon: number, zoom: number, width = 650, height = 450) =>
+  `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=${zoom}&size=${width}x${height}&markers=${lat},${lon},red-pushpin`;
+
 interface GlobalLocationIntelligenceProps {
   onBack?: () => void;
   onOpenCommandCenter?: () => void;
@@ -103,6 +107,12 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [liveProfile, setLiveProfile] = useState<CityProfile | null>(null);
   const [researchResult, setResearchResult] = useState<MultiSourceResult | null>(null);
   
+  // Government data state
+  const [governmentLeaders, setGovernmentLeaders] = useState<GovernmentLeader[]>([]);
+  const [isLoadingGovernmentData, setIsLoadingGovernmentData] = useState(false);
+  const [regionalComparisons, setRegionalComparisons] = useState<RegionalComparisonSet | null>(null);
+  const [isLoadingComparisons, setIsLoadingComparisons] = useState(false);
+  
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     overview: true,
     economy: true,
@@ -112,7 +122,8 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     live: true,
     sources: true,
     similar: true,
-    narratives: true
+    narratives: true,
+    regional: true
   });
 
   const toggleSection = (section: string) => {
@@ -140,6 +151,31 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     if (!activeProfileId) return null;
     return profiles.find(profile => profile.id === activeProfileId) || null;
   }, [activeProfileId, profiles, liveProfile, hasSelection]);
+
+  const leadershipRanking = useMemo(() => {
+    if (!activeProfile?.leaders?.length) return [];
+    return [...activeProfile.leaders].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  }, [activeProfile]);
+
+  const internationalLead = useMemo(() => {
+    if (!leadershipRanking.length) return null;
+    return leadershipRanking.find(l => l.internationalEngagementFocus) || leadershipRanking[0];
+  }, [leadershipRanking]);
+
+  const safetyProxyScore = useMemo(() => {
+    if (!activeProfile) return null;
+    const stability = activeProfile.politicalStability ?? 50;
+    const reg = activeProfile.regulatoryFriction ?? 50;
+    return Math.round((stability * 0.6) + ((100 - reg) * 0.4));
+  }, [activeProfile]);
+
+  const outlookLabel = useMemo(() => {
+    if (!activeProfile) return 'Not available';
+    const momentum = activeProfile.investmentMomentum ?? 0;
+    if (momentum >= 70) return 'Accelerating';
+    if (momentum >= 55) return 'Stable';
+    return 'Developing';
+  }, [activeProfile]);
 
   // Handle search submission - LIVE SEARCH
   const handleSearchSubmit = useCallback(async (query: string) => {
@@ -185,16 +221,44 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     }
   }, []);
 
-  // Load existing profiles
+  // Load existing profiles and check for cached research results
   useEffect(() => {
     const loadProfiles = async () => {
       const data = await getCityProfiles();
       setProfiles(data);
       
-      // Check for target from localStorage (from other pages)
+      // Check for CACHED research result FIRST (highest priority - prevents duplicate research)
+      const cachedResearch = localStorage.getItem('gli-cached-research');
       const target = localStorage.getItem('gli-target');
+      
+      if (cachedResearch && target) {
+        try {
+          const result = JSON.parse(cachedResearch);
+          if (result && result.profile) {
+            // Use cached result - NO NEW RESEARCH NEEDED
+            setHasSelection(true);
+            setLiveProfile(result.profile);
+            setResearchResult(result);
+            setSearchQuery('');
+            setSearchResults([]);
+            setResearchProgress({ stage: 'Complete', progress: 100, message: `Report loaded from cache: ${result.sources.length} sources.` });
+            
+            // Clean up cache keys after using them
+            localStorage.removeItem('gli-target');
+            localStorage.removeItem('gli-cached-research');
+            
+            return; // EXIT - DON'T DO NEW RESEARCH
+          }
+        } catch (e) {
+          console.warn('Failed to parse cached research:', e);
+          // Fall through to normal search
+        }
+      }
+      
+      // Fallback: if no cached result, search using gli-target location name
       if (target) {
         localStorage.removeItem('gli-target');
+        localStorage.removeItem('gli-cached-research');
         setTimeout(() => {
           handleSearchSubmit(target);
         }, 0);
@@ -213,7 +277,46 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setIsResearching(false);
     setResearchProgress(null);
     setLoadingError(null);
+    setGovernmentLeaders([]);
+    setRegionalComparisons(null);
   };
+
+  // Fetch real-time government data and regional comparisons when profile is selected
+  useEffect(() => {
+    if (!activeProfile) return;
+
+    const fetchEnrichedData = async () => {
+      try {
+        // Fetch current government leaders
+        setIsLoadingGovernmentData(true);
+        const leaders = await fetchGovernmentLeaders(activeProfile.city, activeProfile.country);
+        setGovernmentLeaders(leaders);
+      } catch (error) {
+        console.error('Error fetching government leaders:', error);
+      } finally {
+        setIsLoadingGovernmentData(false);
+      }
+
+      try {
+        // Fetch regional comparisons
+        setIsLoadingComparisons(true);
+        const nearbyLocations = profiles.filter(
+          p => p.region === activeProfile.region && p.id !== activeProfile.id
+        );
+        
+        if (nearbyLocations.length > 0) {
+          const comparisons = await getRegionalComparisons(activeProfile, nearbyLocations);
+          setRegionalComparisons(comparisons);
+        }
+      } catch (error) {
+        console.error('Error fetching regional comparisons:', error);
+      } finally {
+        setIsLoadingComparisons(false);
+      }
+    };
+
+    fetchEnrichedData();
+  }, [activeProfile, profiles]);
 
   const computeCompositeScore = (profile: CityProfile | Partial<CityProfile>) => {
     if (!profile.infrastructureScore) return 0;
@@ -487,21 +590,33 @@ th { background: #f1f5f9; }
               </div>
             )}
           </div>
-          {/* Static Map Image - Better Performance */}
-          <div className="h-[450px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
+          {/* Static Map Images - Country + Regional */}
+          <div className="grid md:grid-cols-2 gap-4">
             {activeProfile?.latitude && activeProfile?.longitude ? (
               <>
-                <img
-                  src={`https://static-maps.yandex.ru/1.x/?ll=${activeProfile.longitude},${activeProfile.latitude}&z=11&l=map&size=650,450`}
-                  alt={`Map of ${activeProfile.city}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to OpenStreetMap static
-                    (e.target as HTMLImageElement).src = `https://www.openstreetmap.org/export/embed.html?bbox=${activeProfile.longitude! - 0.1}%2C${activeProfile.latitude! - 0.1}%2C${activeProfile.longitude! + 0.1}%2C${activeProfile.latitude! + 0.1}&layer=mapnik`;
-                  }}
-                />
-                {/* Map Overlay with Location Info */}
-                <div className="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
+                <div className="h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
+                  <img
+                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 8)}
+                    alt={`Regional map of ${activeProfile.city}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/650x450?text=Map+Unavailable';
+                    }}
+                  />
+                  <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">Regional View</div>
+                </div>
+                <div className="h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
+                  <img
+                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 4)}
+                    alt={`Country map of ${activeProfile.country}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/650x450?text=Map+Unavailable';
+                    }}
+                  />
+                  <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">Country View</div>
+                </div>
+                <div className="md:col-span-2 bg-black/70 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="text-lg font-bold text-white">{activeProfile.city}</div>
@@ -512,10 +627,10 @@ th { background: #f1f5f9; }
                     </div>
                     <div className="text-right">
                       <div className="text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
-                      <div className="text-[10px] text-slate-500 uppercase">Score</div>
+                      <div className="text-[10px] text-slate-500 uppercase">Composite Score</div>
                     </div>
                   </div>
-                  <div className="mt-3 grid grid-cols-4 gap-2 text-[10px]">
+                  <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px]">
                     <div className="bg-slate-800 rounded p-2 text-center">
                       <div className="text-slate-400">Population</div>
                       <div className="text-white font-semibold">{activeProfile.demographics?.population || 'N/A'}</div>
@@ -534,19 +649,12 @@ th { background: #f1f5f9; }
                     </div>
                   </div>
                 </div>
-                {/* Map Pin Indicator */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full">
-                  <div className="flex flex-col items-center">
-                    <MapPin className="w-8 h-8 text-red-500 drop-shadow-lg" />
-                    <div className="w-2 h-2 bg-red-500 rounded-full -mt-1 shadow-lg" />
-                  </div>
-                </div>
               </>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="md:col-span-2 h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 flex items-center justify-center">
                 <div className="text-center text-slate-500">
                   <Globe className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                  <p>Search for a location to view map</p>
+                  <p>Search for a location to view regional and country maps</p>
                 </div>
               </div>
             )}
@@ -722,7 +830,11 @@ th { background: #f1f5f9; }
               {/* Overview Narrative - Use research result if available */}
               <div className="space-y-4 text-sm text-slate-300 leading-relaxed mb-6">
                 {researchResult?.narratives?.overview ? (
-                  <p>{researchResult.narratives.overview}</p>
+                  <>
+                    {((researchResult.narratives.overview as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                      <p key={`overview-${idx}`}>{(p.text as string)}</p>
+                    )) || <p>{((researchResult.narratives.overview as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                  </>
                 ) : (
                   <>
                     <p>
@@ -743,7 +855,11 @@ th { background: #f1f5f9; }
                 </div>
                 <div className="space-y-3 text-sm text-slate-300 leading-relaxed">
                   {researchResult?.narratives?.history ? (
-                    <p>{researchResult.narratives.history}</p>
+                    <>
+                      {((researchResult.narratives.history as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                        <p key={`history-${idx}`}>{(p.text as string)}</p>
+                      )) || <p>{((researchResult.narratives.history as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                    </>
                   ) : (
                     buildNarrative(activeProfile).historical.map((paragraph, idx) => (
                       <p key={`history-${idx}`}>{paragraph}</p>
@@ -758,7 +874,11 @@ th { background: #f1f5f9; }
                   <div className="text-[11px] uppercase tracking-wider text-emerald-400 mb-2 font-semibold flex items-center gap-2">
                     <BarChart3 className="w-4 h-4" /> Economic Analysis
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.economy}</p>
+                  <div className="text-sm text-slate-300 leading-relaxed space-y-3">
+                    {((researchResult.narratives.economy as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                      <p key={`econ-${idx}`}>{(p.text as string)}</p>
+                    )) || <p>{((researchResult.narratives.economy as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                  </div>
                 </div>
               )}
 
@@ -768,7 +888,11 @@ th { background: #f1f5f9; }
                   <div className="text-[11px] uppercase tracking-wider text-purple-400 mb-2 font-semibold flex items-center gap-2">
                     <Landmark className="w-4 h-4" /> Governance Overview
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.governance}</p>
+                  <div className="text-sm text-slate-300 leading-relaxed space-y-3">
+                    {((researchResult.narratives.governance as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                      <p key={`gov-${idx}`}>{(p.text as string)}</p>
+                    )) || <p>{((researchResult.narratives.governance as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                  </div>
                 </div>
               )}
 
@@ -778,7 +902,11 @@ th { background: #f1f5f9; }
                   <div className="text-[11px] uppercase tracking-wider text-amber-400 mb-2 font-semibold flex items-center gap-2">
                     <Target className="w-4 h-4" /> Investment Case
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.investment}</p>
+                  <div className="text-sm text-slate-300 leading-relaxed space-y-3">
+                    {((researchResult.narratives.investment as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                      <p key={`inv-${idx}`}>{(p.text as string)}</p>
+                    )) || <p>{((researchResult.narratives.investment as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                  </div>
                 </div>
               )}
 
@@ -788,7 +916,11 @@ th { background: #f1f5f9; }
                   <div className="text-[11px] uppercase tracking-wider text-cyan-400 mb-2 font-semibold flex items-center gap-2">
                     <Zap className="w-4 h-4" /> Infrastructure & Connectivity
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">{researchResult.narratives.infrastructure}</p>
+                  <div className="text-sm text-slate-300 leading-relaxed space-y-3">
+                    {((researchResult.narratives.infrastructure as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.map((p, idx) => (
+                      <p key={`infra-${idx}`}>{(p.text as string)}</p>
+                    )) || <p>{((researchResult.narratives.infrastructure as unknown as Record<string, unknown>)?.introduction as string)}</p>}
+                  </div>
                 </div>
               )}
 
@@ -821,7 +953,300 @@ th { background: #f1f5f9; }
                   <div className="text-sm font-semibold mt-1">{activeProfile.businessHours || 'N/A'}</div>
                 </div>
               </div>
+
+              {/* One-Stop Intelligence Snapshot */}
+              <div className="mt-6 bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+                <SectionHeader icon={Database} title="One-Stop Intelligence Snapshot" color="text-amber-400" />
+                <div className="grid lg:grid-cols-2 gap-4">
+                  <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                    <div className="text-[11px] uppercase tracking-wider text-purple-300 mb-2 flex items-center gap-2">
+                      <Landmark className="w-4 h-4" /> Government & Leadership
+                    </div>
+                    {leadershipRanking.length > 0 ? (
+                      <div className="space-y-2 text-xs text-slate-300">
+                        <div className="text-slate-400">Current leadership (top roles):</div>
+                        {leadershipRanking.slice(0, 3).map(leader => (
+                          <div key={leader.id} className="flex items-center justify-between">
+                            <span>{leader.role}: <span className="text-white">{leader.name}</span></span>
+                            <span className="text-[10px] text-slate-500">Influence {leader.rating.toFixed(1)}/10</span>
+                          </div>
+                        ))}
+                        <div className="mt-2 text-[11px] text-slate-400">
+                          International lead: <span className="text-white">{internationalLead?.name || 'Not verified'}</span>
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          Government sources: {researchResult?.dataQuality?.governmentSourcesUsed ?? 0}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-xs text-slate-400">Leadership data not verified yet.</div>
+                    )}
+                  </div>
+
+                  <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                    <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-2 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4" /> Business Ecosystem
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-2">
+                      <div>
+                        <span className="text-slate-400">Key sectors:</span> {activeProfile.keySectors?.slice(0, 5).join(', ') || 'Not verified'}
+                      </div>
+                      <div>
+                        <span className="text-slate-400">Anchor companies:</span> {activeProfile.foreignCompanies?.slice(0, 4).join(', ') || 'Not verified'}
+                      </div>
+                      <div>
+                        <span className="text-slate-400">Investment programs:</span> {activeProfile.investmentPrograms?.slice(0, 3).join(', ') || 'Not verified'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                    <div className="text-[11px] uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                      <Shield className="w-4 h-4" /> Safety & Stability (Proxy)
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span>Stability proxy</span>
+                        <span className="text-white font-semibold">{safetyProxyScore ?? 'N/A'}/100</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Political stability</span>
+                        <span className="text-white">{activeProfile.politicalStability ?? 'N/A'}/100</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Regulatory friction</span>
+                        <span className="text-white">{activeProfile.regulatoryFriction ?? 'N/A'}/100</span>
+                      </div>
+                      <div className="text-[10px] text-slate-500">Proxy score derived from available indicators, not crime data.</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                    <div className="text-[11px] uppercase tracking-wider text-amber-300 mb-2 flex items-center gap-2">
+                      <Rocket className="w-4 h-4" /> Current State & Outlook
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span>Momentum</span>
+                        <span className="text-white">{activeProfile.investmentMomentum ?? 'N/A'}/100</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Outlook</span>
+                        <span className="text-white">{outlookLabel}</span>
+                      </div>
+                      {activeProfile.recentNews?.length ? (
+                        <div className="mt-2">
+                          <div className="text-[10px] text-slate-400 uppercase">Latest signals</div>
+                          <ul className="mt-1 space-y-1">
+                            {activeProfile.recentNews.slice(0, 3).map(item => (
+                              <li key={item.title} className="text-[11px] text-slate-300">• {item.title}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="text-[11px] text-slate-400">No verified recent signals yet.</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid md:grid-cols-3 gap-4">
+                  <ScoreBar label="Evidence completeness" value={researchResult?.dataQuality?.completeness ?? 0} />
+                  <ScoreBar label="Government sources" value={Math.min(((researchResult?.dataQuality?.governmentSourcesUsed ?? 0) * 10), 100)} />
+                  <ScoreBar label="International sources" value={Math.min(((researchResult?.dataQuality?.internationalSourcesUsed ?? 0) * 10), 100)} />
+                </div>
+              </div>
             </div>
+
+            {/* ===================== CURRENT GOVERNMENT DATA SECTION ===================== */}
+            {(governmentLeaders.length > 0 || isLoadingGovernmentData) && (
+              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+                <button
+                  onClick={() => toggleSection('government')}
+                  className="w-full flex items-center justify-between"
+                >
+                  <SectionHeader icon={Building2} title="Current Government Leadership" color="text-blue-400" />
+                  {expandedSections.government ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                </button>
+                {expandedSections.government && (
+                  <div className="mt-4 space-y-3">
+                    {isLoadingGovernmentData ? (
+                      <div className="py-8 text-center">
+                        <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-blue-400" />
+                        <p className="text-sm text-slate-400">Fetching current government information...</p>
+                      </div>
+                    ) : governmentLeaders.length > 0 ? (
+                      governmentLeaders.map((leader, idx) => (
+                        <div key={idx} className="p-4 border border-blue-500/20 bg-blue-500/5 rounded-lg">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="font-semibold text-white">{leader.name}</div>
+                              <div className="text-sm text-blue-300">{leader.role}</div>
+                              <div className="text-xs text-slate-500 mt-1">{leader.tenure}</div>
+                              {leader.party && <div className="text-xs text-purple-300 mt-1">Party: {leader.party}</div>}
+                              {leader.office && <div className="text-xs text-slate-400 mt-1">Office: {leader.office}</div>}
+                              {leader.email && (
+                                <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
+                                  📧 {leader.email}
+                                </div>
+                              )}
+                              {leader.website && (
+                                <a href={leader.website} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline mt-1 block">
+                                  🌐 Official Website →
+                                </a>
+                              )}
+                            </div>
+                            {leader.verified && (
+                              <div className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
+                                ✓ Verified
+                              </div>
+                            )}
+                          </div>
+                          {leader.sourceUrl && (
+                            <div className="mt-2 text-[10px] text-slate-500">
+                              Source: <a href={leader.sourceUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
+                                {new URL(leader.sourceUrl).hostname}
+                              </a> | Last updated: {new Date(leader.lastUpdated).toLocaleDateString()}
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-slate-400 py-4">Government leadership data not yet available for this location.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ===================== REGIONAL COMPARISON METRICS SECTION ===================== */}
+            {(regionalComparisons || isLoadingComparisons) && (
+              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+                <button
+                  onClick={() => toggleSection('regional')}
+                  className="w-full flex items-center justify-between"
+                >
+                  <SectionHeader icon={BarChart3} title="Regional Comparison Metrics" color="text-cyan-400" />
+                  {expandedSections.regional ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                </button>
+                {expandedSections.regional && (
+                  <div className="mt-4 space-y-6">
+                    {isLoadingComparisons ? (
+                      <div className="py-8 text-center">
+                        <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-cyan-400" />
+                        <p className="text-sm text-slate-400">Analyzing regional comparisons...</p>
+                      </div>
+                    ) : regionalComparisons ? (
+                      <>
+                        {/* Nearby Locations Reference */}
+                        <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg">
+                          <div className="text-xs uppercase tracking-wider text-slate-400 mb-3">Comparison Locations (within region)</div>
+                          <div className="space-y-2">
+                            {regionalComparisons.nearbyLocations.slice(0, 5).map((loc, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-sm">
+                                <span className="text-white">{loc.city}, {loc.country}</span>
+                                <span className="text-slate-500 text-xs">{loc.distance_km} km</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Comparison Metrics */}
+                        {regionalComparisons.comparisons.map((comparison, idx) => (
+                          <div key={idx} className="p-4 border border-cyan-500/20 bg-cyan-500/5 rounded-lg">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="font-semibold text-white">{comparison.metric}</h4>
+                              {comparison.percentilRank !== undefined && (
+                                <span className="text-sm font-bold text-cyan-400">
+                                  {comparison.percentilRank}th percentile
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="space-y-3">
+                              {/* Current Location Performance */}
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="p-3 bg-black/30 rounded border border-cyan-500/30">
+                                  <div className="text-xs text-slate-400 uppercase mb-1">{activeProfile?.city}</div>
+                                  <div className="text-lg font-bold text-cyan-300">
+                                    {typeof comparison.currentLocation.value === 'number'
+                                      ? comparison.currentLocation.value.toFixed(0)
+                                      : comparison.currentLocation.value}
+                                  </div>
+                                  {comparison.currentLocation.rank && (
+                                    <div className="text-xs text-slate-500 mt-1">
+                                      Rank: #{comparison.currentLocation.rank}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="p-3 bg-black/30 rounded border border-slate-700">
+                                  <div className="text-xs text-slate-400 uppercase mb-1">Regional Avg</div>
+                                  <div className="text-lg font-bold text-white">
+                                    {typeof comparison.regionalAverage === 'number'
+                                      ? comparison.regionalAverage.toFixed(0)
+                                      : comparison.regionalAverage}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Best & Worst */}
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="p-3 bg-emerald-500/10 rounded border border-emerald-500/30">
+                                  <div className="text-xs text-emerald-300 uppercase mb-1">Regional Best</div>
+                                  <div className="text-sm font-semibold text-emerald-200">{comparison.regionalBest.location}</div>
+                                  <div className="text-xs text-emerald-300 mt-1">
+                                    {typeof comparison.regionalBest.value === 'number'
+                                      ? comparison.regionalBest.value.toFixed(0)
+                                      : comparison.regionalBest.value}
+                                  </div>
+                                </div>
+
+                                <div className="p-3 bg-red-500/10 rounded border border-red-500/30">
+                                  <div className="text-xs text-red-300 uppercase mb-1">Regional Worst</div>
+                                  <div className="text-sm font-semibold text-red-200">{comparison.regionalWorst.location}</div>
+                                  <div className="text-xs text-red-300 mt-1">
+                                    {typeof comparison.regionalWorst.value === 'number'
+                                      ? comparison.regionalWorst.value.toFixed(0)
+                                      : comparison.regionalWorst.value}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Visual comparison bar */}
+                              <div className="mt-3 space-y-1">
+                                <div className="flex items-center gap-2 text-xs text-slate-400">
+                                  <span className="w-16">Relative</span>
+                                  <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                    {typeof comparison.currentLocation.value === 'number' && typeof comparison.regionalAverage === 'number' ? (
+                                      <div
+                                        className="h-full bg-gradient-to-r from-cyan-500 to-cyan-300 rounded-full"
+                                        style={{
+                                          width: `${Math.min(
+                                            (comparison.currentLocation.value / (comparison.regionalAverage * 1.5)) * 100,
+                                            100
+                                          )}%`
+                                        }}
+                                      />
+                                    ) : null}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                        <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg text-xs text-slate-400">
+                          <strong>Data freshness:</strong> {new Date(regionalComparisons.dataFreshness).toLocaleDateString()}
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm text-slate-400 py-4">No regional comparison data available.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* ===================== POLITICAL LEADERSHIP SECTION ===================== */}
             <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">

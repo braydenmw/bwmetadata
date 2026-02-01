@@ -110,7 +110,9 @@ const NEWS_DOMAINS = [
 
 const STATISTICS_DOMAINS = [
   'psa.gov.ph', 'abs.gov.au', 'ons.gov.uk', 'census.gov', 'stat.go.jp',
-  'singstat.gov.sg', 'dosm.gov.my', 'bps.go.id', 'statistics.'
+  'singstat.gov.sg', 'dosm.gov.my', 'bps.go.id', 'statistics.',
+  'data.gov', 'data.gov.ph', 'data.gov.au', 'data.gov.uk', 'data.gov.sg',
+  'dilg.gov.ph', 'lcp.org.ph', 'philgeps.gov.ph'
 ] as const;
 
 // Helper to check if domain is a statistics source
@@ -405,6 +407,8 @@ async function geocodeLocation(query: string): Promise<{
 
 interface ExtractedData {
   population?: string;
+  populationNumber?: number;
+  areaKm2?: number;
   gdp?: string;
   mayor?: string;
   governor?: string;
@@ -414,6 +418,62 @@ interface ExtractedData {
   economicZones?: string[];
   airports?: string[];
   ports?: string[];
+}
+
+const parseNumber = (value: string): number | null => {
+  const cleaned = value.replace(/,/g, '');
+  const num = parseFloat(cleaned);
+  return Number.isFinite(num) ? num : null;
+};
+
+const extractPopulation = (text: string): number | null => {
+  const match =
+    text.match(/population(?:\s+is|\s+was)?\s*([\d,.]+)\s*(million|billion)?/i) ||
+    text.match(/([\d,.]+)\s*(million|billion)?\s+population/i);
+  if (!match) return null;
+  const base = parseNumber(match[1]);
+  if (!base) return null;
+  const scale = match[2]?.toLowerCase();
+  if (scale === 'million') return Math.round(base * 1_000_000);
+  if (scale === 'billion') return Math.round(base * 1_000_000_000);
+  return Math.round(base);
+};
+
+const extractAreaKm2 = (text: string): number | null => {
+  const match = text.match(/([\d,.]+)\s*(?:km2|km²|square kilometers)/i);
+  return match ? parseNumber(match[1]) : null;
+};
+
+async function searchCityStatsSources(
+  cityName: string,
+  region: string,
+  country: string
+): Promise<{ results: GoogleSearchResult[]; extracted: ExtractedData }> {
+  const queries = [
+    `"${cityName}" population statistics`,
+    `"${cityName}" local government area population`,
+    `"${cityName}" area km2`,
+    `site:.gov "${cityName}" population`,
+    `site:.gov "${cityName}" statistics`,
+    `site:data.gov "${cityName}" population`,
+    `${cityName} ${region} official statistics`,
+    `${cityName} ${country} census data`
+  ];
+
+  const allResults: GoogleSearchResult[] = [];
+  for (const query of queries) {
+    const results = await performGoogleSearch(query, 5);
+    allResults.push(...results.filter(r => r.isGovernment || isStatisticsDomain(r.displayLink)));
+    await delay(200);
+  }
+
+  const allText = allResults.map(r => `${r.title} ${r.snippet}`).join(' ');
+  const extracted: ExtractedData = {
+    populationNumber: extractPopulation(allText) || undefined,
+    areaKm2: extractAreaKm2(allText) || undefined
+  };
+
+  return { results: allResults, extracted };
 }
 
 /**
@@ -689,7 +749,13 @@ function buildNarratives(
   const wbFDI = worldBankData.find(i => i.name.includes('Foreign Direct'));
   const wbEase = worldBankData.find(i => i.name.includes('Ease'));
 
-  let economyText = `Economic Profile of ${cityName}, ${country}: `;
+  const hasCityEvidence = [...govResults, ...econResults].some(r =>
+    r.title.toLowerCase().includes(cityName.toLowerCase()) ||
+    r.snippet.toLowerCase().includes(cityName.toLowerCase())
+  );
+  let economyText = hasCityEvidence
+    ? `Economic Profile of ${cityName}: `
+    : `Country-level context for ${country} (not city-specific): `;
   if (wbGDP) {
     const gdpFormatted = wbGDP.value && wbGDP.value > 1e9 
       ? `$${(wbGDP.value / 1e9).toFixed(1)} billion` 
@@ -852,6 +918,26 @@ export async function multiSourceResearch(
       });
     }
 
+    // STAGE 4.5: City statistics sources
+    onProgress?.({
+      stage: 'Government Sources',
+      progress: 42,
+      message: 'Searching city and regional statistics portals...'
+    });
+
+    const cityStats = await searchCityStatsSources(cityName, region, country);
+    for (const result of cityStats.results.slice(0, 5)) {
+      sources.push({
+        title: result.title,
+        url: result.link,
+        type: isStatisticsDomain(result.displayLink) ? 'statistics' : 'government',
+        reliability: 'high',
+        accessDate,
+        dataExtracted: result.snippet.substring(0, 100),
+        organization: result.displayLink
+      });
+    }
+
     // STAGE 5: Economic sources
     onProgress?.({
       stage: 'Economic Research',
@@ -956,6 +1042,11 @@ export async function multiSourceResearch(
       ...(govSearch.extracted.industries || [])
     ])];
 
+    const mentionsCity = (text: string) => text.toLowerCase().includes(cityName.toLowerCase());
+    const hasCityEconomicEvidence =
+      econSearch.results.some(r => mentionsCity(r.title) || mentionsCity(r.snippet)) ||
+      govSearch.results.some(r => mentionsCity(r.title) || mentionsCity(r.snippet));
+
     // Build complete profile
     const profile: CityProfile = {
       id: `research-${Date.now()}`,
@@ -966,7 +1057,9 @@ export async function multiSourceResearch(
       longitude: geo.lon,
       timezone: countryData?.timezones?.[0] || `UTC${geo.lon >= 0 ? '+' : ''}${Math.round(geo.lon / 15)}`,
       established: 'See historical records',
-      areaSize: countryData?.area ? `${countryData.area.toLocaleString()} km² (country)` : 'See geographic data',
+      areaSize: cityStats.extracted.areaKm2
+        ? `${cityStats.extracted.areaKm2.toLocaleString()} km² (city)`
+        : 'City area not verified',
       climate: geo.lat > 23.5 || geo.lat < -23.5 ? 'Temperate' : 'Tropical',
       currency: countryData?.currencies
         ? Object.values(countryData.currencies)[0]?.name || 'National currency'
@@ -1011,35 +1104,27 @@ export async function multiSourceResearch(
       leaders: cityLeaders,
 
       demographics: {
-        population: countryData?.population
-          ? countryData.population.toLocaleString()
-          : worldBankResult.indicators.find(i => i.name === 'Population')?.value?.toLocaleString() || 'See census data',
-        populationGrowth: 'See national statistics',
-        medianAge: 'See census data',
-        literacyRate: worldBankResult.indicators.find(i => i.name.includes('Literacy'))
-          ? `${worldBankResult.indicators.find(i => i.name.includes('Literacy'))?.value?.toFixed(1)}% (World Bank)`
-          : 'See education ministry',
-        workingAgePopulation: 'See labor statistics',
+        population: cityStats.extracted.populationNumber
+          ? `${cityStats.extracted.populationNumber.toLocaleString()} (city)`
+          : 'City population not verified',
+        populationGrowth: 'City growth not verified',
+        medianAge: 'City median age not verified',
+        literacyRate: 'City literacy not verified',
+        workingAgePopulation: 'City working-age population not verified',
         universitiesColleges: 0,
-        graduatesPerYear: 'See education ministry',
+        graduatesPerYear: 'City graduates not verified',
         languages: countryData?.languages ? Object.values(countryData.languages) : undefined
       },
 
       economics: {
-        gdpLocal: worldBankResult.indicators.find(i => i.name.includes('GDP') && !i.name.includes('Growth'))
-          ? `$${(worldBankResult.indicators.find(i => i.name.includes('GDP') && !i.name.includes('Growth'))!.value! / 1e9).toFixed(1)}B (${worldBankResult.indicators.find(i => i.name.includes('GDP'))?.year}, World Bank)`
-          : 'See World Bank data',
-        gdpGrowthRate: worldBankResult.indicators.find(i => i.name.includes('Growth'))
-          ? `${worldBankResult.indicators.find(i => i.name.includes('Growth'))?.value?.toFixed(1)}% (World Bank)`
-          : 'See economic reports',
-        employmentRate: worldBankResult.indicators.find(i => i.name.includes('Unemployment'))
-          ? `${(100 - (worldBankResult.indicators.find(i => i.name.includes('Unemployment'))?.value || 0)).toFixed(1)}% employed (World Bank est.)`
-          : 'See labor department',
-        avgIncome: 'See income surveys',
-        exportVolume: 'See trade statistics',
-        majorIndustries: allIndustries.length > 0 ? allIndustries : ['See economic surveys'],
-        topExports: econSearch.extracted.exports || ['See trade data'],
-        tradePartners: countryData?.borders || ['Regional partners']
+        gdpLocal: hasCityEconomicEvidence ? 'City GDP (see sources)' : 'City GDP not verified',
+        gdpGrowthRate: hasCityEconomicEvidence ? 'City GDP growth (see sources)' : 'City GDP growth not verified',
+        employmentRate: hasCityEconomicEvidence ? 'City employment (see sources)' : 'City employment not verified',
+        avgIncome: hasCityEconomicEvidence ? 'City income (see sources)' : 'City income not verified',
+        exportVolume: hasCityEconomicEvidence ? 'City exports (see sources)' : 'City exports not verified',
+        majorIndustries: allIndustries.length > 0 ? allIndustries : ['City industries not verified'],
+        topExports: econSearch.extracted.exports || ['City exports not verified'],
+        tradePartners: ['City trade partners not verified']
       },
 
       infrastructure: {

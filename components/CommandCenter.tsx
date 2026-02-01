@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
-import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService';
+import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService_v2';
+import { locationResearchCache } from '../services/locationResearchCache';
+// OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
 
@@ -21,18 +23,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     
-    // Handle location search - LIVE (Multi-Source: World Bank, Government, Google)
+    // Handle location search - LIVE (Multi-Source with intelligent caching)
     const handleLocationSearch = async () => {
         if (!locationQuery.trim()) return;
         setIsResearchingLocation(true);
         setLocationResult(null);
-        setResearchProgress({ stage: 'geocoding', progress: 0, message: 'Starting live multi-source research...' });
+        setResearchProgress({ stage: 'initialization', progress: 2, message: 'Initializing research system...' });
         
         try {
-            // Use multi-source research - World Bank, Government, Google - NO MOCKED DATA
-            const result = await multiSourceResearch(locationQuery, (progress) => {
-                setResearchProgress(progress);
-            });
+            // Initialize cache system
+            await locationResearchCache.initialize();
+
+            // Enhanced multi-source research with caching and autonomous refinement
+            const result = await multiSourceResearch(
+                locationQuery, 
+                (progress) => {
+                    setResearchProgress(progress);
+                },
+                true // Enable autonomous refinement loops
+            );
             
             if (result && result.profile) {
                 setLocationResult({ 
@@ -41,10 +50,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     lat: result.profile.latitude || 0, 
                     lon: result.profile.longitude || 0 
                 });
+                
+                // Store in localStorage for quick access in report
+                localStorage.setItem('lastLocationResult', JSON.stringify(result));
             }
         } catch (error) {
             console.error('Location research error:', error);
-            setResearchProgress({ stage: 'error', progress: 0, message: 'Search failed' });
+            setResearchProgress({ stage: 'error', progress: 0, message: 'Search failed - please try again' });
         } finally {
             setIsResearchingLocation(false);
         }
@@ -597,7 +609,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             </div>
                                             <button 
                                                 onClick={() => {
+                                                    // Pass both location name AND the cached research result to prevent re-research
                                                     localStorage.setItem('gli-target', `${locationResult.city}, ${locationResult.country}`);
+                                                    localStorage.setItem('gli-cached-research', localStorage.getItem('lastLocationResult') || '');
                                                     if (onOpenGlobalLocationIntel) {
                                                         onOpenGlobalLocationIntel();
                                                     } else if (onEnterPlatform) {
