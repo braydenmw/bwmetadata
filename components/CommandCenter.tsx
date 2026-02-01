@@ -499,10 +499,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent" />
                                 <div className="absolute bottom-4 left-4 right-4">
                                     <div className="flex items-center gap-2 text-amber-400 text-xs uppercase tracking-wider font-semibold">
-                                        <Globe className="w-4 h-4" />
-                                        Global Coverage
+                                        <Zap className="w-4 h-4" />
+                                        For Full Access
                                     </div>
-                                    <p className="text-white/70 text-sm mt-1">190+ Countries • Real-Time Data</p>
+                                    <p className="text-white/70 text-sm mt-1">Live AI Assistant • Press Launch Button</p>
                                 </div>
                             </div>
                             
