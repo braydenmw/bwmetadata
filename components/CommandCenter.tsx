@@ -126,15 +126,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
                     </p>
                     
-                    {/* Global Coverage Banner */}
-                    <div className="mt-8 inline-block bg-gradient-to-r from-amber-500/10 to-amber-500/5 border border-amber-500/40 rounded-xl px-6 md:px-8 py-4 backdrop-blur-sm">
-                        <div className="flex items-center justify-center gap-3 mb-2">
-                            <Globe className="w-5 h-5 text-amber-400" />
-                            <p className="text-lg md:text-xl font-semibold text-white">Global Coverage</p>
-                        </div>
-                        <p className="text-amber-300 font-semibold">190+ Countries • Real-Time Data</p>
-                        <p className="text-sm text-white/70 mt-3">For full access and live AI assistant, please accept the T&C then click the Launch button below</p>
-                    </div>
                 </div>
             </section>
 
@@ -483,7 +474,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="pipeline" className="py-16 px-4 bg-[#0a0a0a]">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE INTELLIGENCE PIPELINE</p>
-                    <h2 className="text-xl md:text-2xl font-light mb-6">From Rough Brief to Board-Ready Package</h2>
+                    <h2 className="text-xl md:text-2xl font-light mb-2">From Rough Brief to Board-Ready Package</h2>
+                    
+                    {/* Global Intelligence Network Subheading */}
+                    <div className="flex items-center gap-3 mb-8">
+                        <Globe className="w-5 h-5 text-amber-400" />
+                        <div>
+                            <p className="text-sm font-semibold text-white">Global Intelligence Network</p>
+                            <p className="text-sm text-amber-300">Global Coverage • 190+ Countries • Real-Time Data</p>
+                        </div>
+                    </div>
                     
                     {/* GLOBAL LOCATION INTELLIGENCE - Split Window Panel */}
                     <div className="bg-gradient-to-br from-slate-900 to-[#0f0f0f] border border-amber-500/30 rounded-2xl overflow-hidden mb-10">
