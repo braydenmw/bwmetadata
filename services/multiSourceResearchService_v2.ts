@@ -101,6 +101,369 @@ const AUTHORITATIVE_DOMAINS = [
   'un.org', 'undp.org', 'wto.org', 'oecd.org', 'adb.org', 'ifc.org'
 ];
 
+// ==================== BACKEND AI-ENHANCED RESEARCH ====================
+
+/**
+ * Try backend AI-enhanced location intelligence first
+ * Falls back to frontend-only research if backend unavailable
+ */
+async function tryBackendResearch(
+  locationQuery: string,
+  onProgress?: ProgressCallback
+): Promise<MultiSourceResult | null> {
+  try {
+    onProgress?.({
+      stage: 'AI Research',
+      progress: 10,
+      message: 'Connecting to AI research engine...'
+    });
+
+    const response = await fetch('/api/search/location-intelligence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ location: locationQuery })
+    });
+
+    if (!response.ok) {
+      console.warn('Backend research unavailable, falling back to frontend research');
+      return null;
+    }
+
+    const data = await response.json();
+
+    if (!data.aiEnhanced || !data.aiIntelligence) {
+      console.warn('Backend returned non-AI data, falling back to frontend research');
+      return null;
+    }
+
+    onProgress?.({
+      stage: 'AI Research',
+      progress: 50,
+      message: 'AI intelligence received, building profile...'
+    });
+
+    // Transform AI response into MultiSourceResult format
+    const ai = data.aiIntelligence;
+    const geo = data.geocoding;
+    const wb = data.worldBank || {};
+
+    // Build sources from AI data
+    const sources: SourceCitation[] = [];
+    const accessDate = new Date().toISOString().split('T')[0];
+
+    // Add Wikipedia source if available
+    if (data.wikipedia) {
+      sources.push({
+        title: `Wikipedia - ${locationQuery}`,
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(locationQuery.replace(/ /g, '_'))}`,
+        type: 'encyclopedia',
+        reliability: 'medium',
+        accessDate,
+        dataExtracted: data.wikipedia.substring(0, 200),
+        organization: 'Wikipedia'
+      });
+    }
+
+    // Add World Bank source if available
+    if (Object.keys(wb).length > 0) {
+      sources.push({
+        title: `World Bank - ${geo?.country || locationQuery}`,
+        url: `https://data.worldbank.org/country/${geo?.countryCode || ''}`,
+        type: 'worldbank',
+        reliability: 'high',
+        accessDate,
+        dataExtracted: Object.entries(wb).map(([k, v]) => `${k}: ${(v as { value: unknown }).value}`).join('; '),
+        organization: 'World Bank Group'
+      });
+    }
+
+    // Add AI-identified sources
+    if (ai.dataSources && Array.isArray(ai.dataSources)) {
+      ai.dataSources.slice(0, 5).forEach((src: string) => {
+        sources.push({
+          title: src,
+          url: '#ai-synthesized',
+          type: 'research',
+          reliability: 'medium',
+          accessDate,
+          dataExtracted: 'AI-synthesized intelligence',
+          organization: src
+        });
+      });
+    }
+
+    // Build leaders from AI data
+    const leaders: CityLeader[] = [];
+    if (ai.governance?.leader?.name && ai.governance.leader.name !== 'Unknown') {
+      leaders.push({
+        id: 'leader-1',
+        name: ai.governance.leader.name,
+        role: ai.governance.leader.title || 'City/Regional Leader',
+        tenure: ai.governance.leader.since ? `Since ${ai.governance.leader.since}` : 'Current Term',
+        achievements: ai.governance.departments || ['See government sources'],
+        rating: 75,
+        fullBio: `${ai.governance.leader.name} serves as ${ai.governance.leader.title}${ai.governance.leader.party ? ` (${ai.governance.leader.party})` : ''}.`,
+        sourceUrl: '',
+        photoVerified: false,
+        internationalEngagementFocus: false
+      });
+    }
+
+    // Build profile from AI intelligence
+    const profile: CityProfile = {
+      id: data.researchId || `ai-research-${Date.now()}`,
+      city: locationQuery.split(',')[0].trim(),
+      region: geo?.state || ai.governance?.administrativeLevel || '',
+      country: geo?.country || '',
+      latitude: geo?.lat || 0,
+      longitude: geo?.lon || 0,
+      timezone: 'UTC+0', // Could be enhanced
+      established: ai.overview?.established || 'See historical records',
+      areaSize: ai.demographics?.area || 'See geographic sources',
+      climate: ai.geography?.climate || 'Regional climate',
+      currency: 'National Currency',
+      businessHours: '8:00 AM - 5:00 PM local time',
+      globalMarketAccess: ai.overview?.significance || 'Regional market access',
+      departments: ai.governance?.departments || ['City Government'],
+      easeOfDoingBusiness: ai.investment?.easeOfBusiness || 'See World Bank Report',
+
+      // Scores from AI
+      engagementScore: Math.round((ai.scores?.investmentMomentum || 50) * 0.8 + 20),
+      overlookedScore: 40,
+      infrastructureScore: ai.scores?.infrastructure || 50,
+      regulatoryFriction: 100 - (ai.scores?.regulatoryEase || 50),
+      politicalStability: ai.scores?.politicalStability || 50,
+      laborPool: ai.scores?.laborPool || 50,
+      costOfDoing: 100 - (ai.scores?.costCompetitiveness || 50),
+      investmentMomentum: ai.scores?.investmentMomentum || 50,
+
+      // Content from AI
+      knownFor: ai.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || 
+                ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || 
+                ['Regional commerce'],
+      strategicAdvantages: ai.competitiveAdvantages || ['Strategic location'],
+      keySectors: ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || ['Services'],
+      investmentPrograms: ai.investment?.incentives || ['See investment office'],
+      foreignCompanies: ai.economy?.majorEmployers || ['See Chamber of Commerce'],
+
+      leaders,
+
+      demographics: {
+        population: ai.demographics?.population || 'Population data pending',
+        populationGrowth: ai.demographics?.populationGrowth || 'Growth data pending',
+        medianAge: ai.demographics?.medianAge || 'Age data pending',
+        literacyRate: ai.education?.literacyRate || 'Literacy data pending',
+        workingAgePopulation: 'Labor force data pending',
+        universitiesColleges: ai.education?.universities?.length || 0,
+        graduatesPerYear: 'Education data pending',
+        languages: ai.demographics?.languages
+      },
+
+      economics: {
+        gdpLocal: ai.economy?.gdpLocal || wb['GDP (current US$)']?.value ? 
+          `$${(wb['GDP (current US$)'].value / 1e9).toFixed(2)}B (${wb['GDP (current US$)'].year})` : 
+          'Economic data pending',
+        gdpGrowthRate: ai.economy?.gdpGrowth || wb['GDP Growth (annual %)']?.value ?
+          `${wb['GDP Growth (annual %)'].value.toFixed(2)}%` :
+          'Growth data pending',
+        employmentRate: ai.economy?.unemployment ? `${100 - parseFloat(ai.economy.unemployment)}% (inverse of unemployment)` : 'Employment data pending',
+        avgIncome: ai.economy?.averageIncome || 'Income data pending',
+        exportVolume: 'Trade data pending',
+        majorIndustries: ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || [],
+        topExports: ai.economy?.exports || [],
+        tradePartners: ai.economy?.tradePartners || []
+      },
+
+      infrastructure: {
+        airports: ai.infrastructure?.airports?.map((a: any) => ({
+          name: typeof a === 'string' ? a : `${a.name}${a.code ? ` (${a.code})` : ''}`,
+          type: a.type || 'Airport'
+        })) || [{ name: 'See aviation authority', type: 'Airport' }],
+        seaports: ai.infrastructure?.seaports?.map((p: any) => ({
+          name: typeof p === 'string' ? p : p.name,
+          type: p.type || 'Port'
+        })) || [{ name: 'See port authority', type: 'Port' }],
+        specialEconomicZones: ai.economy?.economicZones || ['Contact investment office'],
+        powerCapacity: ai.infrastructure?.powerCapacity || 'See utility provider',
+        internetPenetration: ai.infrastructure?.internetPenetration || 
+          (wb['Internet Users (%)']?.value ? `${wb['Internet Users (%)'].value.toFixed(1)}%` : 'Connectivity data pending')
+      },
+
+      governmentLinks: [],
+
+      recentNews: ai.recentDevelopments?.map((d: any) => ({
+        date: d.date || new Date().toISOString().split('T')[0],
+        title: d.title,
+        summary: d.description,
+        source: 'AI Research',
+        link: '#'
+      })) || []
+    };
+
+    // Build data quality report
+    const dataQuality: DataQualityReport = {
+      completeness: ai.dataQuality?.completeness || 75,
+      governmentSourcesUsed: sources.filter(s => s.type === 'government').length,
+      internationalSourcesUsed: sources.filter(s => s.type === 'worldbank' || s.type === 'international').length + 1,
+      newsSourcesUsed: ai.recentDevelopments?.length || 0,
+      dataFreshness: ai.dataQuality?.freshness || new Date().toISOString().split('T')[0],
+      leaderDataVerified: !!ai.governance?.leader?.name,
+      primarySourcePercentage: 60,
+      conflictsDetected: 0,
+      conflictsResolved: 0
+    };
+
+    // Build enhanced narratives from AI
+    const narratives: EnhancedNarratives = {
+      overview: {
+        title: 'Location Overview',
+        introduction: ai.overview?.significance || `${profile.city} is a strategic location in ${profile.country}.`,
+        paragraphs: [{
+          text: ai.overview?.description || `${profile.city} serves as a hub for regional commerce and development.`,
+          citations: sources.slice(0, 2),
+          confidence: 0.85
+        }],
+        keyFacts: ai.competitiveAdvantages?.slice(0, 5) || [],
+        conclusion: `Research compiled from AI synthesis and ${sources.length} data sources.`
+      },
+      history: {
+        title: 'Historical Context',
+        introduction: `${profile.city} was established ${profile.established}.`,
+        paragraphs: [],
+        keyFacts: [],
+        conclusion: 'See historical records for detailed timeline.'
+      },
+      geography: {
+        title: 'Geographic Context',
+        introduction: `Located at ${profile.latitude}°, ${profile.longitude}° in ${profile.country}.`,
+        paragraphs: [],
+        keyFacts: [
+          `Coordinates: ${profile.latitude}°, ${profile.longitude}°`,
+          `Climate: ${profile.climate}`,
+          `Region: ${profile.region}`
+        ],
+        conclusion: 'Geographic positioning supports regional connectivity.'
+      },
+      economy: {
+        title: 'Economic Profile',
+        introduction: ai.economy?.gdpLocal || 'Economic data available from World Bank sources.',
+        paragraphs: [{
+          text: `Key industries include ${profile.keySectors.join(', ')}. Major employers: ${profile.foreignCompanies.slice(0, 3).join(', ')}.`,
+          citations: sources.filter(s => s.type === 'worldbank'),
+          confidence: 0.8
+        }],
+        keyFacts: [
+          `GDP: ${profile.economics.gdpLocal}`,
+          `Growth: ${profile.economics.gdpGrowthRate}`,
+          `Key Sectors: ${profile.keySectors.slice(0, 3).join(', ')}`
+        ],
+        conclusion: 'Economic fundamentals support investment consideration.'
+      },
+      governance: {
+        title: 'Governance & Leadership',
+        introduction: `${profile.city} operates under ${profile.country}'s governance framework.`,
+        paragraphs: leaders.length > 0 ? [{
+          text: `Current leadership: ${leaders[0].name} (${leaders[0].role}). ${leaders[0].fullBio}`,
+          citations: [],
+          confidence: ai.governance?.leader?.name ? 0.8 : 0.5
+        }] : [],
+        keyFacts: profile.departments,
+        conclusion: 'See official government channels for current information.'
+      },
+      infrastructure: {
+        title: 'Infrastructure & Connectivity',
+        introduction: 'Transportation and utilities infrastructure supports business operations.',
+        paragraphs: [{
+          text: `Airports: ${profile.infrastructure.airports.map(a => a.name).join(', ')}. Ports: ${profile.infrastructure.seaports.map(p => p.name).join(', ')}. Internet: ${profile.infrastructure.internetPenetration}.`,
+          citations: [],
+          confidence: 0.75
+        }],
+        keyFacts: [
+          `Internet: ${profile.infrastructure.internetPenetration}`,
+          `Power: ${profile.infrastructure.powerCapacity}`
+        ],
+        conclusion: 'Infrastructure assessment indicates operational readiness.'
+      },
+      investment: {
+        title: 'Investment Case',
+        introduction: ai.investment?.climate || 'Investment opportunities available.',
+        paragraphs: [{
+          text: ai.investment?.opportunities?.join('. ') || 'Contact local investment promotion office for details.',
+          citations: [],
+          confidence: 0.7
+        }],
+        keyFacts: ai.investment?.incentives || ['See investment office'],
+        conclusion: ai.investment?.challenges ? `Challenges to consider: ${ai.investment.challenges.join(', ')}` : 'Due diligence recommended.'
+      },
+      risks: {
+        title: 'Risk Assessment',
+        introduction: 'Risk profile based on available indicators.',
+        paragraphs: [{
+          text: `Political: ${ai.risks?.political || 'See regional analysis'}. Economic: ${ai.risks?.economic || 'Monitor local conditions'}. Natural: ${ai.risks?.natural || 'Check disaster preparedness'}.`,
+          citations: [],
+          confidence: 0.7
+        }],
+        keyFacts: [
+          `Political Stability: ${profile.politicalStability}/100`,
+          `Regulatory Friction: ${profile.regulatoryFriction}/100`
+        ],
+        conclusion: 'Risk mitigation strategies recommended for implementation.'
+      },
+      opportunities: {
+        title: 'Growth Opportunities',
+        introduction: 'Identified opportunities based on market analysis.',
+        paragraphs: [{
+          text: ai.investment?.opportunities?.join('. ') || 'Growth sectors identified in regional analysis.',
+          citations: [],
+          confidence: 0.75
+        }],
+        keyFacts: ai.competitiveAdvantages?.slice(0, 4) || [],
+        conclusion: 'Strategic opportunities align with regional development trends.'
+      }
+    };
+
+    // Build similar cities
+    const similarCities: SimilarCity[] = ai.similarLocations?.map((loc: any) => ({
+      city: loc.name,
+      country: loc.country,
+      region: '',
+      similarity: 0.7,
+      reason: loc.similarity,
+      keyMetric: loc.keyDifference || 'Economic profile'
+    })) || [];
+
+    onProgress?.({
+      stage: 'Complete',
+      progress: 100,
+      message: `AI-enhanced research complete: ${sources.length} sources, ${dataQuality.completeness}% completeness`
+    });
+
+    const result: MultiSourceResult = {
+      profile,
+      narratives,
+      sources,
+      similarCities,
+      dataQuality,
+      researchSummary: `AI-enhanced research completed with ${sources.length} sources. ${ai.dataQuality?.confidence || 'Medium'} confidence. Data freshness: ${dataQuality.dataFreshness}.`,
+      researchSession: {
+        id: data.researchId || `ai-${Date.now()}`,
+        iterations: 1,
+        totalTime: Date.now() - (new Date(data.timestamp).getTime() || Date.now()),
+        completenessScore: dataQuality.completeness
+      }
+    };
+
+    // Cache the result
+    await locationResearchCache.saveFullResult(locationQuery, result);
+
+    return result;
+
+  } catch (error) {
+    console.warn('Backend AI research failed, falling back to frontend:', error);
+    return null;
+  }
+}
+
 // ==================== ENHANCED RESEARCH SERVICE ====================
 
 /**
@@ -133,6 +496,25 @@ export async function multiSourceResearch(
       });
       return cachedResult;
     }
+
+    // TRY BACKEND AI-ENHANCED RESEARCH FIRST
+    onProgress?.({
+      stage: 'AI Research',
+      progress: 5,
+      message: 'Initiating AI-enhanced research...'
+    });
+
+    const backendResult = await tryBackendResearch(locationQuery, onProgress);
+    if (backendResult) {
+      return backendResult;
+    }
+
+    // FALLBACK: Frontend-only research if backend unavailable
+    onProgress?.({
+      stage: 'Fallback Research',
+      progress: 10,
+      message: 'Using standard research pipeline...'
+    });
 
     // Create research session
     const session = autonomousResearchAgent.createSession(locationQuery);

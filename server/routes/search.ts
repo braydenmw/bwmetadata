@@ -14,6 +14,7 @@
  */
 
 import express, { Request, Response, Router } from 'express';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const router: Router = express.Router();
 
@@ -445,5 +446,299 @@ router.get('/indicators/:country', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Failed to fetch indicators' });
   }
 });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LOCATION INTELLIGENCE - AI-Enhanced Location Research (uses Gemini)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * POST /api/search/location-intelligence
+ * Comprehensive AI-powered location research using Gemini
+ */
+router.post('/location-intelligence', async (req: Request, res: Response) => {
+  try {
+    const { location } = req.body;
+
+    if (!location) {
+      return res.status(400).json({ error: 'Location is required' });
+    }
+
+    console.log(`[Location Intelligence] Researching: ${location}`);
+
+    // Get basic data from public APIs first
+    const [geoData, wikiData] = await Promise.all([
+      fetchLocationGeocoding(location),
+      fetchLocationWikipedia(location)
+    ]);
+
+    // Get World Bank data if we have country code
+    let economicData = null;
+    if (geoData?.countryCode) {
+      economicData = await fetchLocationWorldBank(geoData.countryCode);
+    }
+
+    // Use Gemini for comprehensive synthesis
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    
+    if (!GEMINI_API_KEY) {
+      console.warn('[Location Intelligence] No GEMINI_API_KEY - returning basic data only');
+      return res.json({
+        location,
+        geocoding: geoData,
+        wikipedia: wikiData,
+        economics: economicData,
+        aiEnhanced: false,
+        message: 'Basic data only - AI enhancement requires GEMINI_API_KEY'
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+    const prompt = `You are a world-class location intelligence analyst. Provide comprehensive, accurate intelligence about: "${location}"
+
+CONTEXT DATA (use as foundation, expand with your knowledge):
+- Wikipedia: ${wikiData || 'Not available'}
+- Coordinates: ${geoData ? `${geoData.lat}, ${geoData.lon}` : 'Unknown'}
+- Country: ${geoData?.country || 'Unknown'}
+- Economic Data: ${JSON.stringify(economicData || {})}
+
+Return a detailed JSON response with REAL data (not placeholders). Use actual names, numbers, and facts:
+
+{
+  "overview": {
+    "description": "3 comprehensive paragraphs about this location - its history, current status, and future outlook",
+    "significance": "Strategic and economic importance - why investors/businesses should care",
+    "established": "Year or era established",
+    "nicknames": ["Common nicknames or titles"]
+  },
+  "demographics": {
+    "population": "Current population with year (e.g., '245,000 (2023)')",
+    "populationGrowth": "Annual growth rate (e.g., '1.2%')",
+    "medianAge": "Median age (e.g., '34 years')",
+    "urbanization": "Urban percentage",
+    "languages": ["Languages spoken"],
+    "ethnicGroups": ["Major ethnic groups if notable"]
+  },
+  "governance": {
+    "leader": {
+      "name": "ACTUAL current mayor/governor/leader name",
+      "title": "Official title",
+      "since": "Year took office",
+      "party": "Political party if applicable"
+    },
+    "type": "Government/administrative type",
+    "departments": ["Key government departments"],
+    "administrativeLevel": "How it fits in national structure"
+  },
+  "economy": {
+    "gdpLocal": "Local/regional GDP or economic output",
+    "gdpGrowth": "Recent growth rate",
+    "mainIndustries": [
+      {"name": "Industry name", "description": "Brief description of scale/importance"}
+    ],
+    "majorEmployers": ["Actual company names that are major employers"],
+    "unemployment": "Unemployment rate",
+    "averageIncome": "Average income/wage data",
+    "economicZones": ["Special economic zones if any"],
+    "exports": ["Major export products"],
+    "tradePartners": ["Key trading partners"]
+  },
+  "infrastructure": {
+    "airports": [{"name": "Actual airport name", "code": "IATA code", "type": "International/Regional/Domestic"}],
+    "seaports": [{"name": "Actual port name", "type": "Container/Bulk/Passenger"}],
+    "railways": "Railway connectivity description",
+    "roads": "Major highways/road networks",
+    "publicTransit": "Public transit systems available",
+    "internetPenetration": "Internet access percentage",
+    "powerCapacity": "Power infrastructure description",
+    "waterSupply": "Water infrastructure"
+  },
+  "investment": {
+    "climate": "Overall investment climate - 2-3 sentences",
+    "incentives": ["Specific available investment incentives"],
+    "fdiTrends": "Foreign direct investment trends",
+    "opportunities": ["Top 5 specific investment opportunities"],
+    "challenges": ["Key investment challenges to consider"],
+    "easeOfBusiness": "Ease of doing business context"
+  },
+  "education": {
+    "universities": [{"name": "Actual university name", "ranking": "National/regional ranking if notable", "specialties": ["Key programs"]}],
+    "vocationalSchools": ["Technical/vocational institutions"],
+    "literacyRate": "Literacy rate percentage",
+    "workforceSkills": "Workforce skill level description"
+  },
+  "recentDevelopments": [
+    {"date": "2024 or 2025", "title": "Specific development title", "description": "What happened", "impact": "Economic/business impact"}
+  ],
+  "risks": {
+    "political": "Political risk assessment - specific concerns",
+    "economic": "Economic risk factors",
+    "natural": "Natural disaster risks specific to this area",
+    "regulatory": "Regulatory challenges or changes"
+  },
+  "competitiveAdvantages": ["5-7 specific strategic advantages"],
+  "developmentNeeds": ["3-5 areas needing development or improvement"],
+  "similarLocations": [
+    {"name": "Similar city/region", "country": "Country", "similarity": "Why similar", "keyDifference": "Main difference"}
+  ],
+  "scores": {
+    "infrastructure": 65,
+    "politicalStability": 70,
+    "laborPool": 60,
+    "investmentMomentum": 55,
+    "regulatoryEase": 50,
+    "costCompetitiveness": 60
+  },
+  "dataSources": ["List authoritative sources for this data"],
+  "dataQuality": {
+    "completeness": 85,
+    "freshness": "2024-2025",
+    "confidence": "High/Medium/Low with brief explanation"
+  }
+}
+
+CRITICAL:
+- Use REAL, ACCURATE data - actual names, numbers, facts
+- For leaders, use the CURRENT leader as of your knowledge
+- Include actual company names, airport codes (like MEL, SYD), university names
+- Be specific about economic figures
+- If uncertain, provide best estimate with "(estimated)" note
+- Return ONLY valid JSON, no markdown code blocks or explanation text`;
+
+    console.log('[Location Intelligence] Calling Gemini AI...');
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+    
+    let aiIntelligence = null;
+    try {
+      // Extract JSON from response (handle potential markdown)
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        aiIntelligence = JSON.parse(jsonMatch[0]);
+        console.log('[Location Intelligence] AI response parsed successfully');
+      }
+    } catch (parseError) {
+      console.warn('[Location Intelligence] Failed to parse AI JSON:', parseError);
+    }
+
+    return res.json({
+      location,
+      geocoding: geoData,
+      wikipedia: wikiData,
+      worldBank: economicData,
+      aiIntelligence,
+      aiEnhanced: !!aiIntelligence,
+      timestamp: new Date().toISOString(),
+      researchId: `research-${Date.now()}`
+    });
+
+  } catch (error) {
+    console.error('[Location Intelligence] Error:', error);
+    return res.status(500).json({ 
+      error: 'Location intelligence research failed',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Helper: Geocoding with country extraction
+async function fetchLocationGeocoding(location: string): Promise<{
+  lat: number;
+  lon: number;
+  displayName: string;
+  country: string;
+  countryCode: string;
+  state?: string;
+  type: string;
+} | null> {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json&addressdetails=1&limit=1`,
+      { headers: { 'User-Agent': 'BWGA-Intelligence/1.0' } }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      if (data[0]) {
+        return {
+          lat: parseFloat(data[0].lat),
+          lon: parseFloat(data[0].lon),
+          displayName: data[0].display_name,
+          country: data[0].address?.country || '',
+          countryCode: (data[0].address?.country_code || '').toUpperCase(),
+          state: data[0].address?.state || data[0].address?.province,
+          type: data[0].type
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('[Geocoding] Failed:', error);
+  }
+  return null;
+}
+
+// Helper: Wikipedia with extended extract
+async function fetchLocationWikipedia(location: string): Promise<string | null> {
+  try {
+    const searchRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(location)}&format=json&origin=*&srlimit=1`
+    );
+    if (searchRes.ok) {
+      const searchData = await searchRes.json();
+      if (searchData.query?.search?.[0]) {
+        const title = searchData.query.search[0].title;
+        const extractRes = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&format=json&origin=*`
+        );
+        if (extractRes.ok) {
+          const extractData = await extractRes.json();
+          const pages = extractData.query?.pages;
+          const page = Object.values(pages)[0] as { extract?: string };
+          // Get first 3000 chars for good context
+          return page?.extract?.substring(0, 3000) || null;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('[Wikipedia] Failed:', error);
+  }
+  return null;
+}
+
+// Helper: World Bank economic indicators
+async function fetchLocationWorldBank(countryCode: string): Promise<Record<string, { value: number; year: string }> | null> {
+  const indicators = [
+    { code: 'NY.GDP.MKTP.CD', name: 'GDP (current US$)' },
+    { code: 'NY.GDP.MKTP.KD.ZG', name: 'GDP Growth (annual %)' },
+    { code: 'NY.GDP.PCAP.CD', name: 'GDP per capita' },
+    { code: 'SP.POP.TOTL', name: 'Population' },
+    { code: 'SL.UEM.TOTL.ZS', name: 'Unemployment Rate' },
+    { code: 'IT.NET.USER.ZS', name: 'Internet Users (%)' },
+    { code: 'BX.KLT.DINV.CD.WD', name: 'Foreign Direct Investment' }
+  ];
+  
+  const results: Record<string, { value: number; year: string }> = {};
+  
+  await Promise.all(indicators.map(async (ind) => {
+    try {
+      const res = await fetch(
+        `https://api.worldbank.org/v2/country/${countryCode}/indicator/${ind.code}?format=json&per_page=1`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data[1]?.[0]?.value !== null) {
+          results[ind.name] = { 
+            value: data[1][0].value, 
+            year: data[1][0].date 
+          };
+        }
+      }
+    } catch (e) {
+      // Individual indicator failure is OK
+    }
+  }));
+  
+  return Object.keys(results).length > 0 ? results : null;
+}
 
 export default router;
