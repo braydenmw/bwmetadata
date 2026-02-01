@@ -126,6 +126,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
                     </p>
                     
+                    {/* Global Coverage Banner */}
+                    <div className="mt-8 inline-block bg-gradient-to-r from-amber-500/10 to-amber-500/5 border border-amber-500/40 rounded-xl px-6 md:px-8 py-4 backdrop-blur-sm">
+                        <div className="flex items-center justify-center gap-3 mb-2">
+                            <Globe className="w-5 h-5 text-amber-400" />
+                            <p className="text-lg md:text-xl font-semibold text-white">Global Coverage</p>
+                        </div>
+                        <p className="text-amber-300 font-semibold">190+ Countries • Real-Time Data</p>
+                        <p className="text-sm text-white/70 mt-3">For full access and live AI assistant, please accept the T&C then click the Launch button below</p>
+                    </div>
                 </div>
             </section>
 
@@ -1028,6 +1037,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* LAUNCH SECTION */}
             <section id="launch" className="py-16 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
                 <div className="max-w-4xl mx-auto">
+                    {/* Access Instructions Banner */}
+                    <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 rounded-2xl p-6 md:p-8 mb-8">
+                        <div className="flex items-start gap-4">
+                            <Globe className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
+                            <div className="text-left">
+                                <h3 className="text-lg font-semibold text-white mb-2">Global Coverage • 190+ Countries • Real-Time Data</h3>
+                                <p className="text-white/80 mb-2">For full access to live AI assistant and global location intelligence:</p>
+                                <ol className="space-y-1 text-sm text-white/70">
+                                    <li><strong>1.</strong> Review the Terms of Engagement below</li>
+                                    <li><strong>2.</strong> Accept the Terms & Conditions (checkbox)</li>
+                                    <li><strong>3.</strong> Click the "Launch Intelligence OS" button</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 text-center mb-8">
                         <h2 className="text-xl md:text-2xl font-light mb-4">Ready to Experience the Platform?</h2>
                         <p className="text-sm text-white/70 mb-6">
