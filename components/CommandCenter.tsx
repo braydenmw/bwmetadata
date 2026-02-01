@@ -640,19 +640,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* LAUNCH & TERMS - Part of Intelligence Pipeline */}
                     <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 rounded-2xl p-6 md:p-8 mb-8">
-                        <div className="flex items-start gap-4 mb-6">
-                            <Globe className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
-                            <div className="text-left flex-1">
-                                <h3 className="text-lg font-semibold text-white mb-3">Global Coverage • 190+ Countries • Real-Time Data</h3>
-                                <p className="text-white/80 mb-4">For full access to live AI assistant and global location intelligence:</p>
-                                <ol className="space-y-2 text-sm text-white/70 ml-4 list-decimal">
-                                    <li>Review the Terms of Engagement below</li>
-                                    <li>Accept the Terms & Conditions (checkbox)</li>
-                                    <li>Click the "Launch Intelligence OS" button</li>
-                                </ol>
-                            </div>
-                        </div>
-
                         {/* Terms of Engagement */}
                         <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 text-left">
                             <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
