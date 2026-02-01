@@ -638,6 +638,68 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
+                    {/* LAUNCH & TERMS - Part of Intelligence Pipeline */}
+                    <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 rounded-2xl p-6 md:p-8 mb-8">
+                        <div className="flex items-start gap-4 mb-6">
+                            <Globe className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
+                            <div className="text-left flex-1">
+                                <h3 className="text-lg font-semibold text-white mb-3">Global Coverage • 190+ Countries • Real-Time Data</h3>
+                                <p className="text-white/80 mb-4">For full access to live AI assistant and global location intelligence:</p>
+                                <ol className="space-y-2 text-sm text-white/70 ml-4 list-decimal">
+                                    <li>Review the Terms of Engagement below</li>
+                                    <li>Accept the Terms & Conditions (checkbox)</li>
+                                    <li>Click the "Launch Intelligence OS" button</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        {/* Terms of Engagement */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 text-left">
+                            <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
+                                <Shield size={14} className="text-amber-400" />
+                                Terms of Engagement
+                            </h4>
+                            <div className="max-h-32 overflow-y-auto space-y-2 text-xs text-white/60 pr-2">
+                                <p><strong className="text-white/80">1. Strategic Decision Support:</strong> BW AI is a decision support platform. All outputs are advisory.</p>
+                                <p><strong className="text-white/80">2. Reasoning Governance:</strong> NSIL layer governs analysis via adversarial input screening.</p>
+                                <p><strong className="text-white/80">3. Data Privacy:</strong> Strict compliance with GDPR, Australian Privacy Act.</p>
+                                <p><strong className="text-white/80">4. Accountability:</strong> Users retain final accountability for decisions.</p>
+                            </div>
+                        </div>
+
+                        {/* T&C Checkbox */}
+                        <div className="flex items-start gap-3 mb-6 text-left">
+                            <input 
+                                type="checkbox" 
+                                id="acceptTerms" 
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
+                                className="mt-0.5 w-4 h-4 rounded border-white/30 bg-transparent text-amber-400 focus:ring-amber-400 cursor-pointer"
+                            />
+                            <label htmlFor="acceptTerms" className="text-xs text-white/60 cursor-pointer">
+                                By accessing the platform, you agree to our <strong className="text-white">Terms & Conditions</strong>
+                            </label>
+                        </div>
+
+                        {/* Launch Button */}
+                        <button 
+                            disabled={!termsAccepted}
+                            onClick={() => termsAccepted && onEnterPlatform?.()}
+                            className={`w-full py-4 rounded-xl text-base font-semibold transition-all flex items-center justify-center gap-2 ${
+                                termsAccepted 
+                                    ? 'bg-amber-500 text-black hover:bg-amber-400 cursor-pointer' 
+                                    : 'bg-white/10 text-white/30 cursor-not-allowed'
+                            }`}
+                        >
+                            Launch Intelligence OS
+                            <ArrowRight size={20} />
+                        </button>
+
+                        <p className="text-sm text-white/60 mt-4 text-center">
+                            Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
+                        </p>
+                    </div>
+
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
                         <p className="text-sm text-white/70 leading-relaxed mb-4">
                             Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>
@@ -1034,74 +1096,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* LAUNCH SECTION */}
-            <section id="launch" className="py-16 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
+            {/* FOOTER INFO SECTION */}
+            <section id="footer-info" className="py-16 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
                 <div className="max-w-4xl mx-auto">
-                    {/* Access Instructions Banner */}
-                    <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/40 rounded-2xl p-6 md:p-8 mb-8">
-                        <div className="flex items-start gap-4">
-                            <Globe className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
-                            <div className="text-left">
-                                <h3 className="text-lg font-semibold text-white mb-2">Global Coverage • 190+ Countries • Real-Time Data</h3>
-                                <p className="text-white/80 mb-2">For full access to live AI assistant and global location intelligence:</p>
-                                <ol className="space-y-1 text-sm text-white/70">
-                                    <li><strong>1.</strong> Review the Terms of Engagement below</li>
-                                    <li><strong>2.</strong> Accept the Terms & Conditions (checkbox)</li>
-                                    <li><strong>3.</strong> Click the "Launch Intelligence OS" button</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 text-center mb-8">
-                        <h2 className="text-xl md:text-2xl font-light mb-4">Ready to Experience the Platform?</h2>
-                        <p className="text-sm text-white/70 mb-6">
-                            Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
-                        </p>
-
-                        {/* Terms */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 text-left">
-                            <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
-                                <Shield size={14} className="text-amber-400" />
-                                Terms of Engagement
-                            </h4>
-                            <div className="max-h-32 overflow-y-auto space-y-2 text-xs text-white/60 pr-2">
-                                <p><strong className="text-white/80">1. Strategic Decision Support:</strong> BW AI is a decision support platform. All outputs are advisory.</p>
-                                <p><strong className="text-white/80">2. Reasoning Governance:</strong> NSIL layer governs analysis via adversarial input screening.</p>
-                                <p><strong className="text-white/80">3. Data Privacy:</strong> Strict compliance with GDPR, Australian Privacy Act.</p>
-                                <p><strong className="text-white/80">4. Accountability:</strong> Users retain final accountability for decisions.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3 mb-6 text-left">
-                            <input 
-                                type="checkbox" 
-                                id="acceptTerms" 
-                                checked={termsAccepted}
-                                onChange={(e) => setTermsAccepted(e.target.checked)}
-                                className="mt-0.5 w-4 h-4 rounded border-white/30 bg-transparent text-amber-400 focus:ring-amber-400 cursor-pointer"
-                            />
-                            <label htmlFor="acceptTerms" className="text-xs text-white/60 cursor-pointer">
-                                By accessing the platform, you agree to our <strong className="text-white">Terms & Conditions</strong>
-                            </label>
-                        </div>
-
-                        <button 
-                            disabled={!termsAccepted}
-                            onClick={() => termsAccepted && onEnterPlatform?.()}
-                            className={`w-full py-4 rounded-xl text-base font-semibold transition-all flex items-center justify-center gap-2 ${
-                                termsAccepted 
-                                    ? 'bg-amber-500 text-black hover:bg-amber-400 cursor-pointer' 
-                                    : 'bg-white/10 text-white/30 cursor-not-allowed'
-                            }`}
-                        >
-                            Launch Intelligence OS
-                            <ArrowRight size={20} />
-                        </button>
-                    </div>
-
-                    {/* Footer Info */}
-                    <div className="grid md:grid-cols-2 gap-6 text-sm">
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                             <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">BWGA Intelligence AI</h4>
                             <p className="text-xs text-white/60 mb-4">
@@ -1125,7 +1122,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                     </div>
-                </div>
             </section>
 
             {/* Footer */}
