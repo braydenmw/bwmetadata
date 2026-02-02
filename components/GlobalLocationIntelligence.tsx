@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2 } from 'lucide-react';
+import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2, AlertTriangle, Leaf, Scale, TrendingDown, Info } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService_v2';
@@ -826,6 +826,118 @@ th { background: #f1f5f9; }
                   </button>
                 </div>
               </div>
+
+              {/* ===================== EXECUTIVE SUMMARY ===================== */}
+              <div className="bg-gradient-to-br from-amber-500/10 via-slate-900/50 to-purple-500/10 border border-amber-500/30 rounded-2xl p-6 mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">Executive Summary</h3>
+                      <p className="text-xs text-slate-400">AI-Generated Intelligence Brief</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-slate-400">Report Generated</div>
+                    <div className="text-xs text-amber-300">{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                  </div>
+                </div>
+
+                {/* Key Metrics Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-amber-500/20">
+                    <div className="text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Overall Score</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-slate-700">
+                    <div className="text-2xl font-bold text-white">{activeProfile.infrastructureScore || 'N/A'}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Infrastructure</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-slate-700">
+                    <div className="text-2xl font-bold text-white">{activeProfile.politicalStability || 'N/A'}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Stability</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-slate-700">
+                    <div className="text-2xl font-bold text-white">{activeProfile.laborPool || 'N/A'}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Labor Pool</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-slate-700">
+                    <div className="text-2xl font-bold text-white">{activeProfile.investmentMomentum || 'N/A'}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Momentum</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-3 text-center border border-slate-700">
+                    <div className="text-2xl font-bold text-white">{100 - (activeProfile.regulatoryFriction || 50)}</div>
+                    <div className="text-[10px] text-slate-400 uppercase mt-1">Reg. Ease</div>
+                  </div>
+                </div>
+
+                {/* Current Leadership - PROMINENT */}
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 mb-4">
+                  <div className="text-[11px] uppercase tracking-wider text-purple-300 mb-3 font-semibold flex items-center gap-2">
+                    <Landmark className="w-4 h-4" /> Current Government Leadership
+                  </div>
+                  {activeProfile.leaders && activeProfile.leaders.length > 0 ? (
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {activeProfile.leaders.slice(0, 4).map((leader, idx) => (
+                        <div key={idx} className="flex items-center gap-3 p-3 bg-black/30 rounded-lg">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/40 to-purple-600/40 flex items-center justify-center text-lg font-bold text-white">
+                            {leader.name?.charAt(0) || '?'}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-white truncate">{leader.name || 'Not verified'}</div>
+                            <div className="text-xs text-purple-300">{leader.role}</div>
+                            <div className="text-[10px] text-slate-500">{leader.tenure}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-slate-400 p-3 bg-black/30 rounded-lg">
+                      Leadership data being compiled from official government sources...
+                    </div>
+                  )}
+                </div>
+
+                {/* Quick Facts Row */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">Population</div>
+                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.demographics?.population || 'See census data'}</div>
+                  </div>
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">GDP/Economic Output</div>
+                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.economics?.gdpLocal || 'See economic reports'}</div>
+                  </div>
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">Key Sectors</div>
+                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.keySectors?.slice(0, 2).join(', ') || 'Diversified'}</div>
+                  </div>
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">Coordinates</div>
+                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.latitude?.toFixed(2)}°, {activeProfile.longitude?.toFixed(2)}°</div>
+                  </div>
+                </div>
+
+                {/* Data Quality Indicator */}
+                {researchResult?.dataQuality && (
+                  <div className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-slate-700">
+                    <div className="flex items-center gap-3">
+                      <Shield className={`w-5 h-5 ${researchResult.dataQuality.completeness >= 70 ? 'text-emerald-400' : researchResult.dataQuality.completeness >= 40 ? 'text-amber-400' : 'text-red-400'}`} />
+                      <div>
+                        <div className="text-sm font-semibold text-white">Data Quality: {researchResult.dataQuality.completeness}%</div>
+                        <div className="text-xs text-slate-400">
+                          {researchResult.dataQuality.governmentSourcesUsed} govt • {researchResult.dataQuality.internationalSourcesUsed} int'l • {researchResult.dataQuality.newsSourcesUsed} news sources
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Freshness: {researchResult.dataQuality.dataFreshness || 'Current'}
+                    </div>
+                  </div>
+                )}
+              </div>
               
               {/* Overview Narrative - Use research result if available */}
               <div className="space-y-4 text-sm text-slate-300 leading-relaxed mb-6">
@@ -1566,6 +1678,112 @@ th { background: #f1f5f9; }
               </div>
             )}
 
+            {/* ===================== ENVIRONMENTAL MANAGEMENT SECTION ===================== */}
+            <div className="bg-[#0f0f0f] border border-emerald-500/20 rounded-2xl p-6">
+              <SectionHeader icon={Leaf} title="Environmental Management" color="text-emerald-400" />
+              <p className="text-xs text-slate-400 mb-4">
+                Natural resources, sustainability initiatives, and environmental factors affecting operations and quality of life.
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Natural Resources & Climate */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Globe className="w-4 h-4 text-cyan-400" />
+                    <h4 className="text-sm font-semibold text-cyan-300">Natural Resources & Climate</h4>
+                  </div>
+                  <div className="space-y-3 text-xs">
+                    <div className="flex justify-between p-2 bg-slate-800/50 rounded">
+                      <span className="text-slate-400">Climate Zone</span>
+                      <span className="font-semibold text-white">{activeProfile.climate || 'See climate data'}</span>
+                    </div>
+                    <div className="flex justify-between p-2 bg-slate-800/50 rounded">
+                      <span className="text-slate-400">Geographic Area</span>
+                      <span className="font-semibold text-white">{activeProfile.areaSize || 'See geographic data'}</span>
+                    </div>
+                    <div className="p-2 bg-slate-800/50 rounded">
+                      <div className="text-slate-400 mb-1">Coordinates</div>
+                      <div className="font-mono text-white">{activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sustainability & Green Infrastructure */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Leaf className="w-4 h-4 text-emerald-400" />
+                    <h4 className="text-sm font-semibold text-emerald-300">Sustainability Indicators</h4>
+                  </div>
+                  <div className="space-y-2 text-xs text-slate-300">
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>Power infrastructure: {activeProfile.infrastructure?.powerCapacity || 'See utilities data'}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>Internet connectivity: {activeProfile.infrastructure?.internetPenetration || 'High connectivity'}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>Special economic zones support sustainable development initiatives</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>Urban planning aligns with regional sustainability frameworks</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Environmental Risks */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                    <h4 className="text-sm font-semibold text-amber-300">Environmental Considerations</h4>
+                  </div>
+                  <div className="space-y-2 text-[11px] text-slate-400">
+                    {researchResult?.narratives?.risks ? (
+                      <p>{((researchResult.narratives.risks as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.[0]?.text as string || 'Environmental assessment data being compiled.'}</p>
+                    ) : (
+                      <>
+                        <p>• Assess local weather patterns and seasonal variations for operational planning</p>
+                        <p>• Review disaster preparedness and infrastructure resilience measures</p>
+                        <p>• Consider water availability and resource management policies</p>
+                        <p>• Evaluate air quality and environmental compliance requirements</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Waste & Resource Management */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Factory className="w-4 h-4 text-slate-400" />
+                    <h4 className="text-sm font-semibold text-slate-300">Infrastructure Quality</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-400">Infrastructure Score</span>
+                      <span className={`font-semibold ${(activeProfile.infrastructureScore || 50) >= 70 ? 'text-emerald-400' : (activeProfile.infrastructureScore || 50) >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {activeProfile.infrastructureScore || 50}/100
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${(activeProfile.infrastructureScore || 50) >= 70 ? 'bg-emerald-500' : (activeProfile.infrastructureScore || 50) >= 50 ? 'bg-amber-500' : 'bg-red-500'}`}
+                        style={{ width: `${activeProfile.infrastructureScore || 50}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-2">
+                      {(activeProfile.infrastructureScore || 50) >= 70 
+                        ? 'Well-developed infrastructure supporting sustainable operations.' 
+                        : (activeProfile.infrastructureScore || 50) >= 50 
+                          ? 'Moderate infrastructure development. Improvements ongoing.'
+                          : 'Infrastructure development in progress. Factor in upgrade timelines.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* ===================== INVESTMENT READINESS SCORES ===================== */}
             <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
               <SectionHeader icon={Target} title="Investment Readiness Scores" />
@@ -1576,6 +1794,147 @@ th { background: #f1f5f9; }
                 <ScoreBar label="Investment Momentum" value={activeProfile.investmentMomentum} />
                 <ScoreBar label="Regulatory Ease" value={100 - activeProfile.regulatoryFriction} />
                 <ScoreBar label="Cost Competitiveness" value={100 - activeProfile.costOfDoing} />
+              </div>
+            </div>
+
+            {/* ===================== RISK ASSESSMENT SECTION ===================== */}
+            <div className="bg-[#0f0f0f] border border-red-500/20 rounded-2xl p-6">
+              <SectionHeader icon={AlertTriangle} title="Risk Assessment" color="text-red-400" />
+              <p className="text-xs text-slate-400 mb-4">
+                Comprehensive risk analysis based on political, economic, environmental, and regulatory factors.
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Political Risk */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Landmark className="w-4 h-4 text-purple-400" />
+                    <h4 className="text-sm font-semibold text-purple-300">Political Risk</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-400">Stability Score</span>
+                      <span className={`font-semibold ${(activeProfile.politicalStability || 50) >= 60 ? 'text-emerald-400' : (activeProfile.politicalStability || 50) >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {activeProfile.politicalStability || 50}/100
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${(activeProfile.politicalStability || 50) >= 60 ? 'bg-emerald-500' : (activeProfile.politicalStability || 50) >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
+                        style={{ width: `${activeProfile.politicalStability || 50}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-2">
+                      {(activeProfile.politicalStability || 50) >= 70 
+                        ? 'Stable political environment with consistent policy direction.' 
+                        : (activeProfile.politicalStability || 50) >= 50 
+                          ? 'Moderate political risk. Monitor policy changes and elections.'
+                          : 'Higher political volatility. Consider political risk insurance.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Economic Risk */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <TrendingDown className="w-4 h-4 text-amber-400" />
+                    <h4 className="text-sm font-semibold text-amber-300">Economic Risk</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-400">Economic Health</span>
+                      <span className={`font-semibold ${(activeProfile.investmentMomentum || 50) >= 60 ? 'text-emerald-400' : (activeProfile.investmentMomentum || 50) >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {activeProfile.investmentMomentum || 50}/100
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${(activeProfile.investmentMomentum || 50) >= 60 ? 'bg-emerald-500' : (activeProfile.investmentMomentum || 50) >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
+                        style={{ width: `${activeProfile.investmentMomentum || 50}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-2">
+                      GDP Growth: {activeProfile.economics?.gdpGrowthRate || 'See economic data'}<br/>
+                      Unemployment: {activeProfile.economics?.employmentRate ? `${100 - parseFloat(activeProfile.economics.employmentRate)}% unemployment` : 'See labor data'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Natural/Environmental Risk */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Leaf className="w-4 h-4 text-emerald-400" />
+                    <h4 className="text-sm font-semibold text-emerald-300">Natural & Environmental</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-xs text-slate-300">
+                      <span className="text-slate-400">Climate Zone:</span> {activeProfile.climate || 'Regional climate'}
+                    </div>
+                    <div className="text-[11px] text-slate-400 space-y-1 mt-2">
+                      {researchResult?.narratives?.risks ? (
+                        <p>{((researchResult.narratives.risks as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.[0]?.text as string || 'Environmental risk data being compiled.'}</p>
+                      ) : (
+                        <>
+                          <p>• Consider local weather patterns and seasonal variations</p>
+                          <p>• Review disaster preparedness and infrastructure resilience</p>
+                          <p>• Assess water and resource availability</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Regulatory Risk */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Scale className="w-4 h-4 text-blue-400" />
+                    <h4 className="text-sm font-semibold text-blue-300">Regulatory Risk</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-400">Regulatory Friction</span>
+                      <span className={`font-semibold ${(activeProfile.regulatoryFriction || 50) <= 40 ? 'text-emerald-400' : (activeProfile.regulatoryFriction || 50) <= 60 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {activeProfile.regulatoryFriction || 50}/100
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${(activeProfile.regulatoryFriction || 50) <= 40 ? 'bg-emerald-500' : (activeProfile.regulatoryFriction || 50) <= 60 ? 'bg-amber-500' : 'bg-red-500'}`}
+                        style={{ width: `${100 - (activeProfile.regulatoryFriction || 50)}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-2">
+                      {(activeProfile.regulatoryFriction || 50) <= 30 
+                        ? 'Business-friendly regulatory environment with streamlined processes.' 
+                        : (activeProfile.regulatoryFriction || 50) <= 50 
+                          ? 'Moderate regulatory complexity. Standard compliance processes.'
+                          : 'Higher regulatory burden. Factor in additional compliance costs and timelines.'}
+                    </p>
+                    <div className="text-[10px] text-slate-500 mt-1">
+                      Ease of Business: {activeProfile.easeOfDoingBusiness || 'See World Bank data'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Overall Risk Summary */}
+              <div className="mt-4 p-4 bg-gradient-to-r from-red-500/10 to-amber-500/10 border border-red-500/20 rounded-xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="w-4 h-4 text-amber-400" />
+                  <span className="text-sm font-semibold text-white">Risk Mitigation Recommendations</span>
+                </div>
+                <ul className="text-[11px] text-slate-300 space-y-1">
+                  {(activeProfile.politicalStability || 50) < 60 && (
+                    <li>• Consider political risk insurance for long-term investments</li>
+                  )}
+                  {(activeProfile.regulatoryFriction || 50) > 50 && (
+                    <li>• Engage local legal counsel for regulatory navigation</li>
+                  )}
+                  {(activeProfile.investmentMomentum || 50) < 50 && (
+                    <li>• Monitor economic indicators and maintain flexible exit strategies</li>
+                  )}
+                  <li>• Conduct due diligence with local partners and government offices</li>
+                  <li>• Review bilateral investment treaties and investor protections</li>
+                </ul>
               </div>
             </div>
 
@@ -1854,52 +2213,281 @@ th { background: #f1f5f9; }
 
             {/* ===================== SIMILAR CITIES COMPARISON ===================== */}
             {researchResult?.similarCities && researchResult.similarCities.length > 0 && (
-              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+              <div className="bg-[#0f0f0f] border border-cyan-500/20 rounded-2xl p-6">
                 <button
                   onClick={() => toggleSection('similar')}
                   className="w-full flex items-center justify-between"
                 >
-                  <SectionHeader icon={Globe} title="Compare Similar Cities" color="text-cyan-400" />
+                  <SectionHeader icon={Globe} title="Comparable Locations Analysis" color="text-cyan-400" />
                   {expandedSections.similar ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
                 </button>
                 {expandedSections.similar && (
                   <div className="mt-4">
                     <p className="text-xs text-slate-400 mb-4">
-                      These cities share similar characteristics and may be relevant for comparison or alternative investment opportunities.
+                      Cities with similar economic profiles, demographics, or strategic characteristics. Use this analysis to evaluate alternatives or understand competitive positioning.
                     </p>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {researchResult.similarCities.map((similar: SimilarCity, idx: number) => (
+
+                    {/* Comparison Table */}
+                    <div className="overflow-x-auto mb-6">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-slate-700">
+                            <th className="text-left py-3 px-2 text-slate-400 font-semibold">Location</th>
+                            <th className="text-left py-3 px-2 text-slate-400 font-semibold">Country</th>
+                            <th className="text-center py-3 px-2 text-slate-400 font-semibold">Similarity</th>
+                            <th className="text-left py-3 px-2 text-slate-400 font-semibold">Why Similar</th>
+                            <th className="text-left py-3 px-2 text-slate-400 font-semibold">Key Difference</th>
+                            <th className="text-center py-3 px-2 text-slate-400 font-semibold">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Current Location Row */}
+                          <tr className="border-b border-amber-500/30 bg-amber-500/10">
+                            <td className="py-3 px-2">
+                              <div className="font-semibold text-amber-300">{activeProfile?.city}</div>
+                            </td>
+                            <td className="py-3 px-2 text-white">{activeProfile?.country}</td>
+                            <td className="py-3 px-2 text-center">
+                              <span className="text-amber-400 font-bold">Current</span>
+                            </td>
+                            <td className="py-3 px-2 text-slate-300">Base comparison location</td>
+                            <td className="py-3 px-2 text-slate-400">—</td>
+                            <td className="py-3 px-2 text-center">
+                              <span className="text-[10px] text-amber-300">Selected</span>
+                            </td>
+                          </tr>
+                          {/* Similar Cities Rows */}
+                          {researchResult.similarCities.map((similar: SimilarCity, idx: number) => (
+                            <tr key={idx} className="border-b border-slate-800 hover:bg-cyan-500/5 transition-colors">
+                              <td className="py-3 px-2">
+                                <div className="font-semibold text-white">{similar.city}</div>
+                                <div className="text-[10px] text-slate-500">{similar.region}</div>
+                              </td>
+                              <td className="py-3 px-2 text-slate-300">{similar.country}</td>
+                              <td className="py-3 px-2 text-center">
+                                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full ${
+                                  (similar.similarity || 0) >= 80 ? 'bg-emerald-500/20 text-emerald-400' :
+                                  (similar.similarity || 0) >= 60 ? 'bg-cyan-500/20 text-cyan-400' :
+                                  'bg-slate-700 text-slate-300'
+                                }`}>
+                                  <span className="text-lg font-bold">{similar.similarity || '—'}%</span>
+                                </div>
+                              </td>
+                              <td className="py-3 px-2 text-slate-300 max-w-[200px]">
+                                <p className="line-clamp-2">{similar.reason}</p>
+                              </td>
+                              <td className="py-3 px-2 text-cyan-300 max-w-[150px]">
+                                <p className="line-clamp-2">{similar.keyMetric}</p>
+                              </td>
+                              <td className="py-3 px-2 text-center">
+                                <button
+                                  onClick={() => handleSearchSubmit(`${similar.city}, ${similar.country}`)}
+                                  className="px-3 py-1.5 text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/30"
+                                >
+                                  Research →
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Visual Comparison Cards */}
+                    <div className="grid md:grid-cols-3 gap-4">
+                      {researchResult.similarCities.slice(0, 3).map((similar: SimilarCity, idx: number) => (
                         <button
                           key={idx}
                           onClick={() => handleSearchSubmit(`${similar.city}, ${similar.country}`)}
                           className="text-left p-4 border border-slate-800 rounded-xl hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all group"
                         >
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <div className="text-lg font-semibold text-white group-hover:text-cyan-300">
-                                {similar.city}
-                              </div>
-                              <div className="text-xs text-slate-400">{similar.region}, {similar.country}</div>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                              <Globe className="w-5 h-5 text-cyan-400" />
                             </div>
-                            <div className="text-right">
-                              <div className="text-lg font-bold text-cyan-400">{similar.similarity}%</div>
-                              <div className="text-[10px] text-slate-500">Similarity</div>
+                            <div className={`text-xl font-bold ${
+                              (similar.similarity || 0) >= 80 ? 'text-emerald-400' :
+                              (similar.similarity || 0) >= 60 ? 'text-cyan-400' :
+                              'text-slate-400'
+                            }`}>
+                              {similar.similarity || '—'}%
                             </div>
                           </div>
-                          <div className="mt-3 p-2 bg-black/30 rounded-lg">
-                            <div className="text-[11px] text-slate-300">{similar.reason}</div>
-                            <div className="text-[10px] text-cyan-300 mt-1">{similar.keyMetric}</div>
+                          <div className="text-lg font-semibold text-white group-hover:text-cyan-300">
+                            {similar.city}
                           </div>
-                          <div className="mt-2 text-[10px] text-cyan-300 flex items-center gap-1">
-                            <Search className="w-3 h-3" /> Click to research this city →
+                          <div className="text-xs text-slate-400 mb-2">{similar.country}</div>
+                          <div className="text-[11px] text-slate-300 line-clamp-2 mb-2">{similar.reason}</div>
+                          <div className="p-2 bg-black/30 rounded-lg">
+                            <div className="text-[10px] text-slate-500 uppercase">Key Difference</div>
+                            <div className="text-[11px] text-cyan-300 mt-1">{similar.keyMetric}</div>
                           </div>
                         </button>
                       ))}
+                    </div>
+
+                    {/* Comparison Methodology Note */}
+                    <div className="mt-4 p-3 bg-slate-900/50 border border-slate-800 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <Info className="w-4 h-4 text-slate-500 mt-0.5" />
+                        <div className="text-[11px] text-slate-400">
+                          <strong>Methodology:</strong> Similarity scores are calculated based on population size, economic output, key industries, 
+                          geographic location, and development stage. Higher scores indicate stronger alignment for comparison purposes.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
             )}
+
+            {/* ===================== DATA METHODOLOGY SECTION ===================== */}
+            <div className="bg-[#0f0f0f] border border-slate-500/20 rounded-2xl p-6">
+              <SectionHeader icon={Database} title="Data Collection Methodology" color="text-slate-400" />
+              <p className="text-xs text-slate-400 mb-6">
+                Understanding how this intelligence report was compiled and the sources used to verify information.
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Primary Data Sources */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Building2 className="w-4 h-4 text-emerald-400" />
+                    <h4 className="text-sm font-semibold text-emerald-300">Primary Sources (High Reliability)</h4>
+                  </div>
+                  <ul className="space-y-2 text-[11px] text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">✓</span>
+                      <span><strong>Government Portals:</strong> Official .gov websites, census bureaus, statistical offices</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">✓</span>
+                      <span><strong>World Bank:</strong> GDP, population, economic indicators, development data</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">✓</span>
+                      <span><strong>International Organizations:</strong> IMF, UN, OECD, ADB, regional development banks</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">✓</span>
+                      <span><strong>Investment Authorities:</strong> Trade offices, investment promotion agencies</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Secondary Data Sources */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <BookOpen className="w-4 h-4 text-amber-400" />
+                    <h4 className="text-sm font-semibold text-amber-300">Secondary Sources (Medium Reliability)</h4>
+                  </div>
+                  <ul className="space-y-2 text-[11px] text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">○</span>
+                      <span><strong>News Media:</strong> Major news outlets, business publications, local newspapers</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">○</span>
+                      <span><strong>Academic Sources:</strong> Research papers, university studies, think tanks</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">○</span>
+                      <span><strong>Encyclopedias:</strong> Wikipedia (cross-referenced with primary sources)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">○</span>
+                      <span><strong>Industry Reports:</strong> Market research, sector analyses</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Data Collection Methods */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Search className="w-4 h-4 text-blue-400" />
+                    <h4 className="text-sm font-semibold text-blue-300">Collection Methods</h4>
+                  </div>
+                  <ul className="space-y-2 text-[11px] text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">1.</span>
+                      <span><strong>API Integration:</strong> Direct data feeds from World Bank, OpenStreetMap, REST Countries</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">2.</span>
+                      <span><strong>AI Synthesis:</strong> Gemini AI processes and synthesizes data from multiple sources</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">3.</span>
+                      <span><strong>Cross-Verification:</strong> Data points verified against multiple authoritative sources</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">4.</span>
+                      <span><strong>Caching:</strong> Results cached locally for faster access and reduced API calls</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Data Quality Scoring */}
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Shield className="w-4 h-4 text-purple-400" />
+                    <h4 className="text-sm font-semibold text-purple-300">Quality Scoring System</h4>
+                  </div>
+                  <div className="space-y-3 text-[11px]">
+                    <div className="flex items-center justify-between p-2 bg-emerald-500/10 border border-emerald-500/30 rounded">
+                      <span className="text-emerald-300">★★★ High Reliability</span>
+                      <span className="text-emerald-400">Government, World Bank, Int'l Orgs</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-amber-500/10 border border-amber-500/30 rounded">
+                      <span className="text-amber-300">★★ Medium Reliability</span>
+                      <span className="text-amber-400">News, Research, Academia</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-slate-700/50 border border-slate-600 rounded">
+                      <span className="text-slate-300">★ Lower Reliability</span>
+                      <span className="text-slate-400">User content, unverified sources</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Verification Process */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl">
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-400" />
+                  <span className="text-sm font-semibold text-white">Verification Process</span>
+                </div>
+                <div className="grid md:grid-cols-4 gap-4 text-center">
+                  <div className="p-2">
+                    <div className="w-8 h-8 mx-auto mb-2 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold">1</div>
+                    <div className="text-[10px] text-slate-300">Query submitted to multi-source research engine</div>
+                  </div>
+                  <div className="p-2">
+                    <div className="w-8 h-8 mx-auto mb-2 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold">2</div>
+                    <div className="text-[10px] text-slate-300">Data fetched from APIs & authoritative sources</div>
+                  </div>
+                  <div className="p-2">
+                    <div className="w-8 h-8 mx-auto mb-2 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold">3</div>
+                    <div className="text-[10px] text-slate-300">AI synthesizes & cross-references information</div>
+                  </div>
+                  <div className="p-2">
+                    <div className="w-8 h-8 mx-auto mb-2 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold">4</div>
+                    <div className="text-[10px] text-slate-300">Quality score assigned & report generated</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Disclaimer */}
+              <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5" />
+                  <div className="text-[11px] text-amber-200">
+                    <strong>Important:</strong> This report is for informational purposes only. Data accuracy depends on source availability 
+                    and freshness. Always verify critical information with official government sources before making business or investment 
+                    decisions. Leadership information should be confirmed with official government websites.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         ) : null}
       </div>
