@@ -517,32 +517,13 @@ function transformAIToProfile(
   const scores = ai.scores as Record<string, number> || {};
   const dataQuality = ai.dataQuality as Record<string, unknown> || {};
   const leader = governance.leader as Record<string, unknown> || {};
-    const keyOfficials = (governance.keyOfficials as Array<Record<string, unknown>>) || [];
+  const keyOfficials = (governance.keyOfficials as Array<Record<string, unknown>>) || [];
   const contactDirectory = (ai.contactDirectory as Array<Record<string, string>>) || [];
 
   // Build leaders
   const leaders: CityLeader[] = [];
   if (leader.name && leader.name !== 'Unknown') {
     leaders.push({
-        keyOfficials.forEach((official, idx) => {
-          const name = official.name as string | undefined;
-          if (!name || name === 'Unknown') return;
-          const role = (official.title as string) || 'Government Official';
-          const alreadyIncluded = leaders.some(l => l.name === name && l.role === role);
-          if (alreadyIncluded) return;
-          leaders.push({
-            id: `leader-key-${idx}`,
-            name,
-            role,
-            tenure: official.since ? `Since ${official.since}` : 'Current Term',
-            achievements: (governance.departments as string[]) || ['Government leadership'],
-            rating: 75,
-            fullBio: `${name} serves as ${role}${official.party ? ` (${official.party})` : ''}.`,
-            sourceUrl: (official.sourceUrl as string) || '',
-            photoVerified: false,
-            internationalEngagementFocus: false
-          });
-        });
       id: 'leader-1',
       name: leader.name as string,
       role: leader.title as string || 'Government Leader',
@@ -555,6 +536,26 @@ function transformAIToProfile(
       internationalEngagementFocus: true
     });
   }
+
+  keyOfficials.forEach((official, idx) => {
+    const name = official.name as string | undefined;
+    if (!name || name === 'Unknown') return;
+    const role = (official.title as string) || 'Government Official';
+    const alreadyIncluded = leaders.some(l => l.name === name && l.role === role);
+    if (alreadyIncluded) return;
+    leaders.push({
+      id: `leader-key-${idx}`,
+      name,
+      role,
+      tenure: official.since ? `Since ${official.since}` : 'Current Term',
+      achievements: (governance.departments as string[]) || ['Government leadership'],
+      rating: 75,
+      fullBio: `${name} serves as ${role}${official.party ? ` (${official.party})` : ''}.`,
+      sourceUrl: (official.sourceUrl as string) || '',
+      photoVerified: false,
+      internationalEngagementFocus: false
+    });
+  });
 
   // Build profile
   const profile: CityProfile = {
