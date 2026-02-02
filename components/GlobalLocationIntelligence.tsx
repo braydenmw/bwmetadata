@@ -1170,6 +1170,207 @@ th { background: #f1f5f9; }
               </div>
             </div>
 
+            {/* ===================== 10-STEP PROTOCOL ALIGNMENT ===================== */}
+            <div className="bg-gradient-to-br from-purple-500/5 via-[#0f0f0f] to-amber-500/5 border border-purple-500/20 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <SectionHeader icon={Target} title="10-Step Protocol Alignment" color="text-purple-400" />
+                <span className="text-[10px] px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/40">
+                  Investment Readiness Framework
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mb-6">
+                How this location data maps to your investment due diligence and partnership development process.
+              </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+                {/* Step 3 - Market & Context */}
+                <div className="p-4 border border-emerald-500/30 bg-emerald-500/10 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">3</div>
+                    <span className="text-xs font-semibold text-emerald-300">Market & Context</span>
+                  </div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
+                  <ul className="text-[10px] text-slate-400 space-y-1">
+                    <li>• GDP & economic data</li>
+                    <li>• Regulatory friction</li>
+                    <li>• Demographics</li>
+                    <li>• Trade partners</li>
+                  </ul>
+                </div>
+
+                {/* Step 4 - Partners & Ecosystem */}
+                <div className="p-4 border border-amber-500/30 bg-amber-500/10 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-amber-500/30 rounded-full flex items-center justify-center text-xs font-bold text-amber-300">4</div>
+                    <span className="text-xs font-semibold text-amber-300">Partners & Ecosystem</span>
+                  </div>
+                  <div className="text-[10px] text-amber-200 mb-2">◐ Partially Covered</div>
+                  <ul className="text-[10px] text-slate-400 space-y-1">
+                    <li>• Major employers</li>
+                    <li>• Foreign companies</li>
+                    <li>• Key sectors</li>
+                    <li>• Gov't contacts</li>
+                  </ul>
+                </div>
+
+                {/* Step 5 - Financial Model */}
+                <div className="p-4 border border-cyan-500/30 bg-cyan-500/10 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-cyan-500/30 rounded-full flex items-center justify-center text-xs font-bold text-cyan-300">5</div>
+                    <span className="text-xs font-semibold text-cyan-300">Financial Model</span>
+                  </div>
+                  <div className="text-[10px] text-cyan-200 mb-2">◐ Inputs Available</div>
+                  <ul className="text-[10px] text-slate-400 space-y-1">
+                    <li>• Investment programs</li>
+                    <li>• Tax incentives</li>
+                    <li>• Cost indicators</li>
+                    <li>• Economic zones</li>
+                  </ul>
+                </div>
+
+                {/* Step 6 - Risk & Mitigation */}
+                <div className="p-4 border border-emerald-500/30 bg-emerald-500/10 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">6</div>
+                    <span className="text-xs font-semibold text-emerald-300">Risk & Mitigation</span>
+                  </div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
+                  <ul className="text-[10px] text-slate-400 space-y-1">
+                    <li>• Political risk</li>
+                    <li>• Economic risk</li>
+                    <li>• Natural hazards</li>
+                    <li>• Regulatory risk</li>
+                  </ul>
+                </div>
+
+                {/* Step 10 - Scoring & Readiness */}
+                <div className="p-4 border border-emerald-500/30 bg-emerald-500/10 rounded-xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">10</div>
+                    <span className="text-xs font-semibold text-emerald-300">Scoring & Readiness</span>
+                  </div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
+                  <ul className="text-[10px] text-slate-400 space-y-1">
+                    <li>• Composite score</li>
+                    <li>• Investment readiness</li>
+                    <li>• Comparison analysis</li>
+                    <li>• Data quality</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Market Entry Considerations */}
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <div className="p-4 border border-slate-700 rounded-xl bg-slate-900/30">
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-3 flex items-center gap-2">
+                    <Clock className="w-4 h-4" /> Entry Timeline Considerations
+                  </div>
+                  <ul className="text-[10px] text-slate-300 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">1.</span>
+                      <span>Regulatory approval: {(activeProfile.regulatoryFriction || 50) > 50 ? '3-6 months' : '1-3 months'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">2.</span>
+                      <span>Entity setup: {activeProfile.country?.includes('Singapore') || activeProfile.country?.includes('Hong Kong') ? '1-2 weeks' : '2-4 weeks'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">3.</span>
+                      <span>Operational readiness: 1-3 months post-approval</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400">4.</span>
+                      <span>Full market engagement: 6-12 months</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="p-4 border border-slate-700 rounded-xl bg-slate-900/30">
+                  <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-3 flex items-center gap-2">
+                    <Users className="w-4 h-4" /> Talent & Resources
+                  </div>
+                  <ul className="text-[10px] text-slate-300 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">•</span>
+                      <span>Labor pool quality: {activeProfile.laborPool || 60}/100</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">•</span>
+                      <span>Universities: {activeProfile.demographics?.universitiesColleges || 'See education data'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">•</span>
+                      <span>Literacy: {activeProfile.demographics?.literacyRate || 'See demographics'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400">•</span>
+                      <span>Languages: {activeProfile.demographics?.languages?.slice(0, 2).join(', ') || 'See language data'}</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="p-4 border border-slate-700 rounded-xl bg-slate-900/30">
+                  <div className="text-[11px] uppercase tracking-wider text-amber-300 mb-3 flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" /> Cost Factors
+                  </div>
+                  <ul className="text-[10px] text-slate-300 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">•</span>
+                      <span>Cost index: {activeProfile.costOfDoing || 50}/100 (lower is better)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">•</span>
+                      <span>Avg income: {activeProfile.economics?.avgIncome || 'See economic data'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">•</span>
+                      <span>Tax incentives: {activeProfile.taxIncentives?.length || 0} programs</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-400">•</span>
+                      <span>Economic zones: {activeProfile.infrastructure?.specialEconomicZones?.length || 0} zones</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Protocol Integration Summary */}
+              <div className="p-4 bg-gradient-to-r from-purple-500/10 to-amber-500/10 border border-purple-500/20 rounded-xl">
+                <div className="flex items-center gap-2 mb-3">
+                  <Target className="w-5 h-5 text-purple-400" />
+                  <span className="text-sm font-semibold text-white">Location Due Diligence Score</span>
+                  <span className="ml-auto text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}/100</span>
+                </div>
+                <div className="grid md:grid-cols-3 gap-4 text-[11px]">
+                  <div>
+                    <div className="text-slate-400 mb-1">Strengths for Protocol Steps:</div>
+                    <ul className="text-emerald-300 space-y-1">
+                      <li>✓ Market context data comprehensive</li>
+                      <li>✓ Risk assessment complete</li>
+                      <li>✓ Scoring metrics available</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-slate-400 mb-1">Recommended Next Steps:</div>
+                    <ul className="text-blue-300 space-y-1">
+                      <li>→ Verify leadership via official channels</li>
+                      <li>→ Engage local investment authority</li>
+                      <li>→ Conduct on-ground validation</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-slate-400 mb-1">Data Gaps to Address:</div>
+                    <ul className="text-amber-300 space-y-1">
+                      {!activeProfile.leaders?.length && <li>• Leadership verification needed</li>}
+                      {(activeProfile.laborPool || 0) < 50 && <li>• Workforce assessment recommended</li>}
+                      {!activeProfile.taxIncentives?.length && <li>• Incentive details to confirm</li>}
+                      {activeProfile.leaders?.length && (activeProfile.laborPool || 0) >= 50 && activeProfile.taxIncentives?.length && <li>• Data largely complete</li>}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* ===================== CURRENT GOVERNMENT DATA SECTION ===================== */}
             {(governmentLeaders.length > 0 || isLoadingGovernmentData) && (
               <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
