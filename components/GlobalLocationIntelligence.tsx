@@ -849,6 +849,29 @@ th { background: #f1f5f9; }
               </div>
             </section>
 
+            {/* Location Map */}
+            {activeProfile.latitude && activeProfile.longitude && (
+              <section>
+                <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Location</h2>
+                <div className="rounded-xl border border-slate-700 overflow-hidden bg-slate-900 relative">
+                  <img
+                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 10, 900, 280)}
+                    alt={`Map of ${activeProfile.city}`}
+                    className="w-full h-[280px] object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/900x280?text=Map+Unavailable';
+                    }}
+                  />
+                  <div className="absolute top-3 left-3 bg-black/70 text-xs text-slate-200 px-3 py-1.5 rounded flex items-center gap-2">
+                    <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
+                  </div>
+                  <div className="absolute bottom-3 right-3 bg-black/70 text-xs text-slate-200 px-3 py-1.5 rounded">
+                    {activeProfile.latitude.toFixed(4)}°, {activeProfile.longitude.toFixed(4)}°
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* Quick Facts */}
             <section>
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Quick Facts</h2>
