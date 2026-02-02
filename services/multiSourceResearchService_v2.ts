@@ -253,9 +253,11 @@ async function tryDirectGeminiResearch(
   const apiKey = getGeminiApiKey();
   
   if (!apiKey) {
-    console.warn('No Gemini API key available for direct research');
+    console.warn('[GLI Research] No Gemini API key available for direct research');
     return null;
   }
+  
+  console.log('[GLI Research] API key found, length:', apiKey.length);
 
   try {
     onProgress?.({
@@ -289,7 +291,9 @@ async function tryDirectGeminiResearch(
 
     // Call Gemini directly
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    console.log('[GLI Research] Calling Gemini API for:', locationQuery);
 
     const prompt = LOCATION_INTELLIGENCE_PROMPT(
       locationQuery,
@@ -300,6 +304,7 @@ async function tryDirectGeminiResearch(
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
+    console.log('[GLI Research] Gemini response length:', responseText.length);
 
     onProgress?.({
       stage: 'Processing',
@@ -313,14 +318,16 @@ async function tryDirectGeminiResearch(
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         aiIntelligence = JSON.parse(jsonMatch[0]);
+        console.log('[GLI Research] Successfully parsed AI response');
       }
     } catch (parseError) {
-      console.warn('Failed to parse Gemini response as JSON:', parseError);
+      console.warn('[GLI Research] Failed to parse Gemini response as JSON:', parseError);
+      console.warn('[GLI Research] Response was:', responseText.substring(0, 500));
       return null;
     }
 
     if (!aiIntelligence) {
-      console.warn('No valid AI intelligence received');
+      console.warn('[GLI Research] No valid AI intelligence received');
       return null;
     }
 
@@ -334,7 +341,8 @@ async function tryDirectGeminiResearch(
     return transformAIToProfile(locationQuery, aiIntelligence, geoData, wikiData, worldBankData, onProgress);
 
   } catch (error) {
-    console.error('Direct Gemini research failed:', error);
+    console.error('[GLI Research] Direct Gemini research failed:', error);
+    console.error('[GLI Research] Error details:', (error as Error).message);
     return null;
   }
 }
