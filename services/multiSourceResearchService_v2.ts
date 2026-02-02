@@ -242,6 +242,46 @@ CRITICAL:
 - If uncertain, provide best estimate with "(estimated)" note
 - Return ONLY valid JSON, no markdown code blocks or explanation text`;
 
+const ENTITY_INTELLIGENCE_PROMPT = (query: string, wikiData: string | null, sources: string[]) => `You are a world-class intelligence analyst. Provide comprehensive, accurate intelligence about the entity: "${query}".
+
+If the entity is a company, government body, agency, university, NGO, or other organization, identify it and return a structured intelligence brief.
+
+Sources available:
+- Wikipedia extract: ${wikiData || 'Not available'}
+- Additional sources: ${sources.join('; ') || 'Not available'}
+
+Return ONLY valid JSON in this exact structure:
+{
+  "entity": {
+    "name": "Official entity name",
+    "type": "company | government | agency | university | ngo | organization",
+    "headquarters": "City/Region",
+    "country": "Country",
+    "founded": "Year or date",
+    "website": "Official URL",
+    "description": "Short factual description"
+  },
+  "leadership": [
+    { "name": "Leader name", "role": "Role/Title", "source": "Source name" }
+  ],
+  "operations": {
+    "sector": "Primary sector/industry",
+    "services": ["Key services/products"],
+    "markets": ["Regions or markets served"],
+    "employees": "Employee count (if known)",
+    "revenue": "Revenue/budget (if known)"
+  },
+  "keyFacts": ["Notable verified facts"],
+  "comparisons": ["Comparable entities or benchmarks"],
+  "recentDevelopments": ["Recent verified developments"],
+  "dataSources": ["List of sources used"]
+}
+
+CRITICAL:
+- Use REAL, ACCURATE data where possible
+- If unsure, say "Not verified" rather than inventing
+- Return ONLY valid JSON, no markdown or commentary`;
+
 /**
  * Direct Gemini AI research - works without backend server
  * This is the primary research method for static hosting (AWS, Netlify, Vercel)
@@ -345,6 +385,374 @@ async function tryDirectGeminiResearch(
     console.error('[GLI Research] Error details:', (error as Error).message);
     return null;
   }
+}
+
+/**
+ * Direct Gemini AI research for entities (companies, governments, organizations)
+ */
+async function tryDirectGeminiEntityResearch(
+  query: string,
+  category: QueryCategory,
+  onProgress?: ProgressCallback
+): Promise<MultiSourceResult | null> {
+  const apiKey = getGeminiApiKey();
+
+  if (!apiKey) {
+    console.warn('[GLI Research] No Gemini API key available for entity research');
+    return null;
+  }
+
+  try {
+    onProgress?.({
+      stage: 'Entity Research',
+      progress: 5,
+      message: 'Initializing entity intelligence...'
+    });
+
+    const wikiData = await fetchWikipediaEntityData(query);
+    const searchResults = await performGoogleSearch(`${query} official website`, 6);
+
+    const sourceNames = searchResults.map(r => r.displayLink).filter(Boolean);
+    const prompt = ENTITY_INTELLIGENCE_PROMPT(query, wikiData?.extract || null, sourceNames);
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+
+    let aiIntelligence: Record<string, unknown> | null = null;
+    try {
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        aiIntelligence = JSON.parse(jsonMatch[0]);
+      }
+    } catch (parseError) {
+      console.warn('[GLI Research] Failed to parse entity AI response:', parseError);
+      return null;
+    }
+
+    if (!aiIntelligence) return null;
+
+    onProgress?.({
+      stage: 'Processing',
+      progress: 70,
+      message: 'Constructing entity intelligence profile...'
+    });
+
+    return transformEntityToProfile(query, category, aiIntelligence, wikiData, searchResults, onProgress);
+  } catch (error) {
+    console.error('[GLI Research] Direct Gemini entity research failed:', error);
+    return null;
+  }
+}
+
+function transformEntityToProfile(
+  query: string,
+  category: QueryCategory,
+  ai: Record<string, unknown>,
+  wikiData: { title: string; extract: string; url: string } | null,
+  searchResults: Array<{ title: string; link: string; snippet: string; displayLink: string; isGovernment: boolean }>,
+  onProgress?: ProgressCallback
+): MultiSourceResult {
+  const accessDate = new Date().toISOString().split('T')[0];
+  const entity = (ai.entity as Record<string, unknown>) || {};
+  const operations = (ai.operations as Record<string, unknown>) || {};
+  const leadership = (ai.leadership as Array<{ name: string; role: string; source: string }>) || [];
+
+  const sources: SourceCitation[] = [];
+  if (wikiData?.url) {
+    sources.push({
+      title: `Wikipedia - ${wikiData.title}`,
+      url: wikiData.url,
+      type: 'encyclopedia',
+      reliability: 'medium',
+      accessDate,
+      dataExtracted: wikiData.extract.substring(0, 150),
+      organization: 'Wikipedia'
+    });
+  }
+
+  searchResults.slice(0, 6).forEach((result) => {
+    sources.push({
+      title: result.title,
+      url: result.link,
+      type: result.isGovernment ? 'government' : 'research',
+      reliability: result.isGovernment ? 'high' : 'medium',
+      accessDate,
+      dataExtracted: result.snippet.substring(0, 150),
+      organization: result.displayLink
+    });
+  });
+
+  const sectors = (operations.services as string[]) || [];
+  const sectorPrimary = (operations.sector as string) || '';
+  const keyFacts = (ai.keyFacts as string[]) || [];
+
+  const leaders: CityLeader[] = leadership.length
+    ? leadership.map((l, idx) => ({
+      id: `leader-${idx + 1}`,
+      name: l.name || 'Leadership Not Verified',
+      role: l.role || (category === 'government' ? 'Senior Official' : 'Executive'),
+      tenure: 'Current',
+      achievements: [l.source || 'Source not verified'],
+      rating: l.name ? 6 : 0,
+      internationalEngagementFocus: false
+    }))
+    : [{
+      id: 'leader-pending',
+      name: 'Leadership information pending verification',
+      role: category === 'government' ? 'Senior Official' : 'Executive',
+      tenure: 'Current',
+      achievements: ['Verify leadership details via official sources'],
+      rating: 0,
+      internationalEngagementFocus: false
+    }];
+
+  const profile: CityProfile = {
+    id: `entity-${Date.now()}`,
+    city: (entity.name as string) || query,
+    entityName: (entity.name as string) || query,
+    entityType: (entity.type as CityProfile['entityType']) || category,
+    region: (entity.headquarters as string) || '',
+    country: (entity.country as string) || '',
+    established: (entity.founded as string) || 'Not verified',
+    knownFor: keyFacts.length ? keyFacts : [(entity.description as string) || 'Not verified'],
+    strategicAdvantages: keyFacts.slice(0, 4),
+    investmentPrograms: [],
+    keySectors: sectorPrimary ? [sectorPrimary, ...sectors] : sectors,
+    foreignCompanies: [],
+    departments: sectors,
+    easeOfDoingBusiness: category === 'government' ? 'See official policy' : 'Not applicable',
+    globalMarketAccess: ((operations.markets as string[]) || []).join(', ') || 'Global',
+    latitude: 0,
+    longitude: 0,
+    infrastructureScore: 50,
+    regulatoryFriction: 50,
+    politicalStability: 50,
+    laborPool: 50,
+    costOfDoing: 50,
+    investmentMomentum: 50,
+    engagementScore: 50,
+    overlookedScore: 50,
+    leaders,
+    economics: {
+      gdpLocal: operations.revenue ? `Revenue: ${operations.revenue}` : 'Not available',
+      majorIndustries: sectorPrimary ? [sectorPrimary] : [],
+      tradePartners: [],
+      topExports: []
+    },
+    demographics: {
+      population: operations.employees ? `Employees: ${operations.employees}` : 'Not available'
+    },
+    infrastructure: {},
+    governmentLinks: sources.filter(s => s.type === 'government').slice(0, 3).map(s => ({
+      label: s.title,
+      url: s.url
+    })),
+    recentNews: ((ai.recentDevelopments as string[]) || []).slice(0, 5).map((d) => ({
+      date: accessDate,
+      title: d,
+      summary: d,
+      source: 'Research',
+      link: '#'
+    })),
+    _rawWikiExtract: wikiData?.extract || ''
+  };
+
+  const comparisons = (ai.comparisons as string[]) || [];
+  const similarCities: SimilarCity[] = comparisons.slice(0, 4).map((c, idx) => ({
+    city: c,
+    country: '',
+    region: '',
+    similarity: 50 - idx * 5,
+    reason: 'Comparable entity',
+    keyMetric: 'Benchmark comparison'
+  }));
+
+  onProgress?.({
+    stage: 'Finalizing',
+    progress: 95,
+    message: 'Finalizing entity intelligence...'
+  });
+
+  return {
+    profile,
+    narratives: generateBasicNarratives(profile),
+    sources: deduplicateSources(sources),
+    similarCities,
+    dataQuality: {
+      completeness: Math.min(100, sources.length * 12),
+      governmentSourcesUsed: sources.filter(s => s.type === 'government').length,
+      internationalSourcesUsed: sources.filter(s => s.type === 'international').length,
+      newsSourcesUsed: sources.filter(s => s.type === 'news').length,
+      dataFreshness: accessDate,
+      leaderDataVerified: leadership.length > 0,
+      primarySourcePercentage: sources.length ? Math.round((sources.filter(s => s.type === 'government').length / sources.length) * 100) : 0,
+      conflictsDetected: 0,
+      conflictsResolved: 0
+    },
+    researchSummary: `Entity intelligence compiled from ${sources.length} sources.`,
+    researchSession: {
+      id: `entity-session-${Date.now()}`,
+      iterations: 1,
+      totalTime: 0,
+      completenessScore: Math.min(100, sources.length * 12)
+    }
+  };
+}
+
+/**
+ * Fallback entity research using public sources
+ */
+async function executeEntityResearch(
+  query: string,
+  category: QueryCategory,
+  onProgress?: ProgressCallback
+): Promise<MultiSourceResult | null> {
+  const accessDate = new Date().toISOString().split('T')[0];
+
+  onProgress?.({
+    stage: 'Entity Research',
+    progress: 15,
+    message: 'Collecting public intelligence sources...'
+  });
+
+  const [wikiData, officialSearch, leadershipSearch, coverageSearch] = await Promise.all([
+    fetchWikipediaEntityData(query),
+    performGoogleSearch(`${query} official website`, 6),
+    performGoogleSearch(`${query} leadership`, 6),
+    performGoogleSearch(`${query} headquarters`, 6)
+  ]);
+
+  const sources: SourceCitation[] = [];
+  const allSearchResults = [...officialSearch, ...leadershipSearch, ...coverageSearch];
+
+  if (wikiData?.url) {
+    sources.push({
+      title: `Wikipedia - ${wikiData.title}`,
+      url: wikiData.url,
+      type: 'encyclopedia',
+      reliability: 'medium',
+      accessDate,
+      dataExtracted: wikiData.extract.substring(0, 150),
+      organization: 'Wikipedia'
+    });
+  }
+
+  allSearchResults.slice(0, 8).forEach((result) => {
+    if (!result?.link) return;
+    sources.push({
+      title: result.title,
+      url: result.link,
+      type: result.isGovernment ? 'government' : 'research',
+      reliability: result.isGovernment ? 'high' : 'medium',
+      accessDate,
+      dataExtracted: result.snippet.substring(0, 150),
+      organization: result.displayLink
+    });
+  });
+
+  const wikiExtract = wikiData?.extract || '';
+  const foundedMatch = wikiExtract.match(/founded in (\d{4})/i) || wikiExtract.match(/established in (\d{4})/i);
+  const headquartersMatch = wikiExtract.match(/headquartered in ([^,.]+)/i);
+  const countryMatch = wikiExtract.match(/\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)\b/);
+
+  const leaders = leadershipSearch.slice(0, 2).map((result, idx) => ({
+    id: `leader-${idx + 1}`,
+    name: extractNameFromSnippet(result.snippet),
+    role: category === 'government' ? 'Senior Official' : 'Executive',
+    tenure: 'Current',
+    achievements: [result.snippet.substring(0, 150)],
+    rating: result.isGovernment ? 6 : 4,
+    sourceUrl: result.link,
+    photoVerified: false,
+    internationalEngagementFocus: false
+  }));
+
+  const profile: CityProfile = {
+    id: `entity-${Date.now()}`,
+    city: query,
+    entityName: query,
+    entityType: category === 'location' ? 'unknown' : category,
+    region: headquartersMatch ? headquartersMatch[1] : '',
+    country: countryMatch ? countryMatch[1] : '',
+    latitude: 0,
+    longitude: 0,
+    timezone: 'Not available',
+    established: foundedMatch ? foundedMatch[1] : 'Not verified',
+    areaSize: 'Not applicable',
+    climate: 'Not applicable',
+    currency: 'Not applicable',
+    businessHours: 'Not available',
+    knownFor: wikiExtract ? [wikiExtract.split('.').slice(0, 1).join('.')] : ['Not verified'],
+    strategicAdvantages: [],
+    investmentPrograms: [],
+    keySectors: [],
+    foreignCompanies: [],
+    departments: [],
+    easeOfDoingBusiness: 'Not applicable',
+    globalMarketAccess: 'Global',
+    infrastructureScore: 50,
+    regulatoryFriction: 50,
+    politicalStability: 50,
+    laborPool: 50,
+    costOfDoing: 50,
+    investmentMomentum: 50,
+    engagementScore: 50,
+    overlookedScore: 50,
+    leaders: leaders.length ? leaders : [{
+      id: 'leader-pending',
+      name: 'Leadership information pending verification',
+      role: category === 'government' ? 'Senior Official' : 'Executive',
+      tenure: 'Current',
+      achievements: ['Verify leadership details via official sources'],
+      rating: 0,
+      internationalEngagementFocus: false
+    }],
+    economics: {
+      gdpLocal: 'Not applicable',
+      majorIndustries: [],
+      tradePartners: [],
+      topExports: []
+    },
+    demographics: {
+      population: 'Not available'
+    },
+    infrastructure: {},
+    governmentLinks: sources.filter(s => s.type === 'government').slice(0, 3).map(s => ({
+      label: s.title,
+      url: s.url
+    })),
+    recentNews: []
+  };
+
+  const result: MultiSourceResult = {
+    profile,
+    narratives: generateBasicNarratives(profile),
+    sources: deduplicateSources(sources),
+    similarCities: [],
+    dataQuality: {
+      completeness: Math.min(100, sources.length * 10),
+      governmentSourcesUsed: sources.filter(s => s.type === 'government').length,
+      internationalSourcesUsed: sources.filter(s => s.type === 'international').length,
+      newsSourcesUsed: sources.filter(s => s.type === 'news').length,
+      dataFreshness: accessDate,
+      leaderDataVerified: leaders.length > 0,
+      primarySourcePercentage: sources.length ? Math.round((sources.filter(s => s.type === 'government').length / sources.length) * 100) : 0,
+      conflictsDetected: 0,
+      conflictsResolved: 0
+    },
+    researchSummary: `Entity intelligence compiled from ${sources.length} sources.`,
+    researchSession: {
+      id: `entity-session-${Date.now()}`,
+      iterations: 1,
+      totalTime: 0,
+      completenessScore: Math.min(100, sources.length * 10)
+    }
+  };
+
+  return result;
 }
 
 /**
@@ -945,11 +1353,17 @@ async function tryBackendResearch(
       investmentMomentum: ai.scores?.investmentMomentum || 50,
 
       // Content from AI
-      knownFor: ai.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || 
-                ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || 
+      knownFor: (ai.mainIndustries as Array<string | { name?: string }> | undefined)?.map((i) =>
+        typeof i === 'string' ? i : i.name || ''
+      ).filter(Boolean) ||
+                (ai.economy?.mainIndustries as Array<string | { name?: string }> | undefined)?.map((i) =>
+                  typeof i === 'string' ? i : i.name || ''
+                ).filter(Boolean) ||
                 ['Regional commerce'],
-      strategicAdvantages: ai.competitiveAdvantages || ['Strategic location'],
-      keySectors: ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || ['Services'],
+      strategicAdvantages: (ai.competitiveAdvantages as string[]) || ['Strategic location'],
+      keySectors: (ai.economy?.mainIndustries as Array<string | { name?: string }> | undefined)?.map((i) =>
+        typeof i === 'string' ? i : i.name || ''
+      ).filter(Boolean) || ['Services'],
       investmentPrograms: ai.investment?.incentives || ['See investment office'],
       foreignCompanies: ai.economy?.majorEmployers || ['See Chamber of Commerce'],
 
@@ -976,19 +1390,21 @@ async function tryBackendResearch(
         employmentRate: ai.economy?.unemployment ? `${100 - parseFloat(ai.economy.unemployment)}% (inverse of unemployment)` : 'Employment data pending',
         avgIncome: ai.economy?.averageIncome || 'Income data pending',
         exportVolume: 'Trade data pending',
-        majorIndustries: ai.economy?.mainIndustries?.map((i: any) => typeof i === 'string' ? i : i.name) || [],
+        majorIndustries: (ai.economy?.mainIndustries as Array<string | { name?: string }> | undefined)?.map((i) =>
+          typeof i === 'string' ? i : i.name || ''
+        ).filter(Boolean) || [],
         topExports: ai.economy?.exports || [],
         tradePartners: ai.economy?.tradePartners || []
       },
 
       infrastructure: {
-        airports: ai.infrastructure?.airports?.map((a: any) => ({
-          name: typeof a === 'string' ? a : `${a.name}${a.code ? ` (${a.code})` : ''}`,
-          type: a.type || 'Airport'
+        airports: (ai.infrastructure?.airports as Array<string | { name?: string; code?: string; type?: string }> | undefined)?.map((a) => ({
+          name: typeof a === 'string' ? a : `${a.name || 'Airport'}${a.code ? ` (${a.code})` : ''}`,
+          type: typeof a === 'string' ? 'Airport' : (a.type || 'Airport')
         })) || [{ name: 'See aviation authority', type: 'Airport' }],
-        seaports: ai.infrastructure?.seaports?.map((p: any) => ({
-          name: typeof p === 'string' ? p : p.name,
-          type: p.type || 'Port'
+        seaports: (ai.infrastructure?.seaports as Array<string | { name?: string; type?: string }> | undefined)?.map((p) => ({
+          name: typeof p === 'string' ? p : (p.name || 'Port'),
+          type: typeof p === 'string' ? 'Port' : (p.type || 'Port')
         })) || [{ name: 'See port authority', type: 'Port' }],
         specialEconomicZones: ai.economy?.economicZones || ['Contact investment office'],
         powerCapacity: ai.infrastructure?.powerCapacity || 'See utility provider',
@@ -998,10 +1414,10 @@ async function tryBackendResearch(
 
       governmentLinks: [],
 
-      recentNews: ai.recentDevelopments?.map((d: any) => ({
+      recentNews: (ai.recentDevelopments as Array<{ date?: string; title?: string; description?: string }> | undefined)?.map((d) => ({
         date: d.date || new Date().toISOString().split('T')[0],
-        title: d.title,
-        summary: d.description,
+        title: d.title || 'Recent development',
+        summary: d.description || '',
         source: 'AI Research',
         link: '#'
       })) || []
@@ -1130,12 +1546,17 @@ async function tryBackendResearch(
     };
 
     // Build similar cities
-    const similarCities: SimilarCity[] = ai.similarLocations?.map((loc: any) => ({
-      city: loc.name,
-      country: loc.country,
+    const similarCities: SimilarCity[] = (ai.similarLocations as Array<{
+      name?: string;
+      country?: string;
+      similarity?: string;
+      keyDifference?: string;
+    }> | undefined)?.map((loc) => ({
+      city: loc.name || 'Comparable location',
+      country: loc.country || '',
       region: '',
       similarity: 0.7,
-      reason: loc.similarity,
+      reason: loc.similarity || 'Similarity assessment',
       keyMetric: loc.keyDifference || 'Economic profile'
     })) || [];
 
@@ -1189,6 +1610,34 @@ export async function multiSourceResearch(
 
     // TEMPORARILY SKIP CACHE to force fresh Gemini research
     console.log('[GLI Research] Skipping cache, forcing fresh AI research for:', locationQuery);
+
+    let queryCategory = detectQueryCategory(locationQuery);
+    if (queryCategory === 'location') {
+      const geoPreview = await fetchGeocoding(locationQuery);
+      if (!geoPreview) {
+        queryCategory = 'organization';
+      }
+    }
+
+    if (queryCategory !== 'location') {
+      onProgress?.({
+        stage: 'Entity Research',
+        progress: 5,
+        message: `Initiating ${queryCategory} intelligence...`
+      });
+
+      const entityAIResult = await tryDirectGeminiEntityResearch(locationQuery, queryCategory, onProgress);
+      if (entityAIResult) {
+        await locationResearchCache.saveFullResult(locationQuery, entityAIResult);
+        return entityAIResult;
+      }
+
+      const fallbackEntityResult = await executeEntityResearch(locationQuery, queryCategory, onProgress);
+      if (fallbackEntityResult) {
+        await locationResearchCache.saveFullResult(locationQuery, fallbackEntityResult);
+        return fallbackEntityResult;
+      }
+    }
 
     // TRY BACKEND AI-ENHANCED RESEARCH FIRST
     onProgress?.({
@@ -1676,6 +2125,60 @@ async function performGoogleSearch(query: string, numResults: number = 10): Prom
   return results;
 }
 
+type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'unknown';
+
+function detectQueryCategory(query: string): QueryCategory {
+  const q = query.toLowerCase();
+
+  const governmentSignals = [
+    'ministry', 'department', 'agency', 'authority', 'government', 'council', 'parliament', 'senate',
+    'governor', 'mayor', 'state', 'federal', 'national', 'municipal', 'bureau', 'commission',
+    'secretariat', 'embassy'
+  ];
+
+  const companySignals = [
+    'inc', 'ltd', 'llc', 'corp', 'corporation', 'company', 'co.', 'group', 'holdings',
+    'plc', 'gmbh', 's.a.', 'ag', 'bv', 'pty', 'bank', 'insurance'
+  ];
+
+  const organizationSignals = [
+    'university', 'institute', 'foundation', 'ngo', 'nonprofit', 'association', 'society',
+    'chamber', 'union', 'trust', 'hospital'
+  ];
+
+  if (governmentSignals.some((s) => q.includes(s))) return 'government';
+  if (companySignals.some((s) => q.includes(s))) return 'company';
+  if (organizationSignals.some((s) => q.includes(s))) return 'organization';
+
+  return 'location';
+}
+
+async function fetchWikipediaEntityData(query: string): Promise<{ title: string; extract: string; url: string } | null> {
+  try {
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=1`;
+    const searchRes = await fetch(searchUrl);
+    const searchData = await searchRes.json();
+
+    if (searchData.query?.search?.[0]) {
+      const pageTitle = searchData.query.search[0].title;
+      const pageUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=extracts&explaintext=true&format=json&origin=*`;
+      const pageRes = await fetch(pageUrl);
+      const pageData = await pageRes.json();
+      const pages = pageData.query.pages;
+      const pageContent = Object.values(pages)[0] as Record<string, unknown>;
+      const extract = (pageContent?.extract as string) || '';
+      return {
+        title: pageTitle,
+        extract: extract.substring(0, 900),
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle.replace(/\s+/g, '_'))}`
+      };
+    }
+  } catch (error) {
+    console.warn('Wikipedia entity fetch failed:', error);
+  }
+  return null;
+}
+
 /**
  * Fetch World Bank data
  */
@@ -1859,7 +2362,7 @@ function extractStructuredData(
   }
 
   // Area
-  const areaMatch = normalizedText.match(/area(?:\s*(?:of|is))?\s*([0-9][0-9,\.]+)\s*(?:km2|km²|sq\s*km)/i);
+  const areaMatch = normalizedText.match(/area(?:\s*(?:of|is))?\s*([0-9][0-9,.]+)\s*(?:km2|km²|sq\s*km)/i);
   if (areaMatch) {
     data.area = `${areaMatch[1]} km²`;
   }

@@ -1,38 +1,9 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2, AlertTriangle, Leaf, Scale, TrendingDown, Info } from 'lucide-react';
+import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation, type SimilarCity } from '../services/multiSourceResearchService_v2';
+import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation } from '../services/multiSourceResearchService_v2';
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
-
-// Helper components declared outside main component to avoid re-creation on render
-const ScoreBar: React.FC<{ label: string; value: number; max?: number }> = ({ label, value, max = 100 }) => (
-  <div className="space-y-1">
-    <div className="flex justify-between text-[11px]">
-      <span className="text-slate-400">{label}</span>
-      <span className="text-slate-200">{value}/{max}</span>
-    </div>
-    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-      <div 
-        className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full transition-all"
-        style={{ width: `${(value / max) * 100}%` }}
-      />
-    </div>
-  </div>
-);
-
-const StatusBadge: React.FC<{ status: 'connected' | 'pending' | 'offline' }> = ({ status }) => {
-  const colors = {
-    connected: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-    pending: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-    offline: 'bg-red-500/20 text-red-300 border-red-500/40'
-  };
-  return (
-    <span className={`text-[10px] px-2 py-0.5 rounded-full border ${colors[status]}`}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  );
-};
 
 const ProjectBadge: React.FC<{ status: 'completed' | 'ongoing' | 'planned' }> = ({ status }) => {
   const colors = {
@@ -45,42 +16,6 @@ const ProjectBadge: React.FC<{ status: 'completed' | 'ongoing' | 'planned' }> = 
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
-};
-
-const SectionHeader: React.FC<{ icon: React.ElementType; title: string; color?: string }> = ({ icon: Icon, title, color = 'text-amber-400' }) => (
-  <div className="flex items-center gap-3 mb-4">
-    <Icon className={`w-5 h-5 ${color}`} />
-    <h3 className="text-sm font-semibold uppercase tracking-wider">{title}</h3>
-  </div>
-);
-
-const buildNarrative = (profile: CityProfile) => {
-  // Check if we have live Wikipedia data (stored in _rawWikiExtract) - reserved for future use
-  const _wikiExtract = (profile as unknown as { _rawWikiExtract?: string })._rawWikiExtract;
-  void _wikiExtract; // Will be used for enhanced narratives
-  
-  const knownFor = profile.knownFor?.slice(0, 3).join(', ') || 'strategic trade and regional services';
-  const sectors = profile.keySectors?.slice(0, 4).join(', ') || 'diversified commerce and services';
-  const access = profile.globalMarketAccess || 'regional corridors and maritime routes';
-  const established = profile.established || 'historical settlement period';
-  const climate = profile.climate || 'regional climate zone';
-  const population = profile.demographics?.population || 'verified population baseline';
-  const gdp = profile.economics?.gdpLocal || 'local GDP baseline';
-  const trade = profile.economics?.tradePartners?.slice(0, 3).join(', ') || 'regional trade partners';
-
-  const overview = [
-    `${profile.city} anchors ${profile.region} as a strategic urban node within ${profile.country}. Established ${established}, the city evolved around ${knownFor}, creating a durable economic base that continues to shape investment priorities and governance focus today.`,
-    `The city’s modern economy is driven by ${sectors}, supported by access to ${access}. This access underpins trade and logistics viability, while the local climate (${climate}) influences infrastructure resilience planning and long-term development sequencing.`,
-    `Current macro indicators—including population ${population} and GDP ${gdp}—frame the capacity of the local market and workforce, while trade relationships with ${trade} provide external demand signals that validate opportunity sizing.`
-  ];
-
-  const historical = [
-    `Historically, ${profile.city} grew as a regional interchange point, shaped by governance reforms, commercial expansion, and infrastructure investments that tied it to wider national priorities. These historical phases created today’s institutional footprint across ports, trade corridors, and civic administration.`,
-    `The city’s evolution has produced layered administrative capabilities that now influence permitting speed, public-private partnership readiness, and the reliability of long-term policy execution. This history matters because it explains why present-day outcomes are feasible within existing local institutions.`,
-    `Taken together, the historical arc supports a defensible thesis: ${profile.city} has repeatedly converted strategic geography into sustained economic utility—a core prerequisite for regional investment and partnership alignment.`
-  ];
-
-  return { overview, historical };
 };
 
 const buildStaticMapUrl = (lat: number, lon: number, zoom: number, width = 650, height = 450) =>
@@ -108,27 +43,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [researchResult, setResearchResult] = useState<MultiSourceResult | null>(null);
   
   // Government data state
-  const [governmentLeaders, setGovernmentLeaders] = useState<GovernmentLeader[]>([]);
-  const [isLoadingGovernmentData, setIsLoadingGovernmentData] = useState(false);
-  const [regionalComparisons, setRegionalComparisons] = useState<RegionalComparisonSet | null>(null);
-  const [isLoadingComparisons, setIsLoadingComparisons] = useState(false);
-  
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    overview: true,
-    economy: true,
-    infrastructure: true,
-    demographics: true,
-    leadership: true,
-    live: true,
-    sources: true,
-    similar: true,
-    narratives: true,
-    regional: true
-  });
-
-  const toggleSection = (section: string) => {
-    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
-  };
+  const [, setGovernmentLeaders] = useState<GovernmentLeader[]>([]);
+  const [, setIsLoadingGovernmentData] = useState(false);
+  const [, setRegionalComparisons] = useState<RegionalComparisonSet | null>(null);
+  const [, setIsLoadingComparisons] = useState(false);
 
   // Handle search results filtering
   useEffect(() => {
@@ -151,90 +69,6 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     if (!activeProfileId) return null;
     return profiles.find(profile => profile.id === activeProfileId) || null;
   }, [activeProfileId, profiles, liveProfile, hasSelection]);
-
-  const leadershipRanking = useMemo(() => {
-    if (!activeProfile?.leaders?.length) return [];
-    return [...activeProfile.leaders].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-  }, [activeProfile]);
-
-  const internationalLead = useMemo(() => {
-    if (!leadershipRanking.length) return null;
-    return leadershipRanking.find(l => l.internationalEngagementFocus) || leadershipRanking[0];
-  }, [leadershipRanking]);
-
-  const keyOfficials = useMemo(() => {
-    const officials: Array<{
-      name: string;
-      role: string;
-      tenure?: string;
-      sourceUrl?: string;
-      verified?: boolean;
-      sourceLabel?: string;
-    }> = [];
-
-    if (governmentLeaders?.length) {
-      governmentLeaders.forEach((leader) => {
-        if (!leader?.name || !leader?.role) return;
-        officials.push({
-          name: leader.name,
-          role: leader.role,
-          tenure: leader.tenure,
-          sourceUrl: leader.sourceUrl,
-          verified: leader.verified,
-          sourceLabel: leader.website
-        });
-      });
-    }
-
-    if (activeProfile?.leaders?.length) {
-      activeProfile.leaders.forEach((leader) => {
-        if (!leader?.name || !leader?.role) return;
-        officials.push({
-          name: leader.name,
-          role: leader.role,
-          tenure: leader.tenure,
-          sourceUrl: leader.sourceUrl,
-          verified: leader.photoVerified
-        });
-      });
-    }
-
-    const priorityRoles = ['mayor', 'governor', 'senator', 'president', 'premier', 'minister', 'secretary', 'chair', 'commissioner'];
-    const seen = new Set<string>();
-
-    const normalized = officials
-      .map((o) => ({
-        ...o,
-        roleLower: o.role?.toLowerCase() || ''
-      }))
-      .filter((o) => {
-        const key = `${o.name}-${o.role}`.toLowerCase();
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-
-    const prioritized = normalized.filter((o) =>
-      priorityRoles.some((role) => o.roleLower.includes(role))
-    );
-
-    return (prioritized.length ? prioritized : normalized).slice(0, 6);
-  }, [governmentLeaders, activeProfile]);
-
-  const safetyProxyScore = useMemo(() => {
-    if (!activeProfile) return null;
-    const stability = activeProfile.politicalStability ?? 50;
-    const reg = activeProfile.regulatoryFriction ?? 50;
-    return Math.round((stability * 0.6) + ((100 - reg) * 0.4));
-  }, [activeProfile]);
-
-  const outlookLabel = useMemo(() => {
-    if (!activeProfile) return 'Not available';
-    const momentum = activeProfile.investmentMomentum ?? 0;
-    if (momentum >= 70) return 'Accelerating';
-    if (momentum >= 55) return 'Stable';
-    return 'Developing';
-  }, [activeProfile]);
 
   const wikiExtract = (activeProfile as unknown as { _rawWikiExtract?: string })._rawWikiExtract;
   const wikiParagraphs = wikiExtract
@@ -268,7 +102,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         setResearchResult(result);
         setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete! ${result.sources.length} sources compiled.` });
       } else {
-        setLoadingError(`Could not find location "${trimmedQuery}". Please try a different search term.`);
+        setLoadingError(`Could not find intelligence for "${trimmedQuery}". Please try a different search term.`);
         setHasSelection(false);
       }
     } catch (error) {
@@ -331,6 +165,11 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     loadProfiles();
   }, [handleSearchSubmit]);
 
+
+  const profileType = activeProfile?.entityType ?? 'location';
+  const isLocationProfile = profileType === 'location' || profileType === 'region';
+  const displayName = activeProfile?.entityName || activeProfile?.city || '';
+  const displayRegion = [activeProfile?.region, activeProfile?.country].filter(Boolean).join(', ');
 
   // Clear selection and reset to global view
   const handleClearSelection = () => {
@@ -402,17 +241,6 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       (profile.investmentMomentum || 50) * 0.15
     );
     return Math.round(score);
-  };
-
-  const deriveNeeds = (profile: CityProfile) => {
-    const needs: string[] = [];
-    if (profile.infrastructureScore < 70) needs.push('Infrastructure modernization and utilities reliability upgrades');
-    if (profile.regulatoryFriction > 50) needs.push('Permitting acceleration and regulatory simplification');
-    if (profile.laborPool < 65) needs.push('Workforce development and vocational pipeline expansion');
-    if (profile.investmentMomentum < 65) needs.push('Investor outreach, incentives packaging, and deal facilitation');
-    if (profile.costOfDoing > 60) needs.push('Cost optimization offsets or targeted incentive relief');
-    if (needs.length === 0) needs.push('Maintain momentum; prioritize strategic partnerships and regional expansion');
-    return needs;
   };
 
   const downloadFile = (content: string, filename: string, type: string) => {
@@ -798,27 +626,44 @@ th { background: #f1f5f9; }
                   ))
                 ) : (
                   <>
-                    <p>
-                      {activeProfile.city}
-                      {activeProfile.region || activeProfile.country
-                        ? ` is located in ${[activeProfile.region, activeProfile.country].filter(Boolean).join(', ')}.`
-                        : '.'}
-                      {activeProfile.established && ` Established ${activeProfile.established}.`}
-                      {activeProfile.demographics?.population && ` The city has a population of ${activeProfile.demographics.population}.`}
-                    </p>
-                    {activeProfile.knownFor && activeProfile.knownFor.length > 0 && (
-                      <p>The city is known for {activeProfile.knownFor.slice(0, 3).join(', ')}.</p>
-                    )}
-                    {activeProfile.keySectors && activeProfile.keySectors.length > 0 && (
-                      <p>Key economic sectors include {activeProfile.keySectors.slice(0, 4).join(', ')}.</p>
-                    )}
-                  </>
+                      {isLocationProfile ? (
+                        <>
+                          <p>
+                            {displayName}
+                            {displayRegion ? ` is located in ${displayRegion}.` : '.'}
+                            {activeProfile.established && ` Established ${activeProfile.established}.`}
+                            {activeProfile.demographics?.population && ` The city has a population of ${activeProfile.demographics.population}.`}
+                          </p>
+                          {activeProfile.knownFor && activeProfile.knownFor.length > 0 && (
+                            <p>The city is known for {activeProfile.knownFor.slice(0, 3).join(', ')}.</p>
+                          )}
+                          {activeProfile.keySectors && activeProfile.keySectors.length > 0 && (
+                            <p>Key economic sectors include {activeProfile.keySectors.slice(0, 4).join(', ')}.</p>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <p>
+                            {displayName}
+                            {displayRegion ? ` is based in ${displayRegion}.` : '.'}
+                            {activeProfile.established && ` Founded ${activeProfile.established}.`}
+                            {activeProfile.demographics?.population && ` Size: ${activeProfile.demographics.population}.`}
+                          </p>
+                          {activeProfile.knownFor && activeProfile.knownFor.length > 0 && (
+                            <p>Known for {activeProfile.knownFor.slice(0, 3).join(', ')}.</p>
+                          )}
+                          {activeProfile.keySectors && activeProfile.keySectors.length > 0 && (
+                            <p>Key sectors include {activeProfile.keySectors.slice(0, 4).join(', ')}.</p>
+                          )}
+                        </>
+                      )}
+                    </>
                 )}
               </div>
             </section>
 
             {/* Location Map */}
-            {activeProfile.latitude && activeProfile.longitude && (
+            {isLocationProfile && activeProfile.latitude && activeProfile.longitude && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Location</h2>
                 <div className="rounded-xl border border-slate-700 overflow-hidden bg-slate-900 relative">
@@ -845,8 +690,14 @@ th { background: #f1f5f9; }
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Quick Facts</h2>
               <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
                 <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span className="text-slate-400">Location</span>
-                  <span className="text-white">{activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°</span>
+                  <span className="text-slate-400">{isLocationProfile ? 'Location' : 'Headquarters'}</span>
+                  <span className="text-white">
+                    {isLocationProfile
+                      ? (activeProfile.latitude && activeProfile.longitude
+                        ? `${activeProfile.latitude.toFixed(4)}°, ${activeProfile.longitude.toFixed(4)}°`
+                        : 'Not available')
+                      : (displayRegion || 'Not available')}
+                  </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Timezone</span>
