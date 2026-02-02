@@ -340,6 +340,13 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setRegionalComparisons(null);
   };
 
+  // Auto-scroll to top when a profile is selected
+  useEffect(() => {
+    if (hasSelection && activeProfile) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [hasSelection, activeProfile]);
+
   // Fetch real-time government data and regional comparisons when profile is selected
   useEffect(() => {
     if (!activeProfile) return;
@@ -649,71 +656,30 @@ th { background: #f1f5f9; }
               </div>
             )}
           </div>
-          {/* Static Map Images - Country + Regional */}
-          <div className="grid md:grid-cols-2 gap-4">
+          {/* Static Map - Single Regional View */}
+          <div className="mb-4">
             {activeProfile?.latitude && activeProfile?.longitude ? (
-              <>
-                <div className="h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
-                  <img
-                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 8)}
-                    alt={`Regional map of ${activeProfile.city}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://placehold.co/650x450?text=Map+Unavailable';
-                    }}
-                  />
-                  <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">Regional View</div>
+              <div className="h-[260px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
+                <img
+                  src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 10, 900, 260)}
+                  alt={`Map of ${activeProfile.city}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://placehold.co/900x260?text=Map+Unavailable';
+                  }}
+                />
+                <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded flex items-center gap-2">
+                  <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
                 </div>
-                <div className="h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
-                  <img
-                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 4)}
-                    alt={`Country map of ${activeProfile.country}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://placehold.co/650x450?text=Map+Unavailable';
-                    }}
-                  />
-                  <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">Country View</div>
+                <div className="absolute bottom-3 right-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">
+                  {activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°
                 </div>
-                <div className="md:col-span-2 bg-black/70 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="text-lg font-bold text-white">{activeProfile.city}</div>
-                      <div className="text-sm text-slate-400">{activeProfile.region}, {activeProfile.country}</div>
-                      <div className="text-xs text-slate-500 mt-1">
-                        {activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
-                      <div className="text-[10px] text-slate-500 uppercase">Composite Score</div>
-                    </div>
-                  </div>
-                  <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px]">
-                    <div className="bg-slate-800 rounded p-2 text-center">
-                      <div className="text-slate-400">Population</div>
-                      <div className="text-white font-semibold">{activeProfile.demographics?.population || 'N/A'}</div>
-                    </div>
-                    <div className="bg-slate-800 rounded p-2 text-center">
-                      <div className="text-slate-400">Sectors</div>
-                      <div className="text-white font-semibold">{activeProfile.keySectors?.length || 0}</div>
-                    </div>
-                    <div className="bg-slate-800 rounded p-2 text-center">
-                      <div className="text-slate-400">Momentum</div>
-                      <div className="text-white font-semibold">{activeProfile.investmentMomentum ?? 'N/A'}</div>
-                    </div>
-                    <div className="bg-slate-800 rounded p-2 text-center">
-                      <div className="text-slate-400">Infrastructure</div>
-                      <div className="text-white font-semibold">{activeProfile.infrastructureScore ?? 'N/A'}</div>
-                    </div>
-                  </div>
-                </div>
-              </>
+              </div>
             ) : (
-              <div className="md:col-span-2 h-[320px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 flex items-center justify-center">
+              <div className="h-[180px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 flex items-center justify-center">
                 <div className="text-center text-slate-500">
-                  <Globe className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                  <p>Search for a location to view regional and country maps</p>
+                  <Globe className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                  <p className="text-sm">Search for a location to view map</p>
                 </div>
               </div>
             )}
@@ -847,12 +813,31 @@ th { background: #f1f5f9; }
 
         {hasSelection && activeProfile ? (
           <div className="space-y-6">
+            {/* Report Header Banner */}
+            <div className="bg-gradient-to-r from-amber-600/20 via-amber-500/10 to-amber-600/20 border border-amber-500/30 rounded-2xl px-6 py-4">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-amber-400" />
+                  <div>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-amber-200">Location Intelligence Report</span>
+                    <p className="text-xs text-slate-400">Generated {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => exportCityBrief(activeProfile)}
+                  className="px-4 py-2 text-xs font-semibold bg-amber-500/20 border border-amber-400/50 text-amber-200 rounded-lg hover:bg-amber-500/30 flex items-center gap-2"
+                >
+                  <Download className="w-3 h-3" /> Export PDF
+                </button>
+              </div>
+            </div>
+
             {/* City Header with Quick Facts */}
             <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
               <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
                 <div>
-                  <h2 className="text-3xl font-bold">{activeProfile.city}</h2>
-                  <p className="text-slate-400">{activeProfile.region} · {activeProfile.country}</p>
+                  <h1 className="text-4xl font-bold text-white">{activeProfile.city}</h1>
+                  <p className="text-slate-400 text-lg">{activeProfile.region} · {activeProfile.country}</p>
                   <p className="text-xs text-slate-500 mt-1">Est. {activeProfile.established} · {activeProfile.timezone}</p>
                   {researchResult?.dataQuality && (
                     <div className="flex items-center gap-2 mt-2">
@@ -877,12 +862,24 @@ th { background: #f1f5f9; }
                 <div className="text-right">
                   <div className="text-4xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}</div>
                   <div className="text-[10px] text-slate-400 uppercase">Composite Score</div>
-                  <button
-                    onClick={() => exportCityBrief(activeProfile)}
-                    className="mt-2 px-3 py-1.5 text-xs font-semibold border border-white/20 text-slate-200 rounded-lg hover:border-amber-400"
-                  >
-                    <Download className="inline w-3 h-3 mr-1" /> Export Full Brief
-                  </button>
+                </div>
+              </div>
+
+              {/* Quick Navigation / Table of Contents */}
+              <div className="bg-black/40 border border-white/10 rounded-xl px-4 py-3 mb-6">
+                <div className="flex items-center gap-2 text-[11px] text-slate-400 flex-wrap">
+                  <span className="font-semibold text-slate-300 mr-2">Sections:</span>
+                  <span className="text-amber-400">Executive Summary</span>
+                  <span className="text-slate-600">→</span>
+                  <span className="hover:text-amber-400 cursor-pointer">Government</span>
+                  <span className="text-slate-600">→</span>
+                  <span className="hover:text-amber-400 cursor-pointer">Economy</span>
+                  <span className="text-slate-600">→</span>
+                  <span className="hover:text-amber-400 cursor-pointer">Demographics</span>
+                  <span className="text-slate-600">→</span>
+                  <span className="hover:text-amber-400 cursor-pointer">Infrastructure</span>
+                  <span className="text-slate-600">→</span>
+                  <span className="hover:text-amber-400 cursor-pointer">Contact Directory</span>
                 </div>
               </div>
 
