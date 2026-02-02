@@ -1187,22 +1187,8 @@ export async function multiSourceResearch(
     // Initialize cache
     await locationResearchCache.initialize();
 
-    // Check cache first
-    onProgress?.({
-      stage: 'Cache Check',
-      progress: 2,
-      message: 'Checking for previous research...'
-    });
-
-    const cachedResult = await locationResearchCache.getFullResult(locationQuery);
-    if (cachedResult) {
-      onProgress?.({
-        stage: 'Cache Hit',
-        progress: 100,
-        message: `Loaded cached research for ${locationQuery}`
-      });
-      return cachedResult;
-    }
+    // TEMPORARILY SKIP CACHE to force fresh Gemini research
+    console.log('[GLI Research] Skipping cache, forcing fresh AI research for:', locationQuery);
 
     // TRY BACKEND AI-ENHANCED RESEARCH FIRST
     onProgress?.({
@@ -1862,23 +1848,49 @@ function extractStructuredData(
     wikiData || ''
   ].join(' ');
 
+  const normalizedText = allText.replace(/\s+/g, ' ');
+
   // Population
-  const popMatch = allText.match(/population[:\s]+([0-9,]+)/i);
+  const popMatch =
+    normalizedText.match(/population(?:\s*(?:of|was|is))?\s*([0-9][0-9,]+)/i) ||
+    normalizedText.match(/([0-9][0-9,]+)\s*(?:people|residents)/i);
   if (popMatch) {
     data.population = parseInt(popMatch[1].replace(/,/g, ''));
   }
 
   // Area
-  const areaMatch = allText.match(/area[:\s]+([0-9,]+)\s*km/i);
+  const areaMatch = normalizedText.match(/area(?:\s*(?:of|is))?\s*([0-9][0-9,\.]+)\s*(?:km2|km²|sq\s*km)/i);
   if (areaMatch) {
     data.area = `${areaMatch[1]} km²`;
   }
 
+  // Established / Founded
+  const establishedMatch = normalizedText.match(/(?:established|founded|settled|incorporated)\s*(?:in|on)?\s*([0-9]{3,4})/i);
+  if (establishedMatch) {
+    data.established = establishedMatch[1];
+  }
+
   // Industries
-  const industryKeywords = ['manufacturing', 'agriculture', 'technology', 'services', 'tourism', 'export', 'mining'];
+  const industryKeywords = [
+    'manufacturing',
+    'agriculture',
+    'technology',
+    'services',
+    'tourism',
+    'mining',
+    'education',
+    'health',
+    'finance',
+    'logistics',
+    'retail',
+    'energy'
+  ];
   for (const keyword of industryKeywords) {
-    if (allText.toLowerCase().includes(keyword)) {
-      data.industries.push(keyword.charAt(0).toUpperCase() + keyword.slice(1));
+    if (normalizedText.toLowerCase().includes(keyword)) {
+      const label = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+      if (!data.industries.includes(label)) {
+        data.industries.push(label);
+      }
     }
   }
 
@@ -2010,7 +2022,8 @@ function buildComprehensiveProfile(
         summary: s.dataExtracted,
         source: s.organization || 'News Source',
         link: s.url
-      }))
+      })),
+    _rawWikiExtract: wikiData || undefined
   };
 
   return profile;

@@ -236,6 +236,11 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     return 'Developing';
   }, [activeProfile]);
 
+  const wikiExtract = (activeProfile as unknown as { _rawWikiExtract?: string })._rawWikiExtract;
+  const wikiParagraphs = wikiExtract
+    ? wikiExtract.split('\n').map(p => p.trim()).filter(Boolean).slice(0, 2)
+    : [];
+
   // Handle search submission - LIVE SEARCH
   const handleSearchSubmit = useCallback(async (query: string) => {
     const trimmedQuery = query.trim();
@@ -638,54 +643,6 @@ th { background: #f1f5f9; }
           </div>
         )}
 
-        {/* Map Section - Dynamic Focus */}
-        <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <Globe className="w-5 h-5 text-amber-400" />
-              <h2 className="text-lg font-semibold">
-                {hasSelection && activeProfile 
-                  ? `${activeProfile.city} - Regional View` 
-                  : 'Global Map - Select or Search a Location'}
-              </h2>
-            </div>
-            {hasSelection && activeProfile && (
-              <div className="flex items-center gap-4 text-xs text-slate-400">
-                <span><MapPin className="inline w-3 h-3 mr-1" />{activeProfile.latitude?.toFixed(4) || 'N/A'}, {activeProfile.longitude?.toFixed(4) || 'N/A'}</span>
-                <span><Clock className="inline w-3 h-3 mr-1" />{activeProfile.timezone || 'N/A'}</span>
-              </div>
-            )}
-          </div>
-          {/* Static Map - Single Regional View */}
-          <div className="mb-4">
-            {activeProfile?.latitude && activeProfile?.longitude ? (
-              <div className="h-[260px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 relative">
-                <img
-                  src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 10, 900, 260)}
-                  alt={`Map of ${activeProfile.city}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://placehold.co/900x260?text=Map+Unavailable';
-                  }}
-                />
-                <div className="absolute top-3 left-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded flex items-center gap-2">
-                  <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
-                </div>
-                <div className="absolute bottom-3 right-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">
-                  {activeProfile.latitude?.toFixed(4)}°, {activeProfile.longitude?.toFixed(4)}°
-                </div>
-              </div>
-            ) : (
-              <div className="h-[180px] rounded-xl border border-slate-800 overflow-hidden bg-slate-900 flex items-center justify-center">
-                <div className="text-center text-slate-500">
-                  <Globe className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                  <p className="text-sm">Search for a location to view map</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
         {/* Research Progress Panel */}
         {isResearching && researchProgress && (
           <div className="bg-[#0f0f0f] border border-purple-500/30 rounded-2xl p-6 mb-6">
@@ -835,16 +792,27 @@ th { background: #f1f5f9; }
             <section>
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">About {activeProfile.city}</h2>
               <div className="space-y-4 text-slate-300 leading-relaxed">
-                <p>
-                  {activeProfile.city} is located in {activeProfile.region}, {activeProfile.country}. 
-                  {activeProfile.established && ` Established ${activeProfile.established}.`}
-                  {activeProfile.demographics?.population && ` The city has a population of ${activeProfile.demographics.population}.`}
-                </p>
-                {activeProfile.knownFor && activeProfile.knownFor.length > 0 && (
-                  <p>The city is known for {activeProfile.knownFor.slice(0, 3).join(', ')}.</p>
-                )}
-                {activeProfile.keySectors && activeProfile.keySectors.length > 0 && (
-                  <p>Key economic sectors include {activeProfile.keySectors.slice(0, 4).join(', ')}.</p>
+                {wikiParagraphs.length > 0 ? (
+                  wikiParagraphs.map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      {activeProfile.city}
+                      {activeProfile.region || activeProfile.country
+                        ? ` is located in ${[activeProfile.region, activeProfile.country].filter(Boolean).join(', ')}.`
+                        : '.'}
+                      {activeProfile.established && ` Established ${activeProfile.established}.`}
+                      {activeProfile.demographics?.population && ` The city has a population of ${activeProfile.demographics.population}.`}
+                    </p>
+                    {activeProfile.knownFor && activeProfile.knownFor.length > 0 && (
+                      <p>The city is known for {activeProfile.knownFor.slice(0, 3).join(', ')}.</p>
+                    )}
+                    {activeProfile.keySectors && activeProfile.keySectors.length > 0 && (
+                      <p>Key economic sectors include {activeProfile.keySectors.slice(0, 4).join(', ')}.</p>
+                    )}
+                  </>
                 )}
               </div>
             </section>

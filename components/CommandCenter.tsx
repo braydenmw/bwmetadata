@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
 import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService_v2';
 import { locationResearchCache } from '../services/locationResearchCache';
+import { CITY_PROFILES } from '../data/globalLocationProfiles';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
@@ -16,41 +17,65 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
-    
+
     // Global Location Intelligence state - LIVE SEARCH
     const [locationQuery, setLocationQuery] = useState('');
     const [isResearchingLocation, setIsResearchingLocation] = useState(false);
     const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
-    
+    const [comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
+    const [researchSummary, setResearchSummary] = useState<string>('');
+
     // Handle location search - LIVE (Multi-Source with intelligent caching)
     const handleLocationSearch = async () => {
         if (!locationQuery.trim()) return;
         setIsResearchingLocation(true);
         setLocationResult(null);
+        setComparisonCities([]);
+        setResearchSummary('');
         setResearchProgress({ stage: 'initialization', progress: 2, message: 'Initializing research system...' });
-        
+
         try {
             // Initialize cache system
             await locationResearchCache.initialize();
 
             // Enhanced multi-source research with caching and autonomous refinement
             const result = await multiSourceResearch(
-                locationQuery, 
+                locationQuery,
                 (progress) => {
                     setResearchProgress(progress);
                 },
                 true // Enable autonomous refinement loops
             );
-            
+
             if (result && result.profile) {
-                setLocationResult({ 
-                    city: result.profile.city, 
-                    country: result.profile.country, 
-                    lat: result.profile.latitude || 0, 
-                    lon: result.profile.longitude || 0 
+                setLocationResult({
+                    city: result.profile.city,
+                    country: result.profile.country,
+                    lat: result.profile.latitude || 0,
+                    lon: result.profile.longitude || 0
                 });
-                
+
+                setResearchSummary(result.researchSummary || 'Research completed. Review the location brief below.');
+
+                const similar = result.similarCities?.length
+                    ? result.similarCities.slice(0, 4).map((c) => ({
+                        city: c.city,
+                        country: c.country,
+                        reason: c.reason,
+                        keyMetric: c.keyMetric
+                    }))
+                    : CITY_PROFILES.filter((p) => p.country === result.profile.country && p.city !== result.profile.city)
+                        .slice(0, 4)
+                        .map((p) => ({
+                            city: p.city,
+                            country: p.country,
+                            reason: `Comparable regional profile in ${p.region}`,
+                            keyMetric: p.globalMarketAccess
+                        }));
+
+                setComparisonCities(similar);
+
                 // Store in localStorage for quick access in report
                 localStorage.setItem('lastLocationResult', JSON.stringify(result));
             }
@@ -103,7 +128,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <button onClick={() => scrollToSection('story')} className="hover:text-white transition-colors">Our Story</button>
                         <button onClick={() => scrollToSection('technology')} className="hover:text-white transition-colors">Technology</button>
                         <button onClick={() => scrollToSection('difference')} className="hover:text-white transition-colors">The Difference</button>
-                        <button onClick={() => scrollToSection('pipeline')} className="hover:text-white transition-colors">Pipeline</button>
+                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-white transition-colors">BW AI Search</button>
                         <button onClick={() => scrollToSection('protocol')} className="hover:text-white transition-colors">10-Step Protocol</button>
                         <button onClick={() => scrollToSection('pilots')} className="hover:text-white transition-colors">Partnerships</button>
                     </div>
@@ -470,20 +495,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0a0a0a]" />
             </div>
 
-            {/* THE INTELLIGENCE PIPELINE */}
-            <section id="pipeline" className="py-16 px-4 bg-[#0a0a0a]">
+            {/* BW AI GLOBAL SEARCH */}
+            <section id="bwai-search" className="py-16 px-4 bg-[#0a0a0a]">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE INTELLIGENCE PIPELINE</p>
-                    <h2 className="text-xl md:text-2xl font-light mb-2">From Rough Brief to Board-Ready Package</h2>
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">BW AI GLOBAL SEARCH</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-3">Instant Intelligence on Any Region, City, Company, or Government</h2>
                     
-                    {/* Global Intelligence Network Subheading */}
-                    <div className="flex items-center gap-3 mb-8">
-                        <Globe className="w-5 h-5 text-amber-400" />
-                        <div>
-                            <p className="text-sm font-semibold text-white">Global Intelligence Network</p>
-                            <p className="text-sm text-amber-300">Global Coverage • 190+ Countries • Real-Time Data</p>
-                        </div>
-                    </div>
+                    <p className="text-sm text-white/70 leading-relaxed mb-8">
+                        Before you can build a case, you need to understand the landscape. This is your starting point—a live AI-powered research engine that pulls verified data on any location or entity you're targeting. Enter a name, get an instant brief: demographics, leadership, economic indicators, infrastructure, and comparison benchmarks. Think of it as a search engine built for dealmakers—surfacing the intelligence that matters.
+                    </p>
                     
                     {/* GLOBAL LOCATION INTELLIGENCE - Split Window Panel */}
                     <div className="bg-gradient-to-br from-slate-900 to-[#0f0f0f] border border-amber-500/30 rounded-2xl overflow-hidden mb-10">
@@ -499,10 +519,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent" />
                                 <div className="absolute bottom-4 left-4 right-4">
                                     <div className="flex items-center gap-2 text-amber-400 text-xs uppercase tracking-wider font-semibold">
-                                        <Zap className="w-4 h-4" />
-                                        For Full Access
+                                        <Globe className="w-4 h-4" />
+                                        Global Coverage
                                     </div>
-                                    <p className="text-white/70 text-sm mt-1">Live AI Assistant • Press Launch Button</p>
+                                    <p className="text-white/70 text-sm mt-1">Real-time data from public sources worldwide</p>
                                 </div>
                             </div>
                             
@@ -510,34 +530,33 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="p-6 md:p-8 flex flex-col justify-center">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/40 rounded-xl flex items-center justify-center">
-                                        <MapPin className="w-5 h-5 text-amber-400" />
+                                        <Search className="w-5 h-5 text-amber-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-semibold text-white">Global Location Intelligence</h3>
-                                        <p className="text-xs text-white/50">AI-Powered Research Agent</p>
+                                        <h3 className="text-lg font-semibold text-white">BW AI Search</h3>
+                                        <p className="text-xs text-white/50">Cities • Regions • Companies • Government</p>
                                     </div>
                                 </div>
-                                
+
                                 <p className="text-sm text-white/70 mb-4 leading-relaxed">
-                                    Search <strong className="text-white">any location worldwide</strong>—cities, regions, or countries. 
-                                    Our AI agent researches leadership, economy, infrastructure, demographics, and investment opportunities in real-time.
+                                    Enter any city, region, company, or government body. Receive a one-page intelligence brief with key facts, leadership, economic data, and comparison signals—instantly.
                                 </p>
-                                
+
                                 <div className="space-y-3 text-xs text-white/60 mb-5">
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                                        <span>Political leadership & government structure</span>
+                                        <span>Population, GDP, key industries & infrastructure</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                                        <span>Economic indicators & trade data</span>
+                                        <span>Leadership, government structure & key contacts</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                                        <span>Infrastructure & investment incentives</span>
+                                        <span>Comparison benchmarks & investment signals</span>
                                     </div>
                                 </div>
-                                
+
                                 {/* Search Input */}
                                 <div className="relative mb-4">
                                     <input
@@ -545,7 +564,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         value={locationQuery}
                                         onChange={(e) => setLocationQuery(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
-                                        placeholder="Enter any city, region, or country..."
+                                        placeholder="Search any city, region, company, or government..."
                                         disabled={isResearchingLocation}
                                         className="w-full px-4 py-3 pr-24 bg-black/40 border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400 text-sm"
                                     />
@@ -567,7 +586,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         )}
                                     </button>
                                 </div>
-                                
+
                                 {/* Research Progress - LIVE */}
                                 {isResearchingLocation && researchProgress && (
                                     <div className="bg-black/40 border border-purple-500/30 rounded-xl p-4 mb-4">
@@ -576,49 +595,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             <span className="text-xs text-purple-400">{Math.round(researchProgress.progress)}%</span>
                                         </div>
                                         <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                            <div 
+                                            <div
                                                 className="h-full bg-gradient-to-r from-purple-500 to-amber-500 rounded-full transition-all duration-500"
                                                 style={{ width: `${researchProgress.progress}%` }}
                                             />
-                                        </div>
-                                        <div className="mt-2 flex flex-wrap gap-1">
-                                            {['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].map(stage => {
-                                                const stageIdx = ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos'].indexOf(stage);
-                                                const currentIdx = ['geocoding', 'basic-info', 'leadership', 'economy', 'news', 'photos', 'complete', 'error'].indexOf(researchProgress.stage);
-                                                const isComplete = currentIdx > stageIdx;
-                                                const isActive = researchProgress.stage === stage;
-                                                
-                                                return (
-                                                    <span 
-                                                        key={stage}
-                                                        className={`text-[10px] px-2 py-0.5 rounded-full ${
-                                                            isComplete ? 'bg-emerald-500/20 text-emerald-300' :
-                                                            isActive ? 'bg-purple-500/20 text-purple-300' :
-                                                            'bg-slate-700 text-slate-400'
-                                                        }`}
-                                                    >
-                                                        {stage.replace('-', ' ')}
-                                                    </span>
-                                                );
-                                            })}
                                         </div>
                                         <div className="mt-2 text-[10px] text-white/40">
                                             Fetching real-time data from World Bank, government sources, and public APIs...
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 {/* Result Preview */}
                                 {locationResult && !isResearchingLocation && (
                                     <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex items-center justify-between gap-4">
                                             <div>
                                                 <p className="text-sm font-semibold text-white">{locationResult.city}, {locationResult.country}</p>
-                                                <p className="text-xs text-white/50">Research complete • Click to view full report</p>
+                                                <p className="text-xs text-white/50">Research complete • Summary below</p>
                                             </div>
-                                            <button 
+                                            <button
                                                 onClick={() => {
-                                                    // Pass both location name AND the cached research result to prevent re-research
                                                     localStorage.setItem('gli-target', `${locationResult.city}, ${locationResult.country}`);
                                                     localStorage.setItem('gli-cached-research', localStorage.getItem('lastLocationResult') || '');
                                                     if (onOpenGlobalLocationIntel) {
@@ -629,40 +626,130 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                 }}
                                                 className="px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs rounded-lg hover:bg-emerald-500/30 flex items-center gap-1"
                                             >
-                                                View Report <ExternalLink className="w-3 h-3" />
+                                                View Full Report <ExternalLink className="w-3 h-3" />
                                             </button>
                                         </div>
+                                        {researchSummary && (
+                                            <p className="mt-3 text-xs text-white/70 leading-relaxed">{researchSummary}</p>
+                                        )}
+                                        {comparisonCities.length > 0 && (
+                                            <div className="mt-4">
+                                                <div className="text-[11px] uppercase tracking-wider text-amber-300 font-semibold mb-2">Comparison Signals</div>
+                                                <div className="grid gap-2">
+                                                    {comparisonCities.map((comp, idx) => (
+                                                        <div key={`${comp.city}-${idx}`} className="text-xs text-white/70 border border-white/10 rounded-lg p-2">
+                                                            <div className="font-semibold text-white">{comp.city}, {comp.country}</div>
+                                                            <div>{comp.reason}</div>
+                                                            {comp.keyMetric && <div className="text-[10px] text-white/50 mt-1">{comp.keyMetric}</div>}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
 
+                    {/* THE COMPREHENSIVE INTAKE FRAMEWORK - 10-Step Protocol */}
+                    <section id="protocol" className="py-10">
+                        <div className="max-w-4xl mx-auto">
+                            <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
+                            <h2 className="text-xl md:text-2xl font-light mb-4">The Ten-Step Protocol</h2>
+
+                            <p className="text-sm text-white/70 leading-relaxed mb-3">
+                                Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
+                            </p>
+                            <p className="text-xs text-amber-400 mb-6">Click any step below to see the detailed data requirements.</p>
+
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                {tenStepProtocol.map((item) => (
+                                    <button
+                                        key={item.step}
+                                        onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
+                                        className={`text-left transition-all rounded-xl p-4 border ${
+                                            activeStep === item.step
+                                                ? 'bg-amber-500/20 border-amber-500/50'
+                                                : item.gliEnabled
+                                                    ? 'bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20'
+                                                    : 'bg-white/5 border-white/10 hover:bg-white/10'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                                                activeStep === item.step ? 'bg-amber-400 text-black' : item.gliEnabled ? 'bg-purple-500/40 text-purple-200' : 'bg-white/20 text-white'
+                                            }`}>
+                                                {item.step}
+                                            </div>
+                                            <span className="text-xs text-white/50">Step {item.step}</span>
+                                            {item.gliEnabled && <span className="text-[8px] px-1.5 py-0.5 bg-purple-500/30 text-purple-300 rounded">GLI</span>}
+                                        </div>
+                                        <h4 className="text-xs font-medium leading-tight">{item.title}</h4>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {activeStep && (
+                                <div className="mt-6 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
+                                    <h4 className="text-sm font-semibold mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
+                                    <p className="text-sm text-white/70 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
+
+                                    {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
+                                        <div className="bg-purple-500/20 border border-purple-500/40 rounded-lg p-3 mb-4">
+                                            <p className="text-xs text-purple-200">{tenStepProtocol[activeStep - 1].gliNote}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="bg-black/30 rounded-lg p-4">
+                                        <h5 className="text-xs font-semibold text-amber-400 mb-3">Data Requirements:</h5>
+                                        <ul className="grid md:grid-cols-2 gap-2">
+                                            {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
+                                                <li key={idx} className="flex items-start gap-2 text-xs text-white/70">
+                                                    <CheckCircle2 size={12} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                                                    {detail}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
                     {/* INTELLIGENCE PIPELINE CONTINUES */}
 
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
                         <p className="text-sm text-white/70 leading-relaxed mb-4">
-                            Most AI tools take your input and generate a response. This system takes your input and interrogates it. It doesn't ask "what do you want me to write?"—it asks <strong className="text-white">"is this opportunity real, and can you prove it?"</strong>
+                            Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
                         </p>
                         <p className="text-sm text-white/70 leading-relaxed">
-                            The pipeline works in three stages: <strong className="text-amber-400">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), <strong className="text-amber-400">Adversarial Analysis</strong> (five AI personas debate your case while 38 formulas score it mathematically, including the Blind Spot Audit suite: SEQ, FMS, DCS, DQS, GCS), and <strong className="text-amber-400">Institutional Output</strong> (the Document Factory generates board-ready deliverables with full audit trails). What takes consulting firms weeks and tens of thousands of dollars happens here in minutes.
+                            The workflow has three stages: <strong className="text-amber-400">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-amber-400">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-amber-400">Institutional Output</strong> (compile evidence into auditable deliverables).
                         </p>
                     </div>
+
+                    <p className="text-sm text-white/70 leading-relaxed mb-4">
+                        Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action.
+                    </p>
 
                     {/* INSTITUTIONAL-GRADE OUTPUTS */}
                     <div className="mb-8">
                         <p className="text-xs text-amber-400 uppercase tracking-wider mb-4 font-semibold">INSTITUTIONAL-GRADE OUTPUTS</p>
                         <h3 className="text-lg font-light mb-4">The Document Factory</h3>
                         
+                        <p className="text-sm text-white/60 leading-relaxed mb-6">
+                            Great analysis is worthless if it stays locked in spreadsheets. The Document Factory bridges the gap between validated insights and boardroom-ready deliverables—producing prospectuses, risk matrices, partnership briefs, LOIs, MOUs, grant applications, and due-diligence packs that meet institutional standards and carry traceable evidence.
+                        </p>
+                        
                         <div className="space-y-4 text-sm text-white/70 mb-6">
                             <p>
-                                <strong className="text-white">Why it exists:</strong> Regional projects fail not because they lack merit, but because they lack presentation. Investors and government bodies expect documents that look like they came from McKinsey or Deloitte. Without institutional-grade formatting, credible projects get dismissed.
+                                <strong className="text-white">Why it exists:</strong> High-potential regional projects fail when their case isn’t packaged at institutional quality. This fixes that gap.
                             </p>
                             <p>
-                                <strong className="text-white">How it works:</strong> The Document Factory doesn't just fill in templates—it synthesizes your 10-Step Protocol data with NSIL's analysis scores, persona debate outcomes, and risk simulations into cohesive narratives. Every document includes embedded provenance: the specific formulas used, the confidence intervals, and the audit trail for every claim.
+                                <strong className="text-white">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.
                             </p>
                             <p>
-                                <strong className="text-white">What you get:</strong> Investment Prospectuses, Risk Assessment Matrices, Partnership Briefs, LOI/MOU Templates, Grant Applications, Due Diligence Packs—all scored, cross-referenced, and ready for board-level presentation.
+                                <strong className="text-white">What you get:</strong> Prospectuses, risk matrices, partnership briefs, LOIs/MOUs, grants, and due-diligence packs—formatted and traceable.
                             </p>
                         </div>
 
@@ -945,74 +1032,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         )}
                     </div>
-                </div>
-            </section>
-
-            {/* THE COMPREHENSIVE INTAKE FRAMEWORK - 10-Step Protocol */}
-            <section id="protocol" className="py-16 px-4 bg-[#0f0f0f]">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
-                    <h2 className="text-xl md:text-2xl font-light mb-4">The Ten-Step Protocol</h2>
-                    
-                    <p className="text-sm text-white/70 leading-relaxed mb-4">
-                        Before NSIL (Nexus Strategic Intelligence Layer) can analyze, it must understand. This professional-grade intake framework guides you through every critical dimension of your strategic plan—forcing clarity, eliminating blind spots, and ensuring the AI reasoning engine works with complete, well-structured inputs.
-                    </p>
-                    <p className="text-xs text-white/50 mb-8">
-                        → For more on how NSIL transforms your inputs into intelligence, see the Technical Architecture section above.
-                    </p>
-                    <p className="text-xs text-amber-400 mb-6">Click any step to see the detailed data requirements.</p>
-
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                        {tenStepProtocol.map((item) => (
-                            <button 
-                                key={item.step}
-                                onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
-                                className={`text-left transition-all rounded-xl p-4 border ${
-                                    activeStep === item.step 
-                                        ? 'bg-amber-500/20 border-amber-500/50' 
-                                        : item.gliEnabled 
-                                            ? 'bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20' 
-                                            : 'bg-white/5 border-white/10 hover:bg-white/10'
-                                }`}
-                            >
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                                        activeStep === item.step ? 'bg-amber-400 text-black' : item.gliEnabled ? 'bg-purple-500/40 text-purple-200' : 'bg-white/20 text-white'
-                                    }`}>
-                                        {item.step}
-                                    </div>
-                                    <span className="text-xs text-white/50">Step {item.step}</span>
-                                    {item.gliEnabled && <span className="text-[8px] px-1.5 py-0.5 bg-purple-500/30 text-purple-300 rounded">GLI</span>}
-                                </div>
-                                <h4 className="text-xs font-medium leading-tight">{item.title}</h4>
-                            </button>
-                        ))}
-                    </div>
-
-                    {activeStep && (
-                        <div className="mt-6 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
-                            <h4 className="text-sm font-semibold mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
-                            <p className="text-sm text-white/70 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
-                            
-                            {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
-                                <div className="bg-purple-500/20 border border-purple-500/40 rounded-lg p-3 mb-4">
-                                    <p className="text-xs text-purple-200">{tenStepProtocol[activeStep - 1].gliNote}</p>
-                                </div>
-                            )}
-                            
-                            <div className="bg-black/30 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-amber-400 mb-3">Data Requirements:</h5>
-                                <ul className="grid md:grid-cols-2 gap-2">
-                                    {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
-                                        <li key={idx} className="flex items-start gap-2 text-xs text-white/70">
-                                            <CheckCircle2 size={12} className="text-amber-400 mt-0.5 flex-shrink-0" />
-                                            {detail}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </section>
 
