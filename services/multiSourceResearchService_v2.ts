@@ -153,10 +153,21 @@ Do NOT include opinions, endorsements, or recommendations. Use neutral, factual 
       "since": "Year took office",
       "party": "Political party if applicable"
     },
+    "keyOfficials": [
+      {"name": "Mayor / Governor / Senator", "title": "Official title", "since": "Year took office", "party": "Political party if applicable", "sourceUrl": "https://..."}
+    ],
     "type": "Government/administrative type",
     "departments": ["Key government departments"],
     "administrativeLevel": "How it fits in national structure"
   },
+  "officialPortals": [
+    {"label": "Official government portal", "url": "https://..."},
+    {"label": "Investment promotion agency", "url": "https://..."},
+    {"label": "Business registry / licensing", "url": "https://..."}
+  ],
+  "contactDirectory": [
+    {"name": "Office name", "type": "national/regional/local", "website": "https://...", "email": "contact@...", "phone": "+...", "address": "..."}
+  ],
   "economy": {
     "gdpLocal": "GDP or economic output (e.g., '$1.7 trillion')",
     "gdpGrowth": "Recent growth rate (e.g., '2.1%')",
@@ -480,6 +491,20 @@ function transformAIToProfile(
     });
   });
 
+  const officialPortals = (ai.officialPortals as Array<{ label: string; url: string }>) || [];
+  officialPortals.forEach((portal) => {
+    if (!portal?.url) return;
+    sources.push({
+      title: portal.label || 'Official government portal',
+      url: portal.url,
+      type: 'government',
+      reliability: 'high',
+      accessDate,
+      dataExtracted: 'Official portal / contact point',
+      organization: portal.label
+    });
+  });
+
   // Extract nested data safely
   const overview = ai.overview as Record<string, unknown> || {};
   const demographics = ai.demographics as Record<string, unknown> || {};
@@ -492,11 +517,32 @@ function transformAIToProfile(
   const scores = ai.scores as Record<string, number> || {};
   const dataQuality = ai.dataQuality as Record<string, unknown> || {};
   const leader = governance.leader as Record<string, unknown> || {};
+    const keyOfficials = (governance.keyOfficials as Array<Record<string, unknown>>) || [];
+  const contactDirectory = (ai.contactDirectory as Array<Record<string, string>>) || [];
 
   // Build leaders
   const leaders: CityLeader[] = [];
   if (leader.name && leader.name !== 'Unknown') {
     leaders.push({
+        keyOfficials.forEach((official, idx) => {
+          const name = official.name as string | undefined;
+          if (!name || name === 'Unknown') return;
+          const role = (official.title as string) || 'Government Official';
+          const alreadyIncluded = leaders.some(l => l.name === name && l.role === role);
+          if (alreadyIncluded) return;
+          leaders.push({
+            id: `leader-key-${idx}`,
+            name,
+            role,
+            tenure: official.since ? `Since ${official.since}` : 'Current Term',
+            achievements: (governance.departments as string[]) || ['Government leadership'],
+            rating: 75,
+            fullBio: `${name} serves as ${role}${official.party ? ` (${official.party})` : ''}.`,
+            sourceUrl: (official.sourceUrl as string) || '',
+            photoVerified: false,
+            internationalEngagementFocus: false
+          });
+        });
       id: 'leader-1',
       name: leader.name as string,
       role: leader.title as string || 'Government Leader',
@@ -581,7 +627,15 @@ function transformAIToProfile(
       internetPenetration: (infrastructure.internetPenetration as string) || 'High connectivity'
     },
 
-    governmentLinks: [],
+    governmentLinks: officialPortals.filter(p => p?.url).map(p => ({ label: p.label || 'Official portal', url: p.url })),
+    governmentOffices: contactDirectory.map((office) => ({
+      name: office.name || 'Government Office',
+      type: office.type || 'local',
+      website: office.website,
+      email: office.email,
+      phone: office.phone,
+      address: office.address
+    })),
 
     recentNews: ((ai.recentDevelopments as Array<{ date: string; title: string; description: string }>) || []).map(d => ({
       date: d.date || accessDate,

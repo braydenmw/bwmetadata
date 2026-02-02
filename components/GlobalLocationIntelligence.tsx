@@ -162,6 +162,65 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     return leadershipRanking.find(l => l.internationalEngagementFocus) || leadershipRanking[0];
   }, [leadershipRanking]);
 
+  const keyOfficials = useMemo(() => {
+    const officials: Array<{
+      name: string;
+      role: string;
+      tenure?: string;
+      sourceUrl?: string;
+      verified?: boolean;
+      sourceLabel?: string;
+    }> = [];
+
+    if (governmentLeaders?.length) {
+      governmentLeaders.forEach((leader) => {
+        if (!leader?.name || !leader?.role) return;
+        officials.push({
+          name: leader.name,
+          role: leader.role,
+          tenure: leader.tenure,
+          sourceUrl: leader.sourceUrl,
+          verified: leader.verified,
+          sourceLabel: leader.website
+        });
+      });
+    }
+
+    if (activeProfile?.leaders?.length) {
+      activeProfile.leaders.forEach((leader) => {
+        if (!leader?.name || !leader?.role) return;
+        officials.push({
+          name: leader.name,
+          role: leader.role,
+          tenure: leader.tenure,
+          sourceUrl: leader.sourceUrl,
+          verified: leader.photoVerified
+        });
+      });
+    }
+
+    const priorityRoles = ['mayor', 'governor', 'senator', 'president', 'premier', 'minister', 'secretary', 'chair', 'commissioner'];
+    const seen = new Set<string>();
+
+    const normalized = officials
+      .map((o) => ({
+        ...o,
+        roleLower: o.role?.toLowerCase() || ''
+      }))
+      .filter((o) => {
+        const key = `${o.name}-${o.role}`.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+    const prioritized = normalized.filter((o) =>
+      priorityRoles.some((role) => o.roleLower.includes(role))
+    );
+
+    return (prioritized.length ? prioritized : normalized).slice(0, 6);
+  }, [governmentLeaders, activeProfile]);
+
   const safetyProxyScore = useMemo(() => {
     if (!activeProfile) return null;
     const stability = activeProfile.politicalStability ?? 50;
@@ -908,6 +967,40 @@ th { background: #f1f5f9; }
                     <div className="text-sm text-slate-400 p-3 bg-black/30 rounded-lg">
                       Leadership data being compiled from official government sources...
                     </div>
+                  )}
+                </div>
+
+                {/* Key Officials & Points of Contact */}
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-4">
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-3 font-semibold flex items-center gap-2">
+                    <Building2 className="w-4 h-4" /> Key Officials (Mayor / Governor / Senator / Reference)
+                  </div>
+                  {keyOfficials.length > 0 ? (
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {keyOfficials.map((official, idx) => (
+                        <div key={`${official.name}-${idx}`} className="p-3 bg-black/30 rounded-lg border border-blue-500/20">
+                          <div className="flex items-start justify-between">
+                            <div className="min-w-0">
+                              <div className="text-sm font-semibold text-white truncate">{official.name}</div>
+                              <div className="text-xs text-blue-300">{official.role}</div>
+                              {official.tenure && <div className="text-[10px] text-slate-500">{official.tenure}</div>}
+                            </div>
+                            {official.verified && (
+                              <div className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
+                                ✓ Verified
+                              </div>
+                            )}
+                          </div>
+                          {official.sourceUrl && (
+                            <div className="text-[10px] text-slate-400 mt-2">
+                              Source: <a href={official.sourceUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">{new URL(official.sourceUrl).hostname}</a>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-slate-400">Key official roles not yet available for this location.</div>
                   )}
                 </div>
 
@@ -2239,26 +2332,99 @@ th { background: #f1f5f9; }
               )}
             </div>
 
-            {/* ===================== GOVERNMENT LINKS & SOURCES ===================== */}
-            {activeProfile.governmentLinks && (
-              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
-                <SectionHeader icon={ExternalLink} title="Official Government Sources" color="text-blue-400" />
-                <div className="grid md:grid-cols-3 gap-4">
-                  {activeProfile.governmentLinks.map(link => (
-                    <a 
-                      key={link.url}
-                      href={link.url} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="p-3 border border-blue-500/30 rounded-lg hover:border-blue-400 hover:bg-blue-500/10 transition-all text-xs text-blue-300 flex items-center gap-2"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      {link.label}
-                    </a>
-                  ))}
+            {/* ===================== GOVERNMENT & CONTACT DIRECTORY ===================== */}
+            <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+              <SectionHeader icon={ExternalLink} title="Government & Contact Directory" color="text-blue-400" />
+              <p className="text-xs text-slate-400 mb-4">
+                Consolidated government portals, departments, and contact points to reduce research time.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-2">Departments</div>
+                  {activeProfile.departments?.length ? (
+                    <ul className="text-xs text-slate-300 space-y-1">
+                      {activeProfile.departments.map((dept) => (
+                        <li key={dept}>• {dept}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="text-xs text-slate-400">Departments not yet available.</div>
+                  )}
+                </div>
+
+                <div className="p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-2">Ease of Doing Business</div>
+                  <div className="text-sm text-white">
+                    {activeProfile.easeOfDoingBusiness || 'See World Bank or official investment authority'}
+                  </div>
+                  <div className="text-[10px] text-slate-500 mt-2">
+                    Reference official sources for licensing, permits, and timelines.
+                  </div>
                 </div>
               </div>
-            )}
+
+              {activeProfile.governmentLinks?.length ? (
+                <div className="mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-2">Official Portals</div>
+                  <div className="grid md:grid-cols-3 gap-3">
+                    {activeProfile.governmentLinks.map(link => (
+                      <a 
+                        key={link.url}
+                        href={link.url} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="p-3 border border-blue-500/30 rounded-lg hover:border-blue-400 hover:bg-blue-500/10 transition-all text-xs text-blue-300 flex items-center gap-2"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-slate-400 mb-6">Official portals not yet available for this location.</div>
+              )}
+
+              {activeProfile.investmentLeads?.length ? (
+                <div className="mb-6">
+                  <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-2">Investment / Trade Contacts</div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {activeProfile.investmentLeads.map((lead) => (
+                      <div key={lead.name} className="p-3 border border-emerald-500/20 bg-emerald-500/5 rounded-lg">
+                        <div className="text-xs font-semibold text-white">{lead.name}</div>
+                        <div className="text-[11px] text-emerald-300">{lead.role}</div>
+                        <div className="text-[10px] text-slate-400">{lead.focus}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {activeProfile.governmentOffices?.length ? (
+                <div>
+                  <div className="text-[11px] uppercase tracking-wider text-blue-300 mb-2">Contact Directory</div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {activeProfile.governmentOffices.map((office, idx) => (
+                      <div key={`${office.name}-${idx}`} className="p-3 border border-blue-500/20 bg-blue-500/5 rounded-lg">
+                        <div className="text-xs font-semibold text-white">{office.name}</div>
+                        <div className="text-[11px] text-blue-300 capitalize">{office.type}</div>
+                        {office.website && (
+                          <a href={office.website} target="_blank" rel="noreferrer" className="text-[11px] text-blue-400 hover:underline block mt-1">
+                            {office.website}
+                          </a>
+                        )}
+                        {office.email && <div className="text-[11px] text-slate-300 mt-1">Email: {office.email}</div>}
+                        {office.phone && <div className="text-[11px] text-slate-300">Phone: {office.phone}</div>}
+                        {office.address && <div className="text-[11px] text-slate-400 mt-1">{office.address}</div>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-slate-400">Contact directory not yet available for this location.</div>
+              )}
+            </div>
 
             {/* ===================== LIVE DATA SECTION ===================== */}
             <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">

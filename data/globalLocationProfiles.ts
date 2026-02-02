@@ -127,6 +127,14 @@ export interface CityProfile {
   rankings?: string[];
   keyStatistics?: string[];
   governmentLinks?: Array<{ label: string; url: string }>;
+  governmentOffices?: Array<{
+    name: string;
+    type: string;
+    website?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+  }>;
   leaders: CityLeader[];
   economics?: EconomicData;
   demographics?: DemographicData;
