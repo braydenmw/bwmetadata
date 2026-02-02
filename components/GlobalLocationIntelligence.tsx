@@ -873,6 +873,17 @@ th { background: #f1f5f9; }
                   </div>
                 </div>
 
+                {/* Neutrality & Purpose */}
+                <div className="bg-slate-900/60 border border-slate-700 rounded-xl p-4 mb-4">
+                  <div className="text-[11px] uppercase tracking-wider text-slate-300 mb-2 font-semibold flex items-center gap-2">
+                    <Info className="w-4 h-4" /> Neutrality & Purpose
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    This report compiles publicly available data for location research. It does not express system opinions or endorsements,
+                    and it is not a recommendation. Verify all critical details with official sources.
+                  </p>
+                </div>
+
                 {/* Current Leadership - PROMINENT */}
                 <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 mb-4">
                   <div className="text-[11px] uppercase tracking-wider text-purple-300 mb-3 font-semibold flex items-center gap-2">
@@ -917,6 +928,22 @@ th { background: #f1f5f9; }
                   <div className="p-3 bg-black/30 rounded-lg">
                     <div className="text-[10px] text-slate-400 uppercase">Coordinates</div>
                     <div className="text-sm font-semibold text-white mt-1">{activeProfile.latitude?.toFixed(2)}°, {activeProfile.longitude?.toFixed(2)}°</div>
+                  </div>
+                </div>
+
+                {/* Government Departments & Ease of Doing Business */}
+                <div className="grid md:grid-cols-2 gap-3 mb-4">
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">Government Departments</div>
+                    <div className="text-sm font-semibold text-white mt-1">
+                      {activeProfile.departments?.join(', ') || 'See official government portals'}
+                    </div>
+                  </div>
+                  <div className="p-3 bg-black/30 rounded-lg">
+                    <div className="text-[10px] text-slate-400 uppercase">Ease of Doing Business</div>
+                    <div className="text-sm font-semibold text-white mt-1">
+                      {activeProfile.easeOfDoingBusiness || 'See World Bank or official investment authority'}
+                    </div>
                   </div>
                 </div>
 
@@ -1088,6 +1115,15 @@ th { background: #f1f5f9; }
                         </div>
                         <div className="text-[11px] text-slate-500">
                           Government sources: {researchResult?.dataQuality?.governmentSourcesUsed ?? 0}
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          Departments: {activeProfile.departments?.slice(0, 4).join(', ') || 'See official government portals'}
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          Ease of doing business: {activeProfile.easeOfDoingBusiness || 'See World Bank or investment authority'}
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          Official portals: {activeProfile.governmentLinks?.length || 0}
                         </div>
                       </div>
                     ) : (
@@ -1338,28 +1374,31 @@ th { background: #f1f5f9; }
               <div className="p-4 bg-gradient-to-r from-purple-500/10 to-amber-500/10 border border-purple-500/20 rounded-xl">
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="w-5 h-5 text-purple-400" />
-                  <span className="text-sm font-semibold text-white">Location Due Diligence Score</span>
+                  <span className="text-sm font-semibold text-white">Location Data Coverage Summary</span>
                   <span className="ml-auto text-2xl font-bold text-amber-400">{computeCompositeScore(activeProfile)}/100</span>
                 </div>
+                <p className="text-[10px] text-slate-400 mb-3">
+                  Derived from available indicators only; not an opinion, endorsement, or recommendation.
+                </p>
                 <div className="grid md:grid-cols-3 gap-4 text-[11px]">
                   <div>
-                    <div className="text-slate-400 mb-1">Strengths for Protocol Steps:</div>
+                    <div className="text-slate-400 mb-1">Coverage Highlights:</div>
                     <ul className="text-emerald-300 space-y-1">
-                      <li>✓ Market context data comprehensive</li>
-                      <li>✓ Risk assessment complete</li>
-                      <li>✓ Scoring metrics available</li>
+                      <li>✓ Market context indicators present</li>
+                      <li>✓ Risk indicators present</li>
+                      <li>✓ Scoring inputs present</li>
                     </ul>
                   </div>
                   <div>
-                    <div className="text-slate-400 mb-1">Recommended Next Steps:</div>
+                    <div className="text-slate-400 mb-1">Verification Checklist:</div>
                     <ul className="text-blue-300 space-y-1">
-                      <li>→ Verify leadership via official channels</li>
-                      <li>→ Engage local investment authority</li>
-                      <li>→ Conduct on-ground validation</li>
+                      <li>→ Confirm leadership via official portals</li>
+                      <li>→ Validate incentives with investment authority</li>
+                      <li>→ Verify current regulations and timelines</li>
                     </ul>
                   </div>
                   <div>
-                    <div className="text-slate-400 mb-1">Data Gaps to Address:</div>
+                    <div className="text-slate-400 mb-1">Known Data Gaps:</div>
                     <ul className="text-amber-300 space-y-1">
                       {!activeProfile.leaders?.length && <li>• Leadership verification needed</li>}
                       {(activeProfile.laborPool || 0) < 50 && <li>• Workforce assessment recommended</li>}
@@ -1372,65 +1411,63 @@ th { background: #f1f5f9; }
             </div>
 
             {/* ===================== CURRENT GOVERNMENT DATA SECTION ===================== */}
-            {(governmentLeaders.length > 0 || isLoadingGovernmentData) && (
-              <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
-                <button
-                  onClick={() => toggleSection('government')}
-                  className="w-full flex items-center justify-between"
-                >
-                  <SectionHeader icon={Building2} title="Current Government Leadership" color="text-blue-400" />
-                  {expandedSections.government ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
-                </button>
-                {expandedSections.government && (
-                  <div className="mt-4 space-y-3">
-                    {isLoadingGovernmentData ? (
-                      <div className="py-8 text-center">
-                        <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-blue-400" />
-                        <p className="text-sm text-slate-400">Fetching current government information...</p>
-                      </div>
-                    ) : governmentLeaders.length > 0 ? (
-                      governmentLeaders.map((leader, idx) => (
-                        <div key={idx} className="p-4 border border-blue-500/20 bg-blue-500/5 rounded-lg">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="font-semibold text-white">{leader.name}</div>
-                              <div className="text-sm text-blue-300">{leader.role}</div>
-                              <div className="text-xs text-slate-500 mt-1">{leader.tenure}</div>
-                              {leader.party && <div className="text-xs text-purple-300 mt-1">Party: {leader.party}</div>}
-                              {leader.office && <div className="text-xs text-slate-400 mt-1">Office: {leader.office}</div>}
-                              {leader.email && (
-                                <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
-                                  📧 {leader.email}
-                                </div>
-                              )}
-                              {leader.website && (
-                                <a href={leader.website} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline mt-1 block">
-                                  🌐 Official Website →
-                                </a>
-                              )}
-                            </div>
-                            {leader.verified && (
-                              <div className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
-                                ✓ Verified
+            <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-6">
+              <button
+                onClick={() => toggleSection('government')}
+                className="w-full flex items-center justify-between"
+              >
+                <SectionHeader icon={Building2} title="Current Government Leadership" color="text-blue-400" />
+                {expandedSections.government ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+              </button>
+              {expandedSections.government && (
+                <div className="mt-4 space-y-3">
+                  {isLoadingGovernmentData ? (
+                    <div className="py-8 text-center">
+                      <Loader2 className="w-5 h-5 animate-spin mx-auto mb-2 text-blue-400" />
+                      <p className="text-sm text-slate-400">Fetching current government information...</p>
+                    </div>
+                  ) : governmentLeaders.length > 0 ? (
+                    governmentLeaders.map((leader, idx) => (
+                      <div key={idx} className="p-4 border border-blue-500/20 bg-blue-500/5 rounded-lg">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="font-semibold text-white">{leader.name}</div>
+                            <div className="text-sm text-blue-300">{leader.role}</div>
+                            <div className="text-xs text-slate-500 mt-1">{leader.tenure}</div>
+                            {leader.party && <div className="text-xs text-purple-300 mt-1">Party: {leader.party}</div>}
+                            {leader.office && <div className="text-xs text-slate-400 mt-1">Office: {leader.office}</div>}
+                            {leader.email && (
+                              <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
+                                📧 {leader.email}
                               </div>
                             )}
+                            {leader.website && (
+                              <a href={leader.website} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline mt-1 block">
+                                🌐 Official Website →
+                              </a>
+                            )}
                           </div>
-                          {leader.sourceUrl && (
-                            <div className="mt-2 text-[10px] text-slate-500">
-                              Source: <a href={leader.sourceUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
-                                {new URL(leader.sourceUrl).hostname}
-                              </a> | Last updated: {new Date(leader.lastUpdated).toLocaleDateString()}
+                          {leader.verified && (
+                            <div className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
+                              ✓ Verified
                             </div>
                           )}
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-400 py-4">Government leadership data not yet available for this location.</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+                        {leader.sourceUrl && (
+                          <div className="mt-2 text-[10px] text-slate-500">
+                            Source: <a href={leader.sourceUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
+                              {new URL(leader.sourceUrl).hostname}
+                            </a> | Last updated: {new Date(leader.lastUpdated).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-slate-400 py-4">Government leadership data not yet available for this location.</p>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* ===================== REGIONAL COMPARISON METRICS SECTION ===================== */}
             {(regionalComparisons || isLoadingComparisons) && (

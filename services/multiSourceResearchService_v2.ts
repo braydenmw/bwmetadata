@@ -128,7 +128,8 @@ CONTEXT DATA (use as foundation, expand with your knowledge):
 - Country: ${geoData?.country || 'Unknown'}
 - World Bank Data: ${JSON.stringify(worldBankData || {})}
 
-Return a detailed JSON response with REAL data (not placeholders). Use actual names, numbers, and facts:
+Return a detailed JSON response with REAL data (not placeholders). Use actual names, numbers, and facts.
+Do NOT include opinions, endorsements, or recommendations. Use neutral, factual phrasing only:
 
 {
   "overview": {
