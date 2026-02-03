@@ -2486,7 +2486,7 @@ async function executeResearchPipeline(
 
     const profile = buildComprehensiveProfile(
       cityName, region, country, countryCode,
-      geo, worldBankData, countryData, wikiData,
+      geo, worldBankData, countryData, wikiData?.extract || null,
       leadershipData, extractedData,
       sources
     );
