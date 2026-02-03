@@ -18,8 +18,9 @@ const ProjectBadge: React.FC<{ status: 'completed' | 'ongoing' | 'planned' }> = 
   );
 };
 
-const buildStaticMapUrl = (lat: number, lon: number, zoom: number, width = 650, height = 450) =>
-  `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=${zoom}&size=${width}x${height}&markers=${lat},${lon},red-pushpin`;
+// Use OpenStreetMap embed for reliable map display
+const buildFallbackMapUrl = (lat: number, lon: number) =>
+  `https://www.openstreetmap.org/export/embed.html?bbox=${lon - 0.05},${lat - 0.03},${lon + 0.05},${lat + 0.03}&layer=mapnik&marker=${lat},${lon}`;
 
 interface GlobalLocationIntelligenceProps {
   onBack?: () => void;
@@ -70,7 +71,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     return profiles.find(profile => profile.id === activeProfileId) || null;
   }, [activeProfileId, profiles, liveProfile, hasSelection]);
 
-  const wikiExtract = (activeProfile as unknown as { _rawWikiExtract?: string })._rawWikiExtract;
+  const wikiExtract = activeProfile ? (activeProfile as unknown as { _rawWikiExtract?: string })._rawWikiExtract : undefined;
   const wikiParagraphs = wikiExtract
     ? wikiExtract.split('\n').map(p => p.trim()).filter(Boolean).slice(0, 2)
     : [];
@@ -667,18 +668,17 @@ th { background: #f1f5f9; }
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Location</h2>
                 <div className="rounded-xl border border-slate-700 overflow-hidden bg-slate-900 relative">
-                  <img
-                    src={buildStaticMapUrl(activeProfile.latitude, activeProfile.longitude, 10, 900, 280)}
-                    alt={`Map of ${activeProfile.city}`}
-                    className="w-full h-[280px] object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://placehold.co/900x280?text=Map+Unavailable';
-                    }}
+                  {/* Use OpenStreetMap iframe for reliable display */}
+                  <iframe
+                    title={`Map of ${activeProfile.city}`}
+                    src={buildFallbackMapUrl(activeProfile.latitude, activeProfile.longitude)}
+                    className="w-full h-[300px] border-0"
+                    loading="lazy"
                   />
-                  <div className="absolute top-3 left-3 bg-black/70 text-xs text-slate-200 px-3 py-1.5 rounded flex items-center gap-2">
+                  <div className="absolute top-3 left-3 bg-black/80 text-xs text-slate-200 px-3 py-1.5 rounded flex items-center gap-2 pointer-events-none">
                     <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
                   </div>
-                  <div className="absolute bottom-3 right-3 bg-black/70 text-xs text-slate-200 px-3 py-1.5 rounded">
+                  <div className="absolute bottom-3 right-3 bg-black/80 text-xs text-slate-200 px-3 py-1.5 rounded pointer-events-none">
                     {activeProfile.latitude.toFixed(4)}°, {activeProfile.longitude.toFixed(4)}°
                   </div>
                 </div>

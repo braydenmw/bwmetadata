@@ -97,7 +97,7 @@ async function fallbackSearch(query: string, res: Response) {
     }
     
     if (data.RelatedTopics) {
-      data.RelatedTopics.slice(0, 10).forEach((topic: any, idx: number) => {
+      (data.RelatedTopics as Array<{ Text?: string; FirstURL?: string }>).slice(0, 10).forEach((topic, idx) => {
         if (topic.Text && topic.FirstURL) {
           organic.push({
             title: topic.Text.split(' - ')[0] || topic.Text.substring(0, 50),
@@ -201,9 +201,16 @@ router.post('/perplexity', async (req: Request, res: Response) => {
  */
 router.post('/news', async (req: Request, res: Response) => {
   try {
-    const { query, country, category } = req.body;
+    const { query, country } = req.body;
 
-    const articles: any[] = [];
+    const articles: Array<{
+      title?: string;
+      description?: string;
+      url?: string;
+      source?: string;
+      publishedAt?: string;
+      image?: string;
+    }> = [];
 
     // Try NewsAPI if key is available
     const NEWS_API_KEY = process.env.NEWS_API_KEY;
@@ -222,7 +229,7 @@ router.post('/news', async (req: Request, res: Response) => {
         
         if (response.ok) {
           const data = await response.json();
-          articles.push(...(data.articles || []).map((a: any) => ({
+          articles.push(...(data.articles as Array<{ title?: string; description?: string; url?: string; source?: { name?: string }; publishedAt?: string; urlToImage?: string }> || []).map((a) => ({
             title: a.title,
             description: a.description,
             url: a.url,
@@ -252,7 +259,7 @@ router.post('/news', async (req: Request, res: Response) => {
         
         if (response.ok) {
           const data = await response.json();
-          articles.push(...(data.news || []).map((n: any) => ({
+          articles.push(...(data.news as Array<{ title?: string; snippet?: string; link?: string; source?: string; date?: string; imageUrl?: string }> || []).map((n) => ({
             title: n.title,
             description: n.snippet,
             url: n.link,
@@ -421,7 +428,7 @@ router.get('/indicators/:country', async (req: Request, res: Response) => {
           );
           if (response.ok) {
             const data = await response.json();
-            const latest = data[1]?.find((d: any) => d.value !== null);
+            const latest = (data[1] as Array<{ value: number | null; indicator?: { value?: string }; date?: string }> | undefined)?.find((d) => d.value !== null);
             return {
               indicator,
               name: latest?.indicator?.value,
@@ -429,7 +436,7 @@ router.get('/indicators/:country', async (req: Request, res: Response) => {
               year: latest?.date
             };
           }
-        } catch (error) {
+        } catch {
           console.warn(`Indicator ${indicator} failed`);
         }
         return null;
@@ -733,7 +740,7 @@ async function fetchLocationWorldBank(countryCode: string): Promise<Record<strin
           };
         }
       }
-    } catch (e) {
+    } catch {
       // Individual indicator failure is OK
     }
   }));

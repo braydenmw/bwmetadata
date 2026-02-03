@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, MapPin, Loader2, ExternalLink } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink } from 'lucide-react';
 import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService_v2';
 import { locationResearchCache } from '../services/locationResearchCache';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
@@ -566,7 +566,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
                                         placeholder="Search any city, region, company, or government..."
                                         disabled={isResearchingLocation}
-                                        className="w-full px-4 py-3 pr-24 bg-black/40 border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400 text-sm"
+                                        className="w-full px-4 py-3 pr-36 bg-black/40 border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400 text-sm"
                                     />
                                     <button
                                         onClick={handleLocationSearch}

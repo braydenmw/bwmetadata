@@ -116,8 +116,6 @@ export interface CityProfile {
   departments: string[];
   easeOfDoingBusiness: string;
   globalMarketAccess: string;
-  entityName?: string;
-  entityType?: 'location' | 'region' | 'company' | 'government' | 'organization' | 'unknown';
   latitude: number;
   longitude: number;
   infrastructureScore: number;

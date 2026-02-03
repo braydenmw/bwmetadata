@@ -135,11 +135,16 @@ Do NOT include opinions, endorsements, or recommendations. Use neutral, factual 
   "overview": {
     "description": "3 comprehensive paragraphs about this location - its history, current status, and future outlook",
     "significance": "Strategic and economic importance - why investors/businesses should care",
-    "established": "Year or era established",
-    "nicknames": ["Common nicknames or titles"]
+    "established": "Year or era established (e.g., '1851' or 'Founded in 1788')",
+    "nicknames": ["Common nicknames or titles"],
+    "timezone": "Timezone (e.g., 'AEST (UTC+10)', 'EST (UTC-5)')",
+    "currency": "Official currency (e.g., 'Australian Dollar (AUD)', 'US Dollar (USD)')",
+    "area": "Geographic area (e.g., '740 km²', '12,368 km²')",
+    "climate": "Climate type (e.g., 'Oceanic/Temperate', 'Subtropical humid')",
+    "businessHours": "Typical business hours (e.g., '9:00 AM - 5:00 PM AEST')"
   },
   "demographics": {
-    "population": "Current population with year (e.g., '26.5 million (2024)')",
+    "population": "Current population with year (e.g., '111,973 (2021 census)')",
     "populationGrowth": "Annual growth rate (e.g., '1.2%')",
     "medianAge": "Median age (e.g., '38 years')",
     "urbanization": "Urban percentage (e.g., '86%')",
@@ -981,12 +986,12 @@ function transformAIToProfile(
     country: geoData?.country || '',
     latitude: geoData?.lat || 0,
     longitude: geoData?.lon || 0,
-    timezone: 'UTC+0',
+    timezone: (overview.timezone as string) || 'See local timezone',
     established: (overview.established as string) || 'Historical records',
-    areaSize: 'See geographic sources',
-    climate: 'Regional climate',
-    currency: 'National Currency',
-    businessHours: '9:00 AM - 5:00 PM local time',
+    areaSize: (overview.area as string) || 'See geographic data',
+    climate: (overview.climate as string) || 'See climate data',
+    currency: (overview.currency as string) || 'National Currency',
+    businessHours: (overview.businessHours as string) || '9:00 AM - 5:00 PM local time',
     globalMarketAccess: (overview.significance as string) || 'Regional and global connectivity',
     departments: (governance.departments as string[]) || ['Government'],
     easeOfDoingBusiness: (investment.easeOfBusiness as string) || 'See World Bank Report',
@@ -1060,7 +1065,10 @@ function transformAIToProfile(
       summary: d.description,
       source: 'Research',
       link: '#'
-    }))
+    })),
+
+    // Store the raw Wikipedia extract AND AI overview for the "About" section
+    _rawWikiExtract: wikiData || (overview.description as string) || ''
   };
 
   // Build narratives
@@ -2471,41 +2479,41 @@ function buildComprehensiveProfile(
     ],
 
     keySectors: (extractedData.industries as string[])?.length > 0 ? (extractedData.industries as string[]) : ['Services', 'Trade'],
-    investmentPrograms: ['See local investment promotion office'],
-    foreignCompanies: ['See Chamber of Commerce directory'],
+    investmentPrograms: ['Contact local investment promotion agency'],
+    foreignCompanies: ['Contact Chamber of Commerce for directory'],
 
     leaders: cityLeaders,
 
     demographics: {
       population: extractedData.population
         ? `${extractedData.population.toLocaleString()} (city)`
-        : 'Population data verification in progress',
-      populationGrowth: 'City growth data verification in progress',
-      medianAge: 'Demographic data verification in progress',
-      literacyRate: 'Education statistics verification in progress',
-      workingAgePopulation: 'Labor force data verification in progress',
+        : 'See local census bureau',
+      populationGrowth: 'See national statistics office',
+      medianAge: 'See demographic surveys',
+      literacyRate: 'See education ministry data',
+      workingAgePopulation: 'See labor department statistics',
       universitiesColleges: 0,
-      graduatesPerYear: 'Education data verification in progress',
+      graduatesPerYear: 'See education reports',
       languages: countryData?.languages ? Object.values(countryData.languages) : undefined
     },
 
     economics: {
-      gdpLocal: gdpInd ? `$${((gdpInd.value as number) / 1e9).toFixed(2)}B (${gdpInd.year}, national level)` : 'Economic data verification in progress',
-      gdpGrowthRate: growthInd ? `${(growthInd.value as number)?.toFixed(2)}% (${growthInd.year})` : 'Growth data verification in progress',
-      employmentRate: 'Employment statistics verification in progress',
-      avgIncome: 'Income data verification in progress',
-      exportVolume: 'Trade data verification in progress',
+      gdpLocal: gdpInd ? `$${((gdpInd.value as number) / 1e9).toFixed(2)}B (${gdpInd.year}, national level)` : 'See World Bank economic data',
+      gdpGrowthRate: growthInd ? `${(growthInd.value as number)?.toFixed(2)}% (${growthInd.year})` : 'See IMF/World Bank reports',
+      employmentRate: 'See labor department data',
+      avgIncome: 'See national statistics',
+      exportVolume: 'See trade ministry data',
       majorIndustries: (extractedData.industries as string[]) || [],
       topExports: (extractedData.industries as string[]) || [],
       tradePartners: ['Regional and global partners']
     },
 
     infrastructure: {
-      airports: [{ name: `See ${city} civil aviation authority`, type: 'Airport' }],
+      airports: [{ name: `${city} Airport (verify with civil aviation)`, type: 'Airport' }],
       seaports: [{ name: `See ${country} port authority`, type: 'Port' }],
       specialEconomicZones: ['Contact local investment office'],
       powerCapacity: 'See local utility provider',
-      internetPenetration: internetInd ? `${(internetInd.value as number)?.toFixed(1)}% (${internetInd.year})` : 'Connectivity data pending'
+      internetPenetration: internetInd ? `${(internetInd.value as number)?.toFixed(1)}% (${internetInd.year})` : 'See telecommunications data'
     },
 
     governmentLinks: sources
