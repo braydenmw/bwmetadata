@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation } from '../services/multiSourceResearchService_v2';
@@ -48,6 +48,12 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [, setIsLoadingGovernmentData] = useState(false);
   const [, setRegionalComparisons] = useState<RegionalComparisonSet | null>(null);
   const [, setIsLoadingComparisons] = useState(false);
+
+  // Split-screen source browser state
+  const [selectedSourceUrl, setSelectedSourceUrl] = useState<string | null>(null);
+  const [iframeError, setIframeError] = useState(false);
+  const [isSourcePanelCollapsed, setIsSourcePanelCollapsed] = useState(false);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -603,7 +609,13 @@ th { background: #f1f5f9; }
 
 
         {hasSelection && activeProfile ? (
-          <div className="space-y-8">
+          <div className="flex gap-4" style={{ height: 'calc(100vh - 280px)' }}>
+            {/* LEFT PANEL - Intelligence Profile (scrollable) */}
+            <div 
+              ref={leftPanelRef}
+              className={`${isSourcePanelCollapsed ? 'flex-1' : 'w-[55%]'} overflow-y-auto pr-4 border-r border-slate-700/50 transition-all duration-300`}
+            >
+              <div className="space-y-8">
             {/* Simple Document Header */}
             <div className="border-b border-slate-700 pb-6">
               <div className="flex items-start justify-between flex-wrap gap-4">
@@ -612,12 +624,21 @@ th { background: #f1f5f9; }
                   <p className="text-slate-400">{activeProfile.region}</p>
                   <p className="text-sm text-slate-500 mt-1">Report generated {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                 </div>
-                <button
-                  onClick={() => exportCityBrief(activeProfile)}
-                  className="px-4 py-2 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded hover:bg-slate-700 flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4" /> Export Report
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setIsSourcePanelCollapsed(!isSourcePanelCollapsed)}
+                    className="px-3 py-2 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded hover:bg-slate-700 flex items-center gap-2"
+                    title={isSourcePanelCollapsed ? 'Show Source Browser' : 'Hide Source Browser'}
+                  >
+                    {isSourcePanelCollapsed ? <PanelRightClose className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+                  </button>
+                  <button
+                    onClick={() => exportCityBrief(activeProfile)}
+                    className="px-4 py-2 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded hover:bg-slate-700 flex items-center gap-2"
+                  >
+                    <Download className="w-4 h-4" /> Export Report
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -960,21 +981,26 @@ th { background: #f1f5f9; }
               )}
             </section>
 
-            {/* Sources */}
+            {/* Sources - In Left Panel (compact version for split view) */}
             {researchResult?.sources && researchResult.sources.length > 0 && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Sources</h2>
-                <p className="text-sm text-slate-400 mb-4">This report was compiled from the following sources.</p>
-                <ul className="space-y-2">
-                  {researchResult.sources.slice(0, 8).map((source: SourceCitation, idx: number) => (
-                    <li key={idx}>
-                      <a href={source.url} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 hover:underline text-sm">
-                        {source.title}
-                      </a>
-                      <span className="text-slate-500 text-xs ml-2">({source.type})</span>
-                    </li>
+                <p className="text-sm text-slate-400 mb-4">
+                  This report was compiled from {researchResult.sources.length} sources. 
+                  {!isSourcePanelCollapsed && ' Click a source in the right panel to preview it.'}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {researchResult.sources.slice(0, 6).map((source: SourceCitation, idx: number) => (
+                    <span key={idx} className="text-xs px-2 py-1 bg-slate-800 rounded text-slate-300">
+                      {source.type}
+                    </span>
                   ))}
-                </ul>
+                  {researchResult.sources.length > 6 && (
+                    <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-400">
+                      +{researchResult.sources.length - 6} more
+                    </span>
+                  )}
+                </div>
               </section>
             )}
 
@@ -984,6 +1010,135 @@ th { background: #f1f5f9; }
                 <strong>Disclaimer:</strong> This report is for informational purposes only. Always verify critical information with official government sources before making business or investment decisions.
               </p>
             </section>
+              </div>
+            </div>
+
+            {/* RIGHT PANEL - Source Browser (collapsible) */}
+            {!isSourcePanelCollapsed && (
+              <div className="w-[45%] flex flex-col overflow-hidden">
+                {/* Source Browser Header */}
+                <div className="flex-shrink-0 pb-3 border-b border-slate-700">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                      <Link2 className="w-4 h-4" /> Source Browser
+                    </h3>
+                    <button
+                      onClick={() => setIsSourcePanelCollapsed(true)}
+                      className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white"
+                      title="Collapse panel"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-500">Click a source to preview without leaving this page</p>
+                </div>
+
+                {/* Source List */}
+                <div className="flex-shrink-0 max-h-[200px] overflow-y-auto py-3 border-b border-slate-700">
+                  {researchResult?.sources && researchResult.sources.length > 0 ? (
+                    <div className="space-y-1">
+                      {researchResult.sources.map((source: SourceCitation, idx: number) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedSourceUrl(source.url);
+                            setIframeError(false);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                            selectedSourceUrl === source.url
+                              ? 'bg-amber-500/20 border border-amber-500/40 text-amber-200'
+                              : 'hover:bg-slate-800 text-slate-300 border border-transparent'
+                          }`}
+                        >
+                          <div className="flex items-start gap-2">
+                            <Eye className="w-3 h-3 mt-1 flex-shrink-0 text-slate-500" />
+                            <div className="flex-1 min-w-0">
+                              <div className="font-medium truncate">{source.title}</div>
+                              <div className="text-[10px] text-slate-500 flex items-center gap-2">
+                                <span className="px-1.5 py-0.5 bg-slate-700 rounded">{source.type}</span>
+                                <span className="truncate">{new URL(source.url).hostname}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-6 text-slate-500">
+                      <Database className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">No sources available</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Iframe Preview */}
+                <div className="flex-1 min-h-0 pt-3">
+                  {selectedSourceUrl ? (
+                    <div className="h-full flex flex-col">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2 text-xs text-slate-400 truncate flex-1">
+                          <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate">{selectedSourceUrl}</span>
+                        </div>
+                        <a
+                          href={selectedSourceUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs px-2 py-1 bg-blue-500/20 text-blue-300 rounded hover:bg-blue-500/30 flex-shrink-0"
+                        >
+                          Open in new tab
+                        </a>
+                      </div>
+                      {iframeError ? (
+                        <div className="flex-1 bg-slate-900 rounded-lg border border-slate-700 flex flex-col items-center justify-center text-center p-6">
+                          <AlertCircle className="w-10 h-10 text-amber-400 mb-3" />
+                          <h4 className="text-white font-semibold mb-2">Cannot preview this source</h4>
+                          <p className="text-sm text-slate-400 mb-4">
+                            This website doesn't allow embedded previews for security reasons.
+                          </p>
+                          <a
+                            href={selectedSourceUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-4 py-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg hover:bg-amber-500/30 text-sm flex items-center gap-2"
+                          >
+                            <ExternalLink className="w-4 h-4" /> Open in new tab instead
+                          </a>
+                        </div>
+                      ) : (
+                        <iframe
+                          src={selectedSourceUrl}
+                          className="flex-1 w-full bg-white rounded-lg border border-slate-700"
+                          title="Source Preview"
+                          sandbox="allow-scripts allow-same-origin"
+                          onError={() => setIframeError(true)}
+                          onLoad={(e) => {
+                            // Some sites block iframe but don't trigger onError, 
+                            // we detect this via empty content (limited detection)
+                            try {
+                              const iframe = e.target as HTMLIFrameElement;
+                              if (iframe.contentDocument?.body?.innerHTML === '') {
+                                setIframeError(true);
+                              }
+                            } catch {
+                              // Cross-origin access denied - this is normal for external sites
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="h-full bg-slate-900/50 rounded-lg border border-slate-700/50 flex flex-col items-center justify-center text-center p-6">
+                      <Globe className="w-12 h-12 text-slate-600 mb-3" />
+                      <h4 className="text-slate-300 font-semibold mb-1">Select a source to preview</h4>
+                      <p className="text-sm text-slate-500">
+                        Click any source link above to view it here without leaving the report
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         ) : null}
       </div>
