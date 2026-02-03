@@ -140,6 +140,7 @@ export async function researchLocation(
   }
 
   console.log('[Gemini Location] Starting research for:', query);
+  console.log('[Gemini Location] API key found, length:', apiKey.length, 'starts with:', apiKey.substring(0, 10) + '...');
   
   try {
     onProgress?.({ stage: 'Initializing', progress: 10, message: 'Connecting to AI...' });
@@ -155,9 +156,13 @@ export async function researchLocation(
 
     onProgress?.({ stage: 'Researching', progress: 30, message: `Gathering intelligence on ${query}...` });
 
+    console.log('[Gemini Location] Calling Gemini API...');
+    
     // Simple, direct call to Gemini
     const result = await model.generateContent(SIMPLE_LOCATION_PROMPT(query));
     const responseText = result.response.text();
+    
+    console.log('[Gemini Location] Response received, length:', responseText.length);
     
     console.log('[Gemini Location] Response length:', responseText.length);
 
@@ -202,9 +207,23 @@ export async function researchLocation(
     };
 
   } catch (error) {
-    console.error('[Gemini Location] Research failed:', error);
-    onProgress?.({ stage: 'Error', progress: 0, message: 'Research failed - please try again' });
-    return null;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Gemini Location] Research failed:', errorMessage);
+    console.error('[Gemini Location] Full error:', error);
+    
+    // Provide more specific error feedback
+    if (errorMessage.includes('API key') || errorMessage.includes('API_KEY')) {
+      onProgress?.({ stage: 'Error', progress: 0, message: 'Invalid API key - please check configuration' });
+    } else if (errorMessage.includes('quota') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+      onProgress?.({ stage: 'Error', progress: 0, message: 'API quota exceeded - please try again later' });
+    } else if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
+      onProgress?.({ stage: 'Error', progress: 0, message: 'Network error - please check your connection' });
+    } else {
+      onProgress?.({ stage: 'Error', progress: 0, message: `Research failed: ${errorMessage}` });
+    }
+    
+    // Re-throw with more context so the UI can show a better message
+    throw new Error(errorMessage);
   }
 }
 

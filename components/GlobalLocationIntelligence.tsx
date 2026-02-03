@@ -127,11 +127,19 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       }
     } catch (error) {
       console.error('Research error:', error);
-      const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
-      if (isNetworkError || !navigator.onLine) {
-        setLoadingError('Unable to connect to research services. Please check your internet connection.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error details:', errorMessage);
+      
+      if (!navigator.onLine) {
+        setLoadingError('No internet connection. Please check your network.');
+      } else if (errorMessage.includes('API key')) {
+        setLoadingError('API key error. Please check configuration.');
+      } else if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
+        setLoadingError('Unable to connect to AI services. Please try again.');
+      } else if (errorMessage.includes('quota') || errorMessage.includes('limit')) {
+        setLoadingError('API quota exceeded. Please try again later.');
       } else {
-        setLoadingError('Research failed. Please try again.');
+        setLoadingError(`Research failed: ${errorMessage}`);
       }
       setHasSelection(false);
     } finally {
