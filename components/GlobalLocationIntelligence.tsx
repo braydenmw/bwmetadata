@@ -6,8 +6,8 @@ import { researchLocation, type ResearchProgress, type LocationResult } from '..
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 
 // Type alias for backwards compatibility
-type MultiSourceResult = LocationResult & { sources: { title: string; url: string; type: string; reliability: string }[] };
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
+type MultiSourceResult = Omit<LocationResult, 'sources'> & { sources: SourceCitation[] };
 
 const ProjectBadge: React.FC<{ status: 'completed' | 'ongoing' | 'planned' }> = ({ status }) => {
   const colors = {
@@ -553,18 +553,7 @@ th { background: #f1f5f9; }
                 <span className="text-amber-400">●</span>
                 <span>Compiling verified economic data and leadership profiles</span>
               </div>
-              {researchProgress?.substage && (
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-purple-400">→</span>
-                  <span className="text-purple-300">Currently: {researchProgress.substage}</span>
-                </div>
-              )}
-              {researchProgress?.sourcesFound && (
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-cyan-400">✓</span>
-                  <span className="text-cyan-300">{researchProgress.sourcesFound} authoritative sources found</span>
-                </div>
-              )}
+
             </div>
           </div>
         )}

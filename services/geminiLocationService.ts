@@ -218,7 +218,6 @@ function transformToProfile(query: string, data: Record<string, unknown>): CityP
   const demo = data.demographics as Record<string, unknown> || {};
   const invest = data.investment as Record<string, unknown> || {};
   const edu = data.education as Record<string, unknown> || {};
-  const risks = data.risks as Record<string, unknown> || {};
   const coords = data.coordinates as { lat: number; lon: number } || { lat: 0, lon: 0 };
   const currency = data.currency as { name: string; code: string } || { name: 'Local Currency', code: 'XXX' };
   const leader = gov.leader as Record<string, unknown> || {};
@@ -317,20 +316,7 @@ function transformToProfile(query: string, data: Record<string, unknown>): CityP
     },
 
     governmentLinks: [],
-    governmentOffices: [],
-    contactPoints: [],
-
-    narratives: {
-      aboutNarrative: (data.overview as string) || `${data.name || query} is a significant location in ${data.country || 'the region'}.`,
-      economicNarrative: `The economy is driven by ${((econ.mainIndustries as string[]) || ['various industries']).join(', ')}.`,
-      infrastructureNarrative: (infra.publicTransit as string) || 'Modern infrastructure supports economic activity.',
-      investmentNarrative: (invest.climate as string) || 'Investment opportunities available for qualified partners.',
-      riskNarrative: [risks.political, risks.economic, risks.natural].filter(Boolean).join(' ') || 'Standard regional risk profile.'
-    },
-
-    investmentOpportunities: (invest.incentives as string[]) || [],
-    localNews: [],
-    lastUpdated: new Date().toISOString()
+    governmentOffices: []
   };
 
   return profile;

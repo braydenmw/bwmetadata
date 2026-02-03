@@ -23,8 +23,7 @@ import { computeFrontierIntelligence } from './algorithms';
 // Get Gemini API key - works in both Vite and Node environments
 const getGeminiApiKey = (): string => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const meta = import.meta as any;
+    const meta = import.meta as { env?: { VITE_GEMINI_API_KEY?: string } };
     if (meta?.env?.VITE_GEMINI_API_KEY) {
       return meta.env.VITE_GEMINI_API_KEY;
     }

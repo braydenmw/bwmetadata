@@ -113,6 +113,7 @@ export type ProgressCallback = (progress: ResearchProgress) => void;
 
 // ==================== CONFIGURATION ====================
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const AUTHORITATIVE_DOMAINS = [
   '.gov', '.gov.ph', '.gov.au', '.gov.uk', '.gov.sg', '.go.jp', '.gov.my',
   'gob.', 'gouv.', 'govt.', 'government', 'worldbank.org', 'imf.org',
@@ -517,7 +518,7 @@ async function tryDirectGeminiResearch(
       // First try: direct JSON parse
       aiIntelligence = JSON.parse(responseText.trim());
       console.log('[GLI Research] Successfully parsed AI response (direct)');
-    } catch (directParseError) {
+    } catch {
       try {
         // Second try: extract JSON with regex (find largest JSON object)
         const jsonMatches = responseText.match(/\{[\s\S]*?\}(?=\s*$|\s*[^}])/g);
@@ -1112,8 +1113,8 @@ interface GeoNamesResult {
   elevation?: number;
   fcode?: string;
   fcodeName?: string;
-  lat?: string;
-  lng?: string;
+  lat?: string | number;
+  lng?: string | number;
   timezone?: { timeZoneId: string };
 }
 
