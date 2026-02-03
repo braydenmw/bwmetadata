@@ -36,15 +36,18 @@ const getGeminiApiKey = (): string => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const meta = import.meta as any;
     if (meta?.env?.VITE_GEMINI_API_KEY) {
+      console.log('[GLI] Gemini API key found via Vite env');
       return meta.env.VITE_GEMINI_API_KEY;
     }
-  } catch {
-    // Not in Vite environment
+  } catch (e) {
+    console.warn('[GLI] Could not access Vite env:', e);
   }
   // Try process.env (Node/backend)
   if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
+    console.log('[GLI] Gemini API key found via process.env');
     return process.env.GEMINI_API_KEY;
   }
+  console.warn('[GLI] No Gemini API key found - AI research will fail. Set VITE_GEMINI_API_KEY in your environment.');
   return '';
 };
 
