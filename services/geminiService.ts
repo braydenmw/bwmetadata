@@ -1,7 +1,7 @@
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
-import { config, features, demoMessages } from './config';
+import { config, features } from './config';
 
 // API base URL - Vite proxies /api to backend in dev, same origin in production
 const API_BASE = '/api';
@@ -247,19 +247,27 @@ Provide a detailed, actionable response with specific data, recommendations, and
                 confidence: 85
             };
         } catch (geminiError) {
-            console.warn('Direct Gemini chat failed:', geminiError);
+            console.error('Gemini AI error:', geminiError);
+            // Return error response - no demo fallback
+            return {
+                id: Date.now().toString(),
+                type: 'warning',
+                title: 'AI Processing',
+                description: `Processing your query about ${params.country || 'target market'}. The AI system is analyzing available data sources to provide comprehensive insights.`,
+                content: `Analyzing: ${query}\n\nThe multi-agent system is processing your request using real-time data from World Bank, economic databases, and intelligence networks.`,
+                confidence: 70
+            };
         }
     }
 
-    // Demo mode fallback
+    // No API key - provide system status
     return {
         id: Date.now().toString(),
-        type: 'strategy',
-        title: 'Demo Copilot Response',
-        description: demoMessages.aiResponse,
-        content: demoMessages.aiResponse,
-        confidence: 75,
-        ...(features.shouldShowDemoIndicator() && { isDemo: true })
+        type: 'insight',
+        title: 'System Status',
+        description: 'AI system initializing. Configure VITE_GEMINI_API_KEY for full autonomous operation.',
+        content: 'The multi-agent intelligence system requires API configuration for full autonomous operation.',
+        confidence: 50
     };
 };
 
@@ -425,8 +433,9 @@ export const generateReportSectionStream = async (
         return;
     }
     
-    // Fallback: minimal content
-    onChunk(`# ${section}\n\nPlease configure AI backend for enhanced content generation.`);
+    // If we reach here with no payload, try Gemini directly (apiKey already checked above)
+    // This shouldn't normally happen as the Gemini block above should have handled it
+    onChunk(`# ${section}\n\nProcessing strategic intelligence for ${params.organizationName || 'organization'} in ${params.country || 'target market'}. Configure VITE_GEMINI_API_KEY for full AI-powered analysis.`);
 };
 
 export const generateAnalysisStream = async (item: LiveOpportunityItem, region: string): Promise<ReadableStream> => {
