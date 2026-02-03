@@ -1,9 +1,27 @@
 
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config, features, demoMessages } from './config';
 
 // API base URL - Vite proxies /api to backend in dev, same origin in production
 const API_BASE = '/api';
+
+// Get Gemini API key - works in both Vite and Node environments
+const getGeminiApiKey = (): string => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = import.meta as any;
+    if (meta?.env?.VITE_GEMINI_API_KEY) {
+      return meta.env.VITE_GEMINI_API_KEY;
+    }
+  } catch (e) {
+    // Vite env not available
+  }
+  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
+    return process.env.GEMINI_API_KEY;
+  }
+  return '';
+};
 
 // System instruction for the AI
 const SYSTEM_INSTRUCTION = `You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
@@ -72,6 +90,7 @@ export const sendMessageStream = async (message: string) => {
 // --- NEW FUNCTIONS FOR APP.TSX ---
 
 export const generateCopilotInsights = async (params: ReportParameters): Promise<CopilotInsight[]> => {
+    // Try backend first
     if (config.useRealAI) {
         try {
             const response = await fetch(`${API_BASE}/ai/insights`, {
@@ -91,15 +110,70 @@ export const generateCopilotInsights = async (params: ReportParameters): Promise
                 return Array.isArray(data) ? data : (data.insights || []);
             }
         } catch (error) {
-            console.warn('Backend AI failed, falling back:', error);
+            console.warn('Backend AI failed, trying direct Gemini:', error);
         }
     }
 
-    // In production without AI, do not inject demo insights
+    // Try direct Gemini API
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ 
+                model: 'gemini-1.5-flash',
+                generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+            
+            const prompt = `${SYSTEM_INSTRUCTION}
+
+Generate 5 strategic insights for:
+- Organization: ${params.organizationName || 'Organization'}
+- Target Market: ${params.country || 'Global'}
+- Strategic Intent: ${params.strategicIntent?.join(', ') || 'Market expansion'}
+- Opportunity: ${params.specificOpportunity || 'Strategic partnership'}
+
+Return ONLY a valid JSON array with exactly 5 insights. Each insight must have:
+- id: unique string
+- type: one of "opportunity", "risk", "strategy", "insight", "warning"
+- title: short title (5-10 words)
+- description: detailed description (2-3 sentences)
+- confidence: number 60-95
+
+Example format:
+[{"id":"1","type":"opportunity","title":"Strong Market Growth Potential","description":"The target market shows 8% annual growth...","confidence":85}]`;
+
+            const result = await model.generateContent(prompt);
+            const responseText = result.response.text();
+            
+            // Parse JSON from response
+            const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+            if (jsonMatch) {
+                const insights = JSON.parse(jsonMatch[0]);
+                return insights.map((i: any, idx: number) => ({
+                    id: i.id || `insight-${idx}`,
+                    type: i.type || 'insight',
+                    title: i.title || 'Strategic Insight',
+                    description: i.description || 'Analysis complete.',
+                    confidence: i.confidence || 75
+                }));
+            }
+        } catch (geminiError) {
+            console.warn('Direct Gemini insights failed:', geminiError);
+        }
+    }
+
+    // Return empty if no AI available
     return [];
 };
 
 export const askCopilot = async (query: string, params: ReportParameters): Promise<CopilotInsight> => {
+    // Try backend first
     if (config.useRealAI) {
         try {
             const response = await fetch(`${API_BASE}/ai/chat`, {
@@ -130,7 +204,50 @@ export const askCopilot = async (query: string, params: ReportParameters): Promi
                 };
             }
         } catch (error) {
-            console.warn('Backend AI failed, falling back:', error);
+            console.warn('Backend AI failed, trying direct Gemini:', error);
+        }
+    }
+
+    // Try direct Gemini API
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ 
+                model: 'gemini-1.5-flash',
+                generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+            
+            const prompt = `${SYSTEM_INSTRUCTION}
+
+Context:
+- Organization: ${params.organizationName || 'Organization'}
+- Target Market: ${params.country || 'Global'}
+- Opportunity: ${params.specificOpportunity || 'Strategic partnership'}
+
+User Query: ${query}
+
+Provide a detailed, actionable response with specific data, recommendations, and next steps. Use professional language suitable for executive decision-making.`;
+
+            const result = await model.generateContent(prompt);
+            const responseText = result.response.text();
+            
+            return {
+                id: Date.now().toString(),
+                type: 'strategy',
+                title: 'AI Copilot Response',
+                description: responseText,
+                content: responseText,
+                confidence: 85
+            };
+        } catch (geminiError) {
+            console.warn('Direct Gemini chat failed:', geminiError);
         }
     }
 
@@ -188,7 +305,48 @@ export const generateReportSectionStream = async (
                 return;
             }
         } catch (error) {
-            console.warn('Backend streaming failed, falling back to deterministic:', error);
+            console.warn('Backend streaming failed, trying direct Gemini API:', error);
+        }
+    }
+    
+    // Try direct Gemini API before falling back to deterministic
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ 
+                model: 'gemini-1.5-flash',
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 4096,
+                },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+            
+            const sectionPrompts: Record<string, string> = {
+                executiveSummary: `Generate an executive summary for a strategic partnership report. Organization: ${params.organizationName || 'Organization'}. Target Market: ${params.country || 'Target Market'}. Strategic Intent: ${params.strategicIntent?.join(', ') || 'Market expansion'}. Problem Statement: ${params.problemStatement || 'Strategic growth'}. Include overall confidence assessment, key metrics, strategic fit analysis, and immediate action recommendations.`,
+                marketAnalysis: `Generate a comprehensive market analysis for ${params.country || 'Target Market'}. Include market size, growth rates, key industries, trade exposure, tariff sensitivity, cost advantages, labor market, regulatory environment, and competitive landscape. Organization focus: ${params.organizationName || 'Organization'}.`,
+                recommendations: `Generate strategic recommendations for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include short-term (0-6 months), mid-term (6-18 months), and long-term (18+ months) actionable recommendations with specific steps.`,
+                implementation: `Generate an implementation playbook for ${params.organizationName || 'Organization'} to enter ${params.country || 'Target Market'}. Include phased timeline, key milestones, resource requirements, governance roadmap, and success metrics.`,
+                financials: `Generate financial projections for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include 5-year revenue projections, cost structure, ROI analysis, break-even timeline, and capital requirements.`,
+                risks: `Generate a comprehensive risk assessment for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include political, economic, regulatory, operational, and market risks with mitigation strategies for each.`
+            };
+            
+            const prompt = sectionPrompts[section] || `Generate a detailed ${section} section for a strategic partnership report. Organization: ${params.organizationName || 'Organization'}. Market: ${params.country || 'Target Market'}.`;
+            
+            const fullPrompt = `${SYSTEM_INSTRUCTION}\n\nGenerate professional, data-driven content for a strategic partnership report.\n\n${prompt}\n\nFormat the output as clean markdown with headers, bullet points, and clear sections. Use specific data points, percentages, and actionable insights. Do not use placeholder text - provide realistic estimates where exact data is unavailable.`;
+            
+            const result = await model.generateContent(fullPrompt);
+            const responseText = result.response.text();
+            onChunk(responseText);
+            return;
+        } catch (geminiError) {
+            console.warn('Direct Gemini API failed, falling back to deterministic:', geminiError);
         }
     }
     

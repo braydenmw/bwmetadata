@@ -15,9 +15,27 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { ReportParameters, ReportData, CopilotInsight, RefinedIntake } from '../types';
 import CompositeScoreService from './CompositeScoreService';
 import { computeFrontierIntelligence } from './algorithms';
+
+// Get Gemini API key - works in both Vite and Node environments
+const getGeminiApiKey = (): string => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = import.meta as any;
+    if (meta?.env?.VITE_GEMINI_API_KEY) {
+      return meta.env.VITE_GEMINI_API_KEY;
+    }
+  } catch (e) {
+    // Vite env not available
+  }
+  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
+    return process.env.GEMINI_API_KEY;
+  }
+  return '';
+};
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES & INTERFACES
@@ -204,6 +222,7 @@ export class MultiAgentOrchestrator {
   }
 
   private static async callGeminiAPI(prompt: string, context: any): Promise<{ text: string; confidence: number; reasoning: string[] }> {
+    // Try backend first
     try {
       const response = await fetch('/api/ai/multi-agent', {
         method: 'POST',
@@ -216,18 +235,54 @@ export class MultiAgentOrchestrator {
         })
       });
       
-      if (!response.ok) throw new Error('Gemini API unavailable');
-      
-      const data = await response.json();
-      return {
-        text: data.text || data.response,
-        confidence: data.confidence || 0.85,
-        reasoning: data.reasoning || ['AI analysis complete']
-      };
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          text: data.text || data.response,
+          confidence: data.confidence || 0.85,
+          reasoning: data.reasoning || ['AI analysis complete']
+        };
+      }
     } catch (error) {
-      // Fallback to local brain if API fails
-      return this.executeLocalBrain(prompt, context);
+      console.log('[MultiAgent] Backend unavailable, trying direct Gemini API...');
     }
+    
+    // Fallback to direct Gemini API
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+      try {
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ 
+          model: 'gemini-1.5-flash',
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 4096,
+          },
+          safetySettings: [
+            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+          ]
+        });
+        
+        const fullPrompt = `${BRAIN_SYSTEM_INSTRUCTION}\n\nContext: ${JSON.stringify(context)}\n\nTask: ${prompt}\n\nProvide a detailed, actionable response with specific data and recommendations.`;
+        
+        const result = await model.generateContent(fullPrompt);
+        const responseText = result.response.text();
+        
+        return {
+          text: responseText,
+          confidence: 0.85,
+          reasoning: ['Direct Gemini API analysis complete', 'Processed with gemini-1.5-flash']
+        };
+      } catch (geminiError) {
+        console.warn('[MultiAgent] Direct Gemini API failed:', geminiError);
+      }
+    }
+    
+    // Final fallback to local brain
+    return this.executeLocalBrain(prompt, context);
   }
 
   private static async callOpenAIAPI(prompt: string, context: any): Promise<{ text: string; confidence: number; reasoning: string[] }> {
