@@ -252,7 +252,7 @@ export class MultiAgentOrchestrator {
       try {
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ 
-          model: 'gemini-1.5-flash',
+          model: 'gemini-2.0-flash',
           generationConfig: {
             temperature: 0.7,
             maxOutputTokens: 4096,
@@ -273,7 +273,7 @@ export class MultiAgentOrchestrator {
         return {
           text: responseText,
           confidence: 0.85,
-          reasoning: ['Direct Gemini API analysis complete', 'Processed with gemini-1.5-flash']
+          reasoning: ['Direct Gemini API analysis complete', 'Processed with gemini-2.0-flash']
         };
       } catch (geminiError) {
         console.warn('[MultiAgent] Direct Gemini API failed:', geminiError);

@@ -455,7 +455,7 @@ async function tryDirectGeminiResearch(
     // Call Gemini directly
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 8192,
@@ -650,7 +650,7 @@ async function tryDirectGeminiEntityResearch(
     const prompt = ENTITY_INTELLIGENCE_PROMPT(query, wikiData?.extract || null, sourceNames);
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();

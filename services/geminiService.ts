@@ -120,7 +120,7 @@ export const generateCopilotInsights = async (params: ReportParameters): Promise
         try {
             const genAI = new GoogleGenerativeAI(apiKey);
             const model = genAI.getGenerativeModel({ 
-                model: 'gemini-1.5-flash',
+                model: 'gemini-2.0-flash',
                 generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
                 safetySettings: [
                     { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
@@ -214,7 +214,7 @@ export const askCopilot = async (query: string, params: ReportParameters): Promi
         try {
             const genAI = new GoogleGenerativeAI(apiKey);
             const model = genAI.getGenerativeModel({ 
-                model: 'gemini-1.5-flash',
+                model: 'gemini-2.0-flash',
                 generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
                 safetySettings: [
                     { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
@@ -323,7 +323,7 @@ export const generateReportSectionStream = async (
         try {
             const genAI = new GoogleGenerativeAI(apiKey);
             const model = genAI.getGenerativeModel({ 
-                model: 'gemini-1.5-flash',
+                model: 'gemini-2.0-flash',
                 generationConfig: {
                     temperature: 0.7,
                     maxOutputTokens: 4096,
