@@ -27,7 +27,7 @@ interface GlobalLocationIntelligenceProps {
   onOpenCommandCenter?: () => void;
 }
 
-const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({ onBack, onOpenCommandCenter }) => {
+const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({ onOpenCommandCenter }) => {
   // Core state - starts EMPTY, no pre-selection
   const [profiles, setProfiles] = useState<CityProfile[]>(CITY_PROFILES);
   const [activeProfileId, setActiveProfileId] = useState<string | null>(null);
@@ -370,14 +370,6 @@ th { background: #f1f5f9; }
                 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider border border-white/20 rounded-lg hover:border-amber-400 hover:text-amber-300"
               >
                 Command Center
-              </button>
-            )}
-            {onBack && (
-              <button
-                onClick={onBack}
-                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-200 border border-amber-500/40 rounded-lg hover:bg-amber-500/30"
-              >
-                <ArrowLeft className="inline w-3 h-3 mr-2" /> Back to OS
               </button>
             )}
           </div>
