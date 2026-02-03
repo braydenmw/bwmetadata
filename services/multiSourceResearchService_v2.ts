@@ -23,7 +23,7 @@
  * 5. Wikipedia/Wikidata (contextual information)
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
 import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
@@ -384,7 +384,26 @@ async function tryDirectGeminiResearch(
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 8192,
-      }
+      },
+      // Reduce safety settings to avoid blocking public data responses
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+      ]
     });
 
     console.log('[GLI Research] Calling Gemini API for:', locationQuery);
