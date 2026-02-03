@@ -123,25 +123,32 @@ const AUTHORITATIVE_DOMAINS = [
 /**
  * The comprehensive AI prompt for location intelligence
  */
-const LOCATION_INTELLIGENCE_PROMPT = (location: string, wikiData: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with access to current 2025-2026 data. Provide comprehensive, accurate intelligence about: "${location}"
+const LOCATION_INTELLIGENCE_PROMPT = (location: string, webSearchContext: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with access to current 2025-2026 data. Provide comprehensive, accurate intelligence about: "${location}"
 
 YOUR KNOWLEDGE CUTOFF: Use your training data which includes information up to early 2024, and apply reasonable projections for 2025-2026 based on trends.
 
-CONTEXT DATA (use as foundation, expand with your knowledge):
-- Wikipedia: ${wikiData?.substring(0, 2500) || 'Not available'}
+VERIFIED LOCATION DATA:
 - Coordinates: ${geoData ? `${geoData.lat}, ${geoData.lon}` : 'Unknown'}
 - Country: ${geoData?.country || 'Unknown'}
-- World Bank Data: ${JSON.stringify(worldBankData || {})}
-- Wikidata: ${additionalContext?.wikidata ? JSON.stringify(additionalContext.wikidata) : 'Not available'}
-- Recent News Topics: ${additionalContext?.recentNews || 'Not available'}
 
-IMPORTANT INSTRUCTIONS:
+CONTEXT FROM WEB SEARCH (use this data as your primary source):
+${webSearchContext?.substring(0, 4000) || 'No web search data available'}
+
+WORLD BANK DATA:
+${JSON.stringify(worldBankData || {})}
+
+RECENT NEWS:
+${additionalContext?.recentNews || 'Not available'}
+
+CRITICAL INSTRUCTIONS:
 1. Provide SPECIFIC, FACTUAL data - actual names of leaders, real GDP figures, actual company names
 2. For government leaders, use the CURRENT leaders as of your knowledge (2024+)
 3. Include REAL investment programs, economic zones, and business incentives that exist
 4. List ACTUAL foreign companies operating in this location
 5. Provide REAL infrastructure details - airport names with IATA codes, port names, etc.
 6. Include recent developments and future plans that are publicly known
+7. DO NOT use placeholder text like "See statistics" or "Contact office" - provide actual data
+8. If you don't know specific data, use your knowledge to provide reasonable estimates with "(estimated)" note
 
 Return a detailed JSON response with REAL data (not placeholders). Use actual names, numbers, and facts.
 Do NOT include opinions, endorsements, or recommendations. Use neutral, factual phrasing only:
@@ -330,23 +337,52 @@ async function tryDirectGeminiResearch(
     onProgress?.({
       stage: 'Data Collection',
       progress: 15,
-      message: 'Gathering geographic and economic data from multiple sources...'
+      message: 'Gathering geographic and economic data from real-time sources...'
     });
 
     console.log('[GLI Research] Fetching data from multiple sources...');
     
-    // Fetch from multiple sources in parallel for richer data
-    const [geoData, wikiData, wikidataInfo, newsData] = await Promise.all([
-      fetchGeocoding(locationQuery),
-      fetchWikipediaExtract(locationQuery),
-      fetchWikidataInfo(locationQuery),
-      fetchRecentNews(locationQuery)
-    ]);
+    // Fetch geocoding data first - this is essential for location validation
+    const geoData = await fetchGeocoding(locationQuery);
     
     console.log('[GLI Research] Geo data:', geoData ? `${geoData.lat}, ${geoData.lon}, ${geoData.country}` : 'null');
-    console.log('[GLI Research] Wiki data length:', wikiData?.length || 0);
-    console.log('[GLI Research] Wikidata info:', wikidataInfo ? Object.keys(wikidataInfo) : 'null');
+
+    // CRITICAL VALIDATION: If we can't geocode the location, it's not a valid location
+    if (!geoData) {
+      console.warn('[GLI Research] Geocoding failed - not a valid location query');
+      return null;
+    }
+
+    onProgress?.({
+      stage: 'Web Research',
+      progress: 25,
+      message: 'Searching authoritative sources via web search...'
+    });
+
+    // Use web search instead of Wikipedia - more reliable and current
+    const [
+      officialSearchResults,
+      economySearchResults,
+      demographicsSearchResults,
+      newsData
+    ] = await Promise.all([
+      performGoogleSearch(`${locationQuery} official government website city council`, 5),
+      performGoogleSearch(`${locationQuery} economy GDP business investment statistics`, 5),
+      performGoogleSearch(`${locationQuery} population demographics census statistics`, 5),
+      fetchRecentNews(locationQuery)
+    ]);
+
+    console.log('[GLI Research] Official search results:', officialSearchResults.length);
+    console.log('[GLI Research] Economy search results:', economySearchResults.length);
+    console.log('[GLI Research] Demographics search results:', demographicsSearchResults.length);
     console.log('[GLI Research] News items:', newsData?.length || 0);
+
+    // Combine search results into context for AI
+    const webSearchContext = [
+      ...officialSearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`),
+      ...economySearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`),
+      ...demographicsSearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`)
+    ].join('\n');
 
     // Fetch additional data based on geo results
     let worldBankData: Record<string, unknown> | null = null;
@@ -364,11 +400,16 @@ async function tryDirectGeminiResearch(
       console.log('[GLI Research] OpenData stats:', openDataStats ? Object.keys(openDataStats) : 'null');
     }
 
-    // Build enriched context for Gemini
+    // Build enriched context for Gemini - use web search results instead of Wikipedia
     const enrichedContext = {
-      wikidata: wikidataInfo,
+      webSearchResults: webSearchContext,
       openDataStats,
-      recentNews: newsData?.slice(0, 3).map(n => n.title).join('; ')
+      recentNews: newsData?.slice(0, 3).map(n => n.title).join('; '),
+      sourceUrls: [
+        ...officialSearchResults.map(r => r.link),
+        ...economySearchResults.map(r => r.link),
+        ...demographicsSearchResults.map(r => r.link)
+      ].filter(Boolean)
     };
 
     onProgress?.({
@@ -408,10 +449,10 @@ async function tryDirectGeminiResearch(
 
     console.log('[GLI Research] Calling Gemini API for:', locationQuery);
 
-    // Enhanced prompt with additional data sources
+    // Enhanced prompt with web search data instead of Wikipedia
     const prompt = LOCATION_INTELLIGENCE_PROMPT(
       locationQuery,
-      wikiData,
+      webSearchContext, // Use web search context instead of Wikipedia
       worldBankData,
       geoData ? { lat: geoData.lat, lon: geoData.lon, country: geoData.country } : null,
       enrichedContext
@@ -462,8 +503,8 @@ async function tryDirectGeminiResearch(
       message: 'Constructing comprehensive profile...'
     });
 
-    // Transform to MultiSourceResult
-    return transformAIToProfile(locationQuery, aiIntelligence, geoData, wikiData, worldBankData, onProgress);
+    // Transform to MultiSourceResult - pass webSearchContext instead of wikiData
+    return transformAIToProfile(locationQuery, aiIntelligence, geoData, webSearchContext, worldBankData, enrichedContext.sourceUrls as string[], onProgress);
 
   } catch (error) {
     console.error('[GLI Research] Direct Gemini research failed:', error);
@@ -880,24 +921,66 @@ async function fetchGeocoding(location: string): Promise<{
  */
 async function fetchWikipediaExtract(location: string): Promise<string | null> {
   try {
-    const searchRes = await fetch(
-      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(location)}&format=json&origin=*&srlimit=1`
-    );
-    if (searchRes.ok) {
-      const searchData = await searchRes.json();
-      if (searchData.query?.search?.[0]) {
-        const title = searchData.query.search[0].title;
-        const extractRes = await fetch(
-          `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&format=json&origin=*`
-        );
-        if (extractRes.ok) {
-          const extractData = await extractRes.json();
-          const pages = extractData.query?.pages;
-          const page = Object.values(pages)[0] as { extract?: string };
-          return page?.extract?.substring(0, 3000) || null;
+    // Add location context to search to avoid matching unrelated entities (e.g., people with place names)
+    const searchTerms = [
+      `${location} city`,
+      `${location} town`,
+      `${location} municipality`,
+      location // fallback to plain search
+    ];
+    
+    for (const searchTerm of searchTerms) {
+      const searchRes = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&format=json&origin=*&srlimit=3`
+      );
+      if (searchRes.ok) {
+        const searchData = await searchRes.json();
+        const results = searchData.query?.search || [];
+        
+        // Find a result that looks like a location (contains city, town, place, etc. in snippet or title)
+        const locationKeywords = ['city', 'town', 'municipality', 'district', 'province', 'state', 'region', 'county', 'village', 'suburb', 'area', 'located', 'population', 'geography'];
+        const personKeywords = ['born', 'died', 'politician', 'president', 'actor', 'actress', 'singer', 'player', 'athlete', 'author', 'writer'];
+        
+        // First pass: find a clear location match
+        for (const result of results) {
+          const snippet = (result.snippet || '').toLowerCase();
+          const title = (result.title || '').toLowerCase();
+          const searchLower = location.toLowerCase().split(',')[0].trim();
+          
+          // Skip if it looks like a person
+          const isPerson = personKeywords.some(kw => snippet.includes(kw));
+          if (isPerson) continue;
+          
+          // Check if title closely matches our search (contains the location name)
+          const titleMatchesSearch = title.includes(searchLower) || searchLower.includes(title.split('(')[0].trim());
+          
+          // Check if it looks like a location
+          const isLocation = locationKeywords.some(kw => snippet.includes(kw) || title.includes(kw));
+          
+          if (titleMatchesSearch && (isLocation || !isPerson)) {
+            // Fetch the extract for this result
+            const extractRes = await fetch(
+              `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(result.title)}&prop=extracts&explaintext=true&format=json&origin=*`
+            );
+            if (extractRes.ok) {
+              const extractData = await extractRes.json();
+              const pages = extractData.query?.pages;
+              const page = Object.values(pages)[0] as { extract?: string };
+              const extract = page?.extract?.substring(0, 3000);
+              
+              // Final validation: make sure the extract doesn't look like a person bio
+              if (extract && !extract.match(/^[A-Z][a-z]+ [A-Z][a-z]+ \(born|was born|is an? (American|British|Australian|Canadian|politician|president|actor)/i)) {
+                return extract;
+              }
+            }
+          }
         }
       }
     }
+    
+    // If no location found, return null rather than wrong data
+    console.warn('[GLI] Wikipedia: No matching location found for:', location);
+    return null;
   } catch (error) {
     console.warn('Wikipedia fetch failed:', error);
   }
@@ -973,7 +1056,9 @@ async function fetchRecentNews(location: string): Promise<Array<{ title: string;
 
 /**
  * Fetch Wikidata structured data for a location
+ * @deprecated Now using web search instead of Wikipedia/Wikidata
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function fetchWikidataInfo(location: string): Promise<Record<string, unknown> | null> {
   try {
     // Search for entity
@@ -1064,8 +1149,9 @@ function transformAIToProfile(
   locationQuery: string,
   ai: Record<string, unknown>,
   geoData: { lat: number; lon: number; country: string; countryCode: string; state?: string } | null,
-  wikiData: string | null,
+  webSearchContext: string | null,
   worldBankData: Record<string, unknown> | null,
+  sourceUrls: string[] = [],
   onProgress?: ProgressCallback
 ): MultiSourceResult {
   console.log('[GLI Transform] Starting transformation for:', locationQuery);
@@ -1077,20 +1163,27 @@ function transformAIToProfile(
   
   const accessDate = new Date().toISOString().split('T')[0];
   
-  // Build sources
+  // Build sources from web search results
   const sources: SourceCitation[] = [];
   
-  if (wikiData) {
-    sources.push({
-      title: `Wikipedia - ${locationQuery}`,
-      url: `https://en.wikipedia.org/wiki/${encodeURIComponent(locationQuery.replace(/ /g, '_'))}`,
-      type: 'encyclopedia',
-      reliability: 'medium',
-      accessDate,
-      dataExtracted: wikiData.substring(0, 200),
-      organization: 'Wikipedia'
-    });
-  }
+  // Add web search source URLs
+  sourceUrls.forEach((url, idx) => {
+    try {
+      const domain = new URL(url).hostname;
+      const isGov = domain.includes('.gov') || domain.includes('.gov.au') || domain.includes('.govt');
+      sources.push({
+        title: `Source ${idx + 1}: ${domain}`,
+        url: url,
+        type: isGov ? 'government' : 'research',
+        reliability: isGov ? 'high' : 'medium',
+        accessDate,
+        dataExtracted: 'Web search result',
+        organization: domain
+      });
+    } catch {
+      // Invalid URL, skip
+    }
+  });
 
   if (worldBankData && Object.keys(worldBankData).length > 0) {
     sources.push({
@@ -1302,8 +1395,8 @@ function transformAIToProfile(
       link: '#'
     })),
 
-    // Store the raw Wikipedia extract AND AI overview for the "About" section
-    _rawWikiExtract: wikiData || (overview.description as string) || ''
+    // Store AI-generated description for the "About" section (no longer using Wikipedia)
+    _rawWikiExtract: (overview.description as string) || ''
   };
 
   // Build narratives
