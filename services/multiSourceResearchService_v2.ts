@@ -123,26 +123,38 @@ const AUTHORITATIVE_DOMAINS = [
 /**
  * The comprehensive AI prompt for location intelligence
  */
-const LOCATION_INTELLIGENCE_PROMPT = (location: string, wikiData: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null) => `You are a world-class location intelligence analyst. Provide comprehensive, accurate intelligence about: "${location}"
+const LOCATION_INTELLIGENCE_PROMPT = (location: string, wikiData: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with access to current 2025-2026 data. Provide comprehensive, accurate intelligence about: "${location}"
+
+YOUR KNOWLEDGE CUTOFF: Use your training data which includes information up to early 2024, and apply reasonable projections for 2025-2026 based on trends.
 
 CONTEXT DATA (use as foundation, expand with your knowledge):
-- Wikipedia: ${wikiData?.substring(0, 2000) || 'Not available'}
+- Wikipedia: ${wikiData?.substring(0, 2500) || 'Not available'}
 - Coordinates: ${geoData ? `${geoData.lat}, ${geoData.lon}` : 'Unknown'}
 - Country: ${geoData?.country || 'Unknown'}
 - World Bank Data: ${JSON.stringify(worldBankData || {})}
+- Wikidata: ${additionalContext?.wikidata ? JSON.stringify(additionalContext.wikidata) : 'Not available'}
+- Recent News Topics: ${additionalContext?.recentNews || 'Not available'}
+
+IMPORTANT INSTRUCTIONS:
+1. Provide SPECIFIC, FACTUAL data - actual names of leaders, real GDP figures, actual company names
+2. For government leaders, use the CURRENT leaders as of your knowledge (2024+)
+3. Include REAL investment programs, economic zones, and business incentives that exist
+4. List ACTUAL foreign companies operating in this location
+5. Provide REAL infrastructure details - airport names with IATA codes, port names, etc.
+6. Include recent developments and future plans that are publicly known
 
 Return a detailed JSON response with REAL data (not placeholders). Use actual names, numbers, and facts.
 Do NOT include opinions, endorsements, or recommendations. Use neutral, factual phrasing only:
 
 {
   "overview": {
-    "description": "3 comprehensive paragraphs about this location - its history, current status, and future outlook",
+    "description": "3 comprehensive paragraphs about this location - its history, current status, and future outlook including recent developments and major projects",
     "significance": "Strategic and economic importance - why investors/businesses should care",
     "established": "Year or era established (e.g., '1851' or 'Founded in 1788')",
     "nicknames": ["Common nicknames or titles"],
-    "timezone": "Timezone (e.g., 'AEST (UTC+10)', 'EST (UTC-5)')",
-    "currency": "Official currency (e.g., 'Australian Dollar (AUD)', 'US Dollar (USD)')",
-    "area": "Geographic area (e.g., '740 km²', '12,368 km²')",
+    "timezone": "Timezone (e.g., 'AEST (UTC+10)', 'PHT (UTC+8)', 'EST (UTC-5)')",
+    "currency": "Official currency with code (e.g., 'Philippine Peso (PHP)', 'Australian Dollar (AUD)')",
+    "area": "Geographic area (e.g., '42.88 km²', '12,368 km²')",
     "climate": "Climate type (e.g., 'Oceanic/Temperate', 'Subtropical humid')",
     "businessHours": "Typical business hours (e.g., '9:00 AM - 5:00 PM AEST')"
   },
@@ -318,28 +330,51 @@ async function tryDirectGeminiResearch(
     onProgress?.({
       stage: 'Data Collection',
       progress: 15,
-      message: 'Gathering geographic and economic data...'
+      message: 'Gathering geographic and economic data from multiple sources...'
     });
 
-    console.log('[GLI Research] Fetching geo and wiki data...');
-    const [geoData, wikiData] = await Promise.all([
+    console.log('[GLI Research] Fetching data from multiple sources...');
+    
+    // Fetch from multiple sources in parallel for richer data
+    const [geoData, wikiData, wikidataInfo, newsData] = await Promise.all([
       fetchGeocoding(locationQuery),
-      fetchWikipediaExtract(locationQuery)
+      fetchWikipediaExtract(locationQuery),
+      fetchWikidataInfo(locationQuery),
+      fetchRecentNews(locationQuery)
     ]);
+    
     console.log('[GLI Research] Geo data:', geoData ? `${geoData.lat}, ${geoData.lon}, ${geoData.country}` : 'null');
     console.log('[GLI Research] Wiki data length:', wikiData?.length || 0);
+    console.log('[GLI Research] Wikidata info:', wikidataInfo ? Object.keys(wikidataInfo) : 'null');
+    console.log('[GLI Research] News items:', newsData?.length || 0);
 
+    // Fetch additional data based on geo results
     let worldBankData: Record<string, unknown> | null = null;
+    let openDataStats: Record<string, unknown> | null = null;
+    
     if (geoData?.countryCode) {
       console.log('[GLI Research] Fetching World Bank data for:', geoData.countryCode);
-      worldBankData = await fetchWorldBankIndicators(geoData.countryCode);
+      const [wbData, odStats] = await Promise.all([
+        fetchWorldBankIndicators(geoData.countryCode),
+        fetchOpenDataStats(locationQuery, geoData.country)
+      ]);
+      worldBankData = wbData;
+      openDataStats = odStats;
       console.log('[GLI Research] World Bank data keys:', worldBankData ? Object.keys(worldBankData) : 'null');
+      console.log('[GLI Research] OpenData stats:', openDataStats ? Object.keys(openDataStats) : 'null');
     }
+
+    // Build enriched context for Gemini
+    const enrichedContext = {
+      wikidata: wikidataInfo,
+      openDataStats,
+      recentNews: newsData?.slice(0, 3).map(n => n.title).join('; ')
+    };
 
     onProgress?.({
       stage: 'AI Synthesis',
-      progress: 30,
-      message: 'Gemini AI analyzing location data...'
+      progress: 40,
+      message: 'Gemini AI analyzing data from multiple sources...'
     });
 
     // Call Gemini directly
@@ -354,11 +389,13 @@ async function tryDirectGeminiResearch(
 
     console.log('[GLI Research] Calling Gemini API for:', locationQuery);
 
+    // Enhanced prompt with additional data sources
     const prompt = LOCATION_INTELLIGENCE_PROMPT(
       locationQuery,
       wikiData,
       worldBankData,
-      geoData ? { lat: geoData.lat, lon: geoData.lon, country: geoData.country } : null
+      geoData ? { lat: geoData.lat, lon: geoData.lon, country: geoData.country } : null,
+      enrichedContext
     );
     console.log('[GLI Research] Prompt length:', prompt.length);
 
@@ -880,6 +917,125 @@ async function fetchWorldBankIndicators(countryCode: string): Promise<Record<str
   }));
   
   return Object.keys(results).length > 0 ? results : null;
+}
+
+/**
+ * Fetch news and recent developments from DuckDuckGo
+ */
+async function fetchRecentNews(location: string): Promise<Array<{ title: string; snippet: string; url: string }>> {
+  try {
+    const query = `${location} investment development news 2025 2026`;
+    const response = await fetch(
+      `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      const results: Array<{ title: string; snippet: string; url: string }> = [];
+      
+      // Extract related topics
+      if (data.RelatedTopics) {
+        for (const topic of data.RelatedTopics.slice(0, 5)) {
+          if (topic.Text && topic.FirstURL) {
+            results.push({
+              title: topic.Text.substring(0, 100),
+              snippet: topic.Text,
+              url: topic.FirstURL
+            });
+          }
+        }
+      }
+      return results;
+    }
+  } catch (error) {
+    console.warn('[GLI] News fetch failed:', error);
+  }
+  return [];
+}
+
+/**
+ * Fetch Wikidata structured data for a location
+ */
+async function fetchWikidataInfo(location: string): Promise<Record<string, unknown> | null> {
+  try {
+    // Search for entity
+    const searchRes = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(location)}&language=en&format=json&origin=*&limit=1`
+    );
+    if (!searchRes.ok) return null;
+    
+    const searchData = await searchRes.json();
+    const entityId = searchData.search?.[0]?.id;
+    if (!entityId) return null;
+    
+    // Fetch entity details
+    const entityRes = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${entityId}&props=claims|labels|descriptions&languages=en&format=json&origin=*`
+    );
+    if (!entityRes.ok) return null;
+    
+    const entityData = await entityRes.json();
+    const entity = entityData.entities?.[entityId];
+    if (!entity) return null;
+    
+    const claims = entity.claims || {};
+    const result: Record<string, unknown> = {
+      label: entity.labels?.en?.value,
+      description: entity.descriptions?.en?.value
+    };
+    
+    // Extract key properties
+    // P17 = country, P36 = capital, P1082 = population, P571 = inception, P856 = website
+    const propertyMap: Record<string, string> = {
+      'P17': 'country',
+      'P36': 'capital',
+      'P1082': 'population',
+      'P571': 'founded',
+      'P856': 'officialWebsite',
+      'P6': 'headOfGovernment',
+      'P1313': 'officeHeldByHeadOfGovernment'
+    };
+    
+    for (const [propId, propName] of Object.entries(propertyMap)) {
+      if (claims[propId]?.[0]?.mainsnak?.datavalue?.value) {
+        const val = claims[propId][0].mainsnak.datavalue.value;
+        result[propName] = typeof val === 'object' ? val.amount || val.time || val.id : val;
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.warn('[GLI] Wikidata fetch failed:', error);
+  }
+  return null;
+}
+
+/**
+ * Fetch Open Data Soft datasets (city statistics)
+ */
+async function fetchOpenDataStats(location: string, country: string): Promise<Record<string, unknown> | null> {
+  try {
+    // Try to get city statistics from OpenDataSoft public datasets
+    const query = `${location} ${country}`;
+    const response = await fetch(
+      `https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=${encodeURIComponent(query)}&rows=1`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      if (data.records?.[0]?.fields) {
+        const fields = data.records[0].fields;
+        return {
+          population: fields.population,
+          timezone: fields.timezone,
+          elevation: fields.elevation,
+          countryCode: fields.country_code,
+          adminName: fields.admin1_code
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('[GLI] OpenDataSoft fetch failed:', error);
+  }
+  return null;
 }
 
 /**
