@@ -321,14 +321,19 @@ async function tryDirectGeminiResearch(
       message: 'Gathering geographic and economic data...'
     });
 
+    console.log('[GLI Research] Fetching geo and wiki data...');
     const [geoData, wikiData] = await Promise.all([
       fetchGeocoding(locationQuery),
       fetchWikipediaExtract(locationQuery)
     ]);
+    console.log('[GLI Research] Geo data:', geoData ? `${geoData.lat}, ${geoData.lon}, ${geoData.country}` : 'null');
+    console.log('[GLI Research] Wiki data length:', wikiData?.length || 0);
 
     let worldBankData: Record<string, unknown> | null = null;
     if (geoData?.countryCode) {
+      console.log('[GLI Research] Fetching World Bank data for:', geoData.countryCode);
       worldBankData = await fetchWorldBankIndicators(geoData.countryCode);
+      console.log('[GLI Research] World Bank data keys:', worldBankData ? Object.keys(worldBankData) : 'null');
     }
 
     onProgress?.({
@@ -339,7 +344,13 @@ async function tryDirectGeminiResearch(
 
     // Call Gemini directly
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 8192,
+      }
+    });
 
     console.log('[GLI Research] Calling Gemini API for:', locationQuery);
 
@@ -349,10 +360,20 @@ async function tryDirectGeminiResearch(
       worldBankData,
       geoData ? { lat: geoData.lat, lon: geoData.lon, country: geoData.country } : null
     );
+    console.log('[GLI Research] Prompt length:', prompt.length);
 
-    const result = await model.generateContent(prompt);
+    // Add timeout for Gemini call
+    const timeoutPromise = new Promise<never>((_, reject) => 
+      setTimeout(() => reject(new Error('Gemini API timeout after 30s')), 30000)
+    );
+
+    const result = await Promise.race([
+      model.generateContent(prompt),
+      timeoutPromise
+    ]);
     const responseText = result.response.text();
     console.log('[GLI Research] Gemini response length:', responseText.length);
+    console.log('[GLI Research] Gemini response preview:', responseText.substring(0, 300));
 
     onProgress?.({
       stage: 'Processing',
@@ -872,6 +893,13 @@ function transformAIToProfile(
   worldBankData: Record<string, unknown> | null,
   onProgress?: ProgressCallback
 ): MultiSourceResult {
+  console.log('[GLI Transform] Starting transformation for:', locationQuery);
+  console.log('[GLI Transform] AI response keys:', Object.keys(ai));
+  console.log('[GLI Transform] AI overview:', ai.overview ? 'present' : 'missing');
+  console.log('[GLI Transform] AI governance:', ai.governance ? 'present' : 'missing');
+  console.log('[GLI Transform] AI economy:', ai.economy ? 'present' : 'missing');
+  console.log('[GLI Transform] AI demographics:', ai.demographics ? 'present' : 'missing');
+  
   const accessDate = new Date().toISOString().split('T')[0];
   
   // Build sources
@@ -1650,11 +1678,30 @@ export async function multiSourceResearch(
       }
     }
 
-    // TRY BACKEND AI-ENHANCED RESEARCH FIRST
+    // SKIP BACKEND - Go straight to Direct Gemini Research (works without backend server)
+    // This is the primary method for static hosting (AWS Amplify, Netlify, Vercel)
     onProgress?.({
       stage: 'AI Research',
       progress: 5,
-      message: 'Initiating AI-enhanced research...'
+      message: 'Initializing Gemini AI research...'
+    });
+
+    console.log('[GLI Research] Attempting direct Gemini AI research for:', locationQuery);
+    const directGeminiResult = await tryDirectGeminiResearch(locationQuery, onProgress);
+    if (directGeminiResult) {
+      console.log('[GLI Research] SUCCESS - Gemini AI returned data');
+      // Cache the result
+      await locationResearchCache.saveFullResult(locationQuery, directGeminiResult);
+      return directGeminiResult;
+    }
+    
+    console.warn('[GLI Research] Gemini AI failed, trying backend as fallback...');
+
+    // TRY BACKEND AI-ENHANCED RESEARCH as fallback (if server is running)
+    onProgress?.({
+      stage: 'Backend Research',
+      progress: 8,
+      message: 'Trying backend server...'
     });
 
     const backendResult = await tryBackendResearch(locationQuery, onProgress);
@@ -1664,21 +1711,8 @@ export async function multiSourceResearch(
       return backendResult;
     }
 
-    // TRY DIRECT GEMINI RESEARCH (works without backend - for static hosting)
-    onProgress?.({
-      stage: 'Direct AI Research',
-      progress: 8,
-      message: 'Attempting direct AI research...'
-    });
-
-    const directGeminiResult = await tryDirectGeminiResearch(locationQuery, onProgress);
-    if (directGeminiResult) {
-      // Cache the result
-      await locationResearchCache.saveFullResult(locationQuery, directGeminiResult);
-      return directGeminiResult;
-    }
-
     // FINAL FALLBACK: Frontend-only research if both AI methods unavailable
+    console.warn('[GLI Research] Both Gemini and backend failed, using fallback pipeline');
     onProgress?.({
       stage: 'Fallback Research',
       progress: 10,
