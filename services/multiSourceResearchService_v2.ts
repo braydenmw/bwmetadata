@@ -122,16 +122,22 @@ const AUTHORITATIVE_DOMAINS = [
 
 /**
  * The comprehensive AI prompt for location intelligence
+ * Now enhanced with multi-source verified data from Wikipedia, REST Countries, Wikidata, and World Bank
  */
-const LOCATION_INTELLIGENCE_PROMPT = (location: string, _webSearchContext: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, _additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with comprehensive knowledge of global locations. Generate a COMPLETE intelligence report about: "${location}"
+const LOCATION_INTELLIGENCE_PROMPT = (location: string, multiSourceContext: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with comprehensive knowledge of global locations. Generate a COMPLETE intelligence report about: "${location}"
 
 CRITICAL: You MUST provide REAL, SPECIFIC, FACTUAL DATA for EVERY field. You have extensive training data about world governments, economies, and infrastructure - USE IT.
+
+VERIFIED DATA FROM MULTIPLE AUTHORITATIVE SOURCES:
+${multiSourceContext || 'Use your comprehensive training knowledge about this location'}
+
+${additionalContext?.restCountriesData ? `REST COUNTRIES API DATA: ${JSON.stringify(additionalContext.restCountriesData, null, 2)}` : ''}
 
 VERIFIED GEOGRAPHIC DATA:
 - Coordinates: ${geoData ? `${geoData.lat}, ${geoData.lon}` : 'Determine from your knowledge'}
 - Country: ${geoData?.country || 'Determine from location name'}
 
-WORLD BANK DATA (use these real figures):
+WORLD BANK ECONOMIC INDICATORS (real figures):
 ${worldBankData && Object.keys(worldBankData).length > 0 ? JSON.stringify(worldBankData, null, 2) : 'Use your knowledge of economic indicators'}
 
 ABSOLUTE REQUIREMENTS - You MUST provide:
@@ -358,35 +364,45 @@ async function tryDirectGeminiResearch(
     }
 
     onProgress?.({
-      stage: 'Web Research',
+      stage: 'Multi-Agent Research',
       progress: 25,
-      message: 'Searching authoritative sources via web search...'
+      message: 'Gathering data from authoritative global sources (Wikipedia, World Bank, REST Countries)...'
     });
 
-    // Use web search instead of Wikipedia - more reliable and current
+    // MULTI-AGENT RESEARCH SYSTEM: Use real APIs instead of DuckDuckGo
+    // Agent 1: Wikipedia - structured article data
+    // Agent 2: REST Countries - comprehensive country data  
+    // Agent 3: Wikidata - verified structured facts
+    // Agent 4: World Bank - economic indicators
+    // Agent 5: Gemini AI - comprehensive synthesis
+    
     const [
-      officialSearchResults,
-      economySearchResults,
-      demographicsSearchResults,
-      newsData
+      wikipediaData,
+      restCountriesData,
+      wikidataStructured
     ] = await Promise.all([
-      performGoogleSearch(`${locationQuery} official government website city council`, 5),
-      performGoogleSearch(`${locationQuery} economy GDP business investment statistics`, 5),
-      performGoogleSearch(`${locationQuery} population demographics census statistics`, 5),
-      fetchRecentNews(locationQuery)
+      fetchWikipediaData(locationQuery),
+      geoData?.countryCode ? fetchRestCountriesData(geoData.countryCode) : Promise.resolve(null),
+      fetchWikidataStructured(locationQuery)
     ]);
 
-    console.log('[GLI Research] Official search results:', officialSearchResults.length);
-    console.log('[GLI Research] Economy search results:', economySearchResults.length);
-    console.log('[GLI Research] Demographics search results:', demographicsSearchResults.length);
-    console.log('[GLI Research] News items:', newsData?.length || 0);
+    console.log('[GLI Research] Wikipedia data:', wikipediaData ? `found (${wikipediaData.extract?.length} chars)` : 'null');
+    console.log('[GLI Research] REST Countries data:', restCountriesData ? 'found' : 'null');
+    console.log('[GLI Research] Wikidata structured:', wikidataStructured ? 'found' : 'null');
 
-    // Combine search results into context for AI
-    const webSearchContext = [
-      ...officialSearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`),
-      ...economySearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`),
-      ...demographicsSearchResults.map(r => `${r.title}: ${r.snippet} (${r.link})`)
-    ].join('\n');
+    // Build rich context from real verified sources
+    const multiSourceContext: string[] = [];
+    
+    if (wikipediaData?.extract) {
+      multiSourceContext.push(`WIKIPEDIA SUMMARY: ${wikipediaData.extract}`);
+    }
+    if (restCountriesData) {
+      const rc = restCountriesData;
+      multiSourceContext.push(`COUNTRY DATA: ${rc.name} (${rc.officialName}), Population: ${(rc.population as number)?.toLocaleString()}, Capital: ${(rc.capital as string[])?.[0]}, Region: ${rc.region}/${rc.subregion}, Area: ${(rc.area as number)?.toLocaleString()} km², Languages: ${Object.values(rc.languages || {}).join(', ')}, Currencies: ${Object.keys(rc.currencies || {}).join(', ')}, Timezones: ${(rc.timezones as string[])?.join(', ')}`);
+    }
+    if (wikidataStructured?.description) {
+      multiSourceContext.push(`WIKIDATA: ${wikidataStructured.label} - ${wikidataStructured.description}`);
+    }
 
     // Fetch additional data based on geo results
     let worldBankData: Record<string, unknown> | null = null;
@@ -402,24 +418,36 @@ async function tryDirectGeminiResearch(
       openDataStats = odStats;
       console.log('[GLI Research] World Bank data keys:', worldBankData ? Object.keys(worldBankData) : 'null');
       console.log('[GLI Research] OpenData stats:', openDataStats ? Object.keys(openDataStats) : 'null');
+      
+      if (worldBankData) {
+        const wbInfo = Object.entries(worldBankData)
+          .map(([k, v]) => `${k}: ${(v as { value: number; year: string }).value?.toLocaleString()} (${(v as { value: number; year: string }).year})`)
+          .join(', ');
+        multiSourceContext.push(`WORLD BANK INDICATORS: ${wbInfo}`);
+      }
     }
 
-    // Build enriched context for Gemini - use web search results instead of Wikipedia
+    // Build enriched context for Gemini with all verified source data
     const enrichedContext = {
-      webSearchResults: webSearchContext,
+      multiSourceSummary: multiSourceContext.join('\n\n'),
+      wikipediaExtract: wikipediaData?.extract,
+      restCountriesData,
+      wikidataStructured,
       openDataStats,
-      recentNews: newsData?.slice(0, 3).map(n => n.title).join('; '),
       sourceUrls: [
-        ...officialSearchResults.map(r => r.link),
-        ...economySearchResults.map(r => r.link),
-        ...demographicsSearchResults.map(r => r.link)
+        wikipediaData?.url,
+        'https://restcountries.com',
+        'https://www.wikidata.org',
+        'https://data.worldbank.org'
       ].filter(Boolean)
     };
+    
+    console.log('[GLI Research] Multi-source context length:', multiSourceContext.join('\n').length, 'chars');
 
     onProgress?.({
       stage: 'AI Synthesis',
       progress: 40,
-      message: 'Gemini AI analyzing data from multiple sources...'
+      message: 'Gemini AI synthesizing intelligence from verified sources...'
     });
 
     // Call Gemini directly
@@ -453,10 +481,10 @@ async function tryDirectGeminiResearch(
 
     console.log('[GLI Research] Calling Gemini API for:', locationQuery);
 
-    // Enhanced prompt with web search data instead of Wikipedia
+    // Enhanced prompt with multi-source verified data
     const prompt = LOCATION_INTELLIGENCE_PROMPT(
       locationQuery,
-      webSearchContext, // Use web search context instead of Wikipedia
+      enrichedContext.multiSourceSummary, // Use verified multi-source context
       worldBankData,
       geoData ? { lat: geoData.lat, lon: geoData.lon, country: geoData.country } : null,
       enrichedContext
@@ -1026,36 +1054,119 @@ async function fetchWorldBankIndicators(countryCode: string): Promise<Record<str
 }
 
 /**
- * Fetch news and recent developments from DuckDuckGo
+ * MULTI-AGENT RESEARCH SYSTEM
+ * Agent 1: Wikipedia API - Get structured article data
  */
-async function fetchRecentNews(location: string): Promise<Array<{ title: string; snippet: string; url: string }>> {
+async function fetchWikipediaData(query: string): Promise<{ title: string; extract: string; url: string } | null> {
   try {
-    const query = `${location} investment development news 2025 2026`;
-    const response = await fetch(
-      `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`
-    );
-    if (response.ok) {
-      const data = await response.json();
-      const results: Array<{ title: string; snippet: string; url: string }> = [];
-      
-      // Extract related topics
-      if (data.RelatedTopics) {
-        for (const topic of data.RelatedTopics.slice(0, 5)) {
-          if (topic.Text && topic.FirstURL) {
-            results.push({
-              title: topic.Text.substring(0, 100),
-              snippet: topic.Text,
-              url: topic.FirstURL
-            });
-          }
+    // Try direct page summary first
+    const directUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query.replace(/ /g, '_'))}`;
+    const directRes = await fetch(directUrl);
+    if (directRes.ok) {
+      const data = await directRes.json();
+      if (data.extract && data.extract.length > 50) {
+        console.log('[GLI] Wikipedia direct hit for:', query);
+        return {
+          title: data.title,
+          extract: data.extract,
+          url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`
+        };
+      }
+    }
+    // Fallback: search API
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=3`;
+    const searchRes = await fetch(searchUrl);
+    if (searchRes.ok) {
+      const searchData = await searchRes.json();
+      const firstResult = searchData.query?.search?.[0];
+      if (firstResult) {
+        const pageUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(firstResult.title.replace(/ /g, '_'))}`;
+        const pageRes = await fetch(pageUrl);
+        if (pageRes.ok) {
+          const pageData = await pageRes.json();
+          console.log('[GLI] Wikipedia search hit for:', query, '->', firstResult.title);
+          return {
+            title: pageData.title,
+            extract: pageData.extract || firstResult.snippet.replace(/<[^>]*>/g, ''),
+            url: pageData.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(firstResult.title)}`
+          };
         }
       }
-      return results;
     }
   } catch (error) {
-    console.warn('[GLI] News fetch failed:', error);
+    console.warn('[GLI] Wikipedia fetch failed:', error);
   }
-  return [];
+  return null;
+}
+
+/**
+ * Agent 2: REST Countries API - Get comprehensive country data
+ */
+async function fetchRestCountriesData(countryCode: string): Promise<Record<string, unknown> | null> {
+  try {
+    const response = await fetch(`https://restcountries.com/v3.1/alpha/${countryCode}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data?.[0]) {
+        console.log('[GLI] REST Countries data found for:', countryCode);
+        return {
+          name: data[0].name?.common,
+          officialName: data[0].name?.official,
+          capital: data[0].capital,
+          region: data[0].region,
+          subregion: data[0].subregion,
+          population: data[0].population,
+          area: data[0].area,
+          currencies: data[0].currencies,
+          languages: data[0].languages,
+          timezones: data[0].timezones,
+          borders: data[0].borders,
+          flag: data[0].flags?.svg,
+          maps: data[0].maps,
+          gini: data[0].gini,
+          demonyms: data[0].demonyms
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('[GLI] REST Countries fetch failed:', error);
+  }
+  return null;
+}
+
+/**
+ * Agent 3: Wikidata Structured Data - Get verified facts
+ */
+async function fetchWikidataStructured(query: string): Promise<Record<string, unknown> | null> {
+  try {
+    const searchRes = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(query)}&language=en&format=json&origin=*&limit=1`
+    );
+    if (!searchRes.ok) return null;
+    
+    const searchData = await searchRes.json();
+    const entityId = searchData.search?.[0]?.id;
+    if (!entityId) return null;
+    
+    const entityRes = await fetch(
+      `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${entityId}&props=claims|labels|descriptions&languages=en&format=json&origin=*`
+    );
+    if (!entityRes.ok) return null;
+    
+    const entityData = await entityRes.json();
+    const entity = entityData.entities?.[entityId];
+    if (!entity) return null;
+    
+    console.log('[GLI] Wikidata entity found:', entityId);
+    return {
+      label: entity.labels?.en?.value,
+      description: entity.descriptions?.en?.value,
+      wikidataId: entityId
+    };
+  } catch (error) {
+    console.warn('[GLI] Wikidata fetch failed:', error);
+  }
+  return null;
 }
 
 /**
@@ -2460,9 +2571,12 @@ async function geocodeLocation(locationQuery: string): Promise<{
 }
 
 /**
- * Perform Google/DuckDuckGo search
+ * DEPRECATED: DuckDuckGo search removed - use multi-agent research instead
+ * The multi-agent system uses Wikipedia, REST Countries, Wikidata, and World Bank APIs
+ * which provide reliable, structured data instead of instant answers
  */
-async function performGoogleSearch(query: string, numResults: number = 10): Promise<Array<{
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function performGoogleSearch(_query: string, _numResults: number = 10): Promise<Array<{
   title: string;
   link: string;
   snippet: string;
@@ -2471,53 +2585,10 @@ async function performGoogleSearch(query: string, numResults: number = 10): Prom
   isInternationalOrg: boolean;
   isNews: boolean;
 }>> {
-  const results: Array<{
-    title: string;
-    link: string;
-    snippet: string;
-    displayLink: string;
-    isGovernment: boolean;
-    isInternationalOrg: boolean;
-    isNews: boolean;
-  }> = [];
-
-  try {
-    const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`;
-    const response = await fetch(ddgUrl);
-    const data = await response.json();
-
-    if (data.AbstractURL && data.AbstractText) {
-      const domain = new URL(data.AbstractURL).hostname || '';
-      results.push({
-        title: data.Heading,
-        link: data.AbstractURL,
-        snippet: data.AbstractText.substring(0, 200),
-        displayLink: domain,
-        isGovernment: AUTHORITATIVE_DOMAINS.some(d => domain.includes(d)),
-        isInternationalOrg: ['worldbank', 'imf', 'un.org'].some(d => domain.includes(d)),
-        isNews: ['news', 'times', 'post', 'tribune'].some(d => domain.includes(d))
-      });
-    }
-
-    if (data.Results) {
-      for (const result of data.Results.slice(0, numResults - 1)) {
-        const domain = result.FirstURL ? new URL(result.FirstURL).hostname : '';
-        results.push({
-          title: result.Text.substring(0, 100),
-          link: result.FirstURL,
-          snippet: result.Text,
-          displayLink: domain || 'unknown',
-          isGovernment: AUTHORITATIVE_DOMAINS.some(d => domain.includes(d)),
-          isInternationalOrg: ['worldbank', 'imf', 'un'].some(d => domain.includes(d)),
-          isNews: ['news', 'times'].some(d => domain.includes(d))
-        });
-      }
-    }
-  } catch (error) {
-    console.warn('Search failed:', error);
-  }
-
-  return results;
+  // DuckDuckGo Instant Answer API removed - it only returns abstracts, not search results
+  // All research now done via multi-agent system (Wikipedia, REST Countries, Wikidata, World Bank)
+  console.log('[GLI] performGoogleSearch deprecated - using multi-agent research instead');
+  return [];
 }
 
 type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'unknown';
@@ -2668,30 +2739,6 @@ async function fetchCountryData(country: string): Promise<Record<string, unknown
     console.warn('Country data fetch failed:', error);
   }
   return {};
-}
-
-/**
- * Fetch Wikipedia data
- */
-async function fetchWikipediaData(city: string, country: string): Promise<string | null> {
-  try {
-    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(city + ' ' + country)}&format=json&origin=*&srlimit=1`;
-    const searchRes = await fetch(searchUrl);
-    const searchData = await searchRes.json();
-
-    if (searchData.query?.search?.[0]) {
-      const pageTitle = searchData.query.search[0].title;
-      const pageUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=extracts&explaintext=true&format=json&origin=*`;
-      const pageRes = await fetch(pageUrl);
-      const pageData = await pageRes.json();
-      const pages = pageData.query.pages;
-      const pageContent = Object.values(pages)[0] as Record<string, unknown>;
-      return (pageContent?.extract as string)?.substring(0, 800) || null;
-    }
-  } catch (error) {
-    console.warn('Wikipedia fetch failed:', error);
-  }
-  return null;
 }
 
 /**
