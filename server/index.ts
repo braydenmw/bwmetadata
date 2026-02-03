@@ -35,6 +35,7 @@ import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
 import autonomousRoutes from './routes/autonomous.js';
 import governanceRoutes from './routes/governance.js';
+import bedrockRoutes from './routes/bedrock.js';
 
 const app = express();
 const PORT = parseInt(String(process.env.PORT || 3001), 10);
@@ -100,6 +101,7 @@ app.use('/api/reports', reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);
 app.use('/api/governance', governanceRoutes);
+app.use('/api/bedrock', bedrockRoutes);
 
 // Serve static frontend in production
 if (process.env.NODE_ENV === 'production') {

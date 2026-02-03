@@ -1,23 +1,23 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * GEMINI-FIRST LOCATION INTELLIGENCE SERVICE
+ * UNIFIED LOCATION INTELLIGENCE SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
- * SIMPLIFIED APPROACH - Gemini AI is the primary intelligence source
+ * PRODUCTION-READY APPROACH:
+ * - Uses AWS Bedrock (Claude) when running on AWS
+ * - Falls back to Gemini for local development
+ * - No external API dependencies
  * 
  * Why this approach works:
- * 1. Gemini has extensive training data on world locations
- * 2. No dependency on rate-limited/failing external APIs
- * 3. Single point of failure instead of 5+ APIs
- * 4. Faster response times
- * 5. More consistent output format
- * 
- * External APIs (REST Countries, World Bank) are used ONLY for enhancement
- * when available, not as requirements.
+ * 1. AWS Bedrock has no rate limits when properly configured
+ * 2. Gemini available as fallback for development
+ * 3. Single unified interface
+ * 4. Consistent output format
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
+import { researchLocationAWS, isAWSEnvironment } from './awsBedrockService';
 
 // ==================== TYPES ====================
 
@@ -131,40 +131,54 @@ export async function researchLocation(
   query: string,
   onProgress?: (progress: ResearchProgress) => void
 ): Promise<LocationResult | null> {
+  
+  console.log('[Location Service] Starting research for:', query);
+  console.log('[Location Service] AWS Environment:', isAWSEnvironment());
+  
+  // Try AWS Bedrock first if on AWS
+  if (isAWSEnvironment()) {
+    try {
+      console.log('[Location Service] Using AWS Bedrock...');
+      const result = await researchLocationAWS(query, onProgress);
+      if (result) {
+        return result as unknown as LocationResult;
+      }
+    } catch (error) {
+      console.warn('[Location Service] AWS Bedrock failed, falling back to Gemini:', error);
+    }
+  }
+  
+  // Fall back to Gemini
   const apiKey = getGeminiApiKey();
   
   if (!apiKey) {
-    console.error('[Gemini Location] No API key available');
+    console.error('[Location Service] No API key available');
     onProgress?.({ stage: 'Error', progress: 0, message: 'API key not configured' });
     return null;
   }
 
-  console.log('[Gemini Location] Starting research for:', query);
-  console.log('[Gemini Location] API key found, length:', apiKey.length, 'starts with:', apiKey.substring(0, 10) + '...');
+  console.log('[Location Service] Using Gemini API, key length:', apiKey.length);
   
   try {
     onProgress?.({ stage: 'Initializing', progress: 10, message: 'Connecting to AI...' });
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.0-flash',  // Updated to current model name
+      model: 'gemini-2.0-flash',
       generationConfig: {
-        temperature: 0.3, // Lower temperature for more factual responses
+        temperature: 0.3,
         maxOutputTokens: 4096,
       }
     });
 
     onProgress?.({ stage: 'Researching', progress: 30, message: `Gathering intelligence on ${query}...` });
 
-    console.log('[Gemini Location] Calling Gemini API...');
+    console.log('[Location Service] Calling Gemini API...');
     
-    // Simple, direct call to Gemini
     const result = await model.generateContent(SIMPLE_LOCATION_PROMPT(query));
     const responseText = result.response.text();
     
-    console.log('[Gemini Location] Response received, length:', responseText.length);
-    
-    console.log('[Gemini Location] Response length:', responseText.length);
+    console.log('[Location Service] Response received, length:', responseText.length);
 
     onProgress?.({ stage: 'Processing', progress: 70, message: 'Processing intelligence data...' });
 

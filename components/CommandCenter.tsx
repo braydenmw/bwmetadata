@@ -27,7 +27,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
     // Handle location search - SIMPLIFIED Gemini-first approach
     const handleLocationSearch = async () => {
-        if (!locationQuery.trim()) return;
+        console.log('[CommandCenter] handleLocationSearch called');
+        console.log('[CommandCenter] locationQuery:', locationQuery);
+        
+        if (!locationQuery.trim()) {
+            console.log('[CommandCenter] Empty query, returning');
+            return;
+        }
+        
+        console.log('[CommandCenter] Starting research...');
         setIsResearchingLocation(true);
         setLocationResult(null);
         setComparisonCities([]);
@@ -35,14 +43,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         setResearchProgress({ stage: 'initialization', progress: 5, message: 'Connecting to AI intelligence...' });
 
         try {
+            console.log('[CommandCenter] Calling researchLocation...');
             // Direct Gemini AI research - simple and reliable
             const result = await researchLocation(
                 locationQuery,
                 (progress) => {
+                    console.log('[CommandCenter] Progress:', progress);
                     setResearchProgress(progress);
                 }
             );
 
+            console.log('[CommandCenter] Research result:', result);
+            
             if (result && result.profile) {
                 setLocationResult({
                     city: result.profile.city,
@@ -68,6 +80,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                 // Store in localStorage for quick access in report
                 localStorage.setItem('lastLocationResult', JSON.stringify(result));
+            } else {
+                console.error('[CommandCenter] No result returned');
+                setResearchProgress({ stage: 'error', progress: 0, message: 'No data found - please try again' });
             }
         } catch (error) {
             console.error('Location research error:', error);
