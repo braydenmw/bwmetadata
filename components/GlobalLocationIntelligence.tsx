@@ -2,8 +2,12 @@ import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react'
 import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { multiSourceResearch, type ResearchProgress, type MultiSourceResult, type SourceCitation } from '../services/multiSourceResearchService_v2';
+import { researchLocation, type ResearchProgress, type LocationResult } from '../services/geminiLocationService';
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
+
+// Type alias for backwards compatibility
+type MultiSourceResult = LocationResult & { sources: { title: string; url: string; type: string; reliability: string }[] };
+type SourceCitation = { title: string; url: string; type: string; reliability: string };
 
 const ProjectBadge: React.FC<{ status: 'completed' | 'ongoing' | 'planned' }> = ({ status }) => {
   const colors = {
@@ -103,21 +107,26 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
     
     try {
-      // Use multi-source research - GOOGLE, WORLD BANK, GOVERNMENT SOURCES
-      const result = await multiSourceResearch(trimmedQuery, (progress) => {
+      // Use simplified Gemini-first research - more reliable
+      const result = await researchLocation(trimmedQuery, (progress) => {
         setResearchProgress(progress);
       });
       
       if (result) {
         setLiveProfile(result.profile);
-        setResearchResult(result);
-        setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete! ${result.sources.length} sources compiled.` });
+        // Transform to MultiSourceResult format for compatibility
+        const multiResult: MultiSourceResult = {
+          ...result,
+          sources: result.sources.map(s => ({ title: s, url: '#', type: 'research', reliability: 'high' }))
+        };
+        setResearchResult(multiResult);
+        setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete!` });
       } else {
         setLoadingError(`Could not find intelligence for "${trimmedQuery}". Please try a different search term.`);
         setHasSelection(false);
       }
     } catch (error) {
-      console.error('Multi-source research error:', error);
+      console.error('Research error:', error);
       const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
       if (isNetworkError || !navigator.onLine) {
         setLoadingError('Unable to connect to research services. Please check your internet connection.');

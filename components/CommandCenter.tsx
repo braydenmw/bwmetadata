@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink } from 'lucide-react';
-import { multiSourceResearch, type ResearchProgress } from '../services/multiSourceResearchService_v2';
-import { locationResearchCache } from '../services/locationResearchCache';
+import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
 // OSINT search removed - using unified location research
 
@@ -26,26 +25,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
     const [researchSummary, setResearchSummary] = useState<string>('');
 
-    // Handle location search - LIVE (Multi-Source with intelligent caching)
+    // Handle location search - SIMPLIFIED Gemini-first approach
     const handleLocationSearch = async () => {
         if (!locationQuery.trim()) return;
         setIsResearchingLocation(true);
         setLocationResult(null);
         setComparisonCities([]);
         setResearchSummary('');
-        setResearchProgress({ stage: 'initialization', progress: 2, message: 'Initializing research system...' });
+        setResearchProgress({ stage: 'initialization', progress: 5, message: 'Connecting to AI intelligence...' });
 
         try {
-            // Initialize cache system
-            await locationResearchCache.initialize();
-
-            // Enhanced multi-source research with caching and autonomous refinement
-            const result = await multiSourceResearch(
+            // Direct Gemini AI research - simple and reliable
+            const result = await researchLocation(
                 locationQuery,
                 (progress) => {
                     setResearchProgress(progress);
-                },
-                true // Enable autonomous refinement loops
+                }
             );
 
             if (result && result.profile) {
@@ -56,23 +51,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     lon: result.profile.longitude || 0
                 });
 
-                setResearchSummary(result.researchSummary || 'Research completed. Review the location brief below.');
+                setResearchSummary(result.summary || 'Research completed. Review the location brief below.');
 
-                const similar = result.similarCities?.length
-                    ? result.similarCities.slice(0, 4).map((c) => ({
-                        city: c.city,
-                        country: c.country,
-                        reason: c.reason,
-                        keyMetric: c.keyMetric
-                    }))
-                    : CITY_PROFILES.filter((p) => p.country === result.profile.country && p.city !== result.profile.city)
-                        .slice(0, 4)
-                        .map((p) => ({
-                            city: p.city,
-                            country: p.country,
-                            reason: `Comparable regional profile in ${p.region}`,
-                            keyMetric: p.globalMarketAccess
-                        }));
+                // Find similar cities from our database
+                const similar = CITY_PROFILES
+                    .filter((p) => p.country === result.profile.country && p.city !== result.profile.city)
+                    .slice(0, 4)
+                    .map((p) => ({
+                        city: p.city,
+                        country: p.country,
+                        reason: `Comparable regional profile in ${p.region}`,
+                        keyMetric: p.globalMarketAccess
+                    }));
 
                 setComparisonCities(similar);
 
