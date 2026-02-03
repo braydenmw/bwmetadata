@@ -20,7 +20,8 @@
  * 2. World Bank Open Data API (economic indicators)
  * 3. REST Countries API (country demographics)
  * 4. OpenStreetMap API (geographic data)
- * 5. Wikipedia/Wikidata (contextual information)
+ * 5. GeoNames API (geographic database)
+ * 6. Wikidata (structured verified facts)
  */
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
@@ -122,7 +123,7 @@ const AUTHORITATIVE_DOMAINS = [
 
 /**
  * The comprehensive AI prompt for location intelligence
- * Now enhanced with multi-source verified data from Wikipedia, REST Countries, Wikidata, and World Bank
+ * Now enhanced with multi-source verified data from GeoNames, REST Countries, Wikidata, and World Bank
  */
 const LOCATION_INTELLIGENCE_PROMPT = (location: string, multiSourceContext: string | null, worldBankData: Record<string, unknown> | null, geoData: { lat: number; lon: number; country?: string } | null, additionalContext?: Record<string, unknown>) => `You are a world-class location intelligence analyst with comprehensive knowledge of global locations. Generate a COMPLETE intelligence report about: "${location}"
 
@@ -279,13 +280,13 @@ CRITICAL:
 - If uncertain, provide best estimate with "(estimated)" note
 - Return ONLY valid JSON, no markdown code blocks or explanation text`;
 
-const ENTITY_INTELLIGENCE_PROMPT = (query: string, wikiData: string | null, sources: string[]) => `You are a world-class intelligence analyst. Provide comprehensive, accurate intelligence about the entity: "${query}".
+const ENTITY_INTELLIGENCE_PROMPT = (query: string, entityData: string | null, sources: string[]) => `You are a world-class intelligence analyst. Provide comprehensive, accurate intelligence about the entity: "${query}".
 
 If the entity is a company, government body, agency, university, NGO, or other organization, identify it and return a structured intelligence brief.
 
 Sources available:
-- Wikipedia extract: ${wikiData || 'Not available'}
-- Additional sources: ${sources.join('; ') || 'Not available'}
+- Entity data: ${entityData || 'Use your comprehensive training knowledge'}
+- Additional sources: ${sources.join('; ') || 'Use authoritative databases'}
 
 Return ONLY valid JSON in this exact structure:
 {
@@ -366,35 +367,35 @@ async function tryDirectGeminiResearch(
     onProgress?.({
       stage: 'Multi-Agent Research',
       progress: 25,
-      message: 'Gathering data from authoritative global sources (Wikipedia, World Bank, REST Countries)...'
+      message: 'Gathering data from authoritative global sources (GeoNames, World Bank, REST Countries)...'
     });
 
-    // MULTI-AGENT RESEARCH SYSTEM: Use real APIs instead of DuckDuckGo
-    // Agent 1: Wikipedia - structured article data
+    // MULTI-AGENT RESEARCH SYSTEM: Use real APIs for verified data
+    // Agent 1: GeoNames - comprehensive geographic database
     // Agent 2: REST Countries - comprehensive country data  
-    // Agent 3: Wikidata - verified structured facts
+    // Agent 3: Wikidata - verified structured facts (not Wikipedia)
     // Agent 4: World Bank - economic indicators
     // Agent 5: Gemini AI - comprehensive synthesis
     
     const [
-      wikipediaData,
+      geoNamesData,
       restCountriesData,
       wikidataStructured
     ] = await Promise.all([
-      fetchWikipediaData(locationQuery),
+      fetchGeoNamesData(locationQuery, geoData),
       geoData?.countryCode ? fetchRestCountriesData(geoData.countryCode) : Promise.resolve(null),
       fetchWikidataStructured(locationQuery)
     ]);
 
-    console.log('[GLI Research] Wikipedia data:', wikipediaData ? `found (${wikipediaData.extract?.length} chars)` : 'null');
+    console.log('[GLI Research] GeoNames data:', geoNamesData ? 'found' : 'null');
     console.log('[GLI Research] REST Countries data:', restCountriesData ? 'found' : 'null');
     console.log('[GLI Research] Wikidata structured:', wikidataStructured ? 'found' : 'null');
 
     // Build rich context from real verified sources
     const multiSourceContext: string[] = [];
     
-    if (wikipediaData?.extract) {
-      multiSourceContext.push(`WIKIPEDIA SUMMARY: ${wikipediaData.extract}`);
+    if (geoNamesData) {
+      multiSourceContext.push(`GEONAMES DATA: ${geoNamesData.name} (${geoNamesData.adminName1 || ''}, ${geoNamesData.countryName}), Population: ${geoNamesData.population?.toLocaleString() || 'N/A'}, Elevation: ${geoNamesData.elevation || 'N/A'}m, Feature: ${geoNamesData.fcodeName || geoNamesData.fcode || 'Location'}`);
     }
     if (restCountriesData) {
       const rc = restCountriesData;
@@ -430,12 +431,12 @@ async function tryDirectGeminiResearch(
     // Build enriched context for Gemini with all verified source data
     const enrichedContext = {
       multiSourceSummary: multiSourceContext.join('\n\n'),
-      wikipediaExtract: wikipediaData?.extract,
+      geoNamesData,
       restCountriesData,
       wikidataStructured,
       openDataStats,
       sourceUrls: [
-        wikipediaData?.url,
+        'https://www.geonames.org',
         'https://restcountries.com',
         'https://www.wikidata.org',
         'https://data.worldbank.org'
@@ -567,7 +568,7 @@ async function tryDirectGeminiEntityResearch(
       message: 'Initializing entity intelligence...'
     });
 
-    const wikiData = await fetchWikipediaEntityData(query);
+    const wikiData = await fetchWikidataEntity(query);
     const searchResults = await performGoogleSearch(`${query} official website`, 6);
 
     const sourceNames = searchResults.map(r => r.displayLink).filter(Boolean);
@@ -621,13 +622,13 @@ function transformEntityToProfile(
   const sources: SourceCitation[] = [];
   if (wikiData?.url) {
     sources.push({
-      title: `Wikipedia - ${wikiData.title}`,
+      title: `Wikidata - ${wikiData.title}`,
       url: wikiData.url,
-      type: 'encyclopedia',
+      type: 'research',
       reliability: 'medium',
       accessDate,
       dataExtracted: wikiData.extract.substring(0, 150),
-      organization: 'Wikipedia'
+      organization: 'Wikidata'
     });
   }
 
@@ -777,7 +778,7 @@ async function executeEntityResearch(
   });
 
   const [wikiData, officialSearch, leadershipSearch, coverageSearch] = await Promise.all([
-    fetchWikipediaEntityData(query),
+    fetchWikidataEntity(query),
     performGoogleSearch(`${query} official website`, 6),
     performGoogleSearch(`${query} leadership`, 6),
     performGoogleSearch(`${query} headquarters`, 6)
@@ -788,13 +789,13 @@ async function executeEntityResearch(
 
   if (wikiData?.url) {
     sources.push({
-      title: `Wikipedia - ${wikiData.title}`,
+      title: `Wikidata - ${wikiData.title}`,
       url: wikiData.url,
-      type: 'encyclopedia',
+      type: 'research',
       reliability: 'medium',
       accessDate,
       dataExtracted: wikiData.extract.substring(0, 150),
-      organization: 'Wikipedia'
+      organization: 'Wikidata'
     });
   }
 
@@ -949,72 +950,43 @@ async function fetchGeocoding(location: string): Promise<{
 }
 
 /**
- * Fetch Wikipedia extract for direct Gemini research
+ * Fetch location description from GeoNames for direct Gemini research
+ * Replaces Wikipedia - uses structured geographic data
  */
-async function fetchWikipediaExtract(location: string): Promise<string | null> {
+async function fetchGeoNamesExtract(location: string): Promise<string | null> {
   try {
-    // Add location context to search to avoid matching unrelated entities (e.g., people with place names)
-    const searchTerms = [
-      `${location} city`,
-      `${location} town`,
-      `${location} municipality`,
-      location // fallback to plain search
-    ];
-    
-    for (const searchTerm of searchTerms) {
-      const searchRes = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&format=json&origin=*&srlimit=3`
-      );
-      if (searchRes.ok) {
-        const searchData = await searchRes.json();
-        const results = searchData.query?.search || [];
-        
-        // Find a result that looks like a location (contains city, town, place, etc. in snippet or title)
-        const locationKeywords = ['city', 'town', 'municipality', 'district', 'province', 'state', 'region', 'county', 'village', 'suburb', 'area', 'located', 'population', 'geography'];
-        const personKeywords = ['born', 'died', 'politician', 'president', 'actor', 'actress', 'singer', 'player', 'athlete', 'author', 'writer'];
-        
-        // First pass: find a clear location match
-        for (const result of results) {
-          const snippet = (result.snippet || '').toLowerCase();
-          const title = (result.title || '').toLowerCase();
-          const searchLower = location.toLowerCase().split(',')[0].trim();
+    // Search GeoNames for location info
+    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(location)}&maxRows=3&username=demo&style=full`;
+    const response = await fetch(searchUrl);
+    if (response.ok) {
+      const data = await response.json();
+      const results = data.geonames || [];
+      
+      // Find best match for a location (not a person)
+      for (const result of results) {
+        const fcode = result.fcode || '';
+        // Feature codes for populated places, admin regions, etc.
+        const locationCodes = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'ADM1', 'ADM2', 'ADM3', 'ADM4', 'PCLI', 'RGN'];
+        if (locationCodes.some(code => fcode.startsWith(code) || fcode.includes(code))) {
+          const description = [
+            `${result.name} is a ${result.fcodeName || 'location'}`,
+            result.adminName1 ? `in ${result.adminName1}` : '',
+            result.countryName ? `, ${result.countryName}` : '',
+            result.population ? `. Population: ${result.population.toLocaleString()}` : '',
+            result.elevation ? `. Elevation: ${result.elevation}m` : '',
+            result.timezone?.timeZoneId ? `. Timezone: ${result.timezone.timeZoneId}` : ''
+          ].filter(Boolean).join('');
           
-          // Skip if it looks like a person
-          const isPerson = personKeywords.some(kw => snippet.includes(kw));
-          if (isPerson) continue;
-          
-          // Check if title closely matches our search (contains the location name)
-          const titleMatchesSearch = title.includes(searchLower) || searchLower.includes(title.split('(')[0].trim());
-          
-          // Check if it looks like a location
-          const isLocation = locationKeywords.some(kw => snippet.includes(kw) || title.includes(kw));
-          
-          if (titleMatchesSearch && (isLocation || !isPerson)) {
-            // Fetch the extract for this result
-            const extractRes = await fetch(
-              `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(result.title)}&prop=extracts&explaintext=true&format=json&origin=*`
-            );
-            if (extractRes.ok) {
-              const extractData = await extractRes.json();
-              const pages = extractData.query?.pages;
-              const page = Object.values(pages)[0] as { extract?: string };
-              const extract = page?.extract?.substring(0, 3000);
-              
-              // Final validation: make sure the extract doesn't look like a person bio
-              if (extract && !extract.match(/^[A-Z][a-z]+ [A-Z][a-z]+ \(born|was born|is an? (American|British|Australian|Canadian|politician|president|actor)/i)) {
-                return extract;
-              }
-            }
-          }
+          console.log('[GLI] GeoNames extract found for:', location);
+          return description;
         }
       }
     }
     
-    // If no location found, return null rather than wrong data
-    console.warn('[GLI] Wikipedia: No matching location found for:', location);
+    console.warn('[GLI] GeoNames: No matching location found for:', location);
     return null;
   } catch (error) {
-    console.warn('Wikipedia fetch failed:', error);
+    console.warn('GeoNames fetch failed:', error);
   }
   return null;
 }
@@ -1055,46 +1027,76 @@ async function fetchWorldBankIndicators(countryCode: string): Promise<Record<str
 
 /**
  * MULTI-AGENT RESEARCH SYSTEM
- * Agent 1: Wikipedia API - Get structured article data
+ * Agent 1: GeoNames API - Get comprehensive geographic data
+ * Free API with location details, population, elevation, feature codes
  */
-async function fetchWikipediaData(query: string): Promise<{ title: string; extract: string; url: string } | null> {
+interface GeoNamesResult {
+  name: string;
+  adminName1?: string;
+  countryName: string;
+  population?: number;
+  elevation?: number;
+  fcode?: string;
+  fcodeName?: string;
+  lat?: string;
+  lng?: string;
+  timezone?: { timeZoneId: string };
+}
+
+async function fetchGeoNamesData(
+  query: string, 
+  geoData?: { lat: number; lon: number; country?: string; countryCode?: string } | null
+): Promise<GeoNamesResult | null> {
   try {
-    // Try direct page summary first
-    const directUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query.replace(/ /g, '_'))}`;
-    const directRes = await fetch(directUrl);
-    if (directRes.ok) {
-      const data = await directRes.json();
-      if (data.extract && data.extract.length > 50) {
-        console.log('[GLI] Wikipedia direct hit for:', query);
+    // GeoNames free API - use demo username (consider registering for production)
+    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=1&username=demo&style=full`;
+    const response = await fetch(searchUrl);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.geonames?.[0]) {
+        const result = data.geonames[0];
+        console.log('[GLI] GeoNames hit for:', query, '->', result.name);
         return {
-          title: data.title,
-          extract: data.extract,
-          url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`
+          name: result.name,
+          adminName1: result.adminName1,
+          countryName: result.countryName,
+          population: result.population,
+          elevation: result.elevation || result.srtm3,
+          fcode: result.fcode,
+          fcodeName: result.fcodeName,
+          lat: result.lat,
+          lng: result.lng,
+          timezone: result.timezone
         };
       }
     }
-    // Fallback: search API
-    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=3`;
-    const searchRes = await fetch(searchUrl);
-    if (searchRes.ok) {
-      const searchData = await searchRes.json();
-      const firstResult = searchData.query?.search?.[0];
-      if (firstResult) {
-        const pageUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(firstResult.title.replace(/ /g, '_'))}`;
-        const pageRes = await fetch(pageUrl);
-        if (pageRes.ok) {
-          const pageData = await pageRes.json();
-          console.log('[GLI] Wikipedia search hit for:', query, '->', firstResult.title);
+    
+    // Fallback: try nearby search if we have coordinates
+    if (geoData?.lat && geoData?.lon) {
+      const nearbyUrl = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${geoData.lat}&lng=${geoData.lon}&username=demo&style=full`;
+      const nearbyRes = await fetch(nearbyUrl);
+      if (nearbyRes.ok) {
+        const nearbyData = await nearbyRes.json();
+        if (nearbyData.geonames?.[0]) {
+          const result = nearbyData.geonames[0];
+          console.log('[GLI] GeoNames nearby hit for:', query);
           return {
-            title: pageData.title,
-            extract: pageData.extract || firstResult.snippet.replace(/<[^>]*>/g, ''),
-            url: pageData.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(firstResult.title)}`
+            name: result.name,
+            adminName1: result.adminName1,
+            countryName: result.countryName,
+            population: result.population,
+            elevation: result.elevation || result.srtm3,
+            fcode: result.fcode,
+            fcodeName: result.fcodeName,
+            lat: result.lat,
+            lng: result.lng,
+            timezone: result.timezone
           };
         }
       }
     }
   } catch (error) {
-    console.warn('[GLI] Wikipedia fetch failed:', error);
+    console.warn('[GLI] GeoNames fetch failed:', error);
   }
   return null;
 }
@@ -1762,16 +1764,16 @@ async function tryBackendResearch(
     const sources: SourceCitation[] = [];
     const accessDate = new Date().toISOString().split('T')[0];
 
-    // Add Wikipedia source if available
-    if (data.wikipedia) {
+    // Add GeoNames source if geocoding data available
+    if (geo) {
       sources.push({
-        title: `Wikipedia - ${locationQuery}`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(locationQuery.replace(/ /g, '_'))}`,
-        type: 'encyclopedia',
-        reliability: 'medium',
+        title: `GeoNames - ${locationQuery}`,
+        url: `https://www.geonames.org`,
+        type: 'statistics',
+        reliability: 'high',
         accessDate,
-        dataExtracted: data.wikipedia.substring(0, 200),
-        organization: 'Wikipedia'
+        dataExtracted: `${geo.city || locationQuery}, ${geo.country || 'Location data'}`,
+        organization: 'GeoNames'
       });
     }
 
@@ -2111,8 +2113,8 @@ export async function multiSourceResearch(
     if (queryCategory === 'location') {
       const geoPreview = await fetchGeocoding(locationQuery);
       if (!geoPreview) {
-        const wikiPreview = await fetchWikipediaExtract(locationQuery);
-        const looksLikeLocation = isLikelyLocationQuery(locationQuery, wikiPreview);
+        const geoNamesPreview = await fetchGeoNamesExtract(locationQuery);
+        const looksLikeLocation = isLikelyLocationQuery(locationQuery, geoNamesPreview);
         if (!looksLikeLocation) {
           queryCategory = 'organization';
         }
@@ -2363,10 +2365,10 @@ async function executeResearchPipeline(
       iteration
     });
 
-    const [worldBankData, countryData, wikiData, leadershipData] = await Promise.all([
+    const [worldBankData, countryData, geoNamesLocData, leadershipData] = await Promise.all([
       fetchWorldBankData(countryCode).catch(() => ({ indicators: [], sourceUrl: '', countryInfo: {} })),
       fetchCountryData(country).catch(() => null),
-      fetchWikipediaData(`${cityName} ${country}`).catch(() => null),
+      fetchGeoNamesData(`${cityName} ${country}`, { lat: 0, lon: 0, country, countryCode }).catch(() => null),
       deepLeaderSearch(cityName, region, country).catch(() => [])
     ]);
 
@@ -2473,7 +2475,7 @@ async function executeResearchPipeline(
     });
 
     const extractedData = extractStructuredData(
-      govSearch, cityStatsSearch, economicSearch, infrastructureSearch, wikiData
+      govSearch, cityStatsSearch, economicSearch, infrastructureSearch, geoNamesLocData
     );
 
     // STAGE 5: Build profile
@@ -2486,7 +2488,7 @@ async function executeResearchPipeline(
 
     const profile = buildComprehensiveProfile(
       cityName, region, country, countryCode,
-      geo, worldBankData, countryData, wikiData?.extract || null,
+      geo, worldBankData, countryData, geoNamesLocData?.name ? `${geoNamesLocData.name} is a ${geoNamesLocData.fcodeName || 'location'} in ${geoNamesLocData.countryName || country}. Population: ${geoNamesLocData.population?.toLocaleString() || 'N/A'}` : null,
       leadershipData, extractedData,
       sources
     );
@@ -2572,7 +2574,7 @@ async function geocodeLocation(locationQuery: string): Promise<{
 
 /**
  * DEPRECATED: DuckDuckGo search removed - use multi-agent research instead
- * The multi-agent system uses Wikipedia, REST Countries, Wikidata, and World Bank APIs
+ * The multi-agent system uses GeoNames, REST Countries, Wikidata, and World Bank APIs
  * which provide reliable, structured data instead of instant answers
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -2586,14 +2588,14 @@ async function performGoogleSearch(_query: string, _numResults: number = 10): Pr
   isNews: boolean;
 }>> {
   // DuckDuckGo Instant Answer API removed - it only returns abstracts, not search results
-  // All research now done via multi-agent system (Wikipedia, REST Countries, Wikidata, World Bank)
+  // All research now done via multi-agent system (GeoNames, REST Countries, Wikidata, World Bank)
   console.log('[GLI] performGoogleSearch deprecated - using multi-agent research instead');
   return [];
 }
 
 type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'unknown';
 
-function isLikelyLocationQuery(query: string, wikiExtract?: string | null): boolean {
+function isLikelyLocationQuery(query: string, geoExtract?: string | null): boolean {
   const q = query.toLowerCase();
   const querySignals = [
     'city', 'town', 'municipality', 'province', 'region', 'state', 'county', 'district',
@@ -2603,13 +2605,13 @@ function isLikelyLocationQuery(query: string, wikiExtract?: string | null): bool
   if (querySignals.some((s) => q.includes(s))) return true;
   if (q.includes(',')) return true;
 
-  if (wikiExtract) {
-    const w = wikiExtract.toLowerCase();
-    const wikiSignals = [
+  if (geoExtract) {
+    const w = geoExtract.toLowerCase();
+    const geoSignals = [
       'city', 'municipality', 'province', 'region', 'capital', 'district',
-      'island', 'town', 'village', 'metropolitan'
+      'island', 'town', 'village', 'metropolitan', 'populated place', 'seat'
     ];
-    if (wikiSignals.some((s) => w.includes(s))) return true;
+    if (geoSignals.some((s) => w.includes(s))) return true;
   }
 
   return false;
@@ -2641,28 +2643,24 @@ function detectQueryCategory(query: string): QueryCategory {
   return 'location';
 }
 
-async function fetchWikipediaEntityData(query: string): Promise<{ title: string; extract: string; url: string } | null> {
+async function fetchWikidataEntity(query: string): Promise<{ title: string; extract: string; url: string } | null> {
   try {
-    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=1`;
+    // Use Wikidata search API instead of Wikipedia
+    const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(query)}&language=en&format=json&origin=*&limit=1`;
     const searchRes = await fetch(searchUrl);
     const searchData = await searchRes.json();
 
-    if (searchData.query?.search?.[0]) {
-      const pageTitle = searchData.query.search[0].title;
-      const pageUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=extracts&explaintext=true&format=json&origin=*`;
-      const pageRes = await fetch(pageUrl);
-      const pageData = await pageRes.json();
-      const pages = pageData.query.pages;
-      const pageContent = Object.values(pages)[0] as Record<string, unknown>;
-      const extract = (pageContent?.extract as string) || '';
+    if (searchData.search?.[0]) {
+      const entity = searchData.search[0];
+      console.log('[GLI] Wikidata entity found:', entity.id, entity.label);
       return {
-        title: pageTitle,
-        extract: extract.substring(0, 900),
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle.replace(/\s+/g, '_'))}`
+        title: entity.label || query,
+        extract: entity.description || `${entity.label} - Wikidata entity ${entity.id}`,
+        url: entity.concepturi || `https://www.wikidata.org/wiki/${entity.id}`
       };
     }
   } catch (error) {
-    console.warn('Wikipedia entity fetch failed:', error);
+    console.warn('Wikidata entity fetch failed:', error);
   }
   return null;
 }
