@@ -3,14 +3,12 @@
  * AWS BEDROCK AI SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
- * Production-ready AI service using AWS Bedrock
+ * Production-ready AI service using AWS Bedrock ONLY
  * - No external API keys needed when running on AWS
  * - Uses AWS credentials/IAM roles automatically
- * - Supports Claude, Llama, and other models
- * - Fallback to Gemini for local development
+ * - Supports Claude and other Bedrock models
+ * - No external dependencies (no Gemini)
  */
-
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // ==================== TYPES ====================
 
@@ -39,22 +37,6 @@ export const isAWSEnvironment = (): boolean => {
     );
   }
   return false;
-};
-
-const getGeminiApiKey = (): string => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const meta = import.meta as any;
-    if (meta?.env?.VITE_GEMINI_API_KEY) {
-      return meta.env.VITE_GEMINI_API_KEY;
-    }
-  } catch {
-    // Ignore
-  }
-  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
-    return process.env.GEMINI_API_KEY;
-  }
-  return '';
 };
 
 // ==================== AWS BEDROCK CLIENT ====================
@@ -90,56 +72,20 @@ async function invokeBedrockModel(prompt: string, model: string = 'anthropic.cla
   }
 }
 
-// ==================== GEMINI FALLBACK ====================
-
-async function invokeGemini(prompt: string): Promise<AIResponse> {
-  const apiKey = getGeminiApiKey();
-  
-  if (!apiKey) {
-    throw new Error('No Gemini API key available');
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ 
-    model: 'gemini-2.0-flash',
-    generationConfig: {
-      temperature: 0.3,
-      maxOutputTokens: 4096,
-    }
-  });
-
-  const result = await model.generateContent(prompt);
-  const responseText = result.response.text();
-
-  return {
-    text: responseText,
-    model: 'gemini-2.0-flash',
-    provider: 'gemini'
-  };
-}
-
 // ==================== UNIFIED AI INVOKE ====================
 
-export async function invokeAI(prompt: string, preferBedrock: boolean = true): Promise<AIResponse> {
-  const useAWS = isAWSEnvironment() && preferBedrock;
-  
-  console.log(`[AI Service] Environment: ${useAWS ? 'AWS Bedrock' : 'Gemini'}`);
-  
-  if (useAWS) {
-    try {
-      return await invokeBedrockModel(prompt);
-    } catch (error) {
-      console.warn('[AI Service] Bedrock failed, falling back to Gemini:', error);
-    }
-  }
+export async function invokeAI(prompt: string): Promise<AIResponse> {
+  console.log('[AI Service] Using AWS Bedrock');
   
   try {
-    return await invokeGemini(prompt);
+    return await invokeBedrockModel(prompt);
   } catch (error) {
-    console.error('[AI Service] All AI providers failed:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[AI Service] Bedrock invocation failed:', errorMessage);
+    
     return {
       text: 'AI service temporarily unavailable. Please try again later.',
-      model: 'fallback',
+      model: 'unavailable',
       provider: 'fallback'
     };
   }
@@ -279,12 +225,12 @@ export async function researchLocationAWS(
     return {
       profile,
       sources: [
-        response.provider === 'bedrock' ? 'AWS Bedrock Claude' : 'Google Gemini AI',
+        'AWS Bedrock Claude',
         'World Knowledge Base',
         'Real-time Intelligence'
       ],
-      summary: `Intelligence report for ${profile.city}, ${profile.country} via ${response.provider === 'bedrock' ? 'AWS Bedrock' : 'Gemini AI'}.`,
-      dataQuality: response.provider === 'bedrock' ? 85 : 75
+      summary: `Intelligence report for ${profile.city}, ${profile.country} via AWS Bedrock.`,
+      dataQuality: 85
     };
     
   } catch (error) {
