@@ -1810,7 +1810,11 @@ export async function multiSourceResearch(
     if (queryCategory === 'location') {
       const geoPreview = await fetchGeocoding(locationQuery);
       if (!geoPreview) {
-        queryCategory = 'organization';
+        const wikiPreview = await fetchWikipediaExtract(locationQuery);
+        const looksLikeLocation = isLikelyLocationQuery(locationQuery, wikiPreview);
+        if (!looksLikeLocation) {
+          queryCategory = 'organization';
+        }
       }
     }
 
@@ -2327,6 +2331,28 @@ async function performGoogleSearch(query: string, numResults: number = 10): Prom
 }
 
 type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'unknown';
+
+function isLikelyLocationQuery(query: string, wikiExtract?: string | null): boolean {
+  const q = query.toLowerCase();
+  const querySignals = [
+    'city', 'town', 'municipality', 'province', 'region', 'state', 'county', 'district',
+    'capital', 'island', 'bay', 'port', 'harbor', 'metropolitan', 'metro', 'national'
+  ];
+
+  if (querySignals.some((s) => q.includes(s))) return true;
+  if (q.includes(',')) return true;
+
+  if (wikiExtract) {
+    const w = wikiExtract.toLowerCase();
+    const wikiSignals = [
+      'city', 'municipality', 'province', 'region', 'capital', 'district',
+      'island', 'town', 'village', 'metropolitan'
+    ];
+    if (wikiSignals.some((s) => w.includes(s))) return true;
+  }
+
+  return false;
+}
 
 function detectQueryCategory(query: string): QueryCategory {
   const q = query.toLowerCase();

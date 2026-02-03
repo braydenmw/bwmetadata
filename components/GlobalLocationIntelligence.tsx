@@ -49,6 +49,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [, setRegionalComparisons] = useState<RegionalComparisonSet | null>(null);
   const [, setIsLoadingComparisons] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
+
   // Handle search results filtering
   useEffect(() => {
     const runSearch = async () => {
