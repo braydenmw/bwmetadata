@@ -535,8 +535,8 @@ async function tryDirectGeminiResearch(
       message: 'Constructing comprehensive profile...'
     });
 
-    // Transform to MultiSourceResult - pass webSearchContext instead of wikiData
-    return transformAIToProfile(locationQuery, aiIntelligence, geoData, webSearchContext, worldBankData, enrichedContext.sourceUrls as string[], onProgress);
+    // Transform to MultiSourceResult - pass multiSourceSummary as the context
+    return transformAIToProfile(locationQuery, aiIntelligence, geoData, enrichedContext.multiSourceSummary, worldBankData, enrichedContext.sourceUrls as string[], onProgress);
 
   } catch (error) {
     console.error('[GLI Research] Direct Gemini research failed:', error);
@@ -2366,7 +2366,7 @@ async function executeResearchPipeline(
     const [worldBankData, countryData, wikiData, leadershipData] = await Promise.all([
       fetchWorldBankData(countryCode).catch(() => ({ indicators: [], sourceUrl: '', countryInfo: {} })),
       fetchCountryData(country).catch(() => null),
-      fetchWikipediaData(cityName, country).catch(() => null),
+      fetchWikipediaData(`${cityName} ${country}`).catch(() => null),
       deepLeaderSearch(cityName, region, country).catch(() => [])
     ]);
 
