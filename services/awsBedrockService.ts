@@ -3,12 +3,11 @@
  * AWS BEDROCK AI SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
- * Production-ready AI service using AWS Bedrock ONLY
- * - No external API keys needed when running on AWS
- * - Uses AWS credentials/IAM roles automatically
- * - Supports Claude and other Bedrock models
- * - No external dependencies (no Gemini)
+ * Production: AWS Bedrock (no external API keys needed)
+ * Local Dev: Gemini fallback (for testing when not on AWS)
  */
+
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // ==================== TYPES ====================
 
@@ -28,6 +27,25 @@ export interface ResearchProgress {
 // ==================== ENVIRONMENT DETECTION ====================
 
 export const isAWSEnvironment = (): boolean => {
+  // Check Vite environment variables first (for browser)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = import.meta as any;
+    if (meta?.env?.VITE_AWS_ENVIRONMENT === 'true') {
+      return true;
+    }
+    // If we're in production mode on a real deployment
+    if (meta?.env?.PROD && meta?.env?.MODE === 'production') {
+      // Check if we have AWS indicators
+      if (meta?.env?.VITE_AWS_REGION) {
+        return true;
+      }
+    }
+  } catch {
+    // Ignore
+  }
+  
+  // Check Node.js environment variables (for server-side)
   if (typeof process !== 'undefined') {
     return !!(
       process.env.AWS_REGION ||
@@ -36,7 +54,27 @@ export const isAWSEnvironment = (): boolean => {
       process.env.ECS_CONTAINER_METADATA_URI
     );
   }
+  
+  // Default: not AWS (use Gemini locally)
   return false;
+};
+
+// ==================== GET GEMINI API KEY (LOCAL DEV ONLY) ====================
+
+const getGeminiApiKey = (): string => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = import.meta as any;
+    if (meta?.env?.VITE_GEMINI_API_KEY) {
+      return meta.env.VITE_GEMINI_API_KEY;
+    }
+  } catch {
+    // Ignore
+  }
+  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
+    return process.env.GEMINI_API_KEY;
+  }
+  return '';
 };
 
 // ==================== AWS BEDROCK CLIENT ====================
@@ -72,19 +110,67 @@ async function invokeBedrockModel(prompt: string, model: string = 'anthropic.cla
   }
 }
 
+// ==================== GEMINI FALLBACK (LOCAL DEV) ====================
+
+async function invokeGemini(prompt: string): Promise<AIResponse> {
+  const apiKey = getGeminiApiKey();
+  
+  if (!apiKey) {
+    throw new Error('No Gemini API key available for local development');
+  }
+
+  console.log('[AI Service] Using Gemini for local development');
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.0-flash',
+    generationConfig: {
+      temperature: 0.3,
+      maxOutputTokens: 4096,
+    }
+  });
+
+  const result = await model.generateContent(prompt);
+  const responseText = result.response.text();
+
+  return {
+    text: responseText,
+    model: 'gemini-2.0-flash',
+    provider: 'gemini'
+  };
+}
+
 // ==================== UNIFIED AI INVOKE ====================
 
 export async function invokeAI(prompt: string): Promise<AIResponse> {
-  console.log('[AI Service] Using AWS Bedrock');
+  const useAWS = isAWSEnvironment();
   
+  console.log(`[AI Service] Environment: ${useAWS ? 'AWS (Bedrock)' : 'Local (Gemini)'}`);
+  
+  // On AWS: Use Bedrock
+  if (useAWS) {
+    try {
+      return await invokeBedrockModel(prompt);
+    } catch (error) {
+      console.error('[AI Service] Bedrock failed:', error);
+      // On AWS, we don't fallback - just return error
+      return {
+        text: 'AI service temporarily unavailable. Please try again later.',
+        model: 'unavailable',
+        provider: 'fallback'
+      };
+    }
+  }
+  
+  // Local development: Use Gemini
   try {
-    return await invokeBedrockModel(prompt);
+    return await invokeGemini(prompt);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[AI Service] Bedrock invocation failed:', errorMessage);
+    console.error('[AI Service] Gemini failed:', errorMessage);
     
     return {
-      text: 'AI service temporarily unavailable. Please try again later.',
+      text: `AI service error: ${errorMessage}. Check your API key or try again later.`,
       model: 'unavailable',
       provider: 'fallback'
     };
