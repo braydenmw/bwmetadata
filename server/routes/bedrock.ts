@@ -1,7 +1,7 @@
 /**
  * AWS Bedrock API Route
  * Handles AI inference requests using AWS Bedrock
- * Falls back to Gemini for local development
+ * Uses AWS Bedrock API Key for authentication
  */
 
 import { Router, Request, Response } from 'express';
@@ -29,24 +29,26 @@ interface BedrockRequestBody {
   temperature?: number;
 }
 
-// Check if running on AWS
-const isAWSEnvironment = (): boolean => {
+// Check if AWS Bedrock is configured
+const hasBedrockConfig = (): boolean => {
   return !!(
-    process.env.AWS_REGION ||
-    process.env.AWS_EXECUTION_ENV ||
-    process.env.AWS_LAMBDA_FUNCTION_NAME
+    process.env.AWS_REGION && 
+    (process.env.AWS_BEDROCK_API_KEY || 
+     process.env.AWS_ACCESS_KEY_ID || 
+     process.env.AWS_EXECUTION_ENV ||
+     process.env.AWS_LAMBDA_FUNCTION_NAME)
   );
 };
 
-// Gemini fallback for local development
+// Gemini fallback for when Bedrock is unavailable
 async function invokeGeminiFallback(prompt: string, maxTokens?: number, temperature?: number) {
   const apiKey = process.env.GEMINI_API_KEY;
   
   if (!apiKey) {
-    throw new Error('No GEMINI_API_KEY configured for local development');
+    throw new Error('No GEMINI_API_KEY configured');
   }
 
-  console.log('[Bedrock Fallback] Using Gemini for local development');
+  console.log('[AI Service] Using Gemini fallback');
   
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ 
@@ -63,7 +65,7 @@ async function invokeGeminiFallback(prompt: string, maxTokens?: number, temperat
   return {
     content: [{ type: 'text', text: responseText }],
     usage: {
-      input_tokens: prompt.length / 4, // Rough estimate
+      input_tokens: prompt.length / 4,
       output_tokens: responseText.length / 4
     },
     model: 'gemini-2.0-flash',
@@ -79,9 +81,9 @@ router.post('/invoke', async (req: Request, res: Response) => {
     return;
   }
 
-  // If not on AWS, use Gemini fallback
-  if (!isAWSEnvironment()) {
-    console.log('[Bedrock] Not on AWS, using Gemini fallback');
+  // Check if Bedrock is configured
+  if (!hasBedrockConfig()) {
+    console.log('[Bedrock] No AWS config, trying Gemini fallback');
     
     try {
       const fallbackResult = await invokeGeminiFallback(prompt, maxTokens, temperature);
@@ -89,23 +91,46 @@ router.post('/invoke', async (req: Request, res: Response) => {
       return;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('[Bedrock Fallback] Gemini failed:', errorMessage);
+      console.error('[AI Service] Gemini fallback failed:', errorMessage);
       res.status(500).json({ 
         error: 'AI service unavailable',
-        message: errorMessage,
-        hint: 'Ensure GEMINI_API_KEY is set in .env for local development'
+        message: errorMessage
       });
       return;
     }
   }
 
   try {
-    // Dynamic import of AWS SDK (only works on AWS)
+    console.log('[Bedrock] AWS config detected, using Bedrock');
+    
+    // Dynamic import of AWS SDK
     const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
     
-    const client = new BedrockRuntimeClient({ 
-      region: process.env.AWS_REGION || 'us-east-1' 
-    });
+    // Configure client with API key if available
+    const clientConfig: { region: string; credentials?: { accessKeyId: string; secretAccessKey: string } } = {
+      region: process.env.AWS_REGION || 'us-east-1'
+    };
+    
+    // If using Bedrock API Key (base64 encoded credentials)
+    if (process.env.AWS_BEDROCK_API_KEY) {
+      try {
+        const decoded = Buffer.from(process.env.AWS_BEDROCK_API_KEY, 'base64').toString('utf-8');
+        const [keyId, secret] = decoded.split(':');
+        if (keyId && secret) {
+          // Extract the actual key ID (remove prefix if present)
+          const accessKeyId = keyId.includes('BedrockAPIKey') ? keyId : keyId;
+          clientConfig.credentials = {
+            accessKeyId: accessKeyId,
+            secretAccessKey: secret
+          };
+          console.log('[Bedrock] Using API Key credentials');
+        }
+      } catch (e) {
+        console.warn('[Bedrock] Could not decode API key, using default credentials');
+      }
+    }
+    
+    const client = new BedrockRuntimeClient(clientConfig);
 
     const modelId = model || 'anthropic.claude-3-sonnet-20240229-v1:0';
     
@@ -142,21 +167,35 @@ router.post('/invoke', async (req: Request, res: Response) => {
     
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
-    if (errorMessage.includes('AccessDeniedException')) {
-      res.status(403).json({ 
-        error: 'Access denied to Bedrock model',
-        message: 'Ensure IAM role has bedrock:InvokeModel permission'
-      });
-    } else if (errorMessage.includes('ResourceNotFoundException')) {
-      res.status(404).json({ 
-        error: 'Model not found',
-        message: 'Request access to Claude models in AWS Bedrock console'
-      });
-    } else {
-      res.status(500).json({ 
-        error: 'Bedrock invocation failed',
-        message: errorMessage
-      });
+    // Try Gemini fallback on Bedrock failure
+    console.log('[Bedrock] Trying Gemini fallback after Bedrock error');
+    try {
+      const fallbackResult = await invokeGeminiFallback(prompt, maxTokens, temperature);
+      res.json(fallbackResult);
+      return;
+    } catch (fallbackError) {
+      const fallbackMsg = fallbackError instanceof Error ? fallbackError.message : 'Unknown';
+      console.error('[AI Service] Both Bedrock and Gemini failed');
+      
+      if (errorMessage.includes('AccessDeniedException')) {
+        res.status(403).json({ 
+          error: 'Access denied to Bedrock model',
+          message: 'Ensure IAM role has bedrock:InvokeModel permission',
+          fallbackError: fallbackMsg
+        });
+      } else if (errorMessage.includes('ResourceNotFoundException')) {
+        res.status(404).json({ 
+          error: 'Model not found',
+          message: 'Request access to Claude models in AWS Bedrock console',
+          fallbackError: fallbackMsg
+        });
+      } else {
+        res.status(500).json({ 
+          error: 'AI service invocation failed',
+          bedrockError: errorMessage,
+          fallbackError: fallbackMsg
+        });
+      }
     }
   }
 });
@@ -164,15 +203,18 @@ router.post('/invoke', async (req: Request, res: Response) => {
 // Health check endpoint
 router.get('/health', (_req: Request, res: Response) => {
   const hasGeminiKey = !!process.env.GEMINI_API_KEY;
-  const onAWS = isAWSEnvironment();
+  const hasBedrockKey = !!process.env.AWS_BEDROCK_API_KEY;
+  const hasAWSRegion = !!process.env.AWS_REGION;
+  const bedrockReady = hasBedrockConfig();
   
   res.json({
     service: 'AI Intelligence',
-    mode: onAWS ? 'AWS Bedrock (Production)' : 'Gemini (Development)',
-    bedrockAvailable: onAWS,
+    mode: bedrockReady ? 'AWS Bedrock (Production)' : (hasGeminiKey ? 'Gemini (Fallback)' : 'No AI'),
+    bedrockAvailable: bedrockReady,
+    bedrockApiKey: hasBedrockKey ? 'configured' : 'not-set',
     geminiAvailable: hasGeminiKey,
-    region: process.env.AWS_REGION || 'local',
-    status: (onAWS || hasGeminiKey) ? 'ready' : 'no-api-keys'
+    region: process.env.AWS_REGION || 'not-configured',
+    status: (bedrockReady || hasGeminiKey) ? 'ready' : 'no-api-keys'
   });
 });
 
