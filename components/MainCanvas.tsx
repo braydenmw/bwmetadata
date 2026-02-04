@@ -674,123 +674,51 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
       setChatMessages(prev => [...prev, newMessage]);
       setChatInput('');
 
-      // Intelligent context-aware BW response
-            setTimeout(() => {
-        let responseText = "";
-        const lowerQ = userQuestion.toLowerCase();
-                const matchLocationProfile = () => {
-                    const cityMatch = CITY_PROFILES.find(profile => lowerQ.includes(profile.city.toLowerCase()));
-                    if (cityMatch) return cityMatch;
-                    const regionMatch = CITY_PROFILES.find(profile => lowerQ.includes(profile.region.toLowerCase()));
-                    if (regionMatch) return regionMatch;
-                    const countryMatches = CITY_PROFILES.filter(profile => lowerQ.includes(profile.country.toLowerCase()));
-                    if (countryMatches.length > 0) return countryMatches[0];
-                    return undefined;
-                };
-                const locationProfile = matchLocationProfile();
-        
-                // Location intelligence questions
-                if (locationProfile) {
-                    const headline = `${locationProfile.city}, ${locationProfile.country}`;
-                    responseText = `**BW Intel Fact Sheet: ${headline}**\n\n` +
-                        `**Known for:** ${locationProfile.knownFor.join(', ')}\n` +
-                        `**Strategic advantages:** ${locationProfile.strategicAdvantages.join(', ')}\n` +
-                        `**Key sectors:** ${locationProfile.keySectors.join(', ')}\n` +
-                        `**Ease of doing business:** ${locationProfile.easeOfDoingBusiness}\n` +
-                        `**Global market access:** ${locationProfile.globalMarketAccess}\n\n` +
-                        `**Operational profile (0-100):**\n` +
-                        `• Infrastructure: ${locationProfile.infrastructureScore}\n` +
-                        `• Regulatory friction (lower is better): ${locationProfile.regulatoryFriction}\n` +
-                        `• Political stability: ${locationProfile.politicalStability}\n` +
-                        `• Labor pool depth: ${locationProfile.laborPool}\n` +
-                        `• Investment momentum: ${locationProfile.investmentMomentum}\n\n` +
-                        `**Official sources:** ${locationProfile.governmentLinks?.map(link => link.label).join(', ') || 'Government statistical portals'}\n\n` +
-                        `I’ve queued the full location report. You can open the full brief now and choose whether to include it in the final report.`;
+      // Set thinking state
+      setAgentThinking(true);
 
-                    setParams({
-                        ...params,
-                        userCity: locationProfile.city,
-                        country: params.country || locationProfile.country,
-                        region: params.region || locationProfile.region
-                    });
-                }
-                else if (lowerQ.includes('location') || lowerQ.includes('city') || lowerQ.includes('region') || lowerQ.includes('place')) {
-                    responseText = `I can generate a full BW Intel Fact Sheet. Please specify the target city/region (e.g., "Cebu City" or "Townsville") and I will queue the full report with official sources.`;
-                }
-                // Document/letter/report requests
-                else if (
-                    lowerQ.includes('letter') ||
-                    lowerQ.includes('report') ||
-                    lowerQ.includes('proposal') ||
-                    lowerQ.includes('mou') ||
-                    lowerQ.includes('loi') ||
-                    lowerQ.includes('memo') ||
-                    lowerQ.includes('brief') ||
-                    lowerQ.includes('term sheet') ||
-                    lowerQ.includes('executive summary') ||
-                    lowerQ.includes('due diligence')
-                ) {
-                    responseText = `I can draft that now. To tailor the document, tell me:\n\n1) **Document type** (LOI, MOU, proposal, executive summary, due diligence request, term sheet)\n2) **Audience** (government, investor, partner, internal board)\n3) **Tone** (formal, neutral, assertive)\n4) **Deadline**\n\nI’ve opened the Docs Suite so you can generate and export the letter/report immediately.`;
-                    setShowDocGenSuite(true);
-                }
-                // Risk-related questions
-                else if (lowerQ.includes('risk')) {
-          responseText = `Regarding risk for ${params.organizationName || 'your organization'}, your current tolerance is set to '${params.riskTolerance || 'not specified'}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0] || 'strategic growth'}'.`;
-        } 
-        // Partner-related questions
-        else if (lowerQ.includes('partner')) {
-          responseText = `For your partnership objectives, finding a partner that complements your goal of '${params.strategicIntent[0] || 'strategic growth'}' is key. Let's ensure the 'Ideal Partner Profile' section is detailed.`;
-        }
-        // Industry/market research questions
-        else if (lowerQ.includes('industry') || lowerQ.includes('market') || lowerQ.includes('sector') || lowerQ.includes('coconut') || lowerQ.includes('agriculture') || lowerQ.includes('asia') || lowerQ.includes('about')) {
-          // Extract potential industry/topic from question
-          const topics = ['coconut', 'palm oil', 'agriculture', 'technology', 'fintech', 'healthcare', 'manufacturing', 'renewable energy', 'automotive', 'pharmaceutical', 'textile', 'food', 'beverage', 'mining', 'construction', 'logistics', 'tourism', 'telecommunications'];
-          const regions = ['asia', 'southeast asia', 'europe', 'africa', 'latin america', 'middle east', 'north america', 'pacific', 'china', 'india', 'indonesia', 'vietnam', 'thailand', 'philippines', 'malaysia', 'singapore', 'japan', 'korea'];
-          
-          let detectedTopic = topics.find(t => lowerQ.includes(t)) || 'the specified sector';
-          let detectedRegion = regions.find(r => lowerQ.includes(r)) || 'the target region';
-          
-          // Generate contextual industry intelligence response
-          if (lowerQ.includes('coconut') && lowerQ.includes('asia')) {
-            responseText = `**Coconut Industry in Asia - Key Intelligence:**\n\n🌴 **Market Overview:** Asia accounts for ~84% of global coconut production, with Indonesia, Philippines, and India as the top producers.\n\n📊 **Market Size:** The Asian coconut market is valued at approximately $12.5B (2024), growing at 5.2% CAGR.\n\n🔑 **Key Segments:**\n• Coconut oil (cooking, cosmetics, biofuel)\n• Coconut water (fastest growing at 15% CAGR)\n• Desiccated coconut & coconut cream\n• Activated carbon from shells\n• Coir fiber products\n\n🎯 **Partnership Opportunities:**\n• Supply chain integration with smallholder farmers\n• Processing facility JVs in Philippines/Indonesia\n• Export partnerships for premium virgin coconut oil\n• Sustainable sourcing certifications\n\n⚠️ **Key Risks:** Climate volatility, aging tree stocks, price fluctuations. Would you like me to generate a detailed market entry brief for this sector?`;
-          } else {
-            responseText = `**${detectedTopic.charAt(0).toUpperCase() + detectedTopic.slice(1)} Industry Analysis for ${detectedRegion.charAt(0).toUpperCase() + detectedRegion.slice(1)}:**\n\nI can help you explore this market. Key areas to consider:\n\n📊 **Market Intelligence:**\n• Current market size and growth projections\n• Major players and competitive landscape\n• Supply chain dynamics\n\n🎯 **Partnership Opportunities:**\n• Strategic alliance potential\n• Joint venture structures\n• Technology transfer opportunities\n\n⚠️ **Risk Assessment:**\n• Regulatory environment\n• Market entry barriers\n• Currency and political considerations\n\nWould you like me to integrate this into your strategic analysis? I can also help identify specific partners in this sector.`;
+      // Call the AI API instead of using hardcoded responses
+      setTimeout(async () => {
+        try {
+          const response = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: userQuestion,
+              context: {
+                ...params,
+                conversationHistory: chatMessages.slice(-5).map(m => ({
+                  role: m.sender === 'user' ? 'user' : 'assistant',
+                  content: m.text
+                }))
+              }
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
           }
+
+          const data = await response.json();
+          const aiResponse = data.content || data.description || 'I apologize, but I encountered an issue processing your request. Please try again.';
+
+          setChatMessages(prev => [...prev, {
+            text: aiResponse,
+            sender: 'bw' as const,
+            timestamp: new Date()
+          }]);
+
+        } catch (error) {
+          console.error('AI Chat error:', error);
+          setChatMessages(prev => [...prev, {
+            text: `I encountered an error connecting to the AI service. Please ensure the server is running and try again. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            sender: 'bw' as const,
+            timestamp: new Date()
+          }]);
+        } finally {
+          setAgentThinking(false);
         }
-        // Strategy questions
-        else if (lowerQ.includes('strategy') || lowerQ.includes('objective') || lowerQ.includes('goal')) {
-          responseText = `Your current strategic objectives are: ${params.strategicIntent.length > 0 ? params.strategicIntent.join(', ') : 'not yet defined'}. I can help you refine these based on market conditions and partnership opportunities. What specific aspect would you like to explore?`;
-        }
-        // Help/guidance questions
-        else if (lowerQ.includes('help') || lowerQ.includes('how') || lowerQ.includes('what can') || lowerQ.includes('guide')) {
-          responseText = `I'm your BW Strategic Consultant. I can help you with:\n\n📋 **Intake & Analysis:** Guide you through the strategic intake process\n🔍 **Market Research:** Provide industry and regional intelligence\n🤝 **Partner Matching:** Identify ideal partnership profiles\n📊 **Risk Assessment:** Analyze potential risks and mitigation strategies\n📄 **Document Generation:** Create strategic briefs and reports\n\nJust ask any question about markets, industries, partnerships, or strategy!`;
-        }
-        // General questions - provide a helpful response
-        else if (lowerQ.includes('?') || lowerQ.length > 10) {
-          responseText = `That's an excellent question about "${userQuestion.substring(0, 50)}${userQuestion.length > 50 ? '...' : ''}". Based on your current profile${params.organizationName ? ` for ${params.organizationName}` : ''}, here's my analysis:\n\nThis relates to your strategic objectives${params.strategicIntent.length > 0 ? ` of '${params.strategicIntent[0]}'` : ''}. I recommend:\n\n1. **Research Phase:** Let me gather relevant market intelligence\n2. **Analysis:** We'll evaluate alignment with your goals\n3. **Recommendations:** I'll provide actionable next steps\n\nWould you like me to elaborate on any specific aspect or generate a detailed brief on this topic?`;
-        }
-        // Default greeting/acknowledgment
-        else {
-          responseText = `Thanks for reaching out! I'm here to help with your partnership analysis. You can ask me about:\n\n• Specific industries or markets (e.g., "Tell me about the coconut industry in Asia")\n• Partnership strategies and objectives\n• Risk assessment and mitigation\n• Market entry approaches\n\nWhat would you like to explore?`;
-        }
-        
-                const shouldSuggestGLI = Boolean(onChangeViewMode) && (Boolean(locationProfile) || lowerQ.includes('location') || lowerQ.includes('city') || lowerQ.includes('region') || lowerQ.includes('place'));
-                const shouldSuggestDocs = lowerQ.includes('letter') || lowerQ.includes('report') || lowerQ.includes('proposal') || lowerQ.includes('mou') || lowerQ.includes('loi') || lowerQ.includes('memo') || lowerQ.includes('brief') || lowerQ.includes('term sheet') || lowerQ.includes('executive summary') || lowerQ.includes('due diligence');
-                const bwResponse = {
-                    text: responseText,
-                    sender: 'bw' as const,
-                    timestamp: new Date(),
-                    action: shouldSuggestDocs
-                        ? { label: 'Open Docs Suite', type: 'open-docs' as const }
-                        : shouldSuggestGLI
-                            ? { label: locationProfile ? `Open ${locationProfile.city} full brief` : 'Open BW Intel Fact Sheet', type: 'open-gli' as const }
-                            : undefined
-                };
-        setChatMessages(prev => [...prev, bwResponse]);
-        
-        // Speak the response if voice is enabled
-        speakText(responseText);
-      }, 1000);
+      }, 500);
     }
   };
 
