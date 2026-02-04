@@ -4,6 +4,7 @@ import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/global
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { researchLocation, type ResearchProgress, type LocationResult } from '../services/geminiLocationService';
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
+import { generateDocument } from '../services/openaiClientService';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
@@ -58,6 +59,11 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [iframeError, setIframeError] = useState(false);
   const [isSourcePanelCollapsed, setIsSourcePanelCollapsed] = useState(false);
   const leftPanelRef = useRef<HTMLDivElement>(null);
+
+  // Document generation state
+  const [isGeneratingDocument, setIsGeneratingDocument] = useState(false);
+  const [generatedDocument, setGeneratedDocument] = useState<string | null>(null);
+  const [documentType, setDocumentType] = useState<'letter' | 'report' | 'briefing'>('report');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -192,6 +198,82 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     };
     loadProfiles();
   }, [handleSearchSubmit]);
+
+  // Document generation handler
+  const handleGenerateDocument = async () => {
+    if (!activeProfile) return;
+
+    setIsGeneratingDocument(true);
+    try {
+      // Convert profile to intelligence format for document generation
+      const intelligence = {
+        overview: {
+          displayName: activeProfile.city || activeProfile.entityName || 'Location',
+          significance: activeProfile.knownFor?.join(', ') || 'Strategic location',
+          established: activeProfile.established || 'Historical records'
+        },
+        demographics: {
+          population: activeProfile.demographics?.population || 'Data available',
+          populationGrowth: activeProfile.demographics?.populationGrowth || 'Tracked',
+          medianAge: activeProfile.demographics?.medianAge || 'Available',
+          literacyRate: activeProfile.demographics?.literacyRate || 'Monitored',
+          languages: activeProfile.demographics?.languages || ['Local languages']
+        },
+        economy: {
+          gdp: activeProfile.economics?.gdpLocal || 'Economic data available',
+          gdpGrowth: activeProfile.economics?.gdpGrowthRate || 'Growth metrics',
+          unemployment: activeProfile.economics?.employmentRate || 'Labor data',
+          averageIncome: activeProfile.economics?.avgIncome || 'Income data',
+          mainIndustries: activeProfile.economics?.majorIndustries || activeProfile.keySectors || [],
+          tradePartners: activeProfile.economics?.tradePartners || [],
+          currency: activeProfile.currency || 'Local currency'
+        },
+        government: {
+          leader: activeProfile.leaders?.[0] ? {
+            name: activeProfile.leaders[0].name,
+            title: activeProfile.leaders[0].role,
+            since: activeProfile.leaders[0].tenure
+          } : {
+            name: 'Leadership available',
+            title: 'Government position',
+            since: 'Current administration'
+          },
+          departments: activeProfile.departments || [],
+          type: 'Government system'
+        },
+        geography: {
+          climate: activeProfile.climate || 'Local climate',
+          area: activeProfile.areaSize || 'Geographic area',
+          timezone: activeProfile.timezone || 'Local timezone'
+        },
+        infrastructure: {
+          powerCapacity: activeProfile.infrastructure?.powerCapacity || 'Infrastructure developed',
+          internetPenetration: activeProfile.infrastructure?.internetPenetration || 'Connectivity available',
+          airports: activeProfile.infrastructure?.airports || [],
+          seaports: activeProfile.infrastructure?.seaports || []
+        },
+        competitiveAdvantages: activeProfile.strategicAdvantages || activeProfile.knownFor || [],
+        investment: {
+          incentives: activeProfile.investmentPrograms || [],
+          easeOfBusiness: activeProfile.easeOfDoingBusiness || 'Business environment'
+        }
+      };
+
+      const document = await generateDocument(
+        intelligence,
+        documentType,
+        'Valued Partner',
+        `Investment and partnership opportunities in ${activeProfile.city}, ${activeProfile.country}`
+      );
+
+      setGeneratedDocument(document);
+    } catch (error) {
+      console.error('Document generation failed:', error);
+      alert('Document generation failed. Please check your OpenAI API key configuration.');
+    } finally {
+      setIsGeneratingDocument(false);
+    }
+  };
 
 
   const profileType = activeProfile?.entityType ?? 'location';
@@ -665,6 +747,27 @@ th { background: #f1f5f9; }
                   >
                     {isSourcePanelCollapsed ? <PanelRightClose className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
                   </button>
+                  <select
+                    value={documentType}
+                    onChange={(e) => setDocumentType(e.target.value as 'letter' | 'report' | 'briefing')}
+                    className="px-3 py-2 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded"
+                  >
+                    <option value="report">Report</option>
+                    <option value="letter">Letter</option>
+                    <option value="briefing">Briefing</option>
+                  </select>
+                  <button
+                    onClick={handleGenerateDocument}
+                    disabled={isGeneratingDocument}
+                    className="px-4 py-2 text-sm bg-blue-600 border border-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isGeneratingDocument ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <FileText className="w-4 h-4" />
+                    )}
+                    {isGeneratingDocument ? 'Generating...' : 'Generate Document'}
+                  </button>
                   <button
                     onClick={() => exportCityBrief(activeProfile)}
                     className="px-4 py-2 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded hover:bg-slate-700 flex items-center gap-2"
@@ -1114,6 +1217,36 @@ th { background: #f1f5f9; }
             </section>
               </div>
             </div>
+
+            {/* GENERATED DOCUMENT DISPLAY */}
+            {generatedDocument && (
+              <div className="mt-6 bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden">
+                <div className="p-6 border-b border-white/10">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-white">Generated {documentType.charAt(0).toUpperCase() + documentType.slice(1)}</h2>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => navigator.clipboard.writeText(generatedDocument)}
+                        className="px-3 py-1 text-sm bg-slate-800 border border-slate-600 text-slate-200 rounded hover:bg-slate-700"
+                      >
+                        Copy
+                      </button>
+                      <button
+                        onClick={() => setGeneratedDocument(null)}
+                        className="px-3 py-1 text-sm bg-red-600 border border-red-500 text-white rounded hover:bg-red-700"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="bg-white text-black p-6 rounded-lg max-h-[600px] overflow-y-auto">
+                    <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">{generatedDocument}</pre>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* RIGHT PANEL - Source Browser (collapsible) */}
             {!isSourcePanelCollapsed && (

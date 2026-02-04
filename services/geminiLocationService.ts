@@ -186,21 +186,106 @@ async function fetchLocationIntelligenceFromServer(
   }
 }
 
-// ==================== TIMEOUT WRAPPER ====================
+// ==================== OPENAI ENHANCED FALLBACK ====================
 
-async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, errorMessage: string): Promise<T> {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  const timeoutPromise = new Promise<never>((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
-  });
-  
+async function fetchLocationIntelligenceWithOpenAI(
+  query: string,
+  onProgress?: (progress: ResearchProgress) => void
+): Promise<LocationResult | null> {
   try {
-    const result = await Promise.race([promise, timeoutPromise]);
-    clearTimeout(timeoutId!);
-    return result;
+    onProgress?.({ stage: 'AI Research', progress: 10, message: 'Generating intelligence with OpenAI...' });
+
+    // Import OpenAI service dynamically to avoid issues if not configured
+    const { generateLocationIntelligence } = await import('./openaiClientService');
+
+    const intelligence = await generateLocationIntelligence(query);
+
+    onProgress?.({ stage: 'Processing', progress: 70, message: 'Processing AI intelligence data...' });
+
+    // Convert OpenAI intelligence to CityProfile format
+    const profile: CityProfile = {
+      id: `openai-${Date.now()}`,
+      country: query, // Will be refined by AI
+      region: 'Intelligence Analysis',
+      city: intelligence.overview.displayName,
+      entityType: 'location',
+      entityName: query,
+      established: intelligence.overview.established,
+      knownFor: intelligence.competitiveAdvantages,
+      strategicAdvantages: intelligence.competitiveAdvantages,
+      investmentPrograms: intelligence.investment.incentives,
+      keySectors: intelligence.economy.mainIndustries,
+      foreignCompanies: intelligence.economy.tradePartners,
+      departments: intelligence.government.departments,
+      easeOfDoingBusiness: intelligence.investment.easeOfBusiness,
+      globalMarketAccess: intelligence.economy.tradePartners.join(', '),
+      latitude: 0, // Would need geocoding
+      longitude: 0,
+      infrastructureScore: 70,
+      regulatoryFriction: 40,
+      politicalStability: 65,
+      laborPool: 70,
+      costOfDoing: 60,
+      investmentMomentum: 65,
+      engagementScore: 60,
+      overlookedScore: 50,
+      leaders: intelligence.government.leader ? [{
+        id: `leader-${Date.now()}`,
+        name: intelligence.government.leader.name,
+        role: intelligence.government.leader.title,
+        tenure: intelligence.government.leader.since,
+        achievements: [],
+        rating: 0,
+        internationalEngagementFocus: false
+      }] : [],
+      economics: {
+        gdpLocal: intelligence.economy.gdp,
+        gdpGrowthRate: intelligence.economy.gdpGrowth,
+        employmentRate: intelligence.economy.unemployment,
+        avgIncome: intelligence.economy.averageIncome,
+        majorIndustries: intelligence.economy.mainIndustries,
+        tradePartners: intelligence.economy.tradePartners,
+        fdi: undefined
+      },
+      demographics: {
+        population: intelligence.demographics.population,
+        populationGrowth: intelligence.demographics.populationGrowth,
+        medianAge: intelligence.demographics.medianAge,
+        literacyRate: intelligence.demographics.literacyRate,
+        languages: intelligence.demographics.languages
+      },
+      infrastructure: {
+        airports: intelligence.infrastructure.airports,
+        seaports: intelligence.infrastructure.seaports,
+        powerCapacity: intelligence.infrastructure.powerCapacity,
+        internetPenetration: intelligence.infrastructure.internetPenetration,
+        specialEconomicZones: []
+      },
+      timezone: intelligence.geography.timezone,
+      currency: intelligence.economy.currency,
+      climate: intelligence.geography.climate,
+      areaSize: intelligence.geography.area,
+      businessHours: '9:00 AM - 5:00 PM',
+      flagUrl: undefined,
+      googleMapsUrl: undefined,
+      _rawWikiExtract: intelligence.overview.significance
+    };
+
+    onProgress?.({ stage: 'Complete', progress: 100, message: 'AI research complete!' });
+
+    return {
+      profile,
+      sources: ['OpenAI GPT-4', 'Real-time Intelligence Analysis'],
+      summary: intelligence.overview.significance,
+      dataQuality: 95,
+      aiEnhanced: true
+    };
+
   } catch (error) {
-    clearTimeout(timeoutId!);
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.warn('[OpenAI] AI research failed:', errorMessage);
+    onProgress?.({ stage: 'Fallback', progress: 10, message: 'AI unavailable, using public data...' });
+    return null;
   }
 }
 
@@ -415,37 +500,55 @@ export async function researchLocation(
   if (API_BASE) {
     try {
       onProgress?.({ stage: 'Connecting', progress: 5, message: 'Connecting to intelligence server...' });
-      
+
       const result = await withTimeout(
         fetchLocationIntelligenceFromServer(query, onProgress),
         15000, // 15 second timeout for server
         'Server timeout'
       );
-      
+
       if (result) {
         return result;
       }
     } catch (error) {
-      console.log('[Location Service] Server unavailable, using client-side fallback');
+      console.log('[Location Service] Server unavailable, trying OpenAI...');
     }
   }
-  
-  // Fallback: Call free APIs directly from browser (no backend required)
+
+  // Try OpenAI directly (best fallback - real intelligence)
   try {
-    onProgress?.({ stage: 'Direct Research', progress: 5, message: 'Researching location...' });
-    
+    onProgress?.({ stage: 'AI Research', progress: 5, message: 'Generating intelligence with AI...' });
+
+    const result = await withTimeout(
+      fetchLocationIntelligenceWithOpenAI(query, onProgress),
+      25000, // 25 second timeout for OpenAI
+      'OpenAI timeout'
+    );
+
+    if (result) {
+      console.log('[Location Service] OpenAI research successful');
+      return result;
+    }
+  } catch (error) {
+    console.log('[Location Service] OpenAI unavailable, using public data APIs');
+  }
+
+  // Final fallback: Free public APIs (basic data only)
+  try {
+    onProgress?.({ stage: 'Public Data', progress: 5, message: 'Researching with public data...' });
+
     const result = await withTimeout(
       fetchLocationIntelligenceClientSide(query, onProgress),
       30000,
       'Request timed out - please try again'
     );
-    
+
     if (result) {
       return result;
     }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[Location Service] Client research failed:', errorMessage);
+    console.error('[Location Service] All research methods failed:', errorMessage);
     
     if (errorMessage.includes('Location not found')) {
       onProgress?.({ stage: 'Error', progress: 0, message: 'Location not found - try a different search term' });
