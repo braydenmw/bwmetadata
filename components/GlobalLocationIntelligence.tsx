@@ -899,13 +899,16 @@ th { background: #f1f5f9; }
                   </div>
                 )}
                 
-                {((activeProfile.economics?.tradePartners as string[] | undefined) || (getProfileProp('tradePartners') as string[] | undefined)) && 
-                 ((activeProfile.economics?.tradePartners as string[])?.length > 0 || (getProfileProp('tradePartners') as string[])?.length > 0) && (
-                  <div className="mb-4">
-                    <h3 className="text-lg font-medium text-slate-200 mb-2">Trade Partners</h3>
-                    <p className="text-slate-300">{((activeProfile.economics?.tradePartners as string[]) || (getProfileProp('tradePartners') as string[]) || []).join(', ')}</p>
-                  </div>
-                )}
+                {(() => {
+                  const partners = activeProfile.economics?.tradePartners || getProfileProp('tradePartners');
+                  const partnersArray = Array.isArray(partners) ? partners : (typeof partners === 'string' ? [partners] : []);
+                  return partnersArray.length > 0 ? (
+                    <div className="mb-4">
+                      <h3 className="text-lg font-medium text-slate-200 mb-2">Trade Partners</h3>
+                      <p className="text-slate-300">{partnersArray.join(', ')}</p>
+                    </div>
+                  ) : null;
+                })()}
 
                 {activeProfile.foreignCompanies && activeProfile.foreignCompanies.length > 0 && (
                   <div>
@@ -945,13 +948,16 @@ th { background: #f1f5f9; }
                   )}
                 </div>
                 
-                {((activeProfile.demographics?.languages as string[] | undefined) || (getProfileProp('languages') as string[] | undefined)) && 
-                 ((activeProfile.demographics?.languages as string[])?.length > 0 || (getProfileProp('languages') as string[])?.length > 0) && (
-                  <div className="mt-4">
-                    <h3 className="text-lg font-medium text-slate-200 mb-2">Languages</h3>
-                    <p className="text-slate-300">{((activeProfile.demographics?.languages as string[]) || (getProfileProp('languages') as string[]) || []).join(', ')}</p>
-                  </div>
-                )}
+                {(() => {
+                  const langs = activeProfile.demographics?.languages || getProfileProp('languages');
+                  const langsArray = Array.isArray(langs) ? langs : (typeof langs === 'string' ? [langs] : []);
+                  return langsArray.length > 0 ? (
+                    <div className="mt-4">
+                      <h3 className="text-lg font-medium text-slate-200 mb-2">Languages</h3>
+                      <p className="text-slate-300">{langsArray.join(', ')}</p>
+                    </div>
+                  ) : null;
+                })()}
               </section>
             )}
 
@@ -1152,7 +1158,7 @@ th { background: #f1f5f9; }
                               <div className="font-medium truncate">{source.title}</div>
                               <div className="text-[10px] text-slate-500 flex items-center gap-2">
                                 <span className="px-1.5 py-0.5 bg-slate-700 rounded">{source.type}</span>
-                                <span className="truncate">{new URL(source.url).hostname}</span>
+                                <span className="truncate">{(() => { try { return new URL(source.url).hostname; } catch { return source.url || 'Unknown'; } })()}</span>
                               </div>
                             </div>
                           </div>
