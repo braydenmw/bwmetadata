@@ -692,7 +692,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 // Location intelligence questions
                 if (locationProfile) {
                     const headline = `${locationProfile.city}, ${locationProfile.country}`;
-                    responseText = `**Global Location Intelligence Brief: ${headline}**\n\n` +
+                    responseText = `**BW Intel Fact Sheet: ${headline}**\n\n` +
                         `**Known for:** ${locationProfile.knownFor.join(', ')}\n` +
                         `**Strategic advantages:** ${locationProfile.strategicAdvantages.join(', ')}\n` +
                         `**Key sectors:** ${locationProfile.keySectors.join(', ')}\n` +
@@ -715,7 +715,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     });
                 }
                 else if (lowerQ.includes('location') || lowerQ.includes('city') || lowerQ.includes('region') || lowerQ.includes('place')) {
-                    responseText = `I can generate a full Global Location Intelligence brief. Please specify the target city/region (e.g., "Cebu City" or "Townsville") and I will queue the full report with official sources.`;
+                    responseText = `I can generate a full BW Intel Fact Sheet. Please specify the target city/region (e.g., "Cebu City" or "Townsville") and I will queue the full report with official sources.`;
                 }
                 // Document/letter/report requests
                 else if (
@@ -783,7 +783,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     action: shouldSuggestDocs
                         ? { label: 'Open Docs Suite', type: 'open-docs' as const }
                         : shouldSuggestGLI
-                            ? { label: locationProfile ? `Open ${locationProfile.city} full brief` : 'Open Global Location Intelligence', type: 'open-gli' as const }
+                            ? { label: locationProfile ? `Open ${locationProfile.city} full brief` : 'Open BW Intel Fact Sheet', type: 'open-gli' as const }
                             : undefined
                 };
         setChatMessages(prev => [...prev, bwResponse]);
@@ -979,7 +979,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
           break;
 
                 case 'global-location-intel':
-                    appendContent('marketAnalysis', `**Global Location Intelligence Brief (${params.userCity || params.country || 'Target Location'}):**\n- Snapshot scope: demographics, infrastructure, utilities, logistics corridors, regulatory friction, incentives, FDI activity, labor availability, education pipeline, land availability, real estate cost, safety, governance transparency, digital connectivity, climate exposure.\n- Verification policy: official government and primary statistical sources only; validate against latest releases before use.`);
+                    appendContent('marketAnalysis', `**BW Intel Fact Sheet (${params.userCity || params.country || 'Target Location'}):**\n- Snapshot scope: demographics, infrastructure, utilities, logistics corridors, regulatory friction, incentives, FDI activity, labor availability, education pipeline, land availability, real estate cost, safety, governance transparency, digital connectivity, climate exposure.\n- Verification policy: official government and primary statistical sources only; validate against latest releases before use.`);
                     break;
       }
     });
@@ -5451,7 +5451,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         <div className="shrink-0 border-b border-slate-200 p-3">
                             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2">
                                 <MapPin size={12} className="text-amber-500" />
-                                Global Location Intelligence
+                                BW Intel Fact Sheet
                             </div>
 
                             <p className="text-[11px] text-slate-600 mb-2">
