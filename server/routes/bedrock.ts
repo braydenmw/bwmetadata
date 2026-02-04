@@ -1,9 +1,11 @@
 /**
  * AWS Bedrock API Route
  * Handles AI inference requests using AWS Bedrock
+ * Falls back to Gemini for local development
  */
 
 import { Router, Request, Response } from 'express';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const router = Router();
 
@@ -36,6 +38,39 @@ const isAWSEnvironment = (): boolean => {
   );
 };
 
+// Gemini fallback for local development
+async function invokeGeminiFallback(prompt: string, maxTokens?: number, temperature?: number) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('No GEMINI_API_KEY configured for local development');
+  }
+
+  console.log('[Bedrock Fallback] Using Gemini for local development');
+  
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.0-flash',
+    generationConfig: {
+      temperature: temperature || 0.3,
+      maxOutputTokens: maxTokens || 4096,
+    }
+  });
+
+  const result = await model.generateContent(prompt);
+  const responseText = result.response.text();
+
+  return {
+    content: [{ type: 'text', text: responseText }],
+    usage: {
+      input_tokens: prompt.length / 4, // Rough estimate
+      output_tokens: responseText.length / 4
+    },
+    model: 'gemini-2.0-flash',
+    provider: 'gemini-fallback'
+  };
+}
+
 router.post('/invoke', async (req: Request, res: Response) => {
   const { prompt, model, maxTokens, temperature }: BedrockRequest = req.body;
 
@@ -44,14 +79,24 @@ router.post('/invoke', async (req: Request, res: Response) => {
     return;
   }
 
-  // If not on AWS, return a helpful message
+  // If not on AWS, use Gemini fallback
   if (!isAWSEnvironment()) {
-    console.log('[Bedrock] Not on AWS, returning fallback');
-    res.status(503).json({ 
-      error: 'AWS Bedrock only available in AWS environment',
-      message: 'Use Gemini API for local development'
-    });
-    return;
+    console.log('[Bedrock] Not on AWS, using Gemini fallback');
+    
+    try {
+      const fallbackResult = await invokeGeminiFallback(prompt, maxTokens, temperature);
+      res.json(fallbackResult);
+      return;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[Bedrock Fallback] Gemini failed:', errorMessage);
+      res.status(500).json({ 
+        error: 'AI service unavailable',
+        message: errorMessage,
+        hint: 'Ensure GEMINI_API_KEY is set in .env for local development'
+      });
+      return;
+    }
   }
 
   try {
@@ -118,10 +163,16 @@ router.post('/invoke', async (req: Request, res: Response) => {
 
 // Health check endpoint
 router.get('/health', (_req: Request, res: Response) => {
+  const hasGeminiKey = !!process.env.GEMINI_API_KEY;
+  const onAWS = isAWSEnvironment();
+  
   res.json({
-    service: 'AWS Bedrock',
-    available: isAWSEnvironment(),
-    region: process.env.AWS_REGION || 'not-configured'
+    service: 'AI Intelligence',
+    mode: onAWS ? 'AWS Bedrock (Production)' : 'Gemini (Development)',
+    bedrockAvailable: onAWS,
+    geminiAvailable: hasGeminiKey,
+    region: process.env.AWS_REGION || 'local',
+    status: (onAWS || hasGeminiKey) ? 'ready' : 'no-api-keys'
   });
 });
 
