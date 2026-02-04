@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye } from 'lucide-react';
+import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye, Info } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { researchLocation, type ResearchProgress, type LocationResult } from '../services/geminiLocationService';
@@ -196,8 +196,22 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
 
   const profileType = activeProfile?.entityType ?? 'location';
   const isLocationProfile = profileType === 'location' || profileType === 'region';
-  const displayName = activeProfile?.entityName || activeProfile?.city || '';
-  const displayRegion = [activeProfile?.region, activeProfile?.country].filter(Boolean).join(', ');
+  const displayName = (activeProfile as unknown as Record<string, unknown>)?.entityName as string || activeProfile?.city || 'Unknown Location';
+  const displayRegion = [activeProfile?.region, activeProfile?.country].filter(Boolean).join(', ') || 'Unknown Region';
+  
+  // Helper function to safely display data
+  const safeDisplay = (value: unknown, fallback: string = 'Data not available'): string => {
+    if (value === null || value === undefined) return fallback;
+    if (typeof value === 'string' && value.trim() === '') return fallback;
+    if (typeof value === 'number') return value.toLocaleString();
+    if (typeof value === 'string') return value;
+    return String(value);
+  };
+  
+  // Type-safe property accessor
+  const getProfileProp = (prop: string): unknown => {
+    return (activeProfile as unknown as Record<string, unknown>)?.[prop];
+  };
 
   // Clear selection and reset to global view
   const handleClearSelection = () => {
@@ -567,6 +581,7 @@ th { background: #f1f5f9; }
         )}
 
         {/* Empty State - No Selection */}
+        {/* Empty State with Search Instructions */}
         {!hasSelection && !isResearching && (
           <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-12 mb-6 text-center">
             <Globe className="w-16 h-16 text-amber-400/30 mx-auto mb-6" />
@@ -575,6 +590,26 @@ th { background: #f1f5f9; }
               Search for any location worldwide to generate a comprehensive intelligence report. 
               Our AI agent will research leadership, economy, infrastructure, demographics, and more.
             </p>
+            
+            {/* Search Tips */}
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-8 max-w-2xl mx-auto text-left">
+              <div className="flex items-start gap-2 mb-3">
+                <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-semibold text-blue-300 mb-2">Search Tips for Best Results:</h3>
+                  <ul className="text-xs text-slate-300 space-y-1">
+                    <li>• <strong>Cities:</strong> "Tokyo", "Manila", "San Francisco", "Dubai"</li>
+                    <li>• <strong>Regions:</strong> "Silicon Valley", "Cebu Province", "Bavaria"</li>
+                    <li>• <strong>Companies:</strong> "Microsoft", "Toyota", "Jollibee"</li>
+                    <li>• <strong>Government Bodies:</strong> "Philippine government", "EU Commission"</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="text-xs text-slate-400">
+                The AI will gather data on population, GDP, leadership, infrastructure, and provide comparison benchmarks.
+              </div>
+            </div>
+            
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇵🇭 Philippines</span>
               <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇦🇺 Australia</span>
@@ -708,7 +743,7 @@ th { background: #f1f5f9; }
               </section>
             )}
 
-            {/* Quick Facts */}
+            {/* Quick Facts - Enhanced with better data display */}
             <section>
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Quick Facts</h2>
               <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
@@ -718,36 +753,54 @@ th { background: #f1f5f9; }
                     {isLocationProfile
                       ? (activeProfile.latitude && activeProfile.longitude
                         ? `${activeProfile.latitude.toFixed(4)}°, ${activeProfile.longitude.toFixed(4)}°`
-                        : 'Not available')
-                      : (displayRegion || 'Not available')}
+                        : safeDisplay(null))
+                      : safeDisplay(displayRegion)}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
+                  <span className="text-slate-400">Population</span>
+                  <span className="text-white">{safeDisplay(getProfileProp('population'))}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Timezone</span>
-                  <span className="text-white">{activeProfile.timezone || 'Not available'}</span>
+                  <span className="text-white">{safeDisplay(activeProfile.timezone)}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Climate</span>
-                  <span className="text-white">{activeProfile.climate || 'Not available'}</span>
+                  <span className="text-white">{safeDisplay(activeProfile.climate)}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Currency</span>
-                  <span className="text-white">{activeProfile.currency || 'Not available'}</span>
+                  <span className="text-white">{safeDisplay(activeProfile.currency)}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Area</span>
-                  <span className="text-white">{activeProfile.areaSize || 'Not available'}</span>
+                  <span className="text-white">{safeDisplay(activeProfile.areaSize)}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
                   <span className="text-slate-400">Business Hours</span>
-                  <span className="text-white">{activeProfile.businessHours || '8:00 AM - 5:00 PM'}</span>
+                  <span className="text-white">{safeDisplay(activeProfile.businessHours, '8:00 AM - 5:00 PM')}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-slate-800">
+                  <span className="text-slate-400">Established</span>
+                  <span className="text-white">{safeDisplay(activeProfile.established)}</span>
                 </div>
               </div>
             </section>
 
-            {/* Government & Leadership */}
+            {/* Government & Leadership - Enhanced display */}
             <section>
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Government & Leadership</h2>
+              
+              {/* Government Type and Structure */}
+              {getProfileProp('governmentType') && (
+                <div className="mb-4 p-3 bg-slate-800/50 rounded-lg">
+                  <div className="text-sm text-slate-400 mb-1">Government Type</div>
+                  <div className="text-white font-medium">{safeDisplay(getProfileProp('governmentType'))}</div>
+                </div>
+              )}
+              
+              {/* Leaders Display */}
               {activeProfile.leaders && activeProfile.leaders.length > 0 ? (
                 <div className="space-y-3">
                   {activeProfile.leaders.slice(0, 4).map((leader, idx) => (
@@ -755,16 +808,33 @@ th { background: #f1f5f9; }
                       <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-lg font-bold text-slate-300">
                         {leader.name?.charAt(0) || '?'}
                       </div>
-                      <div>
-                        <div className="font-medium text-white">{leader.name}</div>
-                        <div className="text-sm text-slate-400">{leader.role}</div>
+                      <div className="flex-1">
+                        <div className="font-medium text-white">{safeDisplay(leader.name, 'Name not available')}</div>
+                        <div className="text-sm text-slate-400">{safeDisplay(leader.role, 'Role not specified')}</div>
+                        {(leader as unknown as Record<string, unknown>).since && <div className="text-xs text-slate-500">Since {String((leader as unknown as Record<string, unknown>).since)}</div>}
                         {leader.tenure && <div className="text-xs text-slate-500">{leader.tenure}</div>}
                       </div>
                     </div>
                   ))}
                 </div>
+              ) : getProfileProp('leader') ? (
+                <div className="flex items-start gap-3 py-2 bg-slate-800/50 rounded-lg px-3">
+                  <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-lg font-bold text-slate-300">
+                    {(getProfileProp('leader') as Record<string, unknown>)?.name ? String((getProfileProp('leader') as Record<string, unknown>).name).charAt(0) : '?'}
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-white">{safeDisplay((getProfileProp('leader') as Record<string, unknown>)?.name, 'Name not available')}</div>
+                    <div className="text-sm text-slate-400">{safeDisplay((getProfileProp('leader') as Record<string, unknown>)?.title, 'Title not specified')}</div>
+                    {(getProfileProp('leader') as Record<string, unknown>)?.since && <div className="text-xs text-slate-500">Since {String((getProfileProp('leader') as Record<string, unknown>).since)}</div>}
+                  </div>
+                </div>
               ) : (
-                <p className="text-slate-400">Leadership information not yet available for this location.</p>
+                <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                  <p className="text-amber-300 text-sm">
+                    <AlertCircle className="inline w-4 h-4 mr-1" />
+                    Leadership information not yet available. Research ongoing.
+                  </p>
+                </div>
               )}
               
               {activeProfile.departments && activeProfile.departments.length > 0 && (
@@ -779,40 +849,61 @@ th { background: #f1f5f9; }
               )}
             </section>
 
-            {/* Economy */}
-            {activeProfile.economics && (
+            {/* Economy - Enhanced data display */}
+            {(activeProfile.economics || getProfileProp('gdp') || getProfileProp('mainIndustries')) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Economy</h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm mb-6">
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">GDP</span>
-                    <span className="text-white">{activeProfile.economics.gdpLocal || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.economics?.gdpLocal || getProfileProp('gdp'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">GDP Growth</span>
-                    <span className="text-white">{activeProfile.economics.gdpGrowthRate || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.economics?.gdpGrowthRate || getProfileProp('gdpGrowth'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
-                    <span className="text-slate-400">Employment Rate</span>
-                    <span className="text-white">{activeProfile.economics.employmentRate || 'Not available'}</span>
+                    <span className="text-slate-400">Unemployment</span>
+                    <span className="text-white">{safeDisplay(activeProfile.economics?.employmentRate || getProfileProp('unemployment'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">Average Income</span>
-                    <span className="text-white">{activeProfile.economics.avgIncome || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.economics?.avgIncome || getProfileProp('averageIncome'))}</span>
                   </div>
                 </div>
                 
-                {activeProfile.economics.majorIndustries && activeProfile.economics.majorIndustries.length > 0 && (
+                {((activeProfile.economics?.majorIndustries as string[] | undefined) || (getProfileProp('mainIndustries') as string[] | undefined)) && 
+                 ((activeProfile.economics?.majorIndustries as string[])?.length > 0 || (getProfileProp('mainIndustries') as string[])?.length > 0) && (
                   <div className="mb-4">
                     <h3 className="text-lg font-medium text-slate-200 mb-2">Major Industries</h3>
-                    <p className="text-slate-300">{activeProfile.economics.majorIndustries.join(', ')}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {((activeProfile.economics?.majorIndustries as string[]) || (getProfileProp('mainIndustries') as string[]) || []).map((industry, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs rounded-full">
+                          {industry}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
                 
-                {activeProfile.economics.tradePartners && activeProfile.economics.tradePartners.length > 0 && (
+                {(getProfileProp('majorEmployers') as string[] | undefined) && (getProfileProp('majorEmployers') as string[]).length > 0 && (
+                  <div className="mb-4">
+                    <h3 className="text-lg font-medium text-slate-200 mb-2">Major Employers</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(getProfileProp('majorEmployers') as string[]).slice(0, 10).map((employer, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs rounded-full">
+                          {employer}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {((activeProfile.economics?.tradePartners as string[] | undefined) || (getProfileProp('tradePartners') as string[] | undefined)) && 
+                 ((activeProfile.economics?.tradePartners as string[])?.length > 0 || (getProfileProp('tradePartners') as string[])?.length > 0) && (
                   <div className="mb-4">
                     <h3 className="text-lg font-medium text-slate-200 mb-2">Trade Partners</h3>
-                    <p className="text-slate-300">{activeProfile.economics.tradePartners.join(', ')}</p>
+                    <p className="text-slate-300">{((activeProfile.economics?.tradePartners as string[]) || (getProfileProp('tradePartners') as string[]) || []).join(', ')}</p>
                   </div>
                 )}
 
@@ -825,33 +916,40 @@ th { background: #f1f5f9; }
               </section>
             )}
 
-            {/* Demographics */}
-            {activeProfile.demographics && (
+            {/* Demographics - Enhanced */}
+            {(activeProfile.demographics || getProfileProp('population')) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Demographics</h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">Population</span>
-                    <span className="text-white">{activeProfile.demographics.population || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.demographics?.population || getProfileProp('population'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">Growth Rate</span>
-                    <span className="text-white">{activeProfile.demographics.populationGrowth || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.demographics?.populationGrowth || getProfileProp('populationGrowth'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">Median Age</span>
-                    <span className="text-white">{activeProfile.demographics.medianAge || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.demographics?.medianAge || getProfileProp('medianAge'))}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-slate-800">
                     <span className="text-slate-400">Literacy Rate</span>
-                    <span className="text-white">{activeProfile.demographics.literacyRate || 'Not available'}</span>
+                    <span className="text-white">{safeDisplay(activeProfile.demographics?.literacyRate || getProfileProp('literacyRate'))}</span>
                   </div>
+                  {activeProfile.demographics?.workingAgePopulation && (
+                    <div className="flex justify-between py-2 border-b border-slate-800">
+                      <span className="text-slate-400">Working Age Population</span>
+                      <span className="text-white">{safeDisplay(activeProfile.demographics.workingAgePopulation)}</span>
+                    </div>
+                  )}
                 </div>
                 
-                {activeProfile.demographics.languages && activeProfile.demographics.languages.length > 0 && (
+                {((activeProfile.demographics?.languages as string[] | undefined) || (getProfileProp('languages') as string[] | undefined)) && 
+                 ((activeProfile.demographics?.languages as string[])?.length > 0 || (getProfileProp('languages') as string[])?.length > 0) && (
                   <div className="mt-4">
                     <h3 className="text-lg font-medium text-slate-200 mb-2">Languages</h3>
-                    <p className="text-slate-300">{activeProfile.demographics.languages.join(', ')}</p>
+                    <p className="text-slate-300">{((activeProfile.demographics?.languages as string[]) || (getProfileProp('languages') as string[]) || []).join(', ')}</p>
                   </div>
                 )}
               </section>

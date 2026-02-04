@@ -9,6 +9,8 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+const API_BASE = (import.meta as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || '';
+
 // ==================== TYPES ====================
 
 export interface AIResponse {
@@ -81,7 +83,7 @@ const getGeminiApiKey = (): string => {
 
 async function invokeBedrockModel(prompt: string, model: string = 'anthropic.claude-3-sonnet-20240229-v1:0'): Promise<AIResponse> {
   try {
-    const response = await fetch('/api/bedrock/invoke', {
+    const response = await fetch(`${API_BASE}/api/bedrock/invoke`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -248,65 +250,159 @@ export async function researchLocationAWS(
     const response = await invokeAI(LOCATION_PROMPT(query));
     
     console.log('[AWS AI] Response received from:', response.provider);
+    console.log('[AWS AI] Response text length:', response.text.length);
     onProgress?.({ stage: 'Processing', progress: 70, message: 'Processing intelligence data...' });
     
-    // Parse JSON response
+    // Parse JSON response with improved error handling
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let data: any = null;
     
     try {
-      data = JSON.parse(response.text.trim());
+      // Remove markdown code blocks if present
+      let cleanText = response.text.trim();
+      if (cleanText.startsWith('```json')) {
+        cleanText = cleanText.replace(/```json\s*/g, '').replace(/```\s*$/g, '');
+      } else if (cleanText.startsWith('```')) {
+        cleanText = cleanText.replace(/```\s*/g, '').replace(/```\s*$/g, '');
+      }
+      data = JSON.parse(cleanText);
+      console.log('[AWS AI] Successfully parsed JSON data');
     } catch {
+      console.log('[AWS AI] First parse attempt failed, trying to extract JSON...');
       const jsonMatch = response.text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         try {
           data = JSON.parse(jsonMatch[0]);
+          console.log('[AWS AI] Successfully extracted and parsed JSON');
         } catch (e) {
-          console.error('[AWS AI] JSON parse failed:', e);
+          console.error('[AWS AI] JSON extraction parse failed:', e);
         }
       }
     }
     
     if (!data) {
-      console.error('[AWS AI] Failed to parse response');
-      onProgress?.({ stage: 'Error', progress: 0, message: 'Failed to process AI response' });
+      console.error('[AWS AI] Failed to parse response, text preview:', response.text.substring(0, 200));
+      onProgress?.({ stage: 'Error', progress: 0, message: 'Unable to parse AI response - please try again' });
+      return null;
+    }
+    
+    // Validate critical fields
+    if (!data.name && !data.city) {
+      console.error('[AWS AI] Missing required location name in response');
+      onProgress?.({ stage: 'Error', progress: 0, message: 'Invalid location data received' });
       return null;
     }
     
     onProgress?.({ stage: 'Complete', progress: 100, message: 'Research complete!' });
     
+    // Build comprehensive profile with enhanced field mapping
     const profile = {
       id: `live-${Date.now()}`,
-      city: data.name || query,
-      country: data.country || 'Unknown',
-      region: data.region || 'Unknown',
-      latitude: data.coordinates?.lat || 0,
-      longitude: data.coordinates?.lon || 0,
-      population: data.population?.metro || data.population?.city || 0,
-      gdp: data.economy?.gdp || 'N/A',
-      timezone: 'UTC',
-      currency: data.currency?.code || 'USD',
+      // Core identity
+      city: data.name || data.city || query,
+      entityName: data.name || data.city || query,
+      entityType: data.entityType || 'location',
+      country: data.country || 'Research Required',
+      countryCode: data.countryCode || '',
+      region: data.region || data.state || 'Unknown',
+      
+      // Geographic data
+      latitude: data.coordinates?.lat || data.latitude || 0,
+      longitude: data.coordinates?.lon || data.longitude || 0,
+      timezone: data.timezone || 'UTC',
+      established: data.established || data.founded || 'Unknown',
+      areaSize: data.area || data.areaSize || 'Unknown',
+      
+      // Population and demographics
+      population: data.population?.metro || data.population?.city || data.population || 0,
+      populationMetro: data.population?.metro || data.population?.metropolitan || 0,
+      populationGrowth: data.demographics?.populationGrowth || data.population?.growth || 'Unknown',
+      medianAge: data.demographics?.medianAge || 'Unknown',
+      
+      // Economic indicators
+      gdp: data.economy?.gdp || data.gdpLocal || 'Data Required',
+      gdpGrowth: data.economy?.gdpGrowth || data.economy?.gdpGrowthRate || 'Unknown',
+      unemployment: data.economy?.unemployment || 'See labor statistics',
+      averageIncome: data.economy?.averageIncome || data.economy?.avgIncome || 'See income surveys',
+      
+      // Core details
+      currency: data.currency?.code || data.currency?.name || 'USD',
       languages: data.languages || ['English'],
+      climate: data.climate || 'Unknown',
+      
+      // Government and leadership
       governmentType: data.government?.type || 'Unknown',
-      leader: data.government?.leader,
-      mainIndustries: data.economy?.mainIndustries || [],
-      majorEmployers: data.economy?.majorEmployers || [],
+      leader: data.government?.leader || { name: 'Research Required', title: 'Leader', since: 'Unknown' },
+      leaders: data.government?.leader ? [{
+        name: data.government.leader.name || 'Unknown',
+        role: data.government.leader.title || 'Leader',
+        since: data.government.leader.since || 'Unknown',
+        bio: '',
+        achievements: [],
+        rating: 0,
+        internationalEngagementFocus: false
+      }] : [],
+      departments: data.government?.departments || [],
+      
+      // Economic activity
+      mainIndustries: data.economy?.mainIndustries || data.economy?.majorIndustries || [],
+      majorEmployers: data.economy?.majorEmployers || data.economy?.topEmployers || [],
+      tradePartners: data.tradePartners || [],
+      topExports: data.economy?.exports || [],
+      
+      // Infrastructure
       airports: data.infrastructure?.airports || [],
-      seaports: data.infrastructure?.seaports || [],
-      universities: data.education?.universities || [],
+      seaports: data.infrastructure?.seaports || data.infrastructure?.ports || [],
+      publicTransit: data.infrastructure?.publicTransit || 'Unknown',
+      internetPenetration: data.infrastructure?.internetPenetration || 'Unknown',
+      powerCapacity: data.infrastructure?.power || 'See utility providers',
+      specialEconomicZones: data.investment?.economicZones || [],
+      
+      // Investment climate
       economicZones: data.investment?.economicZones || [],
       investmentIncentives: data.investment?.incentives || [],
-      risks: data.risks || {},
+      easeOfDoingBusiness: data.investment?.easeOfBusiness || 'See World Bank rankings',
+      investmentClimate: data.investment?.climate || 'Standard',
+      
+      // Education
+      universities: data.education?.universities || [],
+      universitiesColleges: typeof data.education?.universities === 'number' ? data.education.universities : (data.education?.universities?.length || 0),
+      literacyRate: data.education?.literacyRate || 'Unknown',
+      graduatesPerYear: data.education?.graduates || 'See education ministry',
+      
+      // Risk assessment
+      risks: {
+        political: data.risks?.political || 'Standard',
+        economic: data.risks?.economic || 'Moderate',
+        natural: data.risks?.natural || 'Moderate',
+        regulatory: data.risks?.regulatory || 'Standard'
+      },
+      
+      // Additional details
       keyFacts: data.keyFacts || [],
-      tradePartners: data.tradePartners || [],
+      rankings: data.rankings || [],
+      keyStatistics: data.keyStatistics || [],
       overview: data.overview || `Intelligence profile for ${query}`,
-      climate: data.climate || 'Unknown',
-      demographics: data.demographics || {},
-      globalMarketAccess: 'Medium',
-      regulatoryEnvironment: 'Standard',
-      infrastructureQuality: 'Moderate',
+      knownFor: data.knownFor || [],
+      businessHours: data.businessHours || '9:00 AM - 5:00 PM',
+      
+      // Scores and assessments
+      globalMarketAccess: data.scores?.marketAccess || 'Medium',
+      regulatoryEnvironment: data.scores?.regulatory || 'Standard',
+      infrastructureQuality: data.scores?.infrastructure || 'Moderate',
+      engagementScore: data.scores?.engagement || 50,
+      overlookedScore: data.scores?.overlooked || 50,
+      costOfDoing: data.scores?.costOfDoing || 50,
+      investmentMomentum: data.scores?.momentum || 50,
+      
+      // Links and sources
+      governmentLinks: data.links || [],
+      
+      // Raw data for debugging
       _rawData: data
     };
+    
+    console.log('[AWS AI] Profile built successfully:', profile.city);
     
     return {
       profile,

@@ -86,7 +86,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             }
         } catch (error) {
             console.error('Location research error:', error);
-            setResearchProgress({ stage: 'error', progress: 0, message: 'Search failed - please try again' });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            
+            // Provide specific error feedback based on error type
+            let userMessage = 'Search failed - please try again';
+            
+            if (!navigator.onLine) {
+                userMessage = 'No internet connection - please check your network';
+            } else if (errorMessage.includes('timeout') || errorMessage.includes('timed out')) {
+                userMessage = 'Request timed out - please try a simpler search term';
+            } else if (errorMessage.includes('API key') || errorMessage.includes('authentication')) {
+                userMessage = 'API configuration error - please contact support';
+            } else if (errorMessage.includes('parse') || errorMessage.includes('Invalid')) {
+                userMessage = 'Location not found - please check spelling or try a different search';
+            } else if (errorMessage.includes('quota') || errorMessage.includes('limit')) {
+                userMessage = 'Service temporarily unavailable - please try again in a few minutes';
+            } else if (errorMessage) {
+                userMessage = `Error: ${errorMessage}`;
+            }
+            
+            setResearchProgress({ stage: 'error', progress: 0, message: userMessage });
         } finally {
             setIsResearchingLocation(false);
         }
