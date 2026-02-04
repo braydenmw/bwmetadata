@@ -429,7 +429,7 @@ router.post('/copilot-analysis', requireApiKey, async (req: Request, res: Respon
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MULTI-AGENT AI ENDPOINT - Orchestrates multiple AI models
+// MULTI-AGENT AI ENDPOINT - Orchestrates multiple AI models (Bedrock priority)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 router.post('/multi-agent', requireApiKey, async (req: Request, res: Response) => {
@@ -437,13 +437,9 @@ router.post('/multi-agent', requireApiKey, async (req: Request, res: Response) =
     const { model: _requestedModel, prompt, context, systemInstruction } = req.body;
     void _requestedModel; // Reserved for future multi-model support
     
-    // Use Gemini as primary agent (can be extended for GPT/Claude)
-    const model = getGenAI()!.getGenerativeModel({ 
-      model: 'gemini-2.0-flash',
-      systemInstruction: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION
-    });
-    
     const enrichedPrompt = `
+SYSTEM INSTRUCTION: ${systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION}
+
 TASK: ${prompt}
 
 CONTEXT:
@@ -466,31 +462,134 @@ Return structured JSON response with:
 }
 `;
     
-    const result = await model.generateContent(enrichedPrompt);
-    const text = result.response.text();
+    // Priority 1: AWS Bedrock (Production AI)
+    const AWS_BEDROCK_API_KEY = process.env.AWS_BEDROCK_API_KEY;
+    const AWS_REGION = process.env.AWS_REGION;
     
-    // Try to parse as JSON
-    try {
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        return res.json({
-          ...parsed,
-          agentId: 'gemini-flash',
-          model: 'gemini'
+    if (AWS_BEDROCK_API_KEY && AWS_REGION) {
+      try {
+        console.log('[Multi-Agent] Using AWS Bedrock (Production AI)...');
+        
+        const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
+        
+        // Decode the Bedrock API Key to get credentials
+        let accessKeyId: string | undefined;
+        let secretAccessKey: string | undefined;
+        
+        try {
+          const decoded = Buffer.from(AWS_BEDROCK_API_KEY, 'base64').toString('utf-8');
+          const cleanDecoded = decoded.replace(/^[^\x20-\x7E]+/, '');
+          const colonIndex = cleanDecoded.indexOf(':');
+          if (colonIndex > 0) {
+            accessKeyId = cleanDecoded.substring(0, colonIndex);
+            secretAccessKey = cleanDecoded.substring(colonIndex + 1);
+            console.log('[Multi-Agent] Decoded credentials from API key');
+          }
+        } catch (_decodeErr) {
+          console.warn('[Multi-Agent] Could not decode API key');
+        }
+        
+        const clientConfig: { region: string; credentials?: { accessKeyId: string; secretAccessKey: string } } = {
+          region: AWS_REGION
+        };
+        
+        if (accessKeyId && secretAccessKey) {
+          clientConfig.credentials = {
+            accessKeyId,
+            secretAccessKey
+          };
+        }
+        
+        const client = new BedrockRuntimeClient(clientConfig);
+        const modelId = 'anthropic.claude-3-sonnet-20240229-v1:0';
+        
+        const requestBody = {
+          anthropic_version: 'bedrock-2023-05-31',
+          max_tokens: 4096,
+          messages: [{ role: 'user', content: enrichedPrompt }],
+          temperature: 0.7
+        };
+
+        const command = new InvokeModelCommand({
+          modelId,
+          contentType: 'application/json',
+          accept: 'application/json',
+          body: JSON.stringify(requestBody)
         });
+
+        const response = await client.send(command);
+        const result = JSON.parse(new TextDecoder().decode(response.body));
+        
+        if (result.content?.[0]?.text) {
+          const text = result.content[0].text;
+          
+          // Try to parse as JSON
+          try {
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              const parsed = JSON.parse(jsonMatch[0]);
+              return res.json({
+                ...parsed,
+                agentId: 'bedrock-claude',
+                model: 'bedrock'
+              });
+            }
+          } catch {
+            // Return as plain text response
+          }
+          
+          return res.json({
+            text: text,
+            confidence: 0.90,
+            reasoning: ['AWS Bedrock Claude analysis completed'],
+            agentId: 'bedrock-claude',
+            model: 'bedrock'
+          });
+        }
+      } catch (bedrockError) {
+        console.warn('[Multi-Agent] Bedrock error, falling back to Gemini:', 
+          bedrockError instanceof Error ? bedrockError.message : 'Unknown error');
       }
-    } catch {
-      // Return as plain text response
     }
     
-    res.json({
-      text: text,
-      confidence: 0.85,
-      reasoning: ['AI analysis completed'],
-      agentId: 'gemini-flash',
-      model: 'gemini'
-    });
+    // Priority 2: Gemini (Fallback)
+    const geminiAI = getGenAI();
+    if (geminiAI) {
+      console.log('[Multi-Agent] Using Gemini AI (Fallback)...');
+      const model = geminiAI.getGenerativeModel({ 
+        model: 'gemini-2.0-flash',
+        systemInstruction: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION
+      });
+      
+      const result = await model.generateContent(enrichedPrompt);
+      const text = result.response.text();
+      
+      // Try to parse as JSON
+      try {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          return res.json({
+            ...parsed,
+            agentId: 'gemini-flash',
+            model: 'gemini'
+          });
+        }
+      } catch {
+        // Return as plain text response
+      }
+      
+      return res.json({
+        text: text,
+        confidence: 0.85,
+        reasoning: ['Gemini AI analysis completed'],
+        agentId: 'gemini-flash',
+        model: 'gemini'
+      });
+    }
+    
+    // No AI available
+    res.status(503).json({ error: 'No AI service available (Bedrock and Gemini both failed)' });
   } catch (error) {
     console.error('Multi-agent error:', error);
     res.status(500).json({ error: 'Multi-agent processing failed' });

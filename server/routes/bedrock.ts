@@ -103,31 +103,44 @@ router.post('/invoke', async (req: Request, res: Response) => {
   try {
     console.log('[Bedrock] AWS config detected, using Bedrock');
     
+    const bedrockApiKey = process.env.AWS_BEDROCK_API_KEY;
+    const region = process.env.AWS_REGION || 'us-east-1';
+    
     // Dynamic import of AWS SDK
     const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
     
-    // Configure client with API key if available
-    const clientConfig: { region: string; credentials?: { accessKeyId: string; secretAccessKey: string } } = {
-      region: process.env.AWS_REGION || 'us-east-1'
-    };
+    // Priority 1: Use standard AWS credentials if available
+    let accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+    let secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
     
-    // If using Bedrock API Key (base64 encoded credentials)
-    if (process.env.AWS_BEDROCK_API_KEY) {
+    // Priority 2: Decode from Bedrock API Key if standard credentials not available
+    if (!accessKeyId && !secretAccessKey && bedrockApiKey) {
       try {
-        const decoded = Buffer.from(process.env.AWS_BEDROCK_API_KEY, 'base64').toString('utf-8');
-        const [keyId, secret] = decoded.split(':');
-        if (keyId && secret) {
-          // Extract the actual key ID (remove prefix if present)
-          const accessKeyId = keyId.includes('BedrockAPIKey') ? keyId : keyId;
-          clientConfig.credentials = {
-            accessKeyId: accessKeyId,
-            secretAccessKey: secret
-          };
-          console.log('[Bedrock] Using API Key credentials');
+        const decoded = Buffer.from(bedrockApiKey, 'base64').toString('utf-8');
+        const cleanDecoded = decoded.replace(/^[^\x20-\x7E]+/, '');
+        const colonIndex = cleanDecoded.indexOf(':');
+        if (colonIndex > 0) {
+          accessKeyId = cleanDecoded.substring(0, colonIndex);
+          secretAccessKey = cleanDecoded.substring(colonIndex + 1);
+          console.log('[Bedrock] Decoded credentials from API key');
         }
-      } catch (e) {
+      } catch (_decodeErr) {
         console.warn('[Bedrock] Could not decode API key, using default credentials');
       }
+    }
+    
+    const clientConfig: { region: string; credentials?: { accessKeyId: string; secretAccessKey: string } } = {
+      region: region
+    };
+    
+    if (accessKeyId && secretAccessKey) {
+      clientConfig.credentials = {
+        accessKeyId,
+        secretAccessKey
+      };
+      console.log('[Bedrock] Using configured credentials');
+    } else {
+      console.log('[Bedrock] Using default credential chain (IAM role, env, etc.)');
     }
     
     const client = new BedrockRuntimeClient(clientConfig);
