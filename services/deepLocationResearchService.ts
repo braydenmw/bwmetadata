@@ -18,6 +18,23 @@ import { type CityProfile, type CityLeader } from '../data/globalLocationProfile
 
 // ==================== TYPES ====================
 
+// Debug flag for deep research
+const RESEARCH_DEBUG = ((): boolean => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const m = import.meta as any;
+    return Boolean(m?.env?.VITE_DEBUG_RESEARCH === 'true');
+  } catch (e) {
+    return false;
+  }
+})();
+
+function logResearch(...args: unknown[]) {
+  if (RESEARCH_DEBUG) {
+    // eslint-disable-next-line no-console
+    console.debug('[DeepResearch]', ...args);
+  }
+}
 export interface DeepResearchResult {
   profile: CityProfile;
   narratives: {
@@ -814,12 +831,14 @@ export async function deepLocationResearch(
         accessDate,
         relevance: 'Primary source for city overview and data'
       });
+      logResearch('Wikimedia extract found:', wikiData.title, wikiData.fullUrl);
     }
 
     const extractedData = wikiData ? extractDataFromWikiText(wikiData.fullExtract) : {
       population: null, area: null, established: null, elevation: null,
       mayor: null, governor: null, gdp: null, industries: [], languages: []
     };
+    logResearch('Extracted wiki data keys:', Object.keys(extractedData));
 
     // STAGE 3: Country data
     onProgress?.({
@@ -868,6 +887,7 @@ export async function deepLocationResearch(
         });
       }
     }
+    logResearch('Leaders identified:', leaders.map(l => l.name).slice(0,5));
 
     // STAGE 5: Economic research
     onProgress?.({

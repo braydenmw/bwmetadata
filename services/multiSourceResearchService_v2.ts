@@ -25,7 +25,7 @@
  */
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
-import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
+import { type CityProfile, type CityLeader, type EconomicData } from '../data/globalLocationProfiles';
 import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
@@ -53,6 +53,28 @@ const getGeminiApiKey = (): string => {
 };
 
 // ==================== TYPES ====================
+
+// Debug flag: enable verbose research logging via VITE_DEBUG_RESEARCH=true
+const RESEARCH_DEBUG = ((): boolean => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const m = import.meta as any;
+    return Boolean(m?.env?.VITE_DEBUG_RESEARCH === 'true');
+  } catch {
+    return false;
+  }
+})();
+
+function logResearch(...args: unknown[]) {
+  if (RESEARCH_DEBUG) {
+    console.debug('[Research]', ...args);
+  }
+}
+
+function addSource(sources: SourceCitation[], source: SourceCitation) {
+  sources.push(source);
+  logResearch('Added source', source.title, source.type, `reliability=${source.reliability}`);
+}
 
 export interface SourceCitation {
   title: string;
@@ -692,11 +714,11 @@ function transformEntityToProfile(
   const accessDate = new Date().toISOString().split('T')[0];
   const entity = (ai.entity as Record<string, unknown>) || {};
   const operations = (ai.operations as Record<string, unknown>) || {};
-  const leadership = (ai.leadership as Array<{ name: string; role: string; source: string }>) || [];
+  const leadership = (ai.leadership as Array<Record<string, unknown>>) || [];
 
   const sources: SourceCitation[] = [];
   if (wikiData?.url) {
-    sources.push({
+    addSource(sources, {
       title: `Wikidata - ${wikiData.title}`,
       url: wikiData.url,
       type: 'research',
@@ -708,7 +730,7 @@ function transformEntityToProfile(
   }
 
   searchResults.slice(0, 6).forEach((result) => {
-    sources.push({
+    addSource(sources, {
       title: result.title,
       url: result.link,
       type: result.isGovernment ? 'government' : 'research',
@@ -723,16 +745,31 @@ function transformEntityToProfile(
   const sectorPrimary = (operations.sector as string) || '';
   const keyFacts = (ai.keyFacts as string[]) || [];
 
+  // Build leaders array with richer person/company-specific fields when available
   const leaders: CityLeader[] = leadership.length
-    ? leadership.map((l, idx) => ({
-      id: `leader-${idx + 1}`,
-      name: l.name || 'Leadership Not Verified',
-      role: l.role || (category === 'government' ? 'Senior Official' : 'Executive'),
-      tenure: 'Current',
-      achievements: [l.source || 'Source not verified'],
-      rating: l.name ? 6 : 0,
-      internationalEngagementFocus: false
-    }))
+    ? leadership.map((l, idx) => {
+      const rec = l as Record<string, unknown>;
+      return ({
+        id: `leader-${idx + 1}`,
+        name: (rec.name as string) || 'Leadership Not Verified',
+        role: (rec.role as string) || (category === 'government' ? 'Senior Official' : 'Executive'),
+        tenure: (rec.tenure as string) || 'Current',
+        achievements: rec.achievements ? (Array.isArray(rec.achievements) ? (rec.achievements as string[]) : [String(rec.achievements)]) : [(rec.source as string) || 'Source not verified'],
+        rating: (rec.name as string) ? 6 : 0,
+        internationalEngagementFocus: Boolean(rec.internationalEngagementFocus),
+        photoUrl: (rec.photo as string) || undefined,
+        photoVerified: Boolean(rec.photoVerified as boolean),
+        sourceUrl: (rec.source as string) || undefined,
+        bio: (rec.bio as string) || undefined,
+        fullBio: (rec.fullBio as string) || undefined,
+        education: (rec.education as string[]) || undefined,
+        previousPositions: (rec.previousPositions as string[]) || undefined,
+        party: (rec.party as string) || (rec.politicalParty as string) || undefined,
+        contactEmail: (rec.contactEmail as string) || undefined,
+        linkedIn: (rec.linkedIn as string) || undefined,
+        photoSource: (rec.photoSource as string) || undefined
+      });
+    })
     : [{
       id: 'leader-pending',
       name: 'Leadership information pending verification',
@@ -743,6 +780,94 @@ function transformEntityToProfile(
       internationalEngagementFocus: false
     }];
 
+  // If this is a person-level query, prioritize building a person-centric profile
+  if (category === 'person') {
+    const person = (ai.person as Record<string, unknown>) || {};
+    const personName = (person.name !== undefined && person.name !== null) ? String(person.name) : ((leadership?.[0]?.name as string) || query);
+
+    const profile: CityProfile = {
+      id: `person-${Date.now()}`,
+      city: (person.location as string) || (entity.headquarters as string) || query,
+      entityName: personName,
+      entityType: 'person',
+      region: (person.region as string) || (entity.headquarters as string) || '',
+      country: (person.country as string) || (entity.country as string) || '',
+      established: 'N/A',
+      knownFor: person.roles ? (Array.isArray(person.roles) ? (person.roles as string[]) : [String(person.roles)]) : keyFacts.slice(0, 2),
+      strategicAdvantages: (person.keyStrengths as string[]) || [],
+      investmentPrograms: [],
+      keySectors: (person.sectors as string[]) || (sectorPrimary ? [sectorPrimary] : sectors),
+      foreignCompanies: [],
+      departments: (person.affiliations as string[]) || [],
+      easeOfDoingBusiness: 'N/A',
+      globalMarketAccess: 'N/A',
+      latitude: 0,
+      longitude: 0,
+      infrastructureScore: 50,
+      regulatoryFriction: 50,
+      politicalStability: 50,
+      laborPool: 50,
+      costOfDoing: 50,
+      investmentMomentum: 50,
+      engagementScore: 50,
+      overlookedScore: 50,
+      leaders: leaders.length ? leaders : [{ id: 'leader-1', name: personName, role: (person.title as string) || 'Notable Individual', tenure: 'Current', achievements: [], rating: 5 }],
+      economics: {
+        gdpLocal: 'N/A',
+        majorIndustries: [],
+        tradePartners: [],
+        topExports: []
+      },
+      demographics: {
+        population: 'N/A'
+      },
+      infrastructure: {},
+      governmentLinks: sources.filter(s => s.type === 'government').slice(0, 3).map(s => ({ label: s.title, url: s.url })),
+      recentNews: ((ai.recentDevelopments as string[]) || []).slice(0, 5).map((d) => ({ date: accessDate, title: d, summary: d, source: 'Research', link: '#' })),
+      _rawWikiExtract: wikiData?.extract || ''
+    };
+
+    // Populate labor/university fields if available
+    const edInst = (person.educationInstitutions as unknown);
+    if (edInst && Array.isArray(edInst)) {
+      profile.labor = { topUniversities: (edInst as string[]).map(n => ({ name: n, specialties: [] })), talentPipelineNotes: '' };
+    }
+
+    // Populate contact and social data if present
+    if ((person.contactEmail as string) && profile.leaders && profile.leaders.length > 0) {
+      profile.leaders[0].contactEmail = person.contactEmail as string;
+    }
+    if ((person.linkedIn as string) && profile.leaders && profile.leaders.length > 0) {
+      profile.leaders[0].linkedIn = person.linkedIn as string;
+    }
+
+    return {
+      profile,
+      narratives: generateBasicNarratives(profile),
+      sources: deduplicateSources(sources),
+      similarCities: [],
+      dataQuality: {
+        completeness: Math.min(100, sources.length * 12),
+        governmentSourcesUsed: sources.filter(s => s.type === 'government').length,
+        internationalSourcesUsed: sources.filter(s => s.type === 'international').length,
+        newsSourcesUsed: sources.filter(s => s.type === 'news').length,
+        dataFreshness: accessDate,
+        leaderDataVerified: leadership.length > 0,
+        primarySourcePercentage: sources.length ? Math.round((sources.filter(s => s.type === 'government').length / sources.length) * 100) : 0,
+        conflictsDetected: 0,
+        conflictsResolved: 0
+      },
+      researchSummary: `Person intelligence compiled from ${sources.length} sources.`,
+      researchSession: {
+        id: `person-session-${Date.now()}`,
+        iterations: 1,
+        totalTime: 0,
+        completenessScore: Math.min(100, sources.length * 12)
+      }
+    };
+  }
+
+  // Default entity/company/government profile
   const profile: CityProfile = {
     id: `entity-${Date.now()}`,
     city: (entity.name as string) || query,
@@ -793,7 +918,6 @@ function transformEntityToProfile(
     })),
     _rawWikiExtract: wikiData?.extract || ''
   };
-
   const comparisons = (ai.comparisons as string[]) || [];
   const similarCities: SimilarCity[] = comparisons.slice(0, 4).map((c, idx) => ({
     city: c,
@@ -863,7 +987,7 @@ async function executeEntityResearch(
   const allSearchResults = [...officialSearch, ...leadershipSearch, ...coverageSearch];
 
   if (wikiData?.url) {
-    sources.push({
+    addSource(sources, {
       title: `Wikidata - ${wikiData.title}`,
       url: wikiData.url,
       type: 'research',
@@ -876,7 +1000,7 @@ async function executeEntityResearch(
 
   allSearchResults.slice(0, 8).forEach((result) => {
     if (!result?.link) return;
-    sources.push({
+    addSource(sources, {
       title: result.title,
       url: result.link,
       type: result.isGovernment ? 'government' : 'research',
@@ -2232,7 +2356,8 @@ async function tryBackendResearch(
 export async function multiSourceResearch(
   locationQuery: string,
   onProgress?: ProgressCallback,
-  enableAutonomousRefinement: boolean = true
+  enableAutonomousRefinement: boolean = true,
+  options?: { useExternalSources?: boolean; useRealTimeFeeds?: boolean }
 ): Promise<MultiSourceResult | null> {
   const sessionStart = Date.now();
 
@@ -2261,6 +2386,25 @@ export async function multiSourceResearch(
         progress: 5,
         message: `Initiating ${queryCategory} intelligence...`
       });
+
+      // If external source integration is enabled, try to enrich with company data early
+      if (options?.useExternalSources && queryCategory === 'company') {
+        try {
+          const oc = await (await import('./externalDataIntegrations')).fetchOpenCorporatesCompany(locationQuery);
+          if (oc) {
+            const ocProfile = await executeEntityResearch(locationQuery, queryCategory, onProgress);
+            if (ocProfile) {
+              ocProfile.profile.entityName = oc.name;
+              ocProfile.profile.departments = ocProfile.profile.departments || [];
+              ocProfile.profile.investmentPrograms = ocProfile.profile.investmentPrograms || [];
+              await locationResearchCache.saveFullResult(locationQuery, ocProfile);
+              return ocProfile;
+            }
+          }
+        } catch (err) {
+          console.warn('External company enrichment failed:', err);
+        }
+      }
 
       const entityAIResult = await tryDirectGeminiEntityResearch(locationQuery, queryCategory, onProgress);
       if (entityAIResult) {
@@ -2620,7 +2764,7 @@ async function executeResearchPipeline(
       iteration
     });
 
-    const profile = buildComprehensiveProfile(
+    const profile = await buildComprehensiveProfile(
       cityName, region, country, countryCode,
       geo, worldBankData, countryData, geoNamesLocData?.name ? `${geoNamesLocData.name} is a ${geoNamesLocData.fcodeName || 'location'} in ${geoNamesLocData.countryName || country}. Population: ${geoNamesLocData.population?.toLocaleString() || 'N/A'}` : null,
       leadershipData, extractedData,
@@ -2727,7 +2871,7 @@ async function performGoogleSearch(_query: string, _numResults: number = 10): Pr
   return [];
 }
 
-type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'unknown';
+type QueryCategory = 'location' | 'company' | 'government' | 'organization' | 'person' | 'unknown';
 
 function isLikelyLocationQuery(query: string, geoExtract?: string | null): boolean {
   const q = query.toLowerCase();
@@ -2770,12 +2914,27 @@ function detectQueryCategory(query: string): QueryCategory {
     'chamber', 'union', 'trust', 'hospital'
   ];
 
+  const personSignals = [
+    'mayor', 'governor', 'secretary', 'minister', 'ambassador', 'representative', 'senator', 'congressman',
+    'dr', 'prof', 'mr', 'ms', 'mrs', 'chief', 'director', 'ceo', 'coo', 'cfo', 'founder', 'chair'
+  ];
+
+  // Direct signals
   if (governmentSignals.some((s) => q.includes(s))) return 'government';
   if (companySignals.some((s) => q.includes(s))) return 'company';
   if (organizationSignals.some((s) => q.includes(s))) return 'organization';
 
+  // Person/leader detection - presence of title tokens or two-word proper-name heuristic
+  if (personSignals.some((s) => q.includes(s))) return 'person';
+
+  // Heuristic: queries that look like 'First Last' and contain capitalized words are likely people
+  const words = query.trim().split(/\s+/);
+  if (words.length === 2 && words[0][0] === words[0][0]?.toUpperCase() && words[1][0] === words[1][0]?.toUpperCase()) {
+    return 'person';
+  }
+
   return 'location';
-}
+} 
 
 async function fetchWikidataEntity(query: string): Promise<{ title: string; extract: string; url: string } | null> {
   try {
@@ -2796,6 +2955,7 @@ async function fetchWikidataEntity(query: string): Promise<{ title: string; extr
   } catch (error) {
     console.warn('Wikidata entity fetch failed:', error);
   }
+
   return null;
 }
 
@@ -2821,39 +2981,11 @@ async function fetchWorldBankData(countryCode: string): Promise<{
         year: parseInt(gdpData[1][0].date)
       });
     }
-
-    // Growth
-    const growthUrl = `https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=1`;
-    const growthRes = await fetch(growthUrl);
-    const growthData = await growthRes.json();
-    if (growthData[1]?.[0]) {
-      indicators.push({
-        name: 'GDP Growth (annual %)',
-        value: growthData[1][0].value,
-        year: parseInt(growthData[1][0].date)
-      });
-    }
-
-    // Internet
-    const internetUrl = `https://api.worldbank.org/v2/country/${countryCode}/indicator/IT.NET.USER.ZS?format=json&per_page=1`;
-    const internetRes = await fetch(internetUrl);
-    const internetData = await internetRes.json();
-    if (internetData[1]?.[0]) {
-      indicators.push({
-        name: 'Internet Users (% of population)',
-        value: internetData[1][0].value,
-        year: parseInt(internetData[1][0].date)
-      });
-    }
-  } catch (error) {
-    console.warn('World Bank fetch failed:', error);
+  } catch (err) {
+    console.warn('World Bank data fetch failed:', err);
   }
 
-  return {
-    indicators,
-    sourceUrl: `https://data.worldbank.org/country/${countryCode}`,
-    countryInfo: {}
-  };
+  return { indicators, sourceUrl: `https://api.worldbank.org/country/${countryCode}`, countryInfo: {} };
 }
 
 /**
@@ -2999,7 +3131,7 @@ function extractStructuredData(
 /**
  * Build comprehensive city profile
  */
-function buildComprehensiveProfile(
+async function buildComprehensiveProfile(
   city: string,
   region: string,
   country: string,
@@ -3011,7 +3143,7 @@ function buildComprehensiveProfile(
   leaders: Array<Record<string, unknown>>,
   extractedData: Record<string, unknown>,
   sources: SourceCitation[]
-): CityProfile {
+): Promise<CityProfile> {
   const gdpInd = (worldBankData.indicators as Array<Record<string, unknown>>)?.find((i) => String(i.name).includes('GDP'));
   const growthInd = (worldBankData.indicators as Array<Record<string, unknown>>)?.find((i) => String(i.name).includes('Growth'));
   const internetInd = (worldBankData.indicators as Array<Record<string, unknown>>)?.find((i) => String(i.name).includes('Internet'));
@@ -3080,8 +3212,8 @@ function buildComprehensiveProfile(
       medianAge: 'See demographic surveys',
       literacyRate: 'See education ministry data',
       workingAgePopulation: 'See labor department statistics',
-      universitiesColleges: 0,
-      graduatesPerYear: 'See education reports',
+      universitiesColleges: (extractedData.universitiesCount as number) || 0,
+      graduatesPerYear: (extractedData.graduatesPerYear as string) || 'See education reports',
       languages: countryData?.languages ? Object.values(countryData.languages) : undefined
     },
 
@@ -3112,6 +3244,9 @@ function buildComprehensiveProfile(
         url: s.url
       })),
 
+    taxIncentives: (extractedData.taxIncentives as string[]) || [],
+    publicHolidays: (extractedData.publicHolidays as string[]) || [],
+
     recentNews: sources
       .filter(s => s.type === 'news')
       .slice(0, 5)
@@ -3121,9 +3256,67 @@ function buildComprehensiveProfile(
         summary: s.dataExtracted,
         source: s.organization || 'News Source',
         link: s.url
-      })),
-    _rawWikiExtract: wikiData || undefined
+      }))
   };
+
+  // Log filled fields for debugging when debug enabled
+  const filledFields: string[] = [];
+  if ((extractedData.taxIncentives as string[])?.length) filledFields.push('taxIncentives');
+  if ((extractedData.publicHolidays as string[])?.length) filledFields.push('publicHolidays');
+  if ((extractedData.majorEmployers as string[])?.length) filledFields.push('majorEmployers');
+  if ((extractedData.exports as string[])?.length) filledFields.push('topExports');
+  if ((extractedData.universitiesCount as number) && (extractedData.universitiesCount as number) > 0) filledFields.push('universitiesColleges');
+
+  logResearch('Built profile for', city, 'filledFields:', filledFields.length ? filledFields : 'none');
+
+  // External enrichment: World Bank / Numbeo if enabled via options flag
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = (import.meta as any);
+    const externalEnabled = meta?.env?.VITE_ENABLE_EXTERNAL_DATA === 'true';
+    if (externalEnabled) {
+      const ext = await import('./externalDataIntegrations');
+      const wb = await ext.fetchWorldBankCountryIndicators(countryCode);
+      if (wb) {
+        profile.economics = {
+          ...(profile.economics || {}),
+          majorIndustries: (profile.economics && (profile.economics as Partial<EconomicData>).majorIndustries) ? (profile.economics as Partial<EconomicData>).majorIndustries : [],
+          topExports: (profile.economics && (profile.economics as Partial<EconomicData>).topExports) ? (profile.economics as Partial<EconomicData>).topExports : [],
+          tradePartners: (profile.economics && (profile.economics as Partial<EconomicData>).tradePartners) ? (profile.economics as Partial<EconomicData>).tradePartners : []
+        };
+        if (wb.gdp && wb.gdpYear) {
+          (profile.economics as Partial<EconomicData>).gdpLocal = `$${(wb.gdp / 1e9).toFixed(2)}B (${wb.gdpYear})`;
+        }
+        if (wb.gdpGrowth) {
+          (profile.economics as Partial<EconomicData>).gdpGrowthRate = `${wb.gdpGrowth}%`;
+        }
+        if (typeof wb.internetUsersPercent === 'number') {
+          profile.infrastructure = profile.infrastructure || {};
+          profile.infrastructure.internetPenetration = `${wb.internetUsersPercent}%`;
+        }
+      }
+
+      const nb = await ext.fetchNumbeoCityData(city);
+      if (nb) {
+        profile.operationalCosts = profile.operationalCosts || {};
+        if (nb.avgRentOneBed) {
+          profile.operationalCosts.avgOfficeRentPerSqM = nb.avgRentOneBed;
+        }
+        if (nb.costOfLivingIndex) {
+          // use costOfLivingIndex as a signal; don't overwrite existing rent yet
+          profile.operationalCosts.avgOfficeRentPerSqM = profile.operationalCosts.avgOfficeRentPerSqM || undefined;
+        }
+        profile.sustainability = profile.sustainability || {};
+        if (typeof nb.crimeIndex === 'number') {
+          profile.risk = profile.risk || {};
+          profile.risk.politicalStabilityIndex = Math.round(100 - (nb.crimeIndex || 50));
+        }
+        profile.sustainability.aqi = profile.sustainability.aqi || undefined;
+      }
+    }
+  } catch (err) {
+    console.warn('[GLI] External enrichment failed:', err);
+  }
 
   return profile;
 }

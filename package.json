@@ -15,7 +15,8 @@
     "build:all": "npm run build && npm run build:server",
     "start": "node dist-server/server/index.js",
     "preview": "vite preview",
-    "test:nsil": "tsx scripts/nsilSimulation.ts"
+    "test:nsil": "tsx scripts/nsilSimulation.ts",
+    "test:e2e": "playwright test --config=playwright.config.ts"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.981.0",

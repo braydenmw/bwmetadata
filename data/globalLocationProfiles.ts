@@ -102,7 +102,7 @@ export interface CityProfile {
   country: string;
   region: string;
   city: string;
-  entityType?: 'location' | 'region' | 'company' | 'government' | 'organization' | 'unknown';
+  entityType?: 'location' | 'region' | 'company' | 'government' | 'organization' | 'person' | 'unknown';
   entityName?: string;
   established: string;
   knownFor: string[];
@@ -151,6 +151,49 @@ export interface CityProfile {
   taxIncentives?: string[];
   laborLaws?: string[];
   environmentalRegulations?: string[];
+
+  // Enhanced LGU / Business / Person fields (optional)
+  fiscalReporting?: {
+    hasSIE?: boolean;
+    latestSIEUrl?: string;
+    lastReportedYear?: string;
+  };
+
+  businessRegistrationStats?: {
+    totalRegisteredBusinesses?: number;
+    registrationTimelineDays?: number;
+    latestYearSample?: string;
+  };
+
+  operationalCosts?: {
+    avgOfficeRentPerSqM?: number;
+    electricityKwhCommercial?: number;
+    internetSpeedAvgMbps?: number;
+  };
+
+  logistics?: {
+    nearestPort?: string;
+    distanceToPortKm?: number;
+    portTEUCapacity?: string;
+    airportPassengerVolume?: string;
+  };
+
+  sustainability?: {
+    aqi?: number;
+    percentRenewables?: number;
+  };
+
+  labor?: {
+    minimumWage?: string;
+    topUniversities?: Array<{ name: string; specialties: string[] }>;
+    talentPipelineNotes?: string;
+  };
+
+  risk?: {
+    politicalStabilityIndex?: number;
+    nextElectionDate?: string;
+    naturalDisasterRisk?: string;
+  };
   // Live search additional fields
   recentNews?: Array<{
     date: string;

@@ -1,10 +1,14 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+
+
 import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye, Info } from 'lucide-react';
+import PersonCard from './PersonCard';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
 import { researchLocation, type ResearchProgress, type LocationResult } from '../services/geminiLocationService';
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 import { generateDocument } from '../services/openaiClientService';
+import { deepLocationResearch, type DeepResearchResult } from '../services/deepLocationResearchService';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
@@ -31,8 +35,8 @@ interface GlobalLocationIntelligenceProps {
   onBack?: () => void;
   onOpenCommandCenter?: () => void;
   pendingLocation?: {
-    profile: any;
-    research: any;
+    profile: CityProfile;
+    research: LocationResult | null;
     city: string;
     country: string;
   } | null;
@@ -51,6 +55,8 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   
   // Live research state
   const [isResearching, setIsResearching] = useState(false);
+  const [useExternalSources, setUseExternalSources] = useState(false);
+  const [useRealTimeFeeds, setUseRealTimeFeeds] = useState(false);
   const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
   const [liveProfile, setLiveProfile] = useState<CityProfile | null>(null);
   const [researchResult, setResearchResult] = useState<MultiSourceResult | null>(null);
@@ -63,6 +69,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
 
   // Split-screen source browser state
   const [selectedSourceUrl, setSelectedSourceUrl] = useState<string | null>(null);
+  const [showPersonCard, setShowPersonCard] = useState(false);
   const [iframeError, setIframeError] = useState(false);
   const [isSourcePanelCollapsed, setIsSourcePanelCollapsed] = useState(false);
   const leftPanelRef = useRef<HTMLDivElement>(null);
@@ -71,6 +78,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [isGeneratingDocument, setIsGeneratingDocument] = useState(false);
   const [generatedDocument, setGeneratedDocument] = useState<string | null>(null);
   const [documentType, setDocumentType] = useState<'letter' | 'report' | 'briefing'>('report');
+  const [autoBackfillTriggered, setAutoBackfillTriggered] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -103,6 +111,80 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     ? wikiExtract.split('\n').map(p => p.trim()).filter(Boolean).slice(0, 2)
     : [];
 
+  // Debug: Log profile and research result for troubleshooting missing fields
+  useEffect(() => {
+    if (activeProfile) {
+      console.log('[FactSheet] activeProfile:', activeProfile);
+      if (activeProfile.entityType === 'person') setShowPersonCard(true);
+    }
+    if (researchResult) {
+      console.log('[FactSheet] researchResult:', researchResult);
+    }
+  }, [activeProfile, researchResult]);
+
+
+
+  // Compute which key profile areas are missing to help diagnose gaps
+  const computeMissingFields = (profile?: CityProfile | null, research?: MultiSourceResult | null) => {
+    const missing: string[] = [];
+    if (!profile) return missing;
+
+    if (!profile.leaders || profile.leaders.length === 0) missing.push('Leadership');
+    if (!profile.economics || !profile.economics.gdpLocal) missing.push('Economics');
+    if (!profile.demographics || !profile.demographics.population) missing.push('Demographics');
+    if (!profile.infrastructure || (!profile.infrastructure.airports?.length && !profile.infrastructure.seaports?.length)) missing.push('Infrastructure');
+    if (!profile.governmentLinks || profile.governmentLinks.length === 0) missing.push('Government sources');
+    if (!profile.investmentPrograms || profile.investmentPrograms.length === 0) missing.push('Investment programs');
+    if (!profile.operationalCosts || (!profile.operationalCosts.avgOfficeRentPerSqM && !profile.operationalCosts.electricityKwhCommercial && !profile.operationalCosts.internetSpeedAvgMbps)) missing.push('Operational costs');
+    if (!profile.labor || !profile.labor.topUniversities || profile.labor.topUniversities.length === 0) missing.push('Labor & Talent');
+    if (!profile.risk || (!profile.risk.politicalStabilityIndex && !profile.risk.naturalDisasterRisk)) missing.push('Risk & Security');
+    if (!profile.sustainability || (profile.sustainability.aqi === undefined && profile.sustainability.percentRenewables === undefined)) missing.push('Sustainability');
+    if (!profile._rawWikiExtract && (!research || !research.summary)) missing.push('Narrative / Wikipedia extract');
+    if (!research || (research.sources && research.sources.length < 2)) missing.push('Supporting sources');
+
+    return missing;
+  };
+
+  const missingFields = computeMissingFields(activeProfile, researchResult);
+
+  // Auto backfill - run deep research automatically if critical fields are missing (once per profile)
+  useEffect(() => {
+    if (!activeProfile || autoBackfillTriggered) return;
+    const critical = ['Leadership', 'Economics', 'Demographics'];
+    const missingCritical = missingFields.filter(f => critical.includes(f));
+    if (missingCritical.length === 0) return;
+
+    // Trigger auto backfill after brief delay to avoid UI race conditions
+    const timer = setTimeout(async () => {
+      setAutoBackfillTriggered(true);
+      setIsResearching(true);
+      setResearchProgress({ stage: 'Auto Backfill', progress: 5, message: 'Attempting to fill critical data gaps automatically' });
+      try {
+        const deep = await deepLocationResearch(activeProfile.city, (p) => setResearchProgress(p));
+        if (deep && deep.profile) {
+          setLiveProfile(deep.profile);
+          const merged = {
+            profile: deep.profile,
+            sources: (deep.sources || []).map((s: { title: string; url?: string; type?: string; reliability?: string }) => ({ title: s.title, url: s.url || '#', type: s.type || 'research', reliability: s.reliability || 'unknown' })),
+            summary: deep.narratives?.overview || deep.profile.city,
+            dataQuality: deep.dataQuality ? { completeness: deep.dataQuality.completeness, freshness: deep.dataQuality.freshness || 'N/A', sourcesCount: (deep.sources || []).length, leaderDataVerified: !!(deep.dataQuality.leaderDataVerified), economicDataYear: deep.dataQuality.economicDataYear || 'N/A' } : { completeness: 80, freshness: 'N/A', sourcesCount: (deep.sources || []).length, leaderDataVerified: false, economicDataYear: 'N/A' }
+          } as unknown as MultiSourceResult;
+          setResearchResult(merged);
+          setResearchProgress({ stage: 'Complete', progress: 100, message: 'Auto backfill complete.' });
+        } else {
+          setResearchProgress({ stage: 'Failed', progress: 0, message: 'Auto backfill returned no additional data.' });
+        }
+      } catch (err) {
+        console.error('Auto backfill failed:', err);
+        setResearchProgress({ stage: 'Error', progress: 0, message: 'Auto backfill failed' });
+      } finally {
+        setIsResearching(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [activeProfile, missingFields, autoBackfillTriggered]);
+
   // Handle search submission - LIVE SEARCH
   const handleSearchSubmit = useCallback(async (query: string) => {
     const trimmedQuery = query.trim();
@@ -124,6 +206,19 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       const result = await researchLocation(trimmedQuery, (progress) => {
         setResearchProgress(progress);
       });
+
+      // If no result and external sources enabled, try enhanced multiSourceResearch with external options
+      if (!result && useExternalSources) {
+        setResearchProgress({ stage: 'External Enrichment', progress: 10, message: 'Trying external data sources...' });
+        const externalResult = await (await import('../services/multiSourceResearchService_v2')).multiSourceResearch(trimmedQuery, (p) => setResearchProgress(p), true, { useExternalSources: true, useRealTimeFeeds: useRealTimeFeeds });
+        if (externalResult) {
+          setLiveProfile(externalResult.profile);
+          setResearchResult(externalResult as unknown as MultiSourceResult);
+          setResearchProgress({ stage: 'Complete', progress: 100, message: 'External enrichment complete' });
+          setIsResearching(false);
+          return;
+        }
+      }
       
       if (result) {
         setLiveProfile(result.profile);
@@ -158,14 +253,19 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     } finally {
       setIsResearching(false);
     }
-  }, []);
+  }, [useExternalSources, useRealTimeFeeds]);
 
   // Handle pending location data from CommandCenter
   useEffect(() => {
     if (pendingLocation) {
       setHasSelection(true);
       setLiveProfile(pendingLocation.profile);
-      setResearchResult(pendingLocation.research);
+      // Convert LocationResult.sources (string[]) into SourceCitation[] for compatibility
+      const multiResult: MultiSourceResult = pendingLocation.research ? {
+        ...pendingLocation.research,
+        sources: (pendingLocation.research.sources || []).map(s => typeof s === 'string' ? { title: s, url: '#', type: 'research', reliability: 'unknown' } : s)
+      } : null as unknown as MultiSourceResult;
+      setResearchResult(multiResult);
       setActiveProfileId(null);
       setSearchQuery('');
       setSearchResults([]);
@@ -195,10 +295,15 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
             // Use cached result - NO NEW RESEARCH NEEDED
             setHasSelection(true);
             setLiveProfile(result.profile);
-            setResearchResult(result);
+            // Ensure cached result sources are SourceCitation[]
+            const normalized = {
+              ...result,
+              sources: (result.sources || []).map((s: string | SourceCitation) => typeof s === 'string' ? { title: s, url: '#', type: 'research', reliability: 'unknown' } : s)
+            } as MultiSourceResult;
+            setResearchResult(normalized);
             setSearchQuery('');
             setSearchResults([]);
-            setResearchProgress({ stage: 'Complete', progress: 100, message: `Report loaded from cache: ${result.sources.length} sources.` });
+            setResearchProgress({ stage: 'Complete', progress: 100, message: `Report loaded from cache: ${normalized.sources.length} sources.` });
             
             // Clean up cache keys after using them
             localStorage.removeItem('gli-target');
@@ -274,9 +379,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         infrastructure: {
           powerCapacity: activeProfile.infrastructure?.powerCapacity || 'Infrastructure developed',
           internetPenetration: activeProfile.infrastructure?.internetPenetration || 'Connectivity available',
-          airports: activeProfile.infrastructure?.airports || [],
-          seaports: activeProfile.infrastructure?.seaports || []
+          airports: (activeProfile.infrastructure?.airports || []).map(a => typeof a === 'string' ? a : a.name),
+          seaports: (activeProfile.infrastructure?.seaports || []).map(s => typeof s === 'string' ? s : s.name)
         },
+
         competitiveAdvantages: activeProfile.strategicAdvantages || activeProfile.knownFor || [],
         investment: {
           incentives: activeProfile.investmentPrograms || [],
@@ -303,6 +409,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
 
   const profileType = activeProfile?.entityType ?? 'location';
   const isLocationProfile = profileType === 'location' || profileType === 'region';
+  const isPersonProfile = profileType === 'person';
   const displayName = (activeProfile as unknown as Record<string, unknown>)?.entityName as string || activeProfile?.city || 'Unknown Location';
   const displayRegion = [activeProfile?.region, activeProfile?.country].filter(Boolean).join(', ') || 'Unknown Region';
   
@@ -331,6 +438,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setLoadingError(null);
     setGovernmentLeaders([]);
     setRegionalComparisons(null);
+    setShowPersonCard(false);
   };
 
   // Auto-scroll to top when a profile is selected
@@ -532,7 +640,7 @@ th { background: #f1f5f9; }
                       handleSearchSubmit(searchQuery);
                     }
                   }}
-                  placeholder="Enter any city, region, or country (e.g., Tokyo, Paris, Sydney, Manila)..."
+                  placeholder="Enter any city, region, company, or public official (e.g., Tokyo, Ayala Corporation, Mayor John Doe)..."
                   className="w-full px-4 py-3 text-sm rounded-lg border border-white/10 bg-black/40 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
                   disabled={isResearching}
                 />
@@ -579,6 +687,16 @@ th { background: #f1f5f9; }
           </div>
           {hasSelection && (
             <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 text-xs text-slate-300">
+                <input type="checkbox" checked={useExternalSources} onChange={(e) => setUseExternalSources(e.target.checked)} />
+                <span>Use external data</span>
+              </label>
+              <label className="flex items-center gap-2 text-xs text-slate-300">
+                <input type="checkbox" checked={useRealTimeFeeds} onChange={(e) => setUseRealTimeFeeds(e.target.checked)} />
+                <span>Use real-time feeds</span>
+              </label>
+            </div>
               <button
                 onClick={handleClearSelection}
                 className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
@@ -691,6 +809,51 @@ th { background: #f1f5f9; }
         {/* Empty State with Search Instructions */}
         {!hasSelection && !isResearching && (
           <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl p-12 mb-6 text-center">
+              {missingFields.length > 0 && (
+                <div className="mb-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <strong>Data Gaps:</strong> {missingFields.join(', ')}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={async () => {
+                          if (!activeProfile) return;
+                          setIsResearching(true);
+                          setResearchProgress({ stage: 'Deep Research', progress: 0, message: 'Running deep research to fill gaps...' });
+                          try {
+                            const deep: DeepResearchResult | null = await deepLocationResearch(activeProfile.city, (p) => setResearchProgress(p));
+                            if (deep && deep.profile) {
+                              // Merge profile and sources
+                              setLiveProfile(deep.profile);
+                              const merged: MultiSourceResult = {
+                                profile: deep.profile,
+                                sources: (deep.sources || []).map((s: { title: string; url?: string; type?: string; reliability?: string }) => ({ title: s.title, url: s.url || '#', type: s.type || 'research', reliability: s.reliability || 'unknown' })),
+                                summary: deep.narratives?.overview || deep.profile.city,
+                                dataQuality: deep.dataQuality?.completeness || 80
+                              };
+                              setResearchResult(merged);
+                              setResearchProgress({ stage: 'Complete', progress: 100, message: 'Deep research complete.' });
+                            } else {
+                              setResearchProgress({ stage: 'Failed', progress: 0, message: 'Deep research returned no additional data.' });
+                              alert('Deep research did not return additional data.');
+                            }
+                          } catch (err) {
+                            console.error('Deep research failed:', err);
+                            setResearchProgress({ stage: 'Error', progress: 0, message: 'Deep research failed' });
+                          } finally {
+                            setIsResearching(false);
+                          }
+                        }}
+                        className="px-3 py-1 bg-amber-500/20 border border-amber-500/30 text-amber-300 rounded hover:bg-amber-500/30"
+                        disabled={isResearching}
+                      >
+                        {isResearching ? 'Researching...' : 'Run deeper research'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             <Globe className="w-16 h-16 text-amber-400/30 mx-auto mb-6" />
             <h2 className="text-2xl font-bold mb-2">BW Intel Fact Sheet</h2>
             <p className="text-slate-400 max-w-lg mx-auto mb-6">
@@ -705,7 +868,7 @@ th { background: #f1f5f9; }
                 <div>
                   <h3 className="text-sm font-semibold text-blue-300 mb-2">Search Tips for Best Results:</h3>
                   <ul className="text-xs text-slate-300 space-y-1">
-                    <li>• <strong>Cities:</strong> "Tokyo", "Manila", "San Francisco", "Dubai"</li>
+                    <li>• <strong>People / Companies:</strong> "Mayor John Doe", "Ayala Corporation", "Amazon", "Tokyo"</li>
                     <li>• <strong>Regions:</strong> "Silicon Valley", "Cebu Province", "Bavaria"</li>
                     <li>• <strong>Companies:</strong> "Microsoft", "Toyota", "Jollibee"</li>
                     <li>• <strong>Government Bodies:</strong> "Philippine government", "EU Commission"</li>
@@ -929,6 +1092,12 @@ th { background: #f1f5f9; }
               )}
               
               {/* Leaders Display */}
+              {isPersonProfile && showPersonCard && activeProfile.leaders && activeProfile.leaders[0] ? (
+                <div className="mb-4">
+                  <PersonCard leader={activeProfile.leaders[0]} />
+                </div>
+              ) : null}
+
               {activeProfile.leaders && activeProfile.leaders.length > 0 ? (
                 <div className="space-y-3">
                   {activeProfile.leaders.slice(0, 4).map((leader, idx) => (
