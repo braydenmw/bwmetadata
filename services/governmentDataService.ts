@@ -22,9 +22,11 @@ export interface GovernmentLeader {
   office?: string;
   website?: string;
   photoUrl?: string;
+  imageUrl?: string; // Alias for photoUrl for compatibility
   verified: boolean;
   sourceUrl: string;
   lastUpdated: string;
+  photoSourceUrl?: string; // Source of the photo
 }
 
 export interface GovernmentOffice {
@@ -187,39 +189,65 @@ async function fetchWikipediaGovernment(city: string, country: string): Promise<
     // Search for city and government-related articles
     const searchResponse = await fetch(
       `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(
-        `${city} ${country} mayor governor`
+        `${city} ${country} mayor governor president`
       )}&format=json&origin=*`
     ).then(r => r.json()).catch(() => ({ query: { search: [] } }));
 
     const leaders: GovernmentLeader[] = [];
-    
+
     if (searchResponse.query?.search) {
-      // Get details from top result
-      const topResult = searchResponse.query.search[0];
-      if (topResult) {
+      // Get details from top results
+      const topResults = searchResponse.query.search.slice(0, 3); // Check top 3 results
+
+      for (const result of topResults) {
         const pageResponse = await fetch(
           `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(
-            topResult.title
-          )}&prop=extracts&explaintext=true&format=json&origin=*`
+            result.title
+          )}&prop=extracts|pageimages&explaintext=true&piprop=original&format=json&origin=*`
         ).then(r => r.json()).catch(() => ({ query: { pages: {} } }));
 
         const pages = pageResponse.query?.pages || {};
         const pageId = Object.keys(pages)[0];
-        
+
         if (pageId && pages[pageId]?.extract) {
-          // Extract leader info from Wikipedia text (simplified)
           const extract = pages[pageId].extract;
-          
+          const imageUrl = pages[pageId]?.original?.source;
+
           // Try to extract current mayor/governor/leader
-          const mayorMatch = extract.match(/(?:Mayor|Governor|Mayor)(?:.*?)is\s+([A-Z][a-z\s]+)/i);
+          const mayorMatch = extract.match(/(?:Mayor|Governor|President|Prime Minister)(?:.*?)is\s+([A-Z][a-z\s]+)/i);
           if (mayorMatch) {
+            const leaderName = mayorMatch[1].trim();
+            const title = mayorMatch[0].split(/\s+/)[0];
+
+            // Try to get photo for this leader
+            let photoUrl = imageUrl;
+            if (!photoUrl && leaderName) {
+              // Try to get photo from leader's Wikipedia page
+              try {
+                const leaderPageResponse = await fetch(
+                  `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(leaderName)}&prop=pageimages&piprop=original&format=json&origin=*`
+                ).then(r => r.json()).catch(() => ({ query: { pages: {} } }));
+
+                const leaderPages = leaderPageResponse.query?.pages || {};
+                const leaderPageId = Object.keys(leaderPages)[0];
+                if (leaderPageId && leaderPages[leaderPageId]?.original?.source) {
+                  photoUrl = leaderPages[leaderPageId].original.source;
+                }
+              } catch (photoError) {
+                console.warn('Failed to fetch leader photo:', photoError);
+              }
+            }
+
             leaders.push({
-              name: mayorMatch[1].trim(),
-              title: mayorMatch[0].split(/\s+/)[0], // Mayor, Governor, etc.
-              role: mayorMatch[0].split(/\s+/)[0],
+              name: leaderName,
+              title: title,
+              role: title,
               tenure: 'Current',
+              photoUrl: photoUrl,
+              imageUrl: photoUrl, // Alias for compatibility
+              photoSourceUrl: photoUrl ? `https://en.wikipedia.org/wiki/${encodeURIComponent(result.title)}` : undefined,
               verified: true,
-              sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(topResult.title)}`,
+              sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(result.title)}`,
               lastUpdated: new Date().toISOString()
             });
           }

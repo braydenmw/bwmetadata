@@ -40,3 +40,6 @@ _doc209_extracted.txt
 
 # Local build output artifacts
 build_output.txt
+
+# Deployment zip files
+bw-nexus-ai-deployment.zip
