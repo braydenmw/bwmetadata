@@ -44,6 +44,12 @@ const App: React.FC = () => {
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
     const [viewMode, setViewMode] = useState<ViewMode>('command-center');
     const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
+    const [pendingLocationData, setPendingLocationData] = useState<{
+        profile: any;
+        research: any;
+        city: string;
+        country: string;
+    } | null>(null);
 
     useEffect(() => {
         const loadReports = async () => {
@@ -418,6 +424,7 @@ const App: React.FC = () => {
                     <CommandCenter
                         onEnterPlatform={() => setViewMode('main')}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
+                        onLocationResearched={(data) => setPendingLocationData(data)}
                     />
                 </div>
             );
@@ -455,6 +462,8 @@ const App: React.FC = () => {
                     <GlobalLocationIntelligence
                         onBack={() => setViewMode('main')}
                         onOpenCommandCenter={() => setViewMode('command-center')}
+                        pendingLocation={pendingLocationData}
+                        onLocationLoaded={() => setPendingLocationData(null)}
                     />
                 </div>
             );

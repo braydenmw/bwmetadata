@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink, AlertCircle } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
 // OSINT search removed - using unified location research
@@ -9,9 +9,15 @@ import { CITY_PROFILES } from '../data/globalLocationProfiles';
 interface CommandCenterProps {
     onEnterPlatform?: () => void;
     onOpenGlobalLocationIntel?: () => void;
+    onLocationResearched?: (data: {
+        profile: any;
+        research: any;
+        city: string;
+        country: string;
+    }) => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
@@ -24,6 +30,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     const [comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
     const [researchSummary, setResearchSummary] = useState<string>('');
+    const [liveProfile, setLiveProfile] = useState<any>(null);
+    const [researchResult, setResearchResult] = useState<any>(null);
+    const [searchError, setSearchError] = useState<string | null>(null);
 
     // Handle location search - SIMPLIFIED Gemini-first approach
     const handleLocationSearch = async () => {
@@ -38,24 +47,34 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         console.log('[CommandCenter] Starting research...');
         setIsResearchingLocation(true);
         setLocationResult(null);
+        setLiveProfile(null);
+        setResearchResult(null);
         setComparisonCities([]);
         setResearchSummary('');
+        setSearchError(null);
         setResearchProgress({ stage: 'initialization', progress: 5, message: 'Connecting to AI intelligence...' });
 
         try {
             console.log('[CommandCenter] Calling researchLocation...');
             // Direct Gemini AI research - simple and reliable
-            const result = await researchLocation(
-                locationQuery,
-                (progress) => {
-                    console.log('[CommandCenter] Progress:', progress);
-                    setResearchProgress(progress);
-                }
-            );
+            const result = await Promise.race([
+                researchLocation(
+                    locationQuery,
+                    (progress) => {
+                        console.log('[CommandCenter] Progress:', progress);
+                        setResearchProgress(progress);
+                    }
+                ),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Search timeout - taking longer than expected')), 40000)
+                )
+            ]);
 
             console.log('[CommandCenter] Research result:', result);
             
             if (result && result.profile) {
+                setLiveProfile(result.profile);
+                setResearchResult(result);
                 setLocationResult({
                     city: result.profile.city,
                     country: result.profile.country,
@@ -80,8 +99,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                 // Store in localStorage for quick access in report
                 localStorage.setItem('lastLocationResult', JSON.stringify(result));
+                setResearchProgress({ stage: 'Complete', progress: 100, message: 'Research complete!' });
             } else {
                 console.error('[CommandCenter] No result returned');
+                setSearchError('No data found - please try again');
                 setResearchProgress({ stage: 'error', progress: 0, message: 'No data found - please try again' });
             }
         } catch (error) {
@@ -105,6 +126,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 userMessage = `Error: ${errorMessage}`;
             }
             
+            setSearchError(userMessage);
             setResearchProgress({ stage: 'error', progress: 0, message: userMessage });
         } finally {
             setIsResearchingLocation(false);
@@ -611,6 +633,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </button>
                                 </div>
 
+                                {/* Error Banner */}
+                                {searchError && !isResearchingLocation && (
+                                    <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-2">
+                                        <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                                        <div className="flex-1">
+                                            <p className="text-xs text-red-300 font-semibold">Search Error</p>
+                                            <p className="text-xs text-red-200/80 mt-0.5">{searchError}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => setSearchError(null)}
+                                            className="text-red-400 hover:text-red-300 text-xs font-semibold"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                )}
+
                                 {/* Research Progress - LIVE */}
                                 {isResearchingLocation && researchProgress && (
                                     <div className="bg-black/40 border border-purple-500/30 rounded-xl p-4 mb-4">
@@ -640,8 +679,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             </div>
                                             <button
                                                 onClick={() => {
+                                                    const locationData = {
+                                                        profile: liveProfile,
+                                                        research: researchResult,
+                                                        city: locationResult.city,
+                                                        country: locationResult.country
+                                                    };
+                                                    // Both methods - legacy localStorage AND new prop callback
                                                     localStorage.setItem('gli-target', `${locationResult.city}, ${locationResult.country}`);
-                                                    localStorage.setItem('gli-cached-research', localStorage.getItem('lastLocationResult') || '');
+                                                    localStorage.setItem('gli-cached-research', JSON.stringify(researchResult));
+                                                    
+                                                    // New method - pass directly via callback
+                                                    if (onLocationResearched) {
+                                                        onLocationResearched(locationData);
+                                                    }
+                                                    
                                                     if (onOpenGlobalLocationIntel) {
                                                         onOpenGlobalLocationIntel();
                                                     } else if (onEnterPlatform) {

@@ -11,7 +11,6 @@
  */
 
 import { type CityProfile } from '../data/globalLocationProfiles';
-import { researchLocationAWS } from './awsBedrockService';
 
 const API_BASE = (import.meta as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || '';
 
@@ -28,6 +27,21 @@ export interface ResearchProgress {
   stage: string;
   progress: number;
   message: string;
+}
+
+// ==================== UTILITIES ====================
+
+async function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  timeoutMessage: string
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(timeoutMessage)), timeoutMs)
+    )
+  ]);
 }
 
 // ==================== SERVER FALLBACK ====================
@@ -131,10 +145,6 @@ async function fetchLocationIntelligenceFromServer(
           ? ai.economy.mainIndustries.map((i: { name?: string } | string) => typeof i === 'string' ? i : i?.name).filter(Boolean)
           : [],
         tradePartners: ai?.economy?.tradePartners || [],
-        fdi: ai?.economy?.fdi || 
-          (data.worldBank?.['Foreign Direct Investment']?.value 
-            ? `$${(data.worldBank['Foreign Direct Investment'].value / 1e9).toFixed(2)}B FDI` 
-            : undefined)
       },
       demographics: {
         population: getPopulation(),
@@ -164,8 +174,6 @@ async function fetchLocationIntelligenceFromServer(
         ? `${countryInfo.area.toLocaleString()} km²` 
         : ai?.geography?.area || 'Unknown',
       businessHours: '9:00 AM - 5:00 PM',
-      flagUrl: countryInfo?.flags?.svg || countryInfo?.flags?.png || undefined,
-      googleMapsUrl: countryInfo?.maps?.googleMaps || ai?.links?.googleMaps || undefined,
       _rawWikiExtract: data.wikipedia || undefined
     };
 
@@ -175,8 +183,7 @@ async function fetchLocationIntelligenceFromServer(
       profile,
       sources: data.sources || ['OpenStreetMap', 'Wikipedia', 'World Bank', 'REST Countries'],
       summary: ai?.overview?.significance || ai?.overview?.description || `Intelligence report for ${query}.`,
-      dataQuality: ai?.dataQuality?.completeness || data.dataQuality?.completeness || 70,
-      aiEnhanced: data.aiEnhanced || false
+      dataQuality: ai?.dataQuality?.completeness || data.dataQuality?.completeness || 70
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -244,8 +251,7 @@ async function fetchLocationIntelligenceWithOpenAI(
         employmentRate: intelligence.economy.unemployment,
         avgIncome: intelligence.economy.averageIncome,
         majorIndustries: intelligence.economy.mainIndustries,
-        tradePartners: intelligence.economy.tradePartners,
-        fdi: undefined
+        tradePartners: intelligence.economy.tradePartners
       },
       demographics: {
         population: intelligence.demographics.population,
@@ -255,8 +261,10 @@ async function fetchLocationIntelligenceWithOpenAI(
         languages: intelligence.demographics.languages
       },
       infrastructure: {
-        airports: intelligence.infrastructure.airports,
-        seaports: intelligence.infrastructure.seaports,
+        airports: (Array.isArray(intelligence.infrastructure.airports) ? intelligence.infrastructure.airports : [])
+          .map((a: string | { name: string; type: string; routes?: string }) => typeof a === 'string' ? { name: a, type: 'Airport' } : a) || [],
+        seaports: (Array.isArray(intelligence.infrastructure.seaports) ? intelligence.infrastructure.seaports : [])
+          .map((s: string | { name: string; capacity?: string; type: string }) => typeof s === 'string' ? { name: s, type: 'Port' } : s) || [],
         powerCapacity: intelligence.infrastructure.powerCapacity,
         internetPenetration: intelligence.infrastructure.internetPenetration,
         specialEconomicZones: []
@@ -266,8 +274,6 @@ async function fetchLocationIntelligenceWithOpenAI(
       climate: intelligence.geography.climate,
       areaSize: intelligence.geography.area,
       businessHours: '9:00 AM - 5:00 PM',
-      flagUrl: undefined,
-      googleMapsUrl: undefined,
       _rawWikiExtract: intelligence.overview.significance
     };
 
@@ -277,8 +283,7 @@ async function fetchLocationIntelligenceWithOpenAI(
       profile,
       sources: ['OpenAI GPT-4', 'Real-time Intelligence Analysis'],
       summary: intelligence.overview.significance,
-      dataQuality: 95,
-      aiEnhanced: true
+      dataQuality: 95
     };
 
   } catch (error) {
@@ -296,6 +301,7 @@ async function fetchLocationIntelligenceClientSide(
   onProgress?: (progress: ResearchProgress) => void
 ): Promise<LocationResult | null> {
   try {
+    console.log('[Client] Starting client-side research for:', query);
     onProgress?.({ stage: 'Geocoding', progress: 10, message: 'Looking up location...' });
 
     // 1. Geocoding from OpenStreetMap Nominatim (free, no API key)
@@ -304,11 +310,15 @@ async function fetchLocationIntelligenceClientSide(
       { headers: { 'User-Agent': 'BWGA-Intelligence/1.0' } }
     );
     const geoData = await geoResponse.json();
+    console.log('[Client] Geo data:', geoData);
     const geo = geoData[0];
     
     if (!geo) {
-      throw new Error('Location not found');
+      console.error('[Client] Geocoding failed - no results for:', query);
+      throw new Error(`Location not found: "${query}"`);
     }
+    
+    console.log('[Client] Geocoding successful:', geo.address?.country, geo.address?.state);
 
     const countryCode = (geo.address?.country_code || '').toUpperCase();
     const countryName = geo.address?.country || '';
@@ -466,8 +476,7 @@ async function fetchLocationIntelligenceClientSide(
       climate: 'Varies by season',
       areaSize: countryInfo?.area ? `${countryInfo.area.toLocaleString()} km²` : 'N/A',
       businessHours: '9:00 AM - 5:00 PM',
-      flagUrl: countryInfo?.flags?.svg || countryInfo?.flags?.png,
-      googleMapsUrl: countryInfo?.maps?.googleMaps || `https://maps.google.com/?q=${encodeURIComponent(query)}`,
+      // flagUrl and googleMapsUrl removed to match CityProfile type
       _rawWikiExtract: wikiExtract
     };
 
@@ -483,6 +492,7 @@ async function fetchLocationIntelligenceClientSide(
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('[Client] Direct API research failed:', errorMessage);
+    console.error('[Client] Full error:', error);
     throw error;
   }
 }
@@ -508,10 +518,11 @@ export async function researchLocation(
       );
 
       if (result) {
+        console.log('[Location Service] Server research successful');
         return result;
       }
     } catch (error) {
-      console.log('[Location Service] Server unavailable, trying OpenAI...');
+      console.log('[Location Service] Server unavailable:', error instanceof Error ? error.message : error);
     }
   }
 
@@ -530,12 +541,12 @@ export async function researchLocation(
       return result;
     }
   } catch (error) {
-    console.log('[Location Service] OpenAI unavailable, using public data APIs');
+    console.log('[Location Service] OpenAI unavailable:', error instanceof Error ? error.message : error);
   }
 
-  // Final fallback: Free public APIs (basic data only)
+  // Final fallback: Free public APIs (basic data only) - THIS SHOULD ALWAYS WORK
   try {
-    onProgress?.({ stage: 'Public Data', progress: 5, message: 'Researching with public data...' });
+    onProgress?.({ stage: 'Public Data', progress: 5, message: 'Researching with public data APIs...' });
 
     const result = await withTimeout(
       fetchLocationIntelligenceClientSide(query, onProgress),
@@ -544,11 +555,16 @@ export async function researchLocation(
     );
 
     if (result) {
+      console.log('[Location Service] Client-side research successful');
       return result;
     }
+    
+    console.error('[Location Service] Client-side returned null');
+    onProgress?.({ stage: 'Error', progress: 0, message: 'Location not found - try a different search term' });
+    return null;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[Location Service] All research methods failed:', errorMessage);
+    console.error('[Location Service] All research methods failed:', errorMessage, error);
     
     if (errorMessage.includes('Location not found')) {
       onProgress?.({ stage: 'Error', progress: 0, message: 'Location not found - try a different search term' });
@@ -560,9 +576,6 @@ export async function researchLocation(
     
     return null;
   }
-  
-  onProgress?.({ stage: 'Error', progress: 0, message: 'No results returned' });
-  return null;
 }
 
 // ==================== EXPORT ====================

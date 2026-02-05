@@ -30,9 +30,16 @@ const buildFallbackMapUrl = (lat: number, lon: number) =>
 interface GlobalLocationIntelligenceProps {
   onBack?: () => void;
   onOpenCommandCenter?: () => void;
+  pendingLocation?: {
+    profile: any;
+    research: any;
+    city: string;
+    country: string;
+  } | null;
+  onLocationLoaded?: () => void;
 }
 
-const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({ onOpenCommandCenter }) => {
+const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({ onOpenCommandCenter, pendingLocation, onLocationLoaded }) => {
   // Core state - starts EMPTY, no pre-selection
   const [profiles, setProfiles] = useState<CityProfile[]>(CITY_PROFILES);
   const [activeProfileId, setActiveProfileId] = useState<string | null>(null);
@@ -152,6 +159,24 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       setIsResearching(false);
     }
   }, []);
+
+  // Handle pending location data from CommandCenter
+  useEffect(() => {
+    if (pendingLocation) {
+      setHasSelection(true);
+      setLiveProfile(pendingLocation.profile);
+      setResearchResult(pendingLocation.research);
+      setActiveProfileId(null);
+      setSearchQuery('');
+      setSearchResults([]);
+      setResearchProgress({ stage: 'Complete', progress: 100, message: 'Report loaded successfully' });
+      
+      // Clear the pending data
+      if (onLocationLoaded) {
+        onLocationLoaded();
+      }
+    }
+  }, [pendingLocation, onLocationLoaded]);
 
   // Load existing profiles and check for cached research results
   useEffect(() => {
