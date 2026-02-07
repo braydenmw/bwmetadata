@@ -10,6 +10,7 @@ import AdversarialReasoningService from './AdversarialReasoningService';
 import { EventBus } from './EventBus';
 import { GovernanceService } from './GovernanceService';
 import { optimizedAgenticBrain, computeFrontierIntelligence } from './algorithms';
+import { masterAutonomousOrchestrator } from './MasterAutonomousOrchestrator';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -17,6 +18,18 @@ export class ReportOrchestrator {
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
     console.log('DEBUG: Starting ReportOrchestrator assembly for', params.organizationName);
 
+    // Check if full autonomous orchestration is requested (100% performance mode)
+    const isFullAutonomy = params.calibration?.autonomousMode === 'full' ||
+                          params.intentTags?.includes('100-percent') ||
+                          params.intentTags?.includes('full-autonomy');
+
+    if (isFullAutonomy) {
+      console.log('🎯 Activating Master Autonomous Orchestrator for 100% performance');
+      const masterResult = await masterAutonomousOrchestrator.orchestrateCompleteAnalysis(params);
+      return masterResult.reportPayload;
+    }
+
+    // Standard orchestration for normal operation
     const refinedIntake = this.toRefinedIntake(params);
     const spiInput = mapToSPI(refinedIntake);
     const ivasInput = mapToIVAS(refinedIntake);
@@ -29,7 +42,7 @@ export class ReportOrchestrator {
       seamResult,
       symbioticPartners,
       diversificationAnalysis,
-      ethicsCheck,
+      ethicsCheck, 
       orchestrationResult,
       priResult,
       tcoResult,
@@ -43,7 +56,7 @@ export class ReportOrchestrator {
       generateSEAM(params),
       generateSymbioticMatches(params),
       this.runDiversificationAnalysis(params),
-      runEthicalSafeguards(params),
+      runEthicalSafeguards(params), 
       runOpportunityOrchestration(this.buildRegionProfile(params)),
       DerivedIndexService.calculatePRI(params),
       DerivedIndexService.calculateTCO(params),
@@ -88,7 +101,7 @@ export class ReportOrchestrator {
           [],
         urgency: params.expansionTimeline
       },
-      regionalProfile: this.buildRegionalProfile(params),
+      regionalProfile: this.buildReportPayloadRegionalProfile(params),
       economicSignals: this.buildEconomicSignals(params, rroiResult),
       opportunityMatches: this.buildOpportunityMatches(symbioticPartners, spiResult),
       risks: this.buildRisks(params, ethicsCheck),
@@ -145,7 +158,7 @@ export class ReportOrchestrator {
           });
         }
         // Ecosystem pulse from SEAM + RROI
-        const alignment = Math.min(100, (seamResult?.overallAlignment || 70));
+        const alignment = Math.min(100, (seamResult?.score || 70));
         const bottlenecks = (seamResult?.gaps || []).slice(0, 3);
         const opportunities = [
           `Infrastructure readiness ${rroiResult.components.infrastructure.score}/100`,
@@ -159,6 +172,7 @@ export class ReportOrchestrator {
     return payload;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static toAgenticBrainSnapshot(result: any): AgenticBrainSnapshot {
     return {
       proceedSignal: result.executiveBrief.proceedSignal,
@@ -214,7 +228,7 @@ export class ReportOrchestrator {
     };
   }
 
-  private static buildRegionalProfile(params: ReportParameters): ReportPayload['regionalProfile'] {
+  private static buildReportPayloadRegionalProfile(params: ReportParameters): ReportPayload['regionalProfile'] {
     const cityData = GLOBAL_CITY_DATABASE[params.country];
     return {
       demographics: {

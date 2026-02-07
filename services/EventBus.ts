@@ -50,7 +50,42 @@ export type NexusEvent =
   | { type: 'learningUpdate'; reportId: string; message: string; improvements?: string[] }
   | { type: 'ecosystemPulse'; reportId: string; signals: EcosystemPulse }
   | { type: 'approvalUpdated'; reportId: string; approval: ApprovalRecord; mandate?: MandateRecord }
-  | { type: 'provenanceLogged'; reportId: string; entry: ProvenanceEntry; mandate?: MandateRecord };
+  | { type: 'provenanceLogged'; reportId: string; entry: ProvenanceEntry; mandate?: MandateRecord }
+  // Autonomous system events
+  | { type: 'fullyAutonomousRunComplete'; runId: string; deepThinking: any; generatedDocument?: any; autonomousActions: any[]; improvements?: any[]; spawnedAgents?: any[]; memory: any; liabilityAssessment: any[]; performance: any }
+  | { type: 'improvementsSuggested'; suggestions: any[] }
+  | { type: 'agentSpawned'; agent: any }
+  | { type: 'taskAssigned'; task: any; agent: any }
+  | { type: 'agentTerminated'; agent: any; reason: string }
+  | { type: 'schedulerStarted' }
+  | { type: 'schedulerStopped' }
+  | { type: 'taskScheduled'; task: any }
+  | { type: 'taskRemoved'; taskId: string }
+  | { type: 'taskExecuted'; task: any; success: boolean; error?: string; duration: number }
+  | { type: 'triggerExecuted'; trigger: any; data: any }
+  | { type: 'errorReported'; error: any }
+  | { type: 'errorResolved'; error: any }
+  | { type: 'errorOccurred'; error: any }
+  | { type: 'systemDegraded'; resource?: string; usage?: number }
+  | { type: 'systemOverload'; resource?: string; usage?: number }
+  | { type: 'searchConfigUpdated'; config: any }
+  | { type: 'searchResultReady'; query: string; result: any; trigger?: any }
+  | { type: 'searchStarted'; query: string; trigger: any }
+  | { type: 'searchCompleted'; query: string; result: any }
+  | { type: 'consultantInsightsGenerated'; insights: any[]; context: string }
+  | { type: 'consultantReportInsights'; insights: any[] }
+  | { type: 'paramsUpdated'; params: any }
+  | { type: 'reportGenerationStarted'; params: any }
+  | { type: 'autonomousSearchRequest'; query: string; priority?: string }
+  // Self-fixing engine events
+  | { type: 'selfFixApplied'; errorId: string; fixDescription: string; confidence: number }
+  | { type: 'serviceRecovery'; errorId: string; [key: string]: unknown }
+  | { type: 'networkRetry'; errorId: string; context: unknown; maxRetries: number; backoffMs: number }
+  | { type: 'useFallbackData'; errorId: string; reason: string }
+  | { type: 'reduceParallelism'; errorId: string; suggestion: string }
+  | { type: 'logicRecovery'; errorId: string; action: string }
+  | { type: 'securityRestriction'; errorId: string; restriction: string }
+  | { type: 'userInteraction'; action: string; [key: string]: any };
 
 type Handler<T extends NexusEvent['type']> = (event: Extract<NexusEvent, { type: T }>) => void;
 
@@ -68,7 +103,7 @@ class EventBusImpl {
 
   publish(event: NexusEvent): void {
     // Log for traceability
-    this.eventLog.push({ ts: Date.now(), type: event.type, reportId: event.reportId });
+    this.eventLog.push({ ts: Date.now(), type: event.type, reportId: (event as any).reportId || '' });
     if (this.eventLog.length > 100) this.eventLog.shift();
 
     const set = this.listeners.get(event.type);
@@ -95,6 +130,21 @@ class EventBusImpl {
   clear() {
     this.listeners.clear();
     this.eventLog = [];
+  }
+
+  /** Alias for subscribe (for compatibility) */
+  on<T extends NexusEvent['type']>(type: T, handler: Handler<T>): () => void {
+    return this.subscribe(type, handler);
+  }
+
+  /** Alias for publish (for compatibility) */
+  emit(event: NexusEvent): void {
+    return this.publish(event);
+  }
+
+  /** Unsubscribe a handler from an event type */
+  off<T extends NexusEvent['type']>(type: T, handler: Function): void {
+    this.listeners.get(type)?.delete(handler);
   }
 }
 

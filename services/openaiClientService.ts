@@ -7,7 +7,8 @@
  * Used for BW Intel Fact Sheet when backend is unavailable
  */
 
-const OPENAI_API_KEY = import.meta.env?.VITE_OPENAI_API_KEY || '';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const OPENAI_API_KEY = (import.meta as any).env?.VITE_OPENAI_API_KEY || '';
 
 export interface OpenAIResponse {
   content: string;
@@ -247,6 +248,9 @@ Purpose: ${purpose || 'Information sharing'}
   `;
 
   const prompt = `You are a professional intelligence analyst. Using the provided intelligence data, create a ${documentType} about ${intelligence.overview.displayName}.
+
+Context:
+${context}
 
 ${documentType === 'letter' ? `Write a formal business letter to ${recipient || 'the recipient'} introducing investment/business opportunities in ${intelligence.overview.displayName}.` : ''}
 

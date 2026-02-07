@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, BarChart3, Scale, Rocket, Building2, Globe, Layers, Activity, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink, AlertCircle } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, Scale, Rocket, Building2, Globe, Layers, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink, AlertCircle } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
 // OSINT search removed - using unified location research
@@ -9,15 +9,18 @@ import { CITY_PROFILES } from '../data/globalLocationProfiles';
 interface CommandCenterProps {
     onEnterPlatform?: () => void;
     onOpenGlobalLocationIntel?: () => void;
+    onOpenMasterOrchestrator?: () => void;
     onLocationResearched?: (data: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         profile: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         research: any;
         city: string;
         country: string;
     }) => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onLocationResearched }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onOpenMasterOrchestrator, onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
@@ -30,7 +33,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     const [comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
     const [researchSummary, setResearchSummary] = useState<string>('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [liveProfile, setLiveProfile] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [researchResult, setResearchResult] = useState<any>(null);
     const [searchError, setSearchError] = useState<string | null>(null);
 
@@ -68,7 +73,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 new Promise((_, reject) => 
                     setTimeout(() => reject(new Error('Search timeout - taking longer than expected')), 40000)
                 )
-            ]);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ]) as Record<string, any>;
 
             console.log('[CommandCenter] Research result:', result);
             
@@ -285,16 +291,43 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE TECHNOLOGY</p>
                     <h2 className="text-xl md:text-2xl font-light mb-6">What BWGA AI Actually Is</h2>
                     
-                    <div className="space-y-4 text-sm text-white/70 leading-relaxed mb-8">
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed">
                         <p>
-                            To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
+                            To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating. We needed something fundamentally different: an AI that reasons, validates, and produces evidence you can defend in a boardroom.
                         </p>
                         <p>
-                            So, we built <span className="text-amber-400 font-semibold">BWGA Intelligence AI</span>. It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a digital boardroom. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine.
+                            So, we built <strong className="text-white">BWGA Intelligence AI</strong>—the world's first Sovereign-Grade Intelligence Operating System. This is not a chatbot. It is a <strong className="text-white">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and write—coordinated by two proprietary engines working in concert.
                         </p>
                         <p>
-                            We call this the <span className="text-white font-semibold">NSIL (Nexus Strategic Intelligence Layer)</span>. It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly.
+                            The first is the <strong className="text-amber-400">NSIL (Nexus Strategic Intelligence Layer)</strong>—a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction. The second is the <strong className="text-purple-400">Human Cognition Engine</strong>—7 neuroscience-based models drawn from university-level research that simulate how real decision-makers process complexity, allocate attention, and react under pressure. Together, they don't just analyze data—they anticipate how humans will respond to it.
                         </p>
+                        <p>
+                            What this means in practice: every feature on this page—from the instant research engine to the live report builder to the embedded consultant—is powered by this architecture. Scroll down to see each one and try them yourself.
+                        </p>
+                    </div>
+
+                    {/* Platform Feature Map */}
+                    <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="bg-white/5 border border-amber-500/20 rounded-xl p-4 text-center">
+                            <Search size={20} className="text-amber-400 mx-auto mb-2" />
+                            <p className="text-xs font-semibold text-white mb-1">BW AI Search</p>
+                            <p className="text-[10px] text-white/50">Instant intelligence briefs on any city, company, or government</p>
+                        </div>
+                        <div className="bg-white/5 border border-amber-500/20 rounded-xl p-4 text-center">
+                            <FileCheck size={20} className="text-amber-400 mx-auto mb-2" />
+                            <p className="text-xs font-semibold text-white mb-1">Live Report System</p>
+                            <p className="text-[10px] text-white/50">Real-time report builder with multi-agent analysis and scoring</p>
+                        </div>
+                        <div className="bg-white/5 border border-purple-500/20 rounded-xl p-4 text-center">
+                            <Users size={20} className="text-purple-400 mx-auto mb-2" />
+                            <p className="text-xs font-semibold text-white mb-1">BW Consultant</p>
+                            <p className="text-[10px] text-white/50">Embedded AI advisor inside the live report builder</p>
+                        </div>
+                        <div className="bg-white/5 border border-amber-500/20 rounded-xl p-4 text-center">
+                            <GitBranch size={20} className="text-amber-400 mx-auto mb-2" />
+                            <p className="text-xs font-semibold text-white mb-1">Document Factory</p>
+                            <p className="text-[10px] text-white/50">200+ institutional-grade reports, prospectuses, and legal templates</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -313,68 +346,94 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="difference" className="py-16 px-4 bg-[#0a0a0a]">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE DIFFERENCE</p>
-                    <h2 className="text-xl md:text-2xl font-light mb-2">Why This Is Different (The "Magic")</h2>
-                    <p className="text-sm text-white/60 mb-8">
-                        BWGA AI doesn't just generate text like other AI; it puts your ideas through a digital gauntlet, rigorously stress-testing them.
+                    <h2 className="text-xl md:text-2xl font-light mb-6">What Happens When You Use It</h2>
+
+                    <p className="text-sm text-white/70 leading-relaxed mb-8">
+                        Most platforms hand you a blank page and wish you luck. This one walks with you from first question to final document—every step validated, scored, and traceable. Here is what a typical session looks like:
                     </p>
-                    
-                    <div className="space-y-6">
-                        {/* Beyond Echo Chambers */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <div className="flex items-start gap-3 mb-3">
-                                <div className="w-10 h-10 bg-amber-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <Shield size={20} className="text-amber-400" />
-                                </div>
-                                <h3 className="text-base font-medium">Beyond Echo Chambers</h3>
+
+                    {/* Journey Steps — vertical timeline */}
+                    <div className="relative pl-8 border-l-2 border-amber-500/30 space-y-8 mb-10">
+                        {/* Step 1 */}
+                        <div className="relative">
+                            <div className="absolute -left-[2.55rem] top-0 w-8 h-8 bg-amber-500/20 border-2 border-amber-500 rounded-full flex items-center justify-center">
+                                <span className="text-amber-400 text-xs font-bold">1</span>
                             </div>
-                            <p className="text-sm text-white/70 leading-relaxed">
-                                Unlike generic Large Language Models (LLMs) such as ChatGPT or Bard, which are designed to be helpful and agreeable, BWGA AI is built for adversarial reasoning. These LLMs can generate business plans, but independent analysis reveals a tendency to confirm user biases and a lack of critical evaluation. They are optimized for language prediction, not strategic validation. BWGA AI, in contrast, actively seeks weaknesses.
+                            <h3 className="text-base font-medium mb-1">Research the Landscape</h3>
+                            <p className="text-sm text-white/60 leading-relaxed">
+                                You type a city, company, or government into <strong className="text-amber-400">BW AI Search</strong>. In seconds, the system pulls verified data from public sources and delivers a one-page intelligence brief—demographics, GDP, leadership, infrastructure, and comparison benchmarks. You haven't left this page.
                             </p>
                         </div>
 
-                        {/* Consultant-Level Scrutiny */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <div className="flex items-start gap-3 mb-3">
-                                <div className="w-10 h-10 bg-amber-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <Users size={20} className="text-amber-400" />
-                                </div>
-                                <h3 className="text-base font-medium">Consultant-Level Scrutiny, Automated</h3>
+                        {/* Step 2 */}
+                        <div className="relative">
+                            <div className="absolute -left-[2.55rem] top-0 w-8 h-8 bg-amber-500/20 border-2 border-amber-500 rounded-full flex items-center justify-center">
+                                <span className="text-amber-400 text-xs font-bold">2</span>
                             </div>
-                            <p className="text-sm text-white/70 leading-relaxed">
-                                Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.
+                            <h3 className="text-base font-medium mb-1">Define Your Opportunity</h3>
+                            <p className="text-sm text-white/60 leading-relaxed">
+                                You enter the platform and complete the <strong className="text-amber-400">Ten-Step Intake Protocol</strong>—a structured process that captures every dimension of your project: identity, strategy, financials, risk, governance. Most users finish in 30–45 minutes. By the end, the system has a precise, measurable dataset it can trust.
                             </p>
                         </div>
 
-                        {/* Quantified */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <div className="flex items-start gap-3 mb-3">
-                                <div className="w-10 h-10 bg-amber-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <BarChart3 size={20} className="text-amber-400" />
-                                </div>
-                                <h3 className="text-base font-medium">Quantified, Not Just "Considered"</h3>
+                        {/* Step 3 */}
+                        <div className="relative">
+                            <div className="absolute -left-[2.55rem] top-0 w-8 h-8 bg-amber-500/20 border-2 border-amber-500 rounded-full flex items-center justify-center">
+                                <span className="text-amber-400 text-xs font-bold">3</span>
                             </div>
-                            <p className="text-sm text-white/70 leading-relaxed">
-                                While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 38 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard.
+                            <h3 className="text-base font-medium mb-1">Watch the System Think</h3>
+                            <p className="text-sm text-white/60 leading-relaxed">
+                                Hit generate. The <strong className="text-amber-400">Live Report System</strong> activates in real time—you see the NSIL engine scoring your project across 38 formulas, five adversarial personas debating its merits, and the Human Cognition Engine pressure-testing how decision-makers will respond. Nothing is hidden. Every score, debate transcript, and reasoning chain is visible and traceable.
                             </p>
                         </div>
 
-                        {/* Simulating Real-World Pressure */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <div className="flex items-start gap-3 mb-3">
-                                <div className="w-10 h-10 bg-amber-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <Activity size={20} className="text-amber-400" />
-                                </div>
-                                <h3 className="text-base font-medium">Simulating Real-World Pressure</h3>
+                        {/* Step 4 */}
+                        <div className="relative">
+                            <div className="absolute -left-[2.55rem] top-0 w-8 h-8 bg-purple-500/20 border-2 border-purple-500 rounded-full flex items-center justify-center">
+                                <span className="text-purple-400 text-xs font-bold">4</span>
                             </div>
-                            <p className="text-sm text-white/70 leading-relaxed">
-                                The combination of these personas and the rigid scoring creates a simulation of a real-world investment committee. The AI isn't just "generating content"; it's processing, debating, and scoring your idea as if it were in a high-stakes pitch.
+                            <h3 className="text-base font-medium mb-1">Ask Your Consultant</h3>
+                            <p className="text-sm text-white/60 leading-relaxed">
+                                While the report builds, the <strong className="text-purple-400">BW Consultant</strong> is available inside the report builder. Ask it anything: "Why did SPI drop?", "What's the regulatory risk in the Philippines?", "How do I improve my financial readiness score?" It sees your live data and responds with context-aware guidance—like having a senior advisor watching over your shoulder.
+                            </p>
+                        </div>
+
+                        {/* Step 5 */}
+                        <div className="relative">
+                            <div className="absolute -left-[2.55rem] top-0 w-8 h-8 bg-emerald-500/20 border-2 border-emerald-500 rounded-full flex items-center justify-center">
+                                <span className="text-emerald-400 text-xs font-bold">5</span>
+                            </div>
+                            <h3 className="text-base font-medium mb-1">Export Board-Ready Documents</h3>
+                            <p className="text-sm text-white/60 leading-relaxed">
+                                Once analysis is complete, the <strong className="text-emerald-400">Document Factory</strong> compiles everything into institutional-grade deliverables—Investment Prospectuses, Risk Matrices, LOIs, Grant Applications, Due-Diligence Packs—formatted and evidence-backed. Each document traces every recommendation back to specific data inputs, formula calculations, and persona debate transcripts.
                             </p>
                         </div>
                     </div>
 
-                    <p className="text-sm text-white/60 mt-6 leading-relaxed">
-                        This multi-faceted, adversarial approach, combined with its quantitative rigor, sets BWGA AI apart, offering a level of strategic validation that's simply not available in most other AI-driven systems or through traditional, less accessible consulting avenues.
-                    </p>
+                    {/* Proof: Side-by-Side Comparison */}
+                    <div className="mb-6">
+                        <p className="text-xs text-white/50 uppercase tracking-wider mb-4 font-semibold">THE OUTPUT DIFFERENCE</p>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5">
+                                <p className="text-xs text-red-400 uppercase tracking-wider mb-3 font-semibold">GENERIC AI RESPONSE</p>
+                                <p className="text-sm text-white/80 italic mb-3">"This project appears promising with strong market potential. Consider securing funding and building partnerships to move forward."</p>
+                                <div className="border-t border-red-500/20 pt-3">
+                                    <p className="text-xs text-white/50">✗ No metrics</p>
+                                    <p className="text-xs text-white/50">✗ No specific problems identified</p>
+                                    <p className="text-xs text-white/50">✗ No actionable recommendations</p>
+                                </div>
+                            </div>
+                            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-5">
+                                <p className="text-xs text-emerald-400 uppercase tracking-wider mb-3 font-semibold">BWGA AI ANALYSIS</p>
+                                <p className="text-sm text-white/80 mb-3">"SPI: 34%. 3 fatal flaws: undefined revenue model, $4.2M funding gap, missing regulatory pre-clearance. <strong className="text-white">Do not proceed until addressed.</strong>"</p>
+                                <div className="border-t border-emerald-500/20 pt-3">
+                                    <p className="text-xs text-emerald-300">✓ Quantified success probability</p>
+                                    <p className="text-xs text-emerald-300">✓ Specific problems with values</p>
+                                    <p className="text-xs text-emerald-300">✓ Clear go/no-go recommendation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -386,10 +445,38 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     
                     <div className="bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 rounded-xl p-6 mb-6">
                         <p className="text-base text-white/90 leading-relaxed mb-4">
-                            This system changes the game because it turns ambition into proof. Instead of a rough idea, you walk away with institutional-grade documentation—Investment Prospectuses, Risk Assessments, and Legal Frameworks—that look like they came from a top-tier firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
+                            This system turns ambition into proof. Instead of a rough idea, you walk away with institutional-grade documentation—Investment Prospectuses, Risk Assessments, Legal Frameworks—that look like they came from a top-tier advisory firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
                         </p>
                         <p className="text-sm text-white/70 leading-relaxed">
-                            <strong className="text-white">This is the massive difference:</strong> It means a small town in regional Australia or a startup in Southeast Asia can finally compete on a level playing field with the biggest players in the world. It removes the "consultant tax" and ensures that great projects are judged on their merit, not on who they know or how much they paid for advice.
+                            <strong className="text-white">This is the massive difference:</strong> A small town in regional Australia or a startup in Southeast Asia can finally compete on a level playing field with the biggest players in the world. It removes the "consultant tax" and ensures that great projects are judged on their merit, not on who they know or how much they paid for advice.
+                        </p>
+                    </div>
+
+                    {/* What you get — concrete output list */}
+                    <div className="grid md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+                            <h4 className="text-xs font-semibold text-amber-400 mb-3 uppercase tracking-wider">Before BWGA AI</h4>
+                            <ul className="space-y-2 text-xs text-white/50">
+                                <li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">✗</span> Weeks of manual research per target region</li>
+                                <li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">✗</span> $50K+ for consultant-prepared prospectuses</li>
+                                <li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">✗</span> No way to stress-test assumptions</li>
+                                <li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">✗</span> Documents lack traceable evidence</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white/5 border border-emerald-500/20 rounded-xl p-5">
+                            <h4 className="text-xs font-semibold text-emerald-400 mb-3 uppercase tracking-wider">With BWGA AI</h4>
+                            <ul className="space-y-2 text-xs text-white/70">
+                                <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Instant intelligence brief on any city, company, or government</li>
+                                <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Live report built by coordinated AI agents in minutes</li>
+                                <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> 38 formulas score every dimension with reproducible math</li>
+                                <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Audit trail from data input to final recommendation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-amber-500/20 to-transparent border-l-4 border-amber-500 p-5 rounded-r-xl">
+                        <p className="text-sm text-white/80 leading-relaxed">
+                            <strong className="text-white">What follows below</strong> is a walkthrough of every system on this page—from the structured intake protocol that captures your opportunity, to the live search engine, the formula architecture, and the document factory. Each section is functional: you can try BW AI Search right now, or enter the platform to begin building your first report.
                         </p>
                     </div>
                 </div>
@@ -404,6 +491,397 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0a0a0a]" />
             </div>
+
+            {/* THE COMPREHENSIVE INTAKE FRAMEWORK */}
+            <section id="protocol" className="py-16 px-4 bg-[#0a0a0a]">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-2">The Ten-Step Protocol</h2>
+                    <p className="text-sm text-emerald-400 mb-4 flex items-center gap-2">
+                        <span className="inline-block w-2 h-2 bg-emerald-400 rounded-full"></span>
+                        Most users complete this in 30-45 minutes
+                    </p>
+
+                    <p className="text-sm text-white/70 leading-relaxed mb-3">
+                        Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
+                    </p>
+                    <p className="text-xs text-amber-400 mb-6">Click any step below to see the detailed data requirements.</p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                        {tenStepProtocol.map((item) => (
+                            <button
+                                key={item.step}
+                                onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
+                                className={`text-left transition-all rounded-xl p-4 border ${
+                                    activeStep === item.step
+                                        ? 'bg-amber-500/20 border-amber-500/50'
+                                        : item.gliEnabled
+                                            ? 'bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20'
+                                            : 'bg-white/5 border-white/10 hover:bg-white/10'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                                        activeStep === item.step ? 'bg-amber-400 text-black' : item.gliEnabled ? 'bg-purple-500/40 text-purple-200' : 'bg-white/20 text-white'
+                                    }`}>
+                                        {item.step}
+                                    </div>
+                                    <span className="text-xs text-white/50">Step {item.step}</span>
+                                    {item.gliEnabled && <span className="text-[8px] px-1.5 py-0.5 bg-purple-500/30 text-purple-300 rounded">GLI</span>}
+                                </div>
+                                <h4 className="text-xs font-medium leading-tight">{item.title}</h4>
+                            </button>
+                        ))}
+                    </div>
+
+                    {activeStep && (
+                        <div className="mt-6 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
+                            <h4 className="text-sm font-semibold mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
+                            <p className="text-sm text-white/70 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
+
+                            {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
+                                <div className="bg-purple-500/20 border border-purple-500/40 rounded-lg p-3 mb-4">
+                                    <p className="text-xs text-purple-200">{tenStepProtocol[activeStep - 1].gliNote}</p>
+                                </div>
+                            )}
+
+                            <div className="bg-black/30 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-amber-400 mb-3">Data Requirements:</h5>
+                                <ul className="grid md:grid-cols-2 gap-2">
+                                    {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
+                                        <li key={idx} className="flex items-start gap-2 text-xs text-white/70">
+                                            <CheckCircle2 size={12} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                                            {detail}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 mt-8 mb-4">
+                        <p className="text-sm text-white/70 leading-relaxed mb-4">
+                            Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
+                        </p>
+                        <p className="text-sm text-white/70 leading-relaxed">
+                            The workflow has three stages: <strong className="text-amber-400">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-amber-400">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-amber-400">Institutional Output</strong> (compile evidence into auditable deliverables).
+                        </p>
+                    </div>
+
+                    <p className="text-sm text-white/70 leading-relaxed">
+                        Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action.
+                    </p>
+                </div>
+            </section>
+
+            {/* INSTITUTIONAL-GRADE OUTPUTS */}
+            <section className="py-16 px-4 bg-[#0f0f0f]">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">INSTITUTIONAL-GRADE OUTPUTS</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-4">The Document Factory</h2>
+                    
+                    <p className="text-sm text-white/60 leading-relaxed mb-6">
+                        Great analysis is worthless if it stays locked in spreadsheets. The Document Factory bridges the gap between validated insights and boardroom-ready deliverables—producing prospectuses, risk matrices, partnership briefs, LOIs, MOUs, grant applications, and due-diligence packs that meet institutional standards and carry traceable evidence.
+                    </p>
+                    
+                    <div className="space-y-4 text-sm text-white/70 mb-6">
+                        <p>
+                            <strong className="text-white">Why it exists:</strong> High-potential regional projects fail when their case isn't packaged at institutional quality. This fixes that gap.
+                        </p>
+                        <p>
+                            <strong className="text-white">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.
+                        </p>
+                        <p>
+                            <strong className="text-white">What you get:</strong> Prospectuses, risk matrices, partnership briefs, LOIs/MOUs, grants, and due-diligence packs—formatted and traceable.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="bg-gradient-to-br from-amber-500/20 to-transparent border border-amber-500/30 rounded-xl p-5 text-center">
+                            <div className="text-3xl font-light text-amber-400 mb-1">200+</div>
+                            <p className="text-xs text-white/70">Report & Document Types</p>
+                        </div>
+                        <div className="bg-gradient-to-br from-amber-500/20 to-transparent border border-amber-500/30 rounded-xl p-5 text-center">
+                            <div className="text-3xl font-light text-amber-400 mb-1">150+</div>
+                            <p className="text-xs text-white/70">Letter Templates</p>
+                        </div>
+                    </div>
+
+                    <button 
+                        onClick={() => setShowCatalog(!showCatalog)}
+                        className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                    >
+                        <FileCheck size={16} />
+                        {showCatalog ? 'Hide Catalog' : 'View Full Catalog'}
+                    </button>
+
+                    {showCatalog && (
+                        <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
+                            <h4 className="text-sm font-semibold text-amber-400 mb-3">Document Factory Catalog</h4>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Strategic Reports</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• Investment Prospectus</li>
+                                        <li>• Partnership Viability Assessment</li>
+                                        <li>• Market Entry Analysis</li>
+                                        <li>• Competitive Landscape Report</li>
+                                        <li>• Stakeholder Alignment Matrix</li>
+                                        <li>• Risk Assessment Report</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Financial Documents</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• ROI Projection Model</li>
+                                        <li>• Financial Due Diligence Pack</li>
+                                        <li>• Investment Term Sheet</li>
+                                        <li>• Budget Allocation Framework</li>
+                                        <li>• Monte Carlo Simulation Report</li>
+                                        <li>• Sensitivity Analysis</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Legal Templates</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• Letter of Intent (LOI)</li>
+                                        <li>• Memorandum of Understanding (MOU)</li>
+                                        <li>• Non-Disclosure Agreement</li>
+                                        <li>• Partnership Agreement Draft</li>
+                                        <li>• Grant Application Template</li>
+                                        <li>• Compliance Checklist</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Communication Packs</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• Executive Summary Brief</li>
+                                        <li>• Board Presentation Deck</li>
+                                        <li>• Investor Pitch Document</li>
+                                        <li>• Stakeholder Update Letter</li>
+                                        <li>• Media Release Template</li>
+                                        <li>• Partner Onboarding Pack</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <p className="text-xs text-white/50 mt-4">
+                        <strong className="text-white/70">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
+                    </p>
+                </div>
+            </section>
+
+            {/* THE 38 FORMULAS - PROOF OF CAPABILITY */}
+            <section className="py-16 px-4 bg-[#0a0a0a]">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE 38 FORMULAS — PROOF OF CAPABILITY</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-6">Mathematical Foundation & Architecture Details</h2>
+                    
+                    {/* Formula Box - Full Width */}
+                    <div className="bg-black/40 border border-amber-500/30 rounded-xl p-6 mb-6">
+                        <p className="text-xs text-amber-400 uppercase tracking-wider mb-3 font-semibold">Sample Formula: Success Probability Index</p>
+                        <div className="font-mono text-base md:text-lg text-white/90 mb-4">
+                            <p>SPI = Σ(wᵢ × Sᵢ) × (1 - R<sub>composite</sub>) × A<sub>alignment</sub></p>
+                        </div>
+                        <p className="text-xs text-white/50 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
+                        <div className="border-t border-white/10 pt-4">
+                            <p className="text-sm text-white/70 italic">"Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results."</p>
+                        </div>
+                    </div>
+
+                    {/* Real Case Study */}
+                    <div className="bg-gradient-to-r from-emerald-500/10 to-transparent border border-emerald-500/30 rounded-xl p-6 mb-8">
+                        <p className="text-xs text-emerald-400 uppercase tracking-wider mb-3 font-semibold">CASE STUDY: FORMULAS IN ACTION</p>
+                        <p className="text-sm text-white/80 leading-relaxed mb-4">
+                            A regional council submitted a renewable energy partnership proposal. Initial SPI calculation returned <strong className="text-red-400">34% probability of success</strong>. The system identified 2 critical issues:
+                        </p>
+                        <ul className="space-y-2 text-sm text-white/70 mb-4">
+                            <li className="flex items-center gap-2">
+                                <span className="text-red-400">✗</span>
+                                Missing grid connection feasibility study (Regulatory Friction Index flagged)
+                            </li>
+                            <li className="flex items-center gap-2">
+                                <span className="text-red-400">✗</span>
+                                Unrealistic revenue projections (Financial Readiness Index triggered)
+                            </li>
+                        </ul>
+                        <p className="text-sm text-white/80 leading-relaxed">
+                            After addressing these issues with system-guided improvements, the revised proposal scored <strong className="text-emerald-400">78% SPI</strong> — moved from "Do Not Proceed" to "Investment Ready" classification.
+                        </p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                <Database size={16} className="text-amber-400" />
+                                6-Layer Architecture + Cognition
+                            </h4>
+                            <ul className="space-y-2 text-xs text-white/70">
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Input Validation & Governance</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Multi-Agent Adversarial Debate</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Quantitative Formula Scoring</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Monte Carlo Stress Testing</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-purple-400" /> Human Cognition Engine (7 Models)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Output Synthesis & Provenance</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                <Users size={16} className="text-amber-400" />
+                                5 AI Personas
+                            </h4>
+                            <ul className="space-y-2 text-xs text-white/70">
+                                {aiPersonas.map((persona) => (
+                                    <li key={persona.name} className="flex items-center gap-2">
+                                        <persona.icon size={12} className="text-amber-400" />
+                                        <span className="text-white">{persona.name}</span> — {persona.role}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button 
+                        onClick={() => setShowFormulas(!showFormulas)}
+                        className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                    >
+                        <GitBranch size={16} />
+                        {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 38 Formulas'}
+                    </button>
+                    <p className="text-sm text-amber-400 text-center mt-3 font-medium">
+                        ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
+                    </p>
+
+                    {showFormulas && (
+                        <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
+                            <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 38 Proprietary Formulas + Human Cognition Engine</h4>
+                            
+                            <div className="mb-4">
+                                <h5 className="text-xs font-semibold text-white mb-2">6-Layer Processing Architecture with Cognitive Enhancement</h5>
+                                <ol className="space-y-2 text-xs text-white/70">
+                                    <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
+                                    <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
+                                    <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 31 strategic formulas calculate hard metrics</li>
+                                    <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
+                                    <li><strong className="text-purple-400">Layer 5:</strong> <strong className="text-purple-400">Human Cognition Engine</strong> — 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, Itti & Koch attention, emotional processing, Global Workspace consciousness, Baddeley's working memory)</li>
+                                    <li><strong className="text-white">Layer 6:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions with cognitive insights</li>
+                                </ol>
+                            </div>
+
+                            {/* HUMAN COGNITION ENGINE SECTION */}
+                            <div className="mb-4 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-purple-300 mb-3">Human Cognition Engine — 7 Neuroscience Models</h5>
+                                <div className="grid md:grid-cols-2 gap-3 text-xs text-white/70">
+                                    <div><strong className="text-white">Neural Field Dynamics</strong> — Wilson-Cowan equations modeling neural population activity</div>
+                                    <div><strong className="text-white">Predictive Coding</strong> — Rao & Ballard hierarchical belief updating</div>
+                                    <div><strong className="text-white">Free Energy Principle</strong> — Friston variational inference for action selection</div>
+                                    <div><strong className="text-white">Attention Models</strong> — Itti & Koch salience mapping with winner-take-all</div>
+                                    <div><strong className="text-white">Emotional Processing</strong> — Neurovisceral integration with autonomic coupling</div>
+                                    <div><strong className="text-white">Consciousness Models</strong> — Global Workspace Theory for information broadcasting</div>
+                                    <div><strong className="text-white">Working Memory</strong> — Baddeley's model with phonological loops and visuospatial sketchpads</div>
+                                </div>
+                                <p className="text-[10px] text-purple-200/60 mt-3 italic">These are university-level neuroscience equations that have never before been adapted to AI systems—providing human-like reasoning, reactions, and decision-making patterns.</p>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Core Indices</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• SPI™ — Success Probability Index</li>
+                                        <li>• RROI™ — Regional Return on Investment</li>
+                                        <li>• SEAM™ — Stakeholder Alignment Matrix</li>
+                                        <li>• PVI™ — Partnership Viability Index</li>
+                                        <li>• RRI™ — Regional Resilience Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Risk Formulas</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• CRPS — Composite Risk Priority Score</li>
+                                        <li>• RME — Risk Mitigation Effectiveness</li>
+                                        <li>• VaR — Value at Risk</li>
+                                        <li>• SRCI — Supply Chain Risk Index</li>
+                                        <li>• DCS — Dependency Concentration Score</li>
+                                        <li>• PSS — Policy Shock Sensitivity</li>
+                                        <li>• PRS — Political Risk Score</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Financial Metrics</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• IRR — Internal Rate of Return</li>
+                                        <li>• NPV — Net Present Value</li>
+                                        <li>• WACC — Weighted Cost of Capital</li>
+                                        <li>• DSCR — Debt Service Coverage</li>
+                                        <li>• FMS — Funding Match Score</li>
+                                        <li>• ROE — Return on Equity</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Operational Scores</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• ORS — Organizational Readiness</li>
+                                        <li>• TCS — Team Capability Score</li>
+                                        <li>• EEI — Execution Efficiency Index</li>
+                                        <li>• SEQ — Sequencing Integrity Score</li>
+                                        <li>• CGI — Capability Gap Index</li>
+                                        <li>• LCI — Leadership Confidence Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Market Formulas</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• MPI — Market Penetration Index</li>
+                                        <li>• CAI — Competitive Advantage Index</li>
+                                        <li>• TAM — Total Addressable Market</li>
+                                        <li>• SAM — Serviceable Available Market</li>
+                                        <li>• GRI — Growth Rate Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-white mb-2">Governance Metrics</h5>
+                                    <ul className="space-y-1 text-xs text-white/70">
+                                        <li>• GCI — Governance Confidence Index</li>
+                                        <li>• CCS — Compliance Certainty Score</li>
+                                        <li>• TPI — Transparency Index</li>
+                                        <li>• ARI — Audit Readiness Index</li>
+                                        <li>• DQS — Data Quality Score</li>
+                                        <li>• GCS — Governance Clarity Score</li>
+                                        <li>• RFI — Regulatory Friction Index</li>
+                                        <li>• CIS — Counterparty Integrity Score</li>
+                                        <li>• ESG — Environmental Social Governance</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* WORLD-FIRST PROOF SECTION */}
+                            <div className="mt-6 pt-6 border-t border-white/10">
+                                <h5 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
+                                
+                                <div className="bg-black/30 rounded-lg p-4 mb-4">
+                                    <p className="text-xs text-white/80 mb-3">
+                                        <strong className="text-white">Multi-agent AI frameworks exist</strong> — tools like Microsoft AutoGen, CrewAI, and LangGraph allow developers to build systems where AI agents collaborate. But these are <em>developer toolkits</em>, not end-user products. They have no built-in scoring, no document generation, no regional development focus.
+                                    </p>
+                                    <p className="text-xs text-white/80 mb-3">
+                                        <strong className="text-white">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters.
+                                    </p>
+                                    <p className="text-xs text-white/80">
+                                        <strong className="text-white">To our knowledge, no publicly available platform combines:</strong> multi-persona adversarial analysis, quantitative viability indices, Monte Carlo stress testing, and automated institutional-grade document generation with audit trails — purpose-built for regional economic development.
+                                    </p>
+                                </div>
+
+                                <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                                    <p className="text-xs text-white/90 italic">
+                                        "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </section>
 
             {/* DESIGNED FOR EVERYONE */}
             <section className="py-16 px-4 bg-[#0a0a0a]">
@@ -488,7 +966,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                         <p className="text-xs text-white/50 text-center">
-                            The technology behind this is complex—38 formulas, five AI personas, Monte Carlo simulations, 200+ document types. But you don't need to understand any of that. The complexity is hidden. What you see is clarity.
+                            The complexity is hidden. What you see is clarity.
                         </p>
                     </div>
                 </div>
@@ -607,6 +1085,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div className="relative mb-4">
                                     <input
                                         type="text"
+                                        data-testid="bwai-search-input"
                                         value={locationQuery}
                                         onChange={(e) => setLocationQuery(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
@@ -615,6 +1094,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         className="w-full px-4 py-3 pr-36 bg-black/40 border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400 text-sm"
                                     />
                                     <button
+                                        data-testid="bwai-search-button"
                                         onClick={handleLocationSearch}
                                         disabled={!locationQuery.trim() || isResearchingLocation}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-semibold rounded-lg hover:bg-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
@@ -727,387 +1207,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                     </div>
-
-                    {/* THE COMPREHENSIVE INTAKE FRAMEWORK - 10-Step Protocol */}
-                    <section id="protocol" className="py-10">
-                        <div className="max-w-4xl mx-auto">
-                            <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
-                            <h2 className="text-xl md:text-2xl font-light mb-4">The Ten-Step Protocol</h2>
-
-                            <p className="text-sm text-white/70 leading-relaxed mb-3">
-                                Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
-                            </p>
-                            <p className="text-xs text-amber-400 mb-6">Click any step below to see the detailed data requirements.</p>
-
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                                {tenStepProtocol.map((item) => (
-                                    <button
-                                        key={item.step}
-                                        onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
-                                        className={`text-left transition-all rounded-xl p-4 border ${
-                                            activeStep === item.step
-                                                ? 'bg-amber-500/20 border-amber-500/50'
-                                                : item.gliEnabled
-                                                    ? 'bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20'
-                                                    : 'bg-white/5 border-white/10 hover:bg-white/10'
-                                        }`}
-                                    >
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                                                activeStep === item.step ? 'bg-amber-400 text-black' : item.gliEnabled ? 'bg-purple-500/40 text-purple-200' : 'bg-white/20 text-white'
-                                            }`}>
-                                                {item.step}
-                                            </div>
-                                            <span className="text-xs text-white/50">Step {item.step}</span>
-                                            {item.gliEnabled && <span className="text-[8px] px-1.5 py-0.5 bg-purple-500/30 text-purple-300 rounded">GLI</span>}
-                                        </div>
-                                        <h4 className="text-xs font-medium leading-tight">{item.title}</h4>
-                                    </button>
-                                ))}
-                            </div>
-
-                            {activeStep && (
-                                <div className="mt-6 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
-                                    <h4 className="text-sm font-semibold mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
-                                    <p className="text-sm text-white/70 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
-
-                                    {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
-                                        <div className="bg-purple-500/20 border border-purple-500/40 rounded-lg p-3 mb-4">
-                                            <p className="text-xs text-purple-200">{tenStepProtocol[activeStep - 1].gliNote}</p>
-                                        </div>
-                                    )}
-
-                                    <div className="bg-black/30 rounded-lg p-4">
-                                        <h5 className="text-xs font-semibold text-amber-400 mb-3">Data Requirements:</h5>
-                                        <ul className="grid md:grid-cols-2 gap-2">
-                                            {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
-                                                <li key={idx} className="flex items-start gap-2 text-xs text-white/70">
-                                                    <CheckCircle2 size={12} className="text-amber-400 mt-0.5 flex-shrink-0" />
-                                                    {detail}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-
-                    {/* INTELLIGENCE PIPELINE CONTINUES */}
-
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
-                        <p className="text-sm text-white/70 leading-relaxed mb-4">
-                            Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
-                        </p>
-                        <p className="text-sm text-white/70 leading-relaxed">
-                            The workflow has three stages: <strong className="text-amber-400">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-amber-400">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-amber-400">Institutional Output</strong> (compile evidence into auditable deliverables).
-                        </p>
-                    </div>
-
-                    <p className="text-sm text-white/70 leading-relaxed mb-4">
-                        Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action.
-                    </p>
-
-                    {/* INSTITUTIONAL-GRADE OUTPUTS */}
-                    <div className="mb-8">
-                        <p className="text-xs text-amber-400 uppercase tracking-wider mb-4 font-semibold">INSTITUTIONAL-GRADE OUTPUTS</p>
-                        <h3 className="text-lg font-light mb-4">The Document Factory</h3>
-                        
-                        <p className="text-sm text-white/60 leading-relaxed mb-6">
-                            Great analysis is worthless if it stays locked in spreadsheets. The Document Factory bridges the gap between validated insights and boardroom-ready deliverables—producing prospectuses, risk matrices, partnership briefs, LOIs, MOUs, grant applications, and due-diligence packs that meet institutional standards and carry traceable evidence.
-                        </p>
-                        
-                        <div className="space-y-4 text-sm text-white/70 mb-6">
-                            <p>
-                                <strong className="text-white">Why it exists:</strong> High-potential regional projects fail when their case isn’t packaged at institutional quality. This fixes that gap.
-                            </p>
-                            <p>
-                                <strong className="text-white">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.
-                            </p>
-                            <p>
-                                <strong className="text-white">What you get:</strong> Prospectuses, risk matrices, partnership briefs, LOIs/MOUs, grants, and due-diligence packs—formatted and traceable.
-                            </p>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 mb-6">
-                            <div className="bg-gradient-to-br from-amber-500/20 to-transparent border border-amber-500/30 rounded-xl p-5 text-center">
-                                <div className="text-3xl font-light text-amber-400 mb-1">200+</div>
-                                <p className="text-xs text-white/70">Report & Document Types</p>
-                            </div>
-                            <div className="bg-gradient-to-br from-amber-500/20 to-transparent border border-amber-500/30 rounded-xl p-5 text-center">
-                                <div className="text-3xl font-light text-amber-400 mb-1">150+</div>
-                                <p className="text-xs text-white/70">Letter Templates</p>
-                            </div>
-                        </div>
-
-                        <button 
-                            onClick={() => setShowCatalog(!showCatalog)}
-                            className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
-                        >
-                            <FileCheck size={16} />
-                            {showCatalog ? 'Hide Catalog' : 'View Full Catalog'}
-                        </button>
-
-                        {showCatalog && (
-                            <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                                <h4 className="text-sm font-semibold text-amber-400 mb-3">Document Factory Catalog</h4>
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Strategic Reports</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• Investment Prospectus</li>
-                                            <li>• Partnership Viability Assessment</li>
-                                            <li>• Market Entry Analysis</li>
-                                            <li>• Competitive Landscape Report</li>
-                                            <li>• Stakeholder Alignment Matrix</li>
-                                            <li>• Risk Assessment Report</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Financial Documents</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• ROI Projection Model</li>
-                                            <li>• Financial Due Diligence Pack</li>
-                                            <li>• Investment Term Sheet</li>
-                                            <li>• Budget Allocation Framework</li>
-                                            <li>• Monte Carlo Simulation Report</li>
-                                            <li>• Sensitivity Analysis</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Legal Templates</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• Letter of Intent (LOI)</li>
-                                            <li>• Memorandum of Understanding (MOU)</li>
-                                            <li>• Non-Disclosure Agreement</li>
-                                            <li>• Partnership Agreement Draft</li>
-                                            <li>• Grant Application Template</li>
-                                            <li>• Compliance Checklist</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Communication Packs</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• Executive Summary Brief</li>
-                                            <li>• Board Presentation Deck</li>
-                                            <li>• Investor Pitch Document</li>
-                                            <li>• Stakeholder Update Letter</li>
-                                            <li>• Media Release Template</li>
-                                            <li>• Partner Onboarding Pack</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        <p className="text-xs text-white/50 mt-4">
-                            <strong className="text-white/70">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
-                        </p>
-                    </div>
-
-                    {/* THE REASONING ENGINE */}
-                    <div className="mb-8">
-                        <p className="text-xs text-amber-400 uppercase tracking-wider mb-4 font-semibold">THE REASONING ENGINE</p>
-                        <h3 className="text-lg font-light mb-6">NSIL — Nexus Strategic Intelligence Layer</h3>
-                        
-                        {/* Formula Box - Full Width */}
-                        <div className="bg-black/40 border border-amber-500/30 rounded-xl p-6 mb-8">
-                            <p className="text-xs text-amber-400 uppercase tracking-wider mb-3 font-semibold">Sample Formula: Success Probability Index</p>
-                            <div className="font-mono text-base md:text-lg text-white/90 mb-4">
-                                <p>SPI = Σ(wᵢ × Sᵢ) × (1 - R<sub>composite</sub>) × A<sub>alignment</sub></p>
-                            </div>
-                            <p className="text-xs text-white/50 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
-                            <div className="border-t border-white/10 pt-4">
-                                <p className="text-sm text-white/70 italic">"This isn't smoke and mirrors. Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results."</p>
-                            </div>
-                        </div>
-                        
-                        <div className="space-y-4 text-sm text-white/70 mb-6">
-                            <p>
-                                <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
-                            </p>
-                            <p>
-                                <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 38 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
-                            </p>
-                            <p>
-                                <strong className="text-white">The other-side test:</strong> NSIL doesn’t just model your case—it models the other parties involved. It scores counterparty integrity (CIS), regulatory drag (RFI), and asymmetric incentives, then runs a Blind Spot Audit to expose where a deal can fail even when the narrative looks strong.
-                            </p>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-4 mb-6">
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                                <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                    <Database size={16} className="text-amber-400" />
-                                    5-Layer Architecture
-                                </h4>
-                                <ul className="space-y-2 text-xs text-white/70">
-                                    <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Input Validation & Governance</li>
-                                    <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Multi-Agent Adversarial Debate</li>
-                                    <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Quantitative Formula Scoring</li>
-                                    <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Monte Carlo Stress Testing</li>
-                                    <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Output Synthesis & Provenance</li>
-                                </ul>
-                            </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                                <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                    <Users size={16} className="text-amber-400" />
-                                    5 AI Personas
-                                </h4>
-                                <ul className="space-y-2 text-xs text-white/70">
-                                    {aiPersonas.map((persona) => (
-                                        <li key={persona.name} className="flex items-center gap-2">
-                                            <persona.icon size={12} className="text-amber-400" />
-                                            <span className="text-white">{persona.name}</span> — {persona.role}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <button 
-                            onClick={() => setShowFormulas(!showFormulas)}
-                            className="w-full py-3 bg-white/10 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
-                        >
-                            <GitBranch size={16} />
-                            {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 38 Formulas'}
-                        </button>
-                        <p className="text-sm text-amber-400 text-center mt-3 font-medium">
-                            ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
-                        </p>
-
-                        {showFormulas && (
-                            <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                                <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 38 Proprietary Formulas</h4>
-                                
-                                <div className="mb-4">
-                                    <h5 className="text-xs font-semibold text-white mb-2">5-Layer Processing Architecture</h5>
-                                    <ol className="space-y-2 text-xs text-white/70">
-                                        <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
-                                        <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
-                                        <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 38 proprietary formulas calculate hard metrics</li>
-                                        <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
-                                        <li><strong className="text-white">Layer 5:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions</li>
-                                    </ol>
-                                </div>
-
-                                <div className="grid md:grid-cols-3 gap-4">
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Core Indices</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• SPI™ — Success Probability Index</li>
-                                            <li>• RROI™ — Regional Return on Investment</li>
-                                            <li>• SEAM™ — Stakeholder Alignment Matrix</li>
-                                            <li>• PVI™ — Partnership Viability Index</li>
-                                            <li>• RRI™ — Regional Resilience Index</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Risk Formulas</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• CRPS — Composite Risk Priority Score</li>
-                                            <li>• RME — Risk Mitigation Effectiveness</li>
-                                            <li>• VaR — Value at Risk</li>
-                                            <li>• SRCI — Supply Chain Risk Index</li>
-                                            <li>• DCS — Dependency Concentration Score</li>
-                                            <li>• PSS — Policy Shock Sensitivity</li>
-                                            <li>• PRS — Political Risk Score</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Financial Metrics</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• IRR — Internal Rate of Return</li>
-                                            <li>• NPV — Net Present Value</li>
-                                            <li>• WACC — Weighted Cost of Capital</li>
-                                            <li>• DSCR — Debt Service Coverage</li>
-                                            <li>• FMS — Funding Match Score</li>
-                                            <li>• ROE — Return on Equity</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Operational Scores</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• ORS — Organizational Readiness</li>
-                                            <li>• TCS — Team Capability Score</li>
-                                            <li>• EEI — Execution Efficiency Index</li>
-                                            <li>• SEQ — Sequencing Integrity Score</li>
-                                            <li>• CGI — Capability Gap Index</li>
-                                            <li>• LCI — Leadership Confidence Index</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Market Formulas</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• MPI — Market Penetration Index</li>
-                                            <li>• CAI — Competitive Advantage Index</li>
-                                            <li>• TAM — Total Addressable Market</li>
-                                            <li>• SAM — Serviceable Available Market</li>
-                                            <li>• GRI — Growth Rate Index</li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 className="text-xs font-semibold text-white mb-2">Governance Metrics</h5>
-                                        <ul className="space-y-1 text-xs text-white/70">
-                                            <li>• GCI — Governance Confidence Index</li>
-                                            <li>• CCS — Compliance Certainty Score</li>
-                                            <li>• TPI — Transparency Index</li>
-                                            <li>• ARI — Audit Readiness Index</li>
-                                            <li>• DQS — Data Quality Score</li>
-                                            <li>• GCS — Governance Clarity Score</li>
-                                            <li>• RFI — Regulatory Friction Index</li>
-                                            <li>• CIS — Counterparty Integrity Score</li>
-                                            <li>• ESG — Environmental Social Governance</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                {/* WORLD-FIRST PROOF SECTION */}
-                                <div className="mt-6 pt-6 border-t border-white/10">
-                                    <h5 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
-                                    
-                                    <div className="bg-black/30 rounded-lg p-4 mb-4">
-                                        <p className="text-xs text-white/80 mb-3">
-                                            <strong className="text-white">Multi-agent AI frameworks exist</strong> — tools like Microsoft AutoGen, CrewAI, and LangGraph allow developers to build systems where AI agents collaborate. But these are <em>developer toolkits</em>, not end-user products. They have no built-in scoring, no document generation, no regional development focus.
-                                        </p>
-                                        <p className="text-xs text-white/80 mb-3">
-                                            <strong className="text-white">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters.
-                                        </p>
-                                        <p className="text-xs text-white/80">
-                                            <strong className="text-white">To our knowledge, no publicly available platform combines:</strong> multi-persona adversarial analysis, quantitative viability indices, Monte Carlo stress testing, and automated institutional-grade document generation with audit trails — purpose-built for regional economic development.
-                                        </p>
-                                    </div>
-
-                                    <h5 className="text-xs font-semibold text-white mb-3">Why These Formulas Were Created</h5>
-                                    <div className="space-y-3 text-xs text-white/70">
-                                        <p>
-                                            <strong className="text-amber-400">Core Indices (SPI, RROI, SEAM, PVI, RRI):</strong> No single metric existed that weighted strategic, financial, operational, and stakeholder factors into one auditable score. Standard ROI ignores regional context — jobs, supply chains, community resilience. These indices were built to give decision-makers comparable, region-aware numbers.
-                                        </p>
-                                        <p>
-                                            <strong className="text-amber-400">Risk Formulas (CRPS, RME, VaR, SRCI, PRS):</strong> Not all risks are equal. CRPS prioritizes by probability × impact. RME scores whether mitigations are credible, not just listed. SRCI addresses post-pandemic supply chain vulnerabilities. PRS quantifies political risk for emerging markets.
-                                        </p>
-                                        <p>
-                                            <strong className="text-amber-400">Regulatory & Integrity Metrics (RFI, PSS, CIS):</strong> RFI measures approval friction and regulatory drag; PSS simulates exposure to policy shocks; CIS verifies partner integrity using verifiable signals. These close the gap between "paper viability" and real-world execution risk.
-                                        </p>
-                                        <p>
-                                            <strong className="text-amber-400">Blind Spot Audit Metrics (SEQ, FMS, DCS, DQS, GCS):</strong> These formulas quantify sequencing integrity, funding timing mismatch, dependency concentration, data confidence, and governance clarity — the controllable failure points that most deals miss.
-                                        </p>
-                                        <p>
-                                            <strong className="text-amber-400">Operational Scores (ORS, TCS, EEI, CGI, LCI):</strong> Great ideas fail with weak teams. These scores assess organizational capability, leadership credibility, and execution readiness — factors investors demand but regional projects rarely quantify.
-                                        </p>
-                                        <p>
-                                            <strong className="text-amber-400">Market & Governance Metrics:</strong> Defensible market sizing (TAM/SAM), competitive differentiation (CAI), and governance confidence (GCI, ESG) — increasingly required for institutional capital but rarely automated.
-                                        </p>
-                                    </div>
-
-                                    <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-                                        <p className="text-xs text-white/90 italic">
-                                            "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail."
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
                 </div>
             </section>
 
@@ -1176,6 +1275,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </label>
                         </div>
 
+                        {/* Master Orchestrator Button */}
+                        <button 
+                            disabled={!termsAccepted}
+                            onClick={() => termsAccepted && onOpenMasterOrchestrator?.()}
+                            className={`w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 mb-3 ${
+                                termsAccepted 
+                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 cursor-pointer' 
+                                    : 'bg-white/10 text-white/30 cursor-not-allowed'
+                            }`}
+                        >
+                            🎯 Activate 100% Performance Mode
+                            <Zap size={16} />
+                        </button>
+
                         {/* Launch Button */}
                         <button 
                             disabled={!termsAccepted}
@@ -1230,6 +1343,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </span>
                             <span>•</span>
                             <span>NSIL Engine v3.2</span>
+                            <span>•</span>
+                            <span className="text-purple-400">Human Cognition Engine Active</span>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,9 @@ import { researchLocation, type ResearchProgress, type LocationResult } from '..
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 import { generateDocument } from '../services/openaiClientService';
 import { deepLocationResearch, type DeepResearchResult } from '../services/deepLocationResearchService';
+// Automatic Search Integration
+import { automaticSearchService } from '../services/AutomaticSearchService';
+import { bwConsultantAI } from '../services/BWConsultantAgenticAI';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
@@ -202,6 +205,9 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
     
     try {
+      // Use automatic search service for enhanced results
+      await automaticSearchService.triggerSearch(trimmedQuery, 'user_search', 'high');
+
       // Use simplified Gemini-first research - more reliable
       const result = await researchLocation(trimmedQuery, (progress) => {
         setResearchProgress(progress);
@@ -216,10 +222,13 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
           setResearchResult(externalResult as unknown as MultiSourceResult);
           setResearchProgress({ stage: 'Complete', progress: 100, message: 'External enrichment complete' });
           setIsResearching(false);
+
+          // Trigger consultant AI analysis of the results
+          await bwConsultantAI.consult({ locationQuery: trimmedQuery, searchResult: externalResult }, 'location_search_complete');
           return;
         }
       }
-      
+
       if (result) {
         setLiveProfile(result.profile);
         // Transform to MultiSourceResult format for compatibility
@@ -229,6 +238,9 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         };
         setResearchResult(multiResult);
         setResearchProgress({ stage: 'Complete', progress: 100, message: `Research complete!` });
+
+        // Trigger consultant AI analysis of the results
+        await bwConsultantAI.consult({ locationQuery: trimmedQuery, searchResult: result }, 'location_search_complete');
       } else {
         setLoadingError(`Could not find intelligence for "${trimmedQuery}". Please try a different search term.`);
         setHasSelection(false);
@@ -633,6 +645,7 @@ th { background: #f1f5f9; }
               </label>
               <div className="mt-2 relative">
                 <input
+                  data-testid="location-search-input"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   onKeyDown={(event) => {
@@ -645,6 +658,7 @@ th { background: #f1f5f9; }
                   disabled={isResearching}
                 />
                 <button
+                  data-testid="location-search-button"
                   onClick={() => handleSearchSubmit(searchQuery)}
                   disabled={!searchQuery.trim() || isResearching}
                   className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg hover:bg-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed"

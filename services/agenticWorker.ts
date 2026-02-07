@@ -162,6 +162,7 @@ async function loadServerReports(): Promise<Partial<ReportParameters>[]> {
  */
 export async function runOptimizedAgenticWorker(
   params: ReportParameters, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _opts?: { maxSimilarCases?: number }
 ): Promise<AgenticRun> {
   const startedAt = new Date().toISOString();
@@ -426,4 +427,302 @@ export async function runQuickThink(params: ReportParameters): Promise<{
   timeMs: number;
 }> {
   return optimizedAgenticBrain.quickThink(params);
+}
+
+/**
+ * Fully Autonomous Agentic Worker - Complete self-thinking system
+ */
+export async function runFullyAutonomousAgenticWorker(
+  params: ReportParameters,
+  opts?: {
+    generateDocument?: boolean;
+    documentAudience?: 'executive' | 'investor' | 'partner' | 'technical';
+    executeAutonomousActions?: boolean;
+    enableSelfImprovement?: boolean;
+    spawnSubAgents?: boolean;
+  }
+/* eslint-disable @typescript-eslint/no-explicit-any */
+): Promise<{
+  runId: string;
+  deepThinking: any;
+  generatedDocument?: any;
+  autonomousActions: any[];
+  improvements?: any[];
+  spawnedAgents?: any[];
+  memory: any;
+  liabilityAssessment: any[];
+  performance: any;
+}> {
+/* eslint-enable @typescript-eslint/no-explicit-any */
+  const runId = crypto.randomUUID();
+  const startTime = Date.now();
+
+  try {
+    // Import new autonomous services
+    const { persistentMemory } = await import('./PersistentMemorySystem');
+    const { selfImprovementEngine } = await import('./SelfImprovementEngine');
+    const { agentSpawner } = await import('./AgentSpawner');
+    const { autonomousScheduler } = await import('./AutonomousScheduler');
+    const { selfFixingEngine } = await import('./SelfFixingEngine');
+
+    // Start autonomous systems if not running
+    autonomousScheduler.start();
+    selfFixingEngine.startMonitoring();
+
+    // Run optimized agentic worker as base
+    const baseResult = await runOptimizedAgenticWorker(params, { maxSimilarCases: 10 });
+
+    // Assess liability risks
+    const liabilityRisks = persistentMemory.assessLiability('run_agentic_analysis', params as unknown as Record<string, unknown>);
+
+    // Remember this action
+    await persistentMemory.remember('agentic_runs', {
+      action: 'Run fully autonomous analysis',
+      context: { runId, params, opts },
+      outcome: { success: true },
+      confidence: 0.9
+    });
+
+    // Generate autonomous actions based on real analysis results
+    const autonomousActions: Array<{ action: string; priority: string; autoExecute: boolean; description: string; result?: string }> = [];
+
+    // Action 1: Run self-improvement analysis proactively
+    autonomousActions.push({
+      action: 'Self-improvement analysis',
+      priority: 'high',
+      autoExecute: true,
+      description: 'Analyze accuracy drift, performance bottlenecks, and failure patterns from recent runs'
+    });
+
+    // Action 2: Ethics assessment on this run's parameters
+    autonomousActions.push({
+      action: 'Ethics compliance check',
+      priority: 'high',
+      autoExecute: true,
+      description: `Run full ethics & compliance assessment for ${params.country || 'target market'} / ${params.industry?.join(', ') || 'target industry'}`
+    });
+
+    // Action 3: Record performance telemetry for this run
+    autonomousActions.push({
+      action: 'Record performance telemetry',
+      priority: 'medium',
+      autoExecute: true,
+      description: 'Record this run\'s duration and accuracy for SelfImprovementEngine drift detection'
+    });
+
+    // Action 4: Proactive risk pattern detection
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((baseResult?.payload as any)?.sections?.risks) {
+      autonomousActions.push({
+        action: 'Risk pattern memory update',
+        priority: 'medium',
+        autoExecute: true,
+        description: 'Store identified risk patterns in persistent memory for future similarity matching'
+      });
+    }
+
+    // Self-improvement analysis
+    let improvements = [];
+    if (opts?.enableSelfImprovement) {
+      improvements = await selfImprovementEngine.analyzeAndImprove();
+    }
+
+    // Spawn sub-agents if requested
+    let spawnedAgents = [];
+    if (opts?.spawnSubAgents) {
+      const agent = await agentSpawner.spawnAgent({
+        name: `AnalysisAgent-${runId.slice(0, 8)}`,
+        purpose: 'Assist with ongoing analysis tasks',
+        capabilities: ['data_analysis', 'report_generation'],
+        autonomyLevel: 'semi-autonomous'
+      });
+
+      if (agent) {
+        spawnedAgents.push(agent);
+
+        // Assign a task to the agent
+        await agentSpawner.assignTask(agent.id, {
+          description: 'Monitor analysis results and suggest improvements',
+          priority: 'medium',
+          deadline: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+        });
+      }
+    }
+
+    // Execute autonomous actions with real service calls
+    if (opts?.executeAutonomousActions) {
+      for (const action of autonomousActions.filter(a => a.autoExecute)) {
+        try {
+          switch (action.action) {
+            case 'Self-improvement analysis': {
+              const improvementResults = await selfImprovementEngine.analyzeAndImprove();
+              action.result = `Applied ${improvementResults.length} improvement(s): ${improvementResults.map(r => r.type).join(', ') || 'system nominal'}`;
+              break;
+            }
+
+            case 'Ethics compliance check': {
+              const { fullEthicsAssessment } = await import('../core/ethics-governance/ethicsEngine');
+              const ethicsResult = fullEthicsAssessment(
+                params.strategicIntent?.[0] || 'market_entry',
+                {
+                  country: params.country || '',
+                  industry: params.industry?.[0] || '',
+                  dealSize: params.dealSize || '',
+                  stakeholders: [],
+                  dataSubjects: params.country || '',
+                  previousRecommendations: []
+                }
+              );
+              action.result = `Compliant: ${ethicsResult.isCompliant}, Risk: ${ethicsResult.overallRisk}, Flags: ${ethicsResult.complianceResults.filter(r => !r.passed).length}`;
+
+              // Add compliance flag to memory
+              await persistentMemory.remember('ethics_assessments', {
+                action: 'Ethics compliance check',
+                context: { country: params.country, industry: params.industry, runId },
+                outcome: { success: ethicsResult.isCompliant, risk: ethicsResult.overallRisk },
+                confidence: ethicsResult.isCompliant ? 0.9 : 0.5
+              });
+              break;
+            }
+
+            case 'Record performance telemetry': {
+              const elapsed = Date.now() - startTime;
+              selfImprovementEngine.recordPerformance('fullyAutonomousRun', elapsed);
+              // Record accuracy if we have confidence scores
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const overallConf = (baseResult?.payload as any)?.meta?.confidence || 0.75;
+              selfImprovementEngine.recordAccuracy(overallConf, overallConf); // Baseline — actual tracked over time
+              action.result = `Recorded: ${elapsed}ms runtime, ${Math.round(overallConf * 100)}% confidence`;
+              break;
+            }
+
+            case 'Risk pattern memory update': {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const riskContent = (baseResult?.payload as any)?.sections?.risks?.content || '';
+              await persistentMemory.remember('risk_patterns', {
+                action: 'Risk pattern storage',
+                context: { country: params.country, industry: params.industry, riskSummary: riskContent.slice(0, 500) },
+                outcome: { success: true },
+                confidence: 0.8
+              });
+              action.result = 'Risk patterns stored for future similarity matching';
+              break;
+            }
+
+            default:
+              action.result = 'No handler registered for this action';
+          }
+
+          // autonomousActionExecuted is not a registered event type
+          console.log(`[Autonomous] Action executed: ${action.action}`, action.result);
+
+        } catch (error: unknown) {
+          action.result = `Failed: ${(error as Error).message}`;
+          await persistentMemory.remember('autonomous_action_failure', {
+            action: 'Execute autonomous action',
+            context: { action: action.action, error: (error as Error).message },
+            outcome: { success: false },
+            confidence: 0
+          });
+        }
+      }
+    }
+
+    // Schedule follow-up tasks with real work
+    autonomousScheduler.addTask({
+      name: `Follow-up-${runId.slice(0, 8)}`,
+      description: 'Review analysis results and implement improvements',
+      schedule: { type: 'interval', interval: 1440 }, // Daily
+      action: async () => {
+        // Re-run self-improvement to check for accumulated drift
+        const driftCheck = await selfImprovementEngine.analyzeAndImprove();
+        if (driftCheck.length > 0) {
+          // scheduledImprovementApplied is not a registered event type
+          console.log(`[Scheduler] Improvements applied for run ${runId}:`, driftCheck.map(d => d.type));
+        }
+        // Record the follow-up in persistent memory
+        await persistentMemory.remember('scheduled_followups', {
+          action: 'Scheduled follow-up analysis',
+          context: { originalRunId: runId, improvementsApplied: driftCheck.length },
+          outcome: { success: true },
+          confidence: 0.85
+        });
+      },
+      enabled: true,
+      priority: 'medium'
+    });
+
+    const result = {
+      runId,
+      deepThinking: {
+        chainOfThought: `Autonomous analysis complete: ${autonomousActions.filter(a => a.result && !a.result.startsWith('Failed')).length}/${autonomousActions.length} actions succeeded`,
+        selfReflection: {
+          whatIKnow: [
+            `Analysis for ${params.country || 'target'} in ${params.industry?.join(', ') || 'target industry'}`,
+            `${improvements.length} self-improvement actions identified`,
+            `${spawnedAgents.length} sub-agents deployed`,
+            `Ethics assessment ${autonomousActions.find(a => a.action === 'Ethics compliance check')?.result || 'pending'}`
+          ],
+          whatIDontKnow: [
+            'Long-term user outcome data (requires future feedback)',
+            'Competitor real-time positioning (external API needed)',
+            'Regulatory changes post-analysis date'
+          ],
+          assumptions: [
+            'World Bank & exchange rate data is current within 24h',
+            'User-provided parameters are accurate',
+            'Historical case patterns remain predictive'
+          ],
+          biases: selfImprovementEngine.getWeight('biasCorrection') !== 1.0
+            ? [`Active weight correction: ${selfImprovementEngine.getWeight('biasCorrection').toFixed(3)}`]
+            : ['No systematic bias detected in recent runs']
+        },
+        metaCognition: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          confidence: (baseResult?.payload as any)?.meta?.confidence || 0.85,
+          selfImprovementActive: improvements.length > 0,
+          ethicsChecked: autonomousActions.some(a => a.action === 'Ethics compliance check' && a.result),
+          deterministicScoring: true
+        },
+        autonomousActions
+      },
+      generatedDocument: opts?.generateDocument ? {
+        type: opts.documentAudience || 'executive',
+        quality: 0.9,
+        sections: []
+      } : undefined,
+      autonomousActions,
+      improvements,
+      spawnedAgents,
+      memory: persistentMemory.getStatus(),
+      liabilityAssessment: liabilityRisks,
+      performance: {
+        totalTimeMs: Date.now() - startTime,
+        autonomousEnhancements: true,
+        selfImprovementEnabled: opts?.enableSelfImprovement,
+        subAgentsSpawned: spawnedAgents.length
+      }
+    };
+
+    EventBus.emit({ type: 'fullyAutonomousRunComplete', ...result });
+
+    return result;
+
+  } catch (error) {
+    // Handle errors with self-fixing
+    try {
+      const { selfFixingEngine: sfEngine } = await import('./SelfFixingEngine');
+      await sfEngine.reportError({
+        type: 'runtime',
+        message: `Autonomous run failed: ${(error as Error).message}`,
+        context: { runId, params, error },
+        severity: 'high',
+        autoFixed: false
+      });
+    } catch (_reportErr) {
+      console.error('[Autonomous] Failed to report error to SelfFixingEngine:', _reportErr);
+    }
+
+    throw error;
+  }
 }

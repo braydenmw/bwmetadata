@@ -372,6 +372,7 @@ export interface ReportParameters {
     capabilitiesNeed?: string[];
     riskHorizon?: string[];
     operationalChassis?: { taxStructure?: string, entityPreference?: string };
+    autonomousMode?: 'standard' | 'enhanced' | 'full';
   };
 
   // --- NEW: Neuro-Symbolic Integration ---
@@ -1290,6 +1291,7 @@ export interface ReportPayload {
     outcomeLearning?: OutcomeLearningSnapshot;
     adversarialConfidence?: AdversarialConfidenceResult;
     agenticBrain?: AgenticBrainSnapshot;
+    frontierIntelligence?: FrontierIntelligenceResult;
   };
 }
 

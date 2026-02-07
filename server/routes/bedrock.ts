@@ -124,7 +124,7 @@ router.post('/invoke', async (req: Request, res: Response) => {
           secretAccessKey = cleanDecoded.substring(colonIndex + 1);
           console.log('[Bedrock] Decoded credentials from API key');
         }
-      } catch (_decodeErr) {
+      } catch {
         console.warn('[Bedrock] Could not decode API key, using default credentials');
       }
     }
@@ -215,19 +215,16 @@ router.post('/invoke', async (req: Request, res: Response) => {
 
 // Health check endpoint
 router.get('/health', (_req: Request, res: Response) => {
-  const hasGeminiKey = !!process.env.GEMINI_API_KEY;
-  const hasBedrockKey = !!process.env.AWS_BEDROCK_API_KEY;
-  const hasAWSRegion = !!process.env.AWS_REGION;
   const bedrockReady = hasBedrockConfig();
   
   res.json({
     service: 'AI Intelligence',
-    mode: bedrockReady ? 'AWS Bedrock (Production)' : (hasGeminiKey ? 'Gemini (Fallback)' : 'No AI'),
+    mode: bedrockReady ? 'AWS Bedrock (Production)' : (process.env.GEMINI_API_KEY ? 'Gemini (Fallback)' : 'No AI'),
     bedrockAvailable: bedrockReady,
-    bedrockApiKey: hasBedrockKey ? 'configured' : 'not-set',
-    geminiAvailable: hasGeminiKey,
+    bedrockApiKey: process.env.AWS_BEDROCK_API_KEY ? 'configured' : 'not-set',
+    geminiAvailable: !!process.env.GEMINI_API_KEY,
     region: process.env.AWS_REGION || 'not-configured',
-    status: (bedrockReady || hasGeminiKey) ? 'ready' : 'no-api-keys'
+    status: (bedrockReady || !!process.env.GEMINI_API_KEY) ? 'ready' : 'no-api-keys'
   });
 });
 

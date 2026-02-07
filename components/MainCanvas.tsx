@@ -24,6 +24,7 @@ import useAdvisorSnapshot from '../hooks/useAdvisorSnapshot';
 import useBrainObserver, { BrainSignal } from '../hooks/useBrainObserver';
 import ContextualAIAssistant from './ContextualAIAssistant';
 import { LiveReportBuilder, type LiveReportState } from '../services/MultiAgentBrainSystem';
+import { bwConsultantAI } from '../services/BWConsultantAgenticAI';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -667,60 +668,58 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         });
     }, [params, setParams]);
 
-    const handleSendMessage = () => {
-    if (chatInput.trim()) {
-      const userQuestion = chatInput.trim();
-      const newMessage = { text: userQuestion, sender: 'user' as const, timestamp: new Date() };
-      setChatMessages(prev => [...prev, newMessage]);
-      setChatInput('');
+        const handleSendMessage = () => {
+                if (!chatInput.trim()) return;
 
-      // Set thinking state
-      setAgentThinking(true);
+                const userQuestion = chatInput.trim();
+                const newMessage = { text: userQuestion, sender: 'user' as const, timestamp: new Date() };
+                setChatMessages(prev => [...prev, newMessage]);
+                setChatInput('');
 
-      // Call the AI API instead of using hardcoded responses
-      setTimeout(async () => {
-        try {
-          const response = await fetch('/api/ai/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              message: userQuestion,
-              context: {
-                ...params,
-                conversationHistory: chatMessages.slice(-5).map(m => ({
-                  role: m.sender === 'user' ? 'user' : 'assistant',
-                  content: m.text
-                }))
-              }
-            })
-          });
+                setAgentThinking(true);
 
-          if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-          }
+                setTimeout(async () => {
+                        try {
+                                const insights = await bwConsultantAI.consult({
+                                        ...params,
+                                        userQuestion,
+                                        conversationHistory: chatMessages.slice(-5).map(m => ({
+                                                role: m.sender === 'user' ? 'user' : 'assistant',
+                                                content: m.text
+                                        }))
+                                }, 'live_report_chat');
 
-          const data = await response.json();
-          const aiResponse = data.content || data.description || 'I apologize, but I encountered an issue processing your request. Please try again.';
+                                const topInsights = insights.slice(0, 3);
+                                const responseText = topInsights.length
+                                        ? `Here is what I found based on your request:\n\n${topInsights.map(i => `• ${i.title}: ${i.content}`).join('\n')}`
+                                        : 'I am ready to assist. Provide a location, company, or objective and I will generate a targeted brief.';
 
-          setChatMessages(prev => [...prev, {
-            text: aiResponse,
-            sender: 'bw' as const,
-            timestamp: new Date()
-          }]);
+                                const lower = userQuestion.toLowerCase();
+                                let action: { label: string; type: 'open-gli' | 'open-docs' } | undefined;
+                                if (lower.includes('report') || lower.includes('document') || lower.includes('generate')) {
+                                        action = { label: 'Open Document Suite', type: 'open-docs' };
+                                } else if (lower.includes('location') || lower.includes('city') || lower.includes('country') || lower.includes('region')) {
+                                        action = { label: 'Open Location Intelligence', type: 'open-gli' };
+                                }
 
-        } catch (error) {
-          console.error('AI Chat error:', error);
-          setChatMessages(prev => [...prev, {
-            text: `I encountered an error connecting to the AI service. Please ensure the server is running and try again. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-            sender: 'bw' as const,
-            timestamp: new Date()
-          }]);
-        } finally {
-          setAgentThinking(false);
-        }
-      }, 500);
-    }
-  };
+                                setChatMessages(prev => [...prev, {
+                                        text: responseText,
+                                        sender: 'bw' as const,
+                                        timestamp: new Date(),
+                                        ...(action ? { action } : {})
+                                }]);
+                        } catch (error) {
+                                console.error('BW Consultant chat error:', error);
+                                setChatMessages(prev => [...prev, {
+                                        text: `I encountered an error while generating an advisory response. ${error instanceof Error ? error.message : 'Unknown error'}`,
+                                        sender: 'bw' as const,
+                                        timestamp: new Date()
+                                }]);
+                        } finally {
+                                setAgentThinking(false);
+                        }
+                }, 400);
+        };
 
     const renderCompletenessBadge = () => {
         if (completeness <= 0) return null;
@@ -5299,7 +5298,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                     {/* Doc Footer */}
                     <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[11px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
-                        <span>Generated by Nexus Core v4.2</span>
+                        <span>Generated by Nexus Intelligence OS v6.0 · NSIL v3.2</span>
                         <span>Page 1 of 1</span>
                     </div>
                 </motion.div>
@@ -5369,8 +5368,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <div ref={chatMessagesEndRef} />
                             </div>
                             <div className="border-t border-indigo-100 flex items-center gap-1 px-2 py-1.5 bg-indigo-50/50">
-                                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[11px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
-                                <button onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
+                                <input type="text" data-testid="consultant-chat-input" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[11px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
+                                <button data-testid="consultant-chat-send" onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
                             </div>
                         </div>
                     </div>

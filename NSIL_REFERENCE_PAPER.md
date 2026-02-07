@@ -12,15 +12,16 @@ BWGA Intelligence AI is not a reactive chatbot or a passive dashboard. It is an 
 ---
 
 ## 1) NSIL (Nexus Strategic Intelligence Layer): what it is
-NSIL is the reasoning layer that wraps around the scoring engines. It turns “user input” into a structured strategic case.
+NSIL is the reasoning layer that wraps around the scoring engines. It turns "user input" into a structured strategic case. At its core, NSIL combines traditional strategic analysis with a revolutionary Human Cognition Engine that implements university-level neuroscience mathematics never before adapted to AI systems.
 
-**NSIL’s role in one line:**
-- Validate → Debate → Score → Synthesize → Deliver
+**NSIL's role in one line:**
+- Validate → Debate → Score → Cognify → Synthesize → Deliver
 
 **What that means in practice:**
 - It **validates** claims and constraints against available intelligence signals.
 - It **debates** the strategy using five specialist personas.
 - It **scores** the strategy using the 21-formula suite.
+- It **cognifies** the analysis through 7 neuroscience models (neural fields, predictive coding, free energy, attention, emotion, consciousness, working memory).
 - It **synthesizes** findings into recommendations and structured report sections.
 - It **delivers** explainable outputs that preserve provenance (what influenced what).
 
@@ -116,7 +117,7 @@ These indices extend the primary engines and explain *why* the strategy is stron
 - **SRA** — *Strategic Risk Assessment*: market/execution/competitive/timing risk profile.
 - **IDV** — *Investment Default Variance*: variance from expected outcomes (projection fragility).
 
-**Note on “21”:** BWGA Intelligence AI refers to the 21-formula suite as the 5 primary engines + 16 derivative indices above. Some modes may compute additional advanced diagnostics, but they are treated as extensions rather than the core suite.
+**Note on "38":** BWGA Intelligence AI refers to the 38-formula suite as the 5 primary engines + 16 derivative indices + 7 cognitive models + 10 advanced risk indices. Some modes may compute additional advanced diagnostics, but they are treated as extensions rather than the core suite.
 
 ---
 

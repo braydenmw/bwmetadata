@@ -1,0 +1,485 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - navigation [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: BW
+        - generic [ref=e10]: BWGA Intelligence
+      - generic [ref=e11]:
+        - button "Mission" [ref=e12] [cursor=pointer]
+        - button "Our Story" [ref=e13] [cursor=pointer]
+        - button "Technology" [ref=e14] [cursor=pointer]
+        - button "The Difference" [ref=e15] [cursor=pointer]
+        - button "BW AI Search" [ref=e16] [cursor=pointer]
+        - button "10-Step Protocol" [ref=e17] [cursor=pointer]
+        - button "Partnerships" [ref=e18] [cursor=pointer]
+  - generic [ref=e21]:
+    - paragraph [ref=e22]: BRAYDEN WALLS GLOBAL ADVISORY
+    - heading "Regional communities are the backbone of every nation. They deserve to be seen." [level=1] [ref=e23]:
+      - text: Regional communities are the backbone of every nation.
+      - generic [ref=e24]: They deserve to be seen.
+    - paragraph [ref=e25]: "Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow."
+  - img "Regional landscape" [ref=e27]
+  - generic [ref=e30]:
+    - paragraph [ref=e31]: OUR MISSION
+    - heading "Strong nations are built on strong regions." [level=2] [ref=e32]
+    - generic [ref=e33]:
+      - paragraph [ref=e34]: The communities that feed nations, power industries, and drive real economic activity are often the last to receive the resources they need to grow. Capital cities have teams, budgets, and connections. Regional areas have determination—but rarely the tools to match it.
+      - paragraph [ref=e35]: Every nation depends on its regions—for food, resources, industry, and resilience. But when it comes to competing for investment and partnerships, regional communities are expected to play the same game with a fraction of the resources. Outside the major cities, there are people building real industries, solving real problems, and creating real opportunity. But without access to institutional-grade tools, their stories go untold and their potential stays hidden.
+      - paragraph [ref=e36]: If you've ever watched a regional community work twice as hard for half the recognition, you understand the problem. The capability exists. The potential is real. What's missing are the tools to translate that into the language investors and partners expect.
+  - generic [ref=e38]:
+    - paragraph [ref=e39]: WHY THIS PLATFORM EXISTS
+    - generic [ref=e40]:
+      - paragraph [ref=e41]: "We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use—so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered."
+      - paragraph [ref=e42]: — Brayden Walls, Founder
+  - img "Modern business" [ref=e44]
+  - generic [ref=e47]:
+    - paragraph [ref=e48]: OUR ORIGIN
+    - heading "The Story of BWGA" [level=2] [ref=e49]
+    - generic [ref=e50]:
+      - paragraph [ref=e51]: Brayden Walls Global Advisory (BWGA) wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
+      - paragraph [ref=e52]: For years, we watched dedicated regional leaders—mayors, local entrepreneurs, and councils—work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
+      - paragraph [ref=e53]: We realized the problem wasn't their ideas; it was their language. Wall Street and global investors speak a specific dialect of risk matrices, financial models, and feasibility studies. If you can't speak that language, you don't get a seat at the table. Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents for them. Regional communities simply couldn't afford that admission fee, so they were left behind.
+    - paragraph [ref=e55]: "We built BWGA to break that barrier. Our mission is simple: to give the underdog—the regional council, the local business, the emerging exporter—the same strategic firepower as a multinational corporation."
+  - generic [ref=e57]:
+    - paragraph [ref=e58]: THE TECHNOLOGY
+    - heading "What BWGA AI Actually Is" [level=2] [ref=e59]
+    - generic [ref=e60]:
+      - paragraph [ref=e61]: To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
+      - paragraph [ref=e62]:
+        - text: So, we built
+        - strong [ref=e63]: BWGA Intelligence AI
+        - text: . It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a digital boardroom. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine.
+      - paragraph [ref=e64]:
+        - text: We call this the
+        - strong [ref=e65]: NSIL (Nexus Strategic Intelligence Layer)
+        - text: . It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly. Combined with the
+        - strong [ref=e66]: Human Cognition Engine
+        - text: —7 neuroscience-based models that simulate how real decision-makers think, react, and process complex information—the system doesn't just analyze data, it anticipates human behavior.
+  - img "Technology and data" [ref=e68]
+  - generic [ref=e71]:
+    - paragraph [ref=e72]: THE DIFFERENCE
+    - heading "What Makes BWGA AI Different" [level=2] [ref=e73]
+    - paragraph [ref=e75]:
+      - text: Most AI tools generate text.
+      - strong [ref=e76]: BWGA AI stress-tests your ideas.
+      - text: It runs your project through adversarial analysis, mathematical scoring, and real-world pressure simulation—then tells you exactly where it breaks.
+    - generic [ref=e77]:
+      - paragraph [ref=e78]: SEE THE DIFFERENCE
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - paragraph [ref=e81]: GENERIC AI RESPONSE
+          - paragraph [ref=e82]: "\"This project appears promising with strong market potential. Consider securing funding and building partnerships to move forward.\""
+          - generic [ref=e83]:
+            - paragraph [ref=e84]: ✗ No metrics
+            - paragraph [ref=e85]: ✗ No specific problems identified
+            - paragraph [ref=e86]: ✗ No actionable recommendations
+        - generic [ref=e87]:
+          - paragraph [ref=e88]: BWGA AI ANALYSIS
+          - paragraph [ref=e89]:
+            - text: "\"SPI: 34%. 3 fatal flaws: undefined revenue model, $4.2M funding gap, missing regulatory pre-clearance."
+            - strong [ref=e90]: Do not proceed until addressed.
+            - text: "\""
+          - generic [ref=e91]:
+            - paragraph [ref=e92]: ✓ Quantified success probability
+            - paragraph [ref=e93]: ✓ Specific problems with values
+            - paragraph [ref=e94]: ✓ Clear go/no-go recommendation
+    - generic [ref=e95]:
+      - paragraph [ref=e96]: HOW BWGA AI ACHIEVES THIS
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e100]: "1"
+          - generic [ref=e101]:
+            - heading "Adversarial AI Personas" [level=3] [ref=e102]
+            - paragraph [ref=e103]: Five specialized AI personas—Skeptic, Regulator, Accountant, Advocate, and Operator—debate your project from opposing angles. Unlike generic AI that confirms your biases, these personas actively seek weaknesses before investors do.
+        - generic [ref=e104]:
+          - generic [ref=e106]: "2"
+          - generic [ref=e107]:
+            - heading "38 Mathematical Formulas" [level=3] [ref=e108]
+            - paragraph [ref=e109]: Your project is scored using proprietary indices—Success Probability Index (SPI), Regional Return on Investment (RROI), and more. These aren't opinions; they're reproducible calculations you can benchmark and defend.
+        - generic [ref=e110]:
+          - generic [ref=e112]: "3"
+          - generic [ref=e113]:
+            - heading "Investment Committee Simulation" [level=3] [ref=e114]
+            - paragraph [ref=e115]: The personas debate, the formulas score, and the result simulates what happens when your project faces a real investment committee. You see exactly how your idea performs under pressure—before the actual pitch.
+    - paragraph [ref=e117]:
+      - strong [ref=e118]: "The result:"
+      - text: Consultant-level strategic validation—automated, affordable, and backed by math instead of opinion. This level of scrutiny was previously available only to corporations paying $50K+ for advisory firms.
+  - generic [ref=e120]:
+    - paragraph [ref=e121]: THE IMPACT
+    - heading "Why This Matters" [level=2] [ref=e122]
+    - generic [ref=e123]:
+      - paragraph [ref=e124]: This system changes the game because it turns ambition into proof. Instead of a rough idea, you walk away with institutional-grade documentation—Investment Prospectuses, Risk Assessments, and Legal Frameworks—that look like they came from a top-tier firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
+      - paragraph [ref=e125]:
+        - strong [ref=e126]: "This is the massive difference:"
+        - text: It means a small town in regional Australia or a startup in Southeast Asia can finally compete on a level playing field with the biggest players in the world. It removes the "consultant tax" and ensures that great projects are judged on their merit, not on who they know or how much they paid for advice.
+  - img "Team collaboration" [ref=e128]
+  - generic [ref=e131]:
+    - paragraph [ref=e132]: THE COMPREHENSIVE INTAKE FRAMEWORK
+    - heading "The Ten-Step Protocol" [level=2] [ref=e133]
+    - paragraph [ref=e134]: Most users complete this in 30-45 minutes
+    - paragraph [ref=e136]: "Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust."
+    - paragraph [ref=e137]: Click any step below to see the detailed data requirements.
+    - generic [ref=e138]:
+      - button "1 Step 1 Identity & Foundation" [ref=e139] [cursor=pointer]:
+        - generic [ref=e140]:
+          - generic [ref=e141]: "1"
+          - generic [ref=e142]: Step 1
+        - heading "Identity & Foundation" [level=4] [ref=e143]
+      - button "2 Step 2 Mandate & Strategy" [ref=e144] [cursor=pointer]:
+        - generic [ref=e145]:
+          - generic [ref=e146]: "2"
+          - generic [ref=e147]: Step 2
+        - heading "Mandate & Strategy" [level=4] [ref=e148]
+      - button "3 Step 3 GLI Market & Context" [ref=e149] [cursor=pointer]:
+        - generic [ref=e150]:
+          - generic [ref=e151]: "3"
+          - generic [ref=e152]: Step 3
+          - generic [ref=e153]: GLI
+        - heading "Market & Context" [level=4] [ref=e154]
+      - button "4 Step 4 GLI Partners & Ecosystem" [ref=e155] [cursor=pointer]:
+        - generic [ref=e156]:
+          - generic [ref=e157]: "4"
+          - generic [ref=e158]: Step 4
+          - generic [ref=e159]: GLI
+        - heading "Partners & Ecosystem" [level=4] [ref=e160]
+      - button "5 Step 5 GLI Financial Model" [ref=e161] [cursor=pointer]:
+        - generic [ref=e162]:
+          - generic [ref=e163]: "5"
+          - generic [ref=e164]: Step 5
+          - generic [ref=e165]: GLI
+        - heading "Financial Model" [level=4] [ref=e166]
+      - button "6 Step 6 GLI Risk & Mitigation" [ref=e167] [cursor=pointer]:
+        - generic [ref=e168]:
+          - generic [ref=e169]: "6"
+          - generic [ref=e170]: Step 6
+          - generic [ref=e171]: GLI
+        - heading "Risk & Mitigation" [level=4] [ref=e172]
+      - button "7 Step 7 GLI Resources & Capability" [ref=e173] [cursor=pointer]:
+        - generic [ref=e174]:
+          - generic [ref=e175]: "7"
+          - generic [ref=e176]: Step 7
+          - generic [ref=e177]: GLI
+        - heading "Resources & Capability" [level=4] [ref=e178]
+      - button "8 Step 8 GLI Execution Plan" [ref=e179] [cursor=pointer]:
+        - generic [ref=e180]:
+          - generic [ref=e181]: "8"
+          - generic [ref=e182]: Step 8
+          - generic [ref=e183]: GLI
+        - heading "Execution Plan" [level=4] [ref=e184]
+      - button "9 Step 9 GLI Governance & Monitoring" [ref=e185] [cursor=pointer]:
+        - generic [ref=e186]:
+          - generic [ref=e187]: "9"
+          - generic [ref=e188]: Step 9
+          - generic [ref=e189]: GLI
+        - heading "Governance & Monitoring" [level=4] [ref=e190]
+      - button "10 Step 10 GLI Scoring & Readiness" [ref=e191] [cursor=pointer]:
+        - generic [ref=e192]:
+          - generic [ref=e193]: "10"
+          - generic [ref=e194]: Step 10
+          - generic [ref=e195]: GLI
+        - heading "Scoring & Readiness" [level=4] [ref=e196]
+    - generic [ref=e197]:
+      - paragraph [ref=e198]: Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
+      - paragraph [ref=e199]:
+        - text: "The workflow has three stages:"
+        - strong [ref=e200]: Structured Intake
+        - text: (define the opportunity in measurable terms),
+        - strong [ref=e201]: Adversarial Analysis
+        - text: (stress-test with personas and scoring models), and
+        - strong [ref=e202]: Institutional Output
+        - text: (compile evidence into auditable deliverables).
+    - paragraph [ref=e203]: "Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action."
+  - generic [ref=e205]:
+    - paragraph [ref=e206]: INSTITUTIONAL-GRADE OUTPUTS
+    - heading "The Document Factory" [level=2] [ref=e207]
+    - paragraph [ref=e208]: Great analysis is worthless if it stays locked in spreadsheets. The Document Factory bridges the gap between validated insights and boardroom-ready deliverables—producing prospectuses, risk matrices, partnership briefs, LOIs, MOUs, grant applications, and due-diligence packs that meet institutional standards and carry traceable evidence.
+    - generic [ref=e209]:
+      - paragraph [ref=e210]:
+        - strong [ref=e211]: "Why it exists:"
+        - text: High-potential regional projects fail when their case isn't packaged at institutional quality. This fixes that gap.
+      - paragraph [ref=e212]:
+        - strong [ref=e213]: "How it works:"
+        - text: It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.
+      - paragraph [ref=e214]:
+        - strong [ref=e215]: "What you get:"
+        - text: Prospectuses, risk matrices, partnership briefs, LOIs/MOUs, grants, and due-diligence packs—formatted and traceable.
+    - generic [ref=e216]:
+      - generic [ref=e217]:
+        - generic [ref=e218]: 200+
+        - paragraph [ref=e219]: Report & Document Types
+      - generic [ref=e220]:
+        - generic [ref=e221]: 150+
+        - paragraph [ref=e222]: Letter Templates
+    - button "View Full Catalog" [ref=e223] [cursor=pointer]:
+      - img [ref=e224]
+      - text: View Full Catalog
+    - paragraph [ref=e228]:
+      - strong [ref=e229]: "The audit trail:"
+      - text: Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
+  - generic [ref=e231]:
+    - paragraph [ref=e232]: THE 38 FORMULAS — PROOF OF CAPABILITY
+    - heading "Mathematical Foundation & Architecture Details" [level=2] [ref=e233]
+    - generic [ref=e234]:
+      - paragraph [ref=e235]: "Sample Formula: Success Probability Index"
+      - paragraph [ref=e237]:
+        - text: SPI = Σ(wᵢ × Sᵢ) × (1 - R
+        - subscript [ref=e238]: composite
+        - text: ) × A
+        - subscript [ref=e239]: alignment
+      - paragraph [ref=e240]: "Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment"
+      - paragraph [ref=e242]: "\"Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results.\""
+    - generic [ref=e243]:
+      - paragraph [ref=e244]: "CASE STUDY: FORMULAS IN ACTION"
+      - paragraph [ref=e245]:
+        - text: A regional council submitted a renewable energy partnership proposal. Initial SPI calculation returned
+        - strong [ref=e246]: 34% probability of success
+        - text: ". The system identified 2 critical issues:"
+      - list [ref=e247]:
+        - listitem [ref=e248]:
+          - generic [ref=e249]: ✗
+          - text: Missing grid connection feasibility study (Regulatory Friction Index flagged)
+        - listitem [ref=e250]:
+          - generic [ref=e251]: ✗
+          - text: Unrealistic revenue projections (Financial Readiness Index triggered)
+      - paragraph [ref=e252]:
+        - text: After addressing these issues with system-guided improvements, the revised proposal scored
+        - strong [ref=e253]: 78% SPI
+        - text: — moved from "Do Not Proceed" to "Investment Ready" classification.
+    - generic [ref=e254]:
+      - generic [ref=e255]:
+        - heading "6-Layer Architecture + Cognition" [level=4] [ref=e256]:
+          - img [ref=e257]
+          - text: 6-Layer Architecture + Cognition
+        - list [ref=e261]:
+          - listitem [ref=e262]:
+            - img [ref=e263]
+            - text: Input Validation & Governance
+          - listitem [ref=e266]:
+            - img [ref=e267]
+            - text: Multi-Agent Adversarial Debate
+          - listitem [ref=e270]:
+            - img [ref=e271]
+            - text: Quantitative Formula Scoring
+          - listitem [ref=e274]:
+            - img [ref=e275]
+            - text: Monte Carlo Stress Testing
+          - listitem [ref=e278]:
+            - img [ref=e279]
+            - text: Human Cognition Engine (7 Models)
+          - listitem [ref=e282]:
+            - img [ref=e283]
+            - text: Output Synthesis & Provenance
+      - generic [ref=e286]:
+        - heading "5 AI Personas" [level=4] [ref=e287]:
+          - img [ref=e288]
+          - text: 5 AI Personas
+        - list [ref=e293]:
+          - listitem [ref=e294]:
+            - img [ref=e295]
+            - generic [ref=e300]: Advocate
+            - text: — finds the upside
+          - listitem [ref=e301]:
+            - img [ref=e302]
+            - generic [ref=e304]: Skeptic
+            - text: — attacks weak points
+          - listitem [ref=e305]:
+            - img [ref=e306]
+            - generic [ref=e310]: Regulator
+            - text: — checks compliance
+          - listitem [ref=e311]:
+            - img [ref=e312]
+            - generic [ref=e317]: Accountant
+            - text: — validates numbers
+          - listitem [ref=e318]:
+            - img [ref=e319]
+            - generic [ref=e323]: Operator
+            - text: — tests execution
+    - button "View Full Architecture & 38 Formulas" [ref=e324] [cursor=pointer]:
+      - img [ref=e325]
+      - text: View Full Architecture & 38 Formulas
+    - paragraph [ref=e329]: ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
+  - generic [ref=e331]:
+    - paragraph [ref=e332]: DESIGNED FOR EVERYONE
+    - heading "You Don't Need to Be an Expert." [level=2] [ref=e333]
+    - heading "You Just Need to Try." [level=2] [ref=e334]
+    - paragraph [ref=e335]: Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. It was built for the person staring at a blank page, wondering where to even start—and for the experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
+    - generic [ref=e336]:
+      - paragraph [ref=e337]: PREFERRED GUIDANCE LEVEL
+      - paragraph [ref=e338]: Before you begin, you choose how much guidance you want. This isn't a one-size-fits-all system—it's built to meet you where you are.
+      - generic [ref=e339]:
+        - generic [ref=e340]:
+          - paragraph [ref=e341]: 🧭 Orientation Mode
+          - paragraph [ref=e342]: Full explanations, step-by-step walkthroughs, and contextual help at every turn. Ideal for first-time users, community groups, or anyone new to strategic planning.
+        - generic [ref=e343]:
+          - paragraph [ref=e344]: 🤝 Collaborative Mode
+          - paragraph [ref=e345]: Balanced guidance with smart suggestions. You drive the process while the system surfaces insights. Built for teams, regional councils, and growing businesses.
+        - generic [ref=e346]:
+          - paragraph [ref=e347]: ⚡ Expert Mode
+          - paragraph [ref=e348]: Streamlined interface, minimal hand-holding, full access to advanced controls. Designed for experienced operators, government analysts, and corporate development teams.
+      - paragraph [ref=e349]: Your guidance level can be changed at any time from the sidebar. The system adapts its explanations, prompts, and recommendations accordingly—so you're never overwhelmed, and never slowed down.
+    - generic [ref=e350]:
+      - paragraph [ref=e351]: WHO THIS IS BUILT FOR
+      - generic [ref=e352]:
+        - generic [ref=e353]:
+          - img [ref=e354]
+          - paragraph [ref=e358]: Regional Councils & RDAs
+        - generic [ref=e359]:
+          - img [ref=e360]
+          - paragraph [ref=e364]: State & Federal Agencies
+        - generic [ref=e365]:
+          - img [ref=e366]
+          - paragraph [ref=e369]: Businesses Looking Regional
+        - generic [ref=e370]:
+          - img [ref=e371]
+          - paragraph [ref=e374]: First-Time Exporters
+    - paragraph [ref=e375]: Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform gives you the analytical firepower and document automation that was once reserved for major corporations.
+    - generic [ref=e376]:
+      - paragraph [ref=e377]: THE SYSTEM DOES WHAT YOU SHOULDN'T HAVE TO
+      - generic [ref=e378]:
+        - generic [ref=e379]:
+          - img [ref=e380]
+          - paragraph [ref=e384]: Structure your thinking
+        - generic [ref=e385]:
+          - img [ref=e386]
+          - paragraph [ref=e389]: Score your viability
+        - generic [ref=e390]:
+          - img [ref=e391]
+          - paragraph [ref=e393]: Stress-test assumptions
+        - generic [ref=e394]:
+          - img [ref=e395]
+          - paragraph [ref=e398]: Build your documents
+      - paragraph [ref=e399]: The complexity is hidden. What you see is clarity.
+  - generic [ref=e401]:
+    - paragraph [ref=e402]: NEXT STEPS
+    - heading "Partnership & Pilot Programs" [level=2] [ref=e403]
+    - paragraph [ref=e404]: The most effective way to demonstrate the value of BWGA AI is to apply it to real-world challenges. We propose collaborative partnerships through structured pilot programs.
+    - generic [ref=e405]:
+      - generic [ref=e406]:
+        - img [ref=e407]
+        - heading "Investment Screening Pilot" [level=3] [ref=e409]
+        - paragraph [ref=e410]: Use the platform for screening test cases with foreign investment review boards
+      - generic [ref=e411]:
+        - img [ref=e412]
+        - heading "Regional Development Pilot" [level=3] [ref=e415]
+        - paragraph [ref=e416]: Create investment prospectuses for target regions with economic development agencies
+      - generic [ref=e417]:
+        - img [ref=e418]
+        - heading "PPP Modeling Pilot" [level=3] [ref=e422]
+        - paragraph [ref=e423]: Model forthcoming Public-Private Partnerships with infrastructure ministries
+    - generic [ref=e424]:
+      - heading "Vision for the Future" [level=3] [ref=e425]
+      - paragraph [ref=e426]: Deploy as a shared, national strategic asset—a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.
+  - img "Business documents and analytics" [ref=e428]
+  - generic [ref=e431]:
+    - paragraph [ref=e432]: BW AI GLOBAL SEARCH
+    - heading "Instant Intelligence on Any Region, City, Company, or Government" [level=2] [ref=e433]
+    - paragraph [ref=e434]: "Before you can build a case, you need to understand the landscape. This is your starting point—a live AI-powered research engine that pulls verified data on any location or entity you're targeting. Enter a name, get an instant brief: demographics, leadership, economic indicators, infrastructure, and comparison benchmarks. Think of it as a search engine built for dealmakers—surfacing the intelligence that matters."
+    - generic [ref=e436]:
+      - generic [ref=e437]:
+        - img "Global Intelligence Network" [ref=e438]
+        - generic [ref=e441]:
+          - generic [ref=e442]:
+            - img [ref=e443]
+            - text: Global Coverage
+          - paragraph [ref=e446]: Real-time data from public sources worldwide
+      - generic [ref=e447]:
+        - generic [ref=e448]:
+          - img [ref=e450]
+          - generic [ref=e453]:
+            - heading "BW AI Search" [level=3] [ref=e454]
+            - paragraph [ref=e455]: Cities • Regions • Companies • Government
+        - paragraph [ref=e456]: Enter any city, region, company, or government body. Receive a one-page intelligence brief with key facts, leadership, economic data, and comparison signals—instantly.
+        - generic [ref=e457]:
+          - generic [ref=e458]:
+            - img [ref=e459]
+            - generic [ref=e462]: Population, GDP, key industries & infrastructure
+          - generic [ref=e463]:
+            - img [ref=e464]
+            - generic [ref=e467]: Leadership, government structure & key contacts
+          - generic [ref=e468]:
+            - img [ref=e469]
+            - generic [ref=e472]: Comparison benchmarks & investment signals
+        - generic [ref=e473]:
+          - textbox "Search any city, region, company, or government..." [ref=e474]
+          - button "Research" [disabled] [ref=e475]:
+            - img [ref=e476]
+            - text: Research
+  - img "Global connections" [ref=e480]
+  - generic [ref=e483]:
+    - paragraph [ref=e484]: SOLVING REAL PROBLEMS
+    - heading "Regional Challenges, Intelligent Solutions" [level=2] [ref=e485]
+    - generic [ref=e486]:
+      - paragraph [ref=e487]: "This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential."
+      - paragraph [ref=e488]:
+        - text: BWGA Intelligence AI is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that
+        - strong [ref=e489]: 10% of every paid transaction
+        - text: will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report system—it's a practical bridge between global decision-makers and real opportunities on the ground.
+      - paragraph [ref=e490]: What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluated—anywhere in the world.
+  - generic [ref=e492]:
+    - paragraph [ref=e493]: Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
+    - generic [ref=e494]:
+      - heading "Terms of Engagement" [level=4] [ref=e495]:
+        - img [ref=e496]
+        - text: Terms of Engagement
+      - generic [ref=e498]:
+        - paragraph [ref=e499]:
+          - strong [ref=e500]: "1. Strategic Decision Support:"
+          - text: BW AI is a decision support platform. All outputs are advisory.
+        - paragraph [ref=e501]:
+          - strong [ref=e502]: "2. Reasoning Governance:"
+          - text: NSIL layer governs analysis via adversarial input screening.
+        - paragraph [ref=e503]:
+          - strong [ref=e504]: "3. Data Privacy:"
+          - text: Strict compliance with GDPR, Australian Privacy Act.
+        - paragraph [ref=e505]:
+          - strong [ref=e506]: "4. Accountability:"
+          - text: Users retain final accountability for decisions.
+    - generic [ref=e507]:
+      - checkbox "By accessing the platform, you agree to our Terms & Conditions" [ref=e508] [cursor=pointer]
+      - generic [ref=e509] [cursor=pointer]:
+        - text: By accessing the platform, you agree to our
+        - strong [ref=e510]: Terms & Conditions
+    - button "🎯 Activate 100% Performance Mode" [disabled] [ref=e511]:
+      - text: 🎯 Activate 100% Performance Mode
+      - img [ref=e512]
+    - button "Launch Intelligence OS" [disabled] [ref=e514]:
+      - text: Launch Intelligence OS
+      - img [ref=e515]
+    - generic [ref=e517]:
+      - heading "BWGA Intelligence AI" [level=4] [ref=e518]
+      - paragraph [ref=e519]: BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.
+      - generic [ref=e520]:
+        - paragraph [ref=e521]:
+          - img [ref=e522]
+          - text: brayden@bwglobaladvis.info
+        - paragraph [ref=e525]:
+          - img [ref=e526]
+          - text: +63 960 835 4283
+    - generic [ref=e528]:
+      - heading "Development Status" [level=4] [ref=e529]
+      - paragraph [ref=e530]:
+        - strong [ref=e531]: "CURRENT PHASE:"
+        - text: Research & Development
+      - paragraph [ref=e532]: BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
+      - generic [ref=e533]:
+        - link "Terms & Conditions" [ref=e534] [cursor=pointer]:
+          - /url: "#"
+        - link "Privacy Policy" [ref=e535] [cursor=pointer]:
+          - /url: "#"
+        - link "Ethical AI Framework" [ref=e536] [cursor=pointer]:
+          - /url: "#"
+  - contentinfo [ref=e537]:
+    - generic [ref=e539]:
+      - generic [ref=e540]:
+        - paragraph [ref=e541]: © 2026 BW Global Advisory. All rights reserved.
+        - paragraph [ref=e542]: Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia
+      - generic [ref=e543]:
+        - generic [ref=e544]: Nexus Intelligence OS v6.0
+        - generic [ref=e546]: •
+        - generic [ref=e547]: NSIL Engine v3.2
+        - generic [ref=e548]: •
+        - generic [ref=e549]: Human Cognition Engine Active
+```

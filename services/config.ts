@@ -1,5 +1,5 @@
 // Feature flags and configuration for demo/production modes
-// V5.0 - Multi-Agent Brain System - ALL LIVE DATA BY DEFAULT
+// V6.0 - Nexus Intelligence OS - ALL LIVE DATA BY DEFAULT
 export const config = {
   // AI & Backend Features - ENABLED BY DEFAULT FOR LIVE SYSTEM
   useRealAI: process.env.REACT_APP_USE_REAL_AI !== 'false', // Default TRUE
@@ -18,7 +18,7 @@ export const config = {
   isDevelopment: process.env.NODE_ENV === 'development',
   isProduction: process.env.NODE_ENV === 'production',
   
-  // Multi-Agent Brain System v5.0
+  // Multi-Agent Brain System v6.0 (Nexus Intelligence OS)
   enableMultiAgent: true,
   enableHistoricalLearning: true,
   enableRegionalCityEngine: true,

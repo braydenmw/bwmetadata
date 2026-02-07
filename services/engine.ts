@@ -643,7 +643,7 @@ export const runOpportunityOrchestration = async (regionProfile: RegionProfile):
             ]
         },
         nsilOutput: `
-<nsil:analysis_report mode="Orchestrated" version="4.2">
+<nsil:analysis_report mode="Orchestrated" version="6.0">
   <executive_summary>
     <overall_score>${overall}</overall_score>
     <strategic_outlook>Composite score suggests ${(overall > 75 ? 'rapid' : overall > 60 ? 'steady' : 'guarded')} activation potential.</strategic_outlook>

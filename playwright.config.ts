@@ -8,7 +8,7 @@ export default defineConfig({
     headless: true,
     viewport: { width: 1280, height: 800 },
     actionTimeout: 10_000,
-    baseURL: process.env.APP_URL || 'http://localhost:5173'
+    baseURL: process.env.APP_URL || 'http://localhost:3000'
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

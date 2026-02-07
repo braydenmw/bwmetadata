@@ -24,14 +24,13 @@ const RESEARCH_DEBUG = ((): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const m = import.meta as any;
     return Boolean(m?.env?.VITE_DEBUG_RESEARCH === 'true');
-  } catch (e) {
+  } catch {
     return false;
   }
 })();
 
 function logResearch(...args: unknown[]) {
   if (RESEARCH_DEBUG) {
-    // eslint-disable-next-line no-console
     console.debug('[DeepResearch]', ...args);
   }
 }

@@ -34,6 +34,31 @@
  */
 
 import type { ReportParameters } from '../../types';
+import { CompositeScoreService } from '../CompositeScoreService';
+
+// Cached composite data for current run
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _compositeCache: any = null;
+let _compositeCacheKey = '';
+
+async function getComposite(params: ReportParameters) {
+  const key = `${params.country || ''}|${params.region || ''}|${(params.industry || []).join(',')}`;
+  if (_compositeCache && _compositeCacheKey === key) return _compositeCache;
+  _compositeCache = await CompositeScoreService.getScores(params);
+  _compositeCacheKey = key;
+  return _compositeCache;
+}
+
+/** Deterministic hash-based jitter in [-amplitude, +amplitude] derived from input string */
+function deterministicJitter(seed: string, amplitude: number): number {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) {
+    h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
+  }
+  // Map to [-1, 1]
+  const normalized = ((h % 10000) / 10000);
+  return normalized * amplitude;
+}
 
 // ============================================================================
 // TYPES
@@ -175,322 +200,402 @@ const toGrade = (score: number): string => {
 };
 
 const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: FormulaCache) => Promise<FormulaResult>> = {
-  // Level 0 Executors
+  // ─────────────── Level 0 Executors (use CompositeScoreService directly) ───────────────
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'PRI': async (params, _cache) => {
     const start = Date.now();
-    const stability = params.riskTolerance === 'low' ? 70 : params.riskTolerance === 'high' ? 40 : 55;
-    const score = clamp(stability + Math.random() * 20, 20, 95);
+    const c = await getComposite(params);
+    const politicalStability = c.components.politicalStability ?? 55;
+    const regulatory = c.components.regulatory ?? 55;
+    const riskFactor = c.components.riskFactors ?? 50;
+    const riskTolerance = params.riskTolerance === 'low' ? 10 : params.riskTolerance === 'high' ? -10 : 0;
+    const jitter = deterministicJitter(`PRI-${params.country || params.region || ''}`, 3);
+    const score = clamp(politicalStability * 0.4 + regulatory * 0.3 + (100 - riskFactor) * 0.3 + riskTolerance + jitter, 20, 95);
     return {
       id: 'PRI',
       score,
       grade: toGrade(score),
-      components: { political: score * 0.4, regulatory: score * 0.3, market: score * 0.3 },
-      drivers: ['Political environment', 'Regulatory framework', 'Market stability'],
+      components: { political: politicalStability, regulatory, marketStability: 100 - riskFactor },
+      drivers: ['Political stability index', 'Regulatory environment score', 'Market risk assessment'],
       executionTimeMs: Date.now() - start
     };
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'CRI': async (params, _cache) => {
     const start = Date.now();
-    const baseScore = params.country ? 60 : 50;
-    const score = clamp(baseScore + (params.industry?.length || 0) * 5 + Math.random() * 15, 25, 90);
+    const c = await getComposite(params);
+    const infrastructure = c.components.infrastructure ?? 60;
+    const talent = c.components.talent ?? 60;
+    const growthPotential = c.components.growthPotential ?? 60;
+    const industryBonus = (params.industry?.length || 0) * 2;
+    const jitter = deterministicJitter(`CRI-${params.country || ''}`, 3);
+    const score = clamp(infrastructure * 0.35 + talent * 0.30 + growthPotential * 0.35 + industryBonus + jitter, 25, 90);
     return {
       id: 'CRI',
       score,
       grade: toGrade(score),
-      components: { economic: score * 0.35, infrastructure: score * 0.35, talent: score * 0.3 },
-      drivers: ['Economic indicators', 'Infrastructure quality', 'Talent availability'],
+      components: { economic: growthPotential, infrastructure, talent },
+      drivers: ['GDP & growth indicators', 'Infrastructure quality score', 'Talent pool depth'],
       executionTimeMs: Date.now() - start
     };
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'BARNA': async (params, _cache) => {
     const start = Date.now();
-    const barriers = (params.industry?.length || 1) * 8 + (params.targetCounterpartType?.length || 0) * 5;
-    const score = clamp(100 - barriers + Math.random() * 10, 30, 95);
+    const c = await getComposite(params);
+    const regulatory = c.components.regulatory ?? 60;
+    const marketAccess = c.components.marketAccess ?? 60;
+    const costEfficiency = c.components.costEfficiency ?? 60;
+    const industryPenalty = (params.industry?.length || 1) * 3;
+    const counterpartPenalty = (params.targetCounterpartType?.length || 0) * 2;
+    const jitter = deterministicJitter(`BARNA-${params.country || ''}`, 2);
+    const score = clamp(regulatory * 0.30 + marketAccess * 0.25 + costEfficiency * 0.25 + 20 - industryPenalty - counterpartPenalty + jitter, 30, 95);
     return {
       id: 'BARNA',
       score,
       grade: toGrade(score),
-      components: { regulatory: score * 0.3, competitive: score * 0.25, capital: score * 0.25, cultural: score * 0.2 },
-      drivers: ['Regulatory barriers', 'Competitive landscape', 'Capital requirements', 'Cultural factors'],
+      components: { regulatory: regulatory, competitive: marketAccess, capital: costEfficiency, cultural: (regulatory + marketAccess) / 2 },
+      drivers: ['Regulatory barrier index', 'Competitive landscape score', 'Capital requirement assessment', 'Cultural alignment factor'],
       executionTimeMs: Date.now() - start
     };
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'TCO': async (params, _cache) => {
     const start = Date.now();
-    const headcountFactor = params.headcountBand?.includes('1000') ? 30 : params.headcountBand?.includes('100') ? 50 : 70;
-    const score = clamp(headcountFactor + Math.random() * 20, 35, 90);
+    const c = await getComposite(params);
+    const costEfficiency = c.components.costEfficiency ?? 55;
+    const infrastructure = c.components.infrastructure ?? 55;
+    const regulatory = c.components.regulatory ?? 55;
+    const headcountFactor = params.headcountBand?.includes('1000') ? -15 : params.headcountBand?.includes('100') ? -5 : 5;
+    const jitter = deterministicJitter(`TCO-${params.country || ''}`, 3);
+    const score = clamp(costEfficiency * 0.40 + infrastructure * 0.35 + regulatory * 0.25 + headcountFactor + jitter, 35, 90);
     return {
       id: 'TCO',
       score,
       grade: toGrade(score),
-      components: { operating: score * 0.4, capital: score * 0.35, compliance: score * 0.25 },
-      drivers: ['Operating costs', 'Capital expenditure', 'Compliance overhead'],
+      components: { operating: costEfficiency, capital: infrastructure, compliance: regulatory },
+      drivers: ['Operating cost index', 'Capital expenditure profile', 'Compliance overhead score'],
       executionTimeMs: Date.now() - start
     };
   },
 
-  // Level 1 Executors
+  // ─────────────── Level 1 Executors (use Level 0 results + composite) ───────────────
   'SPI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const pri = cache.get('PRI')?.score || 50;
     const cri = cache.get('CRI')?.score || 50;
-    const base = (pri * 0.4 + cri * 0.4 + (params.stakeholderAlignment?.length || 0) * 5);
-    const score = clamp(base + Math.random() * 10, 20, 98);
+    const marketAccess = c.components.marketAccess ?? 60;
+    const stakeholderBonus = (params.stakeholderAlignment?.length || 0) * 4;
+    const jitter = deterministicJitter(`SPI-${params.country || ''}`, 2);
+    const score = clamp(pri * 0.30 + cri * 0.30 + marketAccess * 0.25 + stakeholderBonus + 10 + jitter, 20, 98);
     return {
       id: 'SPI',
       score,
       grade: toGrade(score),
-      components: { market: score * 0.25, partner: score * 0.25, regulatory: score * 0.25, execution: score * 0.25 },
-      drivers: ['Market readiness', 'Partner fit', 'Regulatory clarity', 'Execution feasibility'],
+      components: { market: marketAccess, partner: (pri + cri) / 2, regulatory: c.components.regulatory ?? 60, execution: cri },
+      drivers: ['Market readiness from live data', 'Partner compatibility score', 'Regulatory clarity assessment', 'Execution feasibility index'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'RROI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const tco = cache.get('TCO')?.score || 50;
     const cri = cache.get('CRI')?.score || 50;
-    const base = (100 - tco) * 0.3 + cri * 0.4 + (params.dealSize === 'large' ? 35 : params.dealSize === 'enterprise' ? 50 : 15) * 0.8;
-    const score = clamp(base + Math.random() * 15, 15, 95);
+    const growthPotential = c.components.growthPotential ?? 60;
+    const dealFactor = params.dealSize === 'enterprise' ? 20 : params.dealSize === 'large' ? 12 : 5;
+    const jitter = deterministicJitter(`RROI-${params.country || ''}`, 3);
+    const score = clamp((100 - tco) * 0.20 + cri * 0.30 + growthPotential * 0.30 + dealFactor + jitter, 15, 95);
     return {
       id: 'RROI',
       score,
       grade: toGrade(score),
-      components: { market: score * 0.3, infrastructure: score * 0.25, talent: score * 0.25, regulatory: score * 0.2 },
-      drivers: ['Market opportunity', 'Infrastructure cost', 'Talent access', 'Regulatory overhead'],
+      components: { market: growthPotential, infrastructure: c.components.infrastructure ?? 60, talent: c.components.talent ?? 60, regulatory: c.components.regulatory ?? 60 },
+      drivers: ['Growth potential from GDP data', 'Infrastructure cost efficiency', 'Talent market depth', 'Regulatory cost overhead'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'NVI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const barna = cache.get('BARNA')?.score || 50;
-    const networkEffect = (params.targetCounterpartType?.length || 0) * 8;
-    const score = clamp(barna * 0.5 + networkEffect + 30 + Math.random() * 10, 25, 95);
+    const supplyChain = c.components.supplyChain ?? 55;
+    const marketAccess = c.components.marketAccess ?? 55;
+    const networkEffect = (params.targetCounterpartType?.length || 0) * 6;
+    const jitter = deterministicJitter(`NVI-${params.country || ''}`, 2);
+    const score = clamp(barna * 0.30 + supplyChain * 0.25 + marketAccess * 0.25 + networkEffect + 15 + jitter, 25, 95);
     return {
       id: 'NVI',
       score,
       grade: toGrade(score),
-      components: { connectivity: score * 0.4, partnerships: score * 0.35, ecosystem: score * 0.25 },
-      drivers: ['Network connectivity', 'Partnership density', 'Ecosystem strength'],
+      components: { connectivity: supplyChain, partnerships: marketAccess, ecosystem: (supplyChain + marketAccess) / 2 },
+      drivers: ['Supply chain connectivity', 'Market access & partnerships', 'Ecosystem maturity score'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'RNI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const pri = cache.get('PRI')?.score || 50;
-    const complexity = params.industry?.some(i => ['finance', 'healthcare', 'pharma'].includes(i.toLowerCase())) ? 25 : 0;
-    const score = clamp(pri * 0.6 + 30 - complexity + Math.random() * 10, 20, 90);
+    const regulatory = c.components.regulatory ?? 55;
+    const complexity = params.industry?.some(i => ['finance', 'healthcare', 'pharma', 'banking', 'insurance'].includes(i.toLowerCase())) ? 20 : 0;
+    const jitter = deterministicJitter(`RNI-${params.country || ''}`, 2);
+    const score = clamp(pri * 0.35 + regulatory * 0.45 + 20 - complexity + jitter, 20, 90);
     return {
       id: 'RNI',
       score,
       grade: toGrade(score),
-      components: { complexity: score * 0.4, timeline: score * 0.35, cost: score * 0.25 },
-      drivers: ['Regulatory complexity', 'Approval timeline', 'Compliance cost'],
+      components: { complexity: regulatory, timeline: (pri + regulatory) / 2, cost: 100 - complexity },
+      drivers: ['Regulatory complexity from ease-of-business data', 'Estimated approval timeline', 'Compliance cost projection'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'CAP': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const cri = cache.get('CRI')?.score || 50;
-    const orgFactor = params.organizationType ? 15 : 0;
-    const score = clamp(cri * 0.4 + orgFactor + 40 + Math.random() * 10, 30, 95);
+    const talent = c.components.talent ?? 55;
+    const innovation = c.components.innovation ?? 55;
+    const orgFactor = params.organizationType ? 10 : 0;
+    const jitter = deterministicJitter(`CAP-${params.country || ''}`, 2);
+    const score = clamp(cri * 0.25 + talent * 0.30 + innovation * 0.30 + orgFactor + 10 + jitter, 30, 95);
     return {
       id: 'CAP',
       score,
       grade: toGrade(score),
-      components: { technical: score * 0.35, organizational: score * 0.35, adaptive: score * 0.3 },
-      drivers: ['Technical capability', 'Organizational readiness', 'Adaptability'],
+      components: { technical: innovation, organizational: talent, adaptive: (innovation + talent) / 2 },
+      drivers: ['Technical innovation index', 'Organizational talent depth', 'Adaptive capacity assessment'],
       executionTimeMs: Date.now() - start
     };
   },
 
-  // Level 2 Executors
+  // ─────────────── Level 2 Executors ───────────────
   'SEAM': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const spi = cache.get('SPI')?.score || 50;
     const nvi = cache.get('NVI')?.score || 50;
-    const stakeholders = (params.stakeholderAlignment?.length || 0) * 5;
-    const score = clamp(spi * 0.4 + nvi * 0.3 + stakeholders + 15 + Math.random() * 10, 25, 95);
+    const sustainability = c.components.sustainability ?? 55;
+    const stakeholders = (params.stakeholderAlignment?.length || 0) * 4;
+    const jitter = deterministicJitter(`SEAM-${params.country || ''}`, 2);
+    const score = clamp(spi * 0.35 + nvi * 0.25 + sustainability * 0.20 + stakeholders + 10 + jitter, 25, 95);
     return {
       id: 'SEAM',
       score,
       grade: toGrade(score),
-      components: { alignment: score * 0.35, influence: score * 0.35, incentives: score * 0.3 },
-      drivers: ['Stakeholder alignment', 'Influence mapping', 'Incentive structures'],
+      components: { alignment: spi, influence: nvi, incentives: sustainability },
+      drivers: ['Stakeholder alignment from SPI', 'Network influence from NVI', 'Sustainable incentive structures'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'IVAS': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const rroi = cache.get('RROI')?.score || 50;
     const spi = cache.get('SPI')?.score || 50;
-    const timelineFactor = params.expansionTimeline === 'immediate' ? -10 : params.expansionTimeline === '12-24 months' ? 10 : 0;
-    const score = clamp((rroi + spi) / 2 + timelineFactor + Math.random() * 10, 20, 95);
+    const digitalReadiness = c.components.digitalReadiness ?? 55;
+    const timelineFactor = params.expansionTimeline === 'immediate' ? -10 : params.expansionTimeline === '12-24 months' ? 8 : 0;
+    const jitter = deterministicJitter(`IVAS-${params.country || ''}`, 2);
+    const score = clamp(rroi * 0.30 + spi * 0.30 + digitalReadiness * 0.25 + timelineFactor + 10 + jitter, 20, 95);
     return {
       id: 'IVAS',
       score,
       grade: toGrade(score),
-      components: { activation: score * 0.35, friction: score * 0.35, timeline: score * 0.3 },
-      drivers: ['Activation readiness', 'Implementation friction', 'Timeline realism'],
+      components: { activation: digitalReadiness, friction: 100 - (rroi + spi) / 4, timeline: spi },
+      drivers: ['Digital readiness for activation', 'Implementation friction assessment', 'Timeline realism from SPI'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'ESI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const nvi = cache.get('NVI')?.score || 50;
     const barna = cache.get('BARNA')?.score || 50;
-    const score = clamp((nvi + barna) / 2 + 10 + Math.random() * 10, 30, 95);
+    const supplyChain = c.components.supplyChain ?? 55;
+    const talent = c.components.talent ?? 55;
+    const jitter = deterministicJitter(`ESI-${params.country || ''}`, 2);
+    const score = clamp(nvi * 0.25 + barna * 0.20 + supplyChain * 0.30 + talent * 0.25 + jitter, 30, 95);
     return {
       id: 'ESI',
       score,
       grade: toGrade(score),
-      components: { suppliers: score * 0.3, talent: score * 0.3, infrastructure: score * 0.25, services: score * 0.15 },
-      drivers: ['Supplier ecosystem', 'Talent pool', 'Infrastructure', 'Service availability'],
+      components: { suppliers: supplyChain, talent, infrastructure: c.components.infrastructure ?? 55, services: (supplyChain + talent) / 2 },
+      drivers: ['Supply chain ecosystem depth', 'Talent pool availability', 'Infrastructure readiness', 'Service provider landscape'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'FRS': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const spi = cache.get('SPI')?.score || 50;
     const rroi = cache.get('RROI')?.score || 50;
-    const score = clamp((spi + rroi) / 2 - 5 + Math.random() * 15, 25, 90);
+    const growthPotential = c.components.growthPotential ?? 55;
+    const innovation = c.components.innovation ?? 55;
+    const jitter = deterministicJitter(`FRS-${params.country || ''}`, 3);
+    const score = clamp(spi * 0.25 + rroi * 0.25 + growthPotential * 0.25 + innovation * 0.25 - 5 + jitter, 25, 90);
     return {
       id: 'FRS',
       score,
       grade: toGrade(score),
-      components: { networkEffects: score * 0.35, scalability: score * 0.35, momentum: score * 0.3 },
-      drivers: ['Network effects', 'Scalability potential', 'Growth momentum'],
+      components: { networkEffects: growthPotential, scalability: innovation, momentum: (spi + rroi) / 2 },
+      drivers: ['Network effects from growth data', 'Scalability via innovation index', 'Growth momentum assessment'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'AGI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const ivas = cache.get('IVAS')?.score || 50;
-    const score = clamp(ivas * 0.7 + 20 + Math.random() * 10, 25, 95);
+    const digitalReadiness = c.components.digitalReadiness ?? 55;
+    const jitter = deterministicJitter(`AGI-${params.country || ''}`, 2);
+    const score = clamp(ivas * 0.50 + digitalReadiness * 0.30 + 15 + jitter, 25, 95);
     return {
       id: 'AGI',
       score,
       grade: toGrade(score),
-      components: { velocity: score * 0.4, gates: score * 0.35, readiness: score * 0.25 },
-      drivers: ['Activation velocity', 'Gate readiness', 'Resource availability'],
+      components: { velocity: ivas, gates: digitalReadiness, readiness: (ivas + digitalReadiness) / 2 },
+      drivers: ['Activation velocity from IVAS', 'Gate readiness score', 'Resource availability index'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'VCI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const seam = cache.get('SEAM')?.score || 50;
-    const score = clamp(seam * 0.6 + 30 + Math.random() * 10, 30, 95);
+    const innovation = c.components.innovation ?? 55;
+    const jitter = deterministicJitter(`VCI-${params.country || ''}`, 2);
+    const score = clamp(seam * 0.45 + innovation * 0.35 + 15 + jitter, 30, 95);
     return {
       id: 'VCI',
       score,
       grade: toGrade(score),
-      components: { synergy: score * 0.4, creation: score * 0.35, capture: score * 0.25 },
-      drivers: ['Synergy potential', 'Value creation', 'Value capture'],
+      components: { synergy: seam, creation: innovation, capture: (seam + innovation) / 2 },
+      drivers: ['Synergy potential from SEAM', 'Value creation via innovation', 'Value capture assessment'],
       executionTimeMs: Date.now() - start
     };
   },
 
-  // Level 3 Executors
+  // ─────────────── Level 3 Executors ───────────────
   'SCF': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const seam = cache.get('SEAM')?.score || 50;
     const ivas = cache.get('IVAS')?.score || 50;
     const spi = cache.get('SPI')?.score || 50;
     const rroi = cache.get('RROI')?.score || 50;
-    const score = clamp((seam * 0.25 + ivas * 0.25 + spi * 0.25 + rroi * 0.25) + Math.random() * 5, 20, 98);
+    const sustainability = c.components.sustainability ?? 55;
+    const jitter = deterministicJitter(`SCF-${params.country || ''}`, 1);
+    const score = clamp(seam * 0.22 + ivas * 0.22 + spi * 0.22 + rroi * 0.22 + sustainability * 0.12 + jitter, 20, 98);
     return {
       id: 'SCF',
       score,
       grade: toGrade(score),
-      components: { readiness: score * 0.3, capture: score * 0.25, timeline: score * 0.25, consensus: score * 0.2 },
-      drivers: ['Strategic readiness', 'Value capture', 'Timeline confidence', 'Stakeholder consensus'],
+      components: { readiness: spi, capture: rroi, timeline: ivas, consensus: seam },
+      drivers: ['Strategic readiness (SPI)', 'Value capture potential (RROI)', 'Timeline confidence (IVAS)', 'Stakeholder consensus (SEAM)'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'ATI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const esi = cache.get('ESI')?.score || 50;
     const cap = cache.get('CAP')?.score || 50;
-    const score = clamp((esi + cap) / 2 + Math.random() * 10, 30, 90);
+    const supplyChain = c.components.supplyChain ?? 55;
+    const jitter = deterministicJitter(`ATI-${params.country || ''}`, 2);
+    const score = clamp(esi * 0.35 + cap * 0.35 + supplyChain * 0.30 + jitter, 30, 90);
     return {
       id: 'ATI',
       score,
       grade: toGrade(score),
-      components: { complexity: score * 0.35, risk: score * 0.35, timeline: score * 0.3 },
-      drivers: ['Transfer complexity', 'Transfer risk', 'Timeline estimate'],
+      components: { complexity: esi, risk: cap, timeline: supplyChain },
+      drivers: ['Transfer complexity from ESI', 'Transfer risk from CAP', 'Timeline from supply chain data'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'ISI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const seam = cache.get('SEAM')?.score || 50;
     const cap = cache.get('CAP')?.score || 50;
-    const score = clamp((seam + cap) / 2 + 5 + Math.random() * 10, 30, 95);
+    const digitalReadiness = c.components.digitalReadiness ?? 55;
+    const jitter = deterministicJitter(`ISI-${params.country || ''}`, 2);
+    const score = clamp(seam * 0.30 + cap * 0.30 + digitalReadiness * 0.30 + 5 + jitter, 30, 95);
     return {
       id: 'ISI',
       score,
       grade: toGrade(score),
-      components: { speed: score * 0.4, complexity: score * 0.35, resources: score * 0.25 },
-      drivers: ['Integration speed', 'Complexity management', 'Resource readiness'],
+      components: { speed: digitalReadiness, complexity: seam, resources: cap },
+      drivers: ['Digital integration speed', 'Complexity management from SEAM', 'Resource readiness from CAP'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'OSI': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const esi = cache.get('ESI')?.score || 50;
     const vci = cache.get('VCI')?.score || 50;
-    const score = clamp((esi + vci) / 2 + Math.random() * 10, 30, 95);
+    const sustainability = c.components.sustainability ?? 55;
+    const jitter = deterministicJitter(`OSI-${params.country || ''}`, 2);
+    const score = clamp(esi * 0.30 + vci * 0.30 + sustainability * 0.30 + 5 + jitter, 30, 95);
     return {
       id: 'OSI',
       score,
       grade: toGrade(score),
-      components: { efficiency: score * 0.35, synergy: score * 0.35, sustainability: score * 0.3 },
-      drivers: ['Operational efficiency', 'Synergy realization', 'Long-term sustainability'],
+      components: { efficiency: esi, synergy: vci, sustainability },
+      drivers: ['Operational efficiency from ESI', 'Synergy realization from VCI', 'Long-term sustainability index'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'SRA': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const scf = cache.get('SCF')?.score || 50;
     const pri = cache.get('PRI')?.score || 50;
-    const score = clamp((scf + pri) / 2 + Math.random() * 10, 25, 90);
+    const riskFactors = c.components.riskFactors ?? 50;
+    const jitter = deterministicJitter(`SRA-${params.country || ''}`, 2);
+    const score = clamp(scf * 0.30 + pri * 0.30 + (100 - riskFactors) * 0.30 + 5 + jitter, 25, 90);
     return {
       id: 'SRA',
       score,
       grade: toGrade(score),
-      components: { market: score * 0.3, execution: score * 0.25, competitive: score * 0.25, timing: score * 0.2 },
-      drivers: ['Market risk', 'Execution risk', 'Competitive risk', 'Timing risk'],
+      components: { market: scf, execution: pri, competitive: 100 - riskFactors, timing: (scf + pri) / 2 },
+      drivers: ['Market risk from SCF', 'Execution risk from PRI', 'Competitive risk assessment', 'Timing risk analysis'],
       executionTimeMs: Date.now() - start
     };
   },
 
   'IDV': async (params, cache) => {
     const start = Date.now();
+    const c = await getComposite(params);
     const scf = cache.get('SCF')?.score || 50;
     const rroi = cache.get('RROI')?.score || 50;
     const variance = Math.abs(scf - rroi);
-    const score = clamp(85 - variance + Math.random() * 10, 30, 95);
+    const innovation = c.components.innovation ?? 55;
+    const jitter = deterministicJitter(`IDV-${params.country || ''}`, 2);
+    const score = clamp(85 - variance * 0.5 + innovation * 0.15 + jitter, 30, 95);
     return {
       id: 'IDV',
       score,
       grade: toGrade(score),
-      components: { projection: score * 0.4, variance: score * 0.35, fragility: score * 0.25 },
-      drivers: ['Projection confidence', 'Outcome variance', 'Model fragility'],
+      components: { projection: innovation, variance: 100 - variance * 2, fragility: scf },
+      drivers: ['Projection confidence from innovation data', 'Outcome variance (SCF vs RROI)', 'Model fragility assessment'],
       executionTimeMs: Date.now() - start
     };
   }

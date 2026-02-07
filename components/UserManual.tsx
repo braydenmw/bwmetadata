@@ -157,10 +157,16 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE TECHNOLOGY</p>
               <h3 className="text-2xl font-light text-slate-900 mb-4">What BWGA AI Actually Is</h3>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating.
+                To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating. We needed something fundamentally different: an AI that reasons, validates, and produces evidence you can defend in a boardroom.
               </p>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                So, we built <strong className="text-slate-900">BWGA Intelligence AI</strong>. It is the world's first "Sovereign-Grade" Intelligence Operating System. Think of it not as a chatbot, but as a <strong className="text-slate-900">digital boardroom</strong>. When you log in, you aren't just asking a computer to write for you; you are engaging a team of experts that lives inside the machine. We call this the <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong>. It is a reasoning engine designed to do the heavy lifting of a consulting firm—instantly.
+                So, we built <strong className="text-slate-900">BWGA Intelligence AI</strong>—the world's first Sovereign-Grade Intelligence Operating System. This is not a chatbot. It is a <strong className="text-slate-900">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and write—coordinated by two proprietary engines working in concert. The <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong> is a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                The second engine is the <strong className="text-slate-900">Human Cognition Engine</strong>—7 neuroscience-based models drawn from university-level research that simulate how real decision-makers process complexity, allocate attention, and react under pressure. This includes Wilson-Cowan neural field equations, Rao & Ballard predictive coding, Friston's free energy principle, Itti & Koch attention models, neurovisceral emotional processing, Global Workspace Theory, and Baddeley's working memory systems. Together, these <strong className="text-slate-900">38 mathematical formulations</strong> create an intelligence platform that doesn't just analyze data—it anticipates how humans will respond to it.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
+                In practice, this powers every feature of the platform: <strong className="text-slate-900">BW AI Search</strong> for instant intelligence on any city, company, or government; the <strong className="text-slate-900">Live Report System</strong> for real-time multi-agent analysis; the <strong className="text-slate-900">BW Consultant</strong> as an embedded AI advisor; and a <strong className="text-slate-900">Document Factory</strong> producing 200+ institutional-grade outputs.
               </p>
             </div>
           </div>
@@ -183,7 +189,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <p className="text-lg text-slate-900 font-bold mb-2">Consultant-Level Scrutiny, Automated</p>
                       <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
                       <p className="text-lg text-slate-900 font-bold mb-2">Quantified, Not Just "Considered"</p>
-                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to 27 proprietary mathematical formulas, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to <strong className="text-slate-900">38 proprietary mathematical formulas</strong>, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
                       <p className="text-lg text-slate-900 font-bold mb-2">Simulating Real-World Pressure</p>
                       <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">The combination of these personas and the rigid scoring creates a simulation of a real-world investment committee. The AI isn't just "generating content"; it's processing, debating, and scoring your idea as if it were in a high-stakes pitch.</p>
                       <p className="text-base text-slate-600 leading-relaxed text-justify">
@@ -1142,7 +1148,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">2. System Architecture Overview</h4>
             <p className="mb-3">
-              The architecture comprises five integrated subsystems, collectively termed the <strong>Nexus Strategic Intelligence Layer (NSIL)</strong>:
+              The architecture comprises six integrated subsystems, collectively termed the <strong>Nexus Strategic Intelligence Layer (NSIL)</strong>:
             </p>
             <div className="bg-slate-100 p-4 rounded border border-slate-200 mb-4">
               <table className="w-full text-xs">
@@ -1174,8 +1180,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <td className="py-2 font-mono">DecisionTreeSynthesizer</td>
                     <td className="py-2">Template selection and section ordering based on scores and context</td>
                   </tr>
+                  <tr className="border-b border-slate-200">
+                    <td className="py-2">5. Cognify</td>
+                    <td className="py-2 font-mono">HumanCognitionEngine</td>
+                    <td className="py-2">Neuroscience-inspired processing using 7 cognitive models (Wilson-Cowan neural fields, predictive coding, free energy, attention, emotion, consciousness, working memory)</td>
+                  </tr>
                   <tr>
-                    <td className="py-2">5. Deliver</td>
+                    <td className="py-2">6. Deliver</td>
                     <td className="py-2 font-mono">ReportOrchestrator</td>
                     <td className="py-2">Final assembly with provenance chain attachment</td>
                   </tr>
@@ -1192,7 +1203,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">3. Quantified Scoring Suite</h4>
             <p className="mb-3">
-              The system implements 21 mathematically-defined indices organized into a directed acyclic graph (DAG). This structure enables parallel execution of independent formulas while respecting dependencies between composite indices.
+              The system implements 38 mathematically-defined indices organized into a directed acyclic graph (DAG). This structure enables parallel execution of independent formulas while respecting dependencies between composite indices. The suite combines 21 traditional strategic formulas with 7 neuroscience-inspired cognitive models and 10 advanced risk assessment indices.
             </p>
             
             <p className="mb-3"><strong>3.1 Primary Indices (5)</strong></p>

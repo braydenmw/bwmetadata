@@ -485,7 +485,7 @@ Return structured JSON response with:
             secretAccessKey = cleanDecoded.substring(colonIndex + 1);
             console.log('[Multi-Agent] Decoded credentials from API key');
           }
-        } catch (_decodeErr) {
+        } catch {
           console.warn('[Multi-Agent] Could not decode API key');
         }
         
@@ -654,7 +654,7 @@ Return as JSON array.`;
 });
 
 const MULTI_AGENT_SYSTEM_INSTRUCTION = `
-You are the BWGA Intelligence AI Multi-Agent Brain v5.0 - a self-learning economic intelligence system.
+You are the BWGA Intelligence AI Multi-Agent Brain v6.0 (Nexus Intelligence OS) - a self-learning economic intelligence system with NSIL v3.2 and Human Cognition Engine Active.
 
 CORE CAPABILITIES:
 1. Analyze 200+ years of global economic patterns (1820-2025)

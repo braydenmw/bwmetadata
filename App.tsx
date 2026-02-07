@@ -11,6 +11,7 @@ import MainCanvas from './components/MainCanvas';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
 import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
+import MasterAutonomousOrchestrator from './components/MasterAutonomousOrchestrator';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
@@ -19,11 +20,16 @@ import { ReportOrchestrator } from './services/ReportOrchestrator';
 import { solveAndAct as autonomousSolve } from './services/autonomousClient';
 import { selfLearningEngine } from './services/selfLearningEngine';
 import { ReactiveIntelligenceEngine } from './services/ReactiveIntelligenceEngine';
-import { runSmartAgenticWorker, AgenticRun } from './services/agenticWorker';
+import { runSmartAgenticWorker, AgenticRun, runFullyAutonomousAgenticWorker } from './services/agenticWorker';
+// Automatic Search and Consultant AI
+import { automaticSearchService } from './services/AutomaticSearchService';
+import { bwConsultantAI, type ConsultantInsight } from './services/BWConsultantAgenticAI';
 // EventBus for ecosystem connectivity
 import { EventBus, type EcosystemPulse } from './services/EventBus';
 import { ReportsService } from './services/ReportsService';
-// Note: report-generator sidebar is rendered inside MainCanvas.
+// Location intelligence types
+import { type CityProfile } from './data/globalLocationProfiles';
+import { type LocationResult } from './services/geminiLocationService';
 
 // --- TYPES & INITIAL STATE ---
 const initialSection: ReportSection = { id: '', title: '', content: '', status: 'pending' };
@@ -37,7 +43,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel' | 'master-orchestrator';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -45,8 +51,8 @@ const App: React.FC = () => {
     const [viewMode, setViewMode] = useState<ViewMode>('command-center');
     const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
     const [pendingLocationData, setPendingLocationData] = useState<{
-        profile: any;
-        research: any;
+        profile: CityProfile;
+        research: LocationResult;
         city: string;
         country: string;
     } | null>(null);
@@ -75,6 +81,20 @@ const App: React.FC = () => {
     const [autonomousInsights, setAutonomousInsights] = useState<CopilotInsight[]>([]);
     const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
     const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
+    // FULLY AUTONOMOUS SYSTEM STATE
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isFullyAutonomous, setIsFullyAutonomous] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    const [autonomousSystemStatus, setAutonomousSystemStatus] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [selfImprovementSuggestions, setSelfImprovementSuggestions] = useState<string[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    const [activeSubAgents, setActiveSubAgents] = useState<any[]>([]);
+    // BW CONSULTANT AI STATE
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [consultantInsights, setConsultantInsights] = useState<ConsultantInsight[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isConsultantActive, setIsConsultantActive] = useState(true);
     // ECOSYSTEM STATE (from EventBus "meadow" signals)
     const [, setEcosystemPulse] = useState<EcosystemPulse | null>(null);
 
@@ -114,13 +134,50 @@ const App: React.FC = () => {
             // Could show a toast or update a learning status indicator
         });
 
+        // Subscribe to fully autonomous system events
+        const unsubFullyAutonomous = EventBus.subscribe('fullyAutonomousRunComplete', (event) => {
+            console.log('[App] EventBus → fullyAutonomousRunComplete', event.runId);
+            setAutonomousSystemStatus(event);
+            setSelfImprovementSuggestions(event.improvements || []);
+            setActiveSubAgents(event.spawnedAgents || []);
+        });
+
+        const unsubImprovements = EventBus.subscribe('improvementsSuggested', (event) => {
+            console.log('[App] EventBus → improvementsSuggested', event.suggestions.length);
+            setSelfImprovementSuggestions(event.suggestions);
+        });
+
+        const unsubAgentSpawned = EventBus.subscribe('agentSpawned', (event) => {
+            console.log('[App] EventBus → agentSpawned', event.agent.name);
+            setActiveSubAgents(prev => [...prev, event.agent]);
+        });
+
+        // Subscribe to consultant AI events
+        const unsubConsultantInsights = EventBus.subscribe('consultantInsightsGenerated', (event) => {
+            console.log('[App] EventBus → consultantInsightsGenerated', event.insights.length);
+            setConsultantInsights(event.insights);
+        });
+
+        const unsubSearchResult = EventBus.subscribe('searchResultReady', (event) => {
+            console.log('[App] EventBus → searchResultReady', event.query);
+            // Trigger consultant analysis when search results arrive
+            if (isConsultantActive) {
+                bwConsultantAI.consult(params, 'search_result_integration');
+            }
+        });
+
         return () => {
             unsubInsights();
             unsubSuggestions();
             unsubPulse();
             unsubLearning();
+            unsubFullyAutonomous();
+            unsubImprovements();
+            unsubAgentSpawned();
+            unsubConsultantInsights();
+            unsubSearchResult();
         };
-    }, []);
+    }, [isConsultantActive, params]);
 
 
     // --- EFFECTS ---
@@ -203,6 +260,27 @@ const App: React.FC = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.organizationName, params.country, params.industry, autonomousMode]);
+
+    // BW Consultant AI - Proactive guidance and automatic search
+    useEffect(() => {
+        if (isConsultantActive && (params.organizationName || params.country || params.industry)) {
+            const timer = setTimeout(async () => {
+                console.log('🤖 BW Consultant: Analyzing current parameters for insights');
+                try {
+                    const insights = await bwConsultantAI.consult(params, 'parameter_analysis');
+                    setConsultantInsights(insights);
+
+                    // Trigger automatic searches based on params
+                    await automaticSearchService.proactiveSearchForReport(params);
+
+                } catch (error) {
+                    console.error('🤖 BW Consultant: Error during analysis:', error);
+                }
+            }, 2000); // 2 second delay to avoid too frequent updates
+
+            return () => clearTimeout(timer);
+        }
+    }, [params.organizationName, params.country, params.industry, params.region, isConsultantActive, params]);
 
     // Self-Learning Data Collection - Records performance after report generation
     useEffect(() => {
@@ -403,6 +481,37 @@ const App: React.FC = () => {
         }
     }, [params]);
 
+    // Fully Autonomous System Runner
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const runFullyAutonomousSystem = useCallback(async () => {
+        setIsFullyAutonomous(true);
+        try {
+            console.log('🚀 FULLY AUTONOMOUS SYSTEM: Starting self-thinking analysis');
+
+            const result = await runFullyAutonomousAgenticWorker(params, {
+                generateDocument: true,
+                documentAudience: 'executive',
+                executeAutonomousActions: true,
+                enableSelfImprovement: true,
+                spawnSubAgents: true
+            });
+
+            console.log('🚀 FULLY AUTONOMOUS SYSTEM: Analysis complete', {
+                runId: result.runId,
+                improvements: result.improvements?.length || 0,
+                agents: result.spawnedAgents?.length || 0,
+                liabilityRisks: result.liabilityAssessment.length
+            });
+
+            // Update UI with results
+            setAutonomousSystemStatus(result);
+
+        } catch (error) {
+            console.error('🚀 FULLY AUTONOMOUS SYSTEM: Error', error);
+        } finally {
+            setIsFullyAutonomous(false);
+        }
+    }, [params]);
 
     // --- RENDER ---
 
@@ -424,6 +533,7 @@ const App: React.FC = () => {
                     <CommandCenter
                         onEnterPlatform={() => setViewMode('main')}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
+                        onOpenMasterOrchestrator={() => setViewMode('master-orchestrator')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
                     />
                 </div>
@@ -464,6 +574,22 @@ const App: React.FC = () => {
                         onOpenCommandCenter={() => setViewMode('command-center')}
                         pendingLocation={pendingLocationData}
                         onLocationLoaded={() => setPendingLocationData(null)}
+                    />
+                </div>
+            );
+        }
+
+        if (viewMode === 'master-orchestrator') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <MasterAutonomousOrchestrator
+                        params={params}
+                        onOrchestrationComplete={(result) => {
+                            console.log('Master orchestration completed:', result);
+                            // Handle the orchestration result
+                            setViewMode('main');
+                        }}
+                        isVisible={true}
                     />
                 </div>
             );
