@@ -698,14 +698,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         className="bg-gradient-to-r from-emerald-500/10 to-transparent border border-emerald-500/30 rounded-xl p-6 mb-8 cursor-pointer hover:border-emerald-400/60 hover:from-emerald-500/20 transition-all group"
                     >
                         <div className="flex items-center justify-between mb-3">
-                            <p className="text-xs text-emerald-400 uppercase tracking-wider font-semibold">LIVE TEST: SYSTEM OUTPUT DEMONSTRATION</p>
+                            <p className="text-xs text-emerald-400 uppercase tracking-wider font-semibold">LIVE TEST: SYSTEM OUTPUT DEMONSTRATION *</p>
                             <span className="flex items-center gap-1 text-[10px] text-emerald-400/70 group-hover:text-emerald-300 transition-colors">
                                 <Eye size={12} />
                                 View Full Live Report
                             </span>
                         </div>
-                        <div className="mb-3 px-3 py-1.5 bg-blue-500/10 border border-blue-400/30 rounded-lg inline-block">
-                            <p className="text-[10px] text-blue-300 uppercase tracking-wider font-medium">Test conducted with real-time data feeds — Not a simulation</p>
+                        <div className="mb-3 px-3 py-1.5 bg-amber-500/10 border border-amber-400/30 rounded-lg inline-block">
+                            <p className="text-[10px] text-amber-300 uppercase tracking-wider font-medium">* Live test run through the actual system — Not a simulation, not an approved project</p>
                         </div>
                         <p className="text-sm text-white/80 leading-relaxed mb-4">
                             <strong className="text-white">Northland Regional Council (New Zealand)</strong> submitted a 5MW solar photovoltaic partnership proposal through the Ten-Step Intake. The NSIL engine computed all scores in real time:
