@@ -1,4 +1,4 @@
-import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot } from '../types';
+import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot, ProactiveBriefing } from '../types';
 import { calculateSPI, generateRROI, generateSEAM, generateSymbioticMatches, runEthicalSafeguards } from './engine';
 import { MarketDiversificationEngine } from './engine';
 import { runOpportunityOrchestration } from './engine';
@@ -11,6 +11,8 @@ import { EventBus } from './EventBus';
 import { GovernanceService } from './GovernanceService';
 import { optimizedAgenticBrain, computeFrontierIntelligence } from './algorithms';
 import { masterAutonomousOrchestrator } from './MasterAutonomousOrchestrator';
+import { proactiveOrchestrator } from './proactive/ProactiveOrchestrator';
+import type { CurrentContext } from './proactive/ProactiveSignalMiner';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -79,6 +81,14 @@ export class ReportOrchestrator {
       agenticBrain: agenticBrainSnapshot
     });
 
+    let proactiveBriefing: ProactiveBriefing | undefined;
+    try {
+      const proactiveContext = this.buildProactiveContext(params);
+      proactiveBriefing = await proactiveOrchestrator.runProactiveCycle(proactiveContext);
+    } catch (error) {
+      console.warn('Proactive cycle failed:', error);
+    }
+
     const payload: ReportPayload = {
       metadata: {
         requesterType: params.organizationType,
@@ -133,7 +143,8 @@ export class ReportOrchestrator {
         outcomeLearning: adversarialStack.outcomeLearning,
         adversarialConfidence: adversarialStack.adversarialConfidence,
         agenticBrain: agenticBrainSnapshot,
-        frontierIntelligence
+        frontierIntelligence,
+        proactiveBriefing
       }
     };
 
@@ -226,6 +237,71 @@ export class ReportOrchestrator {
       infrastructureSignal: cityData?.infrastructure.transportation,
       talentSignal: cityData?.talentPool.skillsAvailability
     };
+  }
+
+  private static buildProactiveContext(params: ReportParameters): CurrentContext {
+    const sector = params.industry?.[0] || params.customIndustry || params.industryClassification || 'General';
+    const strategy = params.strategicMode || params.strategicIntent?.[0] || params.problemStatement || 'General';
+    const investmentSizeM = this.extractInvestmentSizeM(params);
+    const keyFactors = this.collectKeyFactors(params);
+
+    return {
+      country: params.country,
+      sector,
+      strategy,
+      investmentSizeM,
+      year: new Date().getFullYear(),
+      keyFactors
+    };
+  }
+
+  private static collectKeyFactors(params: ReportParameters): string[] {
+    const rawFactors = [
+      ...(params.strategicObjectives ?? []),
+      ...(params.priorityThemes ?? []),
+      ...(params.targetIncentives ?? []),
+      ...(params.partnerFitCriteria ?? []),
+      ...(params.relationshipGoals ?? []),
+      params.stakeholderConcerns,
+      params.organizationDescription
+    ].filter(Boolean) as string[];
+
+    return rawFactors.map(f => String(f)).slice(0, 12);
+  }
+
+  private static extractInvestmentSizeM(params: ReportParameters): number {
+    const stringCandidates = [
+      params.totalInvestment,
+      params.calibration?.constraints?.budgetCap
+    ];
+
+    for (const candidate of stringCandidates) {
+      const parsed = this.parseMoneyToMillions(candidate);
+      if (parsed && parsed > 0) return parsed;
+    }
+
+    const budgetUSD = (params as { budgetUSD?: number }).budgetUSD;
+    if (typeof budgetUSD === 'number' && budgetUSD > 0) {
+      return budgetUSD / 1_000_000;
+    }
+
+    return 250;
+  }
+
+  private static parseMoneyToMillions(value?: string): number | null {
+    if (!value) return null;
+    const normalized = value.toLowerCase();
+    const numMatch = normalized.match(/[\d,.]+/);
+    if (!numMatch) return null;
+
+    const raw = Number(numMatch[0].replace(/,/g, ''));
+    if (!Number.isFinite(raw)) return null;
+
+    if (normalized.includes('billion') || normalized.includes('b')) return raw * 1000;
+    if (normalized.includes('million') || normalized.includes('m')) return raw;
+    if (normalized.includes('thousand') || normalized.includes('k')) return raw / 1000;
+
+    return raw / 1_000_000;
   }
 
   private static buildReportPayloadRegionalProfile(params: ReportParameters): ReportPayload['regionalProfile'] {

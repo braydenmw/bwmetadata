@@ -123,10 +123,10 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
     }
   };
 
-  const gatedAction = (name: string, tags?: string[]) => {
+  const gatedAction = async (name: string, tags?: string[]) => {
     setExportError(null);
     setExportSuccess(null);
-    const check = GovernanceService.ensureStage(params.id, 'approved');
+    const check = await GovernanceService.ensureStage(params.id, 'approved');
     if (!check.ok) {
       setExportError(`Action blocked: approval stage must be at least 'approved'. Current stage: ${check.stage}`);
       logProvenance(`${name}-blocked`, { tags });
@@ -623,7 +623,7 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                   <div className="grid md:grid-cols-3 gap-4">
                     <button
                       className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
-                      onClick={() => gatedAction('email-report', ['email'])}
+                      onClick={() => { void gatedAction('email-report', ['email']); }}
                     >
                       <Mail size={20} className="text-blue-600 mb-2" />
                       <div className="font-semibold text-stone-900">Email Report</div>
@@ -631,7 +631,7 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                     </button>
                     <button
                       className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
-                      onClick={() => gatedAction('share-link', ['share'])}
+                      onClick={() => { void gatedAction('share-link', ['share']); }}
                     >
                       <Share2 size={20} className="text-green-600 mb-2" />
                       <div className="font-semibold text-stone-900">Share Link</div>
@@ -639,7 +639,7 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                     </button>
                     <button
                       className="p-4 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors text-left"
-                      onClick={() => gatedAction('customize-report', ['customize'])}
+                      onClick={() => { void gatedAction('customize-report', ['customize']); }}
                     >
                       <Settings size={20} className="text-purple-600 mb-2" />
                       <div className="font-semibold text-stone-900">Customize</div>

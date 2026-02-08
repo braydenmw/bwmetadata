@@ -123,7 +123,6 @@ export {
   type EmotionalState,
   type GlobalWorkspaceState,
   type WorkingMemoryState
-  // @ts-expect-error - Module exists and builds correctly; IDE resolution issue with large file
 } from './HumanCognitionEngine';
 
 // ============================================================================

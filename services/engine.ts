@@ -624,11 +624,33 @@ export const runOpportunityOrchestration = async (regionProfile: RegionProfile):
     const ivas = computeIVAS(regionProfile, composite);
     const scf = computeSCF(composite, regionProfile.sectorHint);
 
+    const laiScore = Math.round(overall);
+    const laiBand: LAIResult['band'] = laiScore >= 75 ? 'high' : laiScore >= 55 ? 'medium' : laiScore >= 35 ? 'low' : 'critical';
+    const laiDrivers = [
+      `Infrastructure ${Math.round(components.infrastructure)}/100`,
+      `Market access ${Math.round(components.marketAccess)}/100`,
+      `Talent ${Math.round(components.talent)}/100`
+    ];
+    const laiPressurePoints = laiScore < 55
+      ? ['Upgrade logistics throughput and workforce readiness before scaling.']
+      : [];
+    const laiRecommendation = laiScore >= 70
+      ? 'Proceed with hub activation; maintain quarterly capacity audits.'
+      : 'Address infrastructure and talent gaps prior to hub-scale activation.';
+
     const lai: LAIResult = {
-        title: `${regionProfile.country || 'Target Region'} Strategic Hub`,
-        description: `Latent asset identified: underutilized capacity in ${regionProfile.rawFeatures?.[0]?.name || 'logistics and infrastructure'}.`,
-        components: ["Infrastructure", "Market Access", "Talent"],
-        synergyTag: overall > 70 ? 'High Synergy' : 'Moderate Synergy'
+      title: `${regionProfile.country || 'Target Region'} Strategic Hub`,
+      description: `Latent asset identified: underutilized capacity in ${regionProfile.rawFeatures?.[0]?.name || 'logistics and infrastructure'}.`,
+      components: ["Infrastructure", "Market Access", "Talent"],
+      synergyTag: overall > 70 ? 'High Synergy' : 'Moderate Synergy',
+      score: laiScore,
+      band: laiBand,
+      drivers: laiDrivers,
+      pressurePoints: laiPressurePoints,
+      recommendation: laiRecommendation,
+      dataSources: composite.dataSources,
+      advisoryBias: 'aligned',
+      gapScore: laiScore
     };
 
     return {

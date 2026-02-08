@@ -414,6 +414,12 @@ const App: React.FC = () => {
             console.warn('DEBUG: Incomplete payload, missing fields:', validation.missingFields);
         }
 
+        setReportData(prev => ({
+            ...prev,
+            confidenceScores: reportPayload.confidenceScores,
+            computedIntelligence: reportPayload.computedIntelligence
+        }));
+
         // Extract scores for backward compatibility
         const spiResult = reportPayload.computedIntelligence.spi;
         const marketPotential = reportPayload.confidenceScores.economicReadiness;

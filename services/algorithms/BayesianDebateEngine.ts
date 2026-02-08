@@ -462,7 +462,6 @@ export class BayesianDebateEngine {
         roundResult.stoppingReason = `Consensus reached: ${consensus.winner} at ${(consensus.strength * 100).toFixed(1)}%`;
         rounds.push(roundResult);
         earlyStopped = true;
-        stoppingReason = roundResult.stoppingReason;
         break;
       }
 

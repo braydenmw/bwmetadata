@@ -1195,7 +1195,36 @@ export interface ReportData {
     adversarialConfidence?: AdversarialConfidenceResult;
     agenticBrain?: AgenticBrainSnapshot;
     frontierIntelligence?: FrontierIntelligenceResult;
+    proactiveBriefing?: ProactiveBriefing;
   };
+}
+
+export interface ProactiveSignalSummary {
+  id: string;
+  type: string;
+  urgency: string;
+  title: string;
+  description: string;
+  confidence: number;
+}
+
+export interface ProactiveBriefing {
+  generatedAt: string;
+  context: {
+    country: string;
+    sector: string;
+    strategy: string;
+    investmentSizeM: number;
+    year: number;
+    keyFactors?: string[];
+  };
+  backtestAccuracy: number;
+  calibrationSummary: string;
+  driftSummary: string;
+  cognitiveSummary: string;
+  proactiveSignals: ProactiveSignalSummary[];
+  actionPriorities: string[];
+  confidence: number;
 }
 
 // --- REPORT PAYLOAD SCHEMA ---
@@ -1292,6 +1321,7 @@ export interface ReportPayload {
     adversarialConfidence?: AdversarialConfidenceResult;
     agenticBrain?: AgenticBrainSnapshot;
     frontierIntelligence?: FrontierIntelligenceResult;
+    proactiveBriefing?: ProactiveBriefing;
   };
 }
 

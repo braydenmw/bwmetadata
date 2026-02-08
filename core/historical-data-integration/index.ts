@@ -10,7 +10,7 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ingestCSV, ingestJSON, ingestAPI, cleanData, assessDataQuality, normalizeData, aggregateData, clearCache } from './etlPipeline';
+import { ingestCSV, ingestJSON, ingestAPI, cleanData, assessDataQuality, normalizeData, aggregateData, clearCache, type DataRecord } from './etlPipeline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +19,7 @@ interface IngestionResult {
   status: 'success' | 'error';
   source: string;
   recordCount: number;
-  data: Record<string, unknown>[];
+  data: DataRecord[];
   quality?: {
     qualityScore: number;
     issues: string[];
@@ -31,7 +31,7 @@ export async function ingestData(source: string): Promise<IngestionResult> {
   console.log(`📥 Ingesting data from: ${source}`);
   
   try {
-    let rawData: Record<string, unknown>[];
+    let rawData: DataRecord[];
     
     // Determine source type and ingest accordingly
     if (source.endsWith('.csv')) {
@@ -117,7 +117,7 @@ export async function ingestAndNormalize(
       default?: unknown;
     }>;
   }
-): Promise<IngestionResult & { normalizedData: Record<string, unknown>[] }> {
+): Promise<IngestionResult & { normalizedData: DataRecord[] }> {
   const result = await ingestData(source);
   
   if (result.status === 'error' || result.data.length === 0) {
@@ -140,7 +140,7 @@ export async function ingestAndAggregate(
     operation: 'sum' | 'avg' | 'min' | 'max' | 'count';
     outputField: string;
   }>
-): Promise<IngestionResult & { aggregatedData: Record<string, unknown>[] }> {
+): Promise<IngestionResult & { aggregatedData: DataRecord[] }> {
   const result = await ingestData(source);
   
   if (result.status === 'error' || result.data.length === 0) {

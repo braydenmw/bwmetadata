@@ -25,7 +25,7 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 // TYPES
 // ============================================================================
 
-interface DataRecord {
+export interface DataRecord {
   [key: string]: string | number | boolean | null | undefined;
 }
 
@@ -455,13 +455,10 @@ export function normalizeData(
     
     for (const field of schema.fields) {
       const sourceValue = record[field.source] ?? record[field.source.toLowerCase()];
+      const defaultValue = isDataValue(field.default) ? field.default : null;
       
       if (sourceValue === null || sourceValue === undefined) {
-        if (field.required) {
-          normalized[field.target] = field.default ?? null;
-        } else {
-          normalized[field.target] = field.default ?? null;
-        }
+        normalized[field.target] = defaultValue;
         continue;
       }
       
@@ -480,12 +477,16 @@ export function normalizeData(
           normalized[field.target] = new Date(String(sourceValue)).toISOString();
           break;
         default:
-          normalized[field.target] = sourceValue;
+          normalized[field.target] = String(sourceValue);
       }
     }
     
     return normalized;
   });
+}
+
+function isDataValue(value: unknown): value is string | number | boolean | null {
+  return value === null || ['string', 'number', 'boolean'].includes(typeof value);
 }
 
 export function aggregateData(

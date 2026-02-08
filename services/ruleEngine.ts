@@ -87,7 +87,7 @@ export class NeuroSymbolicEngine {
             'high': 85
         };
 
-        const variableStore: Record<string, unknown> = {
+        const variableStore: Record<string, number | string | boolean> = {
             ...currentState.variableStore,
             revenue_score: revenueScoreMap[params.revenueBand || ''] || 50,
             risk_score: riskScoreMap[params.riskTolerance || ''] || 50,

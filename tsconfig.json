@@ -28,5 +28,6 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "data/**/*"]
+  "include": ["**/*.ts", "**/*.tsx", "data/**/*"],
+  "exclude": ["node_modules", "dist", "dist-server", "backups", "**/backups/**"]
 }

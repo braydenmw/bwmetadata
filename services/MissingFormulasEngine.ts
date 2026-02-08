@@ -1075,6 +1075,9 @@ class AdvancedIndexService {
       : 'Cross-check advisories with incident telemetry and local partner reporting.';
 
     return {
+      title: `${region || params.country || 'Target Region'} Location Attractiveness`,
+      description: `Advisory posture for ${regionLabel(params)} relative to observed risk telemetry.`,
+      components: ['Governance', 'Stability', 'Operational Risk'],
       score: gapScore,
       band: determineBand(gapScore),
       drivers,

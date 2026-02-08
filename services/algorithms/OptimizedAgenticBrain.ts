@@ -38,7 +38,6 @@ import { decisionTreeSynthesizer, SynthesisResult } from './DecisionTreeSynthesi
 import { gradientRankingEngine, RankedCase } from './GradientRankingEngine';
 import { computeFrontierIntelligence } from './FrontierIntelligenceEngine';
 import { CompositeScoreService } from '../CompositeScoreService';
-// @ts-expect-error - Module exists and builds correctly; IDE resolution issue with large file
 import { HumanCognitionEngine, HumanCognitionResult } from './HumanCognitionEngine';
 
 // ============================================================================
@@ -418,8 +417,8 @@ export class OptimizedAgenticBrain {
       }
 
       // 3. Emotional processing → negative valence amplifies risk perception
-      if (humanCognition.emotionalProcessing) {
-        const valence = humanCognition.emotionalProcessing.valence ?? 0;
+      if (humanCognition.emotionalResponse) {
+        const valence = humanCognition.emotionalResponse.finalEmotion?.valence ?? 0;
         if (valence < -0.3) {
           hceRiskAmplification = 1.25;
           hceEmotionalFlag = 'HCE emotional model flags elevated caution (negative valence).';

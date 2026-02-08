@@ -167,6 +167,33 @@ const formatMonths = (value?: number) => {
     return `${value} mo`;
 };
 
+const formatPercent = (value?: number) => {
+    if (value === undefined || value === null) return 'n/a';
+    return `${Math.round(value * 100)}%`;
+};
+
+const getSignalBadgeStyle = (type?: string) => {
+    const normalized = (type || '').toLowerCase();
+
+    if (normalized.includes('risk') || normalized.includes('vulnerability') || normalized.includes('warning')) {
+        return SIGNAL_BADGE_STYLES.risk;
+    }
+
+    if (normalized.includes('opportunity')) {
+        return SIGNAL_BADGE_STYLES.opportunity;
+    }
+
+    if (normalized.includes('timing') || normalized.includes('regime') || normalized.includes('trend')) {
+        return SIGNAL_BADGE_STYLES.trend;
+    }
+
+    if (normalized.includes('correlation') || normalized.includes('benchmark')) {
+        return SIGNAL_BADGE_STYLES.benchmark;
+    }
+
+    return 'bg-slate-50 text-slate-700 border-slate-200';
+};
+
 interface MainCanvasProps {
   reportData: ReportData;
   isGenerating: boolean;
@@ -920,6 +947,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             : reportData),
         [reportData, selectedIntelligenceEnhancements, applyIntelligenceEnhancements]
     );
+
+    const proactiveBriefing = reportData.computedIntelligence?.proactiveBriefing;
 
   const handleGenerateFinalDocs = () => {
     const reportsToGenerate = reports.filter(report => selectedFinalReports.includes(report.id));
@@ -5268,6 +5297,78 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             </ul>
                                         </div>
                                     )}
+                                </div>
+                            )}
+
+                            {proactiveBriefing && (
+                                <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                                    <h3 className="text-sm font-bold text-amber-900 mb-3">Proactive Briefing</h3>
+
+                                    <div className="grid grid-cols-2 gap-4 text-[11px] text-amber-900">
+                                        <div>
+                                            <span className="font-semibold">Confidence:</span> {formatPercent(proactiveBriefing.confidence)}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Backtest Accuracy:</span> {formatPercent(proactiveBriefing.backtestAccuracy)}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Context:</span> {proactiveBriefing.context.country} / {proactiveBriefing.context.sector}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Strategy:</span> {proactiveBriefing.context.strategy}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Investment:</span> {formatCapitalFigure(proactiveBriefing.context.investmentSizeM * 1_000_000)}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Year:</span> {proactiveBriefing.context.year}
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-3 text-[11px] text-stone-700 space-y-2">
+                                        <p><span className="font-semibold text-amber-900">Calibration:</span> {proactiveBriefing.calibrationSummary}</p>
+                                        <p><span className="font-semibold text-amber-900">Drift:</span> {proactiveBriefing.driftSummary}</p>
+                                        <p><span className="font-semibold text-amber-900">Cognition:</span> {proactiveBriefing.cognitiveSummary}</p>
+                                    </div>
+
+                                    <div className="mt-3">
+                                        <div className="font-semibold text-[11px] text-amber-900 mb-1">Action Priorities</div>
+                                        {proactiveBriefing.actionPriorities.length > 0 ? (
+                                            <ul className="text-[11px] text-stone-700 space-y-1">
+                                                {proactiveBriefing.actionPriorities.slice(0, 5).map((action, idx) => (
+                                                    <li key={idx} className="flex gap-2">
+                                                        <span className="text-amber-800">-</span>
+                                                        <span>{action}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <p className="text-[11px] text-stone-500 italic">No action priorities flagged.</p>
+                                        )}
+                                    </div>
+
+                                    <div className="mt-3">
+                                        <div className="font-semibold text-[11px] text-amber-900 mb-1">Proactive Signals</div>
+                                        {proactiveBriefing.proactiveSignals.length > 0 ? (
+                                            <div className="space-y-2">
+                                                {proactiveBriefing.proactiveSignals.slice(0, 5).map((signal) => (
+                                                    <div key={signal.id} className="rounded border border-amber-100 bg-white px-2 py-2 text-[11px]">
+                                                        <div className="flex flex-wrap items-center gap-2">
+                                                            <span className={`px-2 py-0.5 rounded-full border ${getSignalBadgeStyle(signal.type)}`}>
+                                                                {signal.type.replace(/_/g, ' ')}
+                                                            </span>
+                                                            <span className="font-semibold text-stone-800">{signal.title}</span>
+                                                            <span className="text-stone-500">Confidence {formatPercent(signal.confidence)}</span>
+                                                            <span className="text-stone-500">Urgency {signal.urgency}</span>
+                                                        </div>
+                                                        <div className="mt-1 text-stone-600">{signal.description}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="text-[11px] text-stone-500 italic">No proactive signals available.</p>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
