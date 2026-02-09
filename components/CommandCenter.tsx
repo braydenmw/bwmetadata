@@ -321,7 +321,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="bg-white/5 border border-purple-500/20 rounded-xl p-4 text-center">
                             <Users size={20} className="text-purple-400 mx-auto mb-2" />
                             <p className="text-xs font-semibold text-white mb-1">BW Consultant</p>
-                            <p className="text-[10px] text-white/50">Embedded AI advisor inside the live report builder</p>
+                            <p className="text-[10px] text-white/50">Unified AI advisor with location intelligence inside the report builder</p>
                         </div>
                         <div className="bg-white/5 border border-amber-500/20 rounded-xl p-4 text-center">
                             <GitBranch size={20} className="text-amber-400 mx-auto mb-2" />
@@ -383,7 +383,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <h3 className="text-base font-medium mb-1">Watch the System Think</h3>
                             <p className="text-sm text-white/60 leading-relaxed">
-                                Hit generate. The <strong className="text-amber-400">Live Report System</strong> activates in real time—you see the NSIL engine scoring your project across 38 formulas, five adversarial personas debating its merits, and the Human Cognition Engine pressure-testing how decision-makers will respond. Nothing is hidden. Every score, debate transcript, and reasoning chain is visible and traceable.
+                                Hit generate. The <strong className="text-amber-400">Live Report System</strong> activates in real time—you see the NSIL engine scoring your project across 38 formulas, five adversarial personas debating its merits, and the Human Cognition Engine pressure-testing how decision-makers will respond. The system runs at full autonomous performance on every report—deep research, document enhancement, and self-improvement agents work in concert behind the scenes. Nothing is hidden. Every score, debate transcript, and reasoning chain is visible and traceable.
                             </p>
                         </div>
 
@@ -394,7 +394,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <h3 className="text-base font-medium mb-1">Ask Your Consultant</h3>
                             <p className="text-sm text-white/60 leading-relaxed">
-                                While the report builds, the <strong className="text-purple-400">BW Consultant</strong> is available inside the report builder. Ask it anything: "Why did SPI drop?", "What's the regulatory risk in the Philippines?", "How do I improve my financial readiness score?" It sees your live data and responds with context-aware guidance—like having a senior advisor watching over your shoulder.
+                                While the report builds, the <strong className="text-purple-400">BW Consultant</strong> is available inside the report builder—a unified advisor combining strategic guidance and location intelligence in one panel. Ask it anything: "Why did SPI drop?", "What's the regulatory risk in the Philippines?", "How do I improve my financial readiness score?" It sees your live data, surfaces location-specific intel, and responds with context-aware guidance—like having a senior advisor and research team watching over your shoulder.
                             </p>
                         </div>
 
@@ -1178,7 +1178,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                             <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
                                 <Database size={16} className="text-amber-400" />
-                                6-Layer Architecture + Cognition
+                                7-Layer Architecture + Cognition
                             </h4>
                             <ul className="space-y-2 text-xs text-white/70">
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Input Validation & Governance</li>
@@ -1187,6 +1187,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Monte Carlo Stress Testing</li>
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-purple-400" /> Human Cognition Engine (7 Models)</li>
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Output Synthesis & Provenance</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-emerald-400" /> Proactive Intelligence Layer</li>
                             </ul>
                         </div>
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
@@ -1213,7 +1214,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 38 Formulas'}
                     </button>
                     <p className="text-sm text-amber-400 text-center mt-3 font-medium">
-                        ↳ Includes proof of why this system is a world-first — and why these formulas don't exist anywhere else.
+                        ↳ Includes the 7-layer architecture, 38 formulas, proactive intelligence layer, and proof of why these don't exist anywhere else.
                     </p>
 
                     {showFormulas && (
@@ -1221,30 +1222,45 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 38 Proprietary Formulas + Human Cognition Engine</h4>
                             
                             <div className="mb-4">
-                                <h5 className="text-xs font-semibold text-white mb-2">6-Layer Processing Architecture with Cognitive Enhancement</h5>
+                                <h5 className="text-xs font-semibold text-white mb-2">7-Layer Processing Architecture with Cognitive Enhancement</h5>
                                 <ol className="space-y-2 text-xs text-white/70">
                                     <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
                                     <li><strong className="text-white">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim</li>
                                     <li><strong className="text-white">Layer 3:</strong> Quantitative Formula Scoring — 31 strategic formulas calculate hard metrics</li>
                                     <li><strong className="text-white">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
-                                    <li><strong className="text-purple-400">Layer 5:</strong> <strong className="text-purple-400">Human Cognition Engine</strong> — 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, Itti & Koch attention, emotional processing, Global Workspace consciousness, Baddeley's working memory)</li>
+                                    <li><strong className="text-purple-400">Layer 5:</strong> <strong className="text-purple-400">Human Cognition Engine</strong> — 7 proprietary behavioural models that simulate how decision-makers process complexity, allocate attention, and react under pressure</li>
                                     <li><strong className="text-white">Layer 6:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions with cognitive insights</li>
+                                    <li><strong className="text-emerald-400">Layer 7:</strong> <strong className="text-emerald-400">Proactive Intelligence</strong> — Autonomous monitoring, backtesting calibration, anomaly detection, and opportunity scanning that runs continuously without user prompting</li>
                                 </ol>
                             </div>
 
                             {/* HUMAN COGNITION ENGINE SECTION */}
                             <div className="mb-4 bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-purple-300 mb-3">Human Cognition Engine — 7 Neuroscience Models</h5>
+                                <h5 className="text-xs font-semibold text-purple-300 mb-3">Human Cognition Engine — 7 Proprietary Behavioural Models</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-white/70">
-                                    <div><strong className="text-white">Neural Field Dynamics</strong> — Wilson-Cowan equations modeling neural population activity</div>
-                                    <div><strong className="text-white">Predictive Coding</strong> — Rao & Ballard hierarchical belief updating</div>
-                                    <div><strong className="text-white">Free Energy Principle</strong> — Friston variational inference for action selection</div>
-                                    <div><strong className="text-white">Attention Models</strong> — Itti & Koch salience mapping with winner-take-all</div>
-                                    <div><strong className="text-white">Emotional Processing</strong> — Neurovisceral integration with autonomic coupling</div>
-                                    <div><strong className="text-white">Consciousness Models</strong> — Global Workspace Theory for information broadcasting</div>
-                                    <div><strong className="text-white">Working Memory</strong> — Baddeley's model with phonological loops and visuospatial sketchpads</div>
+                                    <div><strong className="text-white">Neural Field Dynamics</strong> — Models population-level decision activation and inhibition patterns</div>
+                                    <div><strong className="text-white">Predictive Processing</strong> — Hierarchical belief updating and expectation management</div>
+                                    <div><strong className="text-white">Action Selection</strong> — Variational inference for optimal decision-making under uncertainty</div>
+                                    <div><strong className="text-white">Attention Allocation</strong> — Salience mapping to prioritise critical information signals</div>
+                                    <div><strong className="text-white">Emotional Valence</strong> — Stakeholder sentiment and pressure-response modelling</div>
+                                    <div><strong className="text-white">Information Integration</strong> — Cross-domain reasoning and insight broadcasting</div>
+                                    <div><strong className="text-white">Working Memory</strong> — Cognitive load management for complex multi-factor analysis</div>
                                 </div>
-                                <p className="text-[10px] text-purple-200/60 mt-3 italic">These are university-level neuroscience equations that have never before been adapted to AI systems—providing human-like reasoning, reactions, and decision-making patterns.</p>
+                                <p className="text-[10px] text-purple-200/60 mt-3 italic">These proprietary behavioural models simulate how real decision-makers think, react, and allocate attention—bringing human-like reasoning to strategic analysis.</p>
+                            </div>
+
+                            {/* PROACTIVE INTELLIGENCE LAYER */}
+                            <div className="mb-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-emerald-300 mb-3">Proactive Intelligence Layer — Always-On Autonomous Monitoring</h5>
+                                <div className="grid md:grid-cols-2 gap-3 text-xs text-white/70">
+                                    <div><strong className="text-white">Proactive Orchestrator</strong> — Coordinates all autonomous monitoring and enhancement agents</div>
+                                    <div><strong className="text-white">Backtesting Calibration</strong> — Continuously validates scoring accuracy against real outcomes</div>
+                                    <div><strong className="text-white">Anomaly Detection</strong> — Flags unusual patterns in data inputs and score movements</div>
+                                    <div><strong className="text-white">Opportunity Scanner</strong> — Identifies emerging opportunities from market and regulatory signals</div>
+                                    <div><strong className="text-white">Self-Improvement Engine</strong> — Refines analysis depth and document quality with every report</div>
+                                    <div><strong className="text-white">Deep Research Agent</strong> — Autonomous multi-source intelligence gathering</div>
+                                </div>
+                                <p className="text-[10px] text-emerald-200/60 mt-3 italic">This layer runs on every report without user action — the system continuously improves its analysis, validates its own outputs, and surfaces intelligence you didn't know to ask for.</p>
                             </div>
 
                             <div className="grid md:grid-cols-3 gap-4">
@@ -1330,7 +1346,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <strong className="text-white">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters.
                                     </p>
                                     <p className="text-xs text-white/80">
-                                        <strong className="text-white">To our knowledge, no publicly available platform combines:</strong> multi-persona adversarial analysis, quantitative viability indices, Monte Carlo stress testing, and automated institutional-grade document generation with audit trails — purpose-built for regional economic development.
+                                        <strong className="text-white">To our knowledge, no publicly available platform combines:</strong> multi-persona adversarial analysis, quantitative viability indices, Monte Carlo stress testing, proactive intelligence with autonomous monitoring, and automated institutional-grade document generation with audit trails — purpose-built for regional economic development.
                                     </p>
                                 </div>
 

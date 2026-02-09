@@ -1183,12 +1183,17 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <tr className="border-b border-slate-200">
                     <td className="py-2">5. Cognify</td>
                     <td className="py-2 font-mono">HumanCognitionEngine</td>
-                    <td className="py-2">Neuroscience-inspired processing using 7 cognitive models (Wilson-Cowan neural fields, predictive coding, free energy, attention, emotion, consciousness, working memory)</td>
+                    <td className="py-2">Proprietary behavioural processing using 7 models (neural field dynamics, predictive processing, action selection, attention allocation, emotional valence, information integration, working memory)</td>
                   </tr>
-                  <tr>
+                  <tr className="border-b border-slate-200">
                     <td className="py-2">6. Deliver</td>
                     <td className="py-2 font-mono">ReportOrchestrator</td>
                     <td className="py-2">Final assembly with provenance chain attachment</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">7. Enhance</td>
+                    <td className="py-2 font-mono">ProactiveOrchestrator</td>
+                    <td className="py-2">Autonomous monitoring, backtesting calibration, anomaly detection, opportunity scanning, and self-improvement on every report</td>
                   </tr>
                 </tbody>
               </table>
@@ -1203,7 +1208,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">3. Quantified Scoring Suite</h4>
             <p className="mb-3">
-              The system implements 38 mathematically-defined indices organized into a directed acyclic graph (DAG). This structure enables parallel execution of independent formulas while respecting dependencies between composite indices. The suite combines 21 traditional strategic formulas with 7 neuroscience-inspired cognitive models and 10 advanced risk assessment indices.
+              The system implements 38 mathematically-defined indices organized into a directed acyclic graph (DAG). This structure enables parallel execution of independent formulas while respecting dependencies between composite indices. The suite combines 21 traditional strategic formulas with 7 proprietary behavioural models and 10 advanced risk assessment indices.
             </p>
             
             <p className="mb-3"><strong>3.1 Primary Indices (5)</strong></p>
