@@ -11,7 +11,6 @@ import MainCanvas from './components/MainCanvas';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
 import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
-import MasterAutonomousOrchestrator from './components/MasterAutonomousOrchestrator';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
@@ -43,7 +42,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel' | 'master-orchestrator';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -539,7 +538,6 @@ const App: React.FC = () => {
                     <CommandCenter
                         onEnterPlatform={() => setViewMode('main')}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
-                        onOpenMasterOrchestrator={() => setViewMode('master-orchestrator')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
                     />
                 </div>
@@ -585,21 +583,7 @@ const App: React.FC = () => {
             );
         }
 
-        if (viewMode === 'master-orchestrator') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <MasterAutonomousOrchestrator
-                        params={params}
-                        onOrchestrationComplete={(result) => {
-                            console.log('Master orchestration completed:', result);
-                            // Handle the orchestration result
-                            setViewMode('main');
-                        }}
-                        isVisible={true}
-                    />
-                </div>
-            );
-        }
+
         
         // Fallback or default view
         return (

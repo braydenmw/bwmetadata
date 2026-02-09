@@ -341,6 +341,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const brainObservation = useBrainObserver(params);
     const [advisorExpanded, setAdvisorExpanded] = useState(true);
     const [advisorRefreshing, setAdvisorRefreshing] = useState(false);
+    const [unifiedConsultantMode, setUnifiedConsultantMode] = useState(true);
     const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const advisorPanelRef = useRef<HTMLDivElement | null>(null);
     const documentScrollRef = useRef<HTMLDivElement | null>(null);
@@ -5407,6 +5408,24 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                 {/* Right Sidebar - BW Consultant + Step Info + Advisor Console */}
                 <div className="w-96 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full min-h-0 overflow-y-auto">
+
+                    {/* Unified BW Consultant Toggle */}
+                    <div className="shrink-0 px-3 py-2 bg-gradient-to-r from-slate-50 to-indigo-50 border-b border-slate-200 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Cpu size={11} className="text-indigo-600" />
+                            <span className="text-[11px] font-bold tracking-wider uppercase text-slate-700">Unified BW Consultant</span>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={unifiedConsultantMode}
+                                onChange={() => setUnifiedConsultantMode(!unifiedConsultantMode)}
+                                className="sr-only peer"
+                            />
+                            <div className="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600"></div>
+                            <span className="ml-1.5 text-[10px] font-semibold text-slate-500">{unifiedConsultantMode ? 'ON' : 'OFF'}</span>
+                        </label>
+                    </div>
                     
                     {/* BW Consultant Chat - Autonomous Agentic System */}
                     <div className="shrink-0 border-b border-slate-200">
@@ -5431,7 +5450,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </button>
                                 </div>
                             </div>
-                            <p className="text-[11px] text-indigo-600 mt-1">Self-learning • Proactive • Autonomous guidance</p>
+                            <p className="text-[11px] text-indigo-600 mt-1">{unifiedConsultantMode ? 'Advisor • Location Intel • Proactive • Autonomous guidance' : 'Self-learning • Proactive • Autonomous guidance'}</p>
                         </div>
                         <div className="flex flex-col h-56">
                             <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-[11px]">
@@ -5472,10 +5491,36 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <input type="text" data-testid="consultant-chat-input" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[11px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
                                 <button data-testid="consultant-chat-send" onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
                             </div>
+
+                            {/* Unified Mode: Location Intel embedded inside consultant */}
+                            {unifiedConsultantMode && onChangeViewMode && (
+                                <div className="border-t border-indigo-100 px-3 py-2 bg-gradient-to-r from-amber-50/60 to-indigo-50/40">
+                                    <div className="flex items-center gap-1.5 mb-1.5">
+                                        <MapPin size={10} className="text-amber-500" />
+                                        <span className="text-[10px] font-bold tracking-wider uppercase text-amber-700">Location Intel</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <input
+                                            type="text"
+                                            value={params.userCity || ''}
+                                            onChange={(e) => setParams({ ...params, userCity: e.target.value })}
+                                            placeholder="Target city or region"
+                                            className="flex-1 text-[11px] border border-amber-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-amber-400"
+                                        />
+                                        <button
+                                            onClick={handleOpenGlobalLocationReport}
+                                            className="shrink-0 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded hover:bg-amber-400"
+                                        >
+                                            Report
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {onChangeViewMode && (
+                    {/* Separate Intel Fact Sheet — only when unified mode is OFF */}
+                    {!unifiedConsultantMode && onChangeViewMode && (
                         <div className="shrink-0 border-b border-slate-200 p-3">
                             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2">
                                 <MapPin size={12} className="text-amber-500" />

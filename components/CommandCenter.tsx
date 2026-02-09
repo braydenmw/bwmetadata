@@ -9,7 +9,6 @@ import { CITY_PROFILES } from '../data/globalLocationProfiles';
 interface CommandCenterProps {
     onEnterPlatform?: () => void;
     onOpenGlobalLocationIntel?: () => void;
-    onOpenMasterOrchestrator?: () => void;
     onLocationResearched?: (data: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         profile: any;
@@ -20,7 +19,7 @@ interface CommandCenterProps {
     }) => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onOpenMasterOrchestrator, onLocationResearched }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
@@ -294,13 +293,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     
                     <div className="space-y-4 text-sm text-white/70 leading-relaxed">
                         <p>
-                            To solve this, we couldn't just use standard AI. Tools like ChatGPT are incredible, but they are essentially "text predictors"—they guess the next word in a sentence. They can write a poem, but they can't structure a billion-dollar infrastructure deal without hallucinating. We needed something fundamentally different: an AI that reasons, validates, and produces evidence you can defend in a boardroom.
+                            Standard AI tools generate text—they predict the next word. That's useful for writing emails, but it's not enough to structure a complex deal, stress-test a business case, or produce a document you'd stake your reputation on. We built BWGA AI to close that gap: an intelligence system that reasons through problems, validates assumptions with hard data, and delivers outputs you can confidently present to investors, boards, and government bodies.
                         </p>
                         <p>
-                            So, we built <strong className="text-white">BWGA Intelligence AI</strong>—the world's first Sovereign-Grade Intelligence Operating System. This is not a chatbot. It is a <strong className="text-white">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and write—coordinated by two proprietary engines working in concert.
+                            <strong className="text-white">BWGA Intelligence AI</strong> is a Sovereign-Grade Intelligence Operating System. It is not a chatbot. It is a <strong className="text-white">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and write—coordinated by two proprietary engines working in concert.
                         </p>
                         <p>
-                            The first is the <strong className="text-amber-400">NSIL (Nexus Strategic Intelligence Layer)</strong>—a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction. The second is the <strong className="text-purple-400">Human Cognition Engine</strong>—7 neuroscience-based models drawn from university-level research that simulate how real decision-makers process complexity, allocate attention, and react under pressure. Together, they don't just analyze data—they anticipate how humans will respond to it.
+                            The first is the <strong className="text-amber-400">NSIL (Nexus Strategic Intelligence Layer)</strong>—a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction. The second is the <strong className="text-purple-400">Human Cognition Engine</strong>—7 proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure. Together, they don't just analyze data—they anticipate how humans will respond to it.
                         </p>
                         <p>
                             What this means in practice: every feature on this page—from the instant research engine to the live report builder to the embedded consultant—is powered by this architecture. Scroll down to see each one and try them yourself.
@@ -1737,20 +1736,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 By accessing the platform, you agree to our <strong className="text-white">Terms & Conditions</strong>
                             </label>
                         </div>
-
-                        {/* Master Orchestrator Button */}
-                        <button 
-                            disabled={!termsAccepted}
-                            onClick={() => termsAccepted && onOpenMasterOrchestrator?.()}
-                            className={`w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 mb-3 ${
-                                termsAccepted 
-                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 cursor-pointer' 
-                                    : 'bg-white/10 text-white/30 cursor-not-allowed'
-                            }`}
-                        >
-                            🎯 Activate 100% Performance Mode
-                            <Zap size={16} />
-                        </button>
 
                         {/* Launch Button */}
                         <button 

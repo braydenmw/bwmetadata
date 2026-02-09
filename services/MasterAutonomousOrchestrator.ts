@@ -51,6 +51,53 @@ export class MasterAutonomousOrchestrator {
   }
 
   /**
+   * Run enhancements on an already-assembled payload (called by ReportOrchestrator).
+   * Adds deep thinking, research, document quality, self-improvement, and memory updates
+   * without re-assembling the payload (avoids recursive loop).
+   */
+  async runEnhancements(params: ReportParameters, payload: ReportPayload): Promise<{ confidence: number }> {
+    console.log('🎯 Running autonomous enhancements on report...');
+    try {
+      await this.initializeAutonomousAgents();
+
+      const [deepThinking, researchInsights, documentQuality, selfImprovement] = await Promise.all([
+        this.runDeepThinkingAnalysis(params),
+        this.runAutonomousResearch(params),
+        this.runDocumentEnhancement(payload, params),
+        this.runSelfImprovement(params, payload)
+      ]);
+
+      await this.updatePersistentMemory(params, { deepThinking, researchInsights, documentQuality, selfImprovement });
+
+      const confidence = this.calculateOverallConfidence({ deepThinking, researchInsights, documentQuality, selfImprovement });
+
+      EventBus.publish({
+        type: 'fullyAutonomousRunComplete',
+        runId: params.id,
+        deepThinking: deepThinking as Record<string, unknown>,
+        autonomousActions: [],
+        memory: {},
+        liabilityAssessment: [],
+        performance: { confidence, processingTimeMs: 0 }
+      });
+
+      GovernanceService.recordProvenance({
+        reportId: params.id,
+        artifact: 'autonomous-enhancements',
+        action: 'applied',
+        actor: 'MasterAutonomousOrchestrator',
+        source: 'always-on-full-performance',
+        tags: ['full-performance', 'integrated']
+      });
+
+      return { confidence };
+    } catch (error) {
+      console.warn('Autonomous enhancements failed (non-blocking):', error);
+      return { confidence: 0 };
+    }
+  }
+
+  /**
    * Main orchestration method - coordinates all agents for complete autonomous operation
    */
   async orchestrateCompleteAnalysis(params: ReportParameters): Promise<MasterOrchestrationResult> {

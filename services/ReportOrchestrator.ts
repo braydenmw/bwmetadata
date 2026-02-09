@@ -20,18 +20,7 @@ export class ReportOrchestrator {
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
     console.log('DEBUG: Starting ReportOrchestrator assembly for', params.organizationName);
 
-    // Check if full autonomous orchestration is requested (100% performance mode)
-    const isFullAutonomy = params.calibration?.autonomousMode === 'full' ||
-                          params.intentTags?.includes('100-percent') ||
-                          params.intentTags?.includes('full-autonomy');
-
-    if (isFullAutonomy) {
-      console.log('🎯 Activating Master Autonomous Orchestrator for 100% performance');
-      const masterResult = await masterAutonomousOrchestrator.orchestrateCompleteAnalysis(params);
-      return masterResult.reportPayload;
-    }
-
-    // Standard orchestration for normal operation
+    // All reports run at full autonomous performance — no separate mode needed
     const refinedIntake = this.toRefinedIntake(params);
     const spiInput = mapToSPI(refinedIntake);
     const ivasInput = mapToIVAS(refinedIntake);
@@ -149,6 +138,15 @@ export class ReportOrchestrator {
     };
 
     console.log('DEBUG: ReportPayload assembled successfully');
+
+    // Run autonomous enhancement steps (always-on full performance)
+    try {
+      const masterEnhancements = await masterAutonomousOrchestrator.runEnhancements(params, payload);
+      console.log('🎯 Autonomous enhancements applied:', masterEnhancements.confidence);
+    } catch (error) {
+      console.warn('Autonomous enhancements skipped (non-blocking):', error);
+    }
+
     // Publish payload and intake mapping for subscribers (consultant, live builder, exporters)
     try {
       if (payload.metadata.reportId) {
