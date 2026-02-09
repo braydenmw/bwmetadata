@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, Scale, Rocket, Building2, Globe, Layers, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink, AlertCircle, X, Info, Eye, BookOpen, FlaskConical } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
+import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
@@ -25,6 +26,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [showCatalog, setShowCatalog] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
     const [showCaseStudy, setShowCaseStudy] = useState(false);
+    const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
 
     // Global Location Intelligence state - LIVE SEARCH
     const [locationQuery, setLocationQuery] = useState('');
@@ -1783,14 +1785,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-xs text-white/60 mb-4">
                                 BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
                             </p>
-                            <div className="flex gap-3 text-xs text-white/50">
-                                <a href="#" className="hover:text-white">Terms & Conditions</a>
-                                <a href="#" className="hover:text-white">Privacy Policy</a>
-                                <a href="#" className="hover:text-white">Ethical AI Framework</a>
+                            <div className="flex flex-wrap gap-3 text-xs text-white/50">
+                                <button onClick={() => setActiveDocument('user-manual')} className="hover:text-white transition-colors">User Manual</button>
+                                <button onClick={() => setActiveDocument('terms')} className="hover:text-white transition-colors">Terms & Conditions</button>
+                                <button onClick={() => setActiveDocument('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
+                                <button onClick={() => setActiveDocument('ethics')} className="hover:text-white transition-colors">Ethical AI Framework</button>
                             </div>
                         </div>
                     </div>
             </section>
+
+            {/* Legal Document Modals */}
+            <DocumentModal activeDocument={activeDocument} onClose={() => setActiveDocument(null)} />
 
             {/* Footer */}
             <footer className="py-8 px-4 bg-[#050505] border-t border-white/10">
