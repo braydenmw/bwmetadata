@@ -25,6 +25,7 @@ import useBrainObserver, { BrainSignal } from '../hooks/useBrainObserver';
 import ContextualAIAssistant from './ContextualAIAssistant';
 import { LiveReportBuilder, type LiveReportState } from '../services/MultiAgentBrainSystem';
 import { bwConsultantAI } from '../services/BWConsultantAgenticAI';
+import { researchLocation } from '../services/geminiLocationService';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -278,7 +279,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const [showDocumentUpload, setShowDocumentUpload] = useState(false);
 
     const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date, action?: { label: string; type: 'open-gli' | 'open-docs' }}>>([
-    { text: "👋 Hello! I'm your autonomous BW Consultant — I don't just answer questions, I actively learn from your inputs and proactively guide you. Watch me adapt as you fill out each section!", sender: 'bw', timestamp: new Date() }
+    { text: "👋 Welcome — I'm your BW Consultant, a fully autonomous AI advisor.\n\n**What I can do for you:**\n• Research any city, country, company, government, or person — just type a name\n• Provide strategic guidance on every step of your intake\n• Analyse risks, markets, financials, and regulatory environments\n• Generate proactive intelligence as you build your report\n\n💡 **Try it now:** Type \"Tell me about Manila, Philippines\" or ask any strategic question.", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
   const [voiceEnabled, setVoiceEnabled] = useState(false);
@@ -553,6 +554,43 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         }
     }, [completeness, chatMessages.length]);
 
+    // Proactive advisor intelligence — inject insights into chat when advisor data becomes available
+    const lastAdvisorHashRef = useRef<string>('');
+    useEffect(() => {
+        if (identityComplete && advisorSnapshot) {
+            const hash = JSON.stringify({ s: advisorSnapshot.summary?.slice(0, 50), m: advisorSnapshot.priorityMoves?.length });
+            if (hash !== lastAdvisorHashRef.current) {
+                lastAdvisorHashRef.current = hash;
+                let advisorBrief = `📋 **PROACTIVE INTELLIGENCE BRIEFING**\n\n`;
+                if (advisorSnapshot.summary) advisorBrief += `${advisorSnapshot.summary}\n\n`;
+                if (advisorSnapshot.priorityMoves?.length > 0) {
+                    advisorBrief += `**Priority Actions:**\n`;
+                    advisorSnapshot.priorityMoves.slice(0, 3).forEach((move: string) => { advisorBrief += `→ ${move}\n`; });
+                    advisorBrief += `\n`;
+                }
+                if (advisorSnapshot.signals?.length > 0) {
+                    advisorBrief += `**Active Signals:** ${advisorSnapshot.signals.slice(0, 4).map((s: any) => s.type?.toUpperCase()).join(' • ')}\n\n`;
+                }
+                advisorBrief += `💡 I'll continue monitoring your inputs and will proactively alert you to opportunities and risks as you progress.`;
+                setTimeout(() => {
+                    setChatMessages(prev => [...prev, { text: advisorBrief, sender: 'bw', timestamp: new Date() }]);
+                }, 1500);
+            }
+        }
+    }, [identityComplete, advisorSnapshot]);
+
+    // Proactive live summary injection into chat
+    const lastSummaryRef = useRef<string>('');
+    useEffect(() => {
+        if (liveAgenticState?.generatedSummary && liveAgenticState.generatedSummary !== lastSummaryRef.current) {
+            lastSummaryRef.current = liveAgenticState.generatedSummary;
+            const summaryMsg = `📊 **LIVE ANALYSIS UPDATE** (${liveAgenticState.completeness}% complete)\n\n${liveAgenticState.generatedSummary}`;
+            setTimeout(() => {
+                setChatMessages(prev => [...prev, { text: summaryMsg, sender: 'bw', timestamp: new Date() }]);
+            }, 2000);
+        }
+    }, [liveAgenticState?.generatedSummary, liveAgenticState?.completeness]);
+
     // Live multi-agent builder sync (drives autonomous live report insights)
     useEffect(() => {
         const reportId = params.id || 'live-report';
@@ -706,40 +744,196 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                 setAgentThinking(true);
 
+                // Detect if this is a location/entity research request
+                const lower = userQuestion.toLowerCase();
+                const isLocationResearch = /\b(tell me about|research|look up|investigate|brief|background|intel|information on|info on|what do you know about|who is|what is|where is|find out about|search for|search|analyze|analyse)\b/i.test(userQuestion) 
+                    || /\b(city|country|region|company|government|council|ministry|corporation|organization|organisation|municipality|province|state|person|leader|mayor|ceo|director)\b/i.test(userQuestion);
+
                 setTimeout(async () => {
                         try {
-                                const insights = await bwConsultantAI.consult({
-                                        ...params,
-                                        userQuestion,
-                                        conversationHistory: chatMessages.slice(-5).map(m => ({
-                                                role: m.sender === 'user' ? 'user' : 'assistant',
-                                                content: m.text
-                                        }))
-                                }, 'live_report_chat');
+                                if (isLocationResearch) {
+                                        // Extract the target entity from the question
+                                        const target = userQuestion
+                                                .replace(/^(tell me about|research|look up|investigate|give me a brief on|background on|intel on|information on|info on|what do you know about|who is|what is|where is|find out about|search for|search|analyze|analyse)\s*/i, '')
+                                                .replace(/[?.!]$/g, '')
+                                                .trim();
 
-                                const topInsights = insights.slice(0, 3);
-                                const responseText = topInsights.length
-                                        ? `Here is what I found based on your request:\n\n${topInsights.map(i => `• ${i.title}: ${i.content}`).join('\n')}`
-                                        : 'I am ready to assist. Provide a location, company, or objective and I will generate a targeted brief.';
+                                        setChatMessages(prev => [...prev, {
+                                                text: `🔍 **Researching: "${target}"**\n\nI'm now pulling intelligence from multiple sources — demographics, economic data, leadership, infrastructure, regulatory environment, and risk indicators. This may take 10–20 seconds...`,
+                                                sender: 'bw' as const,
+                                                timestamp: new Date()
+                                        }]);
 
-                                const lower = userQuestion.toLowerCase();
-                                let action: { label: string; type: 'open-gli' | 'open-docs' } | undefined;
-                                if (lower.includes('report') || lower.includes('document') || lower.includes('generate')) {
-                                        action = { label: 'Open Document Suite', type: 'open-docs' };
-                                } else if (lower.includes('location') || lower.includes('city') || lower.includes('country') || lower.includes('region')) {
-                                        action = { label: 'Open Location Intelligence', type: 'open-gli' };
+                                        try {
+                                                const result = await Promise.race([
+                                                        researchLocation(target || userQuestion),
+                                                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 35000))
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                ]) as any;
+
+                                                if (result?.profile) {
+                                                        const p = result.profile;
+
+                                                        // Build a comprehensive intel brief directly in chat
+                                                        let brief = `📊 **INTELLIGENCE BRIEF: ${p.city || target}${p.country ? `, ${p.country}` : ''}**\n\n`;
+                                                        
+                                                        // Demographics
+                                                        if (p.population || p.demographics) {
+                                                                brief += `**DEMOGRAPHICS**\n`;
+                                                                if (p.population) brief += `• Population: ${typeof p.population === 'number' ? p.population.toLocaleString() : p.population}\n`;
+                                                                if (p.demographics?.medianAge) brief += `• Median Age: ${p.demographics.medianAge}\n`;
+                                                                if (p.demographics?.urbanization) brief += `• Urbanization: ${p.demographics.urbanization}\n`;
+                                                                if (p.demographics?.literacy) brief += `• Literacy Rate: ${p.demographics.literacy}\n`;
+                                                                if (p.demographics?.languages) brief += `• Languages: ${Array.isArray(p.demographics.languages) ? p.demographics.languages.join(', ') : p.demographics.languages}\n`;
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Economics
+                                                        if (p.economics || p.gdp) {
+                                                                brief += `**ECONOMIC PROFILE**\n`;
+                                                                if (p.economics?.gdpLocal) brief += `• GDP: ${p.economics.gdpLocal}\n`;
+                                                                if (p.economics?.gdpPerCapita) brief += `• GDP per Capita: ${p.economics.gdpPerCapita}\n`;
+                                                                if (p.economics?.growthRate) brief += `• Growth Rate: ${p.economics.growthRate}\n`;
+                                                                if (p.economics?.inflation) brief += `• Inflation: ${p.economics.inflation}\n`;
+                                                                if (p.economics?.unemployment) brief += `• Unemployment: ${p.economics.unemployment}\n`;
+                                                                if (p.economics?.currency) brief += `• Currency: ${p.economics.currency}\n`;
+                                                                if (p.economics?.majorExports) brief += `• Major Exports: ${Array.isArray(p.economics.majorExports) ? p.economics.majorExports.join(', ') : p.economics.majorExports}\n`;
+                                                                if (p.economics?.majorImports) brief += `• Major Imports: ${Array.isArray(p.economics.majorImports) ? p.economics.majorImports.join(', ') : p.economics.majorImports}\n`;
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Key Industries/Sectors
+                                                        const sectors = p.keySectors || p.industries || p.keyIndustries;
+                                                        if (sectors?.length) {
+                                                                brief += `**KEY INDUSTRIES & SECTORS**\n`;
+                                                                (Array.isArray(sectors) ? sectors : [sectors]).forEach((s: string) => { brief += `• ${s}\n`; });
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Leadership
+                                                        if (p.leaders?.length || p.leadership) {
+                                                                brief += `**LEADERSHIP & GOVERNANCE**\n`;
+                                                                const leaders = p.leaders || (p.leadership ? [p.leadership] : []);
+                                                                leaders.slice(0, 5).forEach((l: any) => {
+                                                                        if (typeof l === 'string') { brief += `• ${l}\n`; }
+                                                                        else { brief += `• ${l.name}${l.role ? ` — ${l.role}` : ''}${l.party ? ` (${l.party})` : ''}\n`; }
+                                                                });
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Infrastructure
+                                                        if (p.infrastructure) {
+                                                                brief += `**INFRASTRUCTURE**\n`;
+                                                                const infra = p.infrastructure;
+                                                                if (infra.airports?.length) brief += `• Airports: ${infra.airports.join(', ')}\n`;
+                                                                if (infra.seaports?.length) brief += `• Seaports: ${infra.seaports.join(', ')}\n`;
+                                                                if (infra.internetPenetration) brief += `• Internet Penetration: ${infra.internetPenetration}\n`;
+                                                                if (infra.powerGrid) brief += `• Power Grid: ${infra.powerGrid}\n`;
+                                                                if (infra.transportLinks) brief += `• Transport: ${Array.isArray(infra.transportLinks) ? infra.transportLinks.join(', ') : infra.transportLinks}\n`;
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Regulatory
+                                                        if (p.regulatory || p.regulatoryEnvironment) {
+                                                                brief += `**REGULATORY ENVIRONMENT**\n`;
+                                                                const reg = p.regulatory || p.regulatoryEnvironment;
+                                                                if (typeof reg === 'string') { brief += `• ${reg}\n`; }
+                                                                else {
+                                                                        if (reg.easeOfBusiness) brief += `• Ease of Doing Business: ${reg.easeOfBusiness}\n`;
+                                                                        if (reg.taxRate) brief += `• Corporate Tax Rate: ${reg.taxRate}\n`;
+                                                                        if (reg.foreignInvestmentPolicy) brief += `• FDI Policy: ${reg.foreignInvestmentPolicy}\n`;
+                                                                        if (reg.specialEconomicZones) brief += `• Special Economic Zones: ${Array.isArray(reg.specialEconomicZones) ? reg.specialEconomicZones.join(', ') : reg.specialEconomicZones}\n`;
+                                                                        if (reg.keyRegulations) brief += `• Key Regulations: ${Array.isArray(reg.keyRegulations) ? reg.keyRegulations.join(', ') : reg.keyRegulations}\n`;
+                                                                }
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Risk Assessment
+                                                        if (p.risks || p.riskFactors) {
+                                                                brief += `**RISK ASSESSMENT**\n`;
+                                                                const risks = p.risks || p.riskFactors;
+                                                                if (Array.isArray(risks)) {
+                                                                        risks.forEach((r: any) => {
+                                                                                if (typeof r === 'string') { brief += `• ${r}\n`; }
+                                                                                else { brief += `• ${r.type || r.category}: ${r.level || r.severity || ''} — ${r.description || r.detail || ''}\n`; }
+                                                                        });
+                                                                } else if (typeof risks === 'object') {
+                                                                        Object.entries(risks).forEach(([key, val]) => { brief += `• ${key}: ${val}\n`; });
+                                                                }
+                                                                brief += `\n`;
+                                                        }
+
+                                                        // Summary
+                                                        if (result.summary) {
+                                                                brief += `**ANALYST SUMMARY**\n${result.summary}\n\n`;
+                                                        }
+
+                                                        brief += `💡 **Proactive recommendation:** You can use this intelligence to inform Steps 3–10 of your intake. I've stored this research for reference across your report.`;
+
+                                                        // Store for reuse
+                                                        localStorage.setItem('lastLocationResult', JSON.stringify(result));
+                                                        localStorage.setItem('gli-target', `${p.city}, ${p.country}`);
+
+                                                        setChatMessages(prev => [...prev, {
+                                                                text: brief,
+                                                                sender: 'bw' as const,
+                                                                timestamp: new Date(),
+                                                                action: { label: 'Open Full Location Report', type: 'open-gli' }
+                                                        }]);
+                                                } else {
+                                                        // Fallback to standard consultant
+                                                        const insights = await bwConsultantAI.consult({ ...params, userQuestion, conversationHistory: chatMessages.slice(-5).map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text })) }, 'live_report_chat');
+                                                        const topInsights = insights.slice(0, 3);
+                                                        const responseText = topInsights.length
+                                                                ? `I researched "${target}" but could not find a comprehensive profile. Here's what I gathered:\n\n${topInsights.map(i => `• ${i.title}: ${i.content}`).join('\n')}\n\n💡 Try being more specific — e.g. "Manila, Philippines" or "Northland Regional Council, New Zealand".`
+                                                                : `I couldn't find detailed intelligence on "${target}". Try specifying a city name with country (e.g. "Melbourne, Australia") or a specific organisation name.`;
+                                                        setChatMessages(prev => [...prev, { text: responseText, sender: 'bw' as const, timestamp: new Date() }]);
+                                                }
+                                        } catch (researchErr) {
+                                                const errMsg = researchErr instanceof Error ? researchErr.message : 'Unknown error';
+                                                setChatMessages(prev => [...prev, {
+                                                        text: `⚠️ Research encountered an issue: ${errMsg.includes('timeout') ? 'The request timed out. Try a simpler search term.' : errMsg}\n\nI'm still here to help — try rephrasing your question or ask me about a specific topic.`,
+                                                        sender: 'bw' as const,
+                                                        timestamp: new Date()
+                                                }]);
+                                        }
+                                } else {
+                                        // Standard consultant query — strategy, advice, formulas etc.
+                                        const insights = await bwConsultantAI.consult({
+                                                ...params,
+                                                userQuestion,
+                                                conversationHistory: chatMessages.slice(-5).map(m => ({
+                                                        role: m.sender === 'user' ? 'user' : 'assistant',
+                                                        content: m.text
+                                                }))
+                                        }, 'live_report_chat');
+
+                                        const topInsights = insights.slice(0, 3);
+                                        let responseText = topInsights.length
+                                                ? `${topInsights.map(i => `**${i.title}**\n${i.content}`).join('\n\n')}`
+                                                : 'I\'m ready to assist. You can ask me to research any city, country, company, or government entity — or ask about your project strategy, scores, risk analysis, or any aspect of your intake.';
+
+                                        // Proactive follow-up suggestions
+                                        if (!lower.includes('help') && !lower.includes('what can')) {
+                                                responseText += `\n\n💡 **I can also:**\n• Research any location, company, or entity — just ask\n• Explain your scores and how to improve them\n• Provide strategic recommendations based on your intake data`;
+                                        }
+
+                                        let action: { label: string; type: 'open-gli' | 'open-docs' } | undefined;
+                                        if (lower.includes('report') || lower.includes('document') || lower.includes('generate')) {
+                                                action = { label: 'Open Document Suite', type: 'open-docs' };
+                                        }
+
+                                        setChatMessages(prev => [...prev, {
+                                                text: responseText,
+                                                sender: 'bw' as const,
+                                                timestamp: new Date(),
+                                                ...(action ? { action } : {})
+                                        }]);
                                 }
-
-                                setChatMessages(prev => [...prev, {
-                                        text: responseText,
-                                        sender: 'bw' as const,
-                                        timestamp: new Date(),
-                                        ...(action ? { action } : {})
-                                }]);
                         } catch (error) {
                                 console.error('BW Consultant chat error:', error);
                                 setChatMessages(prev => [...prev, {
-                                        text: `I encountered an error while generating an advisory response. ${error instanceof Error ? error.message : 'Unknown error'}`,
+                                        text: `I encountered an error while generating a response. ${error instanceof Error ? error.message : 'Unknown error'}\n\nPlease try again — I'm still operational.`,
                                         sender: 'bw' as const,
                                         timestamp: new Date()
                                 }]);
@@ -5406,296 +5600,111 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                 </motion.div>
                 </div>
 
-                {/* Right Sidebar - BW Consultant + Step Info + Advisor Console */}
-                <div className="w-96 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full min-h-0 overflow-y-auto">
+                {/* Right Sidebar - Unified BW Consultant */}
+                <div className="w-96 shrink-0 bg-white border-l border-slate-200 flex flex-col h-full min-h-0">
 
-                    {/* Unified BW Consultant Toggle */}
+                    {/* BW Consultant Header */}
+                    <div className="shrink-0 px-4 py-3 bg-gradient-to-r from-indigo-600 to-blue-700">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <div className="relative">
+                                    <Cpu size={14} className="text-white" />
+                                    {agentThinking && (
+                                        <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full animate-pulse" />
+                                    )}
+                                </div>
+                                <div>
+                                    <span className="text-[12px] font-bold tracking-wider uppercase text-white">BW Consultant</span>
+                                    <span className="text-[10px] ml-1.5 px-1.5 py-0.5 bg-white/20 text-white/90 rounded uppercase font-semibold">AI</span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-400/30 text-white"><Square size={8} /></button>}
+                                <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded ${voiceEnabled ? 'bg-emerald-400/30 text-white' : 'bg-white/10 text-white/60'}`}>
+                                    {voiceEnabled ? <Volume2 size={10} /> : <VolumeX size={10} />}
+                                </button>
+                            </div>
+                        </div>
+                        <p className="text-[10px] text-white/70 mt-1">Research any location, company, or entity • Strategic advice • Proactive intelligence</p>
+                    </div>
+
+                    {/* Completeness & Step Indicator Bar */}
                     <div className="shrink-0 px-3 py-2 bg-gradient-to-r from-slate-50 to-indigo-50 border-b border-slate-200 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <Cpu size={11} className="text-indigo-600" />
-                            <span className="text-[11px] font-bold tracking-wider uppercase text-slate-700">Unified BW Consultant</span>
+                            {activeModal ? (
+                                <span className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wider">
+                                    Step: {activeModal.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                </span>
+                            ) : (
+                                <span className="text-[10px] text-slate-500">Select a step to begin</span>
+                            )}
                         </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={unifiedConsultantMode}
-                                onChange={() => setUnifiedConsultantMode(!unifiedConsultantMode)}
-                                className="sr-only peer"
-                            />
-                            <div className="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600"></div>
-                            <span className="ml-1.5 text-[10px] font-semibold text-slate-500">{unifiedConsultantMode ? 'ON' : 'OFF'}</span>
-                        </label>
+                        <div className="flex items-center gap-2">
+                            <div className="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div className="h-full bg-indigo-500 rounded-full transition-all duration-500" style={{ width: `${completeness}%` }} />
+                            </div>
+                            <span className="text-[10px] font-bold text-indigo-600">{completeness}%</span>
+                        </div>
                     </div>
-                    
-                    {/* BW Consultant Chat - Autonomous Agentic System */}
-                    <div className="shrink-0 border-b border-slate-200">
-                        <div className="px-3 py-2 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <div className="relative">
-                                        <Cpu size={12} className="text-indigo-600" />
-                                        {agentThinking && (
-                                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-                                        )}
-                                    </div>
-                                    <div>
-                                        <span className="text-[11px] font-bold tracking-wider uppercase text-indigo-700">BW Consultant</span>
-                                        <span className="text-[11px] ml-1 px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded uppercase font-semibold">Agentic AI</span>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    {isSpeaking && <button onClick={stopSpeaking} className="p-1 rounded bg-red-100 text-red-600"><Square size={8} /></button>}
-                                    <button onClick={() => setVoiceEnabled(!voiceEnabled)} className={`p-1 rounded ${voiceEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
-                                        {voiceEnabled ? <Volume2 size={10} /> : <VolumeX size={10} />}
-                                    </button>
-                                </div>
-                            </div>
-                            <p className="text-[11px] text-indigo-600 mt-1">{unifiedConsultantMode ? 'Advisor • Location Intel • Proactive • Autonomous guidance' : 'Self-learning • Proactive • Autonomous guidance'}</p>
-                        </div>
-                        <div className="flex flex-col h-56">
-                            <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar text-[11px]">
-                                {chatMessages.map((msg, index) => (
-                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-[90%] px-2 py-1.5 rounded-lg text-[11px] whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100'}`}>
-                                            {msg.text}
-                                            {msg.action?.type === 'open-gli' && (
-                                                <button
-                                                    onClick={handleOpenGlobalLocationReport}
-                                                    className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded-md hover:bg-amber-400"
-                                                >
-                                                    {msg.action.label}
-                                                </button>
-                                            )}
-                                            {msg.action?.type === 'open-docs' && (
-                                                <button
-                                                    onClick={() => setShowDocGenSuite(true)}
-                                                    className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-blue-600 text-white rounded-md hover:bg-blue-500"
-                                                >
-                                                    {msg.action.label}
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                                {agentThinking && (
-                                    <div className="flex justify-start">
-                                        <div className="px-3 py-2 rounded-lg bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-[11px] text-amber-700 flex items-center gap-2">
-                                            <Cpu size={10} className="animate-spin" />
-                                            <span>Analyzing context & learning...</span>
-                                        </div>
-                                    </div>
-                                )}
-                                <div ref={chatMessagesEndRef} />
-                            </div>
-                            <div className="border-t border-indigo-100 flex items-center gap-1 px-2 py-1.5 bg-indigo-50/50">
-                                <input type="text" data-testid="consultant-chat-input" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} placeholder="Ask anything..." className="flex-1 text-[11px] border border-indigo-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-indigo-500" />
-                                <button data-testid="consultant-chat-send" onClick={handleSendMessage} className="p-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700"><Send size={12} /></button>
-                            </div>
 
-                            {/* Unified Mode: Location Intel embedded inside consultant */}
-                            {unifiedConsultantMode && onChangeViewMode && (
-                                <div className="border-t border-indigo-100 px-3 py-2 bg-gradient-to-r from-amber-50/60 to-indigo-50/40">
-                                    <div className="flex items-center gap-1.5 mb-1.5">
-                                        <MapPin size={10} className="text-amber-500" />
-                                        <span className="text-[10px] font-bold tracking-wider uppercase text-amber-700">Location Intel</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <input
-                                            type="text"
-                                            value={params.userCity || ''}
-                                            onChange={(e) => setParams({ ...params, userCity: e.target.value })}
-                                            placeholder="Target city or region"
-                                            className="flex-1 text-[11px] border border-amber-200 rounded px-2 py-1.5 bg-white focus:ring-1 focus:ring-amber-400"
-                                        />
+                    {/* Chat Messages — fills remaining space */}
+                    <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar min-h-0">
+                        {chatMessages.map((msg, index) => (
+                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-[92%] px-3 py-2 rounded-xl text-[11px] whitespace-pre-wrap leading-relaxed ${msg.sender === 'user' ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-gradient-to-br from-slate-50 to-indigo-50 text-stone-800 border border-indigo-100 rounded-bl-sm'}`}>
+                                    {msg.text}
+                                    {msg.action?.type === 'open-gli' && (
                                         <button
                                             onClick={handleOpenGlobalLocationReport}
-                                            className="shrink-0 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded hover:bg-amber-400"
+                                            className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded-md hover:bg-amber-400"
                                         >
-                                            Report
+                                            {msg.action.label}
                                         </button>
-                                    </div>
+                                    )}
+                                    {msg.action?.type === 'open-docs' && (
+                                        <button
+                                            onClick={() => setShowDocGenSuite(true)}
+                                            className="mt-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider bg-blue-600 text-white rounded-md hover:bg-blue-500"
+                                        >
+                                            {msg.action.label}
+                                        </button>
+                                    )}
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        ))}
+                        {agentThinking && (
+                            <div className="flex justify-start">
+                                <div className="px-3 py-2 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-[11px] text-amber-700 flex items-center gap-2 rounded-bl-sm">
+                                    <Cpu size={10} className="animate-spin" />
+                                    <span>Researching & analyzing...</span>
+                                </div>
+                            </div>
+                        )}
+                        <div ref={chatMessagesEndRef} />
                     </div>
 
-                    {/* Separate Intel Fact Sheet — only when unified mode is OFF */}
-                    {!unifiedConsultantMode && onChangeViewMode && (
-                        <div className="shrink-0 border-b border-slate-200 p-3">
-                            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                <MapPin size={12} className="text-amber-500" />
-                                BW Intel Fact Sheet
-                            </div>
-
-                            <p className="text-[11px] text-slate-600 mb-2">
-                                Want a full intelligence report on where you plan to do business? Enter the city/region below.
-                            </p>
-
-                            <input
-                                type="text"
-                                value={params.userCity || ''}
-                                onChange={(e) => setParams({ ...params, userCity: e.target.value })}
-                                placeholder="Enter target city or region"
-                                className="w-full mb-3 text-[11px] border border-slate-200 rounded px-2 py-2 bg-white focus:ring-1 focus:ring-amber-500"
+                    {/* Chat Input */}
+                    <div className="shrink-0 border-t border-slate-200 px-3 py-2.5 bg-white">
+                        <div className="flex items-center gap-1.5">
+                            <input 
+                                type="text" 
+                                data-testid="consultant-chat-input" 
+                                value={chatInput} 
+                                onChange={(e) => setChatInput(e.target.value)} 
+                                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSendMessage(); }}} 
+                                placeholder="Research a location, company, or ask anything..." 
+                                className="flex-1 text-[11px] border border-indigo-200 rounded-lg px-3 py-2 bg-slate-50 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors" 
                             />
-
-                            <button
-                                onClick={handleOpenGlobalLocationReport}
-                                className="w-full px-3 py-2 text-[11px] font-semibold uppercase tracking-wider bg-amber-500 text-black rounded-lg hover:bg-amber-400"
+                            <button 
+                                data-testid="consultant-chat-send" 
+                                onClick={handleSendMessage} 
+                                disabled={agentThinking}
+                                className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                Open Full Location Report
+                                <Send size={12} />
                             </button>
-                            <div className="mt-2 text-[11px] text-slate-500">
-                                BW Consultant can refine the location brief and reuse it across reports.
-                            </div>
                         </div>
-                    )}
-
-                    {/* Step-Related Information */}
-                    <div className="shrink-0 border-b border-slate-200 p-3">
-                        <div className="text-[11px] font-bold tracking-wider uppercase text-slate-500 mb-2">Current Step Guidance</div>
-                        {activeModal ? (
-                            <div className="space-y-2">
-                                <div className="p-2 bg-amber-50 border border-amber-200 rounded text-[11px] text-amber-800">
-                                    <strong className="block mb-1">{activeModal.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</strong>
-                                    {activeModal === 'identity' && 'Define your organization profile, entity types, and geographic presence.'}
-                                    {activeModal === 'mandate' && 'Establish strategic objectives, KPIs, and problem statements.'}
-                                    {activeModal === 'market' && 'Specify target markets, competitors, and regulatory landscape.'}
-                                    {activeModal === 'partner-personas' && 'Define ideal partner profiles, fit criteria, and relationship goals.'}
-                                    {activeModal === 'financial' && 'Set investment parameters, funding sources, and revenue projections.'}
-                                    {activeModal === 'risks' && 'Identify risks, mitigation strategies, and contingency plans.'}
-                                    {activeModal === 'capabilities' && 'Document team strengths, technology stack, and capability gaps.'}
-                                    {activeModal === 'execution' && 'Plan roadmap phases, milestones, and go/no-go criteria.'}
-                                    {activeModal === 'governance' && 'Establish decision authority, KPIs, and escalation paths.'}
-                                    {activeModal === 'rate-liquidity' && 'Analyze interest rate sensitivity and financial resilience.'}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="text-[11px] text-slate-500 italic">Select a step from the wizard to see guidance</div>
-                        )}
-                    </div>
-
-                    {/* Live Multi-Agent Summary */}
-                    {liveAgenticState && (
-                        <div className="shrink-0 border-b border-slate-200 p-3">
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="text-[11px] font-bold tracking-wider uppercase text-indigo-600">Live Multi-Agent Summary</div>
-                                <div className="text-[11px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-semibold">
-                                    {liveAgenticState.completeness}%
-                                </div>
-                            </div>
-                            {liveAgenticState.generatedSummary ? (
-                                <div className="text-[11px] text-slate-600 leading-relaxed">
-                                    {liveAgenticState.generatedSummary}
-                                </div>
-                            ) : (
-                                <div className="text-[11px] text-slate-500 italic">Auto-summary unlocks at 50% completeness.</div>
-                            )}
-
-                            {liveAgenticState.aiInsights.length > 0 && (
-                                <div className="mt-3 space-y-2">
-                                    {liveAgenticState.aiInsights.slice(0, 3).map((insight) => (
-                                        <div key={insight.id} className="p-2 bg-indigo-50 border border-indigo-100 rounded">
-                                            <div className="text-[11px] font-semibold text-indigo-800">{insight.title}</div>
-                                            <div className="text-[11px] text-indigo-700 mt-1">{insight.description}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Advisor Console - Collapsible */}
-                    <div className="flex-1 flex flex-col overflow-hidden">
-                        <button
-                            onClick={() => setAdvisorExpanded(!advisorExpanded)}
-                            className="shrink-0 px-3 py-2 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100 flex items-center justify-between hover:bg-indigo-100 transition-colors"
-                        >
-                            <div>
-                                <div className="text-[11px] font-bold tracking-[0.15em] uppercase text-blue-700">Advisor Console</div>
-                                <p className="text-[11px] text-slate-500">Global intelligence synthesis</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                {identityComplete && advisorSnapshot && (
-                                    <button
-                                        className="p-1 text-[11px] font-semibold border border-blue-200 text-blue-600 rounded hover:bg-blue-50"
-                                        onClick={(e) => { e.stopPropagation(); handleAdvisorRefresh(); }}
-                                        title="Refresh Intel"
-                                    >
-                                        <RefreshCw size={10} className={advisorRefreshing ? 'animate-spin' : ''} />
-                                    </button>
-                                )}
-                                <div className={`text-[11px] px-2 py-0.5 rounded font-semibold ${advisorExpanded ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
-                                    {advisorExpanded ? 'ON' : 'OFF'}
-                                </div>
-                            </div>
-                        </button>
-                        
-                        {advisorExpanded && identityComplete && advisorSnapshot && (
-                            <div className="flex-1 overflow-y-auto p-3 space-y-3 text-[11px]">
-                                <p className="text-slate-600 leading-relaxed text-[11px]">{advisorSnapshot.summary}</p>
-
-                                {advisorSnapshot.priorityMoves.length > 0 && (
-                                    <div>
-                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Priority Moves</div>
-                                        <ul className="space-y-1">
-                                            {advisorSnapshot.priorityMoves.slice(0, 3).map((move, idx) => (
-                                                <li key={idx} className="flex items-start gap-1 text-[11px] text-slate-600">
-                                                    <ArrowRight size={10} className="text-blue-500 mt-0.5 shrink-0" />
-                                                    <span>{move}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-
-                                {advisorSnapshot.engagements.length > 0 && (
-                                    <div>
-                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Reference Engagements</div>
-                                        <div className="space-y-2">
-                                            {advisorSnapshot.engagements.slice(0, 2).map((engagement) => (
-                                                <div key={engagement.id} className="p-2 border border-slate-100 rounded-lg bg-slate-50">
-                                                    <div className="text-[11px] font-semibold text-slate-800">{engagement.scenario}</div>
-                                                    <div className="text-[11px] text-slate-500">{engagement.region} • {engagement.era}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {advisorSnapshot.signals.length > 0 && (
-                                    <div>
-                                        <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Signals</div>
-                                        <div className="flex flex-wrap gap-1">
-                                            {advisorSnapshot.signals.slice(0, 4).map((signal, idx) => (
-                                                <span
-                                                    key={`${signal.type}-${idx}`}
-                                                    className={`text-[11px] px-1.5 py-0.5 rounded ${getSignalBadgeClass(signal.type)}`}
-                                                >
-                                                    {signal.type.toUpperCase()}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {advisorExpanded && (!identityComplete || !advisorSnapshot) && (
-                            <div className="flex-1 flex items-center justify-center p-4">
-                                <div className="text-center text-[11px] text-slate-500">
-                                    Complete the Identity intake to enable as there is more space
-                                </div>
-                            </div>
-                        )}
-
-                        {!advisorExpanded && (
-                            <div className="flex-1 flex items-center justify-center p-4">
-                                <div className="text-center text-[11px] text-slate-400">
-                                    Advisor Console is OFF
-                                </div>
-                            </div>
-                        )}
+                        <p className="text-[9px] text-slate-400 mt-1.5 text-center">Try: "Tell me about Manila, Philippines" or "What are the risks in Southeast Asia?"</p>
                     </div>
                 </div>
 

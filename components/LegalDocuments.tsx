@@ -94,29 +94,29 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Table of Contents</h3>
             <div className="grid md:grid-cols-2 gap-1 text-xs text-slate-600">
                 <p>1. Welcome & Getting Started</p>
-                <p>9. Step 5 — Financial Model</p>
+                <p>8. Step 5 — Financial Model</p>
                 <p>2. System Requirements & Access</p>
-                <p>10. Step 6 — Risk & Mitigation</p>
+                <p>9. Step 6 — Risk & Mitigation</p>
                 <p>3. Platform Overview</p>
-                <p>11. Step 7 — Resources & Capability</p>
+                <p>10. Step 7 — Resources & Capability</p>
                 <p>4. The Command Page (Landing)</p>
-                <p>12. Step 8 — Execution Plan</p>
-                <p>5. BW AI Search</p>
-                <p>13. Step 9 — Governance & Monitoring</p>
-                <p>6. Entering the Platform</p>
-                <p>14. Step 10 — Scoring & Readiness</p>
-                <p>7. Step 1 — Identity & Foundation</p>
-                <p>15. Generating Your Report</p>
-                <p>8. Steps 2–4 — Strategy, Market, Partners</p>
-                <p>16. The BW Consultant</p>
+                <p>11. Step 8 — Execution Plan</p>
+                <p>5. Entering the Platform</p>
+                <p>12. Step 9 — Governance & Monitoring</p>
+                <p>6. Step 1 — Identity & Foundation</p>
+                <p>13. Step 10 — Scoring & Readiness</p>
+                <p>7. Steps 2–4 — Strategy, Market, Partners</p>
+                <p>14. Generating Your Report</p>
                 <p>&nbsp;</p>
-                <p>17. The Document Factory</p>
+                <p>15. The BW Consultant</p>
                 <p>&nbsp;</p>
-                <p>18. Understanding Your Scores</p>
+                <p>16. The Document Factory</p>
                 <p>&nbsp;</p>
-                <p>19. Guidance Modes</p>
+                <p>17. Understanding Your Scores</p>
                 <p>&nbsp;</p>
-                <p>20. Troubleshooting & Support</p>
+                <p>18. Guidance Modes</p>
+                <p>&nbsp;</p>
+                <p>19. Troubleshooting & Support</p>
             </div>
         </div>
 
@@ -152,12 +152,11 @@ const UserManualContent: React.FC = () => (
         {/* Chapter 3 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">3. Platform Overview</h3>
-            <p className="mb-3">The platform consists of five primary areas:</p>
+            <p className="mb-3">The platform consists of four primary areas:</p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3 mb-3">
-                <div><strong className="text-slate-900">Command Page</strong> — The landing page you see when you first arrive. It explains the platform, provides BW AI Search, and is your launch point into the system.</div>
+                <div><strong className="text-slate-900">Command Page</strong> — The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study demo. It is your launch point into the system.</div>
                 <div><strong className="text-slate-900">Main Canvas (Report Builder)</strong> — The primary workspace where you complete the 10-step intake protocol, view live report generation, and interact with the BW Consultant.</div>
-                <div><strong className="text-slate-900">BW AI Search</strong> — An instant intelligence engine accessible from the Command Page. Type any city, country, company, or government to receive a research brief.</div>
-                <div><strong className="text-slate-900">Global Location Intelligence</strong> — A full-page deep-dive location analysis tool with demographics, economics, risk assessments, and comparison benchmarks.</div>
+                <div><strong className="text-slate-900">BW Consultant</strong> — A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything — location research, company analysis, strategic advice, score explanations — all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation.</div>
                 <div><strong className="text-slate-900">Document Factory</strong> — The output system that compiles your analysis into 200+ institutional-grade document types.</div>
             </div>
             <p className="mb-3"><strong>7-Layer Processing Architecture:</strong> Every report passes through seven processing layers:</p>
@@ -175,51 +174,42 @@ const UserManualContent: React.FC = () => (
         {/* Chapter 4 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">4. The Command Page (Landing)</h3>
-            <p className="mb-3">When you first visit the platform, you arrive at the Command Page. This page serves three purposes:</p>
+            <p className="mb-3">When you first visit the platform, you arrive at the Command Page. This page serves two purposes:</p>
             <ol className="list-decimal ml-6 space-y-2 mb-3">
-                <li><strong>Education</strong> — Explains what the system does, how it works, and who it is built for. Scroll down to read about the technology, the scoring architecture, and a live case study demonstration.</li>
-                <li><strong>Search</strong> — The BW AI Search bar is embedded directly on this page. You can research any location, company, or government entity before entering the platform.</li>
-                <li><strong>Launch</strong> — At the bottom of the page, accept the Terms & Conditions checkbox and click "Launch Intelligence OS" to enter the full report builder.</li>
+                <li><strong>Education</strong> — Explains what the system does, how it works, and who it is built for. Scroll down to read about the 7-layer architecture, the scoring engine, proprietary behavioural models, and a live case-study demonstration with real outputs.</li>
+                <li><strong>Launch</strong> — At the bottom of the page, accept the Terms & Conditions checkbox and click "Launch Intelligence OS" to enter the full report builder and access the BW Consultant.</li>
             </ol>
+            <p className="mb-3"><strong>What you'll find on the page:</strong></p>
+            <ul className="list-disc ml-6 space-y-1 mb-3">
+                <li>7-Layer Processing Architecture breakdown</li>
+                <li>World-First Technology section — what makes this platform unique</li>
+                <li>Proactive Intelligence Layer overview</li>
+                <li>Live case-study walkthrough (Vestas × Philippines)</li>
+                <li>Legal documents — User Manual, Terms & Conditions, Privacy Policy, Ethical AI Framework</li>
+            </ul>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-xs font-semibold text-blue-800 mb-1">Tip</p>
-                <p className="text-xs text-blue-700">You can use BW AI Search on the Command Page without entering the platform. It's a quick way to get an initial intelligence brief on any target region before committing to a full analysis.</p>
+                <p className="text-xs text-blue-700">All location research, company intelligence, and strategic analysis is handled by the BW Consultant inside the Main Canvas. Launch the platform to access the full AI advisor.</p>
             </div>
         </div>
 
         {/* Chapter 5 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">5. BW AI Search</h3>
-            <p className="mb-3">BW AI Search is your starting point for any research. It works like a specialised search engine built for dealmakers and strategic planners.</p>
-            <p className="mb-3"><strong>How to use it:</strong></p>
-            <ol className="list-decimal ml-6 space-y-2 mb-3">
-                <li>Locate the search bar on the Command Page (scroll to "BW AI GLOBAL SEARCH")</li>
-                <li>Type a city name, country, company, or government entity (e.g., "Manila, Philippines" or "Northland Regional Council")</li>
-                <li>Click "Research" or press Enter</li>
-                <li>Wait 10-20 seconds while the AI gathers intelligence from multiple sources</li>
-                <li>Review the one-page intelligence brief that appears below the search bar</li>
-            </ol>
-            <p className="mb-3"><strong>What you receive:</strong> A structured brief containing demographics, GDP, key industries, leadership, infrastructure status, regulatory environment, and comparison cities with similar profiles.</p>
-            <p className="mb-3"><strong>Opening the Full Report:</strong> After a search completes, click "View Full Report" to open the comprehensive Global Location Intelligence page with deeper analysis, risk scoring, and exportable data.</p>
-        </div>
-
-        {/* Chapter 6 */}
-        <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">6. Entering the Platform — Main Canvas</h3>
-            <p className="mb-3">After accepting the Terms & Conditions and clicking "Launch Intelligence OS", you enter the Main Canvas — the primary workspace.</p>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">5. Entering the Platform</h3>
+            <p className="mb-3">After accepting the Terms & Conditions and clicking "Launch Intelligence OS" on the Command Page, you enter the Main Canvas — the primary workspace.</p>
             <p className="mb-3"><strong>Layout Overview:</strong></p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2 mb-3">
                 <div><strong>Left Sidebar (narrow):</strong> Navigation icons for switching between the wizard steps, accessing the document factory, and system controls.</div>
                 <div><strong>Centre Panel (main area):</strong> The live document view. This is where your report builds in real time as you complete each intake step. It displays formatted sections, scores, and analysis as they are generated.</div>
-                <div><strong>Right Sidebar:</strong> Houses three panels — the BW Consultant (AI advisor chat), the Location Intel input, and the Advisor Console with system insights.</div>
+                <div><strong>Right Sidebar — BW Consultant:</strong> A single unified AI advisor chat that fills the entire right sidebar. You can ask it anything: location research, company analysis, score explanations, strategic recommendations. It also proactively pushes intelligence briefings and live analysis summaries into the conversation as you work.</div>
                 <div><strong>Top Bar:</strong> Contains the 10-step intake wizard progress indicators, the Report Library, and the Generate Report button.</div>
             </div>
-            <p className="mb-3"><strong>The Unified BW Consultant Toggle:</strong> At the top of the right sidebar, you'll see a toggle switch labelled "Unified BW Consultant". When ON (default), the BW Consultant chat and Location Intelligence input are combined into a single integrated panel. When OFF, they appear as separate sections. This toggle does not affect the Command Page.</p>
+            <p className="mb-3"><strong>Getting Started:</strong> When you first enter the platform, the BW Consultant will greet you and explain what it can do. You can begin by completing Step 1 of the intake wizard, or type a question directly into the consultant chat — for example, "Research Manila, Philippines" to get a full intelligence brief.</p>
         </div>
 
-        {/* Chapter 7 */}
+        {/* Chapter 6 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">7. Step 1 — Identity & Foundation</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">6. Step 1 — Identity & Foundation</h3>
             <p className="mb-3">Click on Step 1 in the intake wizard to open the Identity modal. This is where you establish who you are.</p>
             <p className="mb-3"><strong>Required Information:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
@@ -236,24 +226,24 @@ const UserManualContent: React.FC = () => (
             </div>
         </div>
 
-        {/* Chapter 8 */}
+        {/* Chapter 7 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">8. Steps 2–4 — Strategy, Market & Partners</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">7. Steps 2–4 — Strategy, Market & Partners</h3>
             
             <p className="mb-2"><strong>Step 2 — Mandate & Strategy:</strong> Define your strategic vision, objectives (short/medium/long-term), target partner profile, and value proposition. This feeds the SPI strategic intent calculation.</p>
             
-            <p className="mb-2"><strong>Step 3 — Market & Context:</strong> Describe your market size, growth projections, competitive landscape, and regulatory environment. If you've used BW AI Search, relevant location data can inform this step. This feeds the RROI (Regional Return on Investment) market access component and the RFI (Regulatory Friction Index).</p>
+            <p className="mb-2"><strong>Step 3 — Market & Context:</strong> Describe your market size, growth projections, competitive landscape, and regulatory environment. You can ask the BW Consultant to research any target location and it will provide relevant data to inform this step. This feeds the RROI (Regional Return on Investment) market access component and the RFI (Regulatory Friction Index).</p>
             
             <p className="mb-2"><strong>Step 4 — Partners & Ecosystem:</strong> Map your stakeholder landscape — who are your potential partners, what are their profiles, and how do they align with your objectives? This feeds the CIS (Counterparty Integrity Score) and SPI partner reliability component.</p>
 
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-3">
-                <p className="text-xs text-purple-700"><strong>Location Intelligence Integration:</strong> Steps 3–10 are enhanced by BW Intel Fact Sheet data. If you've researched a target location, the system can pre-populate relevant fields with GDP data, demographics, regulatory frameworks, and risk assessments from the Global Location Intelligence database.</p>
+                <p className="text-xs text-purple-700"><strong>Location Intelligence Integration:</strong> Steps 3–10 are enhanced by research data. Ask the BW Consultant to research your target location (e.g. "Research Manila, Philippines") and it will provide GDP data, demographics, regulatory frameworks, and risk assessments to inform your inputs.</p>
             </div>
         </div>
 
-        {/* Chapter 9 */}
+        {/* Chapter 8 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">9. Step 5 — Financial Model</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">8. Step 5 — Financial Model</h3>
             <p className="mb-3">This step captures your investment requirements, revenue projections, cost structure, and ROI scenarios.</p>
             <p className="mb-3"><strong>Key Fields:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
@@ -268,38 +258,38 @@ const UserManualContent: React.FC = () => (
             </div>
         </div>
 
-        {/* Chapter 10 */}
+        {/* Chapter 9 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">10. Step 6 — Risk & Mitigation</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">9. Step 6 — Risk & Mitigation</h3>
             <p className="mb-3">Identify and categorise the risks facing your project. The system uses your inputs to calculate the CRPS (Composite Risk Priority Score), PSS (Policy Shock Sensitivity), and RFI bottleneck detection.</p>
             <p className="mb-3"><strong>Risk Categories:</strong> Political, Economic, Regulatory, Operational, Environmental, Financial, Reputational, Supply Chain.</p>
             <p className="mb-3">For each risk, you assign a probability (Low/Medium/High) and impact level. The system generates a risk matrix and mitigation framework automatically.</p>
         </div>
 
-        {/* Chapter 11 */}
+        {/* Chapter 10 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">11. Step 7 — Resources & Capability</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">10. Step 7 — Resources & Capability</h3>
             <p className="mb-3">Assess your team's strengths, technology stack, and capability gaps. This feeds the ORS (Organisational Readiness Score), TCS (Team Capability Score), and CGI (Capability Gap Index).</p>
             <p className="mb-3">Be honest about gaps — the system is designed to identify them constructively and recommend how to address them, not penalise you for transparency.</p>
         </div>
 
-        {/* Chapter 12 */}
+        {/* Chapter 11 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">12. Step 8 — Execution Plan</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">11. Step 8 — Execution Plan</h3>
             <p className="mb-3">Define your implementation roadmap: phases, milestones, dependencies, timelines, go/no-go decision gates, and resource allocation per phase.</p>
             <p className="mb-3">This feeds the IVAS (Investment Velocity & Activation Speed) calculation, which estimates your activation timeline across P10 (best case), P50 (median), and P90 (worst case) scenarios.</p>
         </div>
 
-        {/* Chapter 13 */}
+        {/* Chapter 12 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">13. Step 9 — Governance & Monitoring</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">12. Step 9 — Governance & Monitoring</h3>
             <p className="mb-3">Establish your oversight structure: decision-making authority, reporting cadence, escalation procedures, KPI tracking, and audit frameworks.</p>
             <p className="mb-3">This feeds the GCI (Governance Confidence Index), CCS (Compliance Certainty Score), and SPI ethical alignment component.</p>
         </div>
 
-        {/* Chapter 14 */}
+        {/* Chapter 13 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">14. Step 10 — Scoring & Readiness</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">13. Step 10 — Scoring & Readiness</h3>
             <p className="mb-3">The final intake step is a readiness self-assessment. Rate your confidence levels, review the pre-launch checklist, and confirm your data is complete.</p>
             <p className="mb-3">Once all 10 steps are complete, the system has a comprehensive, machine-readable dataset. You are now ready to generate your report.</p>
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
@@ -307,9 +297,9 @@ const UserManualContent: React.FC = () => (
             </div>
         </div>
 
-        {/* Chapter 15 */}
+        {/* Chapter 14 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">15. Generating Your Report</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">14. Generating Your Report</h3>
             <p className="mb-3">Click the <strong>"Generate Report"</strong> button in the top bar. The system will:</p>
             <ol className="list-decimal ml-6 space-y-2 mb-3">
                 <li><strong>Validate your inputs</strong> — Checks for completeness and consistency</li>
@@ -335,25 +325,35 @@ const UserManualContent: React.FC = () => (
             </div>
         </div>
 
-        {/* Chapter 16 */}
+        {/* Chapter 15 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">16. The BW Consultant</h3>
-            <p className="mb-3">The BW Consultant is an AI advisor embedded in the right sidebar of the report builder. It is context-aware — it can see your intake data, your scores, and your current progress.</p>
-            <p className="mb-3"><strong>What you can ask:</strong></p>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">15. The BW Consultant</h3>
+            <p className="mb-3">The BW Consultant is the unified AI advisor that occupies the entire right sidebar of the report builder. It is your single point of contact for all intelligence, research, analysis, and strategic guidance within the platform.</p>
+            <p className="mb-3"><strong>Capabilities — what you can do in one chat window:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
-                <li>"Why is my SPI score low?"</li>
-                <li>"What are the regulatory risks in [country]?"</li>
-                <li>"How do I improve my financial readiness?"</li>
-                <li>"What partners should I consider for this project?"</li>
-                <li>"Explain the RFI bottleneck on my project"</li>
+                <li><strong>Location Research:</strong> "Research Manila, Philippines" — returns a full intelligence brief with demographics, GDP, industries, leadership, infrastructure, regulatory environment, and risk assessment</li>
+                <li><strong>Company Analysis:</strong> "Tell me about Vestas" — returns corporate intelligence and strategic context</li>
+                <li><strong>Score Explanations:</strong> "Why is my SPI score low?" — analyses your intake data and explains score drivers</li>
+                <li><strong>Strategic Advice:</strong> "What partners should I consider for this project?" — provides contextual recommendations</li>
+                <li><strong>Risk Analysis:</strong> "What are the regulatory risks in Indonesia?" — delivers region-specific risk intelligence</li>
+                <li><strong>Formula Explanations:</strong> "Explain the RFI bottleneck on my project" — breaks down how scoring formulas apply to your data</li>
             </ul>
-            <p className="mb-3"><strong>Unified Mode:</strong> When the "Unified BW Consultant" toggle is ON (default), the consultant panel also includes a Location Intel input. You can type a city or region directly in the consultant panel and launch a full location intelligence report without navigating away from the report builder.</p>
+            <p className="mb-3"><strong>Proactive Intelligence:</strong> The BW Consultant is not just reactive. It proactively pushes intelligence into the conversation without being asked:</p>
+            <ul className="list-disc ml-6 space-y-1 mb-3">
+                <li><strong>Advisor Briefings:</strong> When the multi-agent system (Advocate, Skeptic, Regulator, Accountant, Operator) completes analysis, a summary briefing is automatically posted to the chat</li>
+                <li><strong>Live Analysis Summaries:</strong> When the system generates new insights during report processing, these are injected into the chat in real time</li>
+                <li><strong>Follow-Up Suggestions:</strong> Every response includes suggested follow-up questions so you always know what to explore next</li>
+            </ul>
             <p className="mb-3"><strong>Voice Output:</strong> Click the speaker icon in the consultant header to enable voice responses. The system will read responses aloud using text-to-speech.</p>
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                <p className="text-xs font-semibold text-indigo-800 mb-1">How It Works</p>
+                <p className="text-xs text-indigo-700">The consultant is powered by multi-source intelligence. Location queries are routed through the platform's research pipeline (server-side AI, OpenAI, and public data APIs). Strategic queries use your intake data, scores, and the multi-agent debate system to generate context-aware advice. All responses are traceable to their intelligence sources.</p>
+            </div>
         </div>
 
-        {/* Chapter 17 */}
+        {/* Chapter 16 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">17. The Document Factory</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">16. The Document Factory</h3>
             <p className="mb-3">Once your report is generated, you can produce institutional-grade documents from the Document Factory. The system offers 200+ report types and 150+ letter templates.</p>
             <p className="mb-3"><strong>Document Categories:</strong></p>
             <div className="grid md:grid-cols-2 gap-4 mb-3">
@@ -401,9 +401,9 @@ const UserManualContent: React.FC = () => (
             <p className="mb-3"><strong>Audit Trail:</strong> Every document produced by the Document Factory carries a full audit trail. Each recommendation, score, and conclusion can be traced back to specific data inputs, formula calculations, and persona debate transcripts.</p>
         </div>
 
-        {/* Chapter 18 */}
+        {/* Chapter 17 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">18. Understanding Your Scores</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">17. Understanding Your Scores</h3>
             <p className="mb-3">The NSIL engine produces 38 scores organised into six categories:</p>
             <div className="space-y-3 mb-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
@@ -434,9 +434,9 @@ const UserManualContent: React.FC = () => (
             <p className="mb-3">Each score is presented on a 0–100 scale. Scores above 70 are generally considered strong. Scores below 50 indicate areas requiring attention. The system colour-codes scores: <span className="text-emerald-600 font-semibold">green (strong)</span>, <span className="text-amber-600 font-semibold">amber (caution)</span>, <span className="text-red-600 font-semibold">red (critical)</span>.</p>
         </div>
 
-        {/* Chapter 19 */}
+        {/* Chapter 18 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">19. Guidance Modes</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">18. Guidance Modes</h3>
             <p className="mb-3">Before beginning, you can select your preferred guidance level. The system adapts its explanations, prompts, and interface density accordingly.</p>
             <div className="space-y-3 mb-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
@@ -455,9 +455,9 @@ const UserManualContent: React.FC = () => (
             <p>Your guidance level can be changed at any time from the sidebar settings.</p>
         </div>
 
-        {/* Chapter 20 */}
+        {/* Chapter 19 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">20. Troubleshooting & Support</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">19. Troubleshooting & Support</h3>
             <div className="space-y-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                     <p className="font-semibold text-xs text-slate-900 mb-1">Search returns an error or times out</p>
