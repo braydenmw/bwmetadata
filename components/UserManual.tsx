@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, Briefcase, Scale, TrendingUp, Eye, CheckCircle2 } from 'lucide-react';
+import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, Briefcase, Scale, TrendingUp, Eye, CheckCircle2, Target, ShieldCheck } from 'lucide-react';
 import { termsOfEngagement } from '../constants/commandCenterData';
 
 interface UserManualProps {
@@ -661,7 +661,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 Complete Document Library
               </h3>
               <div className="flex gap-4 text-center">
-                <div><div className="text-2xl font-bold">200+</div><div className="text-xs text-slate-400">Documents</div></div>
+                <div><div className="text-2xl font-bold">265+</div><div className="text-xs text-slate-400">Documents</div></div>
                 <div><div className="text-2xl font-bold">150+</div><div className="text-xs text-slate-400">Letters</div></div>
               </div>
             </div>
@@ -1083,6 +1083,119 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
             <div className="px-4 pb-4 text-xs text-slate-500">
               <em>Note: Legal frameworks require review by qualified legal counsel before execution.</em>
+            </div>
+          </div>
+
+          {/* GOVERNMENT SUBMISSIONS & INTERNATIONAL BODY APPLICATIONS (20+ types) — NEW */}
+          <div className="border border-blue-200 rounded-lg overflow-hidden">
+            <div className="bg-blue-50 px-4 py-3 border-b border-blue-200">
+              <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                <Globe className="w-5 h-5 text-blue-600" />
+                Government Submissions & International Body Applications (20+ Types)
+              </h3>
+            </div>
+            <div className="p-4 grid md:grid-cols-3 gap-2 text-xs">
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Government Grant Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">National Development Plan Submission</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">SEZ/Industrial Zone Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Investment Incentive Request</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Trade Agreement Policy Brief</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">World Bank Project Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">ADB Funding Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">IFC Investment Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">UNIDO Technical Cooperation Request</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">UNDP Development Programme Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Green Climate Fund Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">AfDB Project Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">EBRD Financing Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">GEF Grant Application</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Municipal Investment Pitch</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Provincial Development Submission</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Cross-Border Cooperation Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Public-Private Partnership Proposal</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Bilateral Aid Cooperation Framework</div>
+              <div className="p-2 bg-blue-50 rounded border border-blue-100">Climate Adaptation Fund Application</div>
+            </div>
+          </div>
+
+          {/* TRADE & CUSTOMS DOCUMENTS (15+ types) — NEW */}
+          <div className="border border-green-200 rounded-lg overflow-hidden">
+            <div className="bg-green-50 px-4 py-3 border-b border-green-200">
+              <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                <Target className="w-5 h-5 text-green-600" />
+                Trade, Customs & Export Documents (15+ Types)
+              </h3>
+            </div>
+            <div className="p-4 grid md:grid-cols-3 gap-2 text-xs">
+              <div className="p-2 bg-green-50 rounded border border-green-100">Export Readiness Assessment</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Market Access Strategy</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Trade Facilitation Analysis</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Customs Tariff Classification Guide</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Rules of Origin Compliance Brief</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">FTA Utilisation Strategy</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Certificate of Origin Application</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Sanitary/Phytosanitary Compliance</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Trade Finance Facility Application</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Letter of Credit Documentation</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Incoterms Selection Analysis</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Anti-Dumping Response Brief</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Trade Remedies Application</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Export Insurance Application</div>
+              <div className="p-2 bg-green-50 rounded border border-green-100">Bonded Warehouse Application</div>
+            </div>
+          </div>
+
+          {/* COMMUNITY & SOCIAL IMPACT (15+ types) — NEW */}
+          <div className="border border-purple-200 rounded-lg overflow-hidden">
+            <div className="bg-purple-50 px-4 py-3 border-b border-purple-200">
+              <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                <Users className="w-5 h-5 text-purple-600" />
+                Community Engagement & Social Impact (15+ Types)
+              </h3>
+            </div>
+            <div className="p-4 grid md:grid-cols-3 gap-2 text-xs">
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Community Impact Assessment</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Social License Strategy</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Stakeholder Engagement Plan</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Community Benefit Agreement</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Indigenous Consultation Protocol</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Environmental Social Governance Report</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Gender Equality Impact Brief</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Youth Employment Strategy</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Local Content Development Plan</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Community Development Fund Design</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Resettlement Action Plan</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Free Prior Informed Consent (FPIC)</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Social Return on Investment (SROI)</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Cultural Heritage Impact Assessment</div>
+              <div className="p-2 bg-purple-50 rounded border border-purple-100">Grievance Redress Mechanism</div>
+            </div>
+          </div>
+
+          {/* COMPLIANCE & REGULATORY (15+ types) — NEW */}
+          <div className="border border-amber-200 rounded-lg overflow-hidden">
+            <div className="bg-amber-50 px-4 py-3 border-b border-amber-200">
+              <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-amber-600" />
+                Compliance, Anti-Corruption & Regulatory (15+ Types)
+              </h3>
+            </div>
+            <div className="p-4 grid md:grid-cols-3 gap-2 text-xs">
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">AML/KYC Compliance Framework</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Anti-Bribery Compliance Manual</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Sanctions Screening Report</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">FCPA/UKBA Compliance Brief</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Beneficial Ownership Declaration</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">PEP Screening Assessment</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">EITI Compliance Report</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Data Protection Impact Assessment</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">GDPR Compliance Framework</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Environmental Compliance Audit</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Labor Standards Compliance</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Tax Compliance Certificate</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Regulatory Change Impact Assessment</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Cross-Border Compliance Map</div>
+              <div className="p-2 bg-amber-50 rounded border border-amber-100">Whistleblower Policy Framework</div>
             </div>
           </div>
 

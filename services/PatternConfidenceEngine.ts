@@ -51,7 +51,13 @@ export type PatternCategory =
   | 'special-economic-zone'
   | 'public-private-partnership'
   | 'technology-transfer'
-  | 'financial-structuring';
+  | 'financial-structuring'
+  | 'climate-finance'
+  | 'digital-economy'
+  | 'healthcare-development'
+  | 'tourism-development'
+  | 'resource-governance'
+  | 'anti-corruption';
 
 export interface PatternSource {
   document: string;
@@ -379,6 +385,267 @@ const PATTERN_LIBRARY: Omit<PatternMatch, 'matchStrength' | 'confidenceBoost'>[]
       { document: 'UNCTAD World Investment Report', year: 2023, country: 'International', relevance: 'Global benchmark' },
     ],
   },
+  // ── NEW PATTERNS — Africa, Latin America, Middle East, Central Asia ──
+  {
+    patternId: 'CLF-001',
+    name: 'Climate Finance and Green Bond Structuring',
+    category: 'financial-structuring',
+    historicalDepth: 15,
+    geographicBreadth: 140,
+    knownOutcomes: [
+      'Green bonds now exceed $500B annual issuance globally',
+      'Climate finance unlocks concessional capital inaccessible through commercial channels',
+      'MRV (Measurement, Reporting, Verification) requirements add 5-15% project cost',
+      'REDD+ and carbon credit mechanisms create supplementary revenue streams',
+    ],
+    knownRisks: [
+      'Greenwashing accusations damage reputational capital',
+      'Carbon market volatility introduces revenue uncertainty',
+      'Additionality requirements are ambiguous and evolving',
+      'Climate finance eligibility criteria change with political cycles',
+    ],
+    methodology: 'Project-level climate finance structuring using GCF, GEF, and bilateral climate fund frameworks. Combines mitigation/adaptation logic with bankable project design.',
+    sources: [
+      { document: 'Green Climate Fund Investment Framework', year: 2015, country: 'International', relevance: 'Largest climate fund' },
+      { document: 'Kenya Green Bond Programme', year: 2019, country: 'Kenya', relevance: 'African pioneer' },
+      { document: 'Indonesia Sovereign Green Sukuk', year: 2018, country: 'Indonesia', relevance: 'Islamic climate finance' },
+      { document: 'Chile Green Bond Framework', year: 2019, country: 'Chile', relevance: 'Latin American model' },
+    ],
+  },
+  {
+    patternId: 'MIN-001',
+    name: 'Mining and Extractive Industry Governance',
+    category: 'regional-development',
+    historicalDepth: 55,
+    geographicBreadth: 90,
+    knownOutcomes: [
+      'Resource-rich countries without governance frameworks suffer "resource curse"',
+      'Revenue-sharing agreements determine community acceptance or conflict',
+      'EITI compliance improves investor confidence by 20-30%',
+      'Sovereign wealth funds stabilise fiscal management of volatile commodity revenue',
+    ],
+    knownRisks: [
+      'Dutch disease displaces non-resource sectors',
+      'Community displacement creates multi-generational grievances',
+      'Environmental remediation costs frequently exceed bond provisions',
+      'Political capture of mining revenue undermines institutional integrity',
+    ],
+    methodology: 'Resource governance combining EITI transparency, community benefit agreements, environmental bonding, and sovereign wealth fund design. Pattern established across 50+ resource economies.',
+    sources: [
+      { document: 'Botswana Diamond Revenue Management', year: 1967, country: 'Botswana', relevance: 'Gold standard resource governance' },
+      { document: 'Chile Copper Stabilization Fund', year: 1985, country: 'Chile', relevance: 'Counter-cyclical fund model' },
+      { document: 'Norway Government Pension Fund', year: 1990, country: 'Norway', relevance: 'Sovereign wealth benchmark' },
+      { document: 'Ghana Petroleum Revenue Management', year: 2011, country: 'Ghana', relevance: 'Recent African model' },
+    ],
+  },
+  {
+    patternId: 'DIG-001',
+    name: 'Digital Economy Leapfrog Strategy',
+    category: 'technology-transfer',
+    historicalDepth: 15,
+    geographicBreadth: 60,
+    knownOutcomes: [
+      'Mobile money adoption enables financial inclusion bypass of traditional banking',
+      'Digital ID systems enable government service delivery transformation',
+      'E-commerce growth in emerging markets outpaces developed market rates 3-5x',
+      'Digital tax collection improvements of 15-30% within 3 years of implementation',
+    ],
+    knownRisks: [
+      'Digital divide deepens inequality between urban/connected and rural/disconnected',
+      'Data sovereignty concerns create regulatory friction with global platforms',
+      'Cybersecurity capacity lags behind digital adoption in most emerging markets',
+      'Platform monopolies extract value from markets faster than regulation can respond',
+    ],
+    methodology: 'Digital economy acceleration through mobile-first infrastructure, regulatory sandboxes, digital ID, and e-government. Pattern emerged from Kenya M-Pesa (2007), India Aadhaar/UPI, Estonia e-governance.',
+    sources: [
+      { document: 'Kenya M-Pesa Mobile Money', year: 2007, country: 'Kenya', relevance: 'Origin fintech model' },
+      { document: 'India Digital Stack (Aadhaar/UPI)', year: 2010, country: 'India', relevance: 'Largest digital ID' },
+      { document: 'Estonia e-Residency Programme', year: 2014, country: 'Estonia', relevance: 'Digital governance pioneer' },
+      { document: 'Rwanda Smart Kigali Programme', year: 2015, country: 'Rwanda', relevance: 'African digital city' },
+    ],
+  },
+  {
+    patternId: 'AFZ-001',
+    name: 'African Free Trade Zone Integration',
+    category: 'special-economic-zone',
+    historicalDepth: 10,
+    geographicBreadth: 54,
+    knownOutcomes: [
+      'AfCFTA represents 1.3B person single market — largest by member count',
+      'Intra-African trade increases from 15% to projected 25% by 2030',
+      'Rules of origin complexity remains the primary implementation challenge',
+      'Infrastructure deficit limits actual trade facilitation despite tariff reduction',
+    ],
+    knownRisks: [
+      'Non-tariff barriers persist despite agreement ratification',
+      'Customs harmonisation implementation lags 3-5 years behind schedule',
+      'Dominant economies (Nigeria, South Africa, Egypt, Kenya) capture disproportionate benefit',
+      'Small economies need safeguard mechanisms against import surges',
+    ],
+    methodology: 'Continental free trade area implementation through phased tariff reduction, rules of origin harmonisation, and trade facilitation. Based on EU single market model adapted for African context.',
+    sources: [
+      { document: 'AfCFTA Agreement', year: 2018, country: 'African Union', relevance: 'Continental framework' },
+      { document: 'EAC Common Market Protocol', year: 2010, country: 'East Africa', relevance: 'Regional precedent' },
+      { document: 'ECOWAS Trade Liberalisation Scheme', year: 1993, country: 'West Africa', relevance: 'Sub-regional model' },
+      { document: 'SADC Free Trade Area', year: 2008, country: 'Southern Africa', relevance: 'Sub-regional model' },
+    ],
+  },
+  {
+    patternId: 'GCC-001',
+    name: 'GCC Economic Diversification',
+    category: 'regional-development',
+    historicalDepth: 20,
+    geographicBreadth: 6,
+    knownOutcomes: [
+      'Tourism and real estate diversification most successful (Dubai model)',
+      'Sovereign wealth fund-backed industrial zones attract anchor tenants',
+      'Labour nationalisation quotas create structural tension with business needs',
+      'Knowledge economy aspirations require 15-20 year education pipeline investment',
+    ],
+    knownRisks: [
+      'Oil price volatility disrupts diversification budgets',
+      'Guest worker dependency creates social stability risks',
+      'Megaproject cost overruns endemic (50-300% common)',
+      'Regional competition between GCC states for same sectors and investors',
+    ],
+    methodology: 'Oil-economy diversification through vision plans (Vision 2030), sovereign wealth deployment, megaproject development, and targeted sector attraction. Pattern across all 6 GCC states since 2000s.',
+    sources: [
+      { document: 'Saudi Vision 2030', year: 2016, country: 'Saudi Arabia', relevance: 'Largest diversification plan' },
+      { document: 'Dubai Vision 2021', year: 2014, country: 'UAE', relevance: 'Most advanced implementation' },
+      { document: 'Qatar National Vision 2030', year: 2008, country: 'Qatar', relevance: 'Small state model' },
+      { document: 'Oman Vision 2040', year: 2020, country: 'Oman', relevance: 'Late mover adaptation' },
+    ],
+  },
+  {
+    patternId: 'CAS-001',
+    name: 'Central Asian Corridor Development',
+    category: 'infrastructure-development',
+    historicalDepth: 30,
+    geographicBreadth: 15,
+    knownOutcomes: [
+      'Belt and Road Initiative revived Silk Road trade corridor concept',
+      'Transport corridor development creates landlock-to-land-link transformation',
+      'Multi-lateral infrastructure projects face coordination costs across 3-5 countries',
+      'Resource corridor models (mining + transport) are most bankable structures',
+    ],
+    knownRisks: [
+      'Debt sustainability concerns with large infrastructure loans',
+      'Geopolitical competition between China, Russia, and Western interests',
+      'Environmental and social safeguards vary dramatically between lenders',
+      'Transit country dependency creates single-point-of-failure risks',
+    ],
+    methodology: 'Multi-country corridor development combining transport infrastructure, trade facilitation, and economic zone clusters. Based on Greater Mekong Subregion model adapted for Central/West Asia.',
+    sources: [
+      { document: 'CAREC Transport Corridors', year: 2001, country: 'Central Asia', relevance: 'ADB multi-country framework' },
+      { document: 'Belt and Road Initiative', year: 2013, country: 'China', relevance: 'Largest infrastructure initiative' },
+      { document: 'Kazakhstan Nurly Zhol Programme', year: 2014, country: 'Kazakhstan', relevance: 'National corridor model' },
+      { document: 'Uzbekistan Development Strategy', year: 2017, country: 'Uzbekistan', relevance: 'Reform-era connectivity' },
+    ],
+  },
+  {
+    patternId: 'LAT-001',
+    name: 'Latin American Nearshoring Wave',
+    category: 'market-entry',
+    historicalDepth: 8,
+    geographicBreadth: 20,
+    knownOutcomes: [
+      'US-China decoupling creating Mexico and Central America manufacturing relocation',
+      'Maquila/free zone models evolving to higher value-added production',
+      'Time zone alignment with US creates competitive advantage for services',
+      'Pacific Alliance (Chile, Colombia, Mexico, Peru) facilitates intra-regional trade',
+    ],
+    knownRisks: [
+      'Security challenges in some manufacturing corridors',
+      'Infrastructure capacity may not absorb redirected supply chains rapidly enough',
+      'Labour availability in technical skills is the binding constraint',
+      'Political instability in some key nearshoring destinations',
+    ],
+    methodology: 'Supply chain relocation strategy leveraging geographic proximity, trade agreements, and cost arbitrage. Emerging pattern post-COVID and US-China tensions.',
+    sources: [
+      { document: 'Mexico Nearshoring Opportunities (Banxico)', year: 2022, country: 'Mexico', relevance: 'Primary destination' },
+      { document: 'Costa Rica Nearshoring Strategy (CINDE)', year: 2021, country: 'Costa Rica', relevance: 'Services nearshoring' },
+      { document: 'Colombia Productive Transformation', year: 2020, country: 'Colombia', relevance: 'South American model' },
+      { document: 'IDB Nearshoring Assessment', year: 2023, country: 'International', relevance: 'Regional analysis' },
+    ],
+  },
+  {
+    patternId: 'HLT-001',
+    name: 'Healthcare and Life Sciences Hub',
+    category: 'technology-transfer',
+    historicalDepth: 25,
+    geographicBreadth: 35,
+    knownOutcomes: [
+      'Medical tourism creates $50-100B global market with compound growth',
+      'Generic pharmaceutical manufacturing concentrated in India, Bangladesh, and South Africa',
+      'Clinical trial outsourcing shifting to diverse-population lower-cost jurisdictions',
+      'Telemedicine post-COVID created new service export category',
+    ],
+    knownRisks: [
+      'Regulatory harmonisation challenges across borders',
+      'IP and patent cliff management in pharmaceutical manufacturing',
+      'Healthcare brain drain from public to private/international sectors',
+      'Quality assurance and WHO prequalification as barriers to entry',
+    ],
+    methodology: 'Healthcare sector development combining medical tourism, pharmaceutical manufacturing, clinical research, and digital health. Pattern from India, Thailand, Singapore, and emerging African hubs.',
+    sources: [
+      { document: 'Thailand Medical Tourism Hub Strategy', year: 2004, country: 'Thailand', relevance: 'Pioneer medical tourism' },
+      { document: 'India Pharma Vision 2020', year: 2012, country: 'India', relevance: 'Generic pharma powerhouse' },
+      { document: 'Rwanda Health Innovation Strategy', year: 2018, country: 'Rwanda', relevance: 'African health-tech' },
+      { document: 'Bangladesh API Manufacturing', year: 2016, country: 'Bangladesh', relevance: 'Emerging pharma hub' },
+    ],
+  },
+  {
+    patternId: 'TRS-001',
+    name: 'Tourism-Led Economic Development',
+    category: 'regional-development',
+    historicalDepth: 45,
+    geographicBreadth: 120,
+    knownOutcomes: [
+      'Tourism accounts for 10%+ GDP in 45+ countries',
+      'Eco-tourism and sustainable tourism commands 20-30% price premium',
+      'Cruise tourism creates concentrated economic impact at port destinations',
+      'Tourism employment multiplier effect ranges from 1.5-2.5x direct jobs',
+    ],
+    knownRisks: [
+      'Over-tourism degrades the natural/cultural assets that attract visitors',
+      'COVID demonstrated extreme vulnerability of tourism-dependent economies',
+      'Seasonality creates employment instability and resource waste',
+      'Foreign leakage of tourism revenue can reach 70-80% in island economies',
+    ],
+    methodology: 'Destination development combining infrastructure, marketing, product development, and carrying capacity management. Established framework since 1960s mass tourism era.',
+    sources: [
+      { document: 'UNWTO Tourism Development Guidelines', year: 1975, country: 'International', relevance: 'Global standard' },
+      { document: 'Maldives Tourism Master Plan', year: 1983, country: 'Maldives', relevance: 'Island tourism model' },
+      { document: 'Costa Rica Ecotourism Strategy', year: 1990, country: 'Costa Rica', relevance: 'Sustainable model' },
+      { document: 'Rwanda Gorilla Tourism', year: 2005, country: 'Rwanda', relevance: 'Conservation tourism' },
+    ],
+  },
+  {
+    patternId: 'ACO-001',
+    name: 'Anti-Corruption and Governance Reform',
+    category: 'government-planning',
+    historicalDepth: 30,
+    geographicBreadth: 195,
+    knownOutcomes: [
+      'UNCAC ratification is near-universal but implementation varies dramatically',
+      'E-procurement reduces corruption by 25-40% in public contracting',
+      'Asset declaration systems effective only when verified and public',
+      'Independent anti-corruption agencies require political insulation to function',
+    ],
+    knownRisks: [
+      'Anti-corruption drives can be weaponised for political persecution',
+      'Institutional reform without cultural change produces cosmetic compliance',
+      'International pressure creates technical compliance without substantive reform',
+      'Brain drain when competent officials face hostile working environment',
+    ],
+    methodology: 'Governance reform through transparency mechanisms, institutional design, e-government, and international peer review. Based on UNCAC, OECD Anti-Bribery Convention, and FATF standards.',
+    sources: [
+      { document: 'UN Convention Against Corruption', year: 2003, country: 'International', relevance: 'Global framework' },
+      { document: 'Georgia Anti-Corruption Reforms', year: 2003, country: 'Georgia', relevance: 'Rapid transformation model' },
+      { document: 'Rwanda Governance Reforms', year: 2000, country: 'Rwanda', relevance: 'African governance benchmark' },
+      { document: 'Singapore Anti-Corruption Model', year: 1960, country: 'Singapore', relevance: 'Long-term success case' },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -426,7 +693,7 @@ export class PatternConfidenceEngine {
       knownElements.push(`Sector selection — standard sectoral analysis methodology applies`);
     }
 
-    if (params.investmentTimeline || params.expansionTimeline) {
+    if (params.expansionTimeline) {
       knownElements.push(`Timeline planning — phased implementation is universal practice`);
     }
 
@@ -502,22 +769,28 @@ export class PatternConfidenceEngine {
       params.problemStatement || '',
       ...(params.industry || []),
       params.organizationType || '',
-      params.investmentTimeline || '',
+      params.expansionTimeline || '',
     ].join(' ').toLowerCase();
 
     const categoryKeywords: Record<PatternCategory, string[]> = {
       'regional-development': ['regional', 'development', 'rural', 'provincial', 'decentrali', 'growth pole', 'corridor'],
       'investment-incentive': ['incentive', 'tax holiday', 'tax break', 'exemption', 'boi', 'peza', 'zone'],
       'government-planning': ['government', 'public sector', 'policy', 'planning', 'council', 'municipal', 'agency'],
-      'market-entry': ['market entry', 'expansion', 'new market', 'foreign', 'international', 'overseas'],
+      'market-entry': ['market entry', 'expansion', 'new market', 'foreign', 'international', 'overseas', 'nearshoring'],
       'partnership-structure': ['partner', 'joint venture', 'alliance', 'collaboration', 'consortium'],
       'export-strategy': ['export', 'trade', 'international trade', 'customs', 'tariff'],
-      'infrastructure-development': ['infrastructure', 'road', 'port', 'airport', 'bridge', 'power', 'energy'],
-      'agricultural-modernisation': ['agriculture', 'farming', 'agri', 'land reform', 'crop', 'food'],
-      'special-economic-zone': ['economic zone', 'sez', 'freeport', 'industrial park', 'peza', 'export processing'],
+      'infrastructure-development': ['infrastructure', 'road', 'port', 'airport', 'bridge', 'power', 'energy', 'corridor', 'belt and road'],
+      'agricultural-modernisation': ['agriculture', 'farming', 'agri', 'land reform', 'crop', 'food', 'value chain'],
+      'special-economic-zone': ['economic zone', 'sez', 'freeport', 'industrial park', 'peza', 'export processing', 'free trade zone'],
       'public-private-partnership': ['ppp', 'public-private', 'concession', 'bot', 'build-operate'],
-      'technology-transfer': ['technology', 'bpo', 'it-bpm', 'software', 'digital', 'outsourcing', 'tech'],
+      'technology-transfer': ['technology', 'bpo', 'it-bpm', 'software', 'digital', 'outsourcing', 'tech', 'fintech'],
       'financial-structuring': ['finance', 'funding', 'grant', 'loan', 'capital', 'investment', 'blended'],
+      'climate-finance': ['climate', 'green bond', 'carbon', 'renewable', 'sustainability', 'gcf', 'adaptation', 'mitigation'],
+      'digital-economy': ['digital', 'e-commerce', 'mobile money', 'fintech', 'digital id', 'e-government', 'digital economy'],
+      'healthcare-development': ['health', 'medical', 'pharma', 'hospital', 'clinical', 'telemedicine', 'biotech'],
+      'tourism-development': ['tourism', 'travel', 'hospitality', 'hotel', 'eco-tourism', 'destination'],
+      'resource-governance': ['mining', 'extractive', 'oil', 'gas', 'mineral', 'resource', 'eiti', 'sovereign wealth'],
+      'anti-corruption': ['corruption', 'governance', 'transparency', 'integrity', 'anti-corruption', 'accountability', 'procurement'],
     };
 
     const keywords = categoryKeywords[pattern.category] || [];

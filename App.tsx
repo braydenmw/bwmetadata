@@ -15,6 +15,8 @@ import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
 import { ReportOrchestrator } from './services/ReportOrchestrator';
+// ETHICAL GATE & DOCUMENT INTEGRITY
+import { DocumentIntegrityService } from './services/DocumentIntegrityService';
 // AUTONOMOUS CAPABILITIES IMPORTS
 import { solveAndAct as autonomousSolve } from './services/autonomousClient';
 import { selfLearningEngine } from './services/selfLearningEngine';
@@ -412,6 +414,59 @@ const App: React.FC = () => {
         if (!validation.isComplete) {
             console.warn('DEBUG: Incomplete payload, missing fields:', validation.missingFields);
         }
+
+        // ═══════════════════════════════════════════════════════════════
+        // ETHICAL GATE ENFORCEMENT — block or warn based on ethical assessment
+        // ═══════════════════════════════════════════════════════════════
+        const ethicalGate = (reportPayload as any).ethicalAssessment?.gate;
+        if (ethicalGate === 'reject') {
+            const ethicalReasons = (reportPayload as any).ethicalAssessment?.conditions || ['Ethical review failed'];
+            console.error('ETHICAL GATE: Report generation BLOCKED', ethicalReasons);
+            setReportData(prev => ({
+                ...prev,
+                executiveSummary: {
+                    ...prev.executiveSummary,
+                    content: `# ⛔ Report Generation Blocked — Ethical Review\n\nThe NSIL Ethical Reasoning Engine has determined that this engagement cannot proceed in its current form.\n\n**Reasons:**\n${ethicalReasons.map((r: string) => `- ${r}`).join('\n')}\n\n**What this means:** The system has identified fundamental ethical concerns that prevent responsible analysis. This is not a technical limitation — it is a governance safeguard.\n\n**Next Steps:**\n- Review and address the ethical concerns identified above\n- Consider restructuring the engagement parameters\n- Consult with compliance officers on the flagged issues\n\n*This gate is enforced by the Autonomous Ethical Reasoning Engine (7-dimension framework) and cannot be overridden.*`,
+                    status: 'completed'
+                }
+            }));
+            setGenPhase('complete');
+            setGenProgress(100);
+            setIsGeneratingReport(false);
+            return;
+        }
+        if (ethicalGate === 'redesign' || ethicalGate === 'proceed-with-conditions') {
+            const ethicalWarnings = (reportPayload as any).ethicalAssessment?.conditions || [];
+            console.warn(`ETHICAL GATE: ${ethicalGate}`, ethicalWarnings);
+            // Allow generation to proceed but include warning in executive summary
+            setReportData(prev => ({
+                ...prev,
+                executiveSummary: {
+                    ...prev.executiveSummary,
+                    content: `> ⚠️ **Ethical Advisory:** ${ethicalWarnings.slice(0, 3).join(' | ')}\n\n`
+                }
+            }));
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // DOCUMENT INTEGRITY — wrap with provenance tracking
+        // ═══════════════════════════════════════════════════════════════
+        const dataSources = ['NSIL Intelligence Hub', 'Pattern Confidence Engine', 'Historical Parallel Matcher',
+                             'Situation Analysis Engine', 'Formula Suite (29 formulas)', 'Ethical Reasoning Engine'];
+        if ((reportPayload as any).patternIntelligence?.matchedPatterns?.length > 0) {
+            dataSources.push('Methodology Knowledge Base');
+        }
+        const integrityConfidence = (reportPayload.confidenceScores?.overall || 50) >= 70 ? 'high' as const
+            : (reportPayload.confidenceScores?.overall || 50) >= 45 ? 'medium' as const
+            : (reportPayload.confidenceScores?.overall || 50) >= 20 ? 'low' as const
+            : 'insufficient-data' as const;
+        const integrityHeader = DocumentIntegrityService.generateIntegrityHeader({
+            documentType: 'strategic-report',
+            confidence: integrityConfidence,
+            country: params.country,
+            sector: (params.industry || [])[0],
+        });
+        console.log('INTEGRITY HEADER:', DocumentIntegrityService.formatHeaderForDocument(integrityHeader));
 
         setReportData(prev => ({
             ...prev,

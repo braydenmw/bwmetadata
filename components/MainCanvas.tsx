@@ -26,6 +26,9 @@ import ContextualAIAssistant from './ContextualAIAssistant';
 import { LiveReportBuilder, type LiveReportState } from '../services/MultiAgentBrainSystem';
 import { bwConsultantAI } from '../services/BWConsultantAgenticAI';
 import { researchLocation } from '../services/geminiLocationService';
+import { DocumentTypeRouter } from '../services/DocumentTypeRouter';
+import { DocumentIntegrityService } from '../services/DocumentIntegrityService';
+import { GlobalComplianceFramework } from '../services/GlobalComplianceFramework';
 
 const REQUIRED_FIELDS: Record<string, (keyof ReportParameters)[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -1148,22 +1151,37 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const handleGenerateFinalDocs = () => {
     const reportsToGenerate = reports.filter(report => selectedFinalReports.includes(report.id));
 
-    const newDocs = reportsToGenerate.map(report => ({
-      id: report.id,
-      title: report.reportName,
-      desc: report.problemStatement || 'No description available',
-      timestamp: new Date()
-    }));
+    const newDocs = reportsToGenerate.map(report => {
+      // Route each document through DocumentTypeRouter for distinct section structures
+      const docType = report.problemStatement?.toLowerCase().includes('feasibility') ? 'full-feasibility-study'
+        : report.problemStatement?.toLowerCase().includes('investment') ? 'investment-attraction-strategy'
+        : report.problemStatement?.toLowerCase().includes('risk') ? 'risk-assessment-report'
+        : report.problemStatement?.toLowerCase().includes('partner') ? 'partner-proposal'
+        : 'executive-brief';
+      
+      const routedConfig = DocumentTypeRouter.routeDocument(docType);
+      const complianceBriefing = GlobalComplianceFramework.generateComplianceBriefing(report.country || '');
+      
+      const docTypeName = routedConfig?.config?.id || docType;
+      const sectionCount = routedConfig?.sectionPrompts?.length || 0;
+      console.log(`[DocumentTypeRouter] ${report.reportName} → ${docTypeName} (${sectionCount} sections)`);
+      console.log(`[GlobalCompliance] ${report.country}: ${complianceBriefing.substring(0, 100)}...`);
+
+      return {
+        id: report.id,
+        title: report.reportName,
+        desc: report.problemStatement || 'No description available',
+        timestamp: new Date()
+      };
+    });
 
     setGeneratedDocs(prev => [...newDocs, ...prev]);
 
     setShowFinalizationModal(false);
-    setIsDraftFinalized(false); // Reset the state
+    setIsDraftFinalized(false);
     setSelectedFinalReports([]);
 
-    // In a real app, you would call a service for each report.
-    // For now, we just show a confirmation.
-    alert(`Generating ${selectedFinalReports.length} official documents.`);
+    alert(`Generating ${selectedFinalReports.length} official documents with distinct section structures via DocumentTypeRouter.`);
   };
 
   const handleGenerateDocument = () => {
@@ -1171,11 +1189,33 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             alert('Please complete required inputs before generating. Readiness must be at least 70%.');
             return;
         }
-    // In a real app, this would trigger a more complex generation service
-    // For now, we'll just log it to show the config is captured
-    console.log(`Generating document: ${activeModal}`, generationConfig);
-    // alert(`Generating ${activeModal} with config: ${JSON.stringify(generationConfig)}`);
-    onGenerate(); // Call the original onGenerate prop
+    // Route through DocumentTypeRouter for type-specific section structures
+    const docType = (activeModal || 'executive-brief').toLowerCase().replace(/\s+/g, '-');
+    const routedConfig = DocumentTypeRouter.routeDocument(docType);
+    const docTypeName = routedConfig?.config?.id || docType;
+    const sectionCount = routedConfig?.sectionPrompts?.length || 0;
+    console.log(`[DocumentTypeRouter] Generating ${docTypeName}: ${sectionCount} sections`, generationConfig);
+    
+    // Add compliance check for target country
+    if (params.country) {
+      const complianceCheck = GlobalComplianceFramework.checkCompliance({ country: params.country, sector: (params.industry || [])[0] });
+      console.log(`[GlobalCompliance] ${params.country}: ${complianceCheck.riskLevel} risk | Blockers: ${complianceCheck.blockers.length}`);
+    }
+
+    // Wrap document with integrity tracking
+    const integrityConfidence = (reportData.confidenceScores?.overall || 50) >= 70 ? 'high' as const
+      : (reportData.confidenceScores?.overall || 50) >= 45 ? 'medium' as const
+      : (reportData.confidenceScores?.overall || 50) >= 20 ? 'low' as const
+      : 'insufficient-data' as const;
+    const header = DocumentIntegrityService.generateIntegrityHeader({
+      documentType: docTypeName,
+      confidence: integrityConfidence,
+      country: params.country,
+      sector: (params.industry || [])[0],
+    });
+    console.log('[DocumentIntegrity]', DocumentIntegrityService.formatHeaderForDocument(header));
+
+    onGenerate();
     handleModalClose();
   };
 

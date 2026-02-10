@@ -336,13 +336,110 @@ export const generateReportSectionStream = async (
                 ]
             });
             
+            // ═══════════════════════════════════════════════════════════════
+            // BUILD NSIL INTELLIGENCE CONTEXT — injected into every prompt
+            // This is the brain of the system: pattern matches, historical
+            // parallels, formula scores, situation analysis, ethical gate,
+            // emotional climate — ALL fed into the AI generation prompts.
+            // ═══════════════════════════════════════════════════════════════
+            const enhancedPayload = (params as any).reportPayload;
+            let nsilContext = '';
+            if (enhancedPayload) {
+              const ctx: string[] = [];
+              // Confidence scores
+              if (enhancedPayload.confidenceScores) {
+                const cs = enhancedPayload.confidenceScores;
+                ctx.push(`[NSIL CONFIDENCE] Overall: ${cs.overall}/100 | Economic Readiness: ${cs.economicReadiness}/100 | Symbiotic Fit: ${cs.symbioticFit}/100 | Political Stability: ${cs.politicalStability}/100 | Activation Velocity: ${cs.activationVelocity}/100`);
+              }
+              // Pattern intelligence
+              if (enhancedPayload.patternIntelligence) {
+                const pi = enhancedPayload.patternIntelligence;
+                ctx.push(`[PATTERN INTELLIGENCE] Reasoning Stance: ${pi.reasoningStance || 'exploratory'}`);
+                if (pi.matchedPatterns && pi.matchedPatterns.length > 0) {
+                  ctx.push(`Matched Patterns: ${pi.matchedPatterns.slice(0, 3).map((p: any) => `${p.name} (${p.historicalDepth}yr, ${p.geographicBreadth} countries, match: ${Math.round((p.matchStrength || 0) * 100)}%)`).join('; ')}`);
+                  const topPattern = pi.matchedPatterns[0];
+                  if (topPattern.knownOutcomes) ctx.push(`Known Outcomes: ${topPattern.knownOutcomes.slice(0, 3).join('; ')}`);
+                  if (topPattern.knownRisks) ctx.push(`Known Risks: ${topPattern.knownRisks.slice(0, 3).join('; ')}`);
+                  if (topPattern.methodology) ctx.push(`Methodology: ${topPattern.methodology}`);
+                }
+                if (pi.knownElements) ctx.push(`Known Elements: ${pi.knownElements.join('; ')}`);
+                if (pi.novelElements) ctx.push(`Novel Elements: ${pi.novelElements.join('; ')}`);
+              }
+              // Historical parallels
+              if (enhancedPayload.historicalParallels) {
+                const hp = enhancedPayload.historicalParallels;
+                ctx.push(`[HISTORICAL PARALLELS] Success Rate: ${hp.successRate || 0}%`);
+                if (hp.synthesisInsight) ctx.push(`Synthesis: ${hp.synthesisInsight}`);
+                if (hp.matches && hp.matches.length > 0) {
+                  ctx.push(`Top Cases: ${hp.matches.slice(0, 3).map((m: any) => `${m.title} (${m.country} ${m.year}, ${m.outcome}): ${m.lessonsLearned?.[0] || ''}`).join(' | ')}`);
+                }
+                if (hp.commonSuccessFactors) ctx.push(`Common Success Factors: ${hp.commonSuccessFactors.slice(0, 4).join('; ')}`);
+                if (hp.commonFailureFactors) ctx.push(`Common Failure Factors: ${hp.commonFailureFactors.slice(0, 4).join('; ')}`);
+              }
+              // Situation analysis
+              if (enhancedPayload.situationAnalysis) {
+                const sa = enhancedPayload.situationAnalysis;
+                if (sa.situationType) ctx.push(`[SITUATION ANALYSIS] Type: ${sa.situationType}`);
+                if (sa.creativeStrategies && sa.creativeStrategies.length > 0) {
+                  ctx.push(`Creative Strategies: ${sa.creativeStrategies.slice(0, 3).map((s: any) => `${s.name}: ${s.description}`).join(' | ')}`);
+                }
+              }
+              // Economic signals
+              if (enhancedPayload.economicSignals) {
+                const es = enhancedPayload.economicSignals;
+                ctx.push(`[ECONOMIC SIGNALS] Trade Exposure: ${es.tradeExposure} | Tariff Sensitivity: ${es.tariffSensitivity} | Cost Advantages: ${(es.costAdvantages || []).join(', ')}`);
+              }
+              // Risk profile
+              if (enhancedPayload.risks) {
+                const r = enhancedPayload.risks;
+                if (r.political) ctx.push(`[RISK] Political Stability: ${r.political.stabilityScore}/100 | Regional Conflict Risk: ${r.political.regionalConflictRisk}`);
+                if (r.regulatory) ctx.push(`[RISK] Corruption Index: ${r.regulatory.corruptionIndex} | Regulatory Friction: ${r.regulatory.regulatoryFriction}`);
+                if (r.operational) ctx.push(`[RISK] Supply Chain Dependency: ${r.operational.supplyChainDependency} | Currency Risk: ${r.operational.currencyRisk}`);
+              }
+              // Ethical gate
+              if (enhancedPayload.ethicalAssessment) {
+                const ea = enhancedPayload.ethicalAssessment;
+                ctx.push(`[ETHICAL ASSESSMENT] Gate: ${ea.gate || 'proceed'} | Dimensions: ${ea.dimensions ? ea.dimensions.map((d: any) => `${d.dimension}: ${d.score}/100`).join(', ') : 'n/a'}`);
+                if (ea.conditions && ea.conditions.length > 0) ctx.push(`Ethical Conditions: ${ea.conditions.join('; ')}`);
+              }
+              // Emotional climate
+              if (enhancedPayload.emotionalClimate) {
+                const ec = enhancedPayload.emotionalClimate;
+                ctx.push(`[EMOTIONAL CLIMATE] Business Confidence: ${ec.businessConfidence || 'n/a'} | Stakeholder Sentiment: ${ec.stakeholderSentiment || 'n/a'} | Community Reception: ${ec.communityReception || 'n/a'}`);
+              }
+              // Computed intelligence formulas
+              if (enhancedPayload.computedIntelligence) {
+                const ci = enhancedPayload.computedIntelligence;
+                const formulaSummary = Object.entries(ci).slice(0, 8).map(([key, val]: [string, any]) => {
+                  if (typeof val === 'object' && val !== null) {
+                    return `${key}: ${JSON.stringify(val).substring(0, 80)}`;
+                  }
+                  return `${key}: ${val}`;
+                }).join(' | ');
+                ctx.push(`[FORMULA INTELLIGENCE] ${formulaSummary}`);
+              }
+              // Regional profile
+              if (enhancedPayload.regionalProfile) {
+                const rp = enhancedPayload.regionalProfile;
+                if (rp.demographics) {
+                  const d = rp.demographics;
+                  ctx.push(`[REGIONAL] Population: ${d.population} | GDP/Capita: $${d.gdpPerCapita} | Growth: ${d.gdpGrowth}% | Labor Cost Index: ${d.laborCosts}`);
+                }
+              }
+              nsilContext = ctx.join('\n');
+            }
+
+            const intelligenceBlock = nsilContext
+              ? `\n\n--- NSIL INTELLIGENCE PAYLOAD (use this data to ground your analysis) ---\n${nsilContext}\n--- END NSIL PAYLOAD ---\n\n`
+              : '';
+
             const sectionPrompts: Record<string, string> = {
-                executiveSummary: `Generate an executive summary for a strategic partnership report. Organization: ${params.organizationName || 'Organization'}. Target Market: ${params.country || 'Target Market'}. Strategic Intent: ${params.strategicIntent?.join(', ') || 'Market expansion'}. Problem Statement: ${params.problemStatement || 'Strategic growth'}. Include overall confidence assessment, key metrics, strategic fit analysis, and immediate action recommendations.`,
-                marketAnalysis: `Generate a comprehensive market analysis for ${params.country || 'Target Market'}. Include market size, growth rates, key industries, trade exposure, tariff sensitivity, cost advantages, labor market, regulatory environment, and competitive landscape. Organization focus: ${params.organizationName || 'Organization'}.`,
-                recommendations: `Generate strategic recommendations for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include short-term (0-6 months), mid-term (6-18 months), and long-term (18+ months) actionable recommendations with specific steps.`,
-                implementation: `Generate an implementation playbook for ${params.organizationName || 'Organization'} to enter ${params.country || 'Target Market'}. Include phased timeline, key milestones, resource requirements, governance roadmap, and success metrics.`,
-                financials: `Generate financial projections for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include 5-year revenue projections, cost structure, ROI analysis, break-even timeline, and capital requirements.`,
-                risks: `Generate a comprehensive risk assessment for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}. Include political, economic, regulatory, operational, and market risks with mitigation strategies for each.`
+                executiveSummary: `Generate an executive summary for a strategic partnership report. Organization: ${params.organizationName || 'Organization'}. Target Market: ${params.country || 'Target Market'}. Strategic Intent: ${params.strategicIntent?.join(', ') || 'Market expansion'}. Problem Statement: ${params.problemStatement || 'Strategic growth'}.${intelligenceBlock}Use the NSIL intelligence payload above to ground your analysis with specific confidence scores, pattern matches, historical parallels, and computed formula results. Include overall confidence assessment, key metrics, strategic fit analysis, and immediate action recommendations. Reference specific historical cases and pattern matches where relevant.`,
+                marketAnalysis: `Generate a comprehensive market analysis for ${params.country || 'Target Market'}. Organization focus: ${params.organizationName || 'Organization'}.${intelligenceBlock}Use the NSIL economic signals, regional demographics, and risk profile above. Include market size, growth rates, key industries, trade exposure, tariff sensitivity, cost advantages, labor market, regulatory environment, and competitive landscape. Reference the pattern intelligence for structural insights about this market.`,
+                recommendations: `Generate strategic recommendations for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}.${intelligenceBlock}Use the NSIL historical parallels, creative strategies, and formula intelligence above. Include short-term (0-6 months), mid-term (6-18 months), and long-term (18+ months) actionable recommendations. Incorporate lessons from historical cases and address the known risks identified by pattern intelligence. Each recommendation should reference the supporting evidence from the intelligence payload.`,
+                implementation: `Generate an implementation playbook for ${params.organizationName || 'Organization'} to enter ${params.country || 'Target Market'}.${intelligenceBlock}Use the NSIL confidence scores, activation velocity, and situation analysis above. Include phased timeline, key milestones, resource requirements, governance roadmap, and success metrics. Ethical conditions and compliance requirements from the payload must be addressed in the implementation plan.`,
+                financials: `Generate financial projections for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}.${intelligenceBlock}Use the NSIL computed intelligence formulas (SCF, RROI, CAP, TCO etc.) and economic signals above. Include 5-year revenue projections, cost structure, ROI analysis, break-even timeline, and capital requirements. Ground projections in the formula outputs and historical parallel outcomes.`,
+                risks: `Generate a comprehensive risk assessment for ${params.organizationName || 'Organization'} entering ${params.country || 'Target Market'}.${intelligenceBlock}Use the NSIL risk profile, ethical assessment, emotional climate, and pattern intelligence known risks above. Include political, economic, regulatory, operational, and market risks with mitigation strategies for each. Reference the historical cases where similar risks materialised and what mitigation worked.`
             };
             
             const prompt = sectionPrompts[section] || `Generate a detailed ${section} section for a strategic partnership report. Organization: ${params.organizationName || 'Organization'}. Market: ${params.country || 'Target Market'}.`;
