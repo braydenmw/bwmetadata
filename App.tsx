@@ -162,10 +162,9 @@ const App: React.FC = () => {
 
         const unsubSearchResult = EventBus.subscribe('searchResultReady', (event) => {
             console.log('[App] EventBus → searchResultReady', event.query);
-            // Trigger consultant analysis when search results arrive
-            if (isConsultantActive) {
-                bwConsultantAI.consult(params, 'search_result_integration');
-            }
+            // Note: Do NOT call bwConsultantAI.consult() here.
+            // It triggers proactiveSearchForReport → triggerSearch → emit(searchResultReady) → consult → infinite loop.
+            // Search results are already stored and available to the consultant when next consulted.
         });
 
         return () => {

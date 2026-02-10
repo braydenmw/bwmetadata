@@ -48,8 +48,12 @@ export class BWConsultantAgenticAI {
     // Update focus
     this.state.currentFocus = context;
 
-    // Trigger automatic searches
-    await automaticSearchService.proactiveSearchForReport(params);
+    // Only trigger proactive searches for primary consultations
+    // NEVER re-trigger searches from search_result_integration context — this causes infinite recursion:
+    // consult → proactiveSearchForReport → triggerSearch → emit(searchResultReady) → App handler → consult → ...
+    if (context !== 'search_result_integration') {
+      await automaticSearchService.proactiveSearchForReport(params);
+    }
 
     // Generate insights based on current knowledge
     const insights = await this.generateInsights(params, context);

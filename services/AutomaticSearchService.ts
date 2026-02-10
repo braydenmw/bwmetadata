@@ -46,6 +46,7 @@ export class AutomaticSearchService {
   private searchQueue: SearchTrigger[] = [];
   private lastSearchTime = 0;
   private searchHistory: Map<string, SearchResult> = new Map();
+  private isProactiveSearching = false; // Re-entrancy guard
 
   constructor() {
     this.setupEventListeners();
@@ -65,7 +66,8 @@ export class AutomaticSearchService {
     // Check if we recently searched for this
     const recentResult = this.searchHistory.get(query.toLowerCase());
     if (recentResult && Date.now() - recentResult.timestamp.getTime() < 300000) { // 5 minutes
-      EventBus.emit({ type: 'searchResultReady', query, result: recentResult });
+      // Emit asynchronously to prevent call-stack recursion when listeners re-trigger searches
+      setTimeout(() => EventBus.emit({ type: 'searchResultReady', query, result: recentResult }), 0);
       return;
     }
 
@@ -87,10 +89,18 @@ export class AutomaticSearchService {
   async proactiveSearchForReport(params: any): Promise<void> {
     if (!this.config.proactiveSearch) return;
 
-    const potentialQueries = this.extractLocationQueriesFromParams(params);
+    // Re-entrancy guard — prevents infinite recursion via EventBus listeners
+    if (this.isProactiveSearching) return;
+    this.isProactiveSearching = true;
 
-    for (const query of potentialQueries) {
-      await this.triggerSearch(query, 'report_building', 'high');
+    try {
+      const potentialQueries = this.extractLocationQueriesFromParams(params);
+
+      for (const query of potentialQueries) {
+        await this.triggerSearch(query, 'report_building', 'high');
+      }
+    } finally {
+      this.isProactiveSearching = false;
     }
   }
 
