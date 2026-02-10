@@ -213,20 +213,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center font-bold text-black text-sm">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-sm">
                             BW
                         </div>
                         <span className="text-lg font-light tracking-wide hidden sm:block text-slate-800">BWGA Intelligence</span>
                     </div>
                     <div className="hidden lg:flex items-center gap-6 text-sm text-slate-600 font-medium">
-                        <button onClick={() => scrollToSection('mission')} className="hover:text-amber-600 transition-colors">Mission</button>
-                        <button onClick={() => scrollToSection('story')} className="hover:text-amber-600 transition-colors">Our Story</button>
-                        <button onClick={() => scrollToSection('technology')} className="hover:text-amber-600 transition-colors">Technology</button>
-                        <button onClick={() => scrollToSection('foundation')} className="hover:text-amber-600 transition-colors">Foundation</button>
-                        <button onClick={() => scrollToSection('difference')} className="hover:text-amber-600 transition-colors">The Difference</button>
-                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-amber-600 transition-colors">BW AI Search</button>
-                        <button onClick={() => scrollToSection('protocol')} className="hover:text-amber-600 transition-colors">10-Step Protocol</button>
-                        <button onClick={() => scrollToSection('pilots')} className="hover:text-amber-600 transition-colors">Partnerships</button>
+                        <button onClick={() => scrollToSection('mission')} className="hover:text-blue-600 transition-colors">Mission</button>
+                        <button onClick={() => scrollToSection('story')} className="hover:text-blue-600 transition-colors">Our Story</button>
+                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">Technology</button>
+                        <button onClick={() => scrollToSection('foundation')} className="hover:text-blue-600 transition-colors">Foundation</button>
+                        <button onClick={() => scrollToSection('difference')} className="hover:text-blue-600 transition-colors">The Difference</button>
+                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-blue-600 transition-colors">BW AI Search</button>
+                        <button onClick={() => scrollToSection('protocol')} className="hover:text-blue-600 transition-colors">10-Step Protocol</button>
+                        <button onClick={() => scrollToSection('pilots')} className="hover:text-blue-600 transition-colors">Partnerships</button>
                     </div>
                     
                 </div>
@@ -239,21 +239,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     alt="" 
                     className="absolute inset-0 w-full h-full object-cover" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-white" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/30 to-slate-900/70" />
                 <div className="relative z-10 max-w-5xl mx-auto text-center">
-                    <p className="text-amber-400 uppercase tracking-[0.3em] text-base md:text-lg mb-6 font-bold">
+                    <p className="text-sky-300 uppercase tracking-[0.3em] text-base md:text-lg mb-6 font-bold">
                         BRAYDEN WALLS GLOBAL ADVISORY
                     </p>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-white">
                         Regional communities are the backbone of every nation.
-                        <span className="block text-amber-400 mt-4 font-normal">They deserve to be seen.</span>
+                        <span className="block text-sky-300 mt-4 font-normal">They deserve to be seen.</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-10 font-light">
+                    <p className="text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed mb-10 font-light">
                         Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
                     </p>
                     <button 
                         onClick={() => scrollToSection('bwai-search')}
-                        className="inline-flex items-center gap-3 px-10 py-4 bg-amber-500 border-2 border-amber-400 rounded-full text-black text-base font-bold hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/30"
+                        className="inline-flex items-center gap-3 px-10 py-4 bg-sky-500 border-2 border-sky-400 rounded-full text-white text-base font-bold hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/30"
                     >
                         <Search size={18} />
                         Try BW AI Search
@@ -276,9 +276,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                         {/* LEFT — The Story */}
                         <div id="story">
-                            <p className="text-amber-600 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">OUR ORIGIN</p>
-                            <h2 className="text-xl md:text-2xl font-light mb-4 text-slate-900">The Story of BWGA</h2>
-                            <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR ORIGIN</p>
+                            <h2 className="text-2xl md:text-3xl font-light mb-4 text-slate-900">The Story of BWGA</h2>
+                            <div className="space-y-3 text-base text-slate-700 leading-relaxed">
                                 <p>
                                     BWGA wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
                                 </p>
@@ -289,8 +289,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents. Regional communities simply couldn't afford that admission fee, so they were left behind.
                                 </p>
                             </div>
-                            <div className="mt-6 bg-gradient-to-r from-amber-50 to-transparent border-l-4 border-amber-500 p-4 rounded-r-xl">
-                                <p className="text-sm text-slate-800 font-light leading-relaxed">
+                            <div className="mt-6 bg-gradient-to-r from-blue-50 to-transparent border-l-4 border-blue-500 p-4 rounded-r-xl">
+                                <p className="text-base text-slate-800 font-normal leading-relaxed">
                                     We built BWGA to break that barrier — to give the underdog the same strategic firepower as a multinational corporation.
                                 </p>
                             </div>
@@ -299,9 +299,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* RIGHT — Mission & Philosophy */}
                         <div className="flex flex-col gap-6">
                             <div>
-                                <p className="text-amber-600 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">OUR MISSION</p>
-                                <h2 className="text-xl md:text-2xl font-light mb-4 text-slate-900">Strong nations are built on strong regions.</h2>
-                                <p className="text-sm text-slate-600 leading-relaxed">
+                                <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR MISSION</p>
+                                <h2 className="text-2xl md:text-3xl font-light mb-4 text-slate-900">Strong nations are built on strong regions.</h2>
+                                <p className="text-base text-slate-700 leading-relaxed">
                                     Every nation depends on its regions — for food, resources, industry, and resilience. But without institutional-grade tools, their stories go untold and their potential stays hidden. The capability exists. The potential is real. What's missing are the tools to translate that into the language investors and partners expect.
                                 </p>
                             </div>
@@ -309,10 +309,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-base text-slate-700 leading-relaxed mb-3 italic">
                                     "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
                                 </p>
-                                <p className="text-slate-500 text-sm">— Brayden Walls, Founder</p>
+                                <p className="text-slate-600 text-sm">— Brayden Walls, Founder</p>
                             </div>
-                            <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-6">
-                                <p className="text-sm text-amber-700 uppercase tracking-wider mb-2 font-bold">WHAT THIS MEANS</p>
+                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
+                                <p className="text-sm text-blue-700 uppercase tracking-wider mb-2 font-bold">WHAT THIS MEANS</p>
                                 <p className="text-sm text-slate-700 leading-relaxed">
                                     This principle is the operating logic of the platform. The system holds 60 years of methodology, patterns from 150+ countries, and classifies its confidence level — authoritative, informed, or exploratory — before a single formula runs.
                                 </p>
@@ -327,20 +327,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-5xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         <div>
-                            <div className="text-5xl md:text-6xl font-extralight text-amber-600 mb-3">120<span className="text-3xl">+</span></div>
-                            <p className="text-sm text-slate-600 uppercase tracking-[0.2em] font-medium">Components</p>
+                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">120<span className="text-3xl">+</span></div>
+                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Components</p>
                         </div>
                         <div>
-                            <div className="text-5xl md:text-6xl font-extralight text-amber-600 mb-3">46</div>
-                            <p className="text-sm text-slate-600 uppercase tracking-[0.2em] font-medium">Proprietary Formulas</p>
+                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">46</div>
+                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Proprietary Formulas</p>
                         </div>
                         <div>
-                            <div className="text-5xl md:text-6xl font-extralight text-amber-600 mb-3">15</div>
-                            <p className="text-sm text-slate-600 uppercase tracking-[0.2em] font-medium">Intelligence Engines</p>
+                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">15</div>
+                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Intelligence Engines</p>
                         </div>
                         <div>
-                            <div className="text-5xl md:text-6xl font-extralight text-amber-600 mb-3">150</div>
-                            <p className="text-sm text-slate-600 uppercase tracking-[0.2em] font-medium">Countries Covered</p>
+                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">150</div>
+                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Countries Covered</p>
                         </div>
                     </div>
                 </div>
@@ -349,7 +349,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* BW AI SEARCH — Location Intelligence */}
             <section id="bwai-search" className="py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW AI SEARCH</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW AI SEARCH</p>
                     <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">Research Any Location, Instantly</h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-8">
                         Type a city, region, or country below. The system pulls verified intelligence — demographics, GDP, leadership, infrastructure, investment climate — and delivers a structured brief in seconds.
@@ -363,7 +363,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 onChange={(e) => setLocationQuery(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
                                 placeholder="Search any city, region, or country..."
-                                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all"
+                                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             />
                         </div>
                         <button
@@ -372,7 +372,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             className={`px-6 py-3.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
                                 isResearchingLocation || !locationQuery.trim()
                                     ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
-                                    : 'bg-amber-500 text-black hover:bg-amber-400'
+                                    : 'bg-blue-600 text-black hover:bg-blue-500'
                             }`}
                         >
                             <Search size={16} />
@@ -382,11 +382,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {researchProgress && (
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
                             <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs text-slate-500">{researchProgress.message}</span>
-                                <span className="text-xs text-amber-600 font-mono">{researchProgress.progress}%</span>
+                                <span className="text-xs text-slate-600">{researchProgress.message}</span>
+                                <span className="text-xs text-blue-600 font-mono">{researchProgress.progress}%</span>
                             </div>
                             <div className="w-full bg-slate-200 rounded-full h-1.5">
-                                <div className="bg-amber-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${researchProgress.progress}%` }} />
+                                <div className="bg-blue-600 h-1.5 rounded-full transition-all duration-500" style={{ width: `${researchProgress.progress}%` }} />
                             </div>
                         </div>
                     )}
@@ -396,8 +396,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     )}
                     {researchSummary && (
-                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                            <p className="text-xs text-emerald-600 uppercase tracking-wider font-semibold mb-2">Intelligence Summary</p>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                            <p className="text-xs text-blue-600 uppercase tracking-wider font-semibold mb-2">Intelligence Summary</p>
                             <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{researchSummary}</p>
                         </div>
                     )}
@@ -405,41 +405,41 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* Photo Banner — Technology & Data */}
-            <div className="w-full h-40 md:h-56 relative overflow-hidden">
+            <div className="w-full h-48 md:h-64 relative overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=400&fit=crop&q=80" alt="Global data visualization" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 to-slate-900/30" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-white text-lg md:text-2xl font-light tracking-wide">Sovereign-Grade Intelligence Architecture</p>
+                    <p className="text-white text-xl md:text-3xl font-medium tracking-wide drop-shadow-lg">Sovereign-Grade Intelligence Architecture</p>
                 </div>
             </div>
 
             {/* THE TECHNOLOGY */}
-            <section id="technology" className="py-16 px-4 bg-slate-50">
+            <section id="technology" className="py-20 px-4 bg-slate-100">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                         <div>
-                            <p className="text-amber-600 uppercase tracking-[0.2em] text-xs mb-2 font-semibold">THE TECHNOLOGY</p>
-                            <h2 className="text-xl md:text-2xl font-light text-slate-900">What BWGA AI Actually Is</h2>
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE TECHNOLOGY</p>
+                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">What BWGA AI Actually Is</h2>
                         </div>
-                        <p className="text-sm text-slate-400 max-w-md text-right hidden md:block">Not a chatbot. A digital boardroom — 120+ components, 15 intelligence engines, 46 proprietary formulas.</p>
+                        <p className="text-base text-slate-700 max-w-md text-right hidden md:block font-medium">Not a chatbot. A digital boardroom — 120+ components, 15 intelligence engines, 46 proprietary formulas.</p>
                     </div>
                     
-                    <p className="text-sm text-slate-600 leading-relaxed mb-8 max-w-3xl">
-                        Standard AI predicts the next word. This system reasons through problems, validates assumptions with hard data, and delivers outputs you'd stake your reputation on. Click any layer below to see what's inside.
+                    <p className="text-base text-slate-700 leading-relaxed mb-8 max-w-3xl">
+                        Standard AI predicts the next word. This system reasons through problems, validates assumptions with hard data, and delivers outputs you’d stake your reputation on. Click any layer below to see what’s inside.
                     </p>
 
                     {/* FIVE-LAYER ARCHITECTURE — Horizontal cards */}
-                    <p className="text-sm text-amber-600 uppercase tracking-wider font-bold mb-5">THE FIVE-LAYER ARCHITECTURE — Click to explore</p>
+                    <p className="text-sm text-blue-600 uppercase tracking-wider font-bold mb-5">THE FIVE-LAYER ARCHITECTURE — Click to explore</p>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-5">
                         {architectureLayers.map((layer) => {
                             const Icon = layer.icon;
                             const isActive = activeLayer === layer.id;
                             const colorMap: Record<string, { border: string; bg: string; text: string; activeBg: string }> = {
-                                cyan: { border: 'border-cyan-300', bg: 'bg-cyan-50', text: 'text-cyan-600', activeBg: 'bg-cyan-100' },
-                                amber: { border: 'border-amber-300', bg: 'bg-amber-50', text: 'text-amber-600', activeBg: 'bg-amber-100' },
-                                purple: { border: 'border-purple-300', bg: 'bg-purple-50', text: 'text-purple-600', activeBg: 'bg-purple-100' },
-                                emerald: { border: 'border-emerald-300', bg: 'bg-emerald-50', text: 'text-emerald-600', activeBg: 'bg-emerald-100' },
-                                rose: { border: 'border-rose-300', bg: 'bg-rose-50', text: 'text-rose-600', activeBg: 'bg-rose-100' },
+                                cyan: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-500', activeBg: 'bg-blue-100' },
+                                amber: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-600', activeBg: 'bg-blue-100' },
+                                purple: { border: 'border-indigo-300', bg: 'bg-indigo-50', text: 'text-indigo-600', activeBg: 'bg-indigo-100' },
+                                emerald: { border: 'border-sky-300', bg: 'bg-sky-50', text: 'text-sky-600', activeBg: 'bg-sky-100' },
+                                rose: { border: 'border-slate-300', bg: 'bg-slate-50', text: 'text-slate-600', activeBg: 'bg-slate-100' },
                             };
                             const c = colorMap[layer.color];
                             return (
@@ -453,7 +453,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                     <p className={`text-sm font-bold ${c.text} mb-1`}>Layer {layer.id}</p>
                                     <p className="text-xs text-slate-900 font-semibold leading-tight mb-1">{layer.name}</p>
-                                    <p className="text-xs text-slate-500 leading-snug">{layer.summary}</p>
+                                    <p className="text-xs text-slate-600 leading-snug">{layer.summary}</p>
                                 </button>
                             );
                         })}
@@ -462,24 +462,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Popup detail panel */}
                     {activeLayer !== null && (
                         <div className={`bg-slate-50 border rounded-xl p-6 mb-6 transition-all duration-300 animate-in fade-in ${
-                            activeLayer === 0 ? 'border-cyan-300' :
-                            activeLayer === 1 ? 'border-amber-300' :
-                            activeLayer === 2 ? 'border-purple-300' :
-                            activeLayer === 3 ? 'border-emerald-300' :
-                            'border-rose-300'
+                            activeLayer === 0 ? 'border-blue-300' :
+                            activeLayer === 1 ? 'border-blue-300' :
+                            activeLayer === 2 ? 'border-indigo-300' :
+                            activeLayer === 3 ? 'border-sky-300' :
+                            'border-slate-300'
                         }`}>
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
                                     <p className={`text-sm font-semibold mb-2 ${
-                                        activeLayer === 0 ? 'text-cyan-600' :
-                                        activeLayer === 1 ? 'text-amber-600' :
-                                        activeLayer === 2 ? 'text-purple-600' :
-                                        activeLayer === 3 ? 'text-emerald-600' :
-                                        'text-rose-600'
+                                        activeLayer === 0 ? 'text-blue-500' :
+                                        activeLayer === 1 ? 'text-blue-600' :
+                                        activeLayer === 2 ? 'text-indigo-600' :
+                                        activeLayer === 3 ? 'text-sky-600' :
+                                        'text-slate-600'
                                     }`}>Layer {activeLayer} — {architectureLayers[activeLayer].name}</p>
                                     <p className="text-sm text-slate-600 leading-relaxed">{architectureLayers[activeLayer].detail}</p>
                                 </div>
-                                <button onClick={() => setActiveLayer(null)} className="text-slate-300 hover:text-slate-500 transition-colors shrink-0 mt-1">
+                                <button onClick={() => setActiveLayer(null)} className="text-slate-300 hover:text-slate-600 transition-colors shrink-0 mt-1">
                                     <X size={16} />
                                 </button>
                             </div>
@@ -488,26 +488,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* System summary + Feature map — side by side */}
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-r from-amber-100 to-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl">
+                        <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
                             <p className="text-base text-slate-800 leading-relaxed">
                                 <strong className="text-slate-900">All five layers work together on every analysis.</strong> The knowledge layer provides context. NSIL provides computation. Cognition anticipates human reactions. Autonomous engines create, evolve, and enforce ethics. Reflexive engines analyse how you think — then translate everything for every audience.
                             </p>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white border-2 border-amber-300 rounded-xl p-4 text-center">
-                                <Search size={20} className="text-amber-600 mx-auto mb-2" />
+                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
+                                <Search size={20} className="text-blue-600 mx-auto mb-2" />
                                 <p className="text-xs font-bold text-slate-900">BW AI Search</p>
                             </div>
-                            <div className="bg-white border-2 border-amber-300 rounded-xl p-4 text-center">
-                                <FileCheck size={20} className="text-amber-600 mx-auto mb-2" />
+                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
+                                <FileCheck size={20} className="text-blue-600 mx-auto mb-2" />
                                 <p className="text-xs font-bold text-slate-900">Live Report</p>
                             </div>
-                            <div className="bg-white border-2 border-purple-300 rounded-xl p-4 text-center">
-                                <Users size={20} className="text-purple-600 mx-auto mb-2" />
+                            <div className="bg-white border-2 border-indigo-300 rounded-xl p-4 text-center">
+                                <Users size={20} className="text-indigo-600 mx-auto mb-2" />
                                 <p className="text-xs font-bold text-slate-900">BW Consultant</p>
                             </div>
-                            <div className="bg-white border-2 border-amber-300 rounded-xl p-4 text-center">
-                                <GitBranch size={20} className="text-amber-600 mx-auto mb-2" />
+                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
+                                <GitBranch size={20} className="text-blue-600 mx-auto mb-2" />
                                 <p className="text-xs font-bold text-slate-900">Document Factory</p>
                             </div>
                         </div>
@@ -516,9 +516,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* Photo Banner — Knowledge Foundation */}
-            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+            <div className="w-full h-40 md:h-52 relative overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=400&fit=crop&q=80" alt="Modern architecture" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 to-slate-900/30" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
             </div>
 
             {/* THE FOUNDATION — Compact bar */}
@@ -526,24 +526,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
                         <div>
-                            <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE FOUNDATION</p>
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE FOUNDATION</p>
                             <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">This System Already Knows</h2>
                             <p className="text-base text-slate-700 leading-relaxed max-w-2xl">
                                 Most AI starts from zero. This one doesn't — it holds 60+ years of government planning methodology across 150 countries. When your question matches a known pattern, it tells you. When the question is genuinely novel, it widens its ranges accordingly. No false certainty.
                             </p>
                         </div>
                         <div className="flex gap-3">
-                            <div className="bg-cyan-50 border-2 border-cyan-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-extralight text-cyan-600">60<span className="text-sm">+</span></div>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">Years Methodology</p>
+                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
+                                <div className="text-3xl font-light text-blue-600">60<span className="text-sm">+</span></div>
+                                <p className="text-xs text-slate-600 mt-1 font-medium">Years Methodology</p>
                             </div>
-                            <div className="bg-amber-50 border-2 border-amber-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-extralight text-amber-600">12</div>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">Pattern Categories</p>
+                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
+                                <div className="text-3xl font-light text-blue-600">12</div>
+                                <p className="text-xs text-slate-600 mt-1 font-medium">Pattern Categories</p>
                             </div>
-                            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-extralight text-emerald-600">3</div>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">Confidence Levels</p>
+                            <div className="bg-sky-50 border-2 border-sky-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
+                                <div className="text-3xl font-light text-sky-600">3</div>
+                                <p className="text-xs text-slate-600 mt-1 font-medium">Confidence Levels</p>
                             </div>
                         </div>
                     </div>
@@ -555,7 +555,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                         <div>
-                            <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE DIFFERENCE</p>
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE DIFFERENCE</p>
                             <h2 className="text-2xl md:text-3xl font-light text-slate-900">What Happens When You Use It</h2>
                             <p className="text-base text-slate-600 mt-2">Five steps from rough idea to board-ready documentation.</p>
                         </div>
@@ -566,9 +566,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {journeySteps.map((step) => {
                             const isActive = activeJourneyStep === step.id;
                             const colorMap: Record<string, { bg: string; text: string; activeBg: string; border: string }> = {
-                                cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', activeBg: 'bg-cyan-100', border: 'border-cyan-500' },
-                                amber: { bg: 'bg-amber-50', text: 'text-amber-600', activeBg: 'bg-amber-100', border: 'border-amber-500' },
-                                emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', activeBg: 'bg-emerald-100', border: 'border-emerald-500' },
+                                cyan: { bg: 'bg-blue-50', text: 'text-blue-500', activeBg: 'bg-blue-100', border: 'border-blue-500' },
+                                amber: { bg: 'bg-blue-50', text: 'text-blue-600', activeBg: 'bg-blue-100', border: 'border-blue-500' },
+                                emerald: { bg: 'bg-sky-50', text: 'text-sky-600', activeBg: 'bg-sky-100', border: 'border-sky-500' },
                             };
                             const c = colorMap[step.color];
                             return (
@@ -592,9 +592,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {(() => {
                         const step = journeySteps[activeJourneyStep - 1];
                         const colorMap: Record<string, { border: string; bg: string; text: string; resultBorder: string; resultBg: string; resultText: string }> = {
-                            cyan: { border: 'border-cyan-300', bg: 'bg-cyan-50', text: 'text-cyan-600', resultBorder: 'border-cyan-200', resultBg: 'bg-cyan-50', resultText: 'text-cyan-600' },
-                            amber: { border: 'border-amber-300', bg: 'bg-amber-50', text: 'text-amber-600', resultBorder: 'border-amber-200', resultBg: 'bg-amber-50', resultText: 'text-amber-600' },
-                            emerald: { border: 'border-emerald-300', bg: 'bg-emerald-50', text: 'text-emerald-600', resultBorder: 'border-emerald-200', resultBg: 'bg-emerald-50', resultText: 'text-emerald-600' },
+                            cyan: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-500', resultBorder: 'border-blue-200', resultBg: 'bg-blue-50', resultText: 'text-blue-500' },
+                            amber: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-600', resultBorder: 'border-blue-200', resultBg: 'bg-blue-50', resultText: 'text-blue-600' },
+                            emerald: { border: 'border-sky-300', bg: 'bg-sky-50', text: 'text-sky-600', resultBorder: 'border-sky-200', resultBg: 'bg-sky-50', resultText: 'text-sky-600' },
                         };
                         const c = colorMap[step.color];
                         return (
@@ -619,18 +619,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5 font-bold">✗</span> Starting from zero every time</li>
                             </ul>
                         </div>
-                        <div className="bg-white border-2 border-emerald-300 rounded-xl p-6">
-                            <h4 className="text-sm font-bold text-emerald-600 mb-4 uppercase tracking-wider">With BWGA AI</h4>
+                        <div className="bg-white border-2 border-blue-300 rounded-xl p-6">
+                            <h4 className="text-sm font-bold text-blue-600 mb-4 uppercase tracking-wider">With BWGA AI</h4>
                             <ul className="space-y-3 text-sm text-slate-700">
-                                <li className="flex items-start gap-2"><span className="text-emerald-600 mt-0.5 font-bold">✓</span> 60+ years of methodology already loaded</li>
-                                <li className="flex items-start gap-2"><span className="text-emerald-600 mt-0.5 font-bold">✓</span> Pattern recognition classifies before formulas run</li>
-                                <li className="flex items-start gap-2"><span className="text-emerald-600 mt-0.5 font-bold">✓</span> 38 formulas score every dimension with reproducible math</li>
-                                <li className="flex items-start gap-2"><span className="text-emerald-600 mt-0.5 font-bold">✓</span> Confidence levels stated — authoritative, informed, or exploratory</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 60+ years of methodology already loaded</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Pattern recognition classifies before formulas run</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 38 formulas score every dimension with reproducible math</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Confidence levels stated — authoritative, informed, or exploratory</li>
                             </ul>
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-r from-amber-100 to-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl">
+                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
                         <p className="text-base text-slate-800 leading-relaxed">
                             <strong className="text-slate-900">Five steps. One session.</strong> You start with a rough idea and finish with quantified analysis, stress-tested assumptions, and ready-to-send documentation. Below: every feature you can try right now.
                         </p>
@@ -639,25 +639,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* Photo Banner — Strategic Planning */}
-            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+            <div className="w-full h-40 md:h-52 relative overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=400&fit=crop&q=80" alt="Strategic planning session" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 to-slate-900/30" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
             </div>
 
             {/* THE COMPREHENSIVE INTAKE FRAMEWORK */}
             <section id="protocol" className="py-16 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
-                    <p className="text-base text-emerald-600 mb-4 flex items-center gap-2 font-medium">
-                        <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full"></span>
+                    <p className="text-base text-blue-600 mb-4 flex items-center gap-2 font-medium">
+                        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
                         Most users complete this in 30-45 minutes
                     </p>
 
                     <p className="text-base text-slate-700 leading-relaxed mb-4">
                         Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
                     </p>
-                    <p className="text-sm text-amber-600 font-semibold mb-8">Click any step below to see the detailed data requirements.</p>
+                    <p className="text-sm text-blue-600 font-semibold mb-8">Click any step below to see the detailed data requirements.</p>
 
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         {tenStepProtocol.map((item) => (
@@ -666,20 +666,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
                                 className={`text-left transition-all rounded-xl p-5 border-2 ${
                                     activeStep === item.step
-                                        ? 'bg-amber-100 border-amber-400'
+                                        ? 'bg-blue-100 border-blue-400'
                                         : item.gliEnabled
-                                            ? 'bg-purple-50 border-purple-200 hover:bg-purple-100'
+                                            ? 'bg-indigo-50 border-indigo-200 hover:bg-indigo-100'
                                             : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                                 }`}
                             >
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                                        activeStep === item.step ? 'bg-amber-500 text-white' : item.gliEnabled ? 'bg-purple-100 text-purple-600' : 'bg-slate-200 text-slate-600'
+                                        activeStep === item.step ? 'bg-blue-600 text-white' : item.gliEnabled ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-600'
                                     }`}>
                                         {item.step}
                                     </div>
-                                    <span className="text-xs text-slate-500 font-medium">Step {item.step}</span>
-                                    {item.gliEnabled && <span className="text-xs px-1.5 py-0.5 bg-purple-100 text-purple-600 rounded font-medium">GLI</span>}
+                                    <span className="text-xs text-slate-600 font-medium">Step {item.step}</span>
+                                    {item.gliEnabled && <span className="text-xs px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded font-medium">GLI</span>}
                                 </div>
                                 <h4 className="text-sm font-semibold text-slate-700 leading-tight">{item.title}</h4>
                             </button>
@@ -687,22 +687,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     {activeStep && (
-                        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
+                        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-5">
                             <h4 className="text-sm font-semibold text-slate-900 mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
                             <p className="text-sm text-slate-600 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
 
                             {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
-                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
-                                    <p className="text-xs text-purple-600">{tenStepProtocol[activeStep - 1].gliNote}</p>
+                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-4">
+                                    <p className="text-xs text-indigo-600">{tenStepProtocol[activeStep - 1].gliNote}</p>
                                 </div>
                             )}
 
                             <div className="bg-slate-100 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-amber-600 mb-3">Data Requirements:</h5>
+                                <h5 className="text-xs font-semibold text-blue-600 mb-3">Data Requirements:</h5>
                                 <ul className="grid md:grid-cols-2 gap-2">
                                     {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
                                         <li key={idx} className="flex items-start gap-2 text-xs text-slate-600">
-                                            <CheckCircle2 size={12} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" />
                                             {detail}
                                         </li>
                                     ))}
@@ -716,7 +716,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
                         </p>
                         <p className="text-sm text-slate-600 leading-relaxed">
-                            The workflow has three stages: <strong className="text-amber-600">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-amber-600">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-amber-600">Institutional Output</strong> (compile evidence into auditable deliverables).
+                            The workflow has three stages: <strong className="text-blue-600">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-blue-600">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-blue-600">Institutional Output</strong> (compile evidence into auditable deliverables).
                         </p>
                     </div>
 
@@ -735,7 +735,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* INSTITUTIONAL-GRADE OUTPUTS */}
             <section className="py-20 px-4 bg-slate-100">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">INSTITUTIONAL-GRADE OUTPUTS</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">INSTITUTIONAL-GRADE OUTPUTS</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">The Document Factory</h2>
                     <p className="text-base text-slate-600 mb-2">Analysis is worthless if it stays locked in spreadsheets.</p>
                     
@@ -756,13 +756,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="bg-gradient-to-br from-amber-50 to-transparent border border-amber-200 rounded-xl p-5 text-center">
-                            <div className="text-3xl font-light text-amber-600 mb-1">200+</div>
-                            <p className="text-xs text-slate-500">Report & Document Types</p>
+                        <div className="bg-gradient-to-br from-blue-50 to-transparent border border-blue-200 rounded-xl p-5 text-center">
+                            <div className="text-3xl font-light text-blue-600 mb-1">200+</div>
+                            <p className="text-xs text-slate-600">Report & Document Types</p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-transparent border border-amber-200 rounded-xl p-5 text-center">
-                            <div className="text-3xl font-light text-amber-600 mb-1">150+</div>
-                            <p className="text-xs text-slate-500">Letter Templates</p>
+                        <div className="bg-gradient-to-br from-blue-50 to-transparent border border-blue-200 rounded-xl p-5 text-center">
+                            <div className="text-3xl font-light text-blue-600 mb-1">150+</div>
+                            <p className="text-xs text-slate-600">Letter Templates</p>
                         </div>
                     </div>
 
@@ -776,11 +776,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {showCatalog && (
                         <div className="mt-4 bg-white border border-slate-200 rounded-xl p-5 space-y-4">
-                            <h4 className="text-sm font-semibold text-amber-600 mb-3">Document Factory Catalog</h4>
+                            <h4 className="text-sm font-semibold text-blue-600 mb-3">Document Factory Catalog</h4>
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Strategic Reports</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• Investment Prospectus</li>
                                         <li>• Partnership Viability Assessment</li>
                                         <li>• Market Entry Analysis</li>
@@ -791,7 +791,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Financial Documents</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• ROI Projection Model</li>
                                         <li>• Financial Due Diligence Pack</li>
                                         <li>• Investment Term Sheet</li>
@@ -802,7 +802,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Legal Templates</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• Letter of Intent (LOI)</li>
                                         <li>• Memorandum of Understanding (MOU)</li>
                                         <li>• Non-Disclosure Agreement</li>
@@ -813,7 +813,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Communication Packs</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• Executive Summary Brief</li>
                                         <li>• Board Presentation Deck</li>
                                         <li>• Investor Pitch Document</li>
@@ -826,7 +826,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     )}
 
-                    <p className="text-sm text-slate-500 mt-4">
+                    <p className="text-sm text-slate-600 mt-4">
                         <strong className="text-slate-700">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
                     </p>
                 </div>
@@ -835,7 +835,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* THE 38 FORMULAS - PROOF OF CAPABILITY */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE 38 FORMULAS — PROOF OF CAPABILITY</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE 38 FORMULAS — PROOF OF CAPABILITY</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">Mathematical Foundation & Architecture Details</h2>
                     <p className="text-base text-slate-600 mb-2">Every score is traceable. Every formula is reproducible.</p>
                     
@@ -844,12 +844,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </p>
                     
                     {/* Formula Box - Full Width */}
-                    <div className="bg-slate-100 border-2 border-amber-300 rounded-xl p-6 mb-8">
-                        <p className="text-sm text-amber-600 uppercase tracking-wider mb-3 font-bold">Sample Formula: Success Probability Index</p>
+                    <div className="bg-slate-100 border-2 border-blue-300 rounded-xl p-6 mb-8">
+                        <p className="text-sm text-blue-600 uppercase tracking-wider mb-3 font-bold">Sample Formula: Success Probability Index</p>
                         <div className="font-mono text-lg md:text-xl text-slate-900 mb-4">
                             <p>SPI = Σ(wᵢ × Sᵢ) × (1 - R<sub>composite</sub>) × A<sub>alignment</sub></p>
                         </div>
-                        <p className="text-xs text-slate-400 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
+                        <p className="text-xs text-slate-600 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
                         <div className="border-t border-slate-200 pt-4">
                             <p className="text-sm text-slate-600 italic">"Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results."</p>
                         </div>
@@ -858,17 +858,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Live Test Case Study - Clickable */}
                     <div 
                         onClick={() => setShowCaseStudy(true)}
-                        className="bg-gradient-to-r from-emerald-50 to-transparent border border-emerald-200 rounded-xl p-6 mb-8 cursor-pointer hover:border-emerald-400 hover:from-emerald-100 transition-all group"
+                        className="bg-gradient-to-r from-blue-50 to-transparent border border-blue-200 rounded-xl p-6 mb-8 cursor-pointer hover:border-blue-400 hover:from-blue-100 transition-all group"
                     >
                         <div className="flex items-center justify-between mb-3">
-                            <p className="text-sm text-emerald-600 uppercase tracking-wider font-bold">LIVE TEST: SYSTEM OUTPUT DEMONSTRATION *</p>
-                            <span className="flex items-center gap-1 text-xs text-emerald-500 group-hover:text-emerald-600 transition-colors">
+                            <p className="text-sm text-blue-600 uppercase tracking-wider font-bold">LIVE TEST: SYSTEM OUTPUT DEMONSTRATION *</p>
+                            <span className="flex items-center gap-1 text-xs text-blue-500 group-hover:text-blue-600 transition-colors">
                                 <Eye size={14} />
                                 View Full Live Report
                             </span>
                         </div>
-                        <div className="mb-3 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg inline-block">
-                            <p className="text-xs text-amber-600 uppercase tracking-wider font-medium">* Live test run through the actual system — Not a simulation, not an approved project</p>
+                        <div className="mb-3 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg inline-block">
+                            <p className="text-xs text-blue-600 uppercase tracking-wider font-medium">* Live test run through the actual system — Not a simulation, not an approved project</p>
                         </div>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             <strong className="text-slate-900">Northland Regional Council (New Zealand)</strong> submitted a 5MW solar photovoltaic partnership proposal through the Ten-Step Intake. The NSIL engine computed all scores in real time:
@@ -884,14 +884,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <li>Classification: <span className="text-red-600 font-bold">DO NOT PROCEED</span></li>
                                 </ul>
                             </div>
-                            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-4">
-                                <p className="text-xs text-emerald-600 uppercase tracking-wider font-bold mb-2">Run 2 — After Corrections</p>
+                            <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+                                <p className="text-xs text-blue-600 uppercase tracking-wider font-bold mb-2">Run 2 — After Corrections</p>
                                 <ul className="space-y-1 text-slate-600 text-sm">
-                                    <li>SPI: <span className="text-emerald-600 font-bold">78%</span> (Grade B)</li>
-                                    <li>RROI: <span className="text-emerald-600 font-bold">74/100</span></li>
-                                    <li>Activation: <span className="text-emerald-600 font-bold">9 months</span> P50</li>
-                                    <li>SCF Impact: <span className="text-emerald-600 font-bold">$1.42M</span></li>
-                                    <li>Classification: <span className="text-emerald-600 font-bold">INVESTMENT READY</span></li>
+                                    <li>SPI: <span className="text-blue-600 font-bold">78%</span> (Grade B)</li>
+                                    <li>RROI: <span className="text-blue-600 font-bold">74/100</span></li>
+                                    <li>Activation: <span className="text-blue-600 font-bold">9 months</span> P50</li>
+                                    <li>SCF Impact: <span className="text-blue-600 font-bold">$1.42M</span></li>
+                                    <li>Classification: <span className="text-blue-600 font-bold">INVESTMENT READY</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -901,7 +901,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-sm text-slate-600 leading-relaxed">
                             <strong className="text-slate-700">Corrections applied:</strong> Uploaded utility interconnection agreement, revised Y1 revenue from $4.2M to $1.4M.
                         </p>
-                        <div className="mt-4 pt-3 border-t border-emerald-200 flex items-center gap-2 text-sm text-emerald-500 group-hover:text-emerald-600 transition-colors font-medium">
+                        <div className="mt-4 pt-3 border-t border-blue-200 flex items-center gap-2 text-sm text-blue-500 group-hover:text-blue-600 transition-colors font-medium">
                             <Info size={12} />
                             Click to view the complete Live Report output — exact format produced by the system, with full formula derivation, 5-persona consensus, and audit trail.
                         </div>
@@ -927,14 +927,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 bg-gradient-to-r from-blue-800 to-slate-700 text-white flex items-center justify-center font-serif font-bold text-2xl">N</div>
                                             <div>
-                                                <div className="text-xs font-bold tracking-[0.3em] text-slate-500 uppercase mb-1">BWGA Intelligence</div>
+                                                <div className="text-xs font-bold tracking-[0.3em] text-slate-600 uppercase mb-1">BWGA Intelligence</div>
                                                 <div className="text-xl font-serif font-bold text-slate-900 tracking-tight">Strategic Roadmap</div>
                                             </div>
                                         </div>
                                         <div className="text-right">
                                             <div className="text-xs text-blue-700 uppercase font-bold tracking-wider mb-1">Confidential Draft</div>
-                                            <div className="text-xs font-mono text-slate-500">Case Study — Live Test Data</div>
-                                            <div className="text-xs font-mono text-slate-500">NSIL Engine v3.2</div>
+                                            <div className="text-xs font-mono text-slate-600">Case Study — Live Test Data</div>
+                                            <div className="text-xs font-mono text-slate-600">NSIL Engine v3.2</div>
                                         </div>
                                     </div>
 
@@ -1005,20 +1005,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                 </div>
 
                                                 {/* Run 2 — Revised Assessment */}
-                                                <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                                                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                                                     <div className="flex items-center justify-between mb-2">
-                                                        <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Run 2 — After System-Guided Corrections</span>
-                                                        <span className="text-xs bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded-full font-bold">INVESTMENT READY</span>
+                                                        <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Run 2 — After System-Guided Corrections</span>
+                                                        <span className="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full font-bold">INVESTMENT READY</span>
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-4 text-xs">
-                                                        <div><span className="font-semibold">SPI:</span> <span className="text-emerald-600 font-bold">78/100</span> (Grade B)</div>
-                                                        <div><span className="font-semibold">RROI:</span> <span className="text-emerald-600 font-bold">74/100</span> (Grade B)</div>
-                                                        <div><span className="font-semibold">Activation P50:</span> <span className="text-emerald-600 font-bold">9 mo</span></div>
-                                                        <div><span className="font-semibold">Activation Band:</span> P10 6 / P90 <span className="text-emerald-600 font-bold">14</span></div>
-                                                        <div><span className="font-semibold">Impact P50:</span> <span className="text-emerald-600 font-bold">$1,420,000</span></div>
+                                                        <div><span className="font-semibold">SPI:</span> <span className="text-blue-600 font-bold">78/100</span> (Grade B)</div>
+                                                        <div><span className="font-semibold">RROI:</span> <span className="text-blue-600 font-bold">74/100</span> (Grade B)</div>
+                                                        <div><span className="font-semibold">Activation P50:</span> <span className="text-blue-600 font-bold">9 mo</span></div>
+                                                        <div><span className="font-semibold">Activation Band:</span> P10 6 / P90 <span className="text-blue-600 font-bold">14</span></div>
+                                                        <div><span className="font-semibold">Impact P50:</span> <span className="text-blue-600 font-bold">$1,420,000</span></div>
                                                         <div><span className="font-semibold">Impact Band:</span> P10 $994,000 / P90 $1,988,000</div>
-                                                        <div><span className="font-semibold">RFI Friction:</span> <span className="text-emerald-600 font-bold">31/100</span> (0 bottlenecks)</div>
-                                                        <div><span className="font-semibold">SCF Viability:</span> <span className="text-emerald-600 font-bold">Strong</span></div>
+                                                        <div><span className="font-semibold">RFI Friction:</span> <span className="text-blue-600 font-bold">31/100</span> (0 bottlenecks)</div>
+                                                        <div><span className="font-semibold">SCF Viability:</span> <span className="text-blue-600 font-bold">Strong</span></div>
                                                     </div>
                                                 </div>
 
@@ -1090,12 +1090,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                                             <p className="text-xs font-sans font-bold text-stone-400 uppercase tracking-widest mb-3">Corrections Applied (Run 2)</p>
                                             <div className="space-y-4 mb-6">
-                                                <div className="border-l-4 border-emerald-500 bg-emerald-50 p-4 rounded-r-lg">
-                                                    <p className="font-sans font-bold text-sm text-emerald-800 mb-1">Resolved: Grid Connection Feasibility Study Submitted</p>
+                                                <div className="border-l-4 border-blue-500 bg-blue-50 p-4 rounded-r-lg">
+                                                    <p className="font-sans font-bold text-sm text-blue-800 mb-1">Resolved: Grid Connection Feasibility Study Submitted</p>
                                                     <p className="text-sm text-stone-700 leading-relaxed">The council uploaded a utility interconnection agreement and a grid capacity assessment from the regional distributor. Regulatory transparency input rose to 78, clearing the RFI bottleneck. Approval window shortened to P90: 68 days.</p>
                                                 </div>
-                                                <div className="border-l-4 border-emerald-500 bg-emerald-50 p-4 rounded-r-lg">
-                                                    <p className="font-sans font-bold text-sm text-emerald-800 mb-1">Resolved: Revenue Projections Revised to Regional Benchmarks</p>
+                                                <div className="border-l-4 border-blue-500 bg-blue-50 p-4 rounded-r-lg">
+                                                    <p className="font-sans font-bold text-sm text-blue-800 mb-1">Resolved: Revenue Projections Revised to Regional Benchmarks</p>
                                                     <p className="text-sm text-stone-700 leading-relaxed">Year 1 revenue revised from $4.2M to $1.4M based on the system's comparable-project database. The Accountant persona reclassified financial viability to "strong" and The Skeptic withdrew the block, noting projections now sit within the 25th–75th percentile of comparable installations.</p>
                                                 </div>
                                             </div>
@@ -1107,23 +1107,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                     <p className="text-xs font-sans font-bold text-red-600 uppercase tracking-wider mb-2">Run 1 — Consensus: Block</p>
                                                     <table className="w-full text-xs">
                                                         <tbody>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
                                                             <tr className="border-b border-stone-100"><td className="py-1">Skeptic</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
                                                             <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
                                                             <tr><td className="py-1">Analyst</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div className="border border-emerald-200 rounded-lg p-3">
-                                                    <p className="text-xs font-sans font-bold text-emerald-600 uppercase tracking-wider mb-2">Run 2 — Consensus: Proceed</p>
+                                                <div className="border border-blue-200 rounded-lg p-3">
+                                                    <p className="text-xs font-sans font-bold text-blue-600 uppercase tracking-wider mb-2">Run 2 — Consensus: Proceed</p>
                                                     <table className="w-full text-xs">
                                                         <tbody>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Skeptic</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr><td className="py-1">Analyst</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Skeptic</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr><td className="py-1">Analyst</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -1148,10 +1148,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                     </tr></thead>
                                                     <tbody className="font-mono">
                                                         <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">ER (Economic Readiness)</td><td className="px-3 py-1.5 text-center text-red-600">42</td><td className="px-3 py-1.5 text-center">0.28</td><td className="px-3 py-1.5 text-center">11.76</td></tr>
-                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">SP (Symbiotic Fit)</td><td className="px-3 py-1.5 text-center text-amber-600">51</td><td className="px-3 py-1.5 text-center">0.20</td><td className="px-3 py-1.5 text-center">10.20</td></tr>
-                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">PS (Political Stability)</td><td className="px-3 py-1.5 text-center text-amber-600">55</td><td className="px-3 py-1.5 text-center">0.18</td><td className="px-3 py-1.5 text-center">9.90</td></tr>
+                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">SP (Symbiotic Fit)</td><td className="px-3 py-1.5 text-center text-blue-600">51</td><td className="px-3 py-1.5 text-center">0.20</td><td className="px-3 py-1.5 text-center">10.20</td></tr>
+                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">PS (Political Stability)</td><td className="px-3 py-1.5 text-center text-blue-600">55</td><td className="px-3 py-1.5 text-center">0.18</td><td className="px-3 py-1.5 text-center">9.90</td></tr>
                                                         <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">PR (Partner Reliability)</td><td className="px-3 py-1.5 text-center text-red-600">38</td><td className="px-3 py-1.5 text-center">0.15</td><td className="px-3 py-1.5 text-center">5.70</td></tr>
-                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">EA (Ethical Alignment)</td><td className="px-3 py-1.5 text-center text-amber-600">60</td><td className="px-3 py-1.5 text-center">0.12</td><td className="px-3 py-1.5 text-center">7.20</td></tr>
+                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">EA (Ethical Alignment)</td><td className="px-3 py-1.5 text-center text-blue-600">60</td><td className="px-3 py-1.5 text-center">0.12</td><td className="px-3 py-1.5 text-center">7.20</td></tr>
                                                         <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">CA (Activation Velocity)</td><td className="px-3 py-1.5 text-center text-red-600">35</td><td className="px-3 py-1.5 text-center">0.10</td><td className="px-3 py-1.5 text-center">3.50</td></tr>
                                                         <tr className="border-b border-stone-200"><td className="px-3 py-1.5 font-sans">UT (Transparency)</td><td className="px-3 py-1.5 text-center text-red-600">40</td><td className="px-3 py-1.5 text-center">0.05</td><td className="px-3 py-1.5 text-center">2.00</td></tr>
                                                         <tr className="bg-stone-100 font-bold"><td className="px-3 py-2 font-sans" colSpan={3}>Weighted Sum</td><td className="px-3 py-2 text-center">50.26</td></tr>
@@ -1176,7 +1176,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                         <th className="text-center px-3 py-2 font-sans text-xs font-bold text-stone-500 uppercase">Weighted</th>
                                                     </tr></thead>
                                                     <tbody className="font-mono">
-                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">Market access</td><td className="px-3 py-1.5 text-center text-amber-600">52</td><td className="px-3 py-1.5 text-center">0.30</td><td className="px-3 py-1.5 text-center">15.60</td></tr>
+                                                        <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">Market access</td><td className="px-3 py-1.5 text-center text-blue-600">52</td><td className="px-3 py-1.5 text-center">0.30</td><td className="px-3 py-1.5 text-center">15.60</td></tr>
                                                         <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">Regulatory</td><td className="px-3 py-1.5 text-center text-red-600">30</td><td className="px-3 py-1.5 text-center">0.25</td><td className="px-3 py-1.5 text-center">7.50</td></tr>
                                                         <tr className="border-b border-stone-100"><td className="px-3 py-1.5 font-sans">Infrastructure</td><td className="px-3 py-1.5 text-center text-red-600">35</td><td className="px-3 py-1.5 text-center">0.25</td><td className="px-3 py-1.5 text-center">8.75</td></tr>
                                                         <tr className="border-b border-stone-200"><td className="px-3 py-1.5 font-sans">Talent availability</td><td className="px-3 py-1.5 text-center text-red-600">32</td><td className="px-3 py-1.5 text-center">0.20</td><td className="px-3 py-1.5 text-center">6.40</td></tr>
@@ -1236,9 +1236,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                         <p className="text-xs font-sans font-bold text-stone-500 uppercase tracking-wider mb-2">Grade Banding</p>
                                                         <table className="w-full border border-stone-200 text-xs">
                                                             <tbody>
-                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5 text-emerald-700 font-bold">≥ 80</td><td className="px-3 py-1.5">Grade A</td></tr>
-                                                                <tr className="border-b border-stone-100 bg-emerald-50"><td className="px-3 py-1.5 text-emerald-700 font-bold">≥ 70</td><td className="px-3 py-1.5 font-bold text-emerald-700">Grade B — Investment Ready</td></tr>
-                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5 text-amber-700 font-bold">≥ 60</td><td className="px-3 py-1.5">Grade C — Proceed With Caution</td></tr>
+                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5 text-blue-700 font-bold">≥ 80</td><td className="px-3 py-1.5">Grade A</td></tr>
+                                                                <tr className="border-b border-stone-100 bg-blue-50"><td className="px-3 py-1.5 text-blue-700 font-bold">≥ 70</td><td className="px-3 py-1.5 font-bold text-blue-700">Grade B — Investment Ready</td></tr>
+                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5 text-blue-700 font-bold">≥ 60</td><td className="px-3 py-1.5">Grade C — Proceed With Caution</td></tr>
                                                                 <tr className="bg-red-50"><td className="px-3 py-1.5 text-red-700 font-bold">&lt; 60</td><td className="px-3 py-1.5 font-bold text-red-700">Grade D — Do Not Proceed</td></tr>
                                                             </tbody>
                                                         </table>
@@ -1247,8 +1247,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                         <p className="text-xs font-sans font-bold text-stone-500 uppercase tracking-wider mb-2">Decision Gate</p>
                                                         <table className="w-full border border-stone-200 text-xs">
                                                             <tbody>
-                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5">SPI ≥ 70 AND SCF ≥ 60</td><td className="px-3 py-1.5 text-emerald-700 font-bold">PROCEED</td></tr>
-                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5">SPI ≥ 50</td><td className="px-3 py-1.5 text-amber-700 font-bold">CAUTION</td></tr>
+                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5">SPI ≥ 70 AND SCF ≥ 60</td><td className="px-3 py-1.5 text-blue-700 font-bold">PROCEED</td></tr>
+                                                                <tr className="border-b border-stone-100"><td className="px-3 py-1.5">SPI ≥ 50</td><td className="px-3 py-1.5 text-blue-700 font-bold">CAUTION</td></tr>
                                                                 <tr><td className="px-3 py-1.5">SPI &lt; 50</td><td className="px-3 py-1.5 text-red-700 font-bold">DO NOT PROCEED</td></tr>
                                                             </tbody>
                                                         </table>
@@ -1318,10 +1318,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                                             <div className="space-y-3 text-sm text-stone-700">
                                                 <p className="font-sans font-bold text-xs text-stone-400 uppercase tracking-widest mb-2">Integrity Assurance</p>
-                                                <div className="flex items-start gap-3"><span className="text-emerald-600 font-bold shrink-0">1.</span><span><strong>Deterministic formulas.</strong> Given the same inputs, every formula always returns the same output. No randomness, no language-model generation in the scoring pipeline.</span></div>
-                                                <div className="flex items-start gap-3"><span className="text-emerald-600 font-bold shrink-0">2.</span><span><strong>Inspectable source code.</strong> Every formula referenced here exists as implemented TypeScript. File paths and line numbers are real and verifiable.</span></div>
-                                                <div className="flex items-start gap-3"><span className="text-emerald-600 font-bold shrink-0">3.</span><span><strong>Reproducible by any user.</strong> Follow the steps above to produce identical flags for identical inputs.</span></div>
-                                                <div className="flex items-start gap-3"><span className="text-emerald-600 font-bold shrink-0">4.</span><span><strong>Full audit trail.</strong> The system records every formula invocation, persona vote, and threshold check. Logs are exportable. No black box.</span></div>
+                                                <div className="flex items-start gap-3"><span className="text-blue-600 font-bold shrink-0">1.</span><span><strong>Deterministic formulas.</strong> Given the same inputs, every formula always returns the same output. No randomness, no language-model generation in the scoring pipeline.</span></div>
+                                                <div className="flex items-start gap-3"><span className="text-blue-600 font-bold shrink-0">2.</span><span><strong>Inspectable source code.</strong> Every formula referenced here exists as implemented TypeScript. File paths and line numbers are real and verifiable.</span></div>
+                                                <div className="flex items-start gap-3"><span className="text-blue-600 font-bold shrink-0">3.</span><span><strong>Reproducible by any user.</strong> Follow the steps above to produce identical flags for identical inputs.</span></div>
+                                                <div className="flex items-start gap-3"><span className="text-blue-600 font-bold shrink-0">4.</span><span><strong>Full audit trail.</strong> The system records every formula invocation, persona vote, and threshold check. Logs are exportable. No black box.</span></div>
                                             </div>
                                         </div>
 
@@ -1341,31 +1341,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-2 gap-4 mb-6">
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                             <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                <Database size={16} className="text-amber-600" />
+                                <Database size={16} className="text-blue-600" />
                                 10-Layer Architecture + Cognition + Autonomy + Reflexive
                             </h4>
                             <ul className="space-y-2 text-xs text-slate-600">
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-cyan-600" /> Knowledge Architecture (Pattern Confidence + Methodology Base)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-600" /> Input Validation & Governance</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-600" /> Multi-Agent Adversarial Debate</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-600" /> Quantitative Formula Scoring (29 DAG-scheduled)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-600" /> Monte Carlo Stress Testing</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-purple-600" /> Human Cognition Engine (7 Models)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-emerald-600" /> Autonomous Intelligence (8 Engines)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-600" /> Output Synthesis & Provenance</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-emerald-600" /> Proactive Intelligence Layer</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-rose-600" /> Reflexive Intelligence (7 Engines)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-500" /> Knowledge Architecture (Pattern Confidence + Methodology Base)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Input Validation & Governance</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Multi-Agent Adversarial Debate</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Quantitative Formula Scoring (29 DAG-scheduled)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Monte Carlo Stress Testing</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-indigo-600" /> Human Cognition Engine (7 Models)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Autonomous Intelligence (8 Engines)</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Output Synthesis & Provenance</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Proactive Intelligence Layer</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-slate-600" /> Reflexive Intelligence (7 Engines)</li>
                             </ul>
                         </div>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                             <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                <Users size={16} className="text-amber-600" />
+                                <Users size={16} className="text-blue-600" />
                                 5 AI Personas
                             </h4>
                             <ul className="space-y-2 text-xs text-slate-600">
                                 {aiPersonas.map((persona) => (
                                     <li key={persona.name} className="flex items-center gap-2">
-                                        <persona.icon size={12} className="text-amber-600" />
+                                        <persona.icon size={12} className="text-blue-600" />
                                         <span className="text-slate-900 font-medium">{persona.name}</span> — {persona.role}
                                     </li>
                                 ))}
@@ -1380,43 +1380,43 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <GitBranch size={16} />
                         {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 46 Formulas'}
                     </button>
-                    <p className="text-sm text-amber-600 text-center mt-3 font-medium">
+                    <p className="text-sm text-blue-600 text-center mt-3 font-medium">
                         ↳ Includes the 10-layer architecture, 46 formulas, 8 autonomous intelligence engines, 7 reflexive intelligence engines, knowledge layer, proactive intelligence, and proof of why these don't exist anywhere else.
                     </p>
 
                     {showFormulas && (
                         <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-                            <h4 className="text-sm font-semibold text-amber-600 mb-3">NSIL Full Architecture & 46 Proprietary Formulas + Knowledge Layer + Human Cognition Engine + Autonomous Intelligence + Reflexive Intelligence</h4>
+                            <h4 className="text-sm font-semibold text-blue-600 mb-3">NSIL Full Architecture & 46 Proprietary Formulas + Knowledge Layer + Human Cognition Engine + Autonomous Intelligence + Reflexive Intelligence</h4>
                             
                             <div className="mb-4">
                                 <h5 className="text-xs font-semibold text-slate-900 mb-2">10-Layer Processing Architecture with Knowledge-First Design</h5>
                                 <ol className="space-y-2 text-xs text-slate-600">
-                                    <li><strong className="text-cyan-600">Layer 0:</strong> Knowledge Architecture — Methodology Knowledge Base (60+ years of documented practice, 150 countries) and Pattern Confidence Engine (12 embedded pattern categories). The system checks what it knows <em>before</em> computing anything.</li>
+                                    <li><strong className="text-blue-500">Layer 0:</strong> Knowledge Architecture — Methodology Knowledge Base (60+ years of documented practice, 150 countries) and Pattern Confidence Engine (12 embedded pattern categories). The system checks what it knows <em>before</em> computing anything.</li>
                                     <li><strong className="text-slate-900">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
                                     <li><strong className="text-slate-900">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim, calibrated by pattern confidence</li>
                                     <li><strong className="text-slate-900">Layer 3:</strong> Quantitative Formula Scoring — 29 DAG-scheduled formulas across 5 execution levels calculate hard metrics with confidence intervals set by the knowledge layer</li>
                                     <li><strong className="text-slate-900">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
-                                    <li><strong className="text-purple-600">Layer 5:</strong> <strong className="text-purple-600">Human Cognition Engine</strong> — 7 proprietary behavioural models that simulate how decision-makers process complexity, allocate attention, and react under pressure</li>
-                                    <li><strong className="text-emerald-600">Layer 6:</strong> <strong className="text-emerald-600">Autonomous Intelligence</strong> — 8 engines: Creative Synthesis (Bisociation Theory), Cross-Domain Transfer (Structure Mapping Theory), Autonomous Goal Detection (HTN + MCDA), Ethical Reasoning (7-dim Rawlsian/Utilitarian), Self-Evolving Algorithm (gradient descent), Adaptive Learning (Bayesian conjugate), Emotional Intelligence (Prospect Theory + Russell Circumplex), Scenario Simulation (5000-run Monte Carlo with causal loops)</li>
+                                    <li><strong className="text-indigo-600">Layer 5:</strong> <strong className="text-indigo-600">Human Cognition Engine</strong> — 7 proprietary behavioural models that simulate how decision-makers process complexity, allocate attention, and react under pressure</li>
+                                    <li><strong className="text-blue-600">Layer 6:</strong> <strong className="text-blue-600">Autonomous Intelligence</strong> — 8 engines: Creative Synthesis (Bisociation Theory), Cross-Domain Transfer (Structure Mapping Theory), Autonomous Goal Detection (HTN + MCDA), Ethical Reasoning (7-dim Rawlsian/Utilitarian), Self-Evolving Algorithm (gradient descent), Adaptive Learning (Bayesian conjugate), Emotional Intelligence (Prospect Theory + Russell Circumplex), Scenario Simulation (5000-run Monte Carlo with causal loops)</li>
                                     <li><strong className="text-slate-900">Layer 7:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions with confidence classification (authoritative / informed / exploratory)</li>
-                                    <li><strong className="text-emerald-600">Layer 8:</strong> <strong className="text-emerald-600">Proactive Intelligence</strong> — Autonomous monitoring, backtesting calibration, anomaly detection, and opportunity scanning that runs continuously without user prompting</li>
-                                    <li><strong className="text-rose-600">Layer 9:</strong> <strong className="text-rose-600">Reflexive Intelligence</strong> — 7 engines that turn analytical power inward: User Signal Decoder, Internal Echo Detector, Investment Lifecycle Mapper, Regional Mirroring Engine, Regional Identity Decoder, Latent Advantage Miner, and Universal Translation Layer. The system analyses how you think, what you avoid, where your region sits on global investment curves, and adapts its output for every audience.</li>
+                                    <li><strong className="text-blue-600">Layer 8:</strong> <strong className="text-blue-600">Proactive Intelligence</strong> — Autonomous monitoring, backtesting calibration, anomaly detection, and opportunity scanning that runs continuously without user prompting</li>
+                                    <li><strong className="text-slate-600">Layer 9:</strong> <strong className="text-slate-600">Reflexive Intelligence</strong> — 7 engines that turn analytical power inward: User Signal Decoder, Internal Echo Detector, Investment Lifecycle Mapper, Regional Mirroring Engine, Regional Identity Decoder, Latent Advantage Miner, and Universal Translation Layer. The system analyses how you think, what you avoid, where your region sits on global investment curves, and adapts its output for every audience.</li>
                                 </ol>
                             </div>
 
                             {/* KNOWLEDGE ARCHITECTURE SECTION */}
-                            <div className="mb-4 bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <h5 className="text-xs font-semibold text-cyan-700 mb-3">Knowledge Architecture — The "Parent" Knowledge Layer</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">Methodology Knowledge Base</strong> — Internalised frameworks from investment attraction (58 years stable), regional development planning (63 years stable), and due diligence methodology (50 years stable). Country intelligence profiles (Philippines, Vietnam, Indonesia, Australia, New Zealand). Sector intelligence (renewable energy, IT-BPM, agriculture).</div>
                                     <div><strong className="text-slate-900">Pattern Confidence Engine</strong> — 12 embedded patterns (SEZ development, regional planning, investment incentives, PPP frameworks, market entry, agriculture modernisation, infrastructure, technology transfer, financial inclusion, export promotion, partnership structures, government promotion). Each with documented historical depth, geographic breadth, known outcomes, and known risks.</div>
                                 </div>
-                                <p className="text-xs text-cyan-600 mt-3 italic">This layer is consulted before any external search, before any API call, before any formula runs. When the system can answer from internal knowledge — and it often can, because the methodology has been stable for decades — it does so.</p>
+                                <p className="text-xs text-blue-500 mt-3 italic">This layer is consulted before any external search, before any API call, before any formula runs. When the system can answer from internal knowledge — and it often can, because the methodology has been stable for decades — it does so.</p>
                             </div>
 
                             {/* HUMAN COGNITION ENGINE SECTION */}
-                            <div className="mb-4 bg-purple-50 border border-purple-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-purple-700 mb-3">Human Cognition Engine — 7 Proprietary Behavioural Models</h5>
+                            <div className="mb-4 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-indigo-700 mb-3">Human Cognition Engine — 7 Proprietary Behavioural Models</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">Neural Field Dynamics</strong> — Models population-level decision activation and inhibition patterns</div>
                                     <div><strong className="text-slate-900">Predictive Processing</strong> — Hierarchical belief updating and expectation management</div>
@@ -1426,12 +1426,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div><strong className="text-slate-900">Information Integration</strong> — Cross-domain reasoning and insight broadcasting</div>
                                     <div><strong className="text-slate-900">Working Memory</strong> — Cognitive load management for complex multi-factor analysis</div>
                                 </div>
-                                <p className="text-xs text-purple-600 mt-3 italic">These proprietary behavioural models simulate how real decision-makers think, react, and allocate attention—bringing human-like reasoning to strategic analysis.</p>
+                                <p className="text-xs text-indigo-600 mt-3 italic">These proprietary behavioural models simulate how real decision-makers think, react, and allocate attention—bringing human-like reasoning to strategic analysis.</p>
                             </div>
 
                             {/* PROACTIVE INTELLIGENCE LAYER */}
-                            <div className="mb-4 bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-emerald-700 mb-3">Proactive Intelligence Layer — Always-On Autonomous Monitoring</h5>
+                            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Proactive Intelligence Layer — Always-On Autonomous Monitoring</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">Proactive Orchestrator</strong> — Coordinates all autonomous monitoring and enhancement agents</div>
                                     <div><strong className="text-slate-900">Backtesting Calibration</strong> — Continuously validates scoring accuracy against real outcomes</div>
@@ -1440,11 +1440,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div><strong className="text-slate-900">Self-Improvement Engine</strong> — Refines analysis depth and document quality with every report</div>
                                     <div><strong className="text-slate-900">Deep Research Agent</strong> — Autonomous multi-source intelligence gathering</div>
                                 </div>
-                                <p className="text-xs text-emerald-600 mt-3 italic">This layer runs on every report without user action — the system continuously improves its analysis, validates its own outputs, and surfaces intelligence you didn't know to ask for.</p>
+                                <p className="text-xs text-blue-600 mt-3 italic">This layer runs on every report without user action — the system continuously improves its analysis, validates its own outputs, and surfaces intelligence you didn't know to ask for.</p>
                             </div>
 
                             {/* REFLEXIVE INTELLIGENCE LAYER */}
-                            <div className="mb-4 bg-rose-50 border border-rose-200 rounded-lg p-4">
+                            <div className="mb-4 bg-slate-50 border border-rose-200 rounded-lg p-4">
                                 <h5 className="text-xs font-semibold text-rose-700 mb-3">Reflexive Intelligence Layer — 7 Engines That Look Inward</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">User Signal Decoder</strong> — Discourse Analysis + Shannon Redundancy. Detects repetition compulsion, avoidance patterns, circular reasoning, and hidden priorities. Generates proactive questions that surface what the user is really trying to solve.</div>
@@ -1455,13 +1455,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div><strong className="text-slate-900">Latent Advantage Miner</strong> — Hidden Asset Theory + Porter's Diamond. Mines casually mentioned assets with historic strategic significance. A deep-water port, a university with an agriculture faculty, a diaspora network, a border crossing — these are the "junk DNA" that powered transformation in Shenzhen, Penang, Medellín, and Kigali.</div>
                                     <div className="md:col-span-2"><strong className="text-slate-900">Universal Translation Layer</strong> — Aristotle's Rhetoric + Halliday's Register Theory. Adapts every finding for 5 distinct audiences: investors (logos-led, IRR/NPV language), government (ethos-led, policy alignment), community (pathos-led, plain language), partners (logos-led, operational detail), executives (ethos-led, strategic framing). Each gets tailored vocabulary, document format, and door-opener briefs.</div>
                                 </div>
-                                <p className="text-xs text-rose-600 mt-3 italic">These engines don't wait to be asked. They analyse how you think, what you avoid, where your region sits globally, and how to communicate findings to every audience that matters. The system doesn't just answer your question — it questions your question.</p>
+                                <p className="text-xs text-slate-600 mt-3 italic">These engines don't wait to be asked. They analyse how you think, what you avoid, where your region sits globally, and how to communicate findings to every audience that matters. The system doesn't just answer your question — it questions your question.</p>
                             </div>
 
                             <div className="grid md:grid-cols-3 gap-4">
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Core Indices</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• SPI™ — Success Probability Index</li>
                                         <li>• RROI™ — Regional Return on Investment</li>
                                         <li>• SEAM™ — Stakeholder Alignment Matrix</li>
@@ -1471,7 +1471,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Risk Formulas</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• CRPS — Composite Risk Priority Score</li>
                                         <li>• RME — Risk Mitigation Effectiveness</li>
                                         <li>• VaR — Value at Risk</li>
@@ -1483,7 +1483,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Financial Metrics</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• IRR — Internal Rate of Return</li>
                                         <li>• NPV — Net Present Value</li>
                                         <li>• WACC — Weighted Cost of Capital</li>
@@ -1494,7 +1494,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Operational Scores</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• ORS — Organizational Readiness</li>
                                         <li>• TCS — Team Capability Score</li>
                                         <li>• EEI — Execution Efficiency Index</li>
@@ -1505,7 +1505,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Market Formulas</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• MPI — Market Penetration Index</li>
                                         <li>• CAI — Competitive Advantage Index</li>
                                         <li>• TAM — Total Addressable Market</li>
@@ -1515,7 +1515,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div>
                                     <h5 className="text-xs font-semibold text-slate-900 mb-2">Governance Metrics</h5>
-                                    <ul className="space-y-1 text-xs text-slate-500">
+                                    <ul className="space-y-1 text-xs text-slate-600">
                                         <li>• GCI — Governance Confidence Index</li>
                                         <li>• CCS — Compliance Certainty Score</li>
                                         <li>• TPI — Transparency Index</li>
@@ -1530,8 +1530,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
 
                             {/* AUTONOMOUS INTELLIGENCE ENGINES */}
-                            <div className="mt-4 mb-2 bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-emerald-700 mb-3">Autonomous Intelligence — 8 Engines (World-First)</h5>
+                            <div className="mt-4 mb-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Autonomous Intelligence — 8 Engines (World-First)</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">CRE — Creative Synthesis</strong> — Bisociation Theory (Koestler 1964). 12 knowledge frames, Jaccard/Cosine similarity, Shannon entropy. Discovers strategies no human would propose by finding hidden connections between unrelated domains.</div>
                                     <div><strong className="text-slate-900">CDT — Cross-Domain Transfer</strong> — Structure Mapping Theory (Gentner 1983). 8 source domains (Coral Reef, Immune System, Military, Thermodynamics, Neural Networks, Lotka-Volterra, Urban Metabolism, Game Theory). 50+ entity-to-economic-concept mappings.</div>
@@ -1542,12 +1542,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div><strong className="text-slate-900">EMO — Emotional Intelligence</strong> — Russell's Circumplex Model (12 emotions, valence/arousal). Prospect Theory: V(x)=x^0.88 gains, -2.25×(-x)^0.88 losses. π(p) probability weighting γ=0.61. 4 stakeholder emotional profiles.</div>
                                     <div><strong className="text-slate-900">SIM — Scenario Simulation</strong> — Monte Carlo with 5,000 runs. 12 variables, 14 causal links, 4 feedback loops. Box-Muller normal sampling, triangular & lognormal distributions. Non-linearity: linear, quadratic, threshold, saturation.</div>
                                 </div>
-                                <p className="text-xs text-emerald-600 mt-3 italic">These 8 engines run autonomously on every analysis. They are not add-ons or modules — they are integrated into the NSIL core via the Intelligence Hub. No other commercial system possesses any of these capabilities, let alone all eight in a unified architecture.</p>
+                                <p className="text-xs text-blue-600 mt-3 italic">These 8 engines run autonomously on every analysis. They are not add-ons or modules — they are integrated into the NSIL core via the Intelligence Hub. No other commercial system possesses any of these capabilities, let alone all eight in a unified architecture.</p>
                             </div>
 
                             {/* WORLD-FIRST PROOF SECTION */}
                             <div className="mt-6 pt-6 border-t border-slate-200">
-                                <h5 className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
+                                <h5 className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
                                 
                                 <div className="bg-slate-100 rounded-lg p-4 mb-4">
                                     <p className="text-xs text-slate-700 mb-3">
@@ -1564,7 +1564,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </p>
                                 </div>
 
-                                <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                                     <p className="text-xs text-slate-700 italic">
                                         "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail. The 15 autonomous and reflexive engines represent capabilities that have never been implemented in any commercial system — each backed by published mathematical theory, implemented in real TypeScript with no placeholders."
                                     </p>
@@ -1586,59 +1586,59 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                         <div>
-                            <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">DESIGNED FOR EVERYONE</p>
-                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert. <span className="text-amber-600 font-normal">The System Already Is.</span></h2>
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">DESIGNED FOR EVERYONE</p>
+                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert. <span className="text-blue-600 font-normal">The System Already Is.</span></h2>
                         </div>
                     </div>
 
                     {/* Guidance modes — compact horizontal */}
                     <div className="grid grid-cols-3 gap-4 mb-8">
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-amber-600 font-bold text-sm mb-2">🧭 Orientation</p>
-                            <p className="text-xs text-slate-500">Full walkthroughs. Ideal for first-time users.</p>
+                            <p className="text-blue-600 font-bold text-sm mb-2">🧭 Orientation</p>
+                            <p className="text-xs text-slate-600">Full walkthroughs. Ideal for first-time users.</p>
                         </div>
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-amber-600 font-bold text-sm mb-2">🤝 Collaborative</p>
-                            <p className="text-xs text-slate-500">Balanced guidance. Built for teams & councils.</p>
+                            <p className="text-blue-600 font-bold text-sm mb-2">🤝 Collaborative</p>
+                            <p className="text-xs text-slate-600">Balanced guidance. Built for teams & councils.</p>
                         </div>
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-amber-600 font-bold text-sm mb-2">⚡ Expert</p>
-                            <p className="text-xs text-slate-500">Streamlined. For experienced operators.</p>
+                            <p className="text-blue-600 font-bold text-sm mb-2">⚡ Expert</p>
+                            <p className="text-xs text-slate-600">Streamlined. For experienced operators.</p>
                         </div>
                     </div>
 
                     {/* Who + Capabilities — side by side */}
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                            <p className="text-sm text-amber-600 uppercase tracking-wider mb-4 font-bold">WHO THIS IS BUILT FOR</p>
+                            <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-bold">WHO THIS IS BUILT FOR</p>
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Building2 size={22} className="mx-auto mb-2 text-amber-600" />
+                                    <Building2 size={22} className="mx-auto mb-2 text-blue-600" />
                                     <p className="text-xs font-semibold text-slate-700">Regional Councils & RDAs</p>
                                 </div>
                                 <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Scale size={22} className="mx-auto mb-2 text-amber-600" />
+                                    <Scale size={22} className="mx-auto mb-2 text-blue-600" />
                                     <p className="text-xs font-semibold text-slate-700">Government Agencies</p>
                                 </div>
                                 <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Briefcase size={22} className="mx-auto mb-2 text-amber-600" />
+                                    <Briefcase size={22} className="mx-auto mb-2 text-blue-600" />
                                     <p className="text-xs font-semibold text-slate-700">Businesses Going Regional</p>
                                 </div>
                                 <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Globe size={22} className="mx-auto mb-2 text-amber-600" />
+                                    <Globe size={22} className="mx-auto mb-2 text-blue-600" />
                                     <p className="text-xs font-semibold text-slate-700">First-Time Exporters</p>
                                 </div>
                             </div>
                         </div>
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6 flex flex-col justify-center">
-                            <p className="text-sm text-amber-600 uppercase tracking-wider mb-4 font-bold">THE SYSTEM HANDLES</p>
+                            <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-bold">THE SYSTEM HANDLES</p>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3"><Layers size={18} className="text-amber-600 shrink-0" /><p className="text-sm text-slate-700">Structure your thinking</p></div>
-                                <div className="flex items-center gap-3"><TrendingUp size={18} className="text-amber-600 shrink-0" /><p className="text-sm text-slate-700">Score your viability</p></div>
-                                <div className="flex items-center gap-3"><Shield size={18} className="text-amber-600 shrink-0" /><p className="text-sm text-slate-700">Stress-test assumptions</p></div>
-                                <div className="flex items-center gap-3"><FileText size={18} className="text-amber-600 shrink-0" /><p className="text-sm text-slate-700">Build your documents</p></div>
+                                <div className="flex items-center gap-3"><Layers size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Structure your thinking</p></div>
+                                <div className="flex items-center gap-3"><TrendingUp size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Score your viability</p></div>
+                                <div className="flex items-center gap-3"><Shield size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Stress-test assumptions</p></div>
+                                <div className="flex items-center gap-3"><FileText size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Build your documents</p></div>
                             </div>
-                            <p className="text-xs text-slate-500 mt-4">The complexity is hidden. What you see is clarity.</p>
+                            <p className="text-xs text-slate-600 mt-4">The complexity is hidden. What you see is clarity.</p>
                         </div>
                     </div>
                 </div>
@@ -1647,28 +1647,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* NEXT STEPS - Partnership & Pilot Programs */}
             <section id="pilots" className="py-16 px-4 bg-slate-100">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">NEXT STEPS</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">NEXT STEPS</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-6">Partnership & Pilot Programs</h2>
                     
                     <div className="grid md:grid-cols-4 gap-4 mb-6">
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <Zap size={22} className="text-amber-600 mb-3" />
+                            <Zap size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">Investment Screening</h3>
-                            <p className="text-xs text-slate-500">Test cases with foreign investment review boards</p>
+                            <p className="text-xs text-slate-600">Test cases with foreign investment review boards</p>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <TrendingUp size={22} className="text-amber-600 mb-3" />
+                            <TrendingUp size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">Regional Development</h3>
-                            <p className="text-xs text-slate-500">Investment prospectuses with economic development agencies</p>
+                            <p className="text-xs text-slate-600">Investment prospectuses with economic development agencies</p>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <Building2 size={22} className="text-amber-600 mb-3" />
+                            <Building2 size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">PPP Modeling</h3>
-                            <p className="text-xs text-slate-500">Public-Private Partnerships with infrastructure ministries</p>
+                            <p className="text-xs text-slate-600">Public-Private Partnerships with infrastructure ministries</p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-100 to-amber-50 border-2 border-amber-300 rounded-xl p-5">
-                            <Globe size={22} className="text-amber-600 mb-3" />
-                            <h3 className="text-sm font-bold text-amber-700 mb-2">Vision</h3>
+                        <div className="bg-gradient-to-br from-blue-100 to-blue-50 border-2 border-blue-300 rounded-xl p-5">
+                            <Globe size={22} className="text-blue-600 mb-3" />
+                            <h3 className="text-sm font-bold text-blue-700 mb-2">Vision</h3>
                             <p className="text-xs text-slate-600">Deploy as a sovereign-grade national strategic asset</p>
                         </div>
                     </div>
@@ -1678,10 +1678,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* SOLVING REAL PROBLEMS — compact callout */}
             <section className="py-12 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="bg-gradient-to-r from-amber-100 to-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl">
-                        <p className="text-amber-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">SOLVING REAL PROBLEMS</p>
+                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
+                        <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">SOLVING REAL PROBLEMS</p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            This platform exists to help capital, partnerships, and capability reach places that are too often overlooked — despite holding extraordinary, investable potential. During this beta phase and in future subscriptions, <strong className="text-amber-600">10% of every paid transaction</strong> goes back into initiatives that support regional development. A new voice for regions. A new standard for how opportunity is evaluated — anywhere in the world.
+                            This platform exists to help capital, partnerships, and capability reach places that are too often overlooked — despite holding extraordinary, investable potential. During this beta phase and in future subscriptions, <strong className="text-blue-600">10% of every paid transaction</strong> goes back into initiatives that support regional development. A new voice for regions. A new standard for how opportunity is evaluated — anywhere in the world.
                         </p>
                     </div>
                 </div>
@@ -1697,7 +1697,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Terms of Engagement */}
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6 text-left">
                             <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                                <Shield size={16} className="text-amber-400" />
+                                <Shield size={16} className="text-sky-300" />
                                 Terms of Engagement
                             </h4>
                             <div className="space-y-2 text-sm text-white/60">
@@ -1715,7 +1715,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 id="acceptTerms" 
                                 checked={termsAccepted}
                                 onChange={(e) => setTermsAccepted(e.target.checked)}
-                                className="mt-0.5 w-4 h-4 rounded border-white/30 bg-transparent text-amber-400 focus:ring-amber-400 cursor-pointer"
+                                className="mt-0.5 w-4 h-4 rounded border-white/30 bg-transparent text-sky-300 focus:ring-blue-400 cursor-pointer"
                             />
                             <label htmlFor="acceptTerms" className="text-sm text-white/60 cursor-pointer">
                                 By accessing the platform, you agree to our <strong className="text-white">Terms & Conditions</strong>
@@ -1728,7 +1728,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             onClick={() => termsAccepted && onEnterPlatform?.()}
                             className={`w-full py-4 rounded-xl text-base font-semibold transition-all flex items-center justify-center gap-2 mb-6 ${
                                 termsAccepted 
-                                    ? 'bg-amber-500 text-black hover:bg-amber-400 cursor-pointer' 
+                                    ? 'bg-blue-600 text-black hover:bg-blue-500 cursor-pointer' 
                                     : 'bg-white/10 text-white/30 cursor-not-allowed'
                             }`}
                         >
@@ -1737,7 +1737,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </button>
 
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <h4 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">BWGA Intelligence AI</h4>
+                            <h4 className="text-sm font-bold text-sky-300 uppercase tracking-wider mb-3">BWGA Intelligence AI</h4>
                             <p className="text-sm text-white/60 mb-4">
                                 BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.
                             </p>
@@ -1747,7 +1747,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <h4 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Development Status</h4>
+                            <h4 className="text-sm font-bold text-sky-300 uppercase tracking-wider mb-3">Development Status</h4>
                             <p className="text-sm text-white/80 mb-2"><strong>CURRENT PHASE:</strong> Research & Development</p>
                             <p className="text-sm text-white/60 mb-4">
                                 BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
@@ -1781,11 +1781,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <span>•</span>
                             <span>NSIL Engine v5.0</span>
                             <span>•</span>
-                            <span className="text-cyan-400">Knowledge Layer Active</span>
+                            <span className="text-blue-400">Knowledge Layer Active</span>
                             <span>•</span>
-                            <span className="text-purple-400">Cognition Active</span>
+                            <span className="text-indigo-400">Cognition Active</span>
                             <span>•</span>
-                            <span className="text-emerald-400">Autonomous Active</span>
+                            <span className="text-blue-400">Autonomous Active</span>
                             <span>•</span>
                             <span className="text-rose-400">Reflexive Active</span>
                         </div>
