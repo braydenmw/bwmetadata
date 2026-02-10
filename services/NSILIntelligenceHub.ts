@@ -34,14 +34,14 @@ import { OutcomeTracker, PredictionAccuracy, LearningInsight } from './OutcomeTr
 import { UnbiasedAnalysisEngine, FullUnbiasedAnalysis } from './UnbiasedAnalysisEngine';
 
 // Autonomous engines
-import { CreativeSynthesisEngine } from './autonomous/CreativeSynthesisEngine';
-import { CrossDomainTransferEngine } from './autonomous/CrossDomainTransferEngine';
-import { AutonomousGoalEngine } from './autonomous/AutonomousGoalEngine';
-import { EthicalReasoningEngine, type EthicalAssessment, type EthicalContext } from './autonomous/EthicalReasoningEngine';
-import { SelfEvolvingAlgorithmEngine, type EvolutionReport } from './autonomous/SelfEvolvingAlgorithmEngine';
-import { AdaptiveLearningEngine, type LearningReport } from './autonomous/AdaptiveLearningEngine';
-import { EmotionalIntelligenceEngine, type EmotionalIntelligenceResult, type EmotionalContext } from './autonomous/EmotionalIntelligenceEngine';
-import { ScenarioSimulationEngine, type SimulationResult, type SimulationContext } from './autonomous/ScenarioSimulationEngine';
+import { CreativeSynthesisEngine, type SynthesisContext } from './autonomous/CreativeSynthesisEngine';
+import { CrossDomainTransferEngine, type TransferContext } from './autonomous/CrossDomainTransferEngine';
+import { AutonomousGoalEngine, type GoalGenerationContext } from './autonomous/AutonomousGoalEngine';
+import { EthicalReasoningEngine, type EthicalAssessment as _EthicalAssessment, type EthicalContext } from './autonomous/EthicalReasoningEngine';
+import { SelfEvolvingAlgorithmEngine, type EvolutionReport as _EvolutionReport } from './autonomous/SelfEvolvingAlgorithmEngine';
+import { AdaptiveLearningEngine, type LearningReport as _LearningReport } from './autonomous/AdaptiveLearningEngine';
+import { EmotionalIntelligenceEngine, type EmotionalIntelligenceResult as _EmotionalIntelligenceResult, type EmotionalContext } from './autonomous/EmotionalIntelligenceEngine';
+import { ScenarioSimulationEngine, type SimulationResult as _SimulationResult, type SimulationContext } from './autonomous/ScenarioSimulationEngine';
 
 // ============================================================================
 // TYPES
@@ -283,27 +283,28 @@ export class NSILIntelligenceHub {
     const region = (params as Record<string, string>).region || '';
 
     // 1. Creative Synthesis — novel strategy generation
-    const creativeCtx = { country, sector, region, currentScores: {}, objectives: ['growth', 'sustainability'] };
+    const creativeCtx: SynthesisContext = { country, sector, region, investmentSizeM: 10, existingCapabilities: [], constraints: [], objectives: ['growth', 'sustainability'] };
     const creativeResult = CreativeSynthesisEngine.synthesise(creativeCtx, 5);
-    const creativeStrategies = creativeResult.map(s => ({
-      strategy: s.strategy,
+    const creativeStrategies = creativeResult.strategies.map(s => ({
+      strategy: s.title,
       noveltyScore: s.noveltyScore,
       feasibilityScore: s.feasibilityScore
     }));
 
     // 2. Cross-Domain Transfer — structural analogies
-    const transferCtx = { country, sector, region, challenges: ['market access', 'infrastructure'], objectives: ['growth'] };
+    const transferCtx: TransferContext = { country, sector, region, challenge: 'market access and infrastructure', currentState: ['emerging market', 'developing infrastructure'], desiredState: ['competitive market', 'robust infrastructure'] };
     const transferResult = CrossDomainTransferEngine.analyse(transferCtx);
-    const crossDomainInsights = transferResult.slice(0, 5).map(t => ({
-      analogy: t.analogy,
-      sourceModel: t.sourceModel,
-      transferScore: t.transferScore
+    const crossDomainInsights = transferResult.topInsights.slice(0, 5).map(t => ({
+      analogy: t.sourceObservation,
+      sourceModel: t.targetPrediction,
+      transferScore: t.confidence
     }));
 
     // 3. Autonomous Goals — self-initiated objectives
-    const goalCtx = { country, sector, region, currentScores: {}, riskFlags: [], informationGaps: [], stakeholders: [] };
-    const goalResult = AutonomousGoalEngine.generateGoals(goalCtx);
-    const autonomousGoals = goalResult.slice(0, 5).map(g => ({
+    const goalCtx: GoalGenerationContext = { country, sector, region, spiScore: 50, rroiScore: 50, riskFlags: [], opportunities: [], dataGaps: [], stakeholderConcerns: [], timelineWeeks: 12, investmentSizeM: 10, existingGoals: [] };
+    const goalEngine = new AutonomousGoalEngine();
+    const goalResult = goalEngine.generateGoals(goalCtx);
+    const autonomousGoals = goalResult.goals.slice(0, 5).map(g => ({
       goal: g.description,
       priority: g.compositeScore,
       status: g.status,

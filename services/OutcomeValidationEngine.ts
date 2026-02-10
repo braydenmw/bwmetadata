@@ -14,15 +14,15 @@
 
 import type { 
     HistoricalCase, 
-    CaseOutcome, 
-    OutcomeAlignment,
-    OutcomeLearningSnapshot 
+    CaseOutcome as _CaseOutcome, 
+    OutcomeAlignment as _OutcomeAlignment,
+    OutcomeLearningSnapshot as _OutcomeLearningSnapshot 
 } from '../types';
 
 export interface PredictionRecord {
     id: string;
     timestamp: Date;
-    inputs: Record<string, any>;
+    inputs: Record<string, unknown>;
     predictions: {
         spi?: number;
         rroi?: number;
@@ -271,7 +271,7 @@ export class OutcomeValidationEngine {
         this.predictions.set(record.id, record);
         
         // Update formula tracking counts
-        for (const [formulaName, value] of Object.entries(record.predictions.allFormulas)) {
+        for (const [formulaName, _value] of Object.entries(record.predictions.allFormulas)) {
             const perf = this.formulaPerformance.get(formulaName);
             if (perf) {
                 perf.totalPredictions++;

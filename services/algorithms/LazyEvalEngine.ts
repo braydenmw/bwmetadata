@@ -62,7 +62,8 @@ const ESTIMATED_TIMES: Record<FormulaId, number> = {
   'SPI': 50, 'RROI': 45, 'SEAM': 55, 'IVAS': 40, 'SCF': 60,
   'BARNA': 30, 'NVI': 25, 'CRI': 35, 'FRS': 25,
   'CAP': 20, 'AGI': 15, 'VCI': 20, 'ATI': 25, 'ESI': 30, 'ISI': 20, 'OSI': 25, 'TCO': 35,
-  'PRI': 30, 'RNI': 25, 'SRA': 35, 'IDV': 20
+  'PRI': 30, 'RNI': 25, 'SRA': 35, 'IDV': 20,
+  'CRE': 80, 'CDT': 75, 'AGL': 60, 'ETH': 55, 'EVO': 45, 'ADA': 40, 'EMO': 50, 'SIM': 120
 };
 
 // ============================================================================

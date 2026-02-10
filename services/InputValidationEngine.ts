@@ -508,7 +508,7 @@ export class InputValidationEngine {
         
         if (comparableCompanies != null && comparableCompanies.length > 0) {
             const avgReturn = comparableCompanies.reduce((sum, c) => sum + (c.returns || 0), 0) / comparableCompanies.length;
-            const allPositive = comparableCompanies.every(c => (c.returns || 0) > 0);
+            const _allPositive = comparableCompanies.every(c => (c.returns || 0) > 0);
             const allHigh = comparableCompanies.every(c => (c.returns || 0) > 50);
             
             // Check if comparing to tech giants for non-tech industry

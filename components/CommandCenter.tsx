@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, Scale, Rocket, Building2, Globe, Layers, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, Loader2, ExternalLink, AlertCircle, X, Info, Eye, BookOpen, FlaskConical, Brain } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, Scale, Rocket, Building2, Globe, Layers, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, X, Info, Eye, BookOpen, FlaskConical, Brain } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
 import { PatternConfidenceEngine } from '../services/PatternConfidenceEngine';
@@ -22,7 +22,7 @@ interface CommandCenterProps {
     }) => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel, onLocationResearched }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showCatalog, setShowCatalog] = useState(false);
@@ -31,20 +31,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
 
     // Global Location Intelligence state - LIVE SEARCH
-    const [locationQuery, setLocationQuery] = useState('');
-    const [isResearchingLocation, setIsResearchingLocation] = useState(false);
-    const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
-    const [locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
-    const [comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
-    const [researchSummary, setResearchSummary] = useState<string>('');
+    const [locationQuery, _setLocationQuery] = useState('');
+    const [_isResearchingLocation, setIsResearchingLocation] = useState(false);
+    const [_researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
+    const [_locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
+    const [_comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
+    const [_researchSummary, setResearchSummary] = useState<string>('');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [liveProfile, setLiveProfile] = useState<any>(null);
+    const [_liveProfile, setLiveProfile] = useState<any>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [researchResult, setResearchResult] = useState<any>(null);
-    const [searchError, setSearchError] = useState<string | null>(null);
+    const [_researchResult, setResearchResult] = useState<any>(null);
+    const [_searchError, setSearchError] = useState<string | null>(null);
 
     // Handle location search - SIMPLIFIED Gemini-first approach
-    const handleLocationSearch = async () => {
+    const _handleLocationSearch = async () => {
         console.log('[CommandCenter] handleLocationSearch called');
         console.log('[CommandCenter] locationQuery:', locationQuery);
         

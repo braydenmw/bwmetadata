@@ -20,7 +20,7 @@ import { historicalDataPipeline } from './HistoricalDataPipeline';
 import { backtestingEngine } from './BacktestingCalibrationEngine';
 import { driftDetectionEngine } from './DriftDetectionEngine';
 import { proactiveSignalMiner, type CurrentContext, type ProactiveSignal } from './ProactiveSignalMiner';
-import { metaCognitionEngine, type DecisionSnapshot } from './MetaCognitionEngine';
+import { metaCognitionEngine, type DecisionSnapshot, type CognitiveAlert } from './MetaCognitionEngine';
 import { continuousLearningLoop } from './ContinuousLearningLoop';
 import { outcomeValidator } from '../OutcomeValidationEngine';
 
@@ -111,7 +111,7 @@ export class ProactiveOrchestrator {
     const cognitiveAlerts = metaCognitionEngine.evaluateCognition();
 
     // 6. Learning loop update
-    const learningReport = await continuousLearningLoop.runFullCycle();
+    const _learningReport = await continuousLearningLoop.runFullCycle();
 
     // 7. Update state
     this.state = {
@@ -182,7 +182,7 @@ export class ProactiveOrchestrator {
     return counterfactuals.length > 0 ? counterfactuals : ['No strong counterfactuals detected'];
   }
 
-  private prioritizeActions(signals: ProactiveSignal[], cognitiveAlerts: any[]): string[] {
+  private prioritizeActions(signals: ProactiveSignal[], cognitiveAlerts: CognitiveAlert[]): string[] {
     const actions = new Set<string>();
 
     for (const s of signals) {

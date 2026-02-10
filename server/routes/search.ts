@@ -28,7 +28,7 @@ const PROMPT_INJECTION_PATTERNS = [
   /disregard\s+(all\s+)?prior/i,
   /system\s*:\s*/i,
   /\[\s*INST\s*\]/i,
-  /\<\s*\|\s*im_start\s*\|\>/i,
+  /<\s*\|\s*im_start\s*\|>/i,
   /act\s+as\s+(if|though)\s+you/i,
   /forget\s+(everything|all)/i,
   /reveal\s+your\s+(instructions|prompt|system)/i,
@@ -46,6 +46,7 @@ function sanitiseUserInput(input: string, maxLength = 2000): { safe: boolean; cl
   }
   
   // Strip control characters but preserve normal unicode
+  // eslint-disable-next-line no-control-regex
   const cleaned = input.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim();
   return { safe: true, cleaned };
 }

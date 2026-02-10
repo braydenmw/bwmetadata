@@ -126,7 +126,7 @@ export class ContinuousLearningLoop {
   // IMPROVEMENT ACTIONS
   // ──────────────────────────────────────────────────────────────────────────
 
-  private collectImprovementActions(driftAlerts: any[], cognitiveAlerts: any[]): string[] {
+  private collectImprovementActions(driftAlerts: { recommendedActions?: string[] }[], cognitiveAlerts: { recommendedCorrections?: string[] }[]): string[] {
     const actions = new Set<string>();
 
     for (const d of driftAlerts) {

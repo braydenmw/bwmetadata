@@ -4,7 +4,8 @@ import {
   CopilotInsight, 
   ReportData, 
   ReportSection,
-  GenerationPhase
+  GenerationPhase,
+  ReportPayload
 } from './types';
 import { INITIAL_PARAMETERS } from './constants';
 import MainCanvas from './components/MainCanvas';
@@ -418,9 +419,10 @@ const App: React.FC = () => {
         // ═══════════════════════════════════════════════════════════════
         // ETHICAL GATE ENFORCEMENT — block or warn based on ethical assessment
         // ═══════════════════════════════════════════════════════════════
-        const ethicalGate = (reportPayload as any).ethicalAssessment?.gate;
+        const extendedPayload = reportPayload as ReportPayload & { ethicalAssessment?: { gate?: string; conditions?: string[] }; patternIntelligence?: { matchedPatterns?: unknown[] } };
+        const ethicalGate = extendedPayload.ethicalAssessment?.gate;
         if (ethicalGate === 'reject') {
-            const ethicalReasons = (reportPayload as any).ethicalAssessment?.conditions || ['Ethical review failed'];
+            const ethicalReasons = extendedPayload.ethicalAssessment?.conditions || ['Ethical review failed'];
             console.error('ETHICAL GATE: Report generation BLOCKED', ethicalReasons);
             setReportData(prev => ({
                 ...prev,
@@ -436,7 +438,7 @@ const App: React.FC = () => {
             return;
         }
         if (ethicalGate === 'redesign' || ethicalGate === 'proceed-with-conditions') {
-            const ethicalWarnings = (reportPayload as any).ethicalAssessment?.conditions || [];
+            const ethicalWarnings = extendedPayload.ethicalAssessment?.conditions || [];
             console.warn(`ETHICAL GATE: ${ethicalGate}`, ethicalWarnings);
             // Allow generation to proceed but include warning in executive summary
             setReportData(prev => ({
@@ -453,7 +455,7 @@ const App: React.FC = () => {
         // ═══════════════════════════════════════════════════════════════
         const dataSources = ['NSIL Intelligence Hub', 'Pattern Confidence Engine', 'Historical Parallel Matcher',
                              'Situation Analysis Engine', 'Formula Suite (29 formulas)', 'Ethical Reasoning Engine'];
-        if ((reportPayload as any).patternIntelligence?.matchedPatterns?.length > 0) {
+        if ((extendedPayload.patternIntelligence?.matchedPatterns?.length ?? 0) > 0) {
             dataSources.push('Methodology Knowledge Base');
         }
         const integrityConfidence = (reportPayload.confidenceScores?.overall || 50) >= 70 ? 'high' as const

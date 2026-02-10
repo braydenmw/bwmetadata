@@ -297,14 +297,14 @@ export class HistoricalDataPipeline {
       }
 
       return data[1]
-        .filter((d: any) => d.value !== null)
-        .map((d: any) => ({
+        .filter((d: { value: unknown; country?: { value?: string }; countryiso3code?: string; date?: string }) => d.value !== null)
+        .map((d: { value: unknown; country?: { value?: string }; countryiso3code?: string; date?: string }) => ({
           indicator: indicatorCode,
           code: indicatorCode,
           country: d.country?.value || countryCode,
           countryCode: d.countryiso3code || countryCode,
-          year: parseInt(d.date),
-          value: parseFloat(d.value),
+          year: parseInt(d.date || '0'),
+          value: parseFloat(String(d.value)),
         }));
     } catch (error) {
       console.warn(`[PIPELINE] Failed to fetch World Bank data: ${error}`);
@@ -548,7 +548,7 @@ export class HistoricalDataPipeline {
   // ESTIMATION FUNCTIONS (derived from public data patterns)
   // ──────────────────────────────────────────────────────────────────────────
 
-  private estimateCompetition(country: string, year: number): number {
+  private estimateCompetition(country: string, _year: number): number {
     const developedMarkets = ['United States', 'Germany', 'Japan', 'United Kingdom', 'France'];
     const emergingHigh = ['China', 'India', 'Brazil'];
     if (developedMarkets.includes(country)) return 80 + Math.random() * 10;
@@ -623,7 +623,7 @@ export class HistoricalDataPipeline {
     return b * (1 + (growth / 100) * (year - 2020));
   }
 
-  private estimateInflation(country: string, year: number): number {
+  private estimateInflation(country: string, _year: number): number {
     const base: Record<string, number> = {
       'United States': 3.5, 'Germany': 2.5, 'Japan': 1.0, 'Singapore': 2.0,
       'China': 2.5, 'India': 5.5, 'Vietnam': 3.5, 'Indonesia': 4.0,

@@ -11,9 +11,9 @@
  * - Fraud Pattern Detection: Flags known failure patterns
  */
 
-import { InputValidationEngine, validateInputs, ValidationReport } from './InputValidationEngine';
+import { InputValidationEngine as _InputValidationEngine, validateInputs, ValidationReport } from './InputValidationEngine';
 import { 
-    FormulaBoundsEngine, 
+    FormulaBoundsEngine as _FormulaBoundsEngine, 
     calculateSafeRROI, 
     calculateSafeSPI, 
     runBoundedWilsonCowan,

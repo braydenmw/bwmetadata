@@ -263,7 +263,7 @@ export class BacktestingEngine {
     return riskScore;
   }
 
-  private calculateAGI(c: HistoricalCaseForBacktest, i: FormulaInput): number {
+  private calculateAGI(c: HistoricalCaseForBacktest, _i: FormulaInput): number {
     let score = 40;
     if (c.keyFactors.some(f => f.includes('government') || f.includes('subsidy') || f.includes('incentive'))) score += 25;
     if (c.keyFactors.some(f => f.includes('tax holiday') || f.includes('tax credit'))) score += 15;
@@ -291,7 +291,7 @@ export class BacktestingEngine {
     return score;
   }
 
-  private calculateNVI(c: HistoricalCaseForBacktest, i: FormulaInput): number {
+  private calculateNVI(c: HistoricalCaseForBacktest, _i: FormulaInput): number {
     let score = 50;
     if (c.keyFactors.some(f => f.includes('ecosystem') || f.includes('supply chain') || f.includes('supplier'))) score += 20;
     if (c.keyFactors.some(f => f.includes('network') || f.includes('platform'))) score += 15;
@@ -401,7 +401,7 @@ export class BacktestingEngine {
       }
 
       // By region
-      const region = historicalDataPipeline.extractFormulaInputs(c.country, c.year).caseId.split('-')[0];
+      const _region = historicalDataPipeline.extractFormulaInputs(c.country, c.year).caseId.split('-')[0];
       if (!byRegion[c.country]) byRegion[c.country] = { total: 0, correct: 0 };
       byRegion[c.country].total++;
       if (r.correct) byRegion[c.country].correct++;
@@ -441,7 +441,7 @@ export class BacktestingEngine {
     return accuracy;
   }
 
-  private getContextModifier(formula: string, country: string, sector: string): number {
+  private getContextModifier(formula: string, country: string, _sector: string): number {
     const key = `${formula}-${country}`;
     return this.contextModifiers[key] ?? 1.0;
   }

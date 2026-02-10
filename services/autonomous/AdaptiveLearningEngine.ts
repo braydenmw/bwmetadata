@@ -288,7 +288,7 @@ export class AdaptiveLearningEngine {
   /**
    * Derive action implication from a pattern.
    */
-  private deriveActionImplication(patternId: string, description: string): string {
+  private deriveActionImplication(patternId: string, _description: string): string {
     if (patternId.includes('low')) return `Investigate root cause of low scores and apply targeted mitigation`;
     if (patternId.includes('high')) return `Leverage strong performance area for competitive positioning`;
     if (patternId.includes('miss')) return `Recalibrate formula weights for this country-sector combination`;

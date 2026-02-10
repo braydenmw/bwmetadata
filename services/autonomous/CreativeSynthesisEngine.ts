@@ -424,7 +424,7 @@ export class CreativeSynthesisEngine {
     context: SynthesisContext
   ): number {
     let score = 0;
-    let factors = 0;
+    let _factors = 0;
 
     // Check if either frame's domain relates to the sector
     const sectorLower = context.sector.toLowerCase();
@@ -433,7 +433,7 @@ export class CreativeSynthesisEngine {
       sectorLower.includes(f.domain.toLowerCase().split(' ')[0])
     );
     if (domainMatch) { score += 0.3; }
-    factors++;
+    _factors++;
 
     // Check capability alignment
     const allMechanisms = [
@@ -444,7 +444,7 @@ export class CreativeSynthesisEngine {
       allMechanisms.some(m => m.includes(c.toLowerCase()) || c.toLowerCase().includes(m))
     ).length / Math.max(context.existingCapabilities.length, 1);
     score += capabilityOverlap * 0.3;
-    factors++;
+    _factors++;
 
     // Check constraint compatibility — success conditions should not conflict with constraints
     const constraintConflicts = context.constraints.filter(c =>
@@ -452,7 +452,7 @@ export class CreativeSynthesisEngine {
         .some(s => s.toLowerCase().includes(c.toLowerCase()))
     ).length;
     score += Math.max(0, 0.2 - constraintConflicts * 0.1);
-    factors++;
+    _factors++;
 
     // Objective alignment
     const objectiveMatch = context.objectives.filter(o => {
@@ -460,7 +460,7 @@ export class CreativeSynthesisEngine {
       return bisociation.emergentInsights.some(i => i.toLowerCase().includes(oLower));
     }).length / Math.max(context.objectives.length, 1);
     score += objectiveMatch * 0.2;
-    factors++;
+    _factors++;
 
     return Math.min(1, score);
   }

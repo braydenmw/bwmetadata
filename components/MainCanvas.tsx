@@ -770,8 +770,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         try {
                                                 const result = await Promise.race([
                                                         researchLocation(target || userQuestion),
-                                                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 35000))
-                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 35000))
                                                 ]) as any;
 
                                                 if (result?.profile) {

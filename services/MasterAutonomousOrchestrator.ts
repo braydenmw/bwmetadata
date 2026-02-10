@@ -283,7 +283,6 @@ export class MasterAutonomousOrchestrator {
   /**
    * Run document enhancement
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async runDocumentEnhancement(_payload: ReportPayload, _params: ReportParameters): Promise<Record<string, unknown>> {
     console.log('📄 Running document enhancement...');
     // IntelligentDocumentGenerator.generateDocument() requires full ReportData
@@ -298,7 +297,6 @@ export class MasterAutonomousOrchestrator {
   /**
    * Run self-improvement analysis
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async runSelfImprovement(_params: ReportParameters, _payload: ReportPayload): Promise<Record<string, unknown>> {
     console.log('🔄 Running self-improvement analysis...');
 
@@ -477,7 +475,7 @@ export class MasterAutonomousOrchestrator {
     return `${params.organizationName} ${params.industry?.[0] || ''} ${params.country} ${params.problemStatement}`.trim();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async executeAutonomousAction(action: any, _params: ReportParameters): Promise<void> {
     // Execute autonomous actions based on thinking engine output
     switch (action.type) {

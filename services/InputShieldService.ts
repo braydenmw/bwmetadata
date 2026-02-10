@@ -290,7 +290,7 @@ const SANCTIONS_WATCHLIST = [
 ];
 
 // ── AML / Financial Crime Pattern Detection ──
-const AML_RED_FLAGS: Array<{
+const _AML_RED_FLAGS: Array<{
   pattern: string;
   description: string;
   severity: 'critical' | 'high' | 'medium';

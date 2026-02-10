@@ -213,7 +213,6 @@ const toGrade = (score: number): string => {
 
 const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: FormulaCache) => Promise<FormulaResult>> = {
   // ─────────────── Level 0 Executors (use CompositeScoreService directly) ───────────────
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'PRI': async (params, _cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -233,7 +232,6 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'CRI': async (params, _cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -253,7 +251,6 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'BARNA': async (params, _cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -274,7 +271,6 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'TCO': async (params, _cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -742,7 +738,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     const start = Date.now();
     const scf = cache.get('SCF')?.score || 50;
     const ati = cache.get('ATI')?.score || 50;
-    const spi = cache.get('SPI')?.score || 50;
+    const _spiAda = cache.get('SPI')?.score || 50;
     // Bayesian posterior shift: how much new evidence moves beliefs
     const priorStrength = 50; // default prior mean
     const posteriorShift = Math.abs(scf - priorStrength);
@@ -793,7 +789,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     // Box-Muller normal sampling, triangular & lognormal distributions
     const start = Date.now();
     const scf = cache.get('SCF')?.score || 50;
-    const sra = cache.get('SRA')?.score || 50;
+    const _sra = cache.get('SRA')?.score || 50;
     const pri = cache.get('PRI')?.score || 50;
     // Simplified MC: perturbation of key indices to estimate outcome distribution
     const runs = 200; // lightweight proxy for the full 5000-run engine

@@ -83,7 +83,7 @@ export interface CurrentContext {
   investmentSizeM: number;
   year: number;
   keyFactors: string[];
-  additionalSignals?: Record<string, any>;
+  additionalSignals?: Record<string, unknown>;
 }
 
 // ============================================================================
@@ -387,7 +387,7 @@ export class ProactiveSignalMiner {
     }
   }
 
-  private getContextValue(dimension: string, context: CurrentContext): any {
+  private getContextValue(dimension: string, context: CurrentContext): string | number | string[] | unknown {
     switch (dimension) {
       case 'country': return context.country;
       case 'sector': return context.sector;
@@ -565,8 +565,8 @@ export class ProactiveSignalMiner {
 
       // Check if there's a pattern in timing
       if (successYears.length > 0 && failureYears.length > 0) {
-        const avgSuccessYear = successYears.reduce((a, b) => a + b, 0) / successYears.length;
-        const avgFailureYear = failureYears.reduce((a, b) => a + b, 0) / failureYears.length;
+        const _avgSuccessYear = successYears.reduce((a, b) => a + b, 0) / successYears.length;
+        const _avgFailureYear = failureYears.reduce((a, b) => a + b, 0) / failureYears.length;
 
         const recentTrend = sectorCases
           .filter(c => c.year >= 2015)
@@ -825,7 +825,7 @@ export class ProactiveSignalMiner {
     return 'monitor';
   }
 
-  private generateActions(pattern: PatternTemplate, context: CurrentContext): string[] {
+  private generateActions(pattern: PatternTemplate, _context: CurrentContext): string[] {
     if (pattern.outcomeIfTriggered === 'high_risk') {
       return [
         `WARNING: "${pattern.name}" pattern detected with ${((pattern.minMatchScore) * 100).toFixed(0)}%+ match`,

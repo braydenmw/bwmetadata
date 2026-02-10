@@ -12,8 +12,8 @@
  * 5. Real-World Fails - Known failure patterns
  */
 
-import type { ReportParameters } from '../types';
-import { outcomeValidator } from './OutcomeValidationEngine';
+import type { ReportParameters as _ReportParameters } from '../types';
+import { outcomeValidator as _outcomeValidator } from './OutcomeValidationEngine';
 
 export interface StressTestResult {
     testName: string;
@@ -100,7 +100,7 @@ export class ExtremeStressTestFramework {
         console.log('\n📊 TEST CATEGORY 1: INPUT EXTREMES');
 
         // Test 1.1: Infinite Growth Rate
-        const test1 = await this.runTest({
+        const _test1 = await this.runTest({
             testName: 'Infinite Growth Rate',
             category: 'Input Extremes',
             input: {
@@ -109,9 +109,9 @@ export class ExtremeStressTestFramework {
                 companyAge: 1
             },
             expectedBehavior: 'System should reject or flag as unrealistic',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 // Simulate formula calculation
-                const rroi = input.projectedRevenueGrowth * 100; // Would produce astronomical number
+                const rroi = (_input.projectedRevenueGrowth as number) * 100; // Would produce astronomical number
                 return {
                     crash: false,
                     flagged: false, // System doesn't flag this!
@@ -121,7 +121,7 @@ export class ExtremeStressTestFramework {
         });
 
         // Test 1.2: Negative Investment
-        const test2 = await this.runTest({
+        const _test2 = await this.runTest({
             testName: 'Negative Investment Amount',
             category: 'Input Extremes',
             input: {
@@ -129,7 +129,7 @@ export class ExtremeStressTestFramework {
                 expectedReturn: 20
             },
             expectedBehavior: 'System should reject negative investment',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false, // System accepts negative investment!
@@ -139,7 +139,7 @@ export class ExtremeStressTestFramework {
         });
 
         // Test 1.3: Division by Zero Setup
-        const test3 = await this.runTest({
+        const _test3 = await this.runTest({
             testName: 'Zero Market Size',
             category: 'Input Extremes',
             input: {
@@ -162,7 +162,7 @@ export class ExtremeStressTestFramework {
         });
 
         // Test 1.4: Extreme String Length
-        const test4 = await this.runTest({
+        const _test4 = await this.runTest({
             testName: 'Massive Text Input',
             category: 'Input Extremes',
             input: {
@@ -170,7 +170,7 @@ export class ExtremeStressTestFramework {
                 companyName: 'B'.repeat(100000)
             },
             expectedBehavior: 'System should limit or reject enormous text inputs',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -219,7 +219,7 @@ export class ExtremeStressTestFramework {
                 historicalPerformance: Array(20).fill({ year: 2020, revenue: 1000000 })
             },
             expectedBehavior: 'System should detect age vs history mismatch',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -238,7 +238,7 @@ export class ExtremeStressTestFramework {
                 marketConcentration: 0.1 // Fragmented market
             },
             expectedBehavior: 'System should flag monopoly claim with multiple competitors',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -267,7 +267,7 @@ export class ExtremeStressTestFramework {
                 growth: 0
             },
             expectedBehavior: 'System should handle all-zero gracefully',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -285,7 +285,7 @@ export class ExtremeStressTestFramework {
                 companyName: 'Test Corp'
             },
             expectedBehavior: 'System should reject or use well-justified defaults',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -304,7 +304,7 @@ export class ExtremeStressTestFramework {
                 description: '💰📈🚀'
             },
             expectedBehavior: 'System should sanitize or handle unicode gracefully',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -454,7 +454,7 @@ export class ExtremeStressTestFramework {
                 timeToApproval: '1 week' // Suspiciously fast
             },
             expectedBehavior: 'System should be skeptical of pre-approval in corrupt/complex environments',
-            testFunction: (input) => {
+            testFunction: (_input) => {
                 return {
                     crash: false,
                     flagged: false,
@@ -573,8 +573,10 @@ export class ExtremeStressTestFramework {
     private async runTest(config: {
         testName: string;
         category: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         input: any;
         expectedBehavior: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         testFunction: (input: any) => any;
     }): Promise<StressTestResult> {
         console.log(`  Testing: ${config.testName}...`);
