@@ -199,7 +199,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         { id: 1, title: 'Recognise', color: 'cyan', heading: 'The System Recognises Your Question', text: 'The moment you select a country, sector, or problem type, the Knowledge Architecture activates. The Pattern Confidence Engine matches your question against 12 embedded pattern categories. Most questions aren\'t novel. The system recognises this and tells you what it already knows — before any formula runs.', result: 'A confidence classification appears — authoritative (strong pattern match, tighter analysis), informed (partial match), or exploratory (genuinely novel — wider ranges, explicit caveats).' },
         { id: 2, title: 'Research', color: 'amber', heading: 'Research the Landscape', text: 'Type a city, company, or government into BW AI Search. In seconds, the system pulls verified data from public sources and delivers a one-page intelligence brief — demographics, GDP, leadership, infrastructure, and comparison benchmarks.', result: 'A structured intelligence brief with real numbers — population, GDP, key industries, government structure, infrastructure quality — plus internal knowledge overlaid where available.' },
         { id: 3, title: 'Define', color: 'amber', heading: 'Define Your Opportunity', text: 'Complete the Ten-Step Intake Protocol — a structured process capturing every dimension of your project: identity, strategy, financials, risk, governance. Steps 1, 2, 4, and 7 capture what only you know. Steps 3, 5, 6, 8, and 9 are pre-populated with system knowledge where available — you confirm, adjust, or override.', result: 'Ten guided sections in the left sidebar with clear labels. A progress bar tracks completion. The BW Consultant AI sits alongside to answer questions as you work.' },
-        { id: 4, title: 'Analyse', color: 'amber', heading: 'Watch the System Think', text: 'Hit generate. The Live Report builds in real time — the knowledge layer sets confidence levels, the NSIL engine scores your project across 38 formulas, five adversarial personas debate its merits, and the Human Cognition Engine pressure-tests how decision-makers will actually respond. Nothing is hidden.', result: 'A live document preview that populates section by section — success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations.' },
+        { id: 4, title: 'Analyse', color: 'amber', heading: 'Watch the System Think', text: 'Hit generate. The Live Report builds in real time — the knowledge layer sets confidence levels, the NSIL engine scores your project across 46 formulas, five adversarial personas debate its merits, and the Human Cognition Engine pressure-tests how decision-makers will actually respond. Nothing is hidden.', result: 'A live document preview that populates section by section — success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations.' },
         { id: 5, title: 'Export', color: 'emerald', heading: 'Export Board-Ready Documents', text: 'Once analysis is complete, the Document Factory compiles everything into institutional-grade deliverables — Investment Prospectuses, Risk Matrices, LOIs, Grant Applications, Due-Diligence Packs — formatted and evidence-backed.', result: 'Professional documents that look like they came from a top-tier advisory firm — with one critical difference: every claim has an audit trail.' },
     ];
 
@@ -239,7 +239,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     alt="" 
                     className="absolute inset-0 w-full h-full object-cover" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/30 to-slate-900/70" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/50 to-slate-900/80" />
                 <div className="relative z-10 max-w-5xl mx-auto text-center">
                     <p className="text-sky-300 uppercase tracking-[0.3em] text-base md:text-lg mb-6 font-bold">
                         BRAYDEN WALLS GLOBAL ADVISORY
@@ -352,7 +352,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW AI SEARCH</p>
                     <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">Research Any Location, Instantly</h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-8">
-                        Type a city, region, or country below. The system pulls verified intelligence — demographics, GDP, leadership, infrastructure, investment climate — and delivers a structured brief in seconds.
+                        Type a city, region, or country below. The system pulls verified intelligence — demographics, GDP, leadership, infrastructure, investment climate — cross-references it against 60+ years of methodology and 12 pattern categories, and delivers a structured brief in seconds. Not a search engine. An intelligence system.
                     </p>
                     <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
@@ -372,7 +372,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             className={`px-6 py-3.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
                                 isResearchingLocation || !locationQuery.trim()
                                     ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
-                                    : 'bg-blue-600 text-black hover:bg-blue-500'
+                                    : 'bg-blue-600 text-white hover:bg-blue-500'
                             }`}
                         >
                             <Search size={16} />
@@ -624,7 +624,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <ul className="space-y-3 text-sm text-slate-700">
                                 <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 60+ years of methodology already loaded</li>
                                 <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Pattern recognition classifies before formulas run</li>
-                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 38 formulas score every dimension with reproducible math</li>
+                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 46 formulas score every dimension with reproducible math</li>
                                 <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Confidence levels stated — authoritative, informed, or exploratory</li>
                             </ul>
                         </div>
@@ -832,10 +832,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* THE 38 FORMULAS - PROOF OF CAPABILITY */}
+            {/* THE 46 FORMULAS - PROOF OF CAPABILITY */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE 38 FORMULAS — PROOF OF CAPABILITY</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE 46 FORMULAS — PROOF OF CAPABILITY</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">Mathematical Foundation & Architecture Details</h2>
                     <p className="text-base text-slate-600 mb-2">Every score is traceable. Every formula is reproducible.</p>
                     
@@ -1406,7 +1406,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             {/* KNOWLEDGE ARCHITECTURE SECTION */}
                             <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-cyan-700 mb-3">Knowledge Architecture — The "Parent" Knowledge Layer</h5>
+                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Knowledge Architecture — The "Parent" Knowledge Layer</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">Methodology Knowledge Base</strong> — Internalised frameworks from investment attraction (58 years stable), regional development planning (63 years stable), and due diligence methodology (50 years stable). Country intelligence profiles (Philippines, Vietnam, Indonesia, Australia, New Zealand). Sector intelligence (renewable energy, IT-BPM, agriculture).</div>
                                     <div><strong className="text-slate-900">Pattern Confidence Engine</strong> — 12 embedded patterns (SEZ development, regional planning, investment incentives, PPP frameworks, market entry, agriculture modernisation, infrastructure, technology transfer, financial inclusion, export promotion, partnership structures, government promotion). Each with documented historical depth, geographic breadth, known outcomes, and known risks.</div>
@@ -1444,8 +1444,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
 
                             {/* REFLEXIVE INTELLIGENCE LAYER */}
-                            <div className="mb-4 bg-slate-50 border border-rose-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-rose-700 mb-3">Reflexive Intelligence Layer — 7 Engines That Look Inward</h5>
+                            <div className="mb-4 bg-slate-50 border border-slate-200 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-slate-700 mb-3">Reflexive Intelligence Layer — 7 Engines That Look Inward</h5>
                                 <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div><strong className="text-slate-900">User Signal Decoder</strong> — Discourse Analysis + Shannon Redundancy. Detects repetition compulsion, avoidance patterns, circular reasoning, and hidden priorities. Generates proactive questions that surface what the user is really trying to solve.</div>
                                     <div><strong className="text-slate-900">Internal Echo Detector</strong> — Cross-references the user's own fields against each other. Finds connections the user entered separately but never linked: a university mentioned in workforce that could anchor a tech hub, a port mentioned casually that defines the region's real competitive advantage.</div>
@@ -1595,15 +1595,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid grid-cols-3 gap-4 mb-8">
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
                             <p className="text-blue-600 font-bold text-sm mb-2">🧭 Orientation</p>
-                            <p className="text-xs text-slate-600">Full walkthroughs. Ideal for first-time users.</p>
+                            <p className="text-xs text-slate-600">Full walkthroughs with BW Consultant AI. 10-step intake guided. Pattern confidence explained at every stage.</p>
                         </div>
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
                             <p className="text-blue-600 font-bold text-sm mb-2">🤝 Collaborative</p>
-                            <p className="text-xs text-slate-600">Balanced guidance. Built for teams & councils.</p>
+                            <p className="text-xs text-slate-600">Teams review scores together. 5-persona debate visible. Shared intake workspace for councils & working groups.</p>
                         </div>
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
                             <p className="text-blue-600 font-bold text-sm mb-2">⚡ Expert</p>
-                            <p className="text-xs text-slate-600">Streamlined. For experienced operators.</p>
+                            <p className="text-xs text-slate-600">Direct formula access. Full audit trail export. DAG scheduler visible. Monte Carlo parameters adjustable.</p>
                         </div>
                     </div>
 
@@ -1633,10 +1633,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6 flex flex-col justify-center">
                             <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-bold">THE SYSTEM HANDLES</p>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3"><Layers size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Structure your thinking</p></div>
-                                <div className="flex items-center gap-3"><TrendingUp size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Score your viability</p></div>
-                                <div className="flex items-center gap-3"><Shield size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Stress-test assumptions</p></div>
-                                <div className="flex items-center gap-3"><FileText size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Build your documents</p></div>
+                                <div className="flex items-center gap-3"><Layers size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Structure your thinking with 10-step intake</p></div>
+                                <div className="flex items-center gap-3"><TrendingUp size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Score viability across 46 formulas</p></div>
+                                <div className="flex items-center gap-3"><Shield size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Stress-test with 5,000 Monte Carlo scenarios</p></div>
+                                <div className="flex items-center gap-3"><FileText size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Export 200+ document types instantly</p></div>
                             </div>
                             <p className="text-xs text-slate-600 mt-4">The complexity is hidden. What you see is clarity.</p>
                         </div>
@@ -1654,22 +1654,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
                             <Zap size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">Investment Screening</h3>
-                            <p className="text-xs text-slate-600">Test cases with foreign investment review boards</p>
+                            <p className="text-xs text-slate-600">46-formula viability scoring with 5-persona adversarial debate for foreign investment review boards and regional councils</p>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
                             <TrendingUp size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">Regional Development</h3>
-                            <p className="text-xs text-slate-600">Investment prospectuses with economic development agencies</p>
+                            <p className="text-xs text-slate-600">Board-ready investment prospectuses, lifecycle mapping, structural twin analysis, and latent advantage mining for economic development agencies</p>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
                             <Building2 size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-slate-900 mb-2">PPP Modeling</h3>
-                            <p className="text-xs text-slate-600">Public-Private Partnerships with infrastructure ministries</p>
+                            <p className="text-xs text-slate-600">Monte Carlo stress testing, stakeholder alignment scoring, ethical reasoning gates, and risk-adjusted ROI projections for infrastructure ministries</p>
                         </div>
                         <div className="bg-gradient-to-br from-blue-100 to-blue-50 border-2 border-blue-300 rounded-xl p-5">
                             <Globe size={22} className="text-blue-600 mb-3" />
                             <h3 className="text-sm font-bold text-blue-700 mb-2">Vision</h3>
-                            <p className="text-xs text-slate-600">Deploy as a sovereign-grade national strategic asset</p>
+                            <p className="text-xs text-slate-600">Deploy as a sovereign-grade national strategic asset — 15 intelligence engines, 8 autonomous + 7 reflexive, audience-adaptive translation for every stakeholder</p>
                         </div>
                     </div>
                 </div>
@@ -1728,7 +1728,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             onClick={() => termsAccepted && onEnterPlatform?.()}
                             className={`w-full py-4 rounded-xl text-base font-semibold transition-all flex items-center justify-center gap-2 mb-6 ${
                                 termsAccepted 
-                                    ? 'bg-blue-600 text-black hover:bg-blue-500 cursor-pointer' 
+                                    ? 'bg-blue-600 text-white hover:bg-blue-500 cursor-pointer' 
                                     : 'bg-white/10 text-white/30 cursor-not-allowed'
                             }`}
                         >
@@ -1787,7 +1787,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <span>•</span>
                             <span className="text-blue-400">Autonomous Active</span>
                             <span>•</span>
-                            <span className="text-rose-400">Reflexive Active</span>
+                            <span className="text-slate-400">Reflexive Active</span>
                         </div>
                     </div>
                 </div>

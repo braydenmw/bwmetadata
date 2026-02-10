@@ -9,7 +9,7 @@
 
 > *Regional communities are the backbone of every nation. They deserve to be seen.*
 
-![Regional Development Landscape](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop)
+![Regional Development Landscape](https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&h=400&fit=crop)
 
 Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity.
 
@@ -47,7 +47,7 @@ This is about how knowledge works. **The past isn't historical interest. The pas
 
 ## ━━━ WHAT BWGA INTELLIGENCE AI ACTUALLY IS ━━━
 
-![Digital Boardroom Concept](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop)
+![Digital Boardroom Concept](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop)
 
 **Not a chatbot. Not a lookup table. An adversarial reasoning system.**
 
@@ -108,7 +108,7 @@ A digital boardroom where multiple perspectives debate, challenge, and synthesis
 
 ## ━━━ THE BW BRAIN: NEURO-SYMBOLIC ARCHITECTURE ━━━
 
-![Think Process Visualization](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop)
+![Think Process Visualization](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=400&fit=crop)
 
 **Pattern recognition (neural) + Explainable logic (symbolic)**
 
@@ -190,7 +190,7 @@ Must survive:
 
 ## ━━━ KNOWLEDGE ARCHITECTURE ━━━
 
-![Knowledge Systems](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop)
+![Knowledge Systems](https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=400&fit=crop)
 
 Two foundational services implement the core principle:
 
@@ -265,7 +265,7 @@ How real decision-makers actually think:
 
 ## ━━━ THE EXECUTION SEQUENCE ━━━
 
-![System Architecture Diagram](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop)
+![System Architecture Diagram](https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=400&fit=crop)
 
 ### What Happens When You Submit
 
