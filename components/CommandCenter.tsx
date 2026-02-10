@@ -33,20 +33,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [activeJourneyStep, setActiveJourneyStep] = useState<number>(1);
 
     // Global Location Intelligence state - LIVE SEARCH
-    const [locationQuery, _setLocationQuery] = useState('');
-    const [_isResearchingLocation, setIsResearchingLocation] = useState(false);
-    const [_researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
+    const [locationQuery, setLocationQuery] = useState('');
+    const [isResearchingLocation, setIsResearchingLocation] = useState(false);
+    const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
     const [_locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
     const [_comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
-    const [_researchSummary, setResearchSummary] = useState<string>('');
+    const [researchSummary, setResearchSummary] = useState<string>('');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [_liveProfile, setLiveProfile] = useState<any>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [_researchResult, setResearchResult] = useState<any>(null);
-    const [_searchError, setSearchError] = useState<string | null>(null);
+    const [searchError, setSearchError] = useState<string | null>(null);
 
     // Handle location search - SIMPLIFIED Gemini-first approach
-    const _handleLocationSearch = async () => {
+    const handleLocationSearch = async () => {
         console.log('[CommandCenter] handleLocationSearch called');
         console.log('[CommandCenter] locationQuery:', locationQuery);
         
@@ -208,9 +208,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden">
+        <div className="min-h-screen bg-[#0b1226] text-white font-sans overflow-x-hidden">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-[#070e1d]/95 backdrop-blur-md border-b border-white/8">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center font-bold text-black text-sm">
@@ -232,10 +232,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </nav>
 
-            {/* Hero Section - Overlaps into Mountain Image */}
-            <section className="relative pt-32 pb-0 px-4 z-20">
-                <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-transparent" />
-                <div className="relative z-10 max-w-4xl mx-auto text-center mb-[-80px]">
+            {/* Hero Section with Background Photo */}
+            <section className="relative pt-32 pb-20 px-4 z-20 min-h-[75vh] flex items-center">
+                <img 
+                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop&q=80" 
+                    alt="" 
+                    className="absolute inset-0 w-full h-full object-cover" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0b1226]/80 via-[#0b1226]/70 to-[#0b1226]" />
+                <div className="relative z-10 max-w-4xl mx-auto text-center">
                     <p className="text-amber-400 uppercase tracking-[0.3em] text-sm md:text-base mb-6 font-semibold">
                         BRAYDEN WALLS GLOBAL ADVISORY
                     </p>
@@ -243,15 +248,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         Regional communities are the backbone of every nation.
                         <span className="block text-amber-400 mt-3">They deserve to be seen.</span>
                     </h1>
-                    <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed mb-4">
+                    <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed mb-8">
                         Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
                     </p>
-                    
+                    <button 
+                        onClick={() => scrollToSection('bwai-search')}
+                        className="inline-flex items-center gap-2 px-8 py-3 bg-amber-500/20 border border-amber-400/40 rounded-full text-amber-400 text-sm font-medium hover:bg-amber-500/30 transition-all"
+                    >
+                        <Search size={16} />
+                        Try BW AI Search
+                    </button>
                 </div>
             </section>
 
+            {/* Photo Banner — Global Perspective */}
+            <div className="w-full h-40 md:h-56 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&h=400&fit=crop&q=80" alt="City skyline panorama" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/30" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <p className="text-white/80 text-lg md:text-2xl font-light tracking-wide">Connecting Regions to Global Opportunity</p>
+                </div>
+            </div>
+
             {/* OUR STORY — Compact 2-column layout */}
-            <section id="mission" className="py-16 px-4 bg-[#0a0a0a]">
+            <section id="mission" className="py-16 px-4 bg-[#0b1226]">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                         {/* LEFT — The Story */}
@@ -303,7 +323,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* BY THE NUMBERS */}
-            <section className="py-16 px-4 bg-[#070707] border-y border-white/5">
+            <section className="py-16 px-4 bg-[#081020] border-y border-white/5">
                 <div className="max-w-5xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         <div>
@@ -326,8 +346,75 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* BW AI SEARCH — Location Intelligence */}
+            <section id="bwai-search" className="py-16 px-4 bg-[#0e1a2e]">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">BW AI SEARCH</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-2">Research Any Location, Instantly</h2>
+                    <p className="text-sm text-white/60 leading-relaxed mb-6">
+                        Type a city, region, or country below. The system pulls verified intelligence — demographics, GDP, leadership, infrastructure, investment climate — and delivers a structured brief in seconds.
+                    </p>
+                    <div className="flex gap-3 mb-4">
+                        <div className="flex-1 relative">
+                            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+                            <input
+                                type="text"
+                                value={locationQuery}
+                                onChange={(e) => setLocationQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
+                                placeholder="Search any city, region, or country..."
+                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-amber-400/50 focus:bg-white/10 transition-all"
+                            />
+                        </div>
+                        <button
+                            onClick={handleLocationSearch}
+                            disabled={isResearchingLocation || !locationQuery.trim()}
+                            className={`px-6 py-3.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
+                                isResearchingLocation || !locationQuery.trim()
+                                    ? 'bg-white/10 text-white/30 cursor-not-allowed'
+                                    : 'bg-amber-500 text-black hover:bg-amber-400'
+                            }`}
+                        >
+                            <Search size={16} />
+                            {isResearchingLocation ? 'Researching...' : 'Research'}
+                        </button>
+                    </div>
+                    {researchProgress && (
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs text-white/60">{researchProgress.message}</span>
+                                <span className="text-xs text-amber-400 font-mono">{researchProgress.progress}%</span>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-1.5">
+                                <div className="bg-amber-400 h-1.5 rounded-full transition-all duration-500" style={{ width: `${researchProgress.progress}%` }} />
+                            </div>
+                        </div>
+                    )}
+                    {searchError && (
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
+                            <p className="text-sm text-red-400">{searchError}</p>
+                        </div>
+                    )}
+                    {researchSummary && (
+                        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                            <p className="text-xs text-emerald-400 uppercase tracking-wider font-semibold mb-2">Intelligence Summary</p>
+                            <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line">{researchSummary}</p>
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* Photo Banner — Technology & Data */}
+            <div className="w-full h-40 md:h-56 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=400&fit=crop&q=80" alt="Global data visualization" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/30" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <p className="text-white/80 text-lg md:text-2xl font-light tracking-wide">Sovereign-Grade Intelligence Architecture</p>
+                </div>
+            </div>
+
             {/* THE TECHNOLOGY */}
-            <section id="technology" className="py-16 px-4 bg-[#0f0f0f]">
+            <section id="technology" className="py-16 px-4 bg-[#0e1a2e]">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                         <div>
@@ -428,8 +515,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* Photo Banner — Knowledge Foundation */}
+            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=400&fit=crop&q=80" alt="Modern architecture" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/40" />
+            </div>
+
             {/* THE FOUNDATION — Compact bar */}
-            <section id="foundation" className="py-10 px-4 bg-[#0a0a0a]">
+            <section id="foundation" className="py-10 px-4 bg-[#0b1226]">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
                         <div>
@@ -458,7 +551,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* THE DIFFERENCE */}
-            <section id="difference" className="py-16 px-4 bg-[#0a0a0a]">
+            <section id="difference" className="py-16 px-4 bg-[#0b1226]">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
                         <div>
@@ -545,8 +638,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* Photo Banner — Strategic Planning */}
+            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=400&fit=crop&q=80" alt="Strategic planning session" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/40" />
+            </div>
+
             {/* THE COMPREHENSIVE INTAKE FRAMEWORK */}
-            <section id="protocol" className="py-16 px-4 bg-[#0a0a0a]">
+            <section id="protocol" className="py-16 px-4 bg-[#0b1226]">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
                     <h2 className="text-xl md:text-2xl font-light mb-2">The Ten-Step Protocol</h2>
@@ -627,8 +726,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* Photo Banner — Document Intelligence */}
+            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&h=400&fit=crop&q=80" alt="Technology and intelligence" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/40" />
+            </div>
+
             {/* INSTITUTIONAL-GRADE OUTPUTS */}
-            <section className="py-16 px-4 bg-[#0f0f0f]">
+            <section className="py-16 px-4 bg-[#0e1a2e]">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">INSTITUTIONAL-GRADE OUTPUTS</p>
                     <h2 className="text-xl md:text-2xl font-light mb-4">The Document Factory</h2>
@@ -727,7 +832,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* THE 38 FORMULAS - PROOF OF CAPABILITY */}
-            <section className="py-16 px-4 bg-[#0a0a0a]">
+            <section className="py-16 px-4 bg-[#0b1226]">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE 38 FORMULAS — PROOF OF CAPABILITY</p>
                     <h2 className="text-xl md:text-2xl font-light mb-4">Mathematical Foundation & Architecture Details</h2>
@@ -1468,8 +1573,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* Photo Banner — Regional Communities */}
+            <div className="w-full h-32 md:h-44 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=400&fit=crop&q=80" alt="Mountain landscape" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b1226]/80 to-[#0b1226]/40" />
+            </div>
+
             {/* DESIGNED FOR EVERYONE */}
-            <section className="py-12 px-4 bg-[#0a0a0a]">
+            <section className="py-12 px-4 bg-[#0b1226]">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
                         <div>
@@ -1532,7 +1643,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* NEXT STEPS - Partnership & Pilot Programs */}
-            <section id="pilots" className="py-12 px-4 bg-[#0f0f0f]">
+            <section id="pilots" className="py-12 px-4 bg-[#0e1a2e]">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-2 font-semibold">NEXT STEPS</p>
                     <h2 className="text-lg font-light mb-4">Partnership & Pilot Programs</h2>
@@ -1563,7 +1674,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* SOLVING REAL PROBLEMS — compact callout */}
-            <section className="py-8 px-4 bg-[#0a0a0a]">
+            <section className="py-8 px-4 bg-[#0b1226]">
                 <div className="max-w-6xl mx-auto">
                     <div className="bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-5 rounded-r-xl">
                         <p className="text-amber-400 uppercase tracking-[0.2em] text-[10px] mb-2 font-semibold">SOLVING REAL PROBLEMS</p>
@@ -1575,7 +1686,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* FOOTER INFO SECTION */}
-            <section id="footer-info" className="py-8 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#0f0f0f]">
+            <section id="footer-info" className="py-8 px-4 bg-gradient-to-b from-[#0b1226] to-[#0e1a2e]">
                 <div className="max-w-4xl mx-auto">
                         <p className="text-lg font-semibold text-white mb-6">
                             Launch the full BW Nexus Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.
@@ -1653,7 +1764,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <DocumentModal activeDocument={activeDocument} onClose={() => setActiveDocument(null)} />
 
             {/* Footer */}
-            <footer className="py-8 px-4 bg-[#050505] border-t border-white/10">
+            <footer className="py-8 px-4 bg-[#060d1a] border-t border-white/10">
                 <div className="max-w-4xl mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="text-center md:text-left">
