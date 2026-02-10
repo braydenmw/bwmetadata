@@ -204,6 +204,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <button onClick={() => scrollToSection('mission')} className="hover:text-white transition-colors">Mission</button>
                         <button onClick={() => scrollToSection('story')} className="hover:text-white transition-colors">Our Story</button>
                         <button onClick={() => scrollToSection('technology')} className="hover:text-white transition-colors">Technology</button>
+                        <button onClick={() => scrollToSection('foundation')} className="hover:text-white transition-colors">Foundation</button>
                         <button onClick={() => scrollToSection('difference')} className="hover:text-white transition-colors">The Difference</button>
                         <button onClick={() => scrollToSection('bwai-search')} className="hover:text-white transition-colors">BW AI Search</button>
                         <button onClick={() => scrollToSection('protocol')} className="hover:text-white transition-colors">10-Step Protocol</button>
@@ -323,6 +324,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* BY THE NUMBERS */}
+            <section className="py-16 px-4 bg-[#070707] border-y border-white/5">
+                <div className="max-w-5xl mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <div className="text-4xl md:text-5xl font-extralight text-amber-400 mb-2">120<span className="text-2xl">+</span></div>
+                            <p className="text-[11px] text-white/40 uppercase tracking-[0.2em]">Components</p>
+                        </div>
+                        <div>
+                            <div className="text-4xl md:text-5xl font-extralight text-amber-400 mb-2">46</div>
+                            <p className="text-[11px] text-white/40 uppercase tracking-[0.2em]">Proprietary Formulas</p>
+                        </div>
+                        <div>
+                            <div className="text-4xl md:text-5xl font-extralight text-amber-400 mb-2">15</div>
+                            <p className="text-[11px] text-white/40 uppercase tracking-[0.2em]">Intelligence Engines</p>
+                        </div>
+                        <div>
+                            <div className="text-4xl md:text-5xl font-extralight text-amber-400 mb-2">150</div>
+                            <p className="text-[11px] text-white/40 uppercase tracking-[0.2em]">Countries Covered</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* THE TECHNOLOGY */}
             <section id="technology" className="py-16 px-4 bg-[#0f0f0f]">
                 <div className="max-w-4xl mx-auto">
@@ -378,7 +403,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div>
                                     <p className="text-sm font-semibold text-purple-400 mb-1">Layer 2 — Human Cognition Engine</p>
                                     <p className="text-xs text-white/60 leading-relaxed">
-                                        Seven proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure. Neural field dynamics, predictive processing, action selection, attention allocation, emotional valence, information integration, working memory. Together, they don't just analyse data — they anticipate how humans will respond to it.
+                                        Seven proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure. They don't just analyse data — they anticipate how humans will respond to it.
                                     </p>
                                 </div>
                             </div>
@@ -392,7 +417,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div>
                                     <p className="text-sm font-semibold text-emerald-400 mb-1">Layer 3 — Autonomous Intelligence</p>
                                     <p className="text-xs text-white/60 leading-relaxed">
-                                        Eight engines that have never existed in any commercial system. <strong className="text-white">Creative Synthesis</strong> (Bisociation Theory) discovers strategies no human would propose. <strong className="text-white">Cross-Domain Transfer</strong> (Structure Mapping Theory) maps biological and physical analogies onto economic data. <strong className="text-white">Autonomous Goal Detection</strong> identifies objectives the user hasn't thought of. <strong className="text-white">Ethical Reasoning</strong> (7-dimension Rawlsian/Utilitarian/Intergenerational framework) acts as a hard gate — unethical paths are rejected, not just flagged. <strong className="text-white">Self-Evolving Algorithm</strong> tunes its own formula weights via online gradient descent. <strong className="text-white">Adaptive Learning</strong> updates Bayesian beliefs with every interaction. <strong className="text-white">Emotional Intelligence</strong> uses Prospect Theory and Russell's Circumplex Model to predict stakeholder reactions. <strong className="text-white">Scenario Simulation</strong> runs 5,000-iteration Monte Carlo with causal feedback loops to model future states. Together, they make the system genuinely autonomous — it thinks, learns, and evolves without being told to.
+                                        Eight engines that have never existed in any commercial system. They discover strategies from unrelated domains, detect objectives you haven't considered, enforce ethical gates that <em>reject</em> unethical paths (not just flag them), tune their own formula weights after every analysis, predict how stakeholders will emotionally react, and simulate 5,000 future scenarios with causal feedback loops. The system thinks, learns, and evolves without being told to.
                                     </p>
                                 </div>
                             </div>
@@ -406,7 +431,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div>
                                     <p className="text-sm font-semibold text-rose-400 mb-1">Layer 4 — Reflexive Intelligence</p>
                                     <p className="text-xs text-white/60 leading-relaxed">
-                                        Seven engines that turn the system's analytical power inward — on the user themselves. <strong className="text-white">User Signal Decoder</strong> detects what you keep repeating, what you avoid, and where you circle without resolving. <strong className="text-white">Internal Echo Detector</strong> cross-references your own inputs to surface connections you missed. <strong className="text-white">Investment Lifecycle Mapper</strong> places your region on a global investment lifecycle curve and identifies recyclable assets from prior economic eras. <strong className="text-white">Regional Mirroring Engine</strong> finds your region's structural twin — places with matching demographics, infrastructure, and economic profiles that solved similar problems. <strong className="text-white">Regional Identity Decoder</strong> detects when a region has lost its authentic competitive story and replaced it with generic marketing language. <strong className="text-white">Latent Advantage Miner</strong> finds assets you mentioned casually but never recognised as strategic — the "junk DNA" that powered transformation elsewhere. <strong className="text-white">Universal Translation Layer</strong> adapts every finding for five distinct audiences — investors, government, community, partners, and executives — each in their own language, framing, and document format.
+                                        Seven engines that turn the system's analytical power inward — on you. They detect what you keep repeating, what you avoid, where your region sits on the global investment lifecycle, and find assets you mentioned casually but never recognised as strategic. They identify your region's structural twin — places that solved the same problems. They spot when authentic competitive identity has been replaced with generic marketing language. Then every finding is translated for each audience — investors, government, community, partners, executives — in their own language and document format.
                                     </p>
                                 </div>
                             </div>
@@ -454,6 +479,61 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0a0a0a]" />
+            </div>
+
+            {/* THE FOUNDATION */}
+            <section id="foundation" className="py-16 px-4 bg-[#0a0a0a]">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3 font-semibold">THE FOUNDATION</p>
+                    <h2 className="text-xl md:text-2xl font-light mb-6">This System Already Knows</h2>
+                    
+                    <div className="space-y-4 text-sm text-white/70 leading-relaxed mb-8">
+                        <p>
+                            Most AI tools start from zero every time you ask a question. This one doesn't. Before a single formula runs, before any external data is retrieved, the system checks what it already knows — and it knows a lot.
+                        </p>
+                        <p>
+                            Government planning methodology has been stable for 60 years. Investment incentive structures follow predictable patterns across 150 countries. Regional development challenges recur structurally, not uniquely. What appears as "innovation" in one context is documented practice in another, often decades ago. The system acts as the <strong className="text-white">institutional memory</strong> that no single organisation maintains — the pattern library that no consultant admits exists.
+                        </p>
+                        <p>
+                            When your question matches a known pattern, the system tells you — and analyses with the confidence of a 40-year expert. When the question is genuinely novel, it tells you that too — and widens its ranges accordingly. No false certainty. No pretending to know what it doesn't.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-4 mb-8">
+                        <div className="bg-white/5 border border-cyan-500/20 rounded-xl p-5">
+                            <div className="text-3xl font-extralight text-cyan-400 mb-2">60<span className="text-lg">+</span></div>
+                            <p className="text-xs text-white/70 font-medium mb-1">Years of Stable Methodology</p>
+                            <p className="text-[11px] text-white/40">Government planning, investment attraction, and feasibility — documented, tested, and stable across decades and continents.</p>
+                        </div>
+                        <div className="bg-white/5 border border-amber-500/20 rounded-xl p-5">
+                            <div className="text-3xl font-extralight text-amber-400 mb-2">12</div>
+                            <p className="text-xs text-white/70 font-medium mb-1">Embedded Pattern Categories</p>
+                            <p className="text-[11px] text-white/40">From SEZ development to PPP frameworks to export promotion — the system matches your question against known patterns before any formula runs.</p>
+                        </div>
+                        <div className="bg-white/5 border border-emerald-500/20 rounded-xl p-5">
+                            <div className="text-3xl font-extralight text-emerald-400 mb-2">3</div>
+                            <p className="text-xs text-white/70 font-medium mb-1">Confidence Classifications</p>
+                            <p className="text-[11px] text-white/40"><strong className="text-white/60">Authoritative</strong> — strong match, tight analysis. <strong className="text-white/60">Informed</strong> — partial match. <strong className="text-white/60">Exploratory</strong> — genuinely novel, wider ranges, explicit caveats.</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-cyan-500/10 to-transparent border-l-4 border-cyan-500 p-5 rounded-r-xl">
+                        <p className="text-sm text-white/80 leading-relaxed italic">
+                            "The system thinks like a 40-year regional development expert who has seen the same patterns repeat across decades and countries — not like a graduate student encountering the field for the first time."
+                        </p>
+                        <p className="text-xs text-white/40 mt-2">— NSIL Intelligence Reference Paper</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Image Break - Foundation */}
+            <div className="relative h-48 md:h-64 overflow-hidden">
+                <img 
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=400&fit=crop" 
+                    alt="Data analytics and strategic intelligence" 
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
             </div>
 
             {/* THE DIFFERENCE */}
@@ -783,6 +863,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </p>
                 </div>
             </section>
+
+            {/* Image Break - Before Proof */}
+            <div className="relative h-48 md:h-64 overflow-hidden">
+                <img 
+                    src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1600&h=400&fit=crop" 
+                    alt="Strategic analysis and intelligence" 
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0a0a0a]" />
+            </div>
 
             {/* THE 38 FORMULAS - PROOF OF CAPABILITY */}
             <section className="py-16 px-4 bg-[#0a0a0a]">
