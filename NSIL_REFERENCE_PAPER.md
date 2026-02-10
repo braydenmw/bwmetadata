@@ -315,16 +315,141 @@ This engine acts as a **hard gate** — if the ethical assessment score falls be
 
 ### Central control: NSILIntelligenceHub.ts
 
-All 8 autonomous engines are orchestrated by a single master control point: `services/NSILIntelligenceHub.ts`. This hub:
+All 8 autonomous engines and 7 reflexive engines are orchestrated by a single master control point: `services/NSILIntelligenceHub.ts`. This hub:
 
-- Imports and instantiates all 8 engines
+- Imports and instantiates all 15 intelligence engines (8 autonomous + 7 reflexive)
 - Runs them in parallel during every analysis
-- Aggregates their outputs into a unified `AutonomousIntelligence` type
+- Aggregates their outputs into unified `AutonomousIntelligence` and `ReflexiveIntelligence` types
 - Feeds autonomous signals into the recommendation synthesis (ethical gate, emotional risk, creative strategies, autonomous goals, scenario probability)
+- Feeds reflexive signals into audience-specific translation and proactive question generation
 - Maintains engine version provenance for audit trails
-- Reports health status for all 13 active components (5 core + 8 autonomous)
+- Reports health status for all 20 active components (5 core + 8 autonomous + 7 reflexive)
 
 The NSIL Intelligence Hub is the single point through which the entire OS operates. Nothing bypasses it.
+
+---
+
+## 11) Reflexive Intelligence Layer: the 7 engines that look inward
+
+While the autonomous layer (Section 10) looks outward — generating strategies, transferring knowledge, simulating scenarios — the reflexive layer turns the system's analytical power **inward**, examining the user's own inputs, assumptions, blind spots, and hidden assets.
+
+This is the layer that makes the system genuinely unprecedented: it doesn't just analyse what the user asks about — it analyses **how the user asks**, **what they avoid**, **what they don't realise they already know**, and **what they're underselling**.
+
+### 11.1 UserSignalDecoder
+
+**Theory:** Discourse Analysis + Repetition Compulsion (Freud) + Shannon Redundancy
+
+**What it does:** Analyses the user's input across all fields to detect:
+- **Repetition** — the same concern appearing in multiple fields reveals what really matters to the user, even if they don't highlight it
+- **Avoidance** — expected topics that are conspicuously absent (e.g., mentioning Philippines energy but avoiding grid connection challenges)
+- **Circularity** — when a user keeps returning to the same point, they likely can't articulate their core question
+- **Emphasis patterns** — intensity markers that reveal anxiety, confidence, defensiveness, or aspiration
+
+**Output:** Proactive questions the system should ask (up to 8), hidden agenda inference, overall clarity score, and articulation gap measurement.
+
+**Implementation:** `services/reflexive/UserSignalDecoder.ts`
+
+### 11.2 InternalEchoDetector
+
+**Theory:** Information Cross-Referencing + Latent Semantic Analysis
+
+**What it does:** Scans all user input fields simultaneously to find connections *the user themselves didn't notice*:
+- Cross-references problem statements against capability descriptions — often the user's stated problem has a solution already described in another field
+- Detects contradictions between fields (e.g., claiming "low risk" while describing high-risk conditions)
+- Matches user inputs against system knowledge patterns to identify where the system already has relevant intelligence
+
+**Output:** Echo connections, contradictions, system knowledge matches, and a "self-answer score" — how much the user already holds their own answer without realising it.
+
+**Implementation:** `services/reflexive/InternalEchoDetector.ts`
+
+### 11.3 InvestmentLifecycleMapper
+
+**Theory:** Product Lifecycle Theory (Vernon, 1966) + Kondratieff Long Waves + Schumpeterian Creative Destruction
+
+**What it does:** Maps a region's position on the investment lifecycle curve:
+
+**Emergence → Growth → Boom → Peak → Plateau → Decline → Dormancy → Reactivation**
+
+- Identifies the current phase based on FDI trends, population, infrastructure age, and government priority
+- Maps recyclable assets from previous boom periods (the "institutional memory preservation" function)
+- Predicts phase transitions with catalysts and blockers
+- Finds similar regions at different lifecycle stages for cross-learning
+- Generates phase-specific reactivation playbooks
+
+The critical insight: what worked during the boom phase can be **recycled** during reactivation — but only if someone maps what those success factors were.
+
+**Output:** Current phase identification, recyclable asset inventory, phase transition prediction, similar region matches, and an ordered reactivation playbook.
+
+**Implementation:** `services/reflexive/InvestmentLifecycleMapper.ts`
+
+### 11.4 RegionalMirroringEngine
+
+**Theory:** Structural Similarity Analysis + Analogical Reasoning (Gentner, 1983)
+
+**What it does:** Finds a region's **structural twins** — other regions with similar economic profiles, demographics, infrastructure, geography, institutional context, and sector specialisation.
+
+This is NOT cross-domain transfer (biology → economics — that's the CrossDomainTransferEngine). This is **region → region**: "Cebu 2010 ≈ Da Nang 2020."
+
+Regions don't know who their structural twins are. They benchmark against aspirational peers (everyone wants to be Singapore) rather than structural matches. This engine forces honest matching by comparing across 6 dimensions with weighted similarity scoring.
+
+**Output:** Top 5 structural mirrors with transferable strategies, aspiration gap analysis (who you want to be vs. who you actually resemble), and cross-mirror strategy patterns.
+
+**Implementation:** `services/reflexive/RegionalMirroringEngine.ts`
+
+### 11.5 RegionalIdentityDecoder
+
+**Theory:** Baudrillard's Simulacra + Regional Competitiveness Theory (Porter, 1990) + Narrative Theory (Fisher, 1984)
+
+**What it does:** Detects when a region has lost its authentic competitive identity and is presenting a generic, interchangeable narrative — the **simulacrum phase**.
+
+Every IPA in the world claims "strategic location, skilled workforce, business-friendly environment." The language becomes interchangeable. This engine:
+- Scans for 10 categories of generic investment promotion language
+- Detects aspirational mimicry ("the next Singapore")
+- Identifies hidden assets being undersold
+- Measures the gap between narrative strength and evidence strength
+- Categorises identity loss from "none" to "complete"
+- Generates authentic positioning recommendations
+
+**Output:** Overall authenticity score, simulacrum level, identity element analysis, hidden asset detection, identity gaps, and positioning recommendation.
+
+**Implementation:** `services/reflexive/RegionalIdentityDecoder.ts`
+
+### 11.6 LatentAdvantageMiner
+
+**Theory:** "Junk DNA" Concept + Hidden Asset Theory + Porter's Diamond
+
+**What it does:** Scans user inputs for casually mentioned assets that are — historically and globally — among the most powerful investment attractors:
+
+- "We have a small port" → Ports cannot be replicated. Ever. This is a permanent advantage.
+- "There's a university nearby" → University anchors persist through economic cycles.
+- "Many of our people work overseas" → Diaspora = investment channel (the 3I model: Ireland, Israel, India).
+- "We have nice beaches" → Lifestyle = tech talent magnet (the Lisbon/Da Nang effect).
+
+10 asset detection patterns covering geographic-permanent, infrastructure-legacy, human-capital, institutional-anchor, cultural-unique, resource-natural, network-position, and timing-window categories. Each matched against global precedents where that asset created transformative value.
+
+**Output:** Latent advantages with global precedents, "junk DNA ratio," blind spot questions for the user, strategic value assessment, and narrative gap analysis.
+
+**Implementation:** `services/reflexive/LatentAdvantageMiner.ts`
+
+### 11.7 UniversalTranslationLayer
+
+**Theory:** Audience-Adaptive Communication + Rhetorical Theory (Aristotle) + Register Theory (Halliday, 1978)
+
+**What it does:** Takes the system's analytical output and translates it into audience-specific formats:
+
+| Audience | Primary Concern | Rhetoric | Key Framing |
+|----------|----------------|----------|-------------|
+| **Investor** | ROI and risk | Logos (data-led) | "12% projected IRR" not "exciting opportunity" |
+| **Government** | Policy alignment, jobs | Ethos (credibility-led) | "Aligned with National Development Plan" |
+| **Community** | Local impact | Pathos (impact-led) | "Jobs for local families" |
+| **Partner/IPA** | Technical capability | Logos (data-led) | Benchmarked, cited, verifiable |
+| **Executive** | Strategic fit | Ethos (credibility-led) | "Summary-first, three key points" |
+
+Includes vocabulary translation (the same fact expressed differently for each audience), language simplification for community audiences, door-opener document generation, and cross-audience consistency checks.
+
+**Output:** 5 audience-specific packages, door-opener document templates, translated findings, and delivery format recommendations.
+
+**Implementation:** `services/reflexive/UniversalTranslationLayer.ts`
 
 ---
 

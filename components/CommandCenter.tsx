@@ -334,13 +334,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             Standard AI tools generate text—they predict the next word. That's useful for writing emails, but it's not enough to structure a complex deal, stress-test a business case, or produce a document you'd stake your reputation on. We built BWGA AI to close that gap: an intelligence system that reasons through problems, validates assumptions with hard data, and delivers outputs you can confidently present to investors, boards, and government bodies.
                         </p>
                         <p>
-                            <strong className="text-white">BWGA Intelligence AI</strong> is a Sovereign-Grade Intelligence Operating System — 110+ components, 60+ services, and 46 proprietary formulas working in concert — including 8 autonomous intelligence engines that no other system on Earth possesses. It is not a chatbot. It is a <strong className="text-white">digital boardroom</strong>: a team of specialised AI agents that research, debate, score, and write—coordinated by engines that <em>already know</em> most of what they're being asked about, and that <em>evolve their own reasoning</em> with every interaction.
+                            <strong className="text-white">BWGA Intelligence AI</strong> is a Sovereign-Grade Intelligence Operating System — 120+ components, 60+ services, and 46 proprietary formulas working in concert — including 8 autonomous intelligence engines and 7 reflexive intelligence engines that no other system on Earth possesses. It is not a chatbot. It is a <strong className="text-white">digital boardroom</strong>: a team of specialised AI agents that research, debate, score, and write—coordinated by engines that <em>already know</em> most of what they're being asked about, that <em>evolve their own reasoning</em> with every interaction, and that <em>analyse how you think</em> — not just what you ask.
                         </p>
                     </div>
 
                     {/* Three-engine architecture */}
                     <div className="mt-8 space-y-4">
-                        <p className="text-xs text-amber-400 uppercase tracking-wider font-semibold mb-4">THE FOUR-LAYER ARCHITECTURE</p>
+                        <p className="text-xs text-amber-400 uppercase tracking-wider font-semibold mb-4">THE FIVE-LAYER ARCHITECTURE</p>
                         
                         <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-5">
                             <div className="flex items-start gap-3">
@@ -397,12 +397,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                         </div>
+
+                        <div className="bg-white/5 border border-rose-500/30 rounded-xl p-5">
+                            <div className="flex items-start gap-3">
+                                <div className="w-8 h-8 bg-rose-500/20 border border-rose-500/40 rounded-lg flex items-center justify-center shrink-0">
+                                    <Eye size={16} className="text-rose-400" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-semibold text-rose-400 mb-1">Layer 4 — Reflexive Intelligence</p>
+                                    <p className="text-xs text-white/60 leading-relaxed">
+                                        Seven engines that turn the system's analytical power inward — on the user themselves. <strong className="text-white">User Signal Decoder</strong> detects what you keep repeating, what you avoid, and where you circle without resolving. <strong className="text-white">Internal Echo Detector</strong> cross-references your own inputs to surface connections you missed. <strong className="text-white">Investment Lifecycle Mapper</strong> places your region on a global investment lifecycle curve and identifies recyclable assets from prior economic eras. <strong className="text-white">Regional Mirroring Engine</strong> finds your region's structural twin — places with matching demographics, infrastructure, and economic profiles that solved similar problems. <strong className="text-white">Regional Identity Decoder</strong> detects when a region has lost its authentic competitive story and replaced it with generic marketing language. <strong className="text-white">Latent Advantage Miner</strong> finds assets you mentioned casually but never recognised as strategic — the "junk DNA" that powered transformation elsewhere. <strong className="text-white">Universal Translation Layer</strong> adapts every finding for five distinct audiences — investors, government, community, partners, and executives — each in their own language, framing, and document format.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* What this means in practice */}
                     <div className="mt-8 bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 p-5 rounded-r-xl">
                         <p className="text-sm text-white/80 leading-relaxed">
-                            <strong className="text-white">What this means in practice:</strong> Every feature on this page — from the instant research engine to the live report builder to the embedded consultant — is powered by this four-layer architecture. The knowledge layer provides context. The NSIL layer provides computation. The cognition layer provides human-aware reasoning. The autonomous layer provides creativity, ethical gates, self-evolution, and Monte Carlo futures. No other system integrates all four. Scroll down to see each feature and try them yourself.
+                            <strong className="text-white">What this means in practice:</strong> Every feature on this page — from the instant research engine to the live report builder to the embedded consultant — is powered by this five-layer architecture. The knowledge layer provides context. The NSIL layer provides computation. The cognition layer provides human-aware reasoning. The autonomous layer provides creativity, ethical gates, self-evolution, and Monte Carlo futures. The reflexive layer turns the lens inward — analysing what you say, what you avoid, where your region sits on global investment cycles, and packaging every insight for every audience. No other system integrates all five. Scroll down to see each feature and try them yourself.
                         </p>
                     </div>
 
@@ -1266,7 +1280,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                                     {/* Doc Footer — matches MainCanvas.tsx footer */}
                                     <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[11px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
-                                        <span>Generated by Nexus Intelligence OS v7.0 · NSIL v4.0 · Autonomous Intelligence Active</span>
+                                        <span>Generated by Nexus Intelligence OS v7.0 · NSIL v5.0 · Autonomous + Reflexive Intelligence Active</span>
                                         <span>Page 1 of 1</span>
                                     </div>
                                 </div>
@@ -1279,7 +1293,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                             <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
                                 <Database size={16} className="text-amber-400" />
-                                9-Layer Architecture + Cognition + Autonomy
+                                10-Layer Architecture + Cognition + Autonomy + Reflexive
                             </h4>
                             <ul className="space-y-2 text-xs text-white/70">
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-cyan-400" /> Knowledge Architecture (Pattern Confidence + Methodology Base)</li>
@@ -1291,6 +1305,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-emerald-400" /> Autonomous Intelligence (8 Engines)</li>
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-amber-400" /> Output Synthesis & Provenance</li>
                                 <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-emerald-400" /> Proactive Intelligence Layer</li>
+                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-rose-400" /> Reflexive Intelligence (7 Engines)</li>
                             </ul>
                         </div>
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
@@ -1317,15 +1332,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 46 Formulas'}
                     </button>
                     <p className="text-sm text-amber-400 text-center mt-3 font-medium">
-                        ↳ Includes the 9-layer architecture, 46 formulas, 8 autonomous intelligence engines, knowledge layer, proactive intelligence, and proof of why these don't exist anywhere else.
+                        ↳ Includes the 10-layer architecture, 46 formulas, 8 autonomous intelligence engines, 7 reflexive intelligence engines, knowledge layer, proactive intelligence, and proof of why these don't exist anywhere else.
                     </p>
 
                     {showFormulas && (
                         <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-                            <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 46 Proprietary Formulas + Knowledge Layer + Human Cognition Engine + Autonomous Intelligence</h4>
+                            <h4 className="text-sm font-semibold text-amber-400 mb-3">NSIL Full Architecture & 46 Proprietary Formulas + Knowledge Layer + Human Cognition Engine + Autonomous Intelligence + Reflexive Intelligence</h4>
                             
                             <div className="mb-4">
-                                <h5 className="text-xs font-semibold text-white mb-2">9-Layer Processing Architecture with Knowledge-First Design</h5>
+                                <h5 className="text-xs font-semibold text-white mb-2">10-Layer Processing Architecture with Knowledge-First Design</h5>
                                 <ol className="space-y-2 text-xs text-white/70">
                                     <li><strong className="text-cyan-400">Layer 0:</strong> Knowledge Architecture — Methodology Knowledge Base (60+ years of documented practice, 150 countries) and Pattern Confidence Engine (12 embedded pattern categories). The system checks what it knows <em>before</em> computing anything.</li>
                                     <li><strong className="text-white">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
@@ -1336,6 +1351,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <li><strong className="text-emerald-400">Layer 6:</strong> <strong className="text-emerald-400">Autonomous Intelligence</strong> — 8 engines: Creative Synthesis (Bisociation Theory), Cross-Domain Transfer (Structure Mapping Theory), Autonomous Goal Detection (HTN + MCDA), Ethical Reasoning (7-dim Rawlsian/Utilitarian), Self-Evolving Algorithm (gradient descent), Adaptive Learning (Bayesian conjugate), Emotional Intelligence (Prospect Theory + Russell Circumplex), Scenario Simulation (5000-run Monte Carlo with causal loops)</li>
                                     <li><strong className="text-white">Layer 7:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions with confidence classification (authoritative / informed / exploratory)</li>
                                     <li><strong className="text-emerald-400">Layer 8:</strong> <strong className="text-emerald-400">Proactive Intelligence</strong> — Autonomous monitoring, backtesting calibration, anomaly detection, and opportunity scanning that runs continuously without user prompting</li>
+                                    <li><strong className="text-rose-400">Layer 9:</strong> <strong className="text-rose-400">Reflexive Intelligence</strong> — 7 engines that turn analytical power inward: User Signal Decoder, Internal Echo Detector, Investment Lifecycle Mapper, Regional Mirroring Engine, Regional Identity Decoder, Latent Advantage Miner, and Universal Translation Layer. The system analyses how you think, what you avoid, where your region sits on global investment curves, and adapts its output for every audience.</li>
                                 </ol>
                             </div>
 
@@ -1376,6 +1392,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div><strong className="text-white">Deep Research Agent</strong> — Autonomous multi-source intelligence gathering</div>
                                 </div>
                                 <p className="text-[11px] text-emerald-200/60 mt-3 italic">This layer runs on every report without user action — the system continuously improves its analysis, validates its own outputs, and surfaces intelligence you didn't know to ask for.</p>
+                            </div>
+
+                            {/* REFLEXIVE INTELLIGENCE LAYER */}
+                            <div className="mb-4 bg-rose-500/10 border border-rose-500/30 rounded-lg p-4">
+                                <h5 className="text-xs font-semibold text-rose-300 mb-3">Reflexive Intelligence Layer — 7 Engines That Look Inward</h5>
+                                <div className="grid md:grid-cols-2 gap-3 text-xs text-white/70">
+                                    <div><strong className="text-white">User Signal Decoder</strong> — Discourse Analysis + Shannon Redundancy. Detects repetition compulsion, avoidance patterns, circular reasoning, and hidden priorities. Generates proactive questions that surface what the user is really trying to solve.</div>
+                                    <div><strong className="text-white">Internal Echo Detector</strong> — Cross-references the user's own fields against each other. Finds connections the user entered separately but never linked: a university mentioned in workforce that could anchor a tech hub, a port mentioned casually that defines the region's real competitive advantage.</div>
+                                    <div><strong className="text-white">Investment Lifecycle Mapper</strong> — Vernon's Product Lifecycle + Kondratieff Long Waves + Schumpeterian Creative Destruction. Maps the region's position on an 8-phase investment curve (Emergence → Reactivation) using global precedents. Identifies recyclable assets from prior economic eras.</div>
+                                    <div><strong className="text-white">Regional Mirroring Engine</strong> — Gentner's Structure-Mapping Theory. Finds structural twin regions across 6 weighted dimensions (economic, demographic, infrastructure, geographic, institutional, sector). Shows what worked for your twin — and what the aspiration gap looks like.</div>
+                                    <div><strong className="text-white">Regional Identity Decoder</strong> — Baudrillard's Simulacra + Porter's Regional Competitiveness. Detects when a region has replaced its authentic competitive identity with generic marketing language ("strategically located", "skilled workforce"). Measures simulacrum severity and identifies buried authentic advantages.</div>
+                                    <div><strong className="text-white">Latent Advantage Miner</strong> — Hidden Asset Theory + Porter's Diamond. Mines casually mentioned assets with historic strategic significance. A deep-water port, a university with an agriculture faculty, a diaspora network, a border crossing — these are the "junk DNA" that powered transformation in Shenzhen, Penang, Medellín, and Kigali.</div>
+                                    <div className="md:col-span-2"><strong className="text-white">Universal Translation Layer</strong> — Aristotle's Rhetoric + Halliday's Register Theory. Adapts every finding for 5 distinct audiences: investors (logos-led, IRR/NPV language), government (ethos-led, policy alignment), community (pathos-led, plain language), partners (logos-led, operational detail), executives (ethos-led, strategic framing). Each gets tailored vocabulary, document format, and door-opener briefs.</div>
+                                </div>
+                                <p className="text-[11px] text-rose-200/60 mt-3 italic">These engines don't wait to be asked. They analyse how you think, what you avoid, where your region sits globally, and how to communicate findings to every audience that matters. The system doesn't just answer your question — it questions your question.</p>
                             </div>
 
                             <div className="grid md:grid-cols-3 gap-4">
@@ -1477,16 +1508,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <strong className="text-white">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters. None include ethical reasoning gates, emotional intelligence modelling, or self-evolving algorithms.
                                     </p>
                                     <p className="text-xs text-white/80 mb-3">
-                                        <strong className="text-white">No system anywhere combines:</strong> multi-persona adversarial analysis, 46 quantitative viability indices, Monte Carlo stress testing, proactive intelligence with autonomous monitoring, 7-model human cognition simulation, <em>and</em> an 8-engine autonomous intelligence layer that reasons creatively, detects goals, enforces ethical constraints, evolves its own weights, models stakeholder emotions, and simulates futures — all in a single platform purpose-built for regional economic development.
+                                        <strong className="text-white">No system anywhere combines:</strong> multi-persona adversarial analysis, 46 quantitative viability indices, Monte Carlo stress testing, proactive intelligence with autonomous monitoring, 7-model human cognition simulation, an 8-engine autonomous intelligence layer that reasons creatively, detects goals, enforces ethical constraints, evolves its own weights, models stakeholder emotions, and simulates futures, <em>and</em> a 7-engine reflexive intelligence layer that analyses how users think, detects identity loss, maps investment lifecycles, finds structural twin regions, mines hidden assets, and translates every finding for every audience — all in a single platform purpose-built for regional economic development.
                                     </p>
                                     <p className="text-xs text-white/80">
-                                        <strong className="text-white">Specifically, no other system has:</strong> Bisociation-based creative synthesis, Structure Mapping cross-domain transfer, autonomous goal detection via HTN decomposition, Rawlsian ethical hard gates, online gradient descent self-evolution, Bayesian adaptive learning with Ebbinghaus retention, Prospect Theory emotional intelligence, or Monte Carlo scenario simulation with causal feedback loops. We have all eight, running together, integrated into a single intelligence hub.
+                                        <strong className="text-white">Specifically, no other system has:</strong> Bisociation-based creative synthesis, Structure Mapping cross-domain transfer, autonomous goal detection via HTN decomposition, Rawlsian ethical hard gates, online gradient descent self-evolution, Bayesian adaptive learning with Ebbinghaus retention, Prospect Theory emotional intelligence, Monte Carlo scenario simulation with causal feedback loops, discourse-analysis user signal decoding, Baudrillard simulacrum identity detection, Vernon/Kondratieff investment lifecycle mapping, Gentner-based regional mirroring, latent advantage mining, or Aristotelian audience-adaptive translation. We have all fifteen, running together, integrated into a single intelligence hub.
                                     </p>
                                 </div>
 
                                 <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
                                     <p className="text-xs text-white/90 italic">
-                                        "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail. The 8 autonomous engines represent capabilities that have never been implemented in any commercial system — each backed by published mathematical theory, implemented in real TypeScript with no placeholders."
+                                        "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail. The 15 autonomous and reflexive engines represent capabilities that have never been implemented in any commercial system — each backed by published mathematical theory, implemented in real TypeScript with no placeholders."
                                     </p>
                                 </div>
                             </div>
@@ -1743,13 +1774,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Nexus Intelligence OS v7.0
                             </span>
                             <span>•</span>
-                            <span>NSIL Engine v4.0</span>
+                            <span>NSIL Engine v5.0</span>
                             <span>•</span>
                             <span className="text-cyan-400">Knowledge Layer Active</span>
                             <span>•</span>
                             <span className="text-purple-400">Cognition Active</span>
                             <span>•</span>
                             <span className="text-emerald-400">Autonomous Active</span>
+                            <span>•</span>
+                            <span className="text-rose-400">Reflexive Active</span>
                         </div>
                     </div>
                 </div>

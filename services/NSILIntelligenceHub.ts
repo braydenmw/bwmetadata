@@ -19,6 +19,10 @@
  *              EmotionalIntelligence, ScenarioSimulation
  *   Layer 7 — Proactive Layer: continuous monitoring, drift detection, backtesting
  *   Layer 8 — Output Synthesis: provenance, audit trail, document generation
+ *   Layer 9 — Reflexive Intelligence: 7 engines that turn analytical power inward
+ *              UserSignalDecoder, InternalEchoDetector, InvestmentLifecycleMapper,
+ *              RegionalMirroringEngine, RegionalIdentityDecoder,
+ *              LatentAdvantageMiner, UniversalTranslationLayer
  *
  * Every public method returns a typed result with full provenance.
  * Nothing is hidden. Everything is auditable.
@@ -42,6 +46,15 @@ import { SelfEvolvingAlgorithmEngine, type EvolutionReport as _EvolutionReport }
 import { AdaptiveLearningEngine, type LearningReport as _LearningReport } from './autonomous/AdaptiveLearningEngine';
 import { EmotionalIntelligenceEngine, type EmotionalIntelligenceResult as _EmotionalIntelligenceResult, type EmotionalContext } from './autonomous/EmotionalIntelligenceEngine';
 import { ScenarioSimulationEngine, type SimulationResult as _SimulationResult, type SimulationContext } from './autonomous/ScenarioSimulationEngine';
+
+// Reflexive Intelligence engines (Layer 9)
+import { UserSignalDecoder, type UserInputSnapshot, type UserSignalReport } from './reflexive/UserSignalDecoder';
+import { InternalEchoDetector, type EchoReport } from './reflexive/InternalEchoDetector';
+import { InvestmentLifecycleMapper, type LifecycleContext, type LifecycleReport } from './reflexive/InvestmentLifecycleMapper';
+import { RegionalMirroringEngine, type MirroringReport } from './reflexive/RegionalMirroringEngine';
+import { RegionalIdentityDecoder, type IdentityReport } from './reflexive/RegionalIdentityDecoder';
+import { LatentAdvantageMiner, type LatentAdvantageReport } from './reflexive/LatentAdvantageMiner';
+import { UniversalTranslationLayer, type TranslationInput, type TranslationReport } from './reflexive/UniversalTranslationLayer';
 
 // ============================================================================
 // TYPES
@@ -89,6 +102,29 @@ export interface AutonomousIntelligence {
   };
 }
 
+export interface ReflexiveIntelligence {
+  // User signal analysis — what the user is really asking
+  userSignals: UserSignalReport;
+  
+  // Internal echoes — connections within user's own data
+  internalEchoes: EchoReport;
+  
+  // Investment lifecycle — where the region sits on the curve
+  lifecyclePosition: LifecycleReport;
+  
+  // Regional mirroring — structural twins
+  mirrorAnalysis: MirroringReport;
+  
+  // Identity decoding — simulacrum detection
+  identityAnalysis: IdentityReport;
+  
+  // Latent advantages — "junk DNA" mining
+  latentAdvantages: LatentAdvantageReport;
+  
+  // Universal translation — audience-specific outputs
+  translationPackage: TranslationReport;
+}
+
 export interface IntelligenceReport {
   id: string;
   timestamp: Date;
@@ -108,6 +144,9 @@ export interface IntelligenceReport {
   
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
+  
+  // Reflexive intelligence layer — system turns analytical power inward
+  reflexive?: ReflexiveIntelligence;
   
   // Applicable insights from past decisions
   applicableInsights: LearningInsight[];
@@ -189,6 +228,7 @@ export class NSILIntelligenceHub {
     let counterfactual: CounterfactualAnalysis | undefined;
     let unbiasedAnalysis: FullUnbiasedAnalysis | undefined;
     let autonomous: AutonomousIntelligence;
+    let reflexive: ReflexiveIntelligence | undefined;
     
     if (inputValidation.overallStatus !== 'rejected') {
       // Run ALL engines in parallel for maximum speed
@@ -204,11 +244,17 @@ export class NSILIntelligenceHub {
       unbiasedAnalysis = unbiasedResult;
       autonomous = autonomousResult;
       
+      // Run reflexive intelligence layer
+      reflexive = this.runReflexiveLayer(params, autonomous);
+      
       componentsRun.push(
         'PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis',
         'CreativeSynthesis', 'CrossDomainTransfer', 'AutonomousGoal',
         'EthicalReasoning', 'EmotionalIntelligence', 'ScenarioSimulation',
-        'SelfEvolvingAlgorithm', 'AdaptiveLearning'
+        'SelfEvolvingAlgorithm', 'AdaptiveLearning',
+        'UserSignalDecoder', 'InternalEchoDetector', 'InvestmentLifecycleMapper',
+        'RegionalMirroringEngine', 'RegionalIdentityDecoder',
+        'LatentAdvantageMiner', 'UniversalTranslationLayer'
       );
     } else {
       autonomous = this.emptyAutonomous();
@@ -255,13 +301,15 @@ export class NSILIntelligenceHub {
       counterfactual,
       unbiasedAnalysis,
       autonomous,
+      reflexive,
       applicableInsights,
       recommendation,
       processingTime,
       componentsRun,
       engineVersions: {
-        nsil: '4.0',
+        nsil: '5.0',
         autonomous: '1.0',
+        reflexive: '1.0',
         knowledge: '2.0',
         cognition: '1.5',
         proactive: '1.2'
@@ -413,6 +461,146 @@ export class NSILIntelligenceHub {
       scenarioOutlook: { probabilityOfSuccess: 0, medianSPI: 0, riskLevel: 'critical' },
       evolutionReport: { generation: 0, fitness: 0, mutationsApplied: 0 },
       learningReport: { patternsLearned: 0, accuracyTrend: 0, activePatterns: 0 }
+    };
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // REFLEXIVE INTELLIGENCE LAYER (Layer 9)
+  // ════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Run all 7 reflexive engines and compile results.
+   * This layer turns the system's analytical power inward — on the user's
+   * own inputs, assumptions, blind spots, and hidden assets.
+   */
+  private static runReflexiveLayer(
+    params: Partial<ReportParameters>,
+    autonomous: AutonomousIntelligence
+  ): ReflexiveIntelligence {
+    const country = (params as Record<string, string>).country || '';
+    const sectorArr = (params as Record<string, string[]>).industry || ['general'];
+    const sector = sectorArr[0] || 'general';
+    const region = (params as Record<string, string>).region || '';
+
+    // Build UserInputSnapshot from params
+    const snapshot: UserInputSnapshot = {
+      missionSummary: (params as Record<string, string>).objectives || '',
+      problemStatement: (params as Record<string, string>).challenges || '',
+      strategicIntent: Array.isArray((params as Record<string, unknown>).strategicIntent)
+        ? (params as Record<string, string[]>).strategicIntent
+        : [(params as Record<string, string>).objectives || 'market-entry'],
+      additionalContext: (params as Record<string, string>).context || (params as Record<string, string>).additionalContext || '',
+      country,
+      region,
+      sector: sectorArr,
+      riskConcerns: (params as Record<string, string>).riskConcerns || '',
+      partnerProfile: (params as Record<string, string>).partnerProfile || '',
+      collaborativeNotes: (params as Record<string, string>).collaborativeNotes || '',
+      politicalSensitivities: Array.isArray((params as Record<string, unknown>).politicalSensitivities)
+        ? (params as Record<string, string[]>).politicalSensitivities
+        : [],
+      priorityThemes: Array.isArray((params as Record<string, unknown>).priorityThemes)
+        ? (params as Record<string, string[]>).priorityThemes
+        : []
+    };
+
+    // 1. User Signal Decoder — detect repetition, avoidance, circularity
+    const userSignals = UserSignalDecoder.decode(snapshot);
+
+    // 2. Internal Echo Detector — cross-reference within user's own data
+    const internalEchoes = InternalEchoDetector.detect(snapshot);
+
+    // 3. Investment Lifecycle Mapper — where is this region on the curve?
+    const lifecycleCtx: LifecycleContext = {
+      region,
+      country,
+      sector: sector,
+      currentFDITrend: 'unknown',
+      yearsOfFDIData: 5,
+      hasHistoricalInvestment: snapshot.additionalContext.toLowerCase().includes('previous') ||
+                                snapshot.additionalContext.toLowerCase().includes('historical') ||
+                                snapshot.additionalContext.toLowerCase().includes('used to'),
+      previousPeakSector: sector,
+      populationTrend: snapshot.additionalContext.toLowerCase().includes('growing') ? 'growing' :
+                       snapshot.additionalContext.toLowerCase().includes('declining') ? 'declining' : 'stable',
+      infrastructureAge: snapshot.collaborativeNotes.toLowerCase().includes('new') ? 'new' :
+                          snapshot.collaborativeNotes.toLowerCase().includes('aging') ? 'aging' : 'developing',
+      governmentPriority: snapshot.additionalContext.toLowerCase().includes('priority') ||
+                           snapshot.additionalContext.toLowerCase().includes('government support') ? 'high' : 'medium',
+      existingAssets: (snapshot.collaborativeNotes + ' ' + snapshot.additionalContext)
+        .split(/[,;.]/)
+        .map(s => s.trim())
+        .filter(s => s.length > 3)
+    };
+    const lifecyclePosition = InvestmentLifecycleMapper.map(lifecycleCtx);
+
+    // 4. Regional Mirroring Engine — find structural twins
+    const mirrorAnalysis = RegionalMirroringEngine.mirror(snapshot);
+
+    // 5. Regional Identity Decoder — simulacrum detection
+    const identityAnalysis = RegionalIdentityDecoder.decode(snapshot);
+
+    // 6. Latent Advantage Miner — "junk DNA" mining
+    const latentAdvantages = LatentAdvantageMiner.mine(snapshot);
+
+    // 7. Universal Translation Layer — audience-specific outputs
+    // Convert key findings into translation inputs
+    const translationInputs: TranslationInput[] = [];
+
+    // Add autonomous findings as translation inputs
+    for (const strategy of autonomous.creativeStrategies.slice(0, 3)) {
+      translationInputs.push({
+        finding: strategy.strategy,
+        category: 'opportunity',
+        confidence: strategy.feasibilityScore,
+        region, sector,
+        context: 'Creative synthesis engine output',
+        sourceEngine: 'CreativeSynthesisEngine'
+      });
+    }
+
+    // Add latent advantages as translation inputs
+    for (const adv of latentAdvantages.latentAdvantages.slice(0, 3)) {
+      translationInputs.push({
+        finding: `Hidden asset: ${adv.asset} — ${adv.historicalValue}`,
+        category: 'hidden-asset',
+        confidence: adv.confidenceScore * 100,
+        region, sector,
+        context: adv.exploitationStrategy,
+        sourceEngine: 'LatentAdvantageMiner'
+      });
+    }
+
+    // Add lifecycle position as translation input
+    translationInputs.push({
+      finding: `Region is in the ${lifecyclePosition.currentPhase} phase of investment lifecycle. ${lifecyclePosition.phaseRationale}`,
+      category: 'lifecycle-position',
+      confidence: lifecyclePosition.phaseConfidence,
+      region, sector,
+      context: lifecyclePosition.reactivationPlaybook.join('; '),
+      sourceEngine: 'InvestmentLifecycleMapper'
+    });
+
+    // Add identity insight as translation input
+    translationInputs.push({
+      finding: identityAnalysis.positioningRecommendation,
+      category: 'identity-insight',
+      confidence: identityAnalysis.overallAuthenticity,
+      region, sector,
+      context: `Simulacrum level: ${identityAnalysis.simulacrumLevel}`,
+      sourceEngine: 'RegionalIdentityDecoder'
+    });
+
+    const translationPackage = UniversalTranslationLayer.translate(translationInputs);
+
+    return {
+      userSignals,
+      internalEchoes,
+      lifecyclePosition,
+      mirrorAnalysis,
+      identityAnalysis,
+      latentAdvantages,
+      translationPackage
     };
   }
 
@@ -763,7 +951,15 @@ export class NSILIntelligenceHub {
       { component: 'SelfEvolvingAlgorithmEngine', layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
       { component: 'AdaptiveLearningEngine',      layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
       { component: 'EmotionalIntelligenceEngine', layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
-      { component: 'ScenarioSimulationEngine',    layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now }
+      { component: 'ScenarioSimulationEngine',    layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      // Reflexive Intelligence engines (Layer 9)
+      { component: 'UserSignalDecoder',             layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'InternalEchoDetector',           layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'InvestmentLifecycleMapper',      layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'RegionalMirroringEngine',        layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'RegionalIdentityDecoder',        layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'LatentAdvantageMiner',           layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now },
+      { component: 'UniversalTranslationLayer',      layer: 'Reflexive Intelligence',    status: 'operational', lastCheck: now }
     ];
   }
 
@@ -772,7 +968,7 @@ export class NSILIntelligenceHub {
    */
   static getEngineVersions(): Record<string, string> {
     return {
-      'NSILIntelligenceHub':        '4.0.0',
+      'NSILIntelligenceHub':        '5.0.0',
       'PersonaEngine':              '2.0.0',
       'InputShieldService':         '1.1.0',
       'CounterfactualEngine':       '1.0.0',
@@ -785,7 +981,14 @@ export class NSILIntelligenceHub {
       'SelfEvolvingAlgorithmEngine':'1.0.0',
       'AdaptiveLearningEngine':     '1.0.0',
       'EmotionalIntelligenceEngine':'1.0.0',
-      'ScenarioSimulationEngine':   '1.0.0'
+      'ScenarioSimulationEngine':   '1.0.0',
+      'UserSignalDecoder':          '1.0.0',
+      'InternalEchoDetector':       '1.0.0',
+      'InvestmentLifecycleMapper':  '1.0.0',
+      'RegionalMirroringEngine':    '1.0.0',
+      'RegionalIdentityDecoder':    '1.0.0',
+      'LatentAdvantageMiner':       '1.0.0',
+      'UniversalTranslationLayer':  '1.0.0'
     };
   }
 }
