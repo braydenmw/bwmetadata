@@ -412,7 +412,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <h2 className="text-xl md:text-2xl font-light mb-6">What Happens When You Use It</h2>
 
                     <p className="text-sm text-white/70 leading-relaxed mb-8">
-                        Most platforms hand you a blank page and wish you luck. This one already knows the territory. Before you type a single word, the system has decades of methodology, country profiles, and sector intelligence loaded and ready. Here is what a typical session looks like:
+                        Most platforms hand you a blank page and wish you luck. This one already knows the territory. Before you type a single word, the system has decades of methodology, country profiles, and sector intelligence loaded and ready. Five steps take you from a rough idea to board-ready documentation.
                     </p>
 
                     {/* Journey Steps — vertical timeline */}
@@ -423,9 +423,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="text-cyan-400 text-xs font-bold">1</span>
                             </div>
                             <h3 className="text-base font-medium mb-1">The System Recognises Your Question</h3>
-                            <p className="text-sm text-white/60 leading-relaxed">
+                            <p className="text-sm text-white/60 leading-relaxed mb-3">
                                 The moment you select a country, sector, or problem type, the <strong className="text-cyan-400">Knowledge Architecture</strong> activates. The Methodology Knowledge Base checks whether it holds relevant intelligence — country investment frameworks, sector patterns, standard timelines and costs. The Pattern Confidence Engine matches your question against 12 embedded pattern categories. Most questions aren't novel. The system recognises this and tells you what it already knows — before any formula runs.
                             </p>
+                            <div className="bg-cyan-500/5 border border-cyan-500/15 rounded-lg px-4 py-2.5">
+                                <p className="text-[11px] text-cyan-300/80"><strong className="text-cyan-300">What you see:</strong> A confidence classification appears — <em>authoritative</em> (strong pattern match, tighter analysis), <em>informed</em> (partial match), or <em>exploratory</em> (genuinely novel — wider ranges, explicit caveats). This tells you how much the system already knows about your situation before it starts calculating.</p>
+                            </div>
                         </div>
 
                         {/* Step 2 */}
@@ -434,9 +437,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="text-amber-400 text-xs font-bold">2</span>
                             </div>
                             <h3 className="text-base font-medium mb-1">Research the Landscape</h3>
-                            <p className="text-sm text-white/60 leading-relaxed">
-                                Type a city, company, or government into <strong className="text-amber-400">BW AI Search</strong>. In seconds, the system pulls verified data from public sources and delivers a one-page intelligence brief — demographics, GDP, leadership, infrastructure, and comparison benchmarks. The brief is enriched by internal knowledge: if the system already holds a country profile, it layers that context into the results automatically.
+                            <p className="text-sm text-white/60 leading-relaxed mb-3">
+                                Type a city, company, or government into <strong className="text-amber-400">BW AI Search</strong>. In seconds, the system pulls verified data from public sources and delivers a one-page intelligence brief — demographics, GDP, leadership, infrastructure, and comparison benchmarks. If the system already holds a country profile, it layers that context into the results automatically.
                             </p>
+                            <div className="bg-amber-500/5 border border-amber-500/15 rounded-lg px-4 py-2.5">
+                                <p className="text-[11px] text-amber-300/80"><strong className="text-amber-300">What you see:</strong> A structured intelligence brief with real numbers — population, GDP, key industries, government structure, infrastructure quality — plus internal knowledge overlaid where available. You can search as many locations as you need.</p>
+                            </div>
                         </div>
 
                         {/* Step 3 */}
@@ -445,9 +451,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="text-amber-400 text-xs font-bold">3</span>
                             </div>
                             <h3 className="text-base font-medium mb-1">Define Your Opportunity</h3>
-                            <p className="text-sm text-white/60 leading-relaxed">
-                                Enter the platform and complete the <strong className="text-amber-400">Ten-Step Intake Protocol</strong> — a structured process capturing every dimension of your project: identity, strategy, financials, risk, governance. Steps 1, 2, 4, and 7 capture what only you know (your identity, your intent, your partners, your resources). Steps 3, 5, 6, 8, and 9 are pre-populated with system knowledge where available — you confirm, adjust, or override.
+                            <p className="text-sm text-white/60 leading-relaxed mb-3">
+                                Complete the <strong className="text-amber-400">Ten-Step Intake Protocol</strong> — a structured process capturing every dimension of your project: identity, strategy, financials, risk, governance. Steps 1, 2, 4, and 7 capture what only you know (your identity, your intent, your partners, your resources). Steps 3, 5, 6, 8, and 9 are pre-populated with system knowledge where available — you confirm, adjust, or override.
                             </p>
+                            <div className="bg-amber-500/5 border border-amber-500/15 rounded-lg px-4 py-2.5">
+                                <p className="text-[11px] text-amber-300/80"><strong className="text-amber-300">What you see:</strong> Ten guided sections in the left sidebar, each with clear labels — Identity, Mandate, Market, Partners, Financial, Risks, Capabilities, Execution, Governance, Rate & Liquidity. A progress bar tracks completion. The BW Consultant AI sits alongside to answer questions as you work.</p>
+                            </div>
                         </div>
 
                         {/* Step 4 */}
@@ -456,9 +465,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="text-amber-400 text-xs font-bold">4</span>
                             </div>
                             <h3 className="text-base font-medium mb-1">Watch the System Think</h3>
-                            <p className="text-sm text-white/60 leading-relaxed">
-                                Hit generate. The <strong className="text-amber-400">Live Report System</strong> activates in real time — you see the knowledge layer set confidence levels, the NSIL engine score your project across 38 formulas, five adversarial personas debate its merits, and the Human Cognition Engine pressure-test how decision-makers will respond. Known patterns get tighter confidence intervals; genuinely novel terrain gets wider ranges with explicit caveats. Nothing is hidden. Every score, debate transcript, and reasoning chain is visible and traceable.
+                            <p className="text-sm text-white/60 leading-relaxed mb-3">
+                                Hit generate. The <strong className="text-amber-400">Live Report</strong> builds in real time — the knowledge layer sets confidence levels, the NSIL engine scores your project across 38 formulas, five adversarial personas debate its merits, and the Human Cognition Engine pressure-tests how decision-makers will actually respond. Nothing is hidden. Every score, every debate point, and every reasoning chain is visible.
                             </p>
+                            <div className="bg-amber-500/5 border border-amber-500/15 rounded-lg px-4 py-2.5">
+                                <p className="text-[11px] text-amber-300/80"><strong className="text-amber-300">What you see:</strong> A live document preview that populates section by section — success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations. Known patterns get tighter confidence intervals. Genuinely novel terrain gets wider ranges with explicit caveats. Every number is traceable to its inputs.</p>
+                            </div>
                         </div>
 
                         {/* Step 5 */}
@@ -467,35 +479,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="text-emerald-400 text-xs font-bold">5</span>
                             </div>
                             <h3 className="text-base font-medium mb-1">Export Board-Ready Documents</h3>
-                            <p className="text-sm text-white/60 leading-relaxed">
-                                Once analysis is complete, the <strong className="text-emerald-400">Document Factory</strong> compiles everything into institutional-grade deliverables — Investment Prospectuses, Risk Matrices, LOIs, Grant Applications, Due-Diligence Packs — formatted and evidence-backed. Each document traces every recommendation back to specific data inputs, formula calculations, pattern confidence levels, and persona debate transcripts. The confidence classification (authoritative / informed / exploratory) is stated in every output.
+                            <p className="text-sm text-white/60 leading-relaxed mb-3">
+                                Once analysis is complete, the <strong className="text-emerald-400">Document Factory</strong> compiles everything into institutional-grade deliverables — Investment Prospectuses, Risk Matrices, LOIs, Grant Applications, Due-Diligence Packs — formatted and evidence-backed. Each document traces every recommendation back to specific data inputs, formula calculations, and persona debate transcripts.
                             </p>
+                            <div className="bg-emerald-500/5 border border-emerald-500/15 rounded-lg px-4 py-2.5">
+                                <p className="text-[11px] text-emerald-300/80"><strong className="text-emerald-300">What you get:</strong> Professional documents that look like they came from a top-tier advisory firm — with one critical difference: every claim has an audit trail. The confidence classification (authoritative / informed / exploratory) is stated in every output so whoever reads it knows exactly how certain the analysis is.</p>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Proof: Side-by-Side Comparison */}
-                    <div className="mb-6">
-                        <p className="text-xs text-white/50 uppercase tracking-wider mb-4 font-semibold">THE OUTPUT DIFFERENCE</p>
-                        <div className="grid md:grid-cols-2 gap-4">
-                            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5">
-                                <p className="text-xs text-red-400 uppercase tracking-wider mb-3 font-semibold">GENERIC AI RESPONSE</p>
-                                <p className="text-sm text-white/80 italic mb-3">"This project appears promising with strong market potential. Consider securing funding and building partnerships to move forward."</p>
-                                <div className="border-t border-red-500/20 pt-3">
-                                    <p className="text-xs text-white/50">✗ No metrics</p>
-                                    <p className="text-xs text-white/50">✗ No specific problems identified</p>
-                                    <p className="text-xs text-white/50">✗ No actionable recommendations</p>
-                                </div>
-                            </div>
-                            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-5">
-                                <p className="text-xs text-emerald-400 uppercase tracking-wider mb-3 font-semibold">BWGA AI ANALYSIS</p>
-                                <p className="text-sm text-white/80 mb-3">"SPI: 34%. 3 fatal flaws: undefined revenue model, $4.2M funding gap, missing regulatory pre-clearance. <strong className="text-white">Do not proceed until addressed.</strong>"</p>
-                                <div className="border-t border-emerald-500/20 pt-3">
-                                    <p className="text-xs text-emerald-300">✓ Quantified success probability</p>
-                                    <p className="text-xs text-emerald-300">✓ Specific problems with values</p>
-                                    <p className="text-xs text-emerald-300">✓ Clear go/no-go recommendation</p>
-                                </div>
-                            </div>
-                        </div>
+                    {/* Summary bar */}
+                    <div className="bg-gradient-to-r from-white/5 to-transparent border border-white/10 rounded-xl p-5">
+                        <p className="text-sm text-white/80 leading-relaxed">
+                            <strong className="text-white">Five steps. One session.</strong> You start with a rough idea and finish with quantified analysis, stress-tested assumptions, and ready-to-send documentation. The system does the heavy lifting — the decades of methodology, the formula suite, the adversarial debate — so you can focus on the decision.
+                        </p>
                     </div>
                 </div>
             </section>
