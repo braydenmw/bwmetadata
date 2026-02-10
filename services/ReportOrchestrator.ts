@@ -12,6 +12,9 @@ import { GovernanceService } from './GovernanceService';
 import { optimizedAgenticBrain, computeFrontierIntelligence } from './algorithms';
 import { masterAutonomousOrchestrator } from './MasterAutonomousOrchestrator';
 import { proactiveOrchestrator } from './proactive/ProactiveOrchestrator';
+import { NSILIntelligenceHub } from './NSILIntelligenceHub';
+import { SituationAnalysisEngine } from './SituationAnalysisEngine';
+import { HistoricalParallelMatcher } from './HistoricalParallelMatcher';
 import type { CurrentContext } from './proactive/ProactiveSignalMiner';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -26,7 +29,7 @@ export class ReportOrchestrator {
     const ivasInput = mapToIVAS(refinedIntake);
     const scfInput = mapToSCF(refinedIntake);
 
-    // Run all intelligence engines in parallel
+    // Run all intelligence engines in parallel (including NSIL autonomous layer)
     const [
       spiResult,
       rroiResult,
@@ -40,7 +43,10 @@ export class ReportOrchestrator {
       criResult,
       advancedIndices,
       adversarialStack,
-      agenticBrainResult
+      agenticBrainResult,
+      nsilReport,
+      situationAnalysis,
+      historicalParallels
     ] = await Promise.all([
       calculateSPI(params),
       generateRROI(params),
@@ -54,7 +60,10 @@ export class ReportOrchestrator {
       DerivedIndexService.calculateCRI(params),
       AdvancedIndexService.computeIndices(params),
       AdversarialReasoningService.generate(params),
-      optimizedAgenticBrain.think(params).catch(() => null)
+      optimizedAgenticBrain.think(params).catch(() => null),
+      NSILIntelligenceHub.runFullAnalysis(params).catch((err) => { console.warn('NSIL full analysis error (non-blocking):', err); return null; }),
+      Promise.resolve(SituationAnalysisEngine.analyse(params)),
+      Promise.resolve(HistoricalParallelMatcher.match(params))
     ]);
 
     console.log('DEBUG: All engines completed');
@@ -133,7 +142,35 @@ export class ReportOrchestrator {
         adversarialConfidence: adversarialStack.adversarialConfidence,
         agenticBrain: agenticBrainSnapshot,
         frontierIntelligence,
-        proactiveBriefing
+        proactiveBriefing,
+        // NSIL Autonomous Intelligence Layer
+        nsilIntelligence: nsilReport ? {
+          autonomous: nsilReport.autonomous,
+          recommendation: nsilReport.recommendation,
+          inputValidation: { overallTrust: nsilReport.inputValidation.overallTrust, overallStatus: nsilReport.inputValidation.overallStatus },
+          processingTime: nsilReport.processingTime,
+          componentsRun: nsilReport.componentsRun
+        } : undefined,
+        // Situation Analysis — multi-perspective view
+        situationAnalysis: situationAnalysis ? {
+          explicitNeeds: situationAnalysis.explicitNeeds,
+          implicitNeeds: situationAnalysis.implicitNeeds,
+          unconsideredNeeds: situationAnalysis.unconsideredNeeds,
+          blindSpots: situationAnalysis.blindSpots,
+          recommendedQuestions: situationAnalysis.recommendedQuestions,
+          overallReadiness: situationAnalysis.overallReadiness,
+          stakeholderViews: situationAnalysis.stakeholderViews,
+          timeHorizonDivergence: situationAnalysis.timeHorizonDivergence
+        } : undefined,
+        // Historical Parallel Matching
+        historicalParallels: historicalParallels ? {
+          matches: historicalParallels.matches.slice(0, 3),
+          synthesisInsight: historicalParallels.synthesisInsight,
+          successRate: historicalParallels.successRate,
+          commonSuccessFactors: historicalParallels.commonSuccessFactors,
+          commonFailureFactors: historicalParallels.commonFailureFactors,
+          recommendedActions: historicalParallels.recommendedActions
+        } : undefined
       }
     };
 

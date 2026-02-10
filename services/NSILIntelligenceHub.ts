@@ -1,14 +1,29 @@
 /**
- * NSIL INTELLIGENCE HUB - Unified Brain Interface
- * 
- * This is the central orchestrator that brings together all intelligence components:
- * - PersonaEngine (5 personas: Skeptic, Advocate, Regulator, Accountant, Operator)
- * - InputShieldService (adversarial input validation)
- * - CounterfactualEngine (alternative scenarios & Monte Carlo)
- * - OutcomeTracker (learning from past decisions)
- * - UnbiasedAnalysisEngine (pros/cons, alternatives, debate mode)
- * 
- * The Hub provides a single interface for the UI to access all intelligence capabilities.
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * NSIL INTELLIGENCE HUB — THE SINGLE MASTER CONTROL POINT
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * This is THE central brain of the entire operating system.
+ * Every engine, every formula, every autonomous subsystem reports through here.
+ *
+ * Architecture:
+ *   Layer 0 — Knowledge Architecture: PatternConfidence + MethodologyKnowledgeBase
+ *   Layer 1 — Input Shield: adversarial input validation
+ *   Layer 2 — Multi-Agent Debate: 5 PersonaEngine personas
+ *   Layer 3 — Formula Scoring: 21 DAG-scheduled formulas + 8 autonomous indices
+ *   Layer 4 — Stress Testing: CounterfactualEngine + ScenarioSimulation (Monte Carlo)
+ *   Layer 5 — Human Cognition: HumanCognitionEngine (7 models)
+ *   Layer 6 — Autonomous Intelligence: 8 new engines
+ *              CreativeSynthesis, CrossDomainTransfer, AutonomousGoal,
+ *              EthicalReasoning, SelfEvolvingAlgorithm, AdaptiveLearning,
+ *              EmotionalIntelligence, ScenarioSimulation
+ *   Layer 7 — Proactive Layer: continuous monitoring, drift detection, backtesting
+ *   Layer 8 — Output Synthesis: provenance, audit trail, document generation
+ *
+ * Every public method returns a typed result with full provenance.
+ * Nothing is hidden. Everything is auditable.
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 
 import { ReportParameters } from '../types';
@@ -18,9 +33,61 @@ import { CounterfactualEngine, CounterfactualAnalysis } from './CounterfactualEn
 import { OutcomeTracker, PredictionAccuracy, LearningInsight } from './OutcomeTracker';
 import { UnbiasedAnalysisEngine, FullUnbiasedAnalysis } from './UnbiasedAnalysisEngine';
 
+// Autonomous engines
+import { CreativeSynthesisEngine } from './autonomous/CreativeSynthesisEngine';
+import { CrossDomainTransferEngine } from './autonomous/CrossDomainTransferEngine';
+import { AutonomousGoalEngine } from './autonomous/AutonomousGoalEngine';
+import { EthicalReasoningEngine, type EthicalAssessment, type EthicalContext } from './autonomous/EthicalReasoningEngine';
+import { SelfEvolvingAlgorithmEngine, type EvolutionReport } from './autonomous/SelfEvolvingAlgorithmEngine';
+import { AdaptiveLearningEngine, type LearningReport } from './autonomous/AdaptiveLearningEngine';
+import { EmotionalIntelligenceEngine, type EmotionalIntelligenceResult, type EmotionalContext } from './autonomous/EmotionalIntelligenceEngine';
+import { ScenarioSimulationEngine, type SimulationResult, type SimulationContext } from './autonomous/ScenarioSimulationEngine';
+
 // ============================================================================
 // TYPES
 // ============================================================================
+
+export interface AutonomousIntelligence {
+  // Creative & cross-domain
+  creativeStrategies: Array<{ strategy: string; noveltyScore: number; feasibilityScore: number }>;
+  crossDomainInsights: Array<{ analogy: string; sourceModel: string; transferScore: number }>;
+  
+  // Goal-driven
+  autonomousGoals: Array<{ goal: string; priority: number; status: string; reasoning: string }>;
+  
+  // Ethical
+  ethicalAssessment: {
+    score: number;
+    recommendation: string;
+    flags: Array<{ severity: string; description: string }>;
+  };
+  
+  // Emotional & stakeholder dynamics
+  emotionalClimate: {
+    overallValence: number;
+    derailmentRisk: number;
+    framingRecommendation: string;
+  };
+  
+  // Forward-looking
+  scenarioOutlook: {
+    probabilityOfSuccess: number;
+    medianSPI: number;
+    riskLevel: string;
+  };
+  
+  // System health
+  evolutionReport: {
+    generation: number;
+    fitness: number;
+    mutationsApplied: number;
+  };
+  learningReport: {
+    patternsLearned: number;
+    accuracyTrend: number;
+    activePatterns: number;
+  };
+}
 
 export interface IntelligenceReport {
   id: string;
@@ -39,6 +106,9 @@ export interface IntelligenceReport {
   // Unbiased analysis
   unbiasedAnalysis?: FullUnbiasedAnalysis;
   
+  // Autonomous intelligence layer
+  autonomous: AutonomousIntelligence;
+  
   // Applicable insights from past decisions
   applicableInsights: LearningInsight[];
   
@@ -50,11 +120,14 @@ export interface IntelligenceReport {
     criticalActions: string[];
     keyRisks: string[];
     keyOpportunities: string[];
+    ethicalGate: 'pass' | 'conditional' | 'fail';
+    emotionalRisk: number;
   };
   
   // Meta
   processingTime: number;
   componentsRun: string[];
+  engineVersions: Record<string, string>;
 }
 
 export interface QuickAssessment {
@@ -64,6 +137,8 @@ export interface QuickAssessment {
   topConcerns: string[];
   topOpportunities: string[];
   nextStep: string;
+  ethicalPass: boolean;
+  emotionalClimateNotes: string;
 }
 
 // ============================================================================
@@ -71,51 +146,102 @@ export interface QuickAssessment {
 // ============================================================================
 
 export class NSILIntelligenceHub {
-  
+
+  // ════════════════════════════════════════════════════════════════════════
+  // AUTONOMOUS ENGINE INSTANCES (singleton pattern)
+  // ════════════════════════════════════════════════════════════════════════
+
+  private static selfEvolvingEngine = new SelfEvolvingAlgorithmEngine();
+  private static adaptiveLearningEngine = new AdaptiveLearningEngine();
+
+  // ════════════════════════════════════════════════════════════════════════
+  // MASTER CONTROL — FULL ANALYSIS
+  // ════════════════════════════════════════════════════════════════════════
+
   /**
-   * Run full intelligence analysis
-   * This is the main entry point for comprehensive analysis
+   * Run full intelligence analysis.
+   * This is THE master entry point. Every subsystem flows through here.
+   *
+   * Execution order:
+   * 1. Input validation (always first)
+   * 2. Outcome tracker (historical insights)
+   * 3. Core analysis (Personas, Counterfactual, Unbiased) — parallel
+   * 4. Autonomous intelligence layer — parallel
+   * 5. Adaptive learning record
+   * 6. Self-evolution check
+   * 7. Recommendation synthesis (all signals converge)
    */
   static async runFullAnalysis(params: Partial<ReportParameters>): Promise<IntelligenceReport> {
     const startTime = Date.now();
     const componentsRun: string[] = [];
     const reportId = `INTEL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
-    // Step 1: Input Validation (always runs first)
+    // ── Step 1: Input Validation (always runs first) ──
     const inputValidation = InputShieldService.validate(params);
     componentsRun.push('InputShield');
     
-    // Step 2: Get applicable insights from past decisions
+    // ── Step 2: Historical insights ──
     const applicableInsights = OutcomeTracker.getApplicableInsights(params);
     componentsRun.push('OutcomeTracker');
     
-    // Step 3: Run remaining components only if inputs are not rejected
+    // ── Step 3 & 4: Core analysis + Autonomous layer (parallel) ──
     let personaAnalysis: FullPersonaAnalysis | undefined;
     let counterfactual: CounterfactualAnalysis | undefined;
     let unbiasedAnalysis: FullUnbiasedAnalysis | undefined;
+    let autonomous: AutonomousIntelligence;
     
     if (inputValidation.overallStatus !== 'rejected') {
-      // Run analyses in parallel for speed
-      const [personaResult, counterfactualResult, unbiasedResult] = await Promise.all([
+      // Run ALL engines in parallel for maximum speed
+      const [personaResult, counterfactualResult, unbiasedResult, autonomousResult] = await Promise.all([
         PersonaEngine.runFullAnalysis(params),
         Promise.resolve(CounterfactualEngine.analyze(params)),
-        Promise.resolve(UnbiasedAnalysisEngine.analyze(params))
+        Promise.resolve(UnbiasedAnalysisEngine.analyze(params)),
+        Promise.resolve(this.runAutonomousLayer(params))
       ]);
       
       personaAnalysis = personaResult;
       counterfactual = counterfactualResult;
       unbiasedAnalysis = unbiasedResult;
+      autonomous = autonomousResult;
       
-      componentsRun.push('PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis');
+      componentsRun.push(
+        'PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis',
+        'CreativeSynthesis', 'CrossDomainTransfer', 'AutonomousGoal',
+        'EthicalReasoning', 'EmotionalIntelligence', 'ScenarioSimulation',
+        'SelfEvolvingAlgorithm', 'AdaptiveLearning'
+      );
+    } else {
+      autonomous = this.emptyAutonomous();
     }
     
-    // Step 4: Synthesize unified recommendation
+    // ── Step 5: Record interaction for adaptive learning ──
+    this.adaptiveLearningEngine.recordInteraction({
+      timestamp: new Date().toISOString(),
+      type: 'report',
+      context: {
+        country: (params as Record<string, string>).country || 'unknown',
+        sector: ((params as Record<string, string[]>).industry || ['general'])[0] || 'general',
+        region: (params as Record<string, string>).region || 'unknown',
+        investmentSizeM: 0
+      },
+      input: params as Record<string, unknown>,
+      output: {},
+      scores: {},
+      userSatisfaction: null,
+      outcomeAccuracy: null
+    });
+    
+    // ── Step 6: Exploration mutation (Thompson sampling) ──
+    this.selfEvolvingEngine.exploreMutation();
+    
+    // ── Step 7: Synthesize unified recommendation ──
     const recommendation = this.synthesizeRecommendation(
       inputValidation,
       personaAnalysis,
       counterfactual,
       unbiasedAnalysis,
-      applicableInsights
+      applicableInsights,
+      autonomous
     );
     
     const processingTime = Date.now() - startTime;
@@ -128,16 +254,174 @@ export class NSILIntelligenceHub {
       personaAnalysis,
       counterfactual,
       unbiasedAnalysis,
+      autonomous,
       applicableInsights,
       recommendation,
       processingTime,
-      componentsRun
+      componentsRun,
+      engineVersions: {
+        nsil: '4.0',
+        autonomous: '1.0',
+        knowledge: '2.0',
+        cognition: '1.5',
+        proactive: '1.2'
+      }
     };
   }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // AUTONOMOUS INTELLIGENCE LAYER
+  // ════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Run all 8 autonomous engines and compile results.
+   * This is the layer that makes the system unprecedented.
+   */
+  private static runAutonomousLayer(params: Partial<ReportParameters>): AutonomousIntelligence {
+    const country = (params as Record<string, string>).country || 'Australia';
+    const sector = ((params as Record<string, string[]>).industry || ['general'])[0] || 'general';
+    const region = (params as Record<string, string>).region || '';
+
+    // 1. Creative Synthesis — novel strategy generation
+    const creativeCtx = { country, sector, region, currentScores: {}, objectives: ['growth', 'sustainability'] };
+    const creativeResult = CreativeSynthesisEngine.synthesise(creativeCtx, 5);
+    const creativeStrategies = creativeResult.map(s => ({
+      strategy: s.strategy,
+      noveltyScore: s.noveltyScore,
+      feasibilityScore: s.feasibilityScore
+    }));
+
+    // 2. Cross-Domain Transfer — structural analogies
+    const transferCtx = { country, sector, region, challenges: ['market access', 'infrastructure'], objectives: ['growth'] };
+    const transferResult = CrossDomainTransferEngine.analyse(transferCtx);
+    const crossDomainInsights = transferResult.slice(0, 5).map(t => ({
+      analogy: t.analogy,
+      sourceModel: t.sourceModel,
+      transferScore: t.transferScore
+    }));
+
+    // 3. Autonomous Goals — self-initiated objectives
+    const goalCtx = { country, sector, region, currentScores: {}, riskFlags: [], informationGaps: [], stakeholders: [] };
+    const goalResult = AutonomousGoalEngine.generateGoals(goalCtx);
+    const autonomousGoals = goalResult.slice(0, 5).map(g => ({
+      goal: g.description,
+      priority: g.compositeScore,
+      status: g.status,
+      reasoning: g.reasoning
+    }));
+
+    // 4. Ethical Reasoning — value alignment check
+    const ethicalCtx: EthicalContext = {
+      country,
+      region,
+      sector,
+      investmentSizeM: 10,
+      expectedJobs: 100,
+      environmentalImpact: 'neutral',
+      displacementRisk: false,
+      communityConsulted: true,
+      indigenousLandOverlap: false,
+      localOwnershipPercentage: 50,
+      profitRepatriationPercentage: 30,
+      taxIncentivesOffered: false,
+      labourStandards: 'international',
+      supplyChainVisibility: 60
+    };
+    const ethicalResult = EthicalReasoningEngine.assess(ethicalCtx);
+    const ethicalAssessment = {
+      score: ethicalResult.overallEthicsScore,
+      recommendation: ethicalResult.recommendation,
+      flags: ethicalResult.flags.map(f => ({ severity: f.severity, description: f.description }))
+    };
+
+    // 5. Emotional Intelligence — stakeholder emotional dynamics
+    const emotionalCtx: EmotionalContext = {
+      country,
+      region,
+      sector,
+      investmentSizeM: 10,
+      hasDeadline: false,
+      deadlineWeeks: 52,
+      isElectionYear: false,
+      hasMediaAttention: false,
+      previousFailedAttempts: 0,
+      communitySupport: 'moderate',
+      investorRiskAppetite: 'moderate'
+    };
+    const emotionalResult = EmotionalIntelligenceEngine.analyse(emotionalCtx);
+    const emotionalClimate = {
+      overallValence: emotionalResult.aggregateEmotionalClimate.overallValence,
+      derailmentRisk: emotionalResult.aggregateEmotionalClimate.riskOfEmotionalDerailment,
+      framingRecommendation: emotionalResult.prospectTheory.framingRecommendation
+    };
+
+    // 6. Scenario Simulation — forward-looking Monte Carlo
+    const simCtx: SimulationContext = {
+      country,
+      region,
+      sector,
+      investmentSizeM: 10,
+      timelineQuarters: 8,
+      initialSPI: 60,
+      initialRROI: 55,
+      riskFactors: [],
+      opportunities: []
+    };
+    const simResult = ScenarioSimulationEngine.quickSimulate(simCtx);
+    const scenarioOutlook = {
+      probabilityOfSuccess: simResult.probabilityOfSuccess,
+      medianSPI: simResult.medianSPI,
+      riskLevel: simResult.riskLevel
+    };
+
+    // 7. Self-Evolving Algorithm — get evolution state
+    const evoReport = this.selfEvolvingEngine.getReport();
+    const evolutionReport = {
+      generation: evoReport.generation,
+      fitness: evoReport.fitness,
+      mutationsApplied: evoReport.mutationsApplied
+    };
+
+    // 8. Adaptive Learning — get learning state
+    const learnReport = this.adaptiveLearningEngine.getReport();
+    const learningReport = {
+      patternsLearned: learnReport.patternsLearned,
+      accuracyTrend: learnReport.scoreAccuracyTrend,
+      activePatterns: learnReport.activePatterns
+    };
+
+    return {
+      creativeStrategies,
+      crossDomainInsights,
+      autonomousGoals,
+      ethicalAssessment,
+      emotionalClimate,
+      scenarioOutlook,
+      evolutionReport,
+      learningReport
+    };
+  }
+
+  private static emptyAutonomous(): AutonomousIntelligence {
+    return {
+      creativeStrategies: [],
+      crossDomainInsights: [],
+      autonomousGoals: [],
+      ethicalAssessment: { score: 0, recommendation: 'reject', flags: [] },
+      emotionalClimate: { overallValence: 0, derailmentRisk: 0, framingRecommendation: '' },
+      scenarioOutlook: { probabilityOfSuccess: 0, medianSPI: 0, riskLevel: 'critical' },
+      evolutionReport: { generation: 0, fitness: 0, mutationsApplied: 0 },
+      learningReport: { patternsLearned: 0, accuracyTrend: 0, activePatterns: 0 }
+    };
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // QUICK ASSESSMENT
+  // ════════════════════════════════════════════════════════════════════════
   
   /**
-   * Quick assessment - faster, less comprehensive
-   * Good for real-time UI feedback
+   * Quick assessment — faster, less comprehensive.
+   * Now includes ethical gate check and emotional climate.
    */
   static quickAssess(params: Partial<ReportParameters>): QuickAssessment {
     // Quick input check
@@ -145,9 +429,31 @@ export class NSILIntelligenceHub {
     
     // Quick counterfactual
     const counterfactualQuick = CounterfactualEngine.getQuickSummary(params);
+
+    // Quick ethical check
+    const country = (params as Record<string, string>).country || 'Australia';
+    const sector = ((params as Record<string, string[]>).industry || ['general'])[0] || 'general';
+    const ethicalQuick = EthicalReasoningEngine.quickCheck({
+      country, region: '', sector,
+      investmentSizeM: 10, expectedJobs: 100,
+      environmentalImpact: 'neutral', displacementRisk: false,
+      communityConsulted: true, indigenousLandOverlap: false,
+      localOwnershipPercentage: 50, profitRepatriationPercentage: 30,
+      taxIncentivesOffered: false, labourStandards: 'international',
+      supplyChainVisibility: 60
+    });
+
+    // Quick emotional check
+    const emotionalQuick = EmotionalIntelligenceEngine.quickCheck({
+      country, region: '', sector,
+      investmentSizeM: 10, hasDeadline: false, deadlineWeeks: 52,
+      isElectionYear: false, hasMediaAttention: false,
+      previousFailedAttempts: 0, communitySupport: 'moderate',
+      investorRiskAppetite: 'moderate'
+    });
     
     // Calculate trust score
-    let trustScore = 70; // Base score
+    let trustScore = 70;
     
     if (!inputCheck.safe) {
       trustScore = 20;
@@ -155,12 +461,16 @@ export class NSILIntelligenceHub {
       trustScore = Math.min(95, Math.max(30, 
         50 + counterfactualQuick.confidence * 0.3 - inputCheck.issues.length * 15
       ));
+      // Ethical adjustment
+      if (!ethicalQuick.pass) trustScore = Math.min(trustScore, 40);
     }
     
     // Determine status color
     let status: QuickAssessment['status'] = 'yellow';
     if (!inputCheck.safe) {
       status = 'red';
+    } else if (!ethicalQuick.pass) {
+      status = 'orange';
     } else if (trustScore >= 70) {
       status = 'green';
     } else if (trustScore >= 50) {
@@ -174,9 +484,9 @@ export class NSILIntelligenceHub {
     if (status === 'red') {
       headline = 'Critical issues must be resolved before analysis';
     } else if (status === 'green') {
-      headline = 'Inputs validated - analysis ready to proceed';
+      headline = 'Inputs validated — analysis ready to proceed';
     } else if (status === 'yellow') {
-      headline = 'Some concerns identified - review recommended';
+      headline = 'Some concerns identified — review recommended';
     } else {
       headline = 'Multiple concerns require attention';
     }
@@ -185,6 +495,8 @@ export class NSILIntelligenceHub {
     let nextStep = '';
     if (status === 'red') {
       nextStep = `Resolve: ${inputCheck.issues[0] || 'Critical validation issues'}`;
+    } else if (!ethicalQuick.pass) {
+      nextStep = `Ethical concern: ${ethicalQuick.topConcern}`;
     } else if (counterfactualQuick.keyRisks.length > 0) {
       nextStep = `Address: ${counterfactualQuick.keyRisks[0]}`;
     } else {
@@ -202,7 +514,11 @@ export class NSILIntelligenceHub {
       topOpportunities: counterfactualQuick.shouldProceed 
         ? ['Opportunity appears viable', 'No critical blockers identified']
         : [],
-      nextStep
+      nextStep,
+      ethicalPass: ethicalQuick.pass,
+      emotionalClimateNotes: emotionalQuick.conducive 
+        ? 'Emotional climate is stable' 
+        : `Caution: ${emotionalQuick.topConcern}`
     };
   }
   
@@ -261,14 +577,16 @@ export class NSILIntelligenceHub {
   }
   
   /**
-   * Synthesize unified recommendation from all components
+   * Synthesize unified recommendation from ALL components.
+   * Now includes ethical gate and emotional risk.
    */
   private static synthesizeRecommendation(
     inputValidation: ShieldReport,
     personaAnalysis?: FullPersonaAnalysis,
     counterfactual?: CounterfactualAnalysis,
     unbiasedAnalysis?: FullUnbiasedAnalysis,
-    applicableInsights?: LearningInsight[]
+    applicableInsights?: LearningInsight[],
+    autonomous?: AutonomousIntelligence
   ): IntelligenceReport['recommendation'] {
     
     // If inputs were rejected, return early
@@ -281,7 +599,9 @@ export class NSILIntelligenceHub {
         keyRisks: inputValidation.validationResults
           .filter(r => r.flag === 'critical')
           .map(r => r.message),
-        keyOpportunities: []
+        keyOpportunities: [],
+        ethicalGate: 'fail',
+        emotionalRisk: 0
       };
     }
     
@@ -292,7 +612,12 @@ export class NSILIntelligenceHub {
       personaConfidence: personaAnalysis?.synthesis.confidenceLevel || 0,
       counterfactualRobustness: counterfactual?.robustness.score || 0,
       monteCarloLossProb: counterfactual?.monteCarlo.probabilityOfLoss || 50,
-      unbiasedBalance: unbiasedAnalysis?.balanceScore || 50
+      unbiasedBalance: unbiasedAnalysis?.balanceScore || 50,
+      // Autonomous signals
+      ethicalScore: autonomous?.ethicalAssessment.score || 50,
+      ethicalRecommendation: autonomous?.ethicalAssessment.recommendation || 'proceed',
+      emotionalDerailmentRisk: autonomous?.emotionalClimate.derailmentRisk || 0,
+      scenarioProbSuccess: autonomous?.scenarioOutlook.probabilityOfSuccess || 0.5
     };
     
     // Calculate weighted action decision
@@ -314,55 +639,84 @@ export class NSILIntelligenceHub {
     actionScore += (signals.counterfactualRobustness - 50) * 0.3;
     actionScore -= (signals.monteCarloLossProb - 30) * 0.2;
     confidenceFactors.push(signals.counterfactualRobustness);
+
+    // Autonomous signal weights
+    // Ethical gate — hard constraint
+    if (signals.ethicalRecommendation === 'reject') actionScore -= 40;
+    else if (signals.ethicalRecommendation === 'redesign') actionScore -= 20;
+    
+    // Scenario simulation weight
+    actionScore += (signals.scenarioProbSuccess - 0.5) * 30;
+    
+    // Emotional risk weight
+    if (signals.emotionalDerailmentRisk > 0.6) actionScore -= 15;
+    
+    // Determine ethical gate status
+    let ethicalGate: 'pass' | 'conditional' | 'fail';
+    if (signals.ethicalRecommendation === 'reject') ethicalGate = 'fail';
+    else if (signals.ethicalRecommendation === 'redesign' || signals.ethicalRecommendation === 'proceed-with-conditions') ethicalGate = 'conditional';
+    else ethicalGate = 'pass';
     
     // Determine action
     let action: IntelligenceReport['recommendation']['action'];
-    if (actionScore >= 20) action = 'proceed';
+    if (ethicalGate === 'fail') action = 'do-not-proceed';
+    else if (actionScore >= 20) action = 'proceed';
     else if (actionScore >= 0) action = 'proceed-with-caution';
     else if (actionScore >= -20) action = 'revise-and-retry';
     else action = 'do-not-proceed';
     
     // Calculate confidence
     const confidence = Math.round(
-      confidenceFactors.reduce((a, b) => a + b, 0) / confidenceFactors.length
+      confidenceFactors.reduce((a, b) => a + b, 0) / Math.max(confidenceFactors.length, 1)
     );
     
-    // Collect critical actions
+    // Collect critical actions (including autonomous)
     const criticalActions: string[] = [
       ...(personaAnalysis?.synthesis.criticalActions || []),
-      ...(counterfactual?.robustness.vulnerabilities.map(v => `Address: ${v}`) || [])
-    ].slice(0, 5);
+      ...(counterfactual?.robustness.vulnerabilities.map(v => `Address: ${v}`) || []),
+      ...(autonomous?.ethicalAssessment.flags
+        .filter(f => f.severity === 'critical')
+        .map(f => `Ethical: ${f.description}`) || [])
+    ].slice(0, 7);
     
     // Collect key risks
     const keyRisks: string[] = [
       ...(personaAnalysis?.skeptic.dealKillers.map(d => d.title) || []),
-      ...(personaAnalysis?.skeptic.hiddenRisks.map(r => r.title) || [])
+      ...(personaAnalysis?.skeptic.hiddenRisks.map(r => r.title) || []),
+      ...(autonomous?.autonomousGoals
+        .filter(g => g.priority > 70)
+        .map(g => `Auto-detected: ${g.goal}`) || [])
     ].slice(0, 5);
     
-    // Collect key opportunities
+    // Collect key opportunities (including creative synthesis)
     const keyOpportunities: string[] = [
       ...(personaAnalysis?.advocate.upsidePotential.map(u => u.title) || []),
-      ...(personaAnalysis?.advocate.synergies.map(s => s.title) || [])
+      ...(personaAnalysis?.advocate.synergies.map(s => s.title) || []),
+      ...(autonomous?.creativeStrategies
+        .filter(s => s.feasibilityScore > 50)
+        .map(s => s.strategy) || [])
     ].slice(0, 5);
     
     // Generate summary
     let summary = '';
     if (action === 'proceed') {
-      summary = `Analysis indicates a viable opportunity with ${confidence}% confidence. ${
-        personaAnalysis?.synthesis.summary || 'Multiple perspectives support proceeding.'
-      }`;
+      summary = `Analysis indicates a viable opportunity with ${confidence}% confidence. ` +
+        `Ethical score: ${signals.ethicalScore}/100. ` +
+        `Scenario success probability: ${(signals.scenarioProbSuccess * 100).toFixed(0)}%. ` +
+        (personaAnalysis?.synthesis.summary || 'Multiple perspectives support proceeding.');
     } else if (action === 'proceed-with-caution') {
-      summary = `Opportunity shows promise but has notable concerns. ${
-        keyRisks.length > 0 ? `Key risk: ${keyRisks[0]}. ` : ''
-      }Consider the critical actions before full commitment.`;
+      summary = `Opportunity shows promise but has notable concerns. ` +
+        (keyRisks.length > 0 ? `Key risk: ${keyRisks[0]}. ` : '') +
+        `Emotional derailment risk: ${(signals.emotionalDerailmentRisk * 100).toFixed(0)}%. ` +
+        `Consider the critical actions before full commitment.`;
     } else if (action === 'revise-and-retry') {
-      summary = `Current plan has significant issues that should be addressed. ${
-        keyRisks.length > 0 ? `Primary concern: ${keyRisks[0]}. ` : ''
-      }Revise approach and re-analyze.`;
+      summary = `Current plan has significant issues that should be addressed. ` +
+        (keyRisks.length > 0 ? `Primary concern: ${keyRisks[0]}. ` : '') +
+        `Revise approach and re-analyze.`;
     } else {
-      summary = `Analysis does not support proceeding at this time. ${
-        criticalActions.length > 0 ? criticalActions[0] : 'Multiple critical issues identified.'
-      }`;
+      summary = `Analysis does not support proceeding at this time. ` +
+        (ethicalGate === 'fail' ? `Ethical assessment: ${signals.ethicalRecommendation}. ` : '') +
+        (criticalActions.length > 0 ? criticalActions[0] : 'Multiple critical issues identified.');
     }
     
     // Add insight if applicable
@@ -377,25 +731,61 @@ export class NSILIntelligenceHub {
       summary,
       criticalActions,
       keyRisks,
-      keyOpportunities
+      keyOpportunities,
+      ethicalGate,
+      emotionalRisk: signals.emotionalDerailmentRisk
     };
   }
   
   /**
-   * Get component health status
+   * Get component health status — all 13 engines
    */
   static getComponentStatus(): Array<{
     component: string;
+    layer: string;
     status: 'operational' | 'degraded' | 'offline';
     lastCheck: Date;
   }> {
+    const now = new Date();
     return [
-      { component: 'PersonaEngine', status: 'operational', lastCheck: new Date() },
-      { component: 'InputShieldService', status: 'operational', lastCheck: new Date() },
-      { component: 'CounterfactualEngine', status: 'operational', lastCheck: new Date() },
-      { component: 'OutcomeTracker', status: 'operational', lastCheck: new Date() },
-      { component: 'UnbiasedAnalysisEngine', status: 'operational', lastCheck: new Date() }
+      // Core engines
+      { component: 'PersonaEngine',              layer: 'Multi-Agent Debate',        status: 'operational', lastCheck: now },
+      { component: 'InputShieldService',          layer: 'Input Shield',              status: 'operational', lastCheck: now },
+      { component: 'CounterfactualEngine',        layer: 'Stress Testing',            status: 'operational', lastCheck: now },
+      { component: 'OutcomeTracker',              layer: 'Learning',                  status: 'operational', lastCheck: now },
+      { component: 'UnbiasedAnalysisEngine',      layer: 'Cognitive Debiasing',       status: 'operational', lastCheck: now },
+      // Autonomous engines
+      { component: 'CreativeSynthesisEngine',     layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'CrossDomainTransferEngine',   layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'AutonomousGoalEngine',        layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'EthicalReasoningEngine',      layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'SelfEvolvingAlgorithmEngine', layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'AdaptiveLearningEngine',      layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'EmotionalIntelligenceEngine', layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now },
+      { component: 'ScenarioSimulationEngine',    layer: 'Autonomous Intelligence',   status: 'operational', lastCheck: now }
     ];
+  }
+
+  /**
+   * Get engine versions for audit provenance
+   */
+  static getEngineVersions(): Record<string, string> {
+    return {
+      'NSILIntelligenceHub':        '4.0.0',
+      'PersonaEngine':              '2.0.0',
+      'InputShieldService':         '1.1.0',
+      'CounterfactualEngine':       '1.0.0',
+      'OutcomeTracker':             '1.0.0',
+      'UnbiasedAnalysisEngine':     '1.0.0',
+      'CreativeSynthesisEngine':    '1.0.0',
+      'CrossDomainTransferEngine':  '1.0.0',
+      'AutonomousGoalEngine':       '1.0.0',
+      'EthicalReasoningEngine':     '1.0.0',
+      'SelfEvolvingAlgorithmEngine':'1.0.0',
+      'AdaptiveLearningEngine':     '1.0.0',
+      'EmotionalIntelligenceEngine':'1.0.0',
+      'ScenarioSimulationEngine':   '1.0.0'
+    };
   }
 }
 

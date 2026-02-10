@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ReportParameters, ChatMessage, CopilotOption } from '../types';
 import { runCopilotAnalysis, generateSearchGroundedContent } from '../services/geminiService';
+import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
+import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
+import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
 import { BrainCircuit, Zap } from 'lucide-react';
 
 interface InquireProps {
@@ -64,11 +67,34 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
             // Perform actual search if needed context
             const searchContext = await generateSearchGroundedContent(text); 
             
-            updateThinking('Reasoning & generating options...');
-            await new Promise(r => setTimeout(r, 1000)); // Visual delay
+            updateThinking('Running NSIL intelligence engines...');
+            // Run NSIL quick assessment + situation analysis for context enrichment
+            let nsilContext = '';
+            try {
+              const quickAssess = NSILIntelligenceHub.quickAssess(params);
+              const situation = SituationAnalysisEngine.quickSummary(params);
+              const historical = HistoricalParallelMatcher.quickMatch(params);
+              
+              nsilContext = `\nNSIL Intelligence:\n`;
+              nsilContext += `- Trust Score: ${quickAssess.trustScore}/100 (${quickAssess.status})\n`;
+              nsilContext += `- Ethical Gate: ${quickAssess.ethicalPass ? 'PASS' : 'CONCERNS'}\n`;
+              nsilContext += `- Readiness: ${situation.readiness}/100\n`;
+              nsilContext += `- Blind Spots: ${situation.blindSpotCount}\n`;
+              nsilContext += `- Top Concern: ${quickAssess.topConcerns[0] || 'None'}\n`;
+              nsilContext += `- Top Opportunity: ${quickAssess.topOpportunities[0] || 'None'}\n`;
+              nsilContext += `- Unconsidered Need: ${situation.topUnconsideredNeed}\n`;
+              if (historical.found) {
+                nsilContext += `- Historical Parallel: ${historical.case_title} (${historical.outcome}) - ${historical.topLesson}\n`;
+              }
+            } catch (e) {
+              console.warn('NSIL enrichment non-blocking error:', e);
+            }
 
-            // Perform Deep Analysis
-            const context = `User Context: ${params.organizationType} in ${params.region}. Industry: ${params.industry.join(', ')}. Goal: ${params.problemStatement}. Recent Search Context: ${searchContext.text}`;
+            updateThinking('Reasoning & generating options...');
+            await new Promise(r => setTimeout(r, 500)); // Visual delay
+
+            // Perform Deep Analysis with NSIL-enriched context
+            const context = `User Context: ${params.organizationType} in ${params.region}. Industry: ${params.industry.join(', ')}. Goal: ${params.problemStatement}. Recent Search Context: ${searchContext.text}${nsilContext}`;
             const result = await runCopilotAnalysis(text, context);
 
             // Replace Thinking Message with Result

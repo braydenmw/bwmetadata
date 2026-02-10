@@ -1196,6 +1196,9 @@ export interface ReportData {
     agenticBrain?: AgenticBrainSnapshot;
     frontierIntelligence?: FrontierIntelligenceResult;
     proactiveBriefing?: ProactiveBriefing;
+    nsilIntelligence?: Record<string, unknown>;
+    situationAnalysis?: Record<string, unknown>;
+    historicalParallels?: Record<string, unknown>;
   };
 }
 
@@ -1322,6 +1325,9 @@ export interface ReportPayload {
     agenticBrain?: AgenticBrainSnapshot;
     frontierIntelligence?: FrontierIntelligenceResult;
     proactiveBriefing?: ProactiveBriefing;
+    nsilIntelligence?: Record<string, unknown>;
+    situationAnalysis?: Record<string, unknown>;
+    historicalParallels?: Record<string, unknown>;
   };
 }
 

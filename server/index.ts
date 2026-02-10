@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -26,8 +27,8 @@ for (const envPath of envPaths) {
   }
 }
 
-// Debug: Check if API key is loaded
-console.log('GEMINI_API_KEY loaded:', process.env.GEMINI_API_KEY ? 'Yes (length: ' + process.env.GEMINI_API_KEY.length + ')' : 'No');
+// Debug: Check if API key is loaded (never log key length in production)
+console.log('GEMINI_API_KEY loaded:', process.env.GEMINI_API_KEY ? 'Yes' : 'No');
 
 // Import routes
 import aiRoutes from './routes/ai.js';
@@ -42,9 +43,40 @@ const PORT = parseInt(String(process.env.PORT || 3001), 10);
 
 // Security middleware
 app.use(helmet({
-  contentSecurityPolicy: false, // Disable for SPA compatibility
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      connectSrc: ["'self'", "https://api.worldbank.org", "https://restcountries.com", "https://nominatim.openstreetmap.org", "https://en.wikipedia.org", "https://google.serper.dev", "https://api.perplexity.ai", "https://generativelanguage.googleapis.com", "https://*.amazonaws.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      frameSrc: ["'none'"],
+    },
+  },
   crossOriginEmbedderPolicy: false,
 }));
+
+// Rate limiting — prevent abuse
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60, // 60 requests per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+app.use('/api/', apiLimiter);
+
+// Stricter limit for AI endpoints (expensive calls)
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'AI request rate limit exceeded. Please wait before trying again.' },
+});
+app.use('/api/ai/', aiLimiter);
+app.use('/api/search/location-intelligence', aiLimiter);
 
 // CORS - allow frontend origin (flexible for different deployment scenarios)
 const allowedOrigins = [
@@ -64,18 +96,16 @@ app.use(cors({
     if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) {
       return callback(null, true);
     }
-    // In production, be more permissive for the same domain
-    if (process.env.NODE_ENV === 'production') {
-      return callback(null, true);
-    }
+    // In production, only allow the configured frontend URL and known deploys
+    console.warn(`CORS blocked origin: ${origin}`);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
 
-// Body parsing
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+// Body parsing (with size limits to prevent abuse)
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // Compression
 app.use(compression());

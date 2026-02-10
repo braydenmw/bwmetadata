@@ -318,6 +318,10 @@ ${currentContext?.organizationName ? `I see you're working on **${currentContext
                     <div className="text-sm whitespace-pre-wrap leading-relaxed" 
                       dangerouslySetInnerHTML={{ 
                         __html: message.content
+                          .replace(/&/g, '&amp;')
+                          .replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;')
+                          .replace(/"/g, '&quot;')
                           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                           .replace(/\*(.*?)\*/g, '<em>$1</em>')
                           .replace(/\n/g, '<br/>')

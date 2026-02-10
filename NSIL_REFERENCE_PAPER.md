@@ -221,16 +221,110 @@ Two services implement the foundational principle at the code level:
 
 ## 9) Execution order: what happens when a user submits a question
 
-This is the actual processing sequence with the new knowledge architecture:
+This is the actual processing sequence with the full knowledge + autonomous architecture:
 
 1. **MethodologyKnowledgeBase lookup** — Does the system already hold relevant methodology, country, or sector knowledge? If yes, this knowledge is pulled immediately.
 2. **PatternConfidenceEngine assessment** — Does the user's question match a known pattern? How many patterns? How strong is the match? Assessment classified as authoritative / informed / exploratory.
 3. **Intake structuring** — User inputs (mission, constraints, region, partners, risk appetite) are structured into the 10-step protocol format.
 4. **Validation** — NSIL checks for contradictions and weak assumptions, cross-referencing against known patterns.
 5. **Multi-agent debate** — Five personas argue, with debate calibrated by pattern confidence. Known-pattern questions get debate focused on application specifics; exploratory questions get broader investigation.
-6. **Formula computation** — 21-formula suite runs via DAG scheduler. Confidence intervals are adjusted by pattern confidence level.
-7. **Synthesis** — Scores + debate + internal knowledge + historical context become recommendations, scenarios, and narratives.
-8. **Delivery** — Output generated as decision-ready deliverables with traceable rationale and clearly marked confidence levels.
+6. **Formula computation** — 29-formula suite runs via 5-level DAG scheduler. Confidence intervals are adjusted by pattern confidence level. Level 4 now includes 8 autonomous indices (CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM).
+7. **Autonomous intelligence layer** — All 8 autonomous engines fire in parallel:
+   - Creative Synthesis discovers novel strategies via Bisociation Theory
+   - Cross-Domain Transfer maps biological/physical analogies to economic data
+   - Autonomous Goal Detection identifies objectives the user hasn't considered
+   - Ethical Reasoning applies 7-dimension gate (Rawlsian, Utilitarian, Intergenerational, etc.)
+   - Self-Evolving Algorithm adjusts formula weights via online gradient descent
+   - Adaptive Learning updates Bayesian beliefs and Ebbinghaus retention curves
+   - Emotional Intelligence models stakeholder reactions via Prospect Theory
+   - Scenario Simulation runs Monte Carlo (5,000 iterations) with causal feedback loops
+8. **Synthesis** — Scores + debate + internal knowledge + autonomous signals + ethical gate + emotional risk become recommendations, scenarios, and narratives.
+9. **Delivery** — Output generated as decision-ready deliverables with traceable rationale, clearly marked confidence levels, ethical compliance status, and emotional risk scores.
+
+---
+
+## 10) Autonomous Intelligence Layer: the 8 engines
+
+The Autonomous Intelligence Layer (Layer 6 of the 9-layer architecture) represents the world-first innovation that distinguishes BWGA AI from every other system in existence. These 8 engines run on every analysis without user prompting. They are not add-ons — they are integrated into the NSIL Intelligence Hub as the central control point.
+
+### 10.1 CRE — Creative Synthesis Engine
+
+**Theory:** Bisociation Theory (Arthur Koestler, *The Act of Creation*, 1964)
+
+The engine maintains 12 knowledge frames spanning domains from marine biology to military strategy to game theory. For every analysis context, it computes Jaccard similarity and cosine distance between all frame pairs, identifies "bisociative connections" where dissimilar frames share structural relationships, and generates novel strategies that no single-domain expert would propose. Shannon entropy measures the diversity of the resulting strategy portfolio. Each strategy includes a novelty score, feasibility assessment, and implementation pathway.
+
+**Implementation:** `services/autonomous/CreativeSynthesisEngine.ts` (~450 lines, real TypeScript, no placeholders)
+
+### 10.2 CDT — Cross-Domain Transfer Engine
+
+**Theory:** Structure Mapping Theory (Dedre Gentner, 1983)
+
+Eight source domain models — Coral Reef Ecosystem, Immune System, Military Strategy, Thermodynamics, Neural Networks, Lotka-Volterra Population Dynamics, Urban Metabolism, and Game Theory — each contain entities, relationships, principles, and 50+ entity-to-economic-concept mappings. The engine evaluates structural similarity (entity overlap), relational depth (principle applicability), and pragmatic utility. Analogies are ranked by a composite score and each includes mapped insights with strategic recommendations.
+
+**Implementation:** `services/autonomous/CrossDomainTransferEngine.ts` (~450 lines)
+
+### 10.3 AGL — Autonomous Goal Detection Engine
+
+**Theory:** Goal Programming + Hierarchical Task Network (HTN) Decomposition + Multi-Criteria Decision Analysis (MCDA)
+
+Eight detection rules scan analysis context for patterns indicating unaddressed objectives — tax incentive gaps, supply chain fragility, talent pipeline risks, regulatory arbitrage, etc. Detected goals are decomposed into sub-goals via HTN, then ranked using MCDA with composite scoring: 0.30×impact + 0.25×urgency + 0.20×feasibility + 0.25×EVOI (Expected Value of Information). Goals above the criticality threshold are surfaced proactively.
+
+**Implementation:** `services/autonomous/AutonomousGoalEngine.ts` (~380 lines)
+
+### 10.4 ETH — Ethical Reasoning Engine
+
+**Theory:** 7-Dimension Ethical Framework (Utilitarian calculus, Rawlsian Difference Principle, Environmental impact, Intergenerational equity via Stern discount rate r=1.4%, Transparency, Proportionality, Cultural Sensitivity)
+
+This engine acts as a **hard gate** — if the ethical assessment score falls below threshold, the recommendation is blocked, not merely flagged. The Gini coefficient measures distributional equality. The Rawlsian dimension checks whether the worst-off group benefits. Intergenerational impact is discounted using the Stern formula: PV = FV × e^(-0.014 × 30). Seven stakeholder groups are auto-generated from context, and each receives a distributional impact score. The recommendation output is one of: proceed, proceed-with-conditions, redesign, or reject.
+
+**Implementation:** `services/autonomous/EthicalReasoningEngine.ts` (~350 lines)
+
+### 10.5 EVO — Self-Evolving Algorithm Engine
+
+**Theory:** Online Gradient Descent + Thompson Sampling (ε-greedy with decay)
+
+21 weight parameters (spanning SPI, RROI, SEAM, CRI, PRI, TCO, BARNA, NVI, ESI, SCF formulas) are continuously tuned based on outcome feedback. The learning rate decays as η_t = 0.05 / (1 + 0.001 × totalMutations). Exploration uses ε-greedy with ε decaying from 0.3. Every weight change is recorded in an immutable audit trail with rollback capability. The engine validates that mutations actually improve outcomes before committing them permanently.
+
+**Implementation:** `services/autonomous/SelfEvolvingAlgorithmEngine.ts` (~320 lines)
+
+### 10.6 ADA — Adaptive Learning Engine
+
+**Theory:** Bayesian Conjugate Normal-Normal Updates + EWMA + Ebbinghaus Forgetting Curve
+
+15 prior beliefs (SEZ success rates, regional investment multipliers, infrastructure impact factors, etc.) are updated via Bayesian conjugate normal-normal posterior updates with every new data point. Accuracy and satisfaction are tracked via Exponentially Weighted Moving Averages (α=0.1). The Ebbinghaus forgetting curve models pattern retention: R = e^(-t/S) where stability S = 24 × √(reinforcement count). Patterns that are not reinforced decay; patterns that recur strengthen.
+
+**Implementation:** `services/autonomous/AdaptiveLearningEngine.ts` (~330 lines)
+
+### 10.7 EMO — Emotional Intelligence Engine
+
+**Theory:** Russell's Circumplex Model of Affect + Prospect Theory (Kahneman & Tversky, 1979)
+
+12 emotions are mapped onto valence/arousal coordinates per Russell's Circumplex Model. Four stakeholder profiles (Investor, Regional Leader, Community, Regulator) have their emotional states computed based on analysis context — investment size, risk levels, community impact, and regulatory alignment. Prospect Theory provides the decision-weighting framework: V(x) = x^0.88 for gains, V(x) = -2.25 × (-x)^0.88 for losses (loss aversion coefficient λ ≈ 2.25). Probability weighting uses the Prelec function with γ = 0.61. The derailment risk score indicates likelihood that emotional factors will override rational analysis.
+
+**Implementation:** `services/autonomous/EmotionalIntelligenceEngine.ts` (~350 lines)
+
+### 10.8 SIM — Scenario Simulation Engine
+
+**Theory:** Monte Carlo Simulation + System Dynamics + Causal Loop Diagrams
+
+12 scenario variables (GDP Growth, FDI Flow, Exchange Rate, Inflation, Political Stability, Infrastructure Quality, Labour Cost, Regulatory Environment, Technology Adoption, Market Access, Tax Competitiveness, Environmental Risk) are connected by 14 causal links with four non-linearity types (linear, quadratic, threshold, saturation). Four feedback loops (Growth Spiral, Infrastructure-Investment, Talent Development, Inflation Brake) create realistic system dynamics. The engine runs 5,000 Monte Carlo iterations using Box-Muller normal sampling, triangular distributions, and lognormal distributions. Each run propagates perturbations through the causal network and estimates SPI via a weighted combination of variable states.
+
+**Implementation:** `services/autonomous/ScenarioSimulationEngine.ts` (~380 lines)
+
+---
+
+### Central control: NSILIntelligenceHub.ts
+
+All 8 autonomous engines are orchestrated by a single master control point: `services/NSILIntelligenceHub.ts`. This hub:
+
+- Imports and instantiates all 8 engines
+- Runs them in parallel during every analysis
+- Aggregates their outputs into a unified `AutonomousIntelligence` type
+- Feeds autonomous signals into the recommendation synthesis (ethical gate, emotional risk, creative strategies, autonomous goals, scenario probability)
+- Maintains engine version provenance for audit trails
+- Reports health status for all 13 active components (5 core + 8 autonomous)
+
+The NSIL Intelligence Hub is the single point through which the entire OS operates. Nothing bypasses it.
 
 ---
 
