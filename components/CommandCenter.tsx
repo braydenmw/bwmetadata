@@ -278,36 +278,37 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </p>
 
                     {/* Personal Story — Brayden Walls */}
-                    <div className="bg-white border-2 border-slate-300 rounded-sm p-8 mb-8 shadow-lg">
-                        <h3 className="text-2xl font-semibold text-slate-900 mb-6">Who I am — the founder and sole developer</h3>
-                        
-                        <div className="flex flex-col md:flex-row gap-6 mb-6">
-                            <div className="md:w-2/3">
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    Hey everyone, I'm Brayden Walls, the developer behind <strong>BW NEXUS AI</strong>, and I'm thrilled to finally share this with the world. For the first time, I'm lifting the curtain on what we've built—a groundbreaking neuro-symbolic intelligence system that's not just another AI tool, but a complete rethinking of how machines can reason like humans.
-                                </p>
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    For more than 16 months, I've been living, researching, and building in a place that inspired everything you see here — the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don't exist.
-                                </p>
-                            </div>
-                            <div className="md:w-1/3">
-                                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop&q=80" alt="Regional landscape" className="w-full h-64 md:h-full object-cover rounded-sm shadow-lg" />
-                            </div>
-                        </div>
-
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific — they all wanted the same thing: to be seen, to be understood, to have a fair shot.
-                        </p>
-
-                        <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn't a chatbot or a dashboard — it's a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you're about to see below is what I built, how it works, and why nothing else like it exists.
-                        </p>
-
-                        <div className="bg-gradient-to-r from-slate-100 to-slate-50 border border-slate-300 rounded-sm p-6">
-                            <p className="text-lg text-slate-800 leading-relaxed italic mb-3">
-                                "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
+                    <div className="relative rounded-sm overflow-hidden mb-8 shadow-lg border-2 border-slate-300">
+                        <img 
+                            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=1080&fit=crop&q=80" 
+                            alt="Regional landscape" 
+                            className="absolute inset-0 w-full h-full object-cover" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-900/75 to-slate-800/85" />
+                        <div className="relative z-10 p-8 md:p-10">
+                            <h3 className="text-2xl font-semibold text-white mb-6">Who I am &mdash; the founder and sole developer</h3>
+                            
+                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                                Hey everyone, I&rsquo;m Brayden Walls, the developer behind <strong className="text-white">BW NEXUS AI</strong>, and I&rsquo;m thrilled to finally share this with the world. For the first time, I&rsquo;m lifting the curtain on what we&rsquo;ve built&mdash;a groundbreaking neuro-symbolic intelligence system that&rsquo;s not just another AI tool, but a complete rethinking of how machines can reason like humans.
                             </p>
-                            <p className="text-slate-600 text-sm font-medium">— Brayden Walls, Founder & Sole Developer</p>
+                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                                For more than 16 months, I&rsquo;ve been living, researching, and building in a place that inspired everything you see here &mdash; the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don&rsquo;t exist.
+                            </p>
+
+                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                                I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific &mdash; they all wanted the same thing: to be seen, to be understood, to have a fair shot.
+                            </p>
+
+                            <p className="text-base text-slate-200 leading-relaxed mb-6">
+                                So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn&rsquo;t a chatbot or a dashboard &mdash; it&rsquo;s a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you&rsquo;re about to see below is what I built, how it works, and why nothing else like it exists.
+                            </p>
+
+                            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-sm p-6">
+                                <p className="text-lg text-white leading-relaxed italic mb-3">
+                                    &ldquo;Every &lsquo;new idea&rsquo; is old somewhere. The child learns what the parent already knows. The past isn&rsquo;t historical interest. The past is the solution library.&rdquo;
+                                </p>
+                                <p className="text-slate-300 text-sm font-medium">&mdash; Brayden Walls, Founder &amp; Sole Developer</p>
+                            </div>
                         </div>
                     </div>
                 </div>
