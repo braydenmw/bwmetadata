@@ -358,21 +358,44 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
                                 Most AI today &mdash; the language models behind ChatGPT, Claude, and others &mdash; is probabilistic. It guesses based on patterns. It can hallucinate facts, silently bias results, or give a different answer every time you ask the same question. It sounds confident, but it can&rsquo;t show its reasoning. And when the stakes are real &mdash; investments, policy decisions, people&rsquo;s livelihoods &mdash; guessing isn&rsquo;t good enough.
                             </p>
-                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                            <p className="text-sm text-slate-700 leading-relaxed mb-5">
                                 I built BW NEXUS AI because I believed intelligence should be provable. Not generated. Not predicted. <strong>Proven.</strong> Every recommendation traceable, every output repeatable, every claim defensible. That&rsquo;s what deterministic means &mdash; and that&rsquo;s what I set out to create.
                             </p>
-                            <div className="space-y-2">
-                                <div className="bg-red-50 border-l-4 border-red-400 rounded-r-sm p-3">
-                                    <p className="text-xs font-bold text-red-800">Language-First AI</p>
-                                    <p className="text-xs text-red-600">Sounds confident, but can hallucinate, contradict itself, and can&rsquo;t show its reasoning.</p>
+
+                            {/* Clean two-column comparison */}
+                            <div className="grid grid-cols-2 gap-4 mb-5">
+                                <div className="border border-slate-200 rounded-sm p-4">
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Language-First AI</p>
+                                    <ul className="space-y-1.5 text-xs text-slate-600">
+                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Hallucinates facts</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Hidden reasoning</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Inconsistent outputs</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> No audit trail</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Silent bias</li>
+                                    </ul>
                                 </div>
-                                <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-sm p-3">
-                                    <p className="text-xs font-bold text-blue-800">BW NEXUS AI</p>
-                                    <p className="text-xs text-blue-600">Validates, debates, scores, simulates, and delivers &mdash; with proof behind every claim.</p>
+                                <div className="border-2 border-blue-500 rounded-sm p-4 bg-blue-50/50">
+                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">BW NEXUS AI</p>
+                                    <ul className="space-y-1.5 text-xs text-slate-700">
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Validates every input</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Adversarial debate</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Deterministic scoring</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Full audit trail</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Ethical enforcement</li>
+                                    </ul>
                                 </div>
                             </div>
+
+                            <button 
+                                onClick={() => setShowFormulas(true)}
+                                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors"
+                            >
+                                <GitBranch size={16} />
+                                View Full Architecture &amp; 38+ Formulas &rarr;
+                            </button>
                         </div>
                     </div>
+
 
                     {/* Block 2: What sparked the NSIL — Text left, photo right */}
                     <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-8">
@@ -391,7 +414,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 It started with a frustration. I was watching regions with real potential — talent, resources, strategic location — get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> (994 lines) to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
                             <button 
                                 onClick={() => setShowBlock2More(true)}
@@ -444,10 +467,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 It doesn’t just answer. It thinks beyond your question — and analyses how you think.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory (608 lines) to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates (534 lines) — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback (403 lines). Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops (504 lines).
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory (591 lines) to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide (612 lines). Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance (483 lines). Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
                             </p>
                             <button 
                                 onClick={() => setShowBlock4More(true)}
@@ -516,240 +539,90 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-sm text-white leading-relaxed font-medium">
                             This isn&rsquo;t just technology. It&rsquo;s a paradigm shift &mdash; built to restore confidence in artificial intelligence, so people can finally make decisions they can defend in boardrooms, government briefings, and investment committees.
                         </p>
-                        <p className="text-sm text-slate-400 mt-4 mb-3">Want to see every algorithm, formula, engine, and the full NSIL architecture that makes this possible?</p>
-                        <button 
-                            onClick={() => setShowFormulas(!showFormulas)}
-                            className="inline-flex items-center gap-3 px-8 py-3 bg-blue-600 text-white rounded-sm text-sm font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
-                        >
-                            <GitBranch size={18} />
-                            {showFormulas ? 'Hide Full Technical Breakdown' : 'View Full Architecture & 38+ Formulas'}
-                        </button>
                     </div>
 
 
 
-                    {showFormulas && (
-                        <div className="mt-6 bg-slate-50 border border-slate-200 rounded-sm p-6 md:p-8 space-y-6 text-xs text-slate-700 leading-relaxed animate-in fade-in duration-300">
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="text-lg font-bold text-slate-900">The Full Technical Breakdown: Inside the NSIL</h3>
-                                <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-slate-600"><X size={18} /></button>
-                            </div>
-
-                            <p>The NSIL &mdash; Nexus Strategic Intelligence Layer &mdash; is the orchestration engine I invented to make AI deterministic. It&rsquo;s implemented in <span className="font-mono text-xs bg-white px-1 rounded">services/NSILIntelligenceHub.ts</span> and runs every analysis through 10 computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
-                            <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (994 lines, <span className="font-mono text-xs bg-white px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
-
-                            <p>Three examples of what these formulas do: <strong>SPI</strong> (Strategic Positioning Index) quantifies market dominance by weighting political risk against country risk with growth-adjusted positioning. <strong>RROI</strong> (Risk-Adjusted Return on Investment) runs Monte Carlo propagation across probability-weighted scenarios &mdash; real-world variance, not a single optimistic projection. <strong>SEAM</strong> (Strategic Ethical Alignment Matrix) cross-references strategy against policy frameworks and stakeholder impact.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 1 &mdash; The Shield (Input Validation)</h4>
-                            <p>A SAT Contradiction Solver I wrote (391 lines, <span className="font-mono text-xs bg-white px-1 rounded">SATContradictionSolver.ts</span>) converts inputs into propositional logic &mdash; conjunctive normal form &mdash; and runs a DPLL-based satisfiability check. Catches contradictions like claiming low risk while expecting 40%+ ROI, targeting global expansion on a small budget, or combining conservative strategy with aggressive growth targets. Each contradiction is classified by severity.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 2 &mdash; The Boardroom (Multi-Agent Debate)</h4>
-                            <p>Five adversarial personas &mdash; Skeptic (1.2x weight), Advocate, Regulator, Accountant, and Operator &mdash; conduct a structured Bayesian debate (557 lines, <span className="font-mono text-xs bg-white px-1 rounded">BayesianDebateEngine.ts</span>). Each votes across four outcomes: proceed, pause, restructure, or reject. Beliefs update via Bayesian inference. Early stopping at 0.75 posterior probability or 0.02 belief delta. Disagreements resolved through Nash bargaining. Every persona&rsquo;s reasoning preserved in the audit trail.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 3 &mdash; The Engine (Formula Scoring)</h4>
-                            <p>The DAG Scheduler executes the full 38+ formula suite with typed inputs, bounded outputs, component breakdowns, and execution timing. Results flow into a <span className="font-mono text-xs bg-white px-1 rounded">CompositeScoreService</span> that normalises raw data against region-specific baselines. Deterministic jitter from hash-based seeding ensures reproducibility.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 4 &mdash; Stress Testing (Scenario Simulation)</h4>
-                            <p>The Scenario Simulation Engine (504 lines, <span className="font-mono text-xs bg-white px-1 rounded">ScenarioSimulationEngine.ts</span>) builds causal graphs with feedback loops, runs Monte Carlo propagation through multi-step chains with non-linear dynamics, and simulates forward outcomes using Markov chain state transitions across economic, political, social, environmental, technological, and regulatory categories.</p>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 5 &mdash; The Brain (Human Cognition Engine)</h4>
-                            <p>The Human Cognition Engine I wrote (1,307 lines, <span className="font-mono text-xs bg-white px-1 rounded">HumanCognitionEngine.ts</span>) implements 7 neuroscience models as mathematical implementations:</p>
-                            <ol className="list-decimal list-inside space-y-1 pl-2">
-                                <li><strong>Wilson-Cowan Neural Field Dynamics</strong> &mdash; Differential equations on excitatory/inhibitory neuron populations on a 50&times;50 spatial grid. Parameters: w_ee=1.5, w_ei=-1.0, w_ie=1.0, w_ii=-0.5, dt=0.01.</li>
-                                <li><strong>Predictive Coding (Rao &amp; Ballard)</strong> &mdash; 3-level hierarchical belief updating with prediction error minimisation. Learning rate 0.1.</li>
-                                <li><strong>Free Energy Principle (Friston)</strong> &mdash; Variational inference across 8 candidate policies, discount factor &gamma;=0.95.</li>
-                                <li><strong>Attention Models (Itti &amp; Koch)</strong> &mdash; Salience maps with intensity/colour/orientation weights. Winner-take-all with inhibition of return (0.7).</li>
-                                <li><strong>Emotional Processing</strong> &mdash; Neurovisceral integration theory, emotional inertia (0.8), autonomic coupling (0.6).</li>
-                                <li><strong>Global Workspace Theory</strong> &mdash; Coalition formation with ignition threshold 0.6. Information broadcasting across cognitive subsystems.</li>
-                                <li><strong>Baddeley&rsquo;s Working Memory</strong> &mdash; Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2.</li>
-                            </ol>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 6 &mdash; Autonomous Intelligence (8 Engines)</h4>
-                            <ul className="list-disc list-inside space-y-1 pl-2">
-                                <li><strong>Creative Synthesis</strong> (608 lines) &mdash; Koestler&rsquo;s bisociation theory + Fauconnier &amp; Turner conceptual blending.</li>
-                                <li><strong>Cross-Domain Transfer</strong> &mdash; Maps biology, physics, engineering onto economics via Gentner&rsquo;s structure-mapping theory.</li>
-                                <li><strong>Autonomous Goal</strong> &mdash; Detects emergent strategic goals from top-level index scores.</li>
-                                <li><strong>Ethical Reasoning</strong> (534 lines) &mdash; Multi-stakeholder utility, Rawlsian fairness, Stern Review discount rates (&le;1.4%). Every recommendation must pass this gate.</li>
-                                <li><strong>Self-Evolving Algorithm</strong> (403 lines) &mdash; Online gradient descent w_t+1 = w_t - &eta;&nabla;L, Thompson sampling, mutation-selection with full rollback.</li>
-                                <li><strong>Adaptive Learning</strong> &mdash; Bayesian belief updates from outcome feedback.</li>
-                                <li><strong>Emotional Intelligence</strong> &mdash; Prospect Theory + Russell&rsquo;s Circumplex Model for stakeholder dynamics.</li>
-                                <li><strong>Scenario Simulation</strong> (504 lines) &mdash; 5,000 Monte Carlo runs with causal loop modelling and Markov state transitions.</li>
-                            </ul>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-2">Layers 7&ndash;9 &mdash; Proactive, Output &amp; Reflexive</h4>
-                            <p><strong>Layer 7 (Proactive):</strong> Seven engines for backtesting, drift detection, continuous learning, and proactive signal mining.</p>
-                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 232 document types &mdash; all populated with exact data and confidence scores.</p>
-                            <p><strong>Layer 9 (Reflexive Intelligence):</strong> Seven engines that analyse the user:</p>
-                            <ul className="list-disc list-inside space-y-1 pl-2">
-                                <li><strong>User Signal Decoder</strong> (591 lines) &mdash; Shannon&rsquo;s information-theoretic redundancy. Detects repetition, avoidance, and emotional emphasis.</li>
-                                <li><strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself.</li>
-                                <li><strong>Investment Lifecycle Mapper</strong> &mdash; Maps project lifecycle stage, adjusts analysis accordingly.</li>
-                                <li><strong>Regional Mirroring</strong> (612 lines) &mdash; Finds structural twin regions via structure-mapping across 6 dimensions.</li>
-                                <li><strong>Regional Identity Decoder</strong> &mdash; Detects when authentic identity has been replaced with generic marketing language.</li>
-                                <li><strong>Latent Advantage Miner</strong> (483 lines) &mdash; Surfaces casually mentioned assets with real strategic significance.</li>
-                                <li><strong>Universal Translation Layer</strong> &mdash; Translates findings for 5 audiences: investors, government, community, partners, executives.</li>
-                            </ul>
-
-                            <h4 className="text-base font-bold text-slate-900 pt-4">The 38+ Proprietary Formulas</h4>
-                            <div className="grid md:grid-cols-3 gap-3 mt-2">
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Core Indices</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; SPI&trade; &mdash; Success Probability Index</li>
-                                        <li>&bull; RROI&trade; &mdash; Regional Return on Investment</li>
-                                        <li>&bull; SEAM&trade; &mdash; Stakeholder Alignment Matrix</li>
-                                        <li>&bull; PVI&trade; &mdash; Partnership Viability Index</li>
-                                        <li>&bull; RRI&trade; &mdash; Regional Resilience Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Risk Formulas</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; CRPS &mdash; Composite Risk Priority Score</li>
-                                        <li>&bull; RME &mdash; Risk Mitigation Effectiveness</li>
-                                        <li>&bull; VaR &mdash; Value at Risk</li>
-                                        <li>&bull; SRCI &mdash; Supply Chain Risk Index</li>
-                                        <li>&bull; PSS &mdash; Policy Shock Sensitivity</li>
-                                        <li>&bull; PRS &mdash; Political Risk Score</li>
-                                        <li>&bull; DCS &mdash; Dependency Concentration</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Financial Metrics</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; IRR &mdash; Internal Rate of Return</li>
-                                        <li>&bull; NPV &mdash; Net Present Value</li>
-                                        <li>&bull; WACC &mdash; Weighted Cost of Capital</li>
-                                        <li>&bull; DSCR &mdash; Debt Service Coverage</li>
-                                        <li>&bull; FMS &mdash; Funding Match Score</li>
-                                        <li>&bull; ROE &mdash; Return on Equity</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Operational Scores</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; ORS &mdash; Organizational Readiness</li>
-                                        <li>&bull; TCS &mdash; Team Capability Score</li>
-                                        <li>&bull; EEI &mdash; Execution Efficiency Index</li>
-                                        <li>&bull; SEQ &mdash; Sequencing Integrity Score</li>
-                                        <li>&bull; CGI &mdash; Capability Gap Index</li>
-                                        <li>&bull; LCI &mdash; Leadership Confidence Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Market Formulas</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; MPI &mdash; Market Penetration Index</li>
-                                        <li>&bull; CAI &mdash; Competitive Advantage Index</li>
-                                        <li>&bull; TAM &mdash; Total Addressable Market</li>
-                                        <li>&bull; SAM &mdash; Serviceable Available Market</li>
-                                        <li>&bull; GRI &mdash; Growth Rate Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Governance Metrics</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; GCI &mdash; Governance Confidence Index</li>
-                                        <li>&bull; CCS &mdash; Compliance Certainty Score</li>
-                                        <li>&bull; TPI &mdash; Transparency Index</li>
-                                        <li>&bull; ARI &mdash; Audit Readiness Index</li>
-                                        <li>&bull; RFI &mdash; Regulatory Friction Index</li>
-                                        <li>&bull; CIS &mdash; Counterparty Integrity Score</li>
-                                        <li>&bull; ESG &mdash; Environmental Social Governance</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-3 mt-4">
-                                <p className="text-xs text-slate-700 italic">
-                                    Every formula has defined methodology, transparent inputs, and a full audit trail. The 22 autonomous, proactive, and reflexive engines are backed by published mathematical theory, implemented in real TypeScript with no placeholders. This is the system I built. This is what makes it a world first.
-                                </p>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </section>
-            <div className="w-full h-28 md:h-36 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=400&fit=crop&q=80" alt="Intelligence technology" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
-            </div>
+
 
             {/* Section 4: FOUR PRODUCTS — Clean cards matching WHO THIS IS FOR */}
-            <section className="py-12 px-4 bg-slate-100">
-                <div className="max-w-5xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm mb-6 font-bold text-center">FOUR WAYS TO ACCESS INTELLIGENCE</p>
-                    <h2 className="text-3xl md:text-4xl font-light text-center leading-tight mb-4 text-slate-900">
+            <section className="relative py-16 px-4 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80" alt="Intelligence technology" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-900/80 to-slate-900/90" />
+                <div className="max-w-5xl mx-auto relative z-10">
+                    <p className="text-blue-400 uppercase tracking-[0.3em] text-sm mb-6 font-bold text-center">FOUR WAYS TO ACCESS INTELLIGENCE</p>
+                    <h2 className="text-3xl md:text-4xl font-light text-center leading-tight mb-4 text-white">
                         One Engine. Four Interfaces.
                     </h2>
-                    <p className="text-lg text-slate-600 text-center mb-8 max-w-3xl mx-auto">
+                    <p className="text-lg text-slate-300 text-center mb-10 max-w-3xl mx-auto">
                         Everything feeds into the same core pipeline &mdash; the same 6-phase NSIL architecture, the same 38+ formulas, the same adversarial debate. We just made it accessible in four different ways depending on what you need.
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-12">
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
-                                    <Search size={20} className="text-blue-600" />
+                                <div className="w-10 h-10 bg-blue-500/30 border border-blue-400/40 rounded-lg flex items-center justify-center">
+                                    <Search size={20} className="text-blue-300" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-semibold text-slate-900">BW AI Search</h3>
-                                    <p className="text-sm font-semibold text-blue-600">The Gateway.</p>
+                                    <h3 className="text-base font-semibold text-white">BW AI Search</h3>
+                                    <p className="text-sm font-semibold text-blue-400">The Gateway.</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            <p className="text-sm text-slate-300 leading-relaxed mb-3">
                                 Search any location on earth. In seconds, the retrieval and synthesis layers assemble a structured intelligence brief &mdash; demographics, GDP, leadership, infrastructure, investment climate, constraints, and investability signals &mdash; as the entry point to deeper analysis.
                             </p>
-                            <p className="text-xs text-blue-600 font-medium">Powered by vector memory retrieval + synthesis layers</p>
+                            <p className="text-xs text-blue-400 font-medium">Powered by vector memory retrieval + synthesis layers</p>
                         </div>
 
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
-                                    <FileCheck size={20} className="text-blue-600" />
+                                <div className="w-10 h-10 bg-blue-500/30 border border-blue-400/40 rounded-lg flex items-center justify-center">
+                                    <FileCheck size={20} className="text-blue-300" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-semibold text-slate-900">Live Report</h3>
-                                    <p className="text-sm font-semibold text-blue-600">The War Room.</p>
+                                    <h3 className="text-base font-semibold text-white">Live Report</h3>
+                                    <p className="text-sm font-semibold text-blue-400">The War Room.</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            <p className="text-sm text-slate-300 leading-relaxed mb-3">
                                 Watch all 6 phases fire in real time. See the SAT solver validate, the 5 personas debate, the DAG scheduler execute formulas, the Wilson-Cowan cognition layer simulate, and the strategy build itself before your eyes &mdash; section by section with full traceability.
                             </p>
-                            <p className="text-xs text-blue-600 font-medium">Visualises all 6 computational layers with live audit trail</p>
+                            <p className="text-xs text-blue-400 font-medium">Visualises all 6 computational layers with live audit trail</p>
                         </div>
 
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 bg-indigo-100 border border-indigo-300 rounded-lg flex items-center justify-center">
-                                    <Users size={20} className="text-indigo-600" />
+                                <div className="w-10 h-10 bg-indigo-500/30 border border-indigo-400/40 rounded-lg flex items-center justify-center">
+                                    <Users size={20} className="text-indigo-300" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-semibold text-slate-900">BW Consultant</h3>
-                                    <p className="text-sm font-semibold text-indigo-600">The Partner.</p>
+                                    <h3 className="text-base font-semibold text-white">BW Consultant</h3>
+                                    <p className="text-sm font-semibold text-indigo-400">The Partner.</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            <p className="text-sm text-slate-300 leading-relaxed mb-3">
                                 An embedded AI consultant powered by the interactive synthesis layer &mdash; clarifying inputs, challenging assumptions through the persona debate engine, and translating validated scores and analysis into actionable strategy.
                             </p>
-                            <p className="text-xs text-indigo-600 font-medium">Interactive access to the adversarial debate + synthesis layers</p>
+                            <p className="text-xs text-indigo-400 font-medium">Interactive access to the adversarial debate + synthesis layers</p>
                         </div>
 
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
-                                    <GitBranch size={20} className="text-blue-600" />
+                                <div className="w-10 h-10 bg-blue-500/30 border border-blue-400/40 rounded-lg flex items-center justify-center">
+                                    <GitBranch size={20} className="text-blue-300" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-semibold text-slate-900">Document Factory</h3>
-                                    <p className="text-sm font-semibold text-blue-600">The Closer.</p>
+                                    <h3 className="text-base font-semibold text-white">Document Factory</h3>
+                                    <p className="text-sm font-semibold text-blue-400">The Closer.</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            <p className="text-sm text-slate-300 leading-relaxed mb-3">
                                 The output layer turns validated, scored analysis into signed deals. Access 156 letter templates and 232 document types &mdash; LOIs, Term Sheets, RFPs, feasibility studies &mdash; all populated with your exact project data, confidence scores, and evidence trails from the pipeline.
                             </p>
-                            <p className="text-xs text-blue-600 font-medium">Board-ready documents generated from the full 6-phase pipeline</p>
+                            <p className="text-xs text-blue-400 font-medium">Board-ready documents generated from the full 6-phase pipeline</p>
                         </div>
                     </div>
                 </div>
@@ -1268,13 +1141,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 It started with a frustration. I was watching regions with real potential — talent, resources, strategic location — get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> (994 lines) to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Then I built the validation layer — a <strong>SAT Contradiction Solver</strong> (391 lines) that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
+                                Then I built the validation layer — a <strong>SAT Contradiction Solver</strong> that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Next came the debate engine. I wanted the system to argue with itself — to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> (557 lines) with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
+                                Next came the debate engine. I wanted the system to argue with itself — to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
                                 Then I added autonomous intelligence — 8 engines that think beyond the question. And reflexive intelligence — 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL — the Nexus Strategic Intelligence Layer</strong> — a 10-layer pipeline I invented from scratch to make all of this run deterministically.
@@ -1371,10 +1244,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 It doesn’t just answer. It thinks beyond your question — and analyses how you think.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory (608 lines) to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates (534 lines) — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback (403 lines). Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops (504 lines).
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory (591 lines) to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide (612 lines). Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance (483 lines). Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
                             </p>
                             <div className="space-y-2">
                                 <div className="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-sm p-3">
@@ -1831,7 +1704,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <section className="py-8 px-6 md:px-8 bg-slate-50 border-b border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <h3 className="text-sm text-blue-600 uppercase tracking-wider font-bold mb-4">Human Cognition Engine &mdash; Expert Judgement Simulation</h3>
-                                <p className="text-xs text-slate-500 mb-4">7 neuroscience models from published research, implemented as faithful mathematical engines (1,307 lines)</p>
+                                <p className="text-xs text-slate-500 mb-4">7 neuroscience models from published research, implemented as faithful mathematical engines</p>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="bg-white border border-slate-200 rounded-sm p-3">
                                         <p className="text-xs font-semibold text-slate-800 mb-1">Wilson-Cowan Neural Fields</p>
@@ -1862,10 +1735,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     {[
                                         { file: 'services/engine.ts', purpose: 'calculateSPI() — 7-component weighted scoring. computeSCF() — P10/P50/P90 impact.' },
                                         { file: 'services/MissingFormulasEngine.ts', purpose: 'computeRFI() — Regulatory Friction Index with bottleneck detection.' },
-                                        { file: 'services/PersonaEngine.ts', purpose: '5-persona adversarial debate engine (818 lines).' },
-                                        { file: 'services/ReportOrchestrator.ts', purpose: 'Full report assembly, all engines in parallel (555 lines).' },
-                                        { file: 'services/algorithms/DAGScheduler.ts', purpose: 'IVAS activation timeline. SCF composite scoring. Formula dependency graph (994 lines).' },
-                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control — all 22 engines orchestrated (997 lines).' },
+                                        { file: 'services/PersonaEngine.ts', purpose: '5-persona adversarial debate engine.' },
+                                        { file: 'services/ReportOrchestrator.ts', purpose: 'Full report assembly, all engines in parallel.' },
+                                        { file: 'services/algorithms/DAGScheduler.ts', purpose: 'IVAS activation timeline. SCF composite scoring. Formula dependency graph.' },
+                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control — all 22 engines orchestrated.' },
                                     ].map((item, idx) => (
                                         <div key={idx} className="bg-slate-50 border border-slate-200 rounded-sm p-3">
                                             <p className="text-xs font-mono text-blue-600 mb-1">{item.file}</p>
@@ -1913,6 +1786,169 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <button 
                                 onClick={() => setShowProofPopup(false)}
                                 className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Full Architecture & Formulas Popup */}
+            {showFormulas && (
+                <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 backdrop-blur-sm p-4" onClick={() => setShowFormulas(false)}>
+                    <div className="bg-white rounded-lg shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
+                        {/* Popup header */}
+                        <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 rounded-t-lg px-8 py-6 flex items-center justify-between">
+                            <div>
+                                <p className="text-blue-400 uppercase tracking-[0.2em] text-xs font-bold mb-1">FULL TECHNICAL BREAKDOWN</p>
+                                <h3 className="text-xl font-bold text-white">Inside the NSIL &mdash; Every Layer, Formula &amp; Engine</h3>
+                            </div>
+                            <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-white transition-colors p-2">
+                                <X size={24} />
+                            </button>
+                        </div>
+                        {/* Popup body */}
+                        <div className="p-6 md:p-8 space-y-6 text-xs text-slate-700 leading-relaxed">
+
+                            <p>The NSIL &mdash; Nexus Strategic Intelligence Layer &mdash; is the orchestration engine I invented to make AI deterministic. It&rsquo;s implemented in <span className="font-mono text-xs bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span> and runs every analysis through 10 computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
+                            <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (<span className="font-mono text-xs bg-slate-100 px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
+
+                            <p>Three examples of what these formulas do: <strong>SPI</strong> (Strategic Positioning Index) quantifies market dominance by weighting political risk against country risk with growth-adjusted positioning. <strong>RROI</strong> (Risk-Adjusted Return on Investment) runs Monte Carlo propagation across probability-weighted scenarios &mdash; real-world variance, not a single optimistic projection. <strong>SEAM</strong> (Strategic Ethical Alignment Matrix) cross-references strategy against policy frameworks and stakeholder impact.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 1 &mdash; The Shield (Input Validation)</h4>
+                            <p>A SAT Contradiction Solver I wrote (<span className="font-mono text-xs bg-slate-100 px-1 rounded">SATContradictionSolver.ts</span>) converts inputs into propositional logic &mdash; conjunctive normal form &mdash; and runs a DPLL-based satisfiability check. Catches contradictions like claiming low risk while expecting 40%+ ROI, targeting global expansion on a small budget, or combining conservative strategy with aggressive growth targets. Each contradiction is classified by severity.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 2 &mdash; The Boardroom (Multi-Agent Debate)</h4>
+                            <p>Five adversarial personas &mdash; Skeptic (1.2x weight), Advocate, Regulator, Accountant, and Operator &mdash; conduct a structured Bayesian debate (<span className="font-mono text-xs bg-slate-100 px-1 rounded">BayesianDebateEngine.ts</span>). Each votes across four outcomes: proceed, pause, restructure, or reject. Beliefs update via Bayesian inference. Early stopping at 0.75 posterior probability or 0.02 belief delta. Disagreements resolved through Nash bargaining. Every persona&rsquo;s reasoning preserved in the audit trail.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 3 &mdash; The Engine (Formula Scoring)</h4>
+                            <p>The DAG Scheduler executes the full 38+ formula suite with typed inputs, bounded outputs, component breakdowns, and execution timing. Results flow into a <span className="font-mono text-xs bg-slate-100 px-1 rounded">CompositeScoreService</span> that normalises raw data against region-specific baselines. Deterministic jitter from hash-based seeding ensures reproducibility.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 4 &mdash; Stress Testing (Scenario Simulation)</h4>
+                            <p>The Scenario Simulation Engine (<span className="font-mono text-xs bg-slate-100 px-1 rounded">ScenarioSimulationEngine.ts</span>) builds causal graphs with feedback loops, runs Monte Carlo propagation through multi-step chains with non-linear dynamics, and simulates forward outcomes using Markov chain state transitions across economic, political, social, environmental, technological, and regulatory categories.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 5 &mdash; The Brain (Human Cognition Engine)</h4>
+                            <p>The Human Cognition Engine I wrote (<span className="font-mono text-xs bg-slate-100 px-1 rounded">HumanCognitionEngine.ts</span>) implements 7 neuroscience models as mathematical implementations:</p>
+                            <ol className="list-decimal list-inside space-y-1 pl-2">
+                                <li><strong>Wilson-Cowan Neural Field Dynamics</strong> &mdash; Differential equations on excitatory/inhibitory neuron populations on a 50&times;50 spatial grid. Parameters: w_ee=1.5, w_ei=-1.0, w_ie=1.0, w_ii=-0.5, dt=0.01.</li>
+                                <li><strong>Predictive Coding (Rao &amp; Ballard)</strong> &mdash; 3-level hierarchical belief updating with prediction error minimisation. Learning rate 0.1.</li>
+                                <li><strong>Free Energy Principle (Friston)</strong> &mdash; Variational inference across 8 candidate policies, discount factor &gamma;=0.95.</li>
+                                <li><strong>Attention Models (Itti &amp; Koch)</strong> &mdash; Salience maps with intensity/colour/orientation weights. Winner-take-all with inhibition of return (0.7).</li>
+                                <li><strong>Emotional Processing</strong> &mdash; Neurovisceral integration theory, emotional inertia (0.8), autonomic coupling (0.6).</li>
+                                <li><strong>Global Workspace Theory</strong> &mdash; Coalition formation with ignition threshold 0.6. Information broadcasting across cognitive subsystems.</li>
+                                <li><strong>Baddeley&rsquo;s Working Memory</strong> &mdash; Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2.</li>
+                            </ol>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 6 &mdash; Autonomous Intelligence (8 Engines)</h4>
+                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                <li><strong>Creative Synthesis</strong> &mdash; Koestler&rsquo;s bisociation theory + Fauconnier &amp; Turner conceptual blending.</li>
+                                <li><strong>Cross-Domain Transfer</strong> &mdash; Maps biology, physics, engineering onto economics via Gentner&rsquo;s structure-mapping theory.</li>
+                                <li><strong>Autonomous Goal</strong> &mdash; Detects emergent strategic goals from top-level index scores.</li>
+                                <li><strong>Ethical Reasoning</strong> &mdash; Multi-stakeholder utility, Rawlsian fairness, Stern Review discount rates (&le;1.4%). Every recommendation must pass this gate.</li>
+                                <li><strong>Self-Evolving Algorithm</strong> &mdash; Online gradient descent w_t+1 = w_t - &eta;&nabla;L, Thompson sampling, mutation-selection with full rollback.</li>
+                                <li><strong>Adaptive Learning</strong> &mdash; Bayesian belief updates from outcome feedback.</li>
+                                <li><strong>Emotional Intelligence</strong> &mdash; Prospect Theory + Russell&rsquo;s Circumplex Model for stakeholder dynamics.</li>
+                                <li><strong>Scenario Simulation</strong> &mdash; 5,000 Monte Carlo runs with causal loop modelling and Markov state transitions.</li>
+                            </ul>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layers 7&ndash;9 &mdash; Proactive, Output &amp; Reflexive</h4>
+                            <p><strong>Layer 7 (Proactive):</strong> Seven engines for backtesting, drift detection, continuous learning, and proactive signal mining.</p>
+                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 232 document types &mdash; all populated with exact data and confidence scores.</p>
+                            <p><strong>Layer 9 (Reflexive Intelligence):</strong> Seven engines that analyse the user:</p>
+                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                <li><strong>User Signal Decoder</strong> &mdash; Shannon&rsquo;s information-theoretic redundancy. Detects repetition, avoidance, and emotional emphasis.</li>
+                                <li><strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself.</li>
+                                <li><strong>Investment Lifecycle Mapper</strong> &mdash; Maps project lifecycle stage, adjusts analysis accordingly.</li>
+                                <li><strong>Regional Mirroring</strong> &mdash; Finds structural twin regions via structure-mapping across 6 dimensions.</li>
+                                <li><strong>Regional Identity Decoder</strong> &mdash; Detects when authentic identity has been replaced with generic marketing language.</li>
+                                <li><strong>Latent Advantage Miner</strong> &mdash; Surfaces casually mentioned assets with real strategic significance.</li>
+                                <li><strong>Universal Translation Layer</strong> &mdash; Translates findings for 5 audiences: investors, government, community, partners, executives.</li>
+                            </ul>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-4">The 38+ Proprietary Formulas</h4>
+                            <div className="grid md:grid-cols-3 gap-3 mt-2">
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Core Indices</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; SPI&trade; &mdash; Success Probability Index</li>
+                                        <li>&bull; RROI&trade; &mdash; Regional Return on Investment</li>
+                                        <li>&bull; SEAM&trade; &mdash; Stakeholder Alignment Matrix</li>
+                                        <li>&bull; PVI&trade; &mdash; Partnership Viability Index</li>
+                                        <li>&bull; RRI&trade; &mdash; Regional Resilience Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Risk Formulas</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; CRPS &mdash; Composite Risk Priority Score</li>
+                                        <li>&bull; RME &mdash; Risk Mitigation Effectiveness</li>
+                                        <li>&bull; VaR &mdash; Value at Risk</li>
+                                        <li>&bull; SRCI &mdash; Supply Chain Risk Index</li>
+                                        <li>&bull; PSS &mdash; Policy Shock Sensitivity</li>
+                                        <li>&bull; PRS &mdash; Political Risk Score</li>
+                                        <li>&bull; DCS &mdash; Dependency Concentration</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Financial Metrics</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; IRR &mdash; Internal Rate of Return</li>
+                                        <li>&bull; NPV &mdash; Net Present Value</li>
+                                        <li>&bull; WACC &mdash; Weighted Cost of Capital</li>
+                                        <li>&bull; DSCR &mdash; Debt Service Coverage</li>
+                                        <li>&bull; FMS &mdash; Funding Match Score</li>
+                                        <li>&bull; ROE &mdash; Return on Equity</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Operational Scores</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; ORS &mdash; Organizational Readiness</li>
+                                        <li>&bull; TCS &mdash; Team Capability Score</li>
+                                        <li>&bull; EEI &mdash; Execution Efficiency Index</li>
+                                        <li>&bull; SEQ &mdash; Sequencing Integrity Score</li>
+                                        <li>&bull; CGI &mdash; Capability Gap Index</li>
+                                        <li>&bull; LCI &mdash; Leadership Confidence Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Market Formulas</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; MPI &mdash; Market Penetration Index</li>
+                                        <li>&bull; CAI &mdash; Competitive Advantage Index</li>
+                                        <li>&bull; TAM &mdash; Total Addressable Market</li>
+                                        <li>&bull; SAM &mdash; Serviceable Available Market</li>
+                                        <li>&bull; GRI &mdash; Growth Rate Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Governance Metrics</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; GCI &mdash; Governance Confidence Index</li>
+                                        <li>&bull; CCS &mdash; Compliance Certainty Score</li>
+                                        <li>&bull; TPI &mdash; Transparency Index</li>
+                                        <li>&bull; ARI &mdash; Audit Readiness Index</li>
+                                        <li>&bull; RFI &mdash; Regulatory Friction Index</li>
+                                        <li>&bull; CIS &mdash; Counterparty Integrity Score</li>
+                                        <li>&bull; ESG &mdash; Environmental Social Governance</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-3 mt-4">
+                                <p className="text-xs text-slate-700 italic">
+                                    Every formula has defined methodology, transparent inputs, and a full audit trail. The 22 autonomous, proactive, and reflexive engines are backed by published mathematical theory, implemented in real TypeScript with no placeholders. This is the system I built. This is what makes it a world first.
+                                </p>
+                            </div>
+                        </div>
+                        {/* Close button at bottom */}
+                        <div className="px-8 py-6 border-t border-slate-200 bg-slate-50 rounded-b-lg flex justify-end">
+                            <button 
+                                onClick={() => setShowFormulas(false)}
+                                className="px-8 py-3 bg-slate-900 text-white rounded-sm text-sm font-bold hover:bg-slate-800 transition-all"
                             >
                                 Close
                             </button>
