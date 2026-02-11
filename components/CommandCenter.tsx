@@ -392,54 +392,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
                                 The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> (994 lines) to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
-                            {!showBlock2More && (
-                                <button 
-                                    onClick={() => setShowBlock2More(true)}
-                                    className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
-                                >
-                                    Read More ↓
-                                </button>
-                            )}
-                            {showBlock2More && (
-                                <>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        Then I built the validation layer — a <strong>SAT Contradiction Solver</strong> (391 lines) that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
-                                    </p>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        Next came the debate engine. I wanted the system to argue with itself — to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> (557 lines) with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
-                                    </p>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        Then I added autonomous intelligence — 8 engines that think beyond the question. And reflexive intelligence — 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL — the Nexus Strategic Intelligence Layer</strong> — a 10-layer pipeline I invented from scratch to make all of this run deterministically.
-                                    </p>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                        128 TypeScript files. 50,000 lines of code. Clean builds in under 5 seconds across 2,105 modules. Full type safety with 900+ lines of strict definitions. 209.38 kB gzipped. One person. Twelve months. Everything built from nothing.
-                                    </p>
-                                    <div className="grid grid-cols-4 gap-2">
-                                        <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
-                                            <p className="text-xl font-bold text-blue-600">13</p>
-                                            <p className="text-xs text-slate-600">Core Algorithms</p>
-                                        </div>
-                                        <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
-                                            <p className="text-xl font-bold text-blue-600">38+</p>
-                                            <p className="text-xs text-slate-600">Formulas</p>
-                                        </div>
-                                        <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
-                                            <p className="text-xl font-bold text-blue-600">10</p>
-                                            <p className="text-xs text-slate-600">Layers</p>
-                                        </div>
-                                        <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
-                                            <p className="text-xl font-bold text-blue-600">50K</p>
-                                            <p className="text-xs text-slate-600">Lines of Code</p>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => setShowBlock2More(false)}
-                                        className="text-slate-500 hover:text-slate-700 text-sm font-semibold flex items-center gap-1 mt-3 transition-colors"
-                                    >
-                                        Show Less ↑
-                                    </button>
-                                </>
-                            )}
+                            <button 
+                                onClick={() => setShowBlock2More(true)}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
+                            >
+                                Read More ↓
+                            </button>
                         </div>
                     </div>
 
@@ -462,56 +420,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
                                 That’s when I found computational neuroscience — real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture I’d already built. The NSIL was designed to be extensible. So I added them.
                             </p>
-                            {!showBlock3More && (
-                                <button 
-                                    onClick={() => setShowBlock3More(true)}
-                                    className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
-                                >
-                                    Read More ↓
-                                </button>
-                            )}
-                            {showBlock3More && (
-                                <>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        I wrote the <strong>Human Cognition Engine</strong> — 1,307 lines of code implementing 7 neuroscience models as faithful mathematical implementations. Not simplified approximations. The real models, running live inside the NSIL pipeline. This is what turned a powerful analytics system into something genuinely new — the first platform that doesn’t just calculate answers, but thinks about them the way a human expert would.
-                                    </p>
-                                    <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 space-y-2 mb-3">
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Wilson-Cowan Neural Fields</strong> — Your brain has billions of neurons, some saying “go” (excitatory) and some saying “stop” (inhibitory). These differential equations (∂u/∂t = -u + ∫ w(r-r’)·f(v) dr’) model that battle on a 50×50 grid, simulating how experts balance competing factors like profit vs. risk. The NSIL runs this live with your data.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Predictive Processing (Rao &amp; Ballard)</strong> — Our brains don’t just react; they predict. Bayesian inference across 3 hierarchical levels anticipates what comes next — like forecasting market shifts from historical precedent. Learning rate 0.1, with prediction error minimisation at every level.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Friston’s Free Energy Principle</strong> — The brain minimises “surprise” by constantly updating beliefs. Variational inference across 8 candidate policies (γ=0.95) simulates how we adapt when new information arrives — revising plans without hallucinating.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Attention Allocation (Itti &amp; Koch)</strong> — Why do you notice one risk and miss another? Salience maps with winner-take-all competition and inhibition of return (0.7) model how the brain spots what matters in a sea of data.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Emotional Valence</strong> — Prospect theory shows the pain of losing £100 hurts more than the joy of gaining £100. This assigns emotional weight to every option, flagging deals that look good on paper but feel wrong.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Global Workspace Theory</strong> — Think of your brain as an office where every department shares information through one central workspace. Coalition formation with ignition threshold 0.6 ensures all layers integrate into coherent insights.
-                                        </p>
-                                        <p className="text-xs text-slate-800 leading-relaxed">
-                                            <strong className="text-slate-900">Working Memory (Baddeley’s Model)</strong> — Human short-term memory is limited. Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2 — this focuses outputs on the 3–5 factors that actually matter.
-                                        </p>
-                                    </div>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        No other platform — not Palantir, not Bloomberg Terminal, not McKinsey’s analytics — implements any of these models. BW NEXUS AI implements all seven. And they work because the NSIL was built to accommodate exactly this kind of extension — I just didn’t know these models existed when I designed it. They fit perfectly into what I’d already created.
-                                    </p>
-                                    <p className="text-xs text-slate-600 leading-relaxed italic">
-                                        That’s what makes this a world first. Not just the neuroscience. Not just the formulas. Not just the debate engine or the autonomous engines. It’s the fact that one person built an architecture flexible enough to unify all of them — and then discovered the missing piece that made it complete.
-                                    </p>
-                                    <button 
-                                        onClick={() => setShowBlock3More(false)}
-                                        className="text-slate-500 hover:text-slate-700 text-sm font-semibold flex items-center gap-1 mt-3 transition-colors"
-                                    >
-                                        Show Less ↑
-                                    </button>
-                                </>
-                            )}
+                            <button 
+                                onClick={() => setShowBlock3More(true)}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
+                            >
+                                Read More ↓
+                            </button>
                         </div>
                     </div>
 
@@ -534,34 +448,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
                                 Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory (591 lines) to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide (612 lines). Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance (483 lines). Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
                             </p>
-                            {!showBlock4More && (
-                                <button 
-                                    onClick={() => setShowBlock4More(true)}
-                                    className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
-                                >
-                                    Read More ↓
-                                </button>
-                            )}
-                            {showBlock4More && (
-                                <>
-                                    <div className="space-y-2">
-                                        <div className="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-sm p-3">
-                                            <p className="text-xs font-bold text-indigo-800">Autonomous Intelligence — 8 Engines</p>
-                                            <p className="text-xs text-indigo-600">CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM — creative synthesis, cross-domain transfer, ethical gates, adaptive learning, Monte Carlo simulation.</p>
-                                        </div>
-                                        <div className="bg-sky-50 border-l-4 border-sky-500 rounded-r-sm p-3">
-                                            <p className="text-xs font-bold text-sky-800">Reflexive Intelligence — 7 Engines</p>
-                                            <p className="text-xs text-sky-600">Signal decoding, echo detection, lifecycle mapping, regional mirroring, identity decoding, latent advantage mining, universal translation.</p>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => setShowBlock4More(false)}
-                                        className="text-slate-500 hover:text-slate-700 text-sm font-semibold flex items-center gap-1 mt-3 transition-colors"
-                                    >
-                                        Show Less ↑
-                                    </button>
-                                </>
-                            )}
+                            <button 
+                                onClick={() => setShowBlock4More(true)}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
+                            >
+                                Read More ↓
+                            </button>
                         </div>
                     </div>
 
@@ -921,75 +813,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
             </div>
 
-            {/* WHAT YOU GET — Document Factory */}
-            <section className="py-12 px-4 bg-slate-100">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
-                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">So What Comes Out the Other End?</h2>
-                    
-                    <p className="text-base text-slate-700 leading-relaxed mb-6">
-                        The output isn&rsquo;t &ldquo;AI text.&rdquo; The output is a complete decision package: the structured case, the quantified scores, the key risks and mitigations, the stakeholder narrative, and the supporting material required to move from idea &rarr; partner conversation &rarr; formal submission.
-                    </p>
-
-                    {/* Relocated & rewritten "Watch it think" — plain language */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-sm p-6 mb-6">
-                        <h3 className="text-lg font-semibold text-slate-900 mb-3">
-                            You can watch it all happen, live.
-                        </h3>
-                        <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                            While the system builds your case, you can watch every step in real time. You&rsquo;ll see the five expert personas debating your proposal, the scoring formulas running one by one, the risk models stress-testing your assumptions, and the final strategy assembling itself section by section. Nothing is hidden. Every score, every conclusion, every piece of evidence is visible and traceable.
-                        </p>
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            This isn&rsquo;t a black box &mdash; it&rsquo;s a glass box. The same inputs will always produce the same validated output. That&rsquo;s the whole point: if you can&rsquo;t see how it reached its answer, why would you trust it?
-                        </p>
-                    </div>
-
-                    {/* Reassurance message */}
-                    <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-6 mb-6">
-                        <p className="text-base text-white leading-relaxed font-medium">
-                            The good news? You don&rsquo;t need to understand how any of this works under the hood. You just need to know it&rsquo;s there &mdash; working for you, 24/7 &mdash; producing rigorous, defensible, repeatable output every single time. Here&rsquo;s what that actually looks like.
-                        </p>
-                    </div>
-
-                    <button 
-                        onClick={() => setShowOutputDetails(true)}
-                        className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-                    >
-                        <Info size={16} />
-                        More Details &mdash; Full Document Catalog &amp; Audit Trail
-                    </button>
-                </div>
-            </section>
-
-            {/* Photo Banner — Strategic Planning */}
-            <div className="w-full h-40 md:h-52 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=400&fit=crop&q=80" alt="Strategic planning session" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
-            </div>
-
-            {/* THE COMPREHENSIVE INTAKE FRAMEWORK */}
-            <section id="protocol" className="py-12 px-4 bg-white">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
-                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
-                    <p className="text-base text-blue-600 mb-4 flex items-center gap-2 font-medium">
-                        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-                        Most users complete this in 30-45 minutes
-                    </p>
-
-                    <p className="text-base text-slate-700 leading-relaxed mb-6">
-                        Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote &mdash; a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness.
-                    </p>
-
-                    <button 
-                        onClick={() => setShowProtocolDetails(true)}
-                        className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-                    >
-                        <Info size={16} />
-                        More Details &mdash; View All 10 Steps &amp; Data Requirements
-                    </button>
-                </div>
-            </section>
 
             {/* PROOF OF CAPABILITY */}
             <section id="proof" className="py-12 px-4 bg-slate-100">
@@ -1864,117 +1687,221 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
+            {/* Block 2 — Read More Popup */}
+            {showBlock2More && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock2More(false)}>
+                    <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="p-6 md:p-8">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                What sparked this: 12 months that changed everything.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                It started with a frustration. I was watching regions with real potential — talent, resources, strategic location — get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> (994 lines) to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Then I built the validation layer — a <strong>SAT Contradiction Solver</strong> (391 lines) that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Next came the debate engine. I wanted the system to argue with itself — to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> (557 lines) with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Then I added autonomous intelligence — 8 engines that think beyond the question. And reflexive intelligence — 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL — the Nexus Strategic Intelligence Layer</strong> — a 10-layer pipeline I invented from scratch to make all of this run deterministically.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                                128 TypeScript files. 50,000 lines of code. Clean builds in under 5 seconds across 2,105 modules. Full type safety with 900+ lines of strict definitions. 209.38 kB gzipped. One person. Twelve months. Everything built from nothing.
+                            </p>
+                            <div className="grid grid-cols-4 gap-2 mb-4">
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">13</p>
+                                    <p className="text-xs text-slate-600">Core Algorithms</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">38+</p>
+                                    <p className="text-xs text-slate-600">Formulas</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">10</p>
+                                    <p className="text-xs text-slate-600">Layers</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">50K</p>
+                                    <p className="text-xs text-slate-600">Lines of Code</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-4 border-t border-slate-200 flex justify-end">
+                            <button onClick={() => setShowBlock2More(false)} className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors">Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Block 3 — Read More Popup */}
+            {showBlock3More && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock3More(false)}>
+                    <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="p-6 md:p-8">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                Then I discovered something that changed the system forever.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                By this point, I had a working intelligence system — formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert — the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                That’s when I found computational neuroscience — real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture I’d already built. The NSIL was designed to be extensible. So I added them.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                I wrote the <strong>Human Cognition Engine</strong> — 1,307 lines of code implementing 7 neuroscience models as faithful mathematical implementations. Not simplified approximations. The real models, running live inside the NSIL pipeline. This is what turned a powerful analytics system into something genuinely new — the first platform that doesn’t just calculate answers, but thinks about them the way a human expert would.
+                            </p>
+                            <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 space-y-2 mb-3">
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Wilson-Cowan Neural Fields</strong> — Your brain has billions of neurons, some saying “go” (excitatory) and some saying “stop” (inhibitory). These differential equations (∂u/∂t = -u + ∫ w(r-r’)·f(v) dr’) model that battle on a 50×50 grid, simulating how experts balance competing factors like profit vs. risk. The NSIL runs this live with your data.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Predictive Processing (Rao &amp; Ballard)</strong> — Our brains don’t just react; they predict. Bayesian inference across 3 hierarchical levels anticipates what comes next — like forecasting market shifts from historical precedent. Learning rate 0.1, with prediction error minimisation at every level.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Friston’s Free Energy Principle</strong> — The brain minimises “surprise” by constantly updating beliefs. Variational inference across 8 candidate policies (γ=0.95) simulates how we adapt when new information arrives — revising plans without hallucinating.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Attention Allocation (Itti &amp; Koch)</strong> — Why do you notice one risk and miss another? Salience maps with winner-take-all competition and inhibition of return (0.7) model how the brain spots what matters in a sea of data.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Emotional Valence</strong> — Prospect theory shows the pain of losing £100 hurts more than the joy of gaining £100. This assigns emotional weight to every option, flagging deals that look good on paper but feel wrong.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Global Workspace Theory</strong> — Think of your brain as an office where every department shares information through one central workspace. Coalition formation with ignition threshold 0.6 ensures all layers integrate into coherent insights.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Working Memory (Baddeley’s Model)</strong> — Human short-term memory is limited. Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2 — this focuses outputs on the 3–5 factors that actually matter.
+                                </p>
+                            </div>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                No other platform — not Palantir, not Bloomberg Terminal, not McKinsey’s analytics — implements any of these models. BW NEXUS AI implements all seven. And they work because the NSIL was built to accommodate exactly this kind of extension — I just didn’t know these models existed when I designed it. They fit perfectly into what I’d already created.
+                            </p>
+                            <p className="text-xs text-slate-600 leading-relaxed italic">
+                                That’s what makes this a world first. Not just the neuroscience. Not just the formulas. Not just the debate engine or the autonomous engines. It’s the fact that one person built an architecture flexible enough to unify all of them — and then discovered the missing piece that made it complete.
+                            </p>
+                        </div>
+                        <div className="p-4 border-t border-slate-200 flex justify-end">
+                            <button onClick={() => setShowBlock3More(false)} className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors">Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Block 4 — Read More Popup */}
+            {showBlock4More && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock4More(false)}>
+                    <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="p-6 md:p-8">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                It doesn’t just answer. It thinks beyond your question — and analyses how you think.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory (608 lines) to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates (534 lines) — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback (403 lines). Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops (504 lines).
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory (591 lines) to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide (612 lines). Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance (483 lines). Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
+                            </p>
+                            <div className="space-y-2">
+                                <div className="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-indigo-800">Autonomous Intelligence — 8 Engines</p>
+                                    <p className="text-xs text-indigo-600">CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM — creative synthesis, cross-domain transfer, ethical gates, adaptive learning, Monte Carlo simulation.</p>
+                                </div>
+                                <div className="bg-sky-50 border-l-4 border-sky-500 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-sky-800">Reflexive Intelligence — 7 Engines</p>
+                                    <p className="text-xs text-sky-600">Signal decoding, echo detection, lifecycle mapping, regional mirroring, identity decoding, latent advantage mining, universal translation.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-4 border-t border-slate-200 flex justify-end">
+                            <button onClick={() => setShowBlock4More(false)} className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors">Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Block 5 — What You Get & How It Works Popup Modal */}
             {showBlock5Popup && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock5Popup(false)}>
-                    <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-                        {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 rounded-t-sm">
-                            <h3 className="text-xl font-bold text-white mb-2">This Is Real. And It Will Help You.</h3>
-                            <p className="text-sm text-blue-100">Everything the system produces for you — and how it gets there.</p>
-                        </div>
-                        
-                        <div className="p-6 space-y-6">
-                            {/* Reassurance */}
-                            <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    Remember: you don’t need to understand the technical details. The system handles all of that for you. What matters is what comes out the other end — and what comes out is a complete, professional, decision-ready package that gives you everything you need to have the conversation that changes everything.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                    Here’s exactly what you’ll receive:
-                                </p>
-                            </div>
+                    <div className="bg-white rounded-sm max-w-4xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                            {/* What You Get - Document List */}
-                            <div>
-                                <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                                    <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                                    What You Get
-                                </h4>
-                                <div className="space-y-2">
-                                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-sm border border-blue-100">
-                                        <span className="text-blue-600 font-bold text-sm mt-0.5">✓</span>
-                                        <div>
-                                            <p className="text-sm font-semibold text-slate-900">Strategic Investment Case</p>
-                                            <p className="text-xs text-slate-600">The complete, structured argument for your project — ready for investors and decision-makers.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-sm border border-blue-100">
-                                        <span className="text-blue-600 font-bold text-sm mt-0.5">✓</span>
-                                        <div>
-                                            <p className="text-sm font-semibold text-slate-900">Quantified Scores &amp; Evidence</p>
-                                            <p className="text-xs text-slate-600">Every score traced to a specific formula, engine, and line of code. Nothing hidden, everything defensible.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-sm border border-blue-100">
-                                        <span className="text-blue-600 font-bold text-sm mt-0.5">✓</span>
-                                        <div>
-                                            <p className="text-sm font-semibold text-slate-900">Risk Analysis &amp; Mitigations</p>
-                                            <p className="text-xs text-slate-600">Key risks identified, stress-tested across thousands of scenarios, with clear mitigation strategies.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-sm border border-blue-100">
-                                        <span className="text-blue-600 font-bold text-sm mt-0.5">✓</span>
-                                        <div>
-                                            <p className="text-sm font-semibold text-slate-900">Stakeholder Narratives</p>
-                                            <p className="text-xs text-slate-600">Your case translated for 5 different audiences — investors, government, community, partners, and executives — each in their own language.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-sm border border-blue-100">
-                                        <span className="text-blue-600 font-bold text-sm mt-0.5">✓</span>
-                                        <div>
-                                            <p className="text-sm font-semibold text-slate-900">Full Audit Trail</p>
-                                            <p className="text-xs text-slate-600">Complete transparency — every decision point, every calculation, every piece of evidence documented and traceable.</p>
-                                        </div>
-                                    </div>
+                        {/* WHAT YOU GET section — styled like landing page */}
+                        <section className="py-12 px-6 md:px-8 bg-slate-100 rounded-t-sm">
+                            <div className="max-w-4xl mx-auto">
+                                <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
+                                <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">So What Comes Out the Other End?</h2>
+                                
+                                <p className="text-base text-slate-700 leading-relaxed mb-6">
+                                    The output isn’t “AI text.” The output is a complete decision package: the structured case, the quantified scores, the key risks and mitigations, the stakeholder narrative, and the supporting material required to move from idea → partner conversation → formal submission.
+                                </p>
+
+                                {/* Watch it happen live */}
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-6 mb-6">
+                                    <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                                        You can watch it all happen, live.
+                                    </h3>
+                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                        While the system builds your case, you can watch every step in real time. You’ll see the five expert personas debating your proposal, the scoring formulas running one by one, the risk models stress-testing your assumptions, and the final strategy assembling itself section by section. Nothing is hidden. Every score, every conclusion, every piece of evidence is visible and traceable.
+                                    </p>
+                                    <p className="text-sm text-slate-700 leading-relaxed">
+                                        This isn’t a black box — it’s a glass box. The same inputs will always produce the same validated output. That’s the whole point: if you can’t see how it reached its answer, why would you trust it?
+                                    </p>
                                 </div>
-                            </div>
 
-                            {/* Watch It Happen */}
-                            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-5">
-                                <h4 className="text-base font-semibold text-white mb-2">You can watch it all happen, live.</h4>
-                                <p className="text-sm text-slate-300 leading-relaxed mb-2">
-                                    While the system builds your case, you can watch every step in real time. Every score, every conclusion, every piece of evidence is visible and traceable. Nothing is hidden. This isn’t a black box — it’s a glass box.
-                                </p>
-                                <p className="text-sm text-white leading-relaxed font-medium">
-                                    The same inputs will always produce the same validated output. That’s the whole point: if you can’t see how it reached its answer, why would you trust it?
-                                </p>
-                            </div>
+                                {/* Reassurance message */}
+                                <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-6 mb-6">
+                                    <p className="text-base text-white leading-relaxed font-medium">
+                                        The good news? You don’t need to understand how any of this works under the hood. You just need to know it’s there — working for you, 24/7 — producing rigorous, defensible, repeatable output every single time. Here’s what that actually looks like.
+                                    </p>
+                                </div>
 
-                            {/* Ten-Step Protocol Summary */}
-                            <div>
-                                <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                                    <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                                    How You Feed the Brain: The Ten-Step Protocol
-                                </h4>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    You answer 10 straightforward steps — most people finish in 30–45 minutes. Each step captures a critical dimension of your opportunity: who you are, what you’re building, who your market is, what partnerships you need, your financials, your risks, your resources, your execution plan, your governance, and your final readiness check.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                    That’s it. You fill in the steps, and the system does the rest — running everything through all the engines, formulas, and models to produce your complete decision package.
-                                </p>
                                 <button 
-                                    onClick={() => { setShowBlock5Popup(false); setShowProtocolDetails(true); }}
-                                    className="w-full py-3 bg-slate-800 text-white border border-slate-700 rounded-sm text-sm font-bold hover:bg-slate-900 transition-all flex items-center justify-center gap-2"
+                                    onClick={() => { setShowBlock5Popup(false); setShowOutputDetails(true); }}
+                                    className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                 >
                                     <Info size={16} />
-                                    View All 10 Steps in Detail
+                                    More Details — Full Document Catalog &amp; Audit Trail
                                 </button>
                             </div>
+                        </section>
 
-                            {/* Link to Report */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-5 text-center">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    Want to see what the system actually produces? A real council submitted a real project. The system flagged problems they missed, blocked the project, then re-scored it after corrections — taking the same proposal from <strong className="text-red-600">"Do Not Proceed"</strong> to <strong className="text-blue-600">"Investment Ready."</strong>
-                                </p>
-                                <a href="#proof" onClick={() => setShowBlock5Popup(false)} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors">
-                                    See the Full Report →
-                                </a>
-                            </div>
+                        {/* Photo Banner — Strategic Planning */}
+                        <div className="w-full h-40 md:h-52 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=400&fit=crop&q=80" alt="Strategic planning session" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
                         </div>
-                        
+
+                        {/* THE TEN-STEP PROTOCOL — styled like landing page */}
+                        <section className="py-12 px-6 md:px-8 bg-white">
+                            <div className="max-w-4xl mx-auto">
+                                <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
+                                <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
+                                <p className="text-base text-blue-600 mb-4 flex items-center gap-2 font-medium">
+                                    <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+                                    Most users complete this in 30-45 minutes
+                                </p>
+
+                                <p className="text-base text-slate-700 leading-relaxed mb-6">
+                                    Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote — a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness.
+                                </p>
+
+                                <button 
+                                    onClick={() => { setShowBlock5Popup(false); setShowProtocolDetails(true); }}
+                                    className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                                >
+                                    <Info size={16} />
+                                    More Details — View All 10 Steps &amp; Data Requirements
+                                </button>
+                            </div>
+                        </section>
+
                         {/* Close button */}
-                        <div className="p-4 border-t border-slate-200 flex justify-end">
+                        <div className="p-4 border-t border-slate-200 flex justify-end bg-slate-50 rounded-b-sm">
                             <button 
                                 onClick={() => setShowBlock5Popup(false)}
                                 className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors"
