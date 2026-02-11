@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, FileText, Users, Zap, Target, CheckCircle2, Scale, Rocket, Building2, Globe, Layers, Coins, Mail, Phone, Briefcase, TrendingUp, FileCheck, Database, GitBranch, Search, X, Info, Eye, BookOpen, FlaskConical, Brain } from 'lucide-react';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info, Eye, Brain } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
 import { PatternConfidenceEngine } from '../services/PatternConfidenceEngine';
@@ -25,12 +25,12 @@ interface CommandCenterProps {
 const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
-    const [showCatalog, setShowCatalog] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
     const [showCaseStudy, setShowCaseStudy] = useState(false);
+    const [showOutputDetails, setShowOutputDetails] = useState(false);
+    const [showProtocolDetails, setShowProtocolDetails] = useState(false);
     const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
     const [activeLayer, setActiveLayer] = useState<number | null>(null);
-    const [activeJourneyStep, setActiveJourneyStep] = useState<number>(1);
 
     // Global Location Intelligence state - LIVE SEARCH
     const [locationQuery, setLocationQuery] = useState('');
@@ -179,29 +179,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         { step: 10, title: "Scoring & Readiness", description: "Final validation and readiness assessment with go/no-go recommendation.", details: ["Composite readiness score calculation", "Strength/weakness summary", "Final risk assessment", "Go/no-go recommendation", "Pre-launch checklist", "Success probability index (SPI)"], gliEnabled: true, gliNote: "📍 BW Intel provides composite scores, comparison analysis, and data quality metrics" }
     ];
 
-    const aiPersonas = [
-        { name: "Advocate", role: "finds the upside", icon: Rocket },
-        { name: "Skeptic", role: "attacks weak points", icon: Shield },
-        { name: "Regulator", role: "checks compliance", icon: Scale },
-        { name: "Accountant", role: "validates numbers", icon: Coins },
-        { name: "Operator", role: "tests execution", icon: Target }
-    ];
-
-    const architectureLayers = [
-        { id: 0, name: 'Knowledge Architecture', icon: BookOpen, color: 'cyan', summary: '60+ years of methodology across 150 countries', detail: 'Before anything computes, two services activate. The Methodology Knowledge Base holds internalised frameworks from 60+ years of documented government planning, investment attraction, and feasibility methodology — covering 150 countries. The Pattern Confidence Engine checks the user\'s question against 12 embedded pattern categories and classifies confidence as authoritative, informed, or exploratory. The system knows what it knows before it starts.' },
-        { id: 1, name: 'NSIL Reasoning Engine', icon: FlaskConical, color: 'amber', summary: '46 formulas, 5 personas, Monte Carlo stress testing', detail: 'The reasoning engine. 46 proprietary mathematical formulas stress-test every dimension of your project — financial viability, regulatory friction, partnership alignment, activation speed, risk exposure, ethical compliance, and emotional stakeholder dynamics. A DAG scheduler manages formula dependencies across 5 execution levels. Five adversarial AI personas debate every claim. Monte Carlo simulations stress-test the range. Confidence intervals are set by the Knowledge Architecture — known patterns get tighter bands; novel terrain gets wider ranges with explicit caveats.' },
-        { id: 2, name: 'Human Cognition', icon: Users, color: 'purple', summary: '7 behavioural models simulating decision-makers', detail: 'Seven proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure — neural field dynamics, predictive processing, action selection, attention allocation, emotional valence, information integration, and working memory. They don\'t just analyse data — they anticipate how humans will respond to it.' },
-        { id: 3, name: 'Autonomous Intelligence', icon: Brain, color: 'emerald', summary: '8 engines that think, learn, and evolve', detail: 'Eight engines that have never existed in any commercial system. They discover strategies from unrelated domains, detect objectives you haven\'t considered, enforce ethical gates that reject unethical paths (not just flag them), tune their own formula weights after every analysis, predict how stakeholders will emotionally react, and simulate 5,000 future scenarios with causal feedback loops. The system thinks, learns, and evolves without being told to.' },
-        { id: 4, name: 'Reflexive Intelligence', icon: Eye, color: 'rose', summary: '7 engines that analyse how you think', detail: 'Seven engines that turn the system\'s analytical power inward — on you. They detect what you keep repeating, what you avoid, where your region sits on the global investment lifecycle, and find assets you mentioned casually but never recognised as strategic. They identify your region\'s structural twin — places that solved the same problems. They spot when authentic competitive identity has been replaced with generic marketing language. Then every finding is translated for each audience — investors, government, community, partners, executives — in their own language and document format.' },
-    ];
-
-    const journeySteps = [
-        { id: 1, title: 'Recognise', color: 'cyan', heading: 'The System Recognises Your Question', text: 'The moment you select a country, sector, or problem type, the Knowledge Architecture activates. The Pattern Confidence Engine matches your question against 12 embedded pattern categories. Most questions aren\'t novel. The system recognises this and tells you what it already knows — before any formula runs.', result: 'A confidence classification appears — authoritative (strong pattern match, tighter analysis), informed (partial match), or exploratory (genuinely novel — wider ranges, explicit caveats).' },
-        { id: 2, title: 'Research', color: 'amber', heading: 'Research the Landscape', text: 'Type a city, company, or government into BW AI Search. In seconds, the system pulls verified data from public sources and delivers a one-page intelligence brief — demographics, GDP, leadership, infrastructure, and comparison benchmarks.', result: 'A structured intelligence brief with real numbers — population, GDP, key industries, government structure, infrastructure quality — plus internal knowledge overlaid where available.' },
-        { id: 3, title: 'Define', color: 'amber', heading: 'Define Your Opportunity', text: 'Complete the Ten-Step Intake Protocol — a structured process capturing every dimension of your project: identity, strategy, financials, risk, governance. Steps 1, 2, 4, and 7 capture what only you know. Steps 3, 5, 6, 8, and 9 are pre-populated with system knowledge where available — you confirm, adjust, or override.', result: 'Ten guided sections in the left sidebar with clear labels. A progress bar tracks completion. The BW Consultant AI sits alongside to answer questions as you work.' },
-        { id: 4, title: 'Analyse', color: 'amber', heading: 'Watch the System Think', text: 'Hit generate. The Live Report builds in real time — the knowledge layer sets confidence levels, the NSIL engine scores your project across 46 formulas, five adversarial personas debate its merits, and the Human Cognition Engine pressure-tests how decision-makers will actually respond. Nothing is hidden.', result: 'A live document preview that populates section by section — success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations.' },
-        { id: 5, title: 'Export', color: 'emerald', heading: 'Export Board-Ready Documents', text: 'Once analysis is complete, the Document Factory compiles everything into institutional-grade deliverables — Investment Prospectuses, Risk Matrices, LOIs, Grant Applications, Due-Diligence Packs — formatted and evidence-backed.', result: 'Professional documents that look like they came from a top-tier advisory firm — with one critical difference: every claim has an audit trail.' },
-    ];
 
     const scrollToSection = (id: string) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -220,37 +197,50 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
                     <div className="hidden lg:flex items-center gap-6 text-sm text-slate-600 font-medium">
                         <button onClick={() => scrollToSection('mission')} className="hover:text-blue-600 transition-colors">Mission</button>
-                        <button onClick={() => scrollToSection('story')} className="hover:text-blue-600 transition-colors">Our Story</button>
-                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">Technology</button>
-                        <button onClick={() => scrollToSection('foundation')} className="hover:text-blue-600 transition-colors">Foundation</button>
-                        <button onClick={() => scrollToSection('difference')} className="hover:text-blue-600 transition-colors">The Difference</button>
-                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-blue-600 transition-colors">BW AI Search</button>
-                        <button onClick={() => scrollToSection('protocol')} className="hover:text-blue-600 transition-colors">10-Step Protocol</button>
+                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Platform</button>
+                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Brain</button>
+                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-blue-600 transition-colors">Products</button>
+                        <button onClick={() => scrollToSection('protocol')} className="hover:text-blue-600 transition-colors">Protocol</button>
+                        <button onClick={() => scrollToSection('proof')} className="hover:text-blue-600 transition-colors">Proof</button>
                         <button onClick={() => scrollToSection('pilots')} className="hover:text-blue-600 transition-colors">Partnerships</button>
                     </div>
                     
                 </div>
             </nav>
 
-            {/* Hero Section with Background Photo */}
-            <section className="relative pt-36 pb-24 px-4 z-20 min-h-[80vh] flex items-center">
+
+            {/* OUR MISSION — The opening statement */}
+            <section id="mission" className="pt-36 pb-20 px-4 bg-white">
+                <div className="max-w-5xl mx-auto text-center">
+                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm mb-6 font-bold">OUR MISSION</p>
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-slate-900">
+                        Strong nations are built<br />on strong regions.
+                    </h1>
+                    <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-4">
+                        Every nation depends on its regions — for food, resources, industry, and resilience. But for too long, opportunity has been decided by proximity to capital, not by fundamentals.
+                    </p>
+                    <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                        The capability is there. The potential is real. What has been missing are the tools. We built those tools.
+                    </p>
+                </div>
+            </section>
+
+            {/* Photo Banner */}
+            <section className="relative z-20 min-h-[50vh] flex items-center">
                 <img 
-                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop&q=80" 
-                    alt="" 
+                    src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=80" 
+                    alt="Regional landscape" 
                     className="absolute inset-0 w-full h-full object-cover" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/50 to-slate-900/80" />
-                <div className="relative z-10 max-w-5xl mx-auto text-center">
-                    <p className="text-sky-300 uppercase tracking-[0.3em] text-base md:text-lg mb-6 font-bold">
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70" />
+                <div className="relative z-10 max-w-5xl mx-auto text-center px-4 py-16">
+                    <p className="text-sky-300 uppercase tracking-[0.3em] text-base md:text-lg mb-4 font-bold">
                         BRAYDEN WALLS GLOBAL ADVISORY
                     </p>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-white">
-                        Regional communities are the backbone of every nation.
-                        <span className="block text-sky-300 mt-4 font-normal">They deserve to be seen.</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed mb-10 font-light">
-                        Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
-                    </p>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight mb-6 text-white">
+                        Built from the ground up.<br />
+                        <span className="text-sky-300 font-normal">For the communities that power nations.</span>
+                    </h2>
                     <button 
                         onClick={() => scrollToSection('bwai-search')}
                         className="inline-flex items-center gap-3 px-10 py-4 bg-sky-500 border-2 border-sky-400 rounded-full text-white text-base font-bold hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/30"
@@ -261,98 +251,549 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Photo Banner — Global Perspective */}
-            <div className="w-full h-48 md:h-64 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&h=400&fit=crop&q=80" alt="City skyline panorama" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-white text-xl md:text-3xl font-medium tracking-wide drop-shadow-lg">Connecting Regions to Global Opportunity</p>
-                </div>
-            </div>
+            {/* OUR ORIGIN */}
+            <section className="py-10 px-4 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR ORIGIN</p>
+                    <h2 className="text-2xl md:text-3xl font-light mb-6 text-slate-900">The Story of BWGA</h2>
+                    <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed mb-8">
+                        <div className="space-y-3">
+                            <p>
+                                BWGA wasn&rsquo;t founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
+                            </p>
+                            <p>
+                                <strong>BW Global Advisory (BWGA)</strong> is an advisory practice built from firsthand experience in regional communities &mdash; places that hold real economic potential but lack the tools, connections, and institutional visibility to compete for global investment on equal footing.
+                            </p>
+                            <p>
+                                We watched regional leaders &mdash; mayors, entrepreneurs, councils &mdash; work tirelessly to attract investment. They had the vision, the drive, the raw assets.
+                            </p>
+                            <p>
+                                From that observation came the question: what if you could build a system that internalised all of that methodology &mdash; 60+ years of documented practice across 150 countries &mdash; and made it available to anyone, anywhere, instantly?
+                            </p>
+                        </div>
+                        <div className="space-y-3 mt-3 md:mt-0">
+                            <p>
+                                The practice exists because of a simple observation: <strong>every &ldquo;new idea&rdquo; is old somewhere.</strong> The 1963 Philippine Integrated Socioeconomic Plan, the 1978 Region 7 Five-Year Development Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations &mdash; they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. <strong>The past is the solution library.</strong>
+                            </p>
+                            <p>
+                                <strong>BWGA Intelligence AI is the answer.</strong> It is the technology arm of BW Global Advisory. Not a chatbot. Not a search engine. Not a lookup table. It is a complete digital boardroom &mdash; a system that reasons through investment, trade, and development problems using the same depth of analysis that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars.
+                            </p>
+                        </div>
+                    </div>
+                    <p className="text-base text-slate-700 leading-relaxed mb-8">
+                        That&rsquo;s not a criticism &mdash; it&rsquo;s the insight that made this system possible. If the answers already exist, scattered across decades and continents, then the real problem isn&rsquo;t knowledge. It&rsquo;s access. It&rsquo;s synthesis. It&rsquo;s the ability to take what worked in Shenzhen in 1980, in Penang in 1995, in Medell&iacute;n in 2004, and translate it into a strategic roadmap for a regional council staring at a blank page today.
+                    </p>
 
-            {/* OUR STORY — Compact 2-column layout */}
-            <section id="mission" className="py-16 px-4 bg-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-                        {/* LEFT — The Story */}
-                        <div id="story">
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR ORIGIN</p>
-                            <h2 className="text-2xl md:text-3xl font-light mb-4 text-slate-900">The Story of BWGA</h2>
-                            <div className="space-y-3 text-base text-slate-700 leading-relaxed">
-                                <p>
-                                    BWGA wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
+                    {/* Personal Story — Brayden Walls */}
+                    <div className="bg-white border-2 border-slate-300 rounded-sm p-8 mb-8 shadow-lg">
+                        <h3 className="text-2xl font-semibold text-slate-900 mb-6">Who I am — the founder and sole developer</h3>
+                        
+                        <div className="flex flex-col md:flex-row gap-6 mb-6">
+                            <div className="md:w-2/3">
+                                <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                    Hey everyone, I'm Brayden Walls, the developer behind <strong>BW NEXUS AI</strong>, and I'm thrilled to finally share this with the world. For the first time, I'm lifting the curtain on what we've built—a groundbreaking neuro-symbolic intelligence system that's not just another AI tool, but a complete rethinking of how machines can reason like humans.
                                 </p>
-                                <p>
-                                    We watched regional leaders — mayors, entrepreneurs, councils — work tirelessly to attract investment. They had the vision, the drive, the raw assets. But they were ignored by global capital because they couldn't speak the language of risk matrices, financial models, and feasibility studies.
-                                </p>
-                                <p>
-                                    Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents. Regional communities simply couldn't afford that admission fee, so they were left behind.
+                                <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                    For more than 16 months, I've been living, researching, and building in a place that inspired everything you see here — the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don't exist.
                                 </p>
                             </div>
-                            <div className="mt-6 bg-gradient-to-r from-blue-50 to-transparent border-l-4 border-blue-500 p-4 rounded-r-xl">
-                                <p className="text-base text-slate-800 font-normal leading-relaxed">
-                                    We built BWGA to break that barrier — to give the underdog the same strategic firepower as a multinational corporation.
-                                </p>
+                            <div className="md:w-1/3">
+                                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop&q=80" alt="Regional landscape" className="w-full h-64 md:h-full object-cover rounded-sm shadow-lg" />
                             </div>
                         </div>
 
-                        {/* RIGHT — Mission & Philosophy */}
-                        <div className="flex flex-col gap-6">
-                            <div>
-                                <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR MISSION</p>
-                                <h2 className="text-2xl md:text-3xl font-light mb-4 text-slate-900">Strong nations are built on strong regions.</h2>
-                                <p className="text-base text-slate-700 leading-relaxed">
-                                    Every nation depends on its regions — for food, resources, industry, and resilience. But without institutional-grade tools, their stories go untold and their potential stays hidden. The capability exists. The potential is real. What's missing are the tools to translate that into the language investors and partners expect.
-                                </p>
-                            </div>
-                            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 flex-1">
-                                <p className="text-base text-slate-700 leading-relaxed mb-3 italic">
-                                    "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
-                                </p>
-                                <p className="text-slate-600 text-sm">— Brayden Walls, Founder</p>
-                            </div>
-                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
-                                <p className="text-sm text-blue-700 uppercase tracking-wider mb-2 font-bold">WHAT THIS MEANS</p>
-                                <p className="text-sm text-slate-700 leading-relaxed">
-                                    This principle is the operating logic of the platform. The system holds 60 years of methodology, patterns from 150+ countries, and classifies its confidence level — authoritative, informed, or exploratory — before a single formula runs.
-                                </p>
-                            </div>
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
+                            I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific — they all wanted the same thing: to be seen, to be understood, to have a fair shot.
+                        </p>
+
+                        <p className="text-base text-slate-700 leading-relaxed mb-6">
+                            So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn't a chatbot or a dashboard — it's a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you're about to see below is what I built, how it works, and why nothing else like it exists.
+                        </p>
+
+                        <div className="bg-gradient-to-r from-slate-100 to-slate-50 border border-slate-300 rounded-sm p-6">
+                            <p className="text-lg text-slate-800 leading-relaxed italic mb-3">
+                                "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
+                            </p>
+                            <p className="text-slate-600 text-sm font-medium">— Brayden Walls, Founder & Sole Developer</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* BY THE NUMBERS */}
-            <section className="py-16 px-4 bg-slate-100 border-y-2 border-slate-200">
+            {/* ═══════════════════════════════════════════════════════ */}
+            {/* THE PLATFORM — Professional Architecture Demonstration */}
+            {/* ═══════════════════════════════════════════════════════ */}
+
+            {/* Section 1: A WORLD FIRST + Full Story Button */}
+            <section id="technology" className="py-12 px-4 bg-white">
                 <div className="max-w-5xl mx-auto">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        <div>
-                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">120<span className="text-3xl">+</span></div>
-                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Components</p>
+                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm font-bold text-center mb-6">A WORLD FIRST</p>
+                    <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">
+                        Probabilistic AI Is Not Enough.
+                    </h2>
+                    <p className="text-center text-2xl md:text-3xl font-light mb-12">
+                        <span className="text-blue-600 font-normal">Welcome to Deterministic Intelligence.</span>
+                    </p>
+
+                    {/* ── THE NARRATIVE: What I Built and Why ── */}
+
+                    {/* Block 1: The Problem — Photo left, narrative right */}
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
+                        <div className="md:w-5/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80" 
+                                alt="Global intelligence data" 
+                                className="w-full h-full min-h-[320px] object-cover" 
+                            />
                         </div>
-                        <div>
-                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">46</div>
-                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Proprietary Formulas</p>
+                        <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                Why I built this: the problem with AI today.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Most AI today &mdash; the language models behind ChatGPT, Claude, and others &mdash; is probabilistic. It guesses based on patterns. It can hallucinate facts, silently bias results, or give a different answer every time you ask the same question. It sounds confident, but it can&rsquo;t show its reasoning. And when the stakes are real &mdash; investments, policy decisions, people&rsquo;s livelihoods &mdash; guessing isn&rsquo;t good enough.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                                I built BW NEXUS AI because I believed intelligence should be provable. Not generated. Not predicted. <strong>Proven.</strong> Every recommendation traceable, every output repeatable, every claim defensible. That&rsquo;s what deterministic means &mdash; and that&rsquo;s what I set out to create.
+                            </p>
+                            <div className="space-y-2">
+                                <div className="bg-red-50 border-l-4 border-red-400 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-red-800">Language-First AI</p>
+                                    <p className="text-xs text-red-600">Sounds confident, but can hallucinate, contradict itself, and can&rsquo;t show its reasoning.</p>
+                                </div>
+                                <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-blue-800">BW NEXUS AI</p>
+                                    <p className="text-xs text-blue-600">Validates, debates, scores, simulates, and delivers &mdash; with proof behind every claim.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">15</div>
-                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Intelligence Engines</p>
+                    </div>
+
+                    {/* Block 2: What sparked the NSIL — Text left, photo right */}
+                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-8">
+                        <div className="md:w-5/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80" 
+                                alt="The NSIL — what sparked development" 
+                                className="w-full h-full min-h-[320px] object-cover" 
+                            />
                         </div>
-                        <div>
-                            <div className="text-5xl md:text-6xl font-light text-blue-700 mb-3">150</div>
-                            <p className="text-sm text-slate-800 uppercase tracking-[0.2em] font-semibold">Countries Covered</p>
+                        <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                What sparked this: 12 months that changed everything.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                It started with a frustration. I was watching regions with real potential &mdash; talent, resources, strategic location &mdash; get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                The first thing I created was the formula engine &mdash; 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> (994 lines) to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Then I built the validation layer &mdash; a <strong>SAT Contradiction Solver</strong> (391 lines) that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Next came the debate engine. I wanted the system to argue with itself &mdash; to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> (557 lines) with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Then I added autonomous intelligence &mdash; 8 engines that think beyond the question. And reflexive intelligence &mdash; 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL &mdash; the Nexus Strategic Intelligence Layer</strong> &mdash; a 10-layer pipeline I invented from scratch to make all of this run deterministically.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                                128 TypeScript files. 50,000 lines of code. Clean builds in under 5 seconds across 2,105 modules. Full type safety with 900+ lines of strict definitions. 209.38 kB gzipped. One person. Twelve months. Everything built from nothing.
+                            </p>
+                            <div className="grid grid-cols-4 gap-2">
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">13</p>
+                                    <p className="text-xs text-slate-600">Core Algorithms</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">38+</p>
+                                    <p className="text-xs text-slate-600">Formulas</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">10</p>
+                                    <p className="text-xs text-slate-600">Layers</p>
+                                </div>
+                                <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
+                                    <p className="text-xl font-bold text-blue-600">50K</p>
+                                    <p className="text-xs text-slate-600">Lines of Code</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Block 3: The Discovery — Photo left, deep narrative right */}
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
+                        <div className="md:w-5/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&q=80" 
+                                alt="The Brain — computational neuroscience discovery" 
+                                className="w-full h-full min-h-[320px] object-cover" 
+                            />
+                        </div>
+                        <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                Then I discovered something that changed the system forever.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                By this point, I had a working intelligence system &mdash; formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert &mdash; the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                That&rsquo;s when I found computational neuroscience &mdash; real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture I&rsquo;d already built. The NSIL was designed to be extensible. So I added them.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                I wrote the <strong>Human Cognition Engine</strong> &mdash; 1,307 lines of code implementing 7 neuroscience models as faithful mathematical implementations. Not simplified approximations. The real models, running live inside the NSIL pipeline. This is what turned a powerful analytics system into something genuinely new &mdash; the first platform that doesn&rsquo;t just calculate answers, but thinks about them the way a human expert would.
+                            </p>
+                            <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 space-y-2 mb-3">
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Wilson-Cowan Neural Fields</strong> &mdash; Your brain has billions of neurons, some saying &ldquo;go&rdquo; (excitatory) and some saying &ldquo;stop&rdquo; (inhibitory). These differential equations (&#8706;u/&#8706;t = -u + &#8747; w(r-r&rsquo;)&middot;f(v) dr&rsquo;) model that battle on a 50&times;50 grid, simulating how experts balance competing factors like profit vs. risk. The NSIL runs this live with your data.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Predictive Processing (Rao &amp; Ballard)</strong> &mdash; Our brains don&rsquo;t just react; they predict. Bayesian inference across 3 hierarchical levels anticipates what comes next &mdash; like forecasting market shifts from historical precedent. Learning rate 0.1, with prediction error minimisation at every level.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Friston&rsquo;s Free Energy Principle</strong> &mdash; The brain minimises &ldquo;surprise&rdquo; by constantly updating beliefs. Variational inference across 8 candidate policies (&gamma;=0.95) simulates how we adapt when new information arrives &mdash; revising plans without hallucinating.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Attention Allocation (Itti &amp; Koch)</strong> &mdash; Why do you notice one risk and miss another? Salience maps with winner-take-all competition and inhibition of return (0.7) model how the brain spots what matters in a sea of data.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Emotional Valence</strong> &mdash; Prospect theory shows the pain of losing &pound;100 hurts more than the joy of gaining &pound;100. This assigns emotional weight to every option, flagging deals that look good on paper but feel wrong.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Global Workspace Theory</strong> &mdash; Think of your brain as an office where every department shares information through one central workspace. Coalition formation with ignition threshold 0.6 ensures all layers integrate into coherent insights.
+                                </p>
+                                <p className="text-xs text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">Working Memory (Baddeley&rsquo;s Model)</strong> &mdash; Human short-term memory is limited. Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2 &mdash; this focuses outputs on the 3&ndash;5 factors that actually matter.
+                                </p>
+                            </div>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                No other platform &mdash; not Palantir, not Bloomberg Terminal, not McKinsey&rsquo;s analytics &mdash; implements any of these models. BW NEXUS AI implements all seven. And they work because the NSIL was built to accommodate exactly this kind of extension &mdash; I just didn&rsquo;t know these models existed when I designed it. They fit perfectly into what I&rsquo;d already created.
+                            </p>
+                            <p className="text-xs text-slate-600 leading-relaxed italic">
+                                That&rsquo;s what makes this a world first. Not just the neuroscience. Not just the formulas. Not just the debate engine or the autonomous engines. It&rsquo;s the fact that one person built an architecture flexible enough to unify all of them &mdash; and then discovered the missing piece that made it complete.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Block 4: The Autonomous & Reflexive Engines — Text left, photo right */}
+                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-8">
+                        <div className="md:w-5/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80" 
+                                alt="Autonomous and reflexive intelligence" 
+                                className="w-full h-full min-h-[320px] object-cover" 
+                            />
+                        </div>
+                        <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                It doesn&rsquo;t just answer. It thinks beyond your question &mdash; and analyses how you think.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory (608 lines) to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates (534 lines) &mdash; if a path is unethical, it&rsquo;s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback (403 lines). Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops (504 lines).
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon&rsquo;s information theory (591 lines) to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide (612 lines). Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance (483 lines). Every finding is then translated for 5 distinct audiences &mdash; investors, government, community, partners, executives &mdash; in their own language.
+                            </p>
+                            <div className="space-y-2">
+                                <div className="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-indigo-800">Autonomous Intelligence &mdash; 8 Engines</p>
+                                    <p className="text-xs text-indigo-600">CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM &mdash; creative synthesis, cross-domain transfer, ethical gates, adaptive learning, Monte Carlo simulation.</p>
+                                </div>
+                                <div className="bg-sky-50 border-l-4 border-sky-500 rounded-r-sm p-3">
+                                    <p className="text-xs font-bold text-sky-800">Reflexive Intelligence &mdash; 7 Engines</p>
+                                    <p className="text-xs text-sky-600">Signal decoding, echo detection, lifecycle mapping, regional mirroring, identity decoding, latent advantage mining, universal translation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Block 5: Watch it Think — Photo left, text right */}
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
+                        <div className="md:w-5/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&q=80" 
+                                alt="Live intelligence — watch it think" 
+                                className="w-full h-full min-h-[320px] object-cover" 
+                            />
+                        </div>
+                        <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                                Watch it think. Live, in front of your eyes.
+                            </h3>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                The Live Report isn&rsquo;t a loading screen. It&rsquo;s a real-time visualisation of all 10 NSIL layers firing: the SAT solver catching contradictions, the 5 personas debating your case, 38+ formulas executing in dependency order across the DAG, Wilson-Cowan neural fields simulating cognition, autonomous engines firing creative strategies and ethical gates, and the strategy building itself section by section.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                Every score, every evidence trail, every confidence interval is visible and traceable. No black boxes. No &ldquo;trust me.&rdquo; The system shows its working because there is nothing to hide. This is deterministic intelligence &mdash; the same inputs produce the same validated, auditable output, every single time.
+                            </p>
+                            <p className="text-sm text-slate-700 leading-relaxed">
+                                I built this to be transparent because that&rsquo;s the whole point. If AI can&rsquo;t show how it arrived at an answer, why should anyone trust it? The Live Report is proof &mdash; not a promise.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Block 6: Why This Matters — Full-width statement */}
+                    <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-8 md:p-12 mb-8">
+                        <h3 className="text-2xl font-semibold text-white mb-4">
+                            Why this matters. Why it&rsquo;s different.
+                        </h3>
+                        <p className="text-sm text-slate-300 leading-relaxed mb-3">
+                            Traditional AI is probabilistic &mdash; it guesses based on patterns and hides its reasoning behind black boxes. BW NEXUS AI is deterministic &mdash; it proves every claim with audit trails and repeatable processes. While other systems rely on single-point estimates or smoothed-over disagreements, the NSIL preserves explicit decision points, stress-tests 5,000+ scenarios, and enforces ethical gates that reject unethical paths.
+                        </p>
+                        <p className="text-sm text-slate-300 leading-relaxed mb-3">
+                            The core problem I&rsquo;m solving is trust. Most AI can&rsquo;t be relied on for real decisions because it hallucinates, biases results, or gives inconsistent answers. This leads to bad investments, flawed strategies, and ethical lapses. BW NEXUS AI solves this by delivering intelligence that&rsquo;s traceable, repeatable, and defensible &mdash; eliminating garbage-in-garbage-out through SAT validation, grounding analysis in institutional memory, and simulating human cognition so outputs have the nuance of an experienced expert.
+                        </p>
+                        <p className="text-sm text-white leading-relaxed font-medium">
+                            This isn&rsquo;t just technology. It&rsquo;s a paradigm shift &mdash; built to restore confidence in artificial intelligence, so people can finally make decisions they can defend in boardrooms, government briefings, and investment committees.
+                        </p>
+                    </div>
+
+                    {/* Under the Hood — Expandable for technical people */}
+                    <div className="text-center mt-10 mb-2">
+                        <p className="text-sm text-slate-500 mb-4">Want to see every algorithm, formula, engine, and the full NSIL architecture that makes this possible?</p>
+                        <button 
+                            onClick={() => setShowFormulas(!showFormulas)}
+                            className="inline-flex items-center gap-3 px-10 py-4 bg-blue-600 text-white rounded-sm text-base font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
+                        >
+                            <GitBranch size={20} />
+                            {showFormulas ? 'Hide Full Technical Breakdown' : 'View Full Architecture & 38+ Formulas'}
+                        </button>
+                    </div>
+
+                    {showFormulas && (
+                        <div className="mt-6 bg-slate-50 border border-slate-200 rounded-sm p-6 md:p-8 space-y-6 text-xs text-slate-700 leading-relaxed animate-in fade-in duration-300">
+                            <div className="flex items-center justify-between mb-2">
+                                <h3 className="text-lg font-bold text-slate-900">The Full Technical Breakdown: Inside the NSIL</h3>
+                                <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-slate-600"><X size={18} /></button>
+                            </div>
+
+                            <p>The NSIL &mdash; Nexus Strategic Intelligence Layer &mdash; is the orchestration engine I invented to make AI deterministic. It&rsquo;s implemented in <span className="font-mono text-xs bg-white px-1 rounded">services/NSILIntelligenceHub.ts</span> and runs every analysis through 10 computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
+                            <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (994 lines, <span className="font-mono text-xs bg-white px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
+
+                            <p>Three examples of what these formulas do: <strong>SPI</strong> (Strategic Positioning Index) quantifies market dominance by weighting political risk against country risk with growth-adjusted positioning. <strong>RROI</strong> (Risk-Adjusted Return on Investment) runs Monte Carlo propagation across probability-weighted scenarios &mdash; real-world variance, not a single optimistic projection. <strong>SEAM</strong> (Strategic Ethical Alignment Matrix) cross-references strategy against policy frameworks and stakeholder impact.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 1 &mdash; The Shield (Input Validation)</h4>
+                            <p>A SAT Contradiction Solver I wrote (391 lines, <span className="font-mono text-xs bg-white px-1 rounded">SATContradictionSolver.ts</span>) converts inputs into propositional logic &mdash; conjunctive normal form &mdash; and runs a DPLL-based satisfiability check. Catches contradictions like claiming low risk while expecting 40%+ ROI, targeting global expansion on a small budget, or combining conservative strategy with aggressive growth targets. Each contradiction is classified by severity.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 2 &mdash; The Boardroom (Multi-Agent Debate)</h4>
+                            <p>Five adversarial personas &mdash; Skeptic (1.2x weight), Advocate, Regulator, Accountant, and Operator &mdash; conduct a structured Bayesian debate (557 lines, <span className="font-mono text-xs bg-white px-1 rounded">BayesianDebateEngine.ts</span>). Each votes across four outcomes: proceed, pause, restructure, or reject. Beliefs update via Bayesian inference. Early stopping at 0.75 posterior probability or 0.02 belief delta. Disagreements resolved through Nash bargaining. Every persona&rsquo;s reasoning preserved in the audit trail.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 3 &mdash; The Engine (Formula Scoring)</h4>
+                            <p>The DAG Scheduler executes the full 38+ formula suite with typed inputs, bounded outputs, component breakdowns, and execution timing. Results flow into a <span className="font-mono text-xs bg-white px-1 rounded">CompositeScoreService</span> that normalises raw data against region-specific baselines. Deterministic jitter from hash-based seeding ensures reproducibility.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 4 &mdash; Stress Testing (Scenario Simulation)</h4>
+                            <p>The Scenario Simulation Engine (504 lines, <span className="font-mono text-xs bg-white px-1 rounded">ScenarioSimulationEngine.ts</span>) builds causal graphs with feedback loops, runs Monte Carlo propagation through multi-step chains with non-linear dynamics, and simulates forward outcomes using Markov chain state transitions across economic, political, social, environmental, technological, and regulatory categories.</p>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 5 &mdash; The Brain (Human Cognition Engine)</h4>
+                            <p>The Human Cognition Engine I wrote (1,307 lines, <span className="font-mono text-xs bg-white px-1 rounded">HumanCognitionEngine.ts</span>) implements 7 neuroscience models as mathematical implementations:</p>
+                            <ol className="list-decimal list-inside space-y-1 pl-2">
+                                <li><strong>Wilson-Cowan Neural Field Dynamics</strong> &mdash; Differential equations on excitatory/inhibitory neuron populations on a 50&times;50 spatial grid. Parameters: w_ee=1.5, w_ei=-1.0, w_ie=1.0, w_ii=-0.5, dt=0.01.</li>
+                                <li><strong>Predictive Coding (Rao &amp; Ballard)</strong> &mdash; 3-level hierarchical belief updating with prediction error minimisation. Learning rate 0.1.</li>
+                                <li><strong>Free Energy Principle (Friston)</strong> &mdash; Variational inference across 8 candidate policies, discount factor &gamma;=0.95.</li>
+                                <li><strong>Attention Models (Itti &amp; Koch)</strong> &mdash; Salience maps with intensity/colour/orientation weights. Winner-take-all with inhibition of return (0.7).</li>
+                                <li><strong>Emotional Processing</strong> &mdash; Neurovisceral integration theory, emotional inertia (0.8), autonomic coupling (0.6).</li>
+                                <li><strong>Global Workspace Theory</strong> &mdash; Coalition formation with ignition threshold 0.6. Information broadcasting across cognitive subsystems.</li>
+                                <li><strong>Baddeley&rsquo;s Working Memory</strong> &mdash; Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2.</li>
+                            </ol>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layer 6 &mdash; Autonomous Intelligence (8 Engines)</h4>
+                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                <li><strong>Creative Synthesis</strong> (608 lines) &mdash; Koestler&rsquo;s bisociation theory + Fauconnier &amp; Turner conceptual blending.</li>
+                                <li><strong>Cross-Domain Transfer</strong> &mdash; Maps biology, physics, engineering onto economics via Gentner&rsquo;s structure-mapping theory.</li>
+                                <li><strong>Autonomous Goal</strong> &mdash; Detects emergent strategic goals from top-level index scores.</li>
+                                <li><strong>Ethical Reasoning</strong> (534 lines) &mdash; Multi-stakeholder utility, Rawlsian fairness, Stern Review discount rates (&le;1.4%). Every recommendation must pass this gate.</li>
+                                <li><strong>Self-Evolving Algorithm</strong> (403 lines) &mdash; Online gradient descent w_t+1 = w_t - &eta;&nabla;L, Thompson sampling, mutation-selection with full rollback.</li>
+                                <li><strong>Adaptive Learning</strong> &mdash; Bayesian belief updates from outcome feedback.</li>
+                                <li><strong>Emotional Intelligence</strong> &mdash; Prospect Theory + Russell&rsquo;s Circumplex Model for stakeholder dynamics.</li>
+                                <li><strong>Scenario Simulation</strong> (504 lines) &mdash; 5,000 Monte Carlo runs with causal loop modelling and Markov state transitions.</li>
+                            </ul>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-2">Layers 7&ndash;9 &mdash; Proactive, Output &amp; Reflexive</h4>
+                            <p><strong>Layer 7 (Proactive):</strong> Seven engines for backtesting, drift detection, continuous learning, and proactive signal mining.</p>
+                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 232 document types &mdash; all populated with exact data and confidence scores.</p>
+                            <p><strong>Layer 9 (Reflexive Intelligence):</strong> Seven engines that analyse the user:</p>
+                            <ul className="list-disc list-inside space-y-1 pl-2">
+                                <li><strong>User Signal Decoder</strong> (591 lines) &mdash; Shannon&rsquo;s information-theoretic redundancy. Detects repetition, avoidance, and emotional emphasis.</li>
+                                <li><strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself.</li>
+                                <li><strong>Investment Lifecycle Mapper</strong> &mdash; Maps project lifecycle stage, adjusts analysis accordingly.</li>
+                                <li><strong>Regional Mirroring</strong> (612 lines) &mdash; Finds structural twin regions via structure-mapping across 6 dimensions.</li>
+                                <li><strong>Regional Identity Decoder</strong> &mdash; Detects when authentic identity has been replaced with generic marketing language.</li>
+                                <li><strong>Latent Advantage Miner</strong> (483 lines) &mdash; Surfaces casually mentioned assets with real strategic significance.</li>
+                                <li><strong>Universal Translation Layer</strong> &mdash; Translates findings for 5 audiences: investors, government, community, partners, executives.</li>
+                            </ul>
+
+                            <h4 className="text-base font-bold text-slate-900 pt-4">The 38+ Proprietary Formulas</h4>
+                            <div className="grid md:grid-cols-3 gap-3 mt-2">
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Core Indices</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; SPI&trade; &mdash; Success Probability Index</li>
+                                        <li>&bull; RROI&trade; &mdash; Regional Return on Investment</li>
+                                        <li>&bull; SEAM&trade; &mdash; Stakeholder Alignment Matrix</li>
+                                        <li>&bull; PVI&trade; &mdash; Partnership Viability Index</li>
+                                        <li>&bull; RRI&trade; &mdash; Regional Resilience Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Risk Formulas</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; CRPS &mdash; Composite Risk Priority Score</li>
+                                        <li>&bull; RME &mdash; Risk Mitigation Effectiveness</li>
+                                        <li>&bull; VaR &mdash; Value at Risk</li>
+                                        <li>&bull; SRCI &mdash; Supply Chain Risk Index</li>
+                                        <li>&bull; PSS &mdash; Policy Shock Sensitivity</li>
+                                        <li>&bull; PRS &mdash; Political Risk Score</li>
+                                        <li>&bull; DCS &mdash; Dependency Concentration</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Financial Metrics</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; IRR &mdash; Internal Rate of Return</li>
+                                        <li>&bull; NPV &mdash; Net Present Value</li>
+                                        <li>&bull; WACC &mdash; Weighted Cost of Capital</li>
+                                        <li>&bull; DSCR &mdash; Debt Service Coverage</li>
+                                        <li>&bull; FMS &mdash; Funding Match Score</li>
+                                        <li>&bull; ROE &mdash; Return on Equity</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Operational Scores</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; ORS &mdash; Organizational Readiness</li>
+                                        <li>&bull; TCS &mdash; Team Capability Score</li>
+                                        <li>&bull; EEI &mdash; Execution Efficiency Index</li>
+                                        <li>&bull; SEQ &mdash; Sequencing Integrity Score</li>
+                                        <li>&bull; CGI &mdash; Capability Gap Index</li>
+                                        <li>&bull; LCI &mdash; Leadership Confidence Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Market Formulas</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; MPI &mdash; Market Penetration Index</li>
+                                        <li>&bull; CAI &mdash; Competitive Advantage Index</li>
+                                        <li>&bull; TAM &mdash; Total Addressable Market</li>
+                                        <li>&bull; SAM &mdash; Serviceable Available Market</li>
+                                        <li>&bull; GRI &mdash; Growth Rate Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-1">Governance Metrics</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; GCI &mdash; Governance Confidence Index</li>
+                                        <li>&bull; CCS &mdash; Compliance Certainty Score</li>
+                                        <li>&bull; TPI &mdash; Transparency Index</li>
+                                        <li>&bull; ARI &mdash; Audit Readiness Index</li>
+                                        <li>&bull; RFI &mdash; Regulatory Friction Index</li>
+                                        <li>&bull; CIS &mdash; Counterparty Integrity Score</li>
+                                        <li>&bull; ESG &mdash; Environmental Social Governance</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-3 mt-4">
+                                <p className="text-xs text-slate-700 italic">
+                                    Every formula has defined methodology, transparent inputs, and a full audit trail. The 22 autonomous, proactive, and reflexive engines are backed by published mathematical theory, implemented in real TypeScript with no placeholders. This is the system I built. This is what makes it a world first.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </section>
+            <div className="w-full h-28 md:h-36 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=400&fit=crop&q=80" alt="Intelligence technology" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
+            </div>
+
+            {/* Section 4: FOUR PRODUCTS — Clean cards matching WHO THIS IS FOR */}
+            <section className="py-12 px-4 bg-slate-100">
+                <div className="max-w-5xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm mb-6 font-bold text-center">FOUR WAYS TO ACCESS INTELLIGENCE</p>
+                    <h2 className="text-3xl md:text-4xl font-light text-center leading-tight mb-4 text-slate-900">
+                        One Engine. Four Interfaces.
+                    </h2>
+                    <p className="text-lg text-slate-600 text-center mb-8 max-w-3xl mx-auto">
+                        Everything feeds into the same core pipeline &mdash; the same 6-phase NSIL architecture, the same 38+ formulas, the same adversarial debate. We just made it accessible in four different ways depending on what you need.
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-12">
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
+                                    <Search size={20} className="text-blue-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-semibold text-slate-900">BW AI Search</h3>
+                                    <p className="text-sm font-semibold text-blue-600">The Gateway.</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                Search any location on earth. In seconds, the retrieval and synthesis layers assemble a structured intelligence brief &mdash; demographics, GDP, leadership, infrastructure, investment climate, constraints, and investability signals &mdash; as the entry point to deeper analysis.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">Powered by vector memory retrieval + synthesis layers</p>
+                        </div>
+
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
+                                    <FileCheck size={20} className="text-blue-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-semibold text-slate-900">Live Report</h3>
+                                    <p className="text-sm font-semibold text-blue-600">The War Room.</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                Watch all 6 phases fire in real time. See the SAT solver validate, the 5 personas debate, the DAG scheduler execute formulas, the Wilson-Cowan cognition layer simulate, and the strategy build itself before your eyes &mdash; section by section with full traceability.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">Visualises all 6 computational layers with live audit trail</p>
+                        </div>
+
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-indigo-100 border border-indigo-300 rounded-lg flex items-center justify-center">
+                                    <Users size={20} className="text-indigo-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-semibold text-slate-900">BW Consultant</h3>
+                                    <p className="text-sm font-semibold text-indigo-600">The Partner.</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                An embedded AI consultant powered by the interactive synthesis layer &mdash; clarifying inputs, challenging assumptions through the persona debate engine, and translating validated scores and analysis into actionable strategy.
+                            </p>
+                            <p className="text-xs text-indigo-600 font-medium">Interactive access to the adversarial debate + synthesis layers</p>
+                        </div>
+
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
+                                    <GitBranch size={20} className="text-blue-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-semibold text-slate-900">Document Factory</h3>
+                                    <p className="text-sm font-semibold text-blue-600">The Closer.</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                The output layer turns validated, scored analysis into signed deals. Access 156 letter templates and 232 document types &mdash; LOIs, Term Sheets, RFPs, feasibility studies &mdash; all populated with your exact project data, confidence scores, and evidence trails from the pipeline.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">Board-ready documents generated from the full 6-phase pipeline</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* BW AI SEARCH — Location Intelligence */}
-            <section id="bwai-search" className="py-20 px-4 bg-white">
+            <section id="bwai-search" className="py-12 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
                     <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW AI SEARCH</p>
-                    <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">Research Any Location, Instantly</h2>
+                    <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">Try It. Search Any Location.</h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-8">
-                        Type a city, region, or country below. The system pulls verified intelligence — demographics, GDP, leadership, infrastructure, investment climate — cross-references it against 60+ years of methodology and 12 pattern categories, and delivers a structured brief in seconds. Not a search engine. An intelligence system.
+                        Type a city, region, or country below and see what comes back. The system assembles a structured intelligence brief — demographics, GDP, leadership, infrastructure, investment climate — in seconds. This is the entry point. Everything else on this page describes what happens after.
                     </p>
                     <div className="flex gap-3 mb-4">
                         <div className="flex-1 relative">
@@ -404,237 +845,49 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Photo Banner — Technology & Data */}
-            <div className="w-full h-48 md:h-64 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=400&fit=crop&q=80" alt="Global data visualization" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-white text-xl md:text-3xl font-medium tracking-wide drop-shadow-lg">Sovereign-Grade Intelligence Architecture</p>
-                </div>
+            {/* Photo Banner — Document Intelligence */}
+            <div className="w-full h-28 md:h-36 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&h=400&fit=crop&q=80" alt="Technology and intelligence" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
             </div>
 
-            {/* THE TECHNOLOGY */}
-            <section id="technology" className="py-20 px-4 bg-slate-100">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-                        <div>
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE TECHNOLOGY</p>
-                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">What BWGA AI Actually Is</h2>
-                        </div>
-                        <p className="text-base text-slate-700 max-w-md text-right hidden md:block font-medium">Not a chatbot. A digital boardroom — 120+ components, 15 intelligence engines, 46 proprietary formulas.</p>
-                    </div>
+            {/* WHAT YOU GET — Document Factory */}
+            <section className="py-12 px-4 bg-slate-100">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
+                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">So What Comes Out the Other End?</h2>
                     
-                    <p className="text-base text-slate-700 leading-relaxed mb-8 max-w-3xl">
-                        Standard AI predicts the next word. This system reasons through problems, validates assumptions with hard data, and delivers outputs you’d stake your reputation on. Click any layer below to see what’s inside.
+                    <p className="text-base text-slate-700 leading-relaxed mb-6">
+                        The output isn&rsquo;t &ldquo;AI text.&rdquo; The output is a complete decision package: the structured case, the quantified scores, the key risks and mitigations, the stakeholder narrative, and the supporting material required to move from idea &rarr; partner conversation &rarr; formal submission.
                     </p>
 
-                    {/* FIVE-LAYER ARCHITECTURE — Horizontal cards */}
-                    <p className="text-sm text-blue-600 uppercase tracking-wider font-bold mb-5">THE FIVE-LAYER ARCHITECTURE — Click to explore</p>
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-5">
-                        {architectureLayers.map((layer) => {
-                            const Icon = layer.icon;
-                            const isActive = activeLayer === layer.id;
-                            const colorMap: Record<string, { border: string; bg: string; text: string; activeBg: string }> = {
-                                cyan: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-500', activeBg: 'bg-blue-100' },
-                                amber: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-600', activeBg: 'bg-blue-100' },
-                                purple: { border: 'border-indigo-300', bg: 'bg-indigo-50', text: 'text-indigo-600', activeBg: 'bg-indigo-100' },
-                                emerald: { border: 'border-sky-300', bg: 'bg-sky-50', text: 'text-sky-600', activeBg: 'bg-sky-100' },
-                                rose: { border: 'border-slate-300', bg: 'bg-slate-50', text: 'text-slate-600', activeBg: 'bg-slate-100' },
-                            };
-                            const c = colorMap[layer.color];
-                            return (
-                                <button
-                                    key={layer.id}
-                                    onClick={() => setActiveLayer(isActive ? null : layer.id)}
-                                    className={`text-left rounded-xl p-4 border transition-all duration-200 group ${c.border} ${isActive ? c.activeBg : 'bg-white hover:' + c.bg}`}
-                                >
-                                    <div className={`w-8 h-8 ${c.bg} border ${c.border} rounded-lg flex items-center justify-center mb-3`}>
-                                        <Icon size={16} className={c.text} />
-                                    </div>
-                                    <p className={`text-sm font-bold ${c.text} mb-1`}>Layer {layer.id}</p>
-                                    <p className="text-xs text-slate-900 font-semibold leading-tight mb-1">{layer.name}</p>
-                                    <p className="text-xs text-slate-600 leading-snug">{layer.summary}</p>
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Popup detail panel */}
-                    {activeLayer !== null && (
-                        <div className={`bg-slate-50 border rounded-xl p-6 mb-6 transition-all duration-300 animate-in fade-in ${
-                            activeLayer === 0 ? 'border-blue-300' :
-                            activeLayer === 1 ? 'border-blue-300' :
-                            activeLayer === 2 ? 'border-indigo-300' :
-                            activeLayer === 3 ? 'border-sky-300' :
-                            'border-slate-300'
-                        }`}>
-                            <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                    <p className={`text-sm font-semibold mb-2 ${
-                                        activeLayer === 0 ? 'text-blue-500' :
-                                        activeLayer === 1 ? 'text-blue-600' :
-                                        activeLayer === 2 ? 'text-indigo-600' :
-                                        activeLayer === 3 ? 'text-sky-600' :
-                                        'text-slate-600'
-                                    }`}>Layer {activeLayer} — {architectureLayers[activeLayer].name}</p>
-                                    <p className="text-sm text-slate-600 leading-relaxed">{architectureLayers[activeLayer].detail}</p>
-                                </div>
-                                <button onClick={() => setActiveLayer(null)} className="text-slate-300 hover:text-slate-600 transition-colors shrink-0 mt-1">
-                                    <X size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* System summary + Feature map — side by side */}
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
-                            <p className="text-base text-slate-800 leading-relaxed">
-                                <strong className="text-slate-900">All five layers work together on every analysis.</strong> The knowledge layer provides context. NSIL provides computation. Cognition anticipates human reactions. Autonomous engines create, evolve, and enforce ethics. Reflexive engines analyse how you think — then translate everything for every audience.
-                            </p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
-                                <Search size={20} className="text-blue-600 mx-auto mb-2" />
-                                <p className="text-xs font-bold text-slate-900">BW AI Search</p>
-                            </div>
-                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
-                                <FileCheck size={20} className="text-blue-600 mx-auto mb-2" />
-                                <p className="text-xs font-bold text-slate-900">Live Report</p>
-                            </div>
-                            <div className="bg-white border-2 border-indigo-300 rounded-xl p-4 text-center">
-                                <Users size={20} className="text-indigo-600 mx-auto mb-2" />
-                                <p className="text-xs font-bold text-slate-900">BW Consultant</p>
-                            </div>
-                            <div className="bg-white border-2 border-blue-300 rounded-xl p-4 text-center">
-                                <GitBranch size={20} className="text-blue-600 mx-auto mb-2" />
-                                <p className="text-xs font-bold text-slate-900">Document Factory</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Photo Banner — Knowledge Foundation */}
-            <div className="w-full h-40 md:h-52 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=400&fit=crop&q=80" alt="Modern architecture" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
-            </div>
-
-            {/* THE FOUNDATION — Compact bar */}
-            <section id="foundation" className="py-14 px-4 bg-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
-                        <div>
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE FOUNDATION</p>
-                            <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">This System Already Knows</h2>
-                            <p className="text-base text-slate-700 leading-relaxed max-w-2xl">
-                                Most AI starts from zero. This one doesn't — it holds 60+ years of government planning methodology across 150 countries. When your question matches a known pattern, it tells you. When the question is genuinely novel, it widens its ranges accordingly. No false certainty.
-                            </p>
-                        </div>
-                        <div className="flex gap-3">
-                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-light text-blue-600">60<span className="text-sm">+</span></div>
-                                <p className="text-xs text-slate-600 mt-1 font-medium">Years Methodology</p>
-                            </div>
-                            <div className="bg-blue-50 border-2 border-blue-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-light text-blue-600">12</div>
-                                <p className="text-xs text-slate-600 mt-1 font-medium">Pattern Categories</p>
-                            </div>
-                            <div className="bg-sky-50 border-2 border-sky-300 rounded-xl px-5 py-4 text-center min-w-[100px]">
-                                <div className="text-3xl font-light text-sky-600">3</div>
-                                <p className="text-xs text-slate-600 mt-1 font-medium">Confidence Levels</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* THE DIFFERENCE */}
-            <section id="difference" className="py-20 px-4 bg-slate-100">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-                        <div>
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE DIFFERENCE</p>
-                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">What Happens When You Use It</h2>
-                            <p className="text-base text-slate-600 mt-2">Five steps from rough idea to board-ready documentation.</p>
-                        </div>
-                    </div>
-
-                    {/* Horizontal journey tabs */}
-                    <div className="flex gap-1 mb-1 overflow-x-auto pb-1">
-                        {journeySteps.map((step) => {
-                            const isActive = activeJourneyStep === step.id;
-                            const colorMap: Record<string, { bg: string; text: string; activeBg: string; border: string }> = {
-                                cyan: { bg: 'bg-blue-50', text: 'text-blue-500', activeBg: 'bg-blue-100', border: 'border-blue-500' },
-                                amber: { bg: 'bg-blue-50', text: 'text-blue-600', activeBg: 'bg-blue-100', border: 'border-blue-500' },
-                                emerald: { bg: 'bg-sky-50', text: 'text-sky-600', activeBg: 'bg-sky-100', border: 'border-sky-500' },
-                            };
-                            const c = colorMap[step.color];
-                            return (
-                                <button
-                                    key={step.id}
-                                    onClick={() => setActiveJourneyStep(step.id)}
-                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl border-b-2 transition-all duration-200 whitespace-nowrap ${
-                                        isActive ? `${c.activeBg} ${c.border} ${c.text}` : 'bg-white border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-100'
-                                    }`}
-                                >
-                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border ${
-                                        isActive ? `${c.border} ${c.text}` : 'border-slate-300 text-slate-400'
-                                    }`}>{step.id}</span>
-                                    <span className="text-xs font-medium">{step.title}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Active step content panel */}
-                    {(() => {
-                        const step = journeySteps[activeJourneyStep - 1];
-                        const colorMap: Record<string, { border: string; bg: string; text: string; resultBorder: string; resultBg: string; resultText: string }> = {
-                            cyan: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-500', resultBorder: 'border-blue-200', resultBg: 'bg-blue-50', resultText: 'text-blue-500' },
-                            amber: { border: 'border-blue-300', bg: 'bg-blue-50', text: 'text-blue-600', resultBorder: 'border-blue-200', resultBg: 'bg-blue-50', resultText: 'text-blue-600' },
-                            emerald: { border: 'border-sky-300', bg: 'bg-sky-50', text: 'text-sky-600', resultBorder: 'border-sky-200', resultBg: 'bg-sky-50', resultText: 'text-sky-600' },
-                        };
-                        const c = colorMap[step.color];
-                        return (
-                            <div className={`bg-white border-2 ${c.border} rounded-b-xl rounded-tr-xl p-6 mb-8`}>
-                                <h3 className={`text-lg font-semibold mb-3 ${c.text}`}>{step.heading}</h3>
-                                <p className="text-base text-slate-600 leading-relaxed mb-4">{step.text}</p>
-                                <div className={`${c.resultBg} border ${c.resultBorder} rounded-lg px-4 py-3`}>
-                                    <p className={`text-sm ${c.resultText}`}><strong className={c.text}>What you see:</strong> {step.result}</p>
-                                </div>
-                            </div>
-                        );
-                    })()}
-
-                    {/* Before/After comparison — side by side */}
-                    <div className="grid md:grid-cols-2 gap-4 mb-8">
-                        <div className="bg-white border-2 border-red-200 rounded-xl p-6">
-                            <h4 className="text-sm font-bold text-red-600 mb-4 uppercase tracking-wider">Without BWGA AI</h4>
-                            <ul className="space-y-3 text-sm text-slate-600">
-                                <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5 font-bold">✗</span> Weeks of manual research per target region</li>
-                                <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5 font-bold">✗</span> $50K+ for consultant-prepared prospectuses</li>
-                                <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5 font-bold">✗</span> No way to stress-test assumptions</li>
-                                <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5 font-bold">✗</span> Starting from zero every time</li>
-                            </ul>
-                        </div>
-                        <div className="bg-white border-2 border-blue-300 rounded-xl p-6">
-                            <h4 className="text-sm font-bold text-blue-600 mb-4 uppercase tracking-wider">With BWGA AI</h4>
-                            <ul className="space-y-3 text-sm text-slate-700">
-                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 60+ years of methodology already loaded</li>
-                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Pattern recognition classifies before formulas run</li>
-                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> 46 formulas score every dimension with reproducible math</li>
-                                <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5 font-bold">✓</span> Confidence levels stated — authoritative, informed, or exploratory</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
-                        <p className="text-base text-slate-800 leading-relaxed">
-                            <strong className="text-slate-900">Five steps. One session.</strong> You start with a rough idea and finish with quantified analysis, stress-tested assumptions, and ready-to-send documentation. Below: every feature you can try right now.
+                    {/* Relocated & rewritten "Watch it think" — plain language */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-sm p-6 mb-6">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                            You can watch it all happen, live.
+                        </h3>
+                        <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                            While the system builds your case, you can watch every step in real time. You&rsquo;ll see the five expert personas debating your proposal, the scoring formulas running one by one, the risk models stress-testing your assumptions, and the final strategy assembling itself section by section. Nothing is hidden. Every score, every conclusion, every piece of evidence is visible and traceable.
+                        </p>
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                            This isn&rsquo;t a black box &mdash; it&rsquo;s a glass box. The same inputs will always produce the same validated output. That&rsquo;s the whole point: if you can&rsquo;t see how it reached its answer, why would you trust it?
                         </p>
                     </div>
+
+                    {/* Reassurance message */}
+                    <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-6 mb-6">
+                        <p className="text-base text-white leading-relaxed font-medium">
+                            The good news? You don&rsquo;t need to understand how any of this works under the hood. You just need to know it&rsquo;s there &mdash; working for you, 24/7 &mdash; producing rigorous, defensible, repeatable output every single time. Here&rsquo;s what that actually looks like.
+                        </p>
+                    </div>
+
+                    <button 
+                        onClick={() => setShowOutputDetails(true)}
+                        className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                    >
+                        <Info size={16} />
+                        More Details &mdash; Full Document Catalog &amp; Audit Trail
+                    </button>
                 </div>
             </section>
 
@@ -645,215 +898,37 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </div>
 
             {/* THE COMPREHENSIVE INTAKE FRAMEWORK */}
-            <section id="protocol" className="py-16 px-4 bg-white">
+            <section id="protocol" className="py-12 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE COMPREHENSIVE INTAKE FRAMEWORK</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
                     <p className="text-base text-blue-600 mb-4 flex items-center gap-2 font-medium">
                         <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
                         Most users complete this in 30-45 minutes
                     </p>
 
-                    <p className="text-base text-slate-700 leading-relaxed mb-4">
-                        Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote—a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
+                    <p className="text-base text-slate-700 leading-relaxed mb-6">
+                        Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote &mdash; a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness.
                     </p>
-                    <p className="text-sm text-blue-600 font-semibold mb-8">Click any step below to see the detailed data requirements.</p>
-
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        {tenStepProtocol.map((item) => (
-                            <button
-                                key={item.step}
-                                onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
-                                className={`text-left transition-all rounded-xl p-5 border-2 ${
-                                    activeStep === item.step
-                                        ? 'bg-blue-100 border-blue-400'
-                                        : item.gliEnabled
-                                            ? 'bg-indigo-50 border-indigo-200 hover:bg-indigo-100'
-                                            : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
-                                }`}
-                            >
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                                        activeStep === item.step ? 'bg-blue-600 text-white' : item.gliEnabled ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-600'
-                                    }`}>
-                                        {item.step}
-                                    </div>
-                                    <span className="text-xs text-slate-600 font-medium">Step {item.step}</span>
-                                    {item.gliEnabled && <span className="text-xs px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded font-medium">GLI</span>}
-                                </div>
-                                <h4 className="text-sm font-semibold text-slate-700 leading-tight">{item.title}</h4>
-                            </button>
-                        ))}
-                    </div>
-
-                    {activeStep && (
-                        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-5">
-                            <h4 className="text-sm font-semibold text-slate-900 mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
-                            <p className="text-sm text-slate-600 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
-
-                            {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
-                                <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-4">
-                                    <p className="text-xs text-indigo-600">{tenStepProtocol[activeStep - 1].gliNote}</p>
-                                </div>
-                            )}
-
-                            <div className="bg-slate-100 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-blue-600 mb-3">Data Requirements:</h5>
-                                <ul className="grid md:grid-cols-2 gap-2">
-                                    {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
-                                        <li key={idx} className="flex items-start gap-2 text-xs text-slate-600">
-                                            <CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                            {detail}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-8 mb-4">
-                        <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                            Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
-                        </p>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                            The workflow has three stages: <strong className="text-blue-600">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-blue-600">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-blue-600">Institutional Output</strong> (compile evidence into auditable deliverables).
-                        </p>
-                    </div>
-
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                        Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action.
-                    </p>
-                </div>
-            </section>
-
-            {/* Photo Banner — Document Intelligence */}
-            <div className="w-full h-40 md:h-52 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&h=400&fit=crop&q=80" alt="Technology and intelligence" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
-            </div>
-
-            {/* INSTITUTIONAL-GRADE OUTPUTS */}
-            <section className="py-20 px-4 bg-slate-100">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">INSTITUTIONAL-GRADE OUTPUTS</p>
-                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">The Document Factory</h2>
-                    <p className="text-base text-slate-600 mb-2">Analysis is worthless if it stays locked in spreadsheets.</p>
-                    
-                    <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        Great analysis is worthless if it stays locked in spreadsheets. The Document Factory bridges the gap between validated insights and boardroom-ready deliverables—producing prospectuses, risk matrices, partnership briefs, LOIs, MOUs, grant applications, and due-diligence packs that meet institutional standards and carry traceable evidence.
-                    </p>
-                    
-                    <div className="space-y-4 text-sm text-slate-600 mb-6">
-                        <p>
-                            <strong className="text-slate-900">Why it exists:</strong> High-potential regional projects fail when their case isn't packaged at institutional quality. This fixes that gap.
-                        </p>
-                        <p>
-                            <strong className="text-slate-900">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.
-                        </p>
-                        <p>
-                            <strong className="text-slate-900">What you get:</strong> Prospectuses, risk matrices, partnership briefs, LOIs/MOUs, grants, and due-diligence packs—formatted and traceable.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="bg-gradient-to-br from-blue-50 to-transparent border border-blue-200 rounded-xl p-5 text-center">
-                            <div className="text-3xl font-light text-blue-600 mb-1">200+</div>
-                            <p className="text-xs text-slate-600">Report & Document Types</p>
-                        </div>
-                        <div className="bg-gradient-to-br from-blue-50 to-transparent border border-blue-200 rounded-xl p-5 text-center">
-                            <div className="text-3xl font-light text-blue-600 mb-1">150+</div>
-                            <p className="text-xs text-slate-600">Letter Templates</p>
-                        </div>
-                    </div>
 
                     <button 
-                        onClick={() => setShowCatalog(!showCatalog)}
-                        className="w-full py-3 bg-slate-100 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
+                        onClick={() => setShowProtocolDetails(true)}
+                        className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                     >
-                        <FileCheck size={16} />
-                        {showCatalog ? 'Hide Catalog' : 'View Full Catalog'}
+                        <Info size={16} />
+                        More Details &mdash; View All 10 Steps &amp; Data Requirements
                     </button>
-
-                    {showCatalog && (
-                        <div className="mt-4 bg-white border border-slate-200 rounded-xl p-5 space-y-4">
-                            <h4 className="text-sm font-semibold text-blue-600 mb-3">Document Factory Catalog</h4>
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Strategic Reports</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• Investment Prospectus</li>
-                                        <li>• Partnership Viability Assessment</li>
-                                        <li>• Market Entry Analysis</li>
-                                        <li>• Competitive Landscape Report</li>
-                                        <li>• Stakeholder Alignment Matrix</li>
-                                        <li>• Risk Assessment Report</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Financial Documents</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• ROI Projection Model</li>
-                                        <li>• Financial Due Diligence Pack</li>
-                                        <li>• Investment Term Sheet</li>
-                                        <li>• Budget Allocation Framework</li>
-                                        <li>• Monte Carlo Simulation Report</li>
-                                        <li>• Sensitivity Analysis</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Legal Templates</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• Letter of Intent (LOI)</li>
-                                        <li>• Memorandum of Understanding (MOU)</li>
-                                        <li>• Non-Disclosure Agreement</li>
-                                        <li>• Partnership Agreement Draft</li>
-                                        <li>• Grant Application Template</li>
-                                        <li>• Compliance Checklist</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Communication Packs</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• Executive Summary Brief</li>
-                                        <li>• Board Presentation Deck</li>
-                                        <li>• Investor Pitch Document</li>
-                                        <li>• Stakeholder Update Letter</li>
-                                        <li>• Media Release Template</li>
-                                        <li>• Partner Onboarding Pack</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <p className="text-sm text-slate-600 mt-4">
-                        <strong className="text-slate-700">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
-                    </p>
                 </div>
             </section>
 
-            {/* THE 46 FORMULAS - PROOF OF CAPABILITY */}
-            <section className="py-20 px-4 bg-white">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">THE 46 FORMULAS — PROOF OF CAPABILITY</p>
-                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">Mathematical Foundation & Architecture Details</h2>
-                    <p className="text-base text-slate-600 mb-2">Every score is traceable. Every formula is reproducible.</p>
-                    
-                    <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        The formulas below don't operate in a vacuum. They run <em>after</em> the Knowledge Architecture has classified the user's question and set confidence levels. A question that matches a known pattern (e.g., SEZ development, regional planning, investment incentives) gets narrower confidence intervals because the system has 25–63 years of documented methodology to draw on. A genuinely novel question gets wider ranges and explicit caveats. The mathematics is the same; the confidence calibration is different.
+            {/* PROOF OF CAPABILITY */}
+            <section id="proof" className="py-12 px-4 bg-slate-100">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">PROOF OF CAPABILITY</p>
+                    <h3 className="text-xl md:text-2xl font-light text-slate-900 mb-3">See What the System Actually Produces</h3>
+                    <p className="text-base text-slate-600 mb-8 max-w-3xl">
+                        A regional council submitted a 5MW solar partnership proposal. The system flagged two critical problems the council missed, blocked the project, then re-scored it after corrections — taking the same proposal from <strong className="text-red-600">"Do Not Proceed"</strong> to <strong className="text-blue-600">"Investment Ready."</strong> Every score is traceable to a specific formula, a specific engine, and a specific line of code.
                     </p>
-                    
-                    {/* Formula Box - Full Width */}
-                    <div className="bg-slate-100 border-2 border-blue-300 rounded-xl p-6 mb-8">
-                        <p className="text-sm text-blue-600 uppercase tracking-wider mb-3 font-bold">Sample Formula: Success Probability Index</p>
-                        <div className="font-mono text-lg md:text-xl text-slate-900 mb-4">
-                            <p>SPI = Σ(wᵢ × Sᵢ) × (1 - R<sub>composite</sub>) × A<sub>alignment</sub></p>
-                        </div>
-                        <p className="text-xs text-slate-600 mb-4">Where: wᵢ = weight factor, Sᵢ = score per dimension, R = risk coefficient, A = stakeholder alignment</p>
-                        <div className="border-t border-slate-200 pt-4">
-                            <p className="text-sm text-slate-600 italic">"Every formula is mathematically grounded, empirically tested, and produces auditable, reproducible results."</p>
-                        </div>
-                    </div>
 
                     {/* Live Test Case Study - Clickable */}
                     <div 
@@ -1107,11 +1182,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                     <p className="text-xs font-sans font-bold text-red-600 uppercase tracking-wider mb-2">Run 1 — Consensus: Block</p>
                                                     <table className="w-full text-xs">
                                                         <tbody>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Advocate</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
                                                             <tr className="border-b border-stone-100"><td className="py-1">Skeptic</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
-                                                            <tr><td className="py-1">Analyst</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Regulator</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr><td className="py-1">Operator</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-sans font-bold rounded">Block</span></td></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -1119,11 +1194,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                     <p className="text-xs font-sans font-bold text-blue-600 uppercase tracking-wider mb-2">Run 2 — Consensus: Proceed</p>
                                                     <table className="w-full text-xs">
                                                         <tbody>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Strategist</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Advocate</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
                                                             <tr className="border-b border-stone-100"><td className="py-1">Skeptic</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
+                                                            <tr className="border-b border-stone-100"><td className="py-1">Regulator</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
                                                             <tr className="border-b border-stone-100"><td className="py-1">Accountant</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr className="border-b border-stone-100"><td className="py-1">Visionary</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Proceed</span></td></tr>
-                                                            <tr><td className="py-1">Analyst</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
+                                                            <tr><td className="py-1">Operator</td><td className="py-1 text-right"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-sans font-bold rounded">Caution</span></td></tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -1337,309 +1412,67 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                     )}
-                    
-                    <div className="grid md:grid-cols-2 gap-4 mb-6">
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                <Database size={16} className="text-blue-600" />
-                                10-Layer Architecture + Cognition + Autonomy + Reflexive
-                            </h4>
-                            <ul className="space-y-2 text-xs text-slate-600">
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-500" /> Knowledge Architecture (Pattern Confidence + Methodology Base)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Input Validation & Governance</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Multi-Agent Adversarial Debate</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Quantitative Formula Scoring (29 DAG-scheduled)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Monte Carlo Stress Testing</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-indigo-600" /> Human Cognition Engine (7 Models)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Autonomous Intelligence (8 Engines)</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Output Synthesis & Provenance</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-600" /> Proactive Intelligence Layer</li>
-                                <li className="flex items-center gap-2"><CheckCircle2 size={12} className="text-slate-600" /> Reflexive Intelligence (7 Engines)</li>
-                            </ul>
-                        </div>
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                                <Users size={16} className="text-blue-600" />
-                                5 AI Personas
-                            </h4>
-                            <ul className="space-y-2 text-xs text-slate-600">
-                                {aiPersonas.map((persona) => (
-                                    <li key={persona.name} className="flex items-center gap-2">
-                                        <persona.icon size={12} className="text-blue-600" />
-                                        <span className="text-slate-900 font-medium">{persona.name}</span> — {persona.role}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <button 
-                        onClick={() => setShowFormulas(!showFormulas)}
-                        className="w-full py-3 bg-slate-100 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
-                    >
-                        <GitBranch size={16} />
-                        {showFormulas ? 'Hide Architecture' : 'View Full Architecture & 46 Formulas'}
-                    </button>
-                    <p className="text-sm text-blue-600 text-center mt-3 font-medium">
-                        ↳ Includes the 10-layer architecture, 46 formulas, 8 autonomous intelligence engines, 7 reflexive intelligence engines, knowledge layer, proactive intelligence, and proof of why these don't exist anywhere else.
-                    </p>
-
-                    {showFormulas && (
-                        <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-                            <h4 className="text-sm font-semibold text-blue-600 mb-3">NSIL Full Architecture & 46 Proprietary Formulas + Knowledge Layer + Human Cognition Engine + Autonomous Intelligence + Reflexive Intelligence</h4>
-                            
-                            <div className="mb-4">
-                                <h5 className="text-xs font-semibold text-slate-900 mb-2">10-Layer Processing Architecture with Knowledge-First Design</h5>
-                                <ol className="space-y-2 text-xs text-slate-600">
-                                    <li><strong className="text-blue-500">Layer 0:</strong> Knowledge Architecture — Methodology Knowledge Base (60+ years of documented practice, 150 countries) and Pattern Confidence Engine (12 embedded pattern categories). The system checks what it knows <em>before</em> computing anything.</li>
-                                    <li><strong className="text-slate-900">Layer 1:</strong> Input Validation & Governance — Screens all inputs for completeness, consistency, and compliance with data standards</li>
-                                    <li><strong className="text-slate-900">Layer 2:</strong> Multi-Agent Adversarial Debate — 5 AI personas debate and stress-test every claim, calibrated by pattern confidence</li>
-                                    <li><strong className="text-slate-900">Layer 3:</strong> Quantitative Formula Scoring — 29 DAG-scheduled formulas across 5 execution levels calculate hard metrics with confidence intervals set by the knowledge layer</li>
-                                    <li><strong className="text-slate-900">Layer 4:</strong> Monte Carlo Stress Testing — Simulates 10,000+ scenarios to test resilience</li>
-                                    <li><strong className="text-indigo-600">Layer 5:</strong> <strong className="text-indigo-600">Human Cognition Engine</strong> — 7 proprietary behavioural models that simulate how decision-makers process complexity, allocate attention, and react under pressure</li>
-                                    <li><strong className="text-blue-600">Layer 6:</strong> <strong className="text-blue-600">Autonomous Intelligence</strong> — 8 engines: Creative Synthesis (Bisociation Theory), Cross-Domain Transfer (Structure Mapping Theory), Autonomous Goal Detection (HTN + MCDA), Ethical Reasoning (7-dim Rawlsian/Utilitarian), Self-Evolving Algorithm (gradient descent), Adaptive Learning (Bayesian conjugate), Emotional Intelligence (Prospect Theory + Russell Circumplex), Scenario Simulation (5000-run Monte Carlo with causal loops)</li>
-                                    <li><strong className="text-slate-900">Layer 7:</strong> Output Synthesis & Provenance — Generates traceable, auditable conclusions with confidence classification (authoritative / informed / exploratory)</li>
-                                    <li><strong className="text-blue-600">Layer 8:</strong> <strong className="text-blue-600">Proactive Intelligence</strong> — Autonomous monitoring, backtesting calibration, anomaly detection, and opportunity scanning that runs continuously without user prompting</li>
-                                    <li><strong className="text-slate-600">Layer 9:</strong> <strong className="text-slate-600">Reflexive Intelligence</strong> — 7 engines that turn analytical power inward: User Signal Decoder, Internal Echo Detector, Investment Lifecycle Mapper, Regional Mirroring Engine, Regional Identity Decoder, Latent Advantage Miner, and Universal Translation Layer. The system analyses how you think, what you avoid, where your region sits on global investment curves, and adapts its output for every audience.</li>
-                                </ol>
-                            </div>
-
-                            {/* KNOWLEDGE ARCHITECTURE SECTION */}
-                            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Knowledge Architecture — The "Parent" Knowledge Layer</h5>
-                                <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
-                                    <div><strong className="text-slate-900">Methodology Knowledge Base</strong> — Internalised frameworks from investment attraction (58 years stable), regional development planning (63 years stable), and due diligence methodology (50 years stable). Country intelligence profiles (Philippines, Vietnam, Indonesia, Australia, New Zealand). Sector intelligence (renewable energy, IT-BPM, agriculture).</div>
-                                    <div><strong className="text-slate-900">Pattern Confidence Engine</strong> — 12 embedded patterns (SEZ development, regional planning, investment incentives, PPP frameworks, market entry, agriculture modernisation, infrastructure, technology transfer, financial inclusion, export promotion, partnership structures, government promotion). Each with documented historical depth, geographic breadth, known outcomes, and known risks.</div>
-                                </div>
-                                <p className="text-xs text-blue-500 mt-3 italic">This layer is consulted before any external search, before any API call, before any formula runs. When the system can answer from internal knowledge — and it often can, because the methodology has been stable for decades — it does so.</p>
-                            </div>
-
-                            {/* HUMAN COGNITION ENGINE SECTION */}
-                            <div className="mb-4 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-indigo-700 mb-3">Human Cognition Engine — 7 Proprietary Behavioural Models</h5>
-                                <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
-                                    <div><strong className="text-slate-900">Neural Field Dynamics</strong> — Models population-level decision activation and inhibition patterns</div>
-                                    <div><strong className="text-slate-900">Predictive Processing</strong> — Hierarchical belief updating and expectation management</div>
-                                    <div><strong className="text-slate-900">Action Selection</strong> — Variational inference for optimal decision-making under uncertainty</div>
-                                    <div><strong className="text-slate-900">Attention Allocation</strong> — Salience mapping to prioritise critical information signals</div>
-                                    <div><strong className="text-slate-900">Emotional Valence</strong> — Stakeholder sentiment and pressure-response modelling</div>
-                                    <div><strong className="text-slate-900">Information Integration</strong> — Cross-domain reasoning and insight broadcasting</div>
-                                    <div><strong className="text-slate-900">Working Memory</strong> — Cognitive load management for complex multi-factor analysis</div>
-                                </div>
-                                <p className="text-xs text-indigo-600 mt-3 italic">These proprietary behavioural models simulate how real decision-makers think, react, and allocate attention—bringing human-like reasoning to strategic analysis.</p>
-                            </div>
-
-                            {/* PROACTIVE INTELLIGENCE LAYER */}
-                            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Proactive Intelligence Layer — Always-On Autonomous Monitoring</h5>
-                                <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
-                                    <div><strong className="text-slate-900">Proactive Orchestrator</strong> — Coordinates all autonomous monitoring and enhancement agents</div>
-                                    <div><strong className="text-slate-900">Backtesting Calibration</strong> — Continuously validates scoring accuracy against real outcomes</div>
-                                    <div><strong className="text-slate-900">Anomaly Detection</strong> — Flags unusual patterns in data inputs and score movements</div>
-                                    <div><strong className="text-slate-900">Opportunity Scanner</strong> — Identifies emerging opportunities from market and regulatory signals</div>
-                                    <div><strong className="text-slate-900">Self-Improvement Engine</strong> — Refines analysis depth and document quality with every report</div>
-                                    <div><strong className="text-slate-900">Deep Research Agent</strong> — Autonomous multi-source intelligence gathering</div>
-                                </div>
-                                <p className="text-xs text-blue-600 mt-3 italic">This layer runs on every report without user action — the system continuously improves its analysis, validates its own outputs, and surfaces intelligence you didn't know to ask for.</p>
-                            </div>
-
-                            {/* REFLEXIVE INTELLIGENCE LAYER */}
-                            <div className="mb-4 bg-slate-50 border border-slate-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-slate-700 mb-3">Reflexive Intelligence Layer — 7 Engines That Look Inward</h5>
-                                <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
-                                    <div><strong className="text-slate-900">User Signal Decoder</strong> — Discourse Analysis + Shannon Redundancy. Detects repetition compulsion, avoidance patterns, circular reasoning, and hidden priorities. Generates proactive questions that surface what the user is really trying to solve.</div>
-                                    <div><strong className="text-slate-900">Internal Echo Detector</strong> — Cross-references the user's own fields against each other. Finds connections the user entered separately but never linked: a university mentioned in workforce that could anchor a tech hub, a port mentioned casually that defines the region's real competitive advantage.</div>
-                                    <div><strong className="text-slate-900">Investment Lifecycle Mapper</strong> — Vernon's Product Lifecycle + Kondratieff Long Waves + Schumpeterian Creative Destruction. Maps the region's position on an 8-phase investment curve (Emergence → Reactivation) using global precedents. Identifies recyclable assets from prior economic eras.</div>
-                                    <div><strong className="text-slate-900">Regional Mirroring Engine</strong> — Gentner's Structure-Mapping Theory. Finds structural twin regions across 6 weighted dimensions (economic, demographic, infrastructure, geographic, institutional, sector). Shows what worked for your twin — and what the aspiration gap looks like.</div>
-                                    <div><strong className="text-slate-900">Regional Identity Decoder</strong> — Baudrillard's Simulacra + Porter's Regional Competitiveness. Detects when a region has replaced its authentic competitive identity with generic marketing language ("strategically located", "skilled workforce"). Measures simulacrum severity and identifies buried authentic advantages.</div>
-                                    <div><strong className="text-slate-900">Latent Advantage Miner</strong> — Hidden Asset Theory + Porter's Diamond. Mines casually mentioned assets with historic strategic significance. A deep-water port, a university with an agriculture faculty, a diaspora network, a border crossing — these are the "junk DNA" that powered transformation in Shenzhen, Penang, Medellín, and Kigali.</div>
-                                    <div className="md:col-span-2"><strong className="text-slate-900">Universal Translation Layer</strong> — Aristotle's Rhetoric + Halliday's Register Theory. Adapts every finding for 5 distinct audiences: investors (logos-led, IRR/NPV language), government (ethos-led, policy alignment), community (pathos-led, plain language), partners (logos-led, operational detail), executives (ethos-led, strategic framing). Each gets tailored vocabulary, document format, and door-opener briefs.</div>
-                                </div>
-                                <p className="text-xs text-slate-600 mt-3 italic">These engines don't wait to be asked. They analyse how you think, what you avoid, where your region sits globally, and how to communicate findings to every audience that matters. The system doesn't just answer your question — it questions your question.</p>
-                            </div>
-
-                            <div className="grid md:grid-cols-3 gap-4">
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Core Indices</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• SPI™ — Success Probability Index</li>
-                                        <li>• RROI™ — Regional Return on Investment</li>
-                                        <li>• SEAM™ — Stakeholder Alignment Matrix</li>
-                                        <li>• PVI™ — Partnership Viability Index</li>
-                                        <li>• RRI™ — Regional Resilience Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Risk Formulas</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• CRPS — Composite Risk Priority Score</li>
-                                        <li>• RME — Risk Mitigation Effectiveness</li>
-                                        <li>• VaR — Value at Risk</li>
-                                        <li>• SRCI — Supply Chain Risk Index</li>
-                                        <li>• DCS — Dependency Concentration Score</li>
-                                        <li>• PSS — Policy Shock Sensitivity</li>
-                                        <li>• PRS — Political Risk Score</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Financial Metrics</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• IRR — Internal Rate of Return</li>
-                                        <li>• NPV — Net Present Value</li>
-                                        <li>• WACC — Weighted Cost of Capital</li>
-                                        <li>• DSCR — Debt Service Coverage</li>
-                                        <li>• FMS — Funding Match Score</li>
-                                        <li>• ROE — Return on Equity</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Operational Scores</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• ORS — Organizational Readiness</li>
-                                        <li>• TCS — Team Capability Score</li>
-                                        <li>• EEI — Execution Efficiency Index</li>
-                                        <li>• SEQ — Sequencing Integrity Score</li>
-                                        <li>• CGI — Capability Gap Index</li>
-                                        <li>• LCI — Leadership Confidence Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Market Formulas</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• MPI — Market Penetration Index</li>
-                                        <li>• CAI — Competitive Advantage Index</li>
-                                        <li>• TAM — Total Addressable Market</li>
-                                        <li>• SAM — Serviceable Available Market</li>
-                                        <li>• GRI — Growth Rate Index</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Governance Metrics</h5>
-                                    <ul className="space-y-1 text-xs text-slate-600">
-                                        <li>• GCI — Governance Confidence Index</li>
-                                        <li>• CCS — Compliance Certainty Score</li>
-                                        <li>• TPI — Transparency Index</li>
-                                        <li>• ARI — Audit Readiness Index</li>
-                                        <li>• DQS — Data Quality Score</li>
-                                        <li>• GCS — Governance Clarity Score</li>
-                                        <li>• RFI — Regulatory Friction Index</li>
-                                        <li>• CIS — Counterparty Integrity Score</li>
-                                        <li>• ESG — Environmental Social Governance</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            {/* AUTONOMOUS INTELLIGENCE ENGINES */}
-                            <div className="mt-4 mb-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h5 className="text-xs font-semibold text-blue-700 mb-3">Autonomous Intelligence — 8 Engines (World-First)</h5>
-                                <div className="grid md:grid-cols-2 gap-3 text-xs text-slate-600">
-                                    <div><strong className="text-slate-900">CRE — Creative Synthesis</strong> — Bisociation Theory (Koestler 1964). 12 knowledge frames, Jaccard/Cosine similarity, Shannon entropy. Discovers strategies no human would propose by finding hidden connections between unrelated domains.</div>
-                                    <div><strong className="text-slate-900">CDT — Cross-Domain Transfer</strong> — Structure Mapping Theory (Gentner 1983). 8 source domains (Coral Reef, Immune System, Military, Thermodynamics, Neural Networks, Lotka-Volterra, Urban Metabolism, Game Theory). 50+ entity-to-economic-concept mappings.</div>
-                                    <div><strong className="text-slate-900">AGL — Autonomous Goal Detection</strong> — Goal Programming + Hierarchical Task Networks. MCDA ranking: 0.30×impact + 0.25×urgency + 0.20×feasibility + 0.25×EVOI. Detects objectives the user hasn't considered.</div>
-                                    <div><strong className="text-slate-900">ETH — Ethical Reasoning</strong> — 7-dimension framework: Utilitarian, Rawlsian (Difference Principle), Environmental, Intergenerational (Stern discount r=1.4%), Transparency, Proportionality, Cultural Sensitivity. Hard gate — unethical paths are rejected.</div>
-                                    <div><strong className="text-slate-900">EVO — Self-Evolving Algorithm</strong> — Online gradient descent with Thompson Sampling. η_t = 0.05/(1+0.001×t). 21 weight parameters auto-tune after every outcome. Full rollback audit trail.</div>
-                                    <div><strong className="text-slate-900">ADA — Adaptive Learning</strong> — Bayesian conjugate normal-normal updates. 15 prior beliefs. EWMA (α=0.1) accuracy tracking. Ebbinghaus forgetting curve: R = e^(-t/S), S = 24×√n reinforcements.</div>
-                                    <div><strong className="text-slate-900">EMO — Emotional Intelligence</strong> — Russell's Circumplex Model (12 emotions, valence/arousal). Prospect Theory: V(x)=x^0.88 gains, -2.25×(-x)^0.88 losses. π(p) probability weighting γ=0.61. 4 stakeholder emotional profiles.</div>
-                                    <div><strong className="text-slate-900">SIM — Scenario Simulation</strong> — Monte Carlo with 5,000 runs. 12 variables, 14 causal links, 4 feedback loops. Box-Muller normal sampling, triangular & lognormal distributions. Non-linearity: linear, quadratic, threshold, saturation.</div>
-                                </div>
-                                <p className="text-xs text-blue-600 mt-3 italic">These 8 engines run autonomously on every analysis. They are not add-ons or modules — they are integrated into the NSIL core via the Intelligence Hub. No other commercial system possesses any of these capabilities, let alone all eight in a unified architecture.</p>
-                            </div>
-
-                            {/* WORLD-FIRST PROOF SECTION */}
-                            <div className="mt-6 pt-6 border-t border-slate-200">
-                                <h5 className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-4">Why This Is a World-First</h5>
-                                
-                                <div className="bg-slate-100 rounded-lg p-4 mb-4">
-                                    <p className="text-xs text-slate-700 mb-3">
-                                        <strong className="text-slate-900">Multi-agent AI frameworks exist</strong> — tools like Microsoft AutoGen, CrewAI, and LangGraph allow developers to build systems where AI agents collaborate. But these are <em>developer toolkits</em>, not end-user products. They have no built-in scoring, no document generation, no regional development focus, and no autonomous intelligence layer.
-                                    </p>
-                                    <p className="text-xs text-slate-700 mb-3">
-                                        <strong className="text-slate-900">Enterprise decision platforms exist</strong> — Palantir, Kensho, and Moody's offer sophisticated analysis. But they're locked behind enterprise contracts, inaccessible to regional councils, SMEs, or first-time exporters. None include ethical reasoning gates, emotional intelligence modelling, or self-evolving algorithms.
-                                    </p>
-                                    <p className="text-xs text-slate-700 mb-3">
-                                        <strong className="text-slate-900">No system anywhere combines:</strong> multi-persona adversarial analysis, 46 quantitative viability indices, Monte Carlo stress testing, proactive intelligence with autonomous monitoring, 7-model human cognition simulation, an 8-engine autonomous intelligence layer that reasons creatively, detects goals, enforces ethical constraints, evolves its own weights, models stakeholder emotions, and simulates futures, <em>and</em> a 7-engine reflexive intelligence layer that analyses how users think, detects identity loss, maps investment lifecycles, finds structural twin regions, mines hidden assets, and translates every finding for every audience — all in a single platform purpose-built for regional economic development.
-                                    </p>
-                                    <p className="text-xs text-slate-700">
-                                        <strong className="text-slate-900">Specifically, no other system has:</strong> Bisociation-based creative synthesis, Structure Mapping cross-domain transfer, autonomous goal detection via HTN decomposition, Rawlsian ethical hard gates, online gradient descent self-evolution, Bayesian adaptive learning with Ebbinghaus retention, Prospect Theory emotional intelligence, Monte Carlo scenario simulation with causal feedback loops, discourse-analysis user signal decoding, Baudrillard simulacrum identity detection, Vernon/Kondratieff investment lifecycle mapping, Gentner-based regional mirroring, latent advantage mining, or Aristotelian audience-adaptive translation. We have all fifteen, running together, integrated into a single intelligence hub.
-                                    </p>
-                                </div>
-
-                                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <p className="text-xs text-slate-700 italic">
-                                        "None of these indices exist as named products elsewhere. They were designed specifically for this system because no existing tool combined them, regional development has unique needs standard tools ignore, and investors demand reproducibility — not AI-generated guesswork. Every formula has defined methodology, transparent inputs, and a full audit trail. The 15 autonomous and reflexive engines represent capabilities that have never been implemented in any commercial system — each backed by published mathematical theory, implemented in real TypeScript with no placeholders."
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </section>
 
-            {/* Photo Banner — Regional Communities */}
-            <div className="w-full h-40 md:h-52 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=400&fit=crop&q=80" alt="Mountain landscape" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-900/20" />
-            </div>
-
-            {/* DESIGNED FOR EVERYONE */}
-            <section className="py-16 px-4 bg-white">
+            {/* WHO THIS IS FOR */}
+            <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-                        <div>
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">DESIGNED FOR EVERYONE</p>
-                            <h2 className="text-2xl md:text-3xl font-light text-slate-900">You Don't Need to Be an Expert. <span className="text-blue-600 font-normal">The System Already Is.</span></h2>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHO THIS IS FOR</p>
+                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">You Don't Need to Be an Expert. <span className="text-blue-600 font-normal">The System Already Is.</span></h2>
+                    <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-3xl">
+                        The people who need this most are the ones who've never had access to it. That's the point.
+                    </p>
+
+                    {/* WHO — narrative cards */}
+                    <div className="grid md:grid-cols-2 gap-6 mb-10">
+                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center"><Building2 size={20} className="text-blue-600" /></div>
+                                <h3 className="text-base font-semibold text-slate-900">Regional Councils & Development Agencies</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                You know your region has potential. You've seen it your entire career. But when the investment board asks for a risk-adjusted ROI model or a stakeholder alignment matrix, the budget doesn't stretch. This system gives you the same analytical depth — scored, stress-tested, and formatted — without the consulting invoice.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">What you get: prospectuses, structural twin analysis, lifecycle mapping, advantage mining, scenario stress-testing</p>
+                        </div>
+                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center"><Scale size={20} className="text-blue-600" /></div>
+                                <h3 className="text-base font-semibold text-slate-900">Government Agencies & Investment Boards</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                You're screening proposals, evaluating bids, or deciding which initiatives get funded. Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces a documented rationale you can stand behind in scrutiny.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">What you get: scored viability assessments, ethical gates, friction analysis, traceable decision rationale</p>
+                        </div>
+                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center"><Briefcase size={20} className="text-blue-600" /></div>
+                                <h3 className="text-base font-semibold text-slate-900">Businesses Expanding Into New Regions</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                You've outgrown your home market. You're looking at Southeast Asia, the Pacific, Latin America — but you don't know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds, scores your entry strategy against historical patterns, and flags what will go wrong before you commit capital.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">What you get: BW AI Search briefs, risk assessment, partner ecosystem mapping, activation timeline forecasts</p>
+                        </div>
+                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center"><Globe size={20} className="text-blue-600" /></div>
+                                <h3 className="text-base font-semibold text-slate-900">First-Time Exporters & Regional Entrepreneurs</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                                You've never written an investment prospectus. You don't know what a due diligence pack looks like. You've never seen a Monte Carlo simulation. That's fine — the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors. The BW Consultant AI sits alongside you at every step.
+                            </p>
+                            <p className="text-xs text-blue-600 font-medium">Guided intake, built-in consultant, and step-by-step preparation — without needing a consulting team</p>
                         </div>
                     </div>
 
-                    {/* Guidance modes — compact horizontal */}
-                    <div className="grid grid-cols-3 gap-4 mb-8">
-                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-blue-600 font-bold text-sm mb-2">🧭 Orientation</p>
-                            <p className="text-xs text-slate-600">Full walkthroughs with BW Consultant AI. 10-step intake guided. Pattern confidence explained at every stage.</p>
-                        </div>
-                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-blue-600 font-bold text-sm mb-2">🤝 Collaborative</p>
-                            <p className="text-xs text-slate-600">Teams review scores together. 5-persona debate visible. Shared intake workspace for councils & working groups.</p>
-                        </div>
-                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-5">
-                            <p className="text-blue-600 font-bold text-sm mb-2">⚡ Expert</p>
-                            <p className="text-xs text-slate-600">Direct formula access. Full audit trail export. DAG scheduler visible. Monte Carlo parameters adjustable.</p>
-                        </div>
-                    </div>
-
-                    {/* Who + Capabilities — side by side */}
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-bold">WHO THIS IS BUILT FOR</p>
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Building2 size={22} className="mx-auto mb-2 text-blue-600" />
-                                    <p className="text-xs font-semibold text-slate-700">Regional Councils & RDAs</p>
-                                </div>
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Scale size={22} className="mx-auto mb-2 text-blue-600" />
-                                    <p className="text-xs font-semibold text-slate-700">Government Agencies</p>
-                                </div>
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Briefcase size={22} className="mx-auto mb-2 text-blue-600" />
-                                    <p className="text-xs font-semibold text-slate-700">Businesses Going Regional</p>
-                                </div>
-                                <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4 text-center">
-                                    <Globe size={22} className="mx-auto mb-2 text-blue-600" />
-                                    <p className="text-xs font-semibold text-slate-700">First-Time Exporters</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-6 flex flex-col justify-center">
-                            <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-bold">THE SYSTEM HANDLES</p>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3"><Layers size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Structure your thinking with 10-step intake</p></div>
-                                <div className="flex items-center gap-3"><TrendingUp size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Score viability across 46 formulas</p></div>
-                                <div className="flex items-center gap-3"><Shield size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Stress-test with 5,000 Monte Carlo scenarios</p></div>
-                                <div className="flex items-center gap-3"><FileText size={18} className="text-blue-600 shrink-0" /><p className="text-sm text-slate-700">Export 200+ document types instantly</p></div>
-                            </div>
-                            <p className="text-xs text-slate-600 mt-4">The complexity is hidden. What you see is clarity.</p>
-                        </div>
+                    {/* How the system adapts */}
+                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-sm">
+                        <p className="text-base text-slate-800 leading-relaxed">
+                            <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs, guided intake, and pattern confidence explained at every stage. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, visible DAG scheduling, and adjustable Monte Carlo parameters. Same engine — different depth based on who's driving.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -1648,28 +1481,49 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="pilots" className="py-16 px-4 bg-slate-100">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">NEXT STEPS</p>
-                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-6">Partnership & Pilot Programs</h2>
+                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-4">Work With Us</h2>
+                    <p className="text-base text-slate-600 mb-8 max-w-3xl">We're looking for forward-thinking organisations who want to pilot a new standard for how investment decisions get made — and help shape the platform before it goes to market.</p>
                     
-                    <div className="grid md:grid-cols-4 gap-4 mb-6">
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <Zap size={22} className="text-blue-600 mb-3" />
-                            <h3 className="text-sm font-bold text-slate-900 mb-2">Investment Screening</h3>
-                            <p className="text-xs text-slate-600">46-formula viability scoring with 5-persona adversarial debate for foreign investment review boards and regional councils</p>
+                    <div className="grid md:grid-cols-2 gap-5 mb-8">
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <Zap size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Investment Promotion Agencies</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">You review hundreds of investment leads a year. Most don't go anywhere. The ones that do take months of manual due diligence before you can even bring them to a board.</p>
+                            <p className="text-sm text-slate-700 font-medium">Pilot the system on your next intake cycle — screen proposals in hours instead of weeks, with board-ready scoring and a defensible evidence trail from day one.</p>
                         </div>
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <TrendingUp size={22} className="text-blue-600 mb-3" />
-                            <h3 className="text-sm font-bold text-slate-900 mb-2">Regional Development</h3>
-                            <p className="text-xs text-slate-600">Board-ready investment prospectuses, lifecycle mapping, structural twin analysis, and latent advantage mining for economic development agencies</p>
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <TrendingUp size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Regional Economic Development</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">Your region has real assets — a port, a university, agricultural land, a diaspora network — but the investment prospectus hasn't been written, or the one you have reads like every other region in the country.</p>
+                            <p className="text-sm text-slate-700 font-medium">Partner on a regional intelligence project — we'll identify what your region actually has, find your structural twins globally, and produce the documents that get you into the room with the right investors.</p>
                         </div>
-                        <div className="bg-white border-2 border-slate-200 rounded-xl p-5">
-                            <Building2 size={22} className="text-blue-600 mb-3" />
-                            <h3 className="text-sm font-bold text-slate-900 mb-2">PPP Modeling</h3>
-                            <p className="text-xs text-slate-600">Monte Carlo stress testing, stakeholder alignment scoring, ethical reasoning gates, and risk-adjusted ROI projections for infrastructure ministries</p>
+                        <div className="bg-white border-2 border-slate-200 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <Building2 size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Public-Private Partnerships</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">PPP proposals fail most often not because the project is bad, but because stakeholder alignment was assumed instead of modelled. The economics looked good on paper but nobody stress-tested the assumptions.</p>
+                            <p className="text-sm text-slate-700 font-medium">Run your next PPP proposal through the system — stress-test the financials across 5,000 scenarios, model every stakeholder's incentives, and surface the deal-killers before they reach the minister's desk.</p>
                         </div>
-                        <div className="bg-gradient-to-br from-blue-100 to-blue-50 border-2 border-blue-300 rounded-xl p-5">
-                            <Globe size={22} className="text-blue-600 mb-3" />
-                            <h3 className="text-sm font-bold text-blue-700 mb-2">Vision</h3>
-                            <p className="text-xs text-slate-600">Deploy as a sovereign-grade national strategic asset — 15 intelligence engines, 8 autonomous + 7 reflexive, audience-adaptive translation for every stakeholder</p>
+                        <div className="bg-gradient-to-br from-blue-100 to-blue-50 border-2 border-blue-300 rounded-xl p-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-200 rounded-lg flex items-center justify-center">
+                                    <Globe size={18} className="text-blue-700" />
+                                </div>
+                                <h3 className="text-sm font-bold text-blue-700">Where This Is Going</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">Every pilot teaches us something. Every partnership sharpens the intelligence. The long-term vision is a sovereign-grade national strategic asset — 22 intelligence engines working in concert, translating the same analysis into the language every stakeholder actually needs.</p>
+                            <p className="text-sm text-blue-700 font-medium">Early partners don't just get access to the platform. They help define what it becomes.</p>
                         </div>
                     </div>
                 </div>
@@ -1678,7 +1532,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* SOLVING REAL PROBLEMS — compact callout */}
             <section className="py-12 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
+                    <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-sm">
                         <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">SOLVING REAL PROBLEMS</p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             This platform exists to help capital, partnerships, and capability reach places that are too often overlooked — despite holding extraordinary, investable potential. During this beta phase and in future subscriptions, <strong className="text-blue-600">10% of every paid transaction</strong> goes back into initiatives that support regional development. A new voice for regions. A new standard for how opportunity is evaluated — anywhere in the world.
@@ -1761,6 +1615,184 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
             </section>
+
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* WHAT YOU GET — Detail Popup Modal                          */}
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {showOutputDetails && (
+                <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowOutputDetails(false)}>
+                    <div className="relative w-full max-w-3xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={() => setShowOutputDetails(false)} className="fixed top-4 right-4 z-20 w-10 h-10 bg-stone-800 border border-stone-600 rounded-full flex items-center justify-center hover:bg-stone-700 transition-colors shadow-lg">
+                            <X size={16} className="text-stone-300" />
+                        </button>
+                        <div className="bg-white rounded-xl shadow-2xl p-8">
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
+                            <h2 className="text-2xl font-light text-slate-900 mb-6">The Full Picture</h2>
+
+                            <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                This is where the system becomes practical. It takes what would normally live across spreadsheets, slide decks, consultant workstreams, and weeks of revisions &mdash; and assembles it into institutional-ready deliverables.
+                            </p>
+
+                            <div className="space-y-4 text-sm text-slate-600 mb-8">
+                                <p><strong className="text-slate-900">Why it exists:</strong> High-potential regional projects fail not because the opportunity isn&rsquo;t real &mdash; but because nobody packaged the case at the standard investors and governments expect. This fixes that.</p>
+                                <p><strong className="text-slate-900">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.</p>
+                                <p><strong className="text-slate-900">What you get:</strong> Decision-ready documents and packs that match the expectations of boards, agencies, and partners &mdash; generated from the same validated analysis.</p>
+                            </div>
+
+                            <h3 className="text-sm font-semibold text-blue-600 mb-4">Document Factory Catalog</h3>
+                            <div className="grid md:grid-cols-2 gap-4 mb-8">
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Strategic Reports</h5>
+                                    <ul className="space-y-1 text-xs text-slate-600">
+                                        <li>&bull; Investment Prospectus</li>
+                                        <li>&bull; Partnership Viability Assessment</li>
+                                        <li>&bull; Market Entry Analysis</li>
+                                        <li>&bull; Competitive Landscape Report</li>
+                                        <li>&bull; Stakeholder Alignment Matrix</li>
+                                        <li>&bull; Risk Assessment Report</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Financial Documents</h5>
+                                    <ul className="space-y-1 text-xs text-slate-600">
+                                        <li>&bull; ROI Projection Model</li>
+                                        <li>&bull; Financial Due Diligence Pack</li>
+                                        <li>&bull; Investment Term Sheet</li>
+                                        <li>&bull; Budget Allocation Framework</li>
+                                        <li>&bull; Monte Carlo Simulation Report</li>
+                                        <li>&bull; Sensitivity Analysis</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Legal Templates</h5>
+                                    <ul className="space-y-1 text-xs text-slate-600">
+                                        <li>&bull; Letter of Intent (LOI)</li>
+                                        <li>&bull; Memorandum of Understanding (MOU)</li>
+                                        <li>&bull; Non-Disclosure Agreement</li>
+                                        <li>&bull; Partnership Agreement Draft</li>
+                                        <li>&bull; Grant Application Template</li>
+                                        <li>&bull; Compliance Checklist</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-xs font-semibold text-slate-900 mb-2">Communication Packs</h5>
+                                    <ul className="space-y-1 text-xs text-slate-600">
+                                        <li>&bull; Executive Summary Brief</li>
+                                        <li>&bull; Board Presentation Deck</li>
+                                        <li>&bull; Investor Pitch Document</li>
+                                        <li>&bull; Stakeholder Update Letter</li>
+                                        <li>&bull; Media Release Template</li>
+                                        <li>&bull; Partner Onboarding Pack</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-6">
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    <strong className="text-slate-700">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn&rsquo;t a black box &mdash; it&rsquo;s court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
+                                </p>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-sm">
+                                <p className="text-base text-slate-800 leading-relaxed">
+                                    <strong className="text-slate-900">But the system can only produce all of this if it has the right inputs.</strong> That&rsquo;s the next piece &mdash; a structured 10-step process that captures every dimension of your opportunity: identity, strategy, financials, risk, governance. It takes 30&ndash;45 minutes, and by the end, the reasoning engine has everything it needs to do its job.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* TEN-STEP PROTOCOL — Detail Popup Modal                     */}
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {showProtocolDetails && (
+                <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowProtocolDetails(false)}>
+                    <div className="relative w-full max-w-4xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={() => setShowProtocolDetails(false)} className="fixed top-4 right-4 z-20 w-10 h-10 bg-stone-800 border border-stone-600 rounded-full flex items-center justify-center hover:bg-stone-700 transition-colors shadow-lg">
+                            <X size={16} className="text-stone-300" />
+                        </button>
+                        <div className="bg-white rounded-xl shadow-2xl p-8">
+                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
+                            <h2 className="text-2xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
+                            <p className="text-base text-blue-600 mb-4 flex items-center gap-2 font-medium">
+                                <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+                                Most users complete this in 30-45 minutes
+                            </p>
+
+                            <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                Each step captures a critical dimension of your opportunity. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
+                            </p>
+                            <p className="text-sm text-blue-600 font-semibold mb-6">Click any step below to see the detailed data requirements.</p>
+
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                {tenStepProtocol.map((item) => (
+                                    <button
+                                        key={item.step}
+                                        onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
+                                        className={`text-left transition-all rounded-xl p-5 border-2 ${
+                                            activeStep === item.step
+                                                ? 'bg-blue-100 border-blue-400'
+                                                : item.gliEnabled
+                                                    ? 'bg-indigo-50 border-indigo-200 hover:bg-indigo-100'
+                                                    : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                                                activeStep === item.step ? 'bg-blue-600 text-white' : item.gliEnabled ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-600'
+                                            }`}>
+                                                {item.step}
+                                            </div>
+                                            <span className="text-xs text-slate-600 font-medium">Step {item.step}</span>
+                                            {item.gliEnabled && <span className="text-xs px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded font-medium">GLI</span>}
+                                        </div>
+                                        <h4 className="text-sm font-semibold text-slate-700 leading-tight">{item.title}</h4>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {activeStep && (
+                                <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-5">
+                                    <h4 className="text-sm font-semibold text-slate-900 mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
+                                    <p className="text-sm text-slate-600 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
+
+                                    {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
+                                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-4">
+                                            <p className="text-xs text-indigo-600">{tenStepProtocol[activeStep - 1].gliNote}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="bg-slate-100 rounded-lg p-4">
+                                        <h5 className="text-xs font-semibold text-blue-600 mb-3">Data Requirements:</h5>
+                                        <ul className="grid md:grid-cols-2 gap-2">
+                                            {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
+                                                <li key={idx} className="flex items-start gap-2 text-xs text-slate-600">
+                                                    <CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                                                    {detail}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-8 mb-4">
+                                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                    Most tools generate text. This system validates reality. It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    The workflow has three stages: <strong className="text-blue-600">Structured Intake</strong> (define the opportunity in measurable terms), <strong className="text-blue-600">Adversarial Analysis</strong> (stress-test with personas and scoring models), and <strong className="text-blue-600">Institutional Output</strong> (compile evidence into auditable deliverables).
+                                </p>
+                            </div>
+
+                            <p className="text-sm text-slate-600 leading-relaxed">
+                                Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Legal Document Modals */}
             <DocumentModal activeDocument={activeDocument} onClose={() => setActiveDocument(null)} />
