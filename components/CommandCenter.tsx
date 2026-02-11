@@ -214,60 +214,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </nav>
 
 
-            {/* OUR MISSION — The opening statement */}
-            <section id="mission" className="pt-36 pb-20 px-4 bg-white">
-                <div className="max-w-5xl mx-auto text-center">
-                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm mb-6 font-bold">OUR MISSION</p>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-slate-900">
-                        Strong nations are built<br />on strong regions.
-                    </h1>
-                    <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-4">
-                        Every nation depends on its regions — for food, resources, industry, and resilience. But for too long, opportunity has been decided by proximity to capital, not by fundamentals.
-                    </p>
-                    <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                        The capability is there. The potential is real. What has been missing are the tools. We built those tools.
-                    </p>
-                </div>
-            </section>
 
-            {/* Photo Banner */}
-            <section className="relative z-20 min-h-[50vh] flex items-center">
+            {/* OUR ORIGIN — Full background hero with story */}
+            <section id="mission" className="relative pt-36 pb-16 px-4 overflow-hidden">
                 <img 
                     src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=80" 
                     alt="Regional landscape" 
                     className="absolute inset-0 w-full h-full object-cover" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70" />
-                <div className="relative z-10 max-w-5xl mx-auto text-center px-4 py-16">
-                    <p className="text-sky-300 uppercase tracking-[0.3em] text-base md:text-lg mb-4 font-bold">
-                        BRAYDEN WALLS GLOBAL ADVISORY
-                    </p>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight mb-6 text-white">
-                        Built from the ground up.<br />
-                        <span className="text-sky-300 font-normal">For the communities that power nations.</span>
-                    </h2>
-                    <button 
-                        onClick={() => scrollToSection('bwai-search')}
-                        className="inline-flex items-center gap-3 px-10 py-4 bg-sky-500 border-2 border-sky-400 rounded-full text-white text-base font-bold hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/30"
-                    >
-                        <Search size={18} />
-                        Try BW AI Search
-                    </button>
-                </div>
-            </section>
-
-            {/* OUR ORIGIN */}
-            <section className="py-10 px-4 bg-white">
-                <div className="max-w-5xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR ORIGIN</p>
-                    <h2 className="text-2xl md:text-3xl font-light mb-6 text-slate-900">The Story of BWGA</h2>
-                    <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed mb-8">
-                        <div className="space-y-3">
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/75 to-slate-900/85" />
+                <div className="relative z-10 max-w-5xl mx-auto">
+                    <p className="text-blue-400 uppercase tracking-[0.3em] text-sm mb-3 font-bold">OUR ORIGIN</p>
+                    <h2 className="text-3xl md:text-4xl font-light mb-8 text-white">The Story of BWGA</h2>
+                    <div className="grid md:grid-cols-2 gap-x-10 text-sm text-slate-300 leading-relaxed mb-8">
+                        <div className="space-y-4">
                             <p>
                                 BWGA wasn&rsquo;t founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
                             </p>
                             <p>
-                                <strong>BW Global Advisory (BWGA)</strong> is an advisory practice built from firsthand experience in regional communities &mdash; places that hold real economic potential but lack the tools, connections, and institutional visibility to compete for global investment on equal footing.
+                                <strong className="text-white">BW Global Advisory (BWGA)</strong> is an advisory practice built from firsthand experience in regional communities &mdash; places that hold real economic potential but lack the tools, connections, and institutional visibility to compete for global investment on equal footing.
                             </p>
                             <p>
                                 We watched regional leaders &mdash; mayors, entrepreneurs, councils &mdash; work tirelessly to attract investment. They had the vision, the drive, the raw assets.
@@ -276,30 +241,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 From that observation came the question: what if you could build a system that internalised all of that methodology &mdash; 60+ years of documented practice across 150 countries &mdash; and made it available to anyone, anywhere, instantly?
                             </p>
                         </div>
-                        <div className="space-y-3 mt-3 md:mt-0">
+                        <div className="space-y-4 mt-4 md:mt-0">
                             <p>
-                                The practice exists because of a simple observation: <strong>every &ldquo;new idea&rdquo; is old somewhere.</strong> The 1963 Philippine Integrated Socioeconomic Plan, the 1978 Region 7 Five-Year Development Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations &mdash; they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. <strong>The past is the solution library.</strong>
+                                The practice exists because of a simple observation: <strong className="text-white">every &ldquo;new idea&rdquo; is old somewhere.</strong> The 1963 Philippine Integrated Socioeconomic Plan, the 1978 Region 7 Five-Year Development Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations &mdash; they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. <strong className="text-white">The past is the solution library.</strong>
                             </p>
                             <p>
-                                <strong>BWGA Intelligence AI is the answer.</strong> It is the technology arm of BW Global Advisory. Not a chatbot. Not a search engine. Not a lookup table. It is a complete digital boardroom &mdash; a system that reasons through investment, trade, and development problems using the same depth of analysis that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars.
+                                <strong className="text-white">BWGA Intelligence AI is the answer.</strong> It is the technology arm of BW Global Advisory. Not a chatbot. Not a search engine. Not a lookup table. It is a complete digital boardroom &mdash; a system that reasons through investment, trade, and development problems using the same depth of analysis that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars.
                             </p>
                         </div>
                     </div>
-                    <p className="text-base text-slate-700 leading-relaxed mb-8">
+                    <p className="text-sm text-slate-300 leading-relaxed mb-10 max-w-4xl">
                         That&rsquo;s not a criticism &mdash; it&rsquo;s the insight that made this system possible. If the answers already exist, scattered across decades and continents, then the real problem isn&rsquo;t knowledge. It&rsquo;s access. It&rsquo;s synthesis. It&rsquo;s the ability to take what worked in Shenzhen in 1980, in Penang in 1995, in Medell&iacute;n in 2004, and translate it into a strategic roadmap for a regional council staring at a blank page today.
                     </p>
 
                     {/* Personal Story — Brayden Walls */}
-                    <div className="bg-white border-2 border-slate-300 rounded-sm p-8 mb-8 shadow-lg">
-                        <h3 className="text-2xl font-semibold text-slate-900 mb-6">Who I am — the founder and sole developer</h3>
+                    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-sm p-8 mb-8">
+                        <h3 className="text-2xl font-semibold text-white mb-6">Who I am &mdash; the founder and sole developer</h3>
                         
                         <div className="flex flex-col md:flex-row gap-6 mb-6">
                             <div className="md:w-2/3">
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    Hey everyone, I'm Brayden Walls, the developer behind <strong>BW NEXUS AI</strong>, and I'm thrilled to finally share this with the world. For the first time, I'm lifting the curtain on what we've built—a groundbreaking neuro-symbolic intelligence system that's not just another AI tool, but a complete rethinking of how machines can reason like humans.
+                                <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                                    Hey everyone, I&rsquo;m Brayden Walls, the developer behind <strong className="text-white">BW NEXUS AI</strong>, and I&rsquo;m thrilled to finally share this with the world. For the first time, I&rsquo;m lifting the curtain on what we&rsquo;ve built &mdash; a groundbreaking neuro-symbolic intelligence system that&rsquo;s not just another AI tool, but a complete rethinking of how machines can reason like humans.
                                 </p>
-                                <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    For more than 16 months, I've been living, researching, and building in a place that inspired everything you see here — the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don't exist.
+                                <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                                    For more than 16 months, I&rsquo;ve been living, researching, and building in a place that inspired everything you see here &mdash; the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don&rsquo;t exist.
                                 </p>
                             </div>
                             <div className="md:w-1/3">
@@ -307,23 +272,37 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific — they all wanted the same thing: to be seen, to be understood, to have a fair shot.
+                        <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                            I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific &mdash; they all wanted the same thing: to be seen, to be understood, to have a fair shot.
                         </p>
 
-                        <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn't a chatbot or a dashboard — it's a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you're about to see below is what I built, how it works, and why nothing else like it exists.
+                        <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                            So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn&rsquo;t a chatbot or a dashboard &mdash; it&rsquo;s a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you&rsquo;re about to see below is what I built, how it works, and why nothing else like it exists.
                         </p>
 
-                        <div className="bg-gradient-to-r from-slate-100 to-slate-50 border border-slate-300 rounded-sm p-6">
-                            <p className="text-lg text-slate-800 leading-relaxed italic mb-3">
-                                "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
+                        <div className="bg-white/10 border border-white/20 rounded-sm p-6">
+                            <p className="text-base text-white leading-relaxed italic mb-3">
+                                &ldquo;Every &lsquo;new idea&rsquo; is old somewhere. The child learns what the parent already knows. The past isn&rsquo;t historical interest. The past is the solution library.&rdquo;
                             </p>
-                            <p className="text-slate-600 text-sm font-medium">— Brayden Walls, Founder & Sole Developer</p>
+                            <p className="text-slate-400 text-sm font-medium">&mdash; Brayden Walls, Founder &amp; Sole Developer</p>
                         </div>
+                    </div>
+
+                    <div className="text-center">
+                        <button 
+                            onClick={() => scrollToSection('bwai-search')}
+                            className="inline-flex items-center gap-3 px-10 py-4 bg-blue-600 border-2 border-blue-500 rounded-full text-white text-base font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/30"
+                        >
+                            <Search size={18} />
+                            Try BW AI Search
+                        </button>
                     </div>
                 </div>
             </section>
+
+
+
+
 
             {/* ═══════════════════════════════════════════════════════ */}
             {/* THE PLATFORM — Professional Architecture Demonstration */}
