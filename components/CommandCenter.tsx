@@ -1,9 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info, Eye, Brain } from 'lucide-react';
-import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
-import { CITY_PROFILES } from '../data/globalLocationProfiles';
-import { PatternConfidenceEngine } from '../services/PatternConfidenceEngine';
-import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
 
@@ -26,7 +22,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showFormulas, setShowFormulas] = useState(false);
-    const [showCaseStudy, setShowCaseStudy] = useState(false);
+    const [_showCaseStudy, _setShowCaseStudy] = useState(false);
     const [showOutputDetails, setShowOutputDetails] = useState(false);
     const [showProtocolDetails, setShowProtocolDetails] = useState(false);
     const [showBlock2More, setShowBlock2More] = useState(false);
@@ -35,141 +31,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [showBlock5Popup, setShowBlock5Popup] = useState(false);
     const [showProofPopup, setShowProofPopup] = useState(false);
     const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
-    const [activeLayer, setActiveLayer] = useState<number | null>(null);
+    const [_activeLayer, _setActiveLayer] = useState<number | null>(null);
 
     // Global Location Intelligence state - LIVE SEARCH
-    const [locationQuery, setLocationQuery] = useState('');
-    const [isResearchingLocation, setIsResearchingLocation] = useState(false);
-    const [researchProgress, setResearchProgress] = useState<ResearchProgress | null>(null);
-    const [_locationResult, setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
-    const [_comparisonCities, setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
-    const [researchSummary, setResearchSummary] = useState<string>('');
+    const [_locationQuery, _setLocationQuery] = useState('');
+    const [_isResearchingLocation, _setIsResearchingLocation] = useState(false);
+    const [_researchProgress, _setResearchProgress] = useState<null>(null);
+    const [_locationResult, _setLocationResult] = useState<{ city: string; country: string; lat: number; lon: number } | null>(null);
+    const [_comparisonCities, _setComparisonCities] = useState<Array<{ city: string; country: string; reason: string; keyMetric?: string }>>([]);
+    const [_researchSummary, _setResearchSummary] = useState<string>('');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [_liveProfile, setLiveProfile] = useState<any>(null);
+    const [_liveProfile, _setLiveProfile] = useState<any>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [_researchResult, setResearchResult] = useState<any>(null);
-    const [searchError, setSearchError] = useState<string | null>(null);
+    const [_researchResult, _setResearchResult] = useState<any>(null);
+    const [_searchError, _setSearchError] = useState<string | null>(null);
 
     // Handle location search - SIMPLIFIED Gemini-first approach
-    const handleLocationSearch = async () => {
-        console.log('[CommandCenter] handleLocationSearch called');
-        console.log('[CommandCenter] locationQuery:', locationQuery);
-        
-        if (!locationQuery.trim()) {
-            console.log('[CommandCenter] Empty query, returning');
-            return;
-        }
-        
-        console.log('[CommandCenter] Starting research...');
-        setIsResearchingLocation(true);
-        setLocationResult(null);
-        setLiveProfile(null);
-        setResearchResult(null);
-        setComparisonCities([]);
-        setResearchSummary('');
-        setSearchError(null);
-        setResearchProgress({ stage: 'initialization', progress: 5, message: 'Connecting to AI intelligence...' });
-
-        try {
-            console.log('[CommandCenter] Calling researchLocation...');
-            // Direct Gemini AI research - simple and reliable
-            const result = await Promise.race([
-                researchLocation(
-                    locationQuery,
-                    (progress) => {
-                        console.log('[CommandCenter] Progress:', progress);
-                        setResearchProgress(progress);
-                    }
-                ),
-                new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Search timeout - taking longer than expected')), 40000)
-                )
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ]) as Record<string, any>;
-
-            console.log('[CommandCenter] Research result:', result);
-            
-            if (result && result.profile) {
-                setLiveProfile(result.profile);
-                setResearchResult(result);
-                setLocationResult({
-                    city: result.profile.city,
-                    country: result.profile.country,
-                    lat: result.profile.latitude || 0,
-                    lon: result.profile.longitude || 0
-                });
-
-                setResearchSummary(result.summary || 'Research completed. Review the location brief below.');
-
-                // NSIL Intelligence Enrichment â€” pattern matching + historical parallels
-                try {
-                  const countryParams = { country: result.profile.country, region: result.profile.region || '', industry: [result.profile.keyIndustries?.[0] || 'general'], strategicIntent: ['market-entry'] };
-                  const patternAssessment = PatternConfidenceEngine.assess(countryParams as unknown as import('../types').ReportParameters);
-                  const historicalMatch = HistoricalParallelMatcher.quickMatch(countryParams);
-                  
-                  let nsilEnrichment = '';
-                  if (patternAssessment.matchedPatterns.length > 0) {
-                    const topPattern = patternAssessment.matchedPatterns[0];
-                    nsilEnrichment += `\n\nðŸ§  NSIL Pattern Match: "${topPattern.name}" (${topPattern.historicalDepth}yr depth, ${topPattern.geographicBreadth} countries). Stance: ${patternAssessment.reasoningStance}.`;
-                  }
-                  if (historicalMatch.found) {
-                    nsilEnrichment += `\nðŸ“š Historical Parallel: ${historicalMatch.case_title} (${historicalMatch.outcome}) â€” ${historicalMatch.topLesson}`;
-                  }
-                  if (nsilEnrichment) {
-                    setResearchSummary((prev: string) => prev + nsilEnrichment);
-                  }
-                } catch (e) {
-                  console.warn('[NSIL Enrichment] Non-blocking error:', e);
-                }
-
-                // Find similar cities from our database
-                const similar = CITY_PROFILES
-                    .filter((p) => p.country === result.profile.country && p.city !== result.profile.city)
-                    .slice(0, 4)
-                    .map((p) => ({
-                        city: p.city,
-                        country: p.country,
-                        reason: `Comparable regional profile in ${p.region}`,
-                        keyMetric: p.globalMarketAccess
-                    }));
-
-                setComparisonCities(similar);
-
-                // Store in localStorage for quick access in report
-                localStorage.setItem('lastLocationResult', JSON.stringify(result));
-                setResearchProgress({ stage: 'Complete', progress: 100, message: 'Research complete!' });
-            } else {
-                console.error('[CommandCenter] No result returned');
-                setSearchError('No data found - please try again');
-                setResearchProgress({ stage: 'error', progress: 0, message: 'No data found - please try again' });
-            }
-        } catch (error) {
-            console.error('Location research error:', error);
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            
-            // Provide specific error feedback based on error type
-            let userMessage = 'Search failed - please try again';
-            
-            if (!navigator.onLine) {
-                userMessage = 'No internet connection - please check your network';
-            } else if (errorMessage.includes('timeout') || errorMessage.includes('timed out')) {
-                userMessage = 'Request timed out - please try a simpler search term';
-            } else if (errorMessage.includes('API key') || errorMessage.includes('authentication')) {
-                userMessage = 'API configuration error - please contact support';
-            } else if (errorMessage.includes('parse') || errorMessage.includes('Invalid')) {
-                userMessage = 'Location not found - please check spelling or try a different search';
-            } else if (errorMessage.includes('quota') || errorMessage.includes('limit')) {
-                userMessage = 'Service temporarily unavailable - please try again in a few minutes';
-            } else if (errorMessage) {
-                userMessage = `Error: ${errorMessage}`;
-            }
-            
-            setSearchError(userMessage);
-            setResearchProgress({ stage: 'error', progress: 0, message: userMessage });
-        } finally {
-            setIsResearchingLocation(false);
-        }
-    };
 
     const tenStepProtocol = [
         { step: 1, title: "Identity & Foundation", description: "Establish organizational credibility, legal structure, and competitive positioning.", details: ["Organization name, type, and legal structure", "Registration/incorporation details", "Key leadership and governance structure", "Historical track record and credentials", "Competitive positioning statement", "Core competencies and differentiators"] },
@@ -204,7 +81,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <button onClick={() => scrollToSection('mission')} className="hover:text-blue-600 transition-colors">Mission</button>
                         <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Platform</button>
                         <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Brain</button>
-                        <button onClick={() => scrollToSection('bwai-search')} className="hover:text-blue-600 transition-colors">Products</button>
                         <button onClick={() => scrollToSection('protocol')} className="hover:text-blue-600 transition-colors">Protocol</button>
                         <button onClick={() => scrollToSection('proof')} className="hover:text-blue-600 transition-colors">Proof</button>
                         <button onClick={() => scrollToSection('pilots')} className="hover:text-blue-600 transition-colors">Partnerships</button>
@@ -235,11 +111,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         The capability is there. The potential is real. What has been missing are the tools. We built those tools.
                     </p>
                     <button 
-                        onClick={() => scrollToSection('bwai-search')}
                         className="inline-flex items-center gap-3 px-10 py-4 bg-blue-600 border-2 border-blue-500 rounded-full text-white text-base font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/30"
                     >
-                        <Search size={18} />
-                        Try BW AI Search
+                        
                     </button>
                 </div>
             </section>
@@ -623,65 +497,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* BW AI SEARCH â€” Location Intelligence */}
-            <section id="bwai-search" className="py-16 px-4 bg-gradient-to-b from-slate-50 to-white">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-white border-2 border-blue-200 rounded-2xl shadow-lg shadow-blue-100/50 p-8 md:p-10">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW AI SEARCH</p>
-                    <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">Try It. Search Any Location.</h2>
-                    <p className="text-base text-slate-600 leading-relaxed mb-8">
-                        Type a city, region, or country below and see what comes back. The system assembles a structured intelligence brief &mdash; demographics, GDP, leadership, infrastructure, investment climate &mdash; in seconds. This is the entry point. Everything else on this page describes what happens after.
-                    </p>
-                    <div className="flex gap-3 mb-4">
-                        <div className="flex-1 relative">
-                            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-400" />
-                            <input
-                                type="text"
-                                value={locationQuery}
-                                onChange={(e) => setLocationQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
-                                placeholder="Search any city, region, or country..."
-                                className="w-full pl-12 pr-4 py-4 bg-blue-50/50 border-2 border-blue-200 rounded-xl text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-md transition-all"
-                            />
-                        </div>
-                        <button
-                            onClick={handleLocationSearch}
-                            disabled={isResearchingLocation || !locationQuery.trim()}
-                            className={`px-8 py-4 rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-md ${
-                                isResearchingLocation || !locationQuery.trim()
-                                    ? 'bg-slate-100 text-slate-300 cursor-not-allowed shadow-none'
-                                    : 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-lg'
-                            }`}
-                        >
-                            <Search size={16} />
-                            {isResearchingLocation ? 'Researching...' : 'Research'}
-                        </button>
-                    </div>
-                    {researchProgress && (
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs text-slate-600">{researchProgress.message}</span>
-                                <span className="text-xs text-blue-600 font-mono">{researchProgress.progress}%</span>
-                            </div>
-                            <div className="w-full bg-slate-200 rounded-full h-1.5">
-                                <div className="bg-blue-600 h-1.5 rounded-full transition-all duration-500" style={{ width: `${researchProgress.progress}%` }} />
-                            </div>
-                        </div>
-                    )}
-                    {searchError && (
-                        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-                            <p className="text-sm text-red-600">{searchError}</p>
-                        </div>
-                    )}
-                    {researchSummary && (
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                            <p className="text-xs text-blue-600 uppercase tracking-wider font-semibold mb-2">Intelligence Summary</p>
-                            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{researchSummary}</p>
-                        </div>
-                    )}
-                    </div>
-                </div>
-            </section>
 
             {/* Photo Banner â€” Document Intelligence */}
 
