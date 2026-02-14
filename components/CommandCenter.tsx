@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
+import { BWConsultantSearchWidget } from './BWConsultantSearchWidget';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
@@ -497,6 +498,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+
+            {/* BW CONSULTANT AI SEARCH - Gateway Widget */}
+            <section className="py-16 px-4 bg-gradient-to-b from-slate-50 to-white border-t border-slate-200">
+                <div className="max-w-4xl mx-auto">
+                    <BWConsultantSearchWidget 
+                        context="landing"
+                        onSearch={(query) => {
+                            console.log('Landing page search:', query);
+                            if (onEnterPlatform) onEnterPlatform();
+                        }}
+                    />
+                </div>
+            </section>
 
             {/* Photo Banner â€” Document Intelligence */}
 
