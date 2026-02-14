@@ -17,7 +17,8 @@ export interface BWConsultantSearchWidgetProps {
 export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> = ({
   onSearch,
   placeholder = 'Search any location, company, or entity...',
-  _context = 'landing'
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  context = 'landing'
 }) => {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
