@@ -20,13 +20,13 @@ export const GlobalChatbot: React.FC<GlobalChatbotProps> = ({ context = 'standal
     {
       id: 'init',
       role: 'system',
-      content: 'BW Consultant AI - Global Issue Resolver',
+      content: 'Strategic Analysis System',
       timestamp: new Date()
     },
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Welcome to BW Consultant AI. I can help you analyze any global issue - whether it\'s a location development opportunity, market analysis, investment decision, policy impact, or strategic challenge.\n\nWhat issue or challenge can I help you explore today?',
+      content: 'Welcome to Strategic Analysis. I can help you analyze any global business challenge — locations, markets, investments, policies, infrastructure, or regional development issues.\n\nDescribe your challenge or question, and I'll provide comprehensive analysis with strategic recommendations.',
       timestamp: new Date()
     }
   ]);
@@ -123,9 +123,9 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 border-b border-blue-500/30">
         <div className="flex items-center gap-3 mb-2">
           <MessageCircle size={20} className="text-white" />
-          <h2 className="text-lg font-semibold text-white">BW Consultant AI</h2>
+          <h2 className="text-lg font-semibold text-white">Strategic Analysis</h2>
         </div>
-        <p className="text-sm text-blue-100">Global Issue Resolution • Universal Problem-Solver</p>
+        <p className="text-sm text-blue-100">Ask about any global business, market, policy, or development challenge</p>
       </div>
 
       {/* Messages Container */}
@@ -217,7 +217,7 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Describe any global issue or challenge..."
+            placeholder="Describe your challenge or question..."
             className="flex-1 bg-slate-700 text-white placeholder-slate-400 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
             disabled={isThinking}
           />
@@ -229,7 +229,7 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
             {isThinking ? <Loader size={16} className="animate-spin" /> : <Send size={16} />}
           </button>
         </form>
-        <p className="text-xs text-slate-400 mt-2">Try: "Analyze Singapore's startup ecosystem" or "What's the investment case for Angola?"</p>
+        <p className="text-xs text-slate-400 mt-2">Example: "What are the market opportunities in Vietnam?" or "Analyze the regulatory landscape for renewable energy"</p>
       </div>
     </div>
   );

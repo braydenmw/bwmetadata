@@ -38,7 +38,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
     try {
       // Simulate NSIL analysis stages
       const stages = [
-        { message: 'Gathering data from AWS...', progress: 35 },
+        { message: 'Retrieving integrated data sources...', progress: 35 },
         { message: 'Running NSIL analysis layers...', progress: 60 },
         { message: 'Generating strategic recommendations...', progress: 85 },
         { message: 'Compiling results...', progress: 100 }
@@ -93,14 +93,14 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
       <div className="bg-white border-2 border-blue-200 rounded-2xl shadow-lg shadow-blue-100/50 p-8 md:p-10">
         {/* Header */}
         <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">
-          BW Consultant AI
+          Strategic Intelligence
         </p>
         <h2 className="text-2xl md:text-3xl font-light mb-3 text-slate-900">
-          Research. Analyze. Plan.
+          Analyze Any Global Challenge
         </h2>
         <p className="text-base text-slate-600 leading-relaxed mb-8">
-          Ask BW Consultant AI anything global — locations, companies, markets, policies, infrastructure.
-          Get intelligent analysis powered by NSIL and live AWS data in seconds.
+          Ask BW Consultant AI anything about global business, investment, or regional development challenges.
+          Get comprehensive analysis powered by the NSIL (Nexus Strategic Intelligence Layer) framework in seconds.
         </p>
 
         {/* Search Input */}
@@ -239,7 +239,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
             <CheckCircle2 size={18} className="text-blue-600" />
             <p className="font-semibold text-sm text-blue-900">Live Data</p>
           </div>
-          <p className="text-xs text-blue-800">Real-time market, location, and company intelligence via AWS</p>
+          <p className="text-xs text-blue-800">Market intelligence, location profiles, and company data integrated from authoritative sources</p>
         </div>
 
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4">
