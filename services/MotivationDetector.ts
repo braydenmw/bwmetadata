@@ -1,4 +1,4 @@
-import { ReportParameters, MotivationAnalysis, MotivationRedFlag } from '../types';
+﻿import { ReportParameters, MotivationAnalysis, MotivationRedFlag } from '../types';
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -304,4 +304,5 @@ class MotivationDetector {
 export default MotivationDetector;
 export { TRIGGER_PATTERNS };
 export type { TriggerPattern, TriggeredSignal };
+
 

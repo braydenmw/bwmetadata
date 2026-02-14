@@ -1,4 +1,4 @@
-// Lightweight external data integrations with rate-limited stubs
+﻿// Lightweight external data integrations with rate-limited stubs
 // Purpose: centralize world-bank, numbeo, opencorporates, marine/flight stubs + basic rate limiting
 
 export interface WorldBankIndicators {
@@ -152,3 +152,4 @@ export async function fetchMarineTrafficPortActivity(portNameOrCountry: string):
   // TODO: integrate when API key/contract available
   return null;
 }
+

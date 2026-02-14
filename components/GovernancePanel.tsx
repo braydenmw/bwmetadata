@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import { 
   ApprovalRecord, 
   MandateRecord, 
@@ -186,7 +186,7 @@ const GovernancePanel: React.FC<GovernancePanelProps> = ({ reportId }) => {
               {approvals.slice(-3).reverse().map((a) => (
                 <li key={a.id} className="flex justify-between gap-3">
                   <div>
-                    <div className="font-semibold">{a.decision} · {a.stage}</div>
+                    <div className="font-semibold">{a.decision} Â· {a.stage}</div>
                     <div className="text-stone-600">{a.actor} ({a.role})</div>
                     {a.notes && <div className="text-stone-500">{a.notes}</div>}
                   </div>
@@ -211,7 +211,7 @@ const GovernancePanel: React.FC<GovernancePanelProps> = ({ reportId }) => {
                 <li key={p.id} className="flex justify-between gap-3">
                   <div>
                     <div className="font-semibold">{p.action}</div>
-                    <div className="text-stone-600">{p.artifact} · {p.actor}</div>
+                    <div className="text-stone-600">{p.artifact} Â· {p.actor}</div>
                     {p.tags && p.tags.length > 0 && (
                       <div className="text-[11px] text-stone-500">Tags: {p.tags.join(', ')}</div>
                     )}
@@ -230,3 +230,4 @@ const GovernancePanel: React.FC<GovernancePanelProps> = ({ reportId }) => {
 };
 
 export default GovernancePanel;
+

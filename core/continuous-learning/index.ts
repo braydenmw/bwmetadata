@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ADVANCED CONTINUOUS LEARNING MODULE
  * 
  * Implements:
@@ -154,7 +154,7 @@ export function logOutcome(taskId: string, outcome: OutcomeRecord['outcome'], co
   
   saveOutcomes(prunedOutcomes);
   
-  console.log(`📊 Outcome logged: ${record.id} (Task: ${taskId})`);
+  console.log(`ðŸ“Š Outcome logged: ${record.id} (Task: ${taskId})`);
   
   // Check if we should trigger retraining
   if (config.autoRetrain) {
@@ -164,7 +164,7 @@ export function logOutcome(taskId: string, outcome: OutcomeRecord['outcome'], co
     });
     
     if (recentOutcomes.length >= config.retrainThreshold) {
-      console.log(`🔄 Auto-retrain triggered: ${recentOutcomes.length} new samples`);
+      console.log(`ðŸ”„ Auto-retrain triggered: ${recentOutcomes.length} new samples`);
       retrainModels();
     }
   }
@@ -225,7 +225,7 @@ export function logFeedback(
     saveOutcomes(outcomes);
   }
   
-  console.log(`💬 Feedback logged: ${record.id} (Rating: ${rating}/5)`);
+  console.log(`ðŸ’¬ Feedback logged: ${record.id} (Rating: ${rating}/5)`);
 }
 
 // ============================================================================
@@ -240,7 +240,7 @@ export function retrainModels(): void {
     return;
   }
   
-  console.log(`🧠 Starting model retraining with ${outcomes.length} samples...`);
+  console.log(`ðŸ§  Starting model retraining with ${outcomes.length} samples...`);
   
   // Convert outcomes to training format
   const trainingData = outcomes.map(o => ({
@@ -269,7 +269,7 @@ export function retrainModels(): void {
   config.activeVersion = newVersion;
   saveConfig(config);
   
-  console.log(`✅ Retraining complete. New version: ${newVersion}`);
+  console.log(`âœ… Retraining complete. New version: ${newVersion}`);
 }
 
 // ============================================================================
@@ -348,11 +348,11 @@ export function updateMetrics(): void {
   const prunedMetrics = allMetrics.slice(-52);
   saveMetrics(prunedMetrics);
   
-  console.log(`📈 Metrics updated: Accuracy=${(accuracy * 100).toFixed(1)}%, Avg Rating=${avgRating.toFixed(1)}/5`);
+  console.log(`ðŸ“ˆ Metrics updated: Accuracy=${(accuracy * 100).toFixed(1)}%, Avg Rating=${avgRating.toFixed(1)}/5`);
   
   // Check if accuracy dropped below threshold
   if (accuracy < config.accuracyThreshold && recentOutcomes.length >= 20) {
-    console.warn(`⚠️ Accuracy below threshold (${config.accuracyThreshold}). Consider retraining.`);
+    console.warn(`âš ï¸ Accuracy below threshold (${config.accuracyThreshold}). Consider retraining.`);
   }
 }
 
@@ -437,3 +437,4 @@ export function getLearningStatus(): {
     lastRetrain: diagnostics.state.lastTrained
   };
 }
+

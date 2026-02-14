@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Globe, TrendingUp, DollarSign, Zap, AlertCircle, Plus, Trash2 } from 'lucide-react';
 
 interface MarketComparison {
@@ -195,7 +195,7 @@ const GlobalMarketComparison: React.FC = () => {
                   <span className="font-bold text-blue-600">{m.nearshoreAdvantage}</span>
                 </div>
                 {m.specialEconomicZones && (
-                  <div className="bg-green-50 px-2 py-1 rounded text-green-800 text-xs font-bold">✓ SEZ Available</div>
+                  <div className="bg-green-50 px-2 py-1 rounded text-green-800 text-xs font-bold">âœ“ SEZ Available</div>
                 )}
               </div>
             </div>
@@ -234,7 +234,7 @@ const GlobalMarketComparison: React.FC = () => {
               <div className="space-y-2">
                 {m.availableIncentives.map((inc, idx) => (
                   <div key={idx} className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-xs font-bold text-blue-800">
-                    ✓ {inc}
+                    âœ“ {inc}
                   </div>
                 ))}
               </div>
@@ -327,13 +327,13 @@ const GlobalMarketComparison: React.FC = () => {
       {/* ACTION PANEL */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="p-4 bg-white rounded-lg border border-stone-200 shadow-sm">
-          <h3 className="font-bold text-stone-900 mb-2">💡 Lowest Cost Option</h3>
+          <h3 className="font-bold text-stone-900 mb-2">ðŸ’¡ Lowest Cost Option</h3>
           <p className="text-sm text-stone-600">
             India offers the lowest total cost of entry at ~$15k with exceptional labor pool (98%) and tailored government incentives.
           </p>
         </div>
         <div className="p-4 bg-white rounded-lg border border-stone-200 shadow-sm">
-          <h3 className="font-bold text-stone-900 mb-2">🎯 Best Overall Balance</h3>
+          <h3 className="font-bold text-stone-900 mb-2">ðŸŽ¯ Best Overall Balance</h3>
           <p className="text-sm text-stone-600">
             Vietnam provides optimal cost-to-opportunity balance with strong infrastructure, government backing, and ASEAN positioning.
           </p>
@@ -344,3 +344,4 @@ const GlobalMarketComparison: React.FC = () => {
 };
 
 export default GlobalMarketComparison;
+

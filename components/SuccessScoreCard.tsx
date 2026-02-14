@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { SPIResult } from '../types';
 import { TrendingUp } from 'lucide-react';
 
@@ -11,7 +11,7 @@ const SuccessScoreCard: React.FC<SuccessScoreCardProps> = ({ spiResult }) => {
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 text-white shadow-lg">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-lg flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" /> SPI™ Score
+                    <TrendingUp className="w-5 h-5" /> SPIâ„¢ Score
                 </h3>
                 <span className="text-4xl font-black">{spiResult.spi}%</span>
             </div>

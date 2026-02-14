@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 
 export default function POVIntake({ onCaseCreated, onMatches } : { onCaseCreated?: (caseId:string)=>void, onMatches?: (matches:any[])=>void }) {
   const [persona, setPersona] = useState('');
@@ -88,7 +88,7 @@ export default function POVIntake({ onCaseCreated, onMatches } : { onCaseCreated
         </div>
         
         <div>
-            <label className="block text-xs font-bold text-gray-500 mb-1">Briefing file path (server local test) — optional</label>
+            <label className="block text-xs font-bold text-gray-500 mb-1">Briefing file path (server local test) â€” optional</label>
             <input className="w-full p-2 border rounded text-sm" value={filePath} onChange={e => setFilePath(e.target.value)} placeholder="/mnt/data/briefing.txt" />
         </div>
         
@@ -125,7 +125,7 @@ export default function POVIntake({ onCaseCreated, onMatches } : { onCaseCreated
             <div key={idx} className="p-3 border border-gray-200 rounded-lg flex justify-between items-start bg-gray-50">
               <div>
                 <div className="font-bold text-sm text-gray-800">{m.match.title || m.match.entityName} <span className="font-normal text-gray-500 text-xs">({m.match.entityType})</span></div>
-                <div className="text-xs text-gray-500">{m.match.location} • {m.match.incentives}</div>
+                <div className="text-xs text-gray-500">{m.match.location} â€¢ {m.match.incentives}</div>
               </div>
               <div className="text-right">
                 <div className="font-bold text-gray-900">{m.match.score}</div>
@@ -158,3 +158,4 @@ export default function POVIntake({ onCaseCreated, onMatches } : { onCaseCreated
     </div>
   );
 }
+

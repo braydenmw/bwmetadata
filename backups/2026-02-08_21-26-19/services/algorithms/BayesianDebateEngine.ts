@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BAYESIAN DEBATE ENGINE - Probabilistic Multi-Agent Debate with Early Stopping
  * 
  * Implements a Bayesian belief network for persona debate synthesis.
@@ -105,7 +105,7 @@ class BayesianBeliefNetwork {
 
   /**
    * Update belief state using Bayesian updating
-   * P(H|E) ∝ P(E|H) * P(H)
+   * P(H|E) âˆ P(E|H) * P(H)
    */
   updateBelief(votes: PersonaVote[]): BeliefState {
     const newBelief: BeliefState = { proceed: 0, pause: 0, restructure: 0, reject: 0 };
@@ -554,3 +554,4 @@ export class BayesianDebateEngine {
 export const bayesianDebateEngine = new BayesianDebateEngine();
 
 export default BayesianDebateEngine;
+

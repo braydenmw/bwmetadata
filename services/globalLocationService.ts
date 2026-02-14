@@ -1,4 +1,4 @@
-import { CITY_PROFILES, type CityProfile } from '../data/globalLocationProfiles';
+﻿import { CITY_PROFILES, type CityProfile } from '../data/globalLocationProfiles';
 
 export const getCityProfiles = async (): Promise<CityProfile[]> => {
   return CITY_PROFILES;
@@ -32,3 +32,4 @@ export const getHiddenGems = async (limit = 5): Promise<CityProfile[]> => {
     .sort((a, b) => b.overlookedScore - a.overlookedScore)
     .slice(0, limit);
 };
+

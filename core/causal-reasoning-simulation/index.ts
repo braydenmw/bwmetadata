@@ -1,4 +1,4 @@
-// Causal Reasoning & Simulation Module
+﻿// Causal Reasoning & Simulation Module
 // Responsible for causal inference and scenario simulation.
 import { simulateIntervention, explainCausalChain } from './causalEngine';
 
@@ -14,3 +14,4 @@ export async function simulateScenario(scenario: any): Promise<any> {
     scenario
   };
 }
+

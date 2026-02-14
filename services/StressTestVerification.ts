@@ -1,4 +1,4 @@
-/**
+﻿/**
  * STRESS TEST WITH FIX VERIFICATION
  * 
  * This runs all the stress tests through the NEW validation engines
@@ -45,7 +45,7 @@ export class StressTestVerification {
         results: VerifiedTestResult[];
         summary: string;
     }> {
-        console.log('\n🔧 RUNNING STRESS TEST VERIFICATION 🔧');
+        console.log('\nðŸ”§ RUNNING STRESS TEST VERIFICATION ðŸ”§');
         console.log('Checking that new engines catch previously-failing scenarios...\n');
 
         this.results = [];
@@ -53,7 +53,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 1: INPUT EXTREMES (Previously 4 failures)
         // =====================================================================
-        console.log('📊 VERIFYING INPUT EXTREMES...');
+        console.log('ðŸ“Š VERIFYING INPUT EXTREMES...');
 
         // Test 1.1: Infinite Growth Rate
         this.verifyInputValidation(
@@ -90,7 +90,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 2: CONTRADICTIONS (Previously 3 failures)
         // =====================================================================
-        console.log('⚠️  VERIFYING CONTRADICTION DETECTION...');
+        console.log('âš ï¸  VERIFYING CONTRADICTION DETECTION...');
 
         // Test 2.1: Profitable While Losing Money
         this.verifyInputValidation(
@@ -119,7 +119,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 3: EDGE CASES (Previously 3 failures)
         // =====================================================================
-        console.log('🔍 VERIFYING EDGE CASE HANDLING...');
+        console.log('ðŸ” VERIFYING EDGE CASE HANDLING...');
 
         // Test 3.1: All Zeros
         this.verifyInputValidation(
@@ -142,9 +142,9 @@ export class StressTestVerification {
             'Unicode Attack (Zalgo Text)',
             'Edge Cases',
             { 
-                companyName: 'T̴̡̢͍̻̙̗̟̣̼͈̝̩͚͔͉̿̌̿͌̓͝ȩ̵̧̛̙̝͙̹̹͕͉̝͚̗̠͐̀̃̆̊̏̇̚͜͠s̶̨̡̢̨̛̯͉̹̤̘̤̗͚̯̰̮͖̖̫̎̀̃̊̎̓̋̓̌̎̕͝t̴̨̢̠͇̥͈̮̙͍̜̼̃̉̀̆̂̈́̾̈́̆͘͠',
-                region: '中国🇨🇳',
-                description: '💰📈🚀'
+                companyName: 'TÌ´Ì¡Ì¢ÍÌ»Ì™Ì—ÌŸÌ£Ì¼ÍˆÌÌ©ÍšÍ”Í‰Ì¿ÌŒÌ¿ÍŒÌ“ÍÈ©ÌµÌ§Ì›Ì™ÌÍ™Ì¹Ì¹Í•Í‰ÌÍšÌ—Ì ÍÌ€ÌƒÌ†ÌŠÌÌ‡ÌšÍœÍ sÌ¶Ì¨Ì¡Ì¢Ì¨Ì›Ì¯Í‰Ì¹Ì¤Ì˜Ì¤Ì—ÍšÌ¯Ì°Ì®Í–Ì–Ì«ÌŽÌ€ÌƒÌŠÌŽÌ“Ì‹Ì“ÌŒÌŽÌ•ÍtÌ´Ì¨Ì¢Ì Í‡Ì¥ÍˆÌ®Ì™ÍÌœÌ¼ÌƒÌ‰Ì€Ì†Ì‚ÌˆÌÌ¾ÌˆÌÌ†Í˜Í ',
+                region: 'ä¸­å›½ðŸ‡¨ðŸ‡³',
+                description: 'ðŸ’°ðŸ“ˆðŸš€'
             },
             'UNICODE_ATTACK'
         );
@@ -152,7 +152,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 4: FORMULA BREAKING (Previously 3 failures)
         // =====================================================================
-        console.log('💥 VERIFYING FORMULA BOUNDS...');
+        console.log('ðŸ’¥ VERIFYING FORMULA BOUNDS...');
 
         // Test 4.1: RROI with Zero Risk
         this.verifyFormulaBounds(
@@ -186,7 +186,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 5: ADVERSARIAL ATTACKS (Previously 3 CRITICAL failures)
         // =====================================================================
-        console.log('🎯 VERIFYING ADVERSARIAL DETECTION...');
+        console.log('ðŸŽ¯ VERIFYING ADVERSARIAL DETECTION...');
 
         // Test 5.1: Hidden Debt in Intangibles
         this.verifyInputValidation(
@@ -231,7 +231,7 @@ export class StressTestVerification {
         // =====================================================================
         // CATEGORY 7: KNOWN FAILURE PATTERNS (Previously 2 failures)
         // =====================================================================
-        console.log('📋 VERIFYING FRAUD PATTERN DETECTION...');
+        console.log('ðŸ“‹ VERIFYING FRAUD PATTERN DETECTION...');
 
         // Test 7.1: Theranos Pattern
         this.verifyInputValidation(
@@ -305,16 +305,16 @@ export class StressTestVerification {
 
         if (issueFound && (blocked || hasIssues)) {
             status = 'FIXED';
-            explanation = `✓ Now detected: ${report.issues.find(i => patterns.some(p => i.code.includes(p)))?.message || 'Issue caught'}`;
+            explanation = `âœ“ Now detected: ${report.issues.find(i => patterns.some(p => i.code.includes(p)))?.message || 'Issue caught'}`;
         } else if (hasIssues) {
             status = 'PARTIAL';
-            explanation = `⚠ Different issue detected: ${report.issues[0]?.code}`;
+            explanation = `âš  Different issue detected: ${report.issues[0]?.code}`;
         } else {
             status = 'STILL_FAILING';
-            explanation = `✗ Not detected - validation passed when it should have failed`;
+            explanation = `âœ— Not detected - validation passed when it should have failed`;
         }
 
-        console.log(`  ${status === 'FIXED' ? '✓' : status === 'PARTIAL' ? '⚠' : '✗'} ${testName}: ${status}`);
+        console.log(`  ${status === 'FIXED' ? 'âœ“' : status === 'PARTIAL' ? 'âš ' : 'âœ—'} ${testName}: ${status}`);
 
         this.results.push({
             testName,
@@ -350,16 +350,16 @@ export class StressTestVerification {
 
         if ((wasCapped || confidenceReduced) && warningMatches) {
             status = 'FIXED';
-            explanation = `✓ Formula bounded: ${result.warningFlags.join(', ')}`;
+            explanation = `âœ“ Formula bounded: ${result.warningFlags.join(', ')}`;
         } else if (hasWarnings || confidenceReduced) {
             status = 'PARTIAL';
-            explanation = `⚠ Some handling: confidence=${result.confidence.toFixed(2)}, warnings=${result.warningFlags.length}`;
+            explanation = `âš  Some handling: confidence=${result.confidence.toFixed(2)}, warnings=${result.warningFlags.length}`;
         } else {
             status = 'STILL_FAILING';
-            explanation = `✗ Formula produced result without warnings`;
+            explanation = `âœ— Formula produced result without warnings`;
         }
 
-        console.log(`  ${status === 'FIXED' ? '✓' : status === 'PARTIAL' ? '⚠' : '✗'} ${testName}: ${status}`);
+        console.log(`  ${status === 'FIXED' ? 'âœ“' : status === 'PARTIAL' ? 'âš ' : 'âœ—'} ${testName}: ${status}`);
 
         this.results.push({
             testName,
@@ -390,16 +390,16 @@ export class StressTestVerification {
 
         if (isBounded && hasWarnings) {
             status = 'FIXED';
-            explanation = `✓ Neural field bounded: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}, stable=${stable}`;
+            explanation = `âœ“ Neural field bounded: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}, stable=${stable}`;
         } else if (isBounded) {
             status = 'PARTIAL';
-            explanation = `⚠ Bounded but no warnings: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}`;
+            explanation = `âš  Bounded but no warnings: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}`;
         } else {
             status = 'STILL_FAILING';
-            explanation = `✗ Field exploded: E=${result.E}, I=${result.I}`;
+            explanation = `âœ— Field exploded: E=${result.E}, I=${result.I}`;
         }
 
-        console.log(`  ${status === 'FIXED' ? '✓' : status === 'PARTIAL' ? '⚠' : '✗'} ${testName}: ${status}`);
+        console.log(`  ${status === 'FIXED' ? 'âœ“' : status === 'PARTIAL' ? 'âš ' : 'âœ—'} ${testName}: ${status}`);
 
         this.results.push({
             testName,
@@ -421,9 +421,9 @@ export class StressTestVerification {
         summary += '='.repeat(80) + '\n\n';
 
         summary += `Total Previously-Failing Tests: ${total}\n`;
-        summary += `✓ FIXED: ${fixed} (${(fixed / total * 100).toFixed(1)}%)\n`;
-        summary += `⚠ PARTIAL: ${partial} (${(partial / total * 100).toFixed(1)}%)\n`;
-        summary += `✗ STILL FAILING: ${stillFailing} (${(stillFailing / total * 100).toFixed(1)}%)\n\n`;
+        summary += `âœ“ FIXED: ${fixed} (${(fixed / total * 100).toFixed(1)}%)\n`;
+        summary += `âš  PARTIAL: ${partial} (${(partial / total * 100).toFixed(1)}%)\n`;
+        summary += `âœ— STILL FAILING: ${stillFailing} (${(stillFailing / total * 100).toFixed(1)}%)\n\n`;
 
         summary += 'BY CATEGORY:\n';
         const byCategory = this.results.reduce((acc, r) => {
@@ -435,17 +435,17 @@ export class StressTestVerification {
         }, {} as Record<string, { fixed: number; partial: number; failing: number }>);
 
         for (const [cat, stats] of Object.entries(byCategory)) {
-            summary += `  ${cat}: ${stats.fixed}✓ ${stats.partial}⚠ ${stats.failing}✗\n`;
+            summary += `  ${cat}: ${stats.fixed}âœ“ ${stats.partial}âš  ${stats.failing}âœ—\n`;
         }
 
         summary += '\n' + '='.repeat(80) + '\n';
         
         if (stillFailing === 0 && partial <= 2) {
-            summary += '🟢 VERDICT: All critical issues FIXED. System is production-ready.\n';
+            summary += 'ðŸŸ¢ VERDICT: All critical issues FIXED. System is production-ready.\n';
         } else if (stillFailing === 0) {
-            summary += '🟡 VERDICT: Critical issues fixed. Some partial fixes need review.\n';
+            summary += 'ðŸŸ¡ VERDICT: Critical issues fixed. Some partial fixes need review.\n';
         } else {
-            summary += `🔴 VERDICT: ${stillFailing} tests still failing. More fixes needed.\n`;
+            summary += `ðŸ”´ VERDICT: ${stillFailing} tests still failing. More fixes needed.\n`;
         }
 
         summary += '='.repeat(80) + '\n';
@@ -468,3 +468,4 @@ export async function runVerification(): Promise<void> {
         totalTests: results.totalTests
     }, null, 2));
 }
+

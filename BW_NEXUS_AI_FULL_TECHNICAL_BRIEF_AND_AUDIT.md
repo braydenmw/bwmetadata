@@ -1,9 +1,9 @@
-# BWGA Intelligence AI (BW Global Advisory)
+﻿# BWGA Ai (BW Global Advisory)
 # Full Technical Brief & System Audit (Funding + Partnership Package)
 
 **Prepared for:** Funding partners, strategic partners, government stakeholders, and institutional collaborators  
 **Prepared by:** BW Global Advisory (BWGA)  
-**System:** BWGA Intelligence AI — NSIL (Nexus Strategic Intelligence Layer) + Agentic Intelligence OS  
+**System:** BWGA Ai â€” NSIL (Nexus Strategic Intelligence Layer) + Agentic Intelligence OS  
 **Date:** 2025-12-30  
 **Version of this document:** 1.0 (Repo-derived)  
 
@@ -17,7 +17,7 @@ This document is written as a **technical brief + audit-style system description
 - Government and institutional evaluation (auditability, transparency, decision-support posture)
 
 **Important framing**
-- BWGA Intelligence AI is designed as **decision-support**. It does not replace legal, financial, compliance, engineering, or investment advice.
+- BWGA Ai is designed as **decision-support**. It does not replace legal, financial, compliance, engineering, or investment advice.
 - Several components currently use **mock/static data + AI-assisted narrative generation**. The architecture is built to be extended to live connectors.
 
 ---
@@ -26,7 +26,7 @@ This document is written as a **technical brief + audit-style system description
 
 1. Executive Summary
 2. System Goals & the Problem Space
-3. Product Definition (What BWGA Intelligence AI Is / Is Not)
+3. Product Definition (What BWGA Ai Is / Is Not)
 4. High-Level Architecture (Client / Server / Intelligence Services)
 5. Core User Journeys & Workflow
 6. Data Model & Persistence Strategy
@@ -49,7 +49,7 @@ This document is written as a **technical brief + audit-style system description
 
 ## 1) Executive Summary
 
-BWGA Intelligence AI is an **enterprise-grade partnership intelligence and deal feasibility platform** built with:
+BWGA Ai is an **enterprise-grade partnership intelligence and deal feasibility platform** built with:
 - **Frontend:** React 19 + TypeScript + Vite + TailwindCSS
 - **Backend:** Node.js + Express + Helmet + CORS + Compression
 - **AI Integration:** Gemini (via `@google/generative-ai` and `@google/genai` dependencies)
@@ -63,10 +63,10 @@ This brief is intentionally written in a structure that maps to common diligence
 - What must be hardened for government/enterprise scale?
 - What are the integration points for partners?
 
-Where possible, statements are grounded in **repository artifacts** (source files and internal documentation). Where the repository describes a capability but the code path appears partial, this document labels it as **“implemented,” “partially implemented,” or “architecture-intended.”**
+Where possible, statements are grounded in **repository artifacts** (source files and internal documentation). Where the repository describes a capability but the code path appears partial, this document labels it as **â€œimplemented,â€ â€œpartially implemented,â€ or â€œarchitecture-intended.â€**
 
 ### What it does (in operational terms)
-BWGA Intelligence AI turns a mandate (who you are, what you want, where, constraints, risk appetite) into:
+BWGA Ai turns a mandate (who you are, what you want, where, constraints, risk appetite) into:
 - A **structured strategic case** (inputs validated and normalized)
 - A **multi-perspective reasoning outcome** (persona debate + counterfactual stress tests)
 - **Explainable quantitative scores** (NSIL/21-formula suite references; in-product scoring payloads)
@@ -92,19 +92,19 @@ In regional development, partnerships, and investment attraction, stakeholders o
 - Fragmented, inconsistent information
 - Slow consulting and diligence cycles
 - Misalignment between narrative (what a region says) and evidence (what can be proven)
-- Low trust due to opaque reasoning (“black box” outputs)
+- Low trust due to opaque reasoning (â€œblack boxâ€ outputs)
 
-### BWGA Intelligence AI’s explicit system goals
+### BWGA Aiâ€™s explicit system goals
 1. **Structuring:** Convert messy real-world intent into a structured case dataset.
 2. **Validation:** Surface missing constraints and contradictions early.
 3. **Multi-perspective reasoning:** Prevent single-thread bias through persona debate.
 4. **Scoring + explainability:** Produce quantified outputs with drivers and pressure points.
 5. **Delivery:** Compile decision-grade reports and outreach materials.
-6. **Audit posture:** Preserve traceability and a clear “why” chain.
+6. **Audit posture:** Preserve traceability and a clear â€œwhyâ€ chain.
 
 ---
 
-## 3) Product Definition — What It Is / What It Is Not
+## 3) Product Definition â€” What It Is / What It Is Not
 
 ### It is
 - A **strategic intelligence workflow**, not a single AI chat prompt.
@@ -123,7 +123,7 @@ In regional development, partnerships, and investment attraction, stakeholders o
 ## 4) High-Level Architecture
 
 ### System boundary
-BWGA Intelligence AI is a web application that can be run in two primary modes:
+BWGA Ai is a web application that can be run in two primary modes:
 - **Frontend-only mode** (local dev / static hosting): UI + local logic + local persistence.
 - **Full-stack mode** (recommended for production): UI + API server for AI calls, report storage, and integrations.
 
@@ -133,31 +133,31 @@ BWGA Intelligence AI is a web application that can be run in two primary modes:
 - **Intelligence services (TypeScript modules):** reasoning stack and orchestrators used by both server and client.
 
 ### Control-plane vs data-plane (audit concept)
-To support high-stakes decisions, BWGA Intelligence AI conceptually separates:
+To support high-stakes decisions, BWGA Ai conceptually separates:
 - **Data-plane:** ingestion of user inputs, uploads, and external signals; storage and retrieval; export artifacts.
 - **Control-plane:** validation rules, scoring engines, orchestration policies, audit logs, and governance rules.
 
-This separation is important because the platform’s defensibility is not only “model output” but the repeatable **process control** around output generation.
+This separation is important because the platformâ€™s defensibility is not only â€œmodel outputâ€ but the repeatable **process control** around output generation.
 
 ### Deployment topology (typical)
-- Browser → Vite-built SPA served by Node or static CDN
-- Browser → `/api/*` → Express server
-- Express server → Gemini API (when configured)
+- Browser â†’ Vite-built SPA served by Node or static CDN
+- Browser â†’ `/api/*` â†’ Express server
+- Express server â†’ Gemini API (when configured)
 
 ---
 
 ## 5) Core User Journeys & Workflow
 
-### Journey A: Standard “Report Builder” Flow
+### Journey A: Standard â€œReport Builderâ€ Flow
 1. User enters CommandCenter (system explanation and acceptance).
 2. User defines entity profile and strategic intent.
 3. System runs analysis modules across a multi-stage report workflow.
 4. Outputs generated: scorecards, narrative sections, partner matching, scenario plans, and exports.
 
 #### Observed workflow characteristics
-- The UI is designed around a “live workspace” concept: as inputs change, readiness, insights, and outputs can update.
+- The UI is designed around a â€œlive workspaceâ€ concept: as inputs change, readiness, insights, and outputs can update.
 - The system mixes deterministic calculation (scores, indices, readiness) with AI-assisted narrative generation (when configured).
-- Exports are treated as first-class outputs, not “copy/paste from UI.”
+- Exports are treated as first-class outputs, not â€œcopy/paste from UI.â€
 
 ### Journey B: Agentic/Orchestrated Run (Report Payload Assembly)
 - A structured parameter object is converted into a report payload via `ReportOrchestrator.assembleReportPayload(...)`.
@@ -173,11 +173,11 @@ This separation is important because the platform’s defensibility is not only 
 ## 6) Data Model & Persistence Strategy
 
 ### Primary data objects (conceptual)
-- **ReportParameters:** the full “case intake” dataset (who/where/why/constraints, etc.).
+- **ReportParameters:** the full â€œcase intakeâ€ dataset (who/where/why/constraints, etc.).
 - **ReportPayload:** the computed intelligence output (scores, risks, confidence, sections).
 
 ### Practical schema notes (engineering reality)
-The repository uses TypeScript types for `ReportParameters` and `ReportPayload` (see `types.ts`). These types act as the “contract” between:
+The repository uses TypeScript types for `ReportParameters` and `ReportPayload` (see `types.ts`). These types act as the â€œcontractâ€ between:
 - UI components collecting inputs
 - services computing scores
 - orchestrators assembling final outputs
@@ -219,11 +219,11 @@ The codebase includes versioning patterns (save versions, compare versions). For
 
 ---
 
-## 7) Intelligence Architecture — NSIL, BW Brain, Multi-Agent Reasoning
+## 7) Intelligence Architecture â€” NSIL, BW Brain, Multi-Agent Reasoning
 
 ### NSIL definition (repo documents)
-The “Intelligence Reference Paper” defines NSIL as the reasoning layer executing:
-**Validate → Debate → Score → Synthesize → Deliver**
+The â€œIntelligence Reference Paperâ€ defines NSIL as the reasoning layer executing:
+**Validate â†’ Debate â†’ Score â†’ Synthesize â†’ Deliver**
 
 ### NSIL Intelligence Hub (implementation)
 The class `NSILIntelligenceHub` acts as a unifying interface over:
@@ -237,13 +237,13 @@ It supports:
 - **Full analysis** (parallelized persona + counterfactual + unbiased analysis)
 - **Quick assessment** (fast trust score + status)
 
-### InputShield as a “neuro-symbolic gatekeeper”
-The repository describes an adversarial validation layer (InputShield). The purpose is to prevent “garbage in, garbage out” risk by:
+### InputShield as a â€œneuro-symbolic gatekeeperâ€
+The repository describes an adversarial validation layer (InputShield). The purpose is to prevent â€œgarbage in, garbage outâ€ risk by:
 - flagging missing critical fields
 - detecting contradictions across fields
 - surfacing risk patterns in inputs
 
-From a funding/audit perspective, this is a core differentiator: it shifts the system from “chat output” to “controlled reasoning workflow.”
+From a funding/audit perspective, this is a core differentiator: it shifts the system from â€œchat outputâ€ to â€œcontrolled reasoning workflow.â€
 
 ### Persona model (as documented)
 Five-agent debate roles:
@@ -253,14 +253,14 @@ Five-agent debate roles:
 - Accountant
 - Operator
 
-Outputs preserve agreements and disagreements to avoid “fake certainty”.
+Outputs preserve agreements and disagreements to avoid â€œfake certaintyâ€.
 
 ---
 
-## 8) Scoring Layer — 21-Formula Suite
+## 8) Scoring Layer â€” 21-Formula Suite
 
-BWGA Intelligence AI references a 21-formula suite:
-- **5 primary engines:** SPI™, RROI™, SEAM™, IVAS™, SCF™
+BWGA Ai references a 21-formula suite:
+- **5 primary engines:** SPIâ„¢, RROIâ„¢, SEAMâ„¢, IVASâ„¢, SCFâ„¢
 - **16 derivative indices:** BARNA, NVI, CRI, FRS, CAP, AGI, VCI, ATI, ESI, ISI, OSI, TCO, PRI, RNI, SRA, IDV
 
 **Audit note:** In institutional deployment, each formula should have:
@@ -276,11 +276,11 @@ For each engine/index, define a stable output contract:
 - `pressurePoints[]` (factor + severity + remediation)
 - `assumptions[]` (explicit; each with confidence)
 
-This allows partners to integrate outputs into dashboards and ensures the “why” survives external scrutiny.
+This allows partners to integrate outputs into dashboards and ensures the â€œwhyâ€ survives external scrutiny.
 
 ---
 
-## 9) Algorithm Layer — Speed, Consistency, Repeatability
+## 9) Algorithm Layer â€” Speed, Consistency, Repeatability
 
 The algorithm layer is positioned as orchestration that ensures the same reasoning loop runs fast and repeatably:
 - memory retrieval / similar-case recall
@@ -301,14 +301,14 @@ A simulation harness (`scripts/nsilSimulation.ts`) demonstrates repeatable orche
 - Lucide icons
 
 ### Architecture style
-- State-driven “ViewMode” routing (rather than URL routing)
+- State-driven â€œViewModeâ€ routing (rather than URL routing)
 - Feature components implement major modules (market comparison, compatibility engine, deal marketplace, etc.)
 - Hooks-based state management
 
 ### UI audit notes
 Strengths:
 - Modularity: feature components are separated and can be audited or replaced.
-- Strong “product surface area”: many features exist as explicit components.
+- Strong â€œproduct surface areaâ€: many features exist as explicit components.
 
 Risks to manage:
 - Without a formal router and URL state, deep-linking and multi-user navigation patterns can be harder.
@@ -364,7 +364,7 @@ The server-side agentic route and the simulation harness both call:
 This indicates a central orchestration API for building report payloads and validating completeness.
 
 ### Orchestration as a defensibility layer
-In funding terms, “ReportOrchestrator” represents the product’s core IP boundary:
+In funding terms, â€œReportOrchestratorâ€ represents the productâ€™s core IP boundary:
 - inputs are normalized
 - intelligence services are invoked
 - results are assembled into a stable payload
@@ -481,17 +481,17 @@ This is a strong starting point for building a formal evaluation suite.
 - Add immutable audit logging for decisions, outputs, and data changes.
 
 ### Recommended phased hardening plan
-Phase 1 (0–6 weeks):
+Phase 1 (0â€“6 weeks):
 - Authn/authz gate on all `/api/*` routes
 - Database persistence for reports
 - Structured logging + request IDs
 
-Phase 2 (6–12 weeks):
+Phase 2 (6â€“12 weeks):
 - Multi-tenant model
 - Audit ledger and retention policies
 - E2E tests for critical flows
 
-Phase 3 (12–24 weeks):
+Phase 3 (12â€“24 weeks):
 - Data connector framework + provenance tracking
 - Formal model evaluation pipeline
 - Compliance mapping (ISO/SOC2-ready control narrative)
@@ -507,7 +507,7 @@ Phase 3 (12–24 weeks):
 
 ## 18) Partnership & Integration Model
 
-BWGA Intelligence AI is designed to be partnered, not competitive:
+BWGA Ai is designed to be partnered, not competitive:
 - White-label deployments for regions
 - Data partnerships (government datasets, institutional data)
 - Workflow partnerships (consultancies, accelerators, banks)
@@ -525,13 +525,13 @@ Technical integration surfaces:
 
 ---
 
-## 19) Funding Readiness — Why This Can Scale
+## 19) Funding Readiness â€” Why This Can Scale
 
 Key leverage points already present:
 - Modular component architecture
 - Central orchestration pattern (ReportOrchestrator)
 - Simulation harness for repeatability
-- Clear product packaging around structured intake → explainable scores → deliverables
+- Clear product packaging around structured intake â†’ explainable scores â†’ deliverables
 
 With funding, the system can be production-hardened through:
 - security and access control
@@ -543,7 +543,7 @@ With funding, the system can be production-hardened through:
 
 ## 20) Appendices
 
-### Appendix A — Backend API Catalog (current)
+### Appendix A â€” Backend API Catalog (current)
 - `GET /api/health`
 - `POST /api/ai/insights`
 - `POST /api/ai/chat`
@@ -553,12 +553,12 @@ With funding, the system can be production-hardened through:
 - `GET/POST/PUT/DELETE /api/reports/*`
 - `POST /api/autonomous/solve`
 
-### Appendix B — Environment Variables (observed)
+### Appendix B â€” Environment Variables (observed)
 - `GEMINI_API_KEY`
 - `FRONTEND_URL`
 - Optional keys referenced in docker-compose: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`, `SERPER_API_KEY`, `NEWS_API_KEY`, `ALPHA_VANTAGE_API_KEY`
 
-### Appendix C — Notes on Evidence
+### Appendix C â€” Notes on Evidence
 This document was generated from repository artifacts including:
 - `SYSTEM_ARCHITECTURE.md`
 - `NSIL_REFERENCE_PAPER.md`
@@ -566,7 +566,7 @@ This document was generated from repository artifacts including:
 - `DEVELOPER_GUIDE.md`
 - server route implementations and orchestration harness
 
-### Appendix D — Terminology and audit definitions
+### Appendix D â€” Terminology and audit definitions
 - **Decision-support:** provides structured intelligence; user retains decision responsibility.
 - **Explainability:** ability to describe why a score/result was produced.
 - **Audit trail:** record of inputs, transformations, outputs, and versioning.
@@ -576,7 +576,7 @@ This document was generated from repository artifacts including:
 
 # Addendum: Deep Technical Detail (Audit-Grade)
 
-The sections below expand the brief into a **diligence-grade system audit narrative**. They are written to be “print/PDF-ready” and to answer the kinds of questions partners and funders typically ask:
+The sections below expand the brief into a **diligence-grade system audit narrative**. They are written to be â€œprint/PDF-readyâ€ and to answer the kinds of questions partners and funders typically ask:
 - What exactly is running?
 - What are the contracts and interfaces?
 - Where are the operational risks?
@@ -594,7 +594,7 @@ Repository documentation and component structure indicates a rich module set. Ex
 - Scenario planning and strategy workbench modules
 - Document generation and export modules
 
-**Audit interpretation:** This is not a “single feature demo.” It is a platform with multiple modules that can be progressively hardened.
+**Audit interpretation:** This is not a â€œsingle feature demo.â€ It is a platform with multiple modules that can be progressively hardened.
 
 ### A1.2 Services inventory (selected)
 The repository includes service modules with audit-relevant responsibilities:
@@ -610,7 +610,7 @@ The backend server provides:
 - core APIs for AI, search, report persistence
 - health endpoint for operations
 
-The backend’s key role is to keep secrets server-side (AI keys) and provide consistent APIs and persistence.
+The backendâ€™s key role is to keep secrets server-side (AI keys) and provide consistent APIs and persistence.
 
 ---
 
@@ -633,13 +633,13 @@ The AI routes use Gemini when `GEMINI_API_KEY` is present. The server lazily ini
 - Control note: the server attempts to parse JSON from model output; if parsing fails, it returns a fallback set.
 
 #### `POST /api/ai/chat`
-- Intent: conversational “copilot” response with system instruction applied
+- Intent: conversational â€œcopilotâ€ response with system instruction applied
 - Contract: returns object containing `content` text and metadata (id, confidence)
 - Control note: system prompt explicitly frames the AI as a deterministic modeling engine; however, LLM outputs remain probabilistic.
 
 #### `POST /api/ai/generate-section`
 - Intent: generate a named report section in professional markdown
-- Audit note: the output should be tagged in the report payload as “AI-generated narrative” versus “computed score” for governance clarity.
+- Audit note: the output should be tagged in the report payload as â€œAI-generated narrativeâ€ versus â€œcomputed scoreâ€ for governance clarity.
 
 #### `POST /api/ai/generate-stream`
 - Intent: stream output via server-sent events
@@ -691,7 +691,7 @@ The search route is designed as a **live data integration layer** with multiple 
   - reasoning steps
   - audit trail of internal steps
 
-**Audit classification:** This endpoint appears “baseline / demonstrative” rather than a full autonomous agent that executes real actions.
+**Audit classification:** This endpoint appears â€œbaseline / demonstrativeâ€ rather than a full autonomous agent that executes real actions.
 
 ---
 
@@ -700,7 +700,7 @@ The search route is designed as a **live data integration layer** with multiple 
 This section describes how raw intake becomes a report.
 
 ### A3.1 Intake (ReportParameters)
-The system’s core power is that it turns intake into a structured dataset. The simulation harness demonstrates the breadth of fields typically captured:
+The systemâ€™s core power is that it turns intake into a structured dataset. The simulation harness demonstrates the breadth of fields typically captured:
 - organization identity (name, type, size, maturity)
 - region/country/industry/intent
 - objectives and constraints
@@ -724,7 +724,7 @@ The persona system is an explicit control mechanism to:
 - preserve disagreement as decision points
 
 ### A3.4 Counterfactual & scenario stress-testing
-Counterfactual analysis tests “what if” conditions. In a government-grade deployment, this becomes:
+Counterfactual analysis tests â€œwhat ifâ€ conditions. In a government-grade deployment, this becomes:
 - scenario bounds (P10/P50/P90)
 - sensitivity analysis
 - regret analysis (what is most costly to be wrong about)
@@ -854,7 +854,7 @@ Partners typically want one of three things:
 2. **Better defensibility:** explainable outputs and audit trails.
 3. **Broader access:** enable small regions/organizations to access high-grade intelligence.
 
-BWGA Intelligence AI is positioned to deliver all three through its architecture:
+BWGA Ai is positioned to deliver all three through its architecture:
 - structured intake creates repeatability
 - scoring creates comparability
 - persona debate reduces one-dimensional bias
@@ -862,15 +862,15 @@ BWGA Intelligence AI is positioned to deliver all three through its architecture
 
 ---
 
-## A8) Suggested “20-page PDF” Layout
+## A8) Suggested â€œ20-page PDFâ€ Layout
 
 If you export this Markdown to PDF, a typical 20+ page layout is:
 1. Cover + executive summary (2 pages)
-2. System overview and architecture (3–4 pages)
-3. User journeys and report lifecycle (3–4 pages)
-4. NSIL intelligence and scoring deep dive (4–6 pages)
-5. API + deployment + operations (3–4 pages)
-6. Security/compliance audit findings + roadmap (3–5 pages)
+2. System overview and architecture (3â€“4 pages)
+3. User journeys and report lifecycle (3â€“4 pages)
+4. NSIL intelligence and scoring deep dive (4â€“6 pages)
+5. API + deployment + operations (3â€“4 pages)
+6. Security/compliance audit findings + roadmap (3â€“5 pages)
 
 This document is intentionally structured to support that print flow.
 
@@ -878,9 +878,9 @@ This document is intentionally structured to support that print flow.
 
 ## A9) Detailed Engine Specifications (Funding/Diligence Detail)
 
-This section expands the NSIL Reference Paper into a diligence-friendly specification format. It is written so that a technical reviewer can ask: “What is computed, what is derived, and what is narrative?”
+This section expands the NSIL Reference Paper into a diligence-friendly specification format. It is written so that a technical reviewer can ask: â€œWhat is computed, what is derived, and what is narrative?â€
 
-### A9.1 SPI™ — Success Probability Index
+### A9.1 SPIâ„¢ â€” Success Probability Index
 
 **Purpose**
 Estimate the likelihood of success for a mandate/partnership strategy using weighted drivers that represent readiness and friction.
@@ -894,7 +894,7 @@ Estimate the likelihood of success for a mandate/partnership strategy using weig
 - execution feasibility signals
 
 **Outputs (expected contract)**
-- `spi.score` (0–100)
+- `spi.score` (0â€“100)
 - `spi.band` (e.g., low / medium / high)
 - `spi.drivers[]` (what increases probability)
 - `spi.pressurePoints[]` (what reduces probability)
@@ -904,7 +904,7 @@ Estimate the likelihood of success for a mandate/partnership strategy using weig
 **Audit posture**
 - SPI must be explainable: every uplift/penalty should reference a driver and its evidence.
 
-### A9.2 RROI™ — Regional Return on Investment
+### A9.2 RROIâ„¢ â€” Regional Return on Investment
 
 **Purpose**
 Estimate risk-adjusted regional ROI using region-specific multipliers and scenario logic.
@@ -922,7 +922,7 @@ Estimate risk-adjusted regional ROI using region-specific multipliers and scenar
 **Audit posture**
 - Disclose: base case vs upside vs downside; separate computed math from narrative.
 
-### A9.3 SEAM™ — Stakeholder & Entity Alignment
+### A9.3 SEAMâ„¢ â€” Stakeholder & Entity Alignment
 
 **Purpose**
 Model ecosystem alignment: stakeholders, incentives, conflicts, influence networks.
@@ -936,12 +936,12 @@ Model ecosystem alignment: stakeholders, incentives, conflicts, influence networ
 **Outputs (expected contract)**
 - alignment signals and conflict signals
 - recommended alignment actions
-- “pressure point” map (what will block the deal)
+- â€œpressure pointâ€ map (what will block the deal)
 
 **Audit posture**
 - SEAM should preserve evidence and highlight uncertainty explicitly.
 
-### A9.4 IVAS™ — Investment Validation Assessment
+### A9.4 IVASâ„¢ â€” Investment Validation Assessment
 
 **Purpose**
 Stress-test activation and friction using scenario bounds (often expressed as P10/P50/P90 timelines).
@@ -957,10 +957,10 @@ Stress-test activation and friction using scenario bounds (often expressed as P1
 - gating factors and remediation pathways
 - risk flags
 
-### A9.5 SCF™ — Strategic Cash Flow / Confidence Framework
+### A9.5 SCFâ„¢ â€” Strategic Cash Flow / Confidence Framework
 
 **Purpose**
-Unify readiness, capture, timeline, and debate consensus into a single “board answer” posture.
+Unify readiness, capture, timeline, and debate consensus into a single â€œboard answerâ€ posture.
 
 **Inputs (typical)**
 - outputs from SPI/RROI/SEAM/IVAS
@@ -976,10 +976,10 @@ Unify readiness, capture, timeline, and debate consensus into a single “board 
 
 ## A10) Data Provenance & Evidence Design (Institutional Requirement)
 
-If BWGA Intelligence AI is positioned for government and large institutional partners, provenance is not optional.
+If BWGA Ai is positioned for government and large institutional partners, provenance is not optional.
 
 ### A10.1 Evidence object model (recommended)
-Each “evidence” reference used by scores or narrative should include:
+Each â€œevidenceâ€ reference used by scores or narrative should include:
 - source name (e.g., World Bank)
 - retrieval time and version
 - canonical URL
@@ -998,7 +998,7 @@ Maintain a registry that classifies sources:
 Every report should be able to generate:
 - a bibliography/appendix of evidence
 - a list of assumptions
-- a list of “verification required” items
+- a list of â€œverification requiredâ€ items
 
 ---
 
@@ -1017,7 +1017,7 @@ For funding and government partnerships, outputs should:
 - embed scorecards with explainability
 - include an assumptions register
 - include a risk register
-- separate “computed” from “AI narrative”
+- separate â€œcomputedâ€ from â€œAI narrativeâ€
 
 ### A11.3 Export formats
 The codebase references PDF/DOCX/HTML export capability. Export governance should include:
@@ -1080,7 +1080,7 @@ This checklist is designed so an external reviewer can validate readiness withou
 
 ## A14) Partnership Packaging (Technical Deliverables)
 
-To accelerate funding and partnership cycles, the following “packaged deliverables” are recommended:
+To accelerate funding and partnership cycles, the following â€œpackaged deliverablesâ€ are recommended:
 - A partner-facing API specification (OpenAPI)
 - A data connector specification (sources, caching, retention)
 - A security posture document (threat model + controls)
@@ -1088,3 +1088,4 @@ To accelerate funding and partnership cycles, the following “packaged delivera
 - A governance policy pack (output labeling, audit trail, retention)
 
 This brief is the foundation for those deliverables.
+

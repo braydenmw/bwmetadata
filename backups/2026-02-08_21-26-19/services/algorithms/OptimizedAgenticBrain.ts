@@ -1,4 +1,4 @@
-/**
+﻿/**
  * OPTIMIZED AGENTIC BRAIN - The Fast-Thinking NSIL Core
  * 
  * This is the main orchestrator that combines all optimization algorithms
@@ -7,23 +7,23 @@
  * Performance Target: Think in 1-3 seconds instead of 10-30 seconds
  * 
  * Architecture:
- * ┌─────────────────────────────────────────────────────────────────┐
- * │  INPUT LAYER                                                    │
- * │  ├─ SAT Contradiction Solver (validates inputs)                │
- * │  └─ Vector Memory Index (retrieves similar cases)              │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  REASONING LAYER (parallel execution)                          │
- * │  ├─ DAG Scheduler (21 formulas with dependencies)              │
- * │  ├─ Bayesian Debate Engine (5 personas with early stopping)    │
- * │  └─ Lazy Eval Engine (derivative indices on demand)            │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  SYNTHESIS LAYER                                                │
- * │  ├─ Decision Tree Synthesizer (template selection)             │
- * │  └─ Gradient Ranking Engine (case relevance)                   │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  OUTPUT LAYER                                                   │
- * │  └─ Executive Brief + Report Payload + Insights                │
- * └─────────────────────────────────────────────────────────────────┘
+ * â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+ * â”‚  INPUT LAYER                                                    â”‚
+ * â”‚  â”œâ”€ SAT Contradiction Solver (validates inputs)                â”‚
+ * â”‚  â””â”€ Vector Memory Index (retrieves similar cases)              â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  REASONING LAYER (parallel execution)                          â”‚
+ * â”‚  â”œâ”€ DAG Scheduler (21 formulas with dependencies)              â”‚
+ * â”‚  â”œâ”€ Bayesian Debate Engine (5 personas with early stopping)    â”‚
+ * â”‚  â””â”€ Lazy Eval Engine (derivative indices on demand)            â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  SYNTHESIS LAYER                                                â”‚
+ * â”‚  â”œâ”€ Decision Tree Synthesizer (template selection)             â”‚
+ * â”‚  â””â”€ Gradient Ranking Engine (case relevance)                   â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  OUTPUT LAYER                                                   â”‚
+ * â”‚  â””â”€ Executive Brief + Report Payload + Insights                â”‚
+ * â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
  */
 
 import type { ReportParameters, CopilotInsight } from '../../types';
@@ -396,7 +396,7 @@ export class OptimizedAgenticBrain {
     similarCases: SimilarityResult[],
     humanCognition?: HumanCognitionResult
   ): AgenticBrainResult['executiveBrief'] {
-    // ── Human Cognition Engine modifiers ────────────────────────────────────
+    // â”€â”€ Human Cognition Engine modifiers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // HCE outputs now actively shape the executive decision, not just add insights.
     let hceBiasAdjustment = 0;        // shifts consensus strength
     let hceRiskAmplification = 1.0;   // amplifies risk signals
@@ -404,20 +404,20 @@ export class OptimizedAgenticBrain {
     let hceEmotionalFlag = '';
 
     if (humanCognition) {
-      // 1. Free-energy reduction → higher = more certain decision
+      // 1. Free-energy reduction â†’ higher = more certain decision
       const feReduction = humanCognition.freeEnergyOptimization.initialFreeEnergy -
                           humanCognition.freeEnergyOptimization.finalFreeEnergy;
       hceBiasAdjustment = Math.min(feReduction * 0.02, 0.10);  // up to +10% consensus
 
-      // 2. Attention allocation → surfaced blind spots weaken consensus
+      // 2. Attention allocation â†’ surfaced blind spots weaken consensus
       if (humanCognition.attentionAllocation.attentionShifts > 5) {
         hceBiasAdjustment -= 0.05; // many attention shifts = uncertainty
         hceAttentionDrivers.push(
-          `HCE detected ${humanCognition.attentionAllocation.attentionShifts} attention shifts — uncertainty present`
+          `HCE detected ${humanCognition.attentionAllocation.attentionShifts} attention shifts â€” uncertainty present`
         );
       }
 
-      // 3. Emotional processing → negative valence amplifies risk perception
+      // 3. Emotional processing â†’ negative valence amplifies risk perception
       if (humanCognition.emotionalProcessing) {
         const valence = humanCognition.emotionalProcessing.valence ?? 0;
         if (valence < -0.3) {
@@ -428,13 +428,13 @@ export class OptimizedAgenticBrain {
         }
       }
 
-      // 4. Consciousness access → if ignition occurred, insight is trustworthy
+      // 4. Consciousness access â†’ if ignition occurred, insight is trustworthy
       if (humanCognition.consciousProcessing?.consciousAccess) {
         hceBiasAdjustment += 0.03;
       }
     }
 
-    // ── Determine proceed signal ────────────────────────────────────────────
+    // â”€â”€ Determine proceed signal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const adjustedConsensus = Math.min(1, debate.consensusStrength + hceBiasAdjustment);
     let proceedSignal: 'proceed' | 'pause' | 'restructure' | 'reject' = 'pause';
     
@@ -465,9 +465,9 @@ export class OptimizedAgenticBrain {
 
     // Top drivers
     const topDrivers: string[] = [
-      `SPI™ Success Probability: ${Math.round(spiScore)}/100`,
-      `RROI™ Regional Return: ${Math.round(rroiScore)}/100`,
-      `SCF™ Strategic Confidence: ${Math.round(scfScore)}/100`
+      `SPIâ„¢ Success Probability: ${Math.round(spiScore)}/100`,
+      `RROIâ„¢ Regional Return: ${Math.round(rroiScore)}/100`,
+      `SCFâ„¢ Strategic Confidence: ${Math.round(scfScore)}/100`
     ];
 
     if (similarCases.length > 0) {
@@ -477,7 +477,7 @@ export class OptimizedAgenticBrain {
     // Inject HCE-derived attention drivers
     topDrivers.push(...hceAttentionDrivers);
 
-    // Top risks — amplified by HCE emotional processing
+    // Top risks â€” amplified by HCE emotional processing
     const topRisks: string[] = [];
     
     if (contradictions.contradictions.length > 0) {
@@ -558,13 +558,13 @@ export class OptimizedAgenticBrain {
       description: brief.headline,
       content: [
         '**Top Drivers:**',
-        ...brief.topDrivers.map(d => `• ${d}`),
+        ...brief.topDrivers.map(d => `â€¢ ${d}`),
         '',
         '**Top Risks:**',
-        ...brief.topRisks.map(r => `• ${r}`),
+        ...brief.topRisks.map(r => `â€¢ ${r}`),
         '',
         '**Next Actions:**',
-        ...brief.nextActions.map(a => `• ${a}`)
+        ...brief.nextActions.map(a => `â€¢ ${a}`)
       ].join('\n'),
       confidence: Math.round(brief.consensusStrength * 100),
       isAutonomous: true
@@ -581,7 +581,7 @@ export class OptimizedAgenticBrain {
           ? `Closest: ${topCase.embedding.metadata.organizationName || topCase.id} (${Math.round(topCase.score * 100)}% match)`
           : 'Similar cases retrieved from memory',
         content: memory.similarCases
-          .map(c => `• ${c.embedding.metadata.organizationName || c.id}: ${c.matchReasons.join(', ')} (${Math.round(c.score * 100)}%)`)
+          .map(c => `â€¢ ${c.embedding.metadata.organizationName || c.id}: ${c.matchReasons.join(', ')} (${Math.round(c.score * 100)}%)`)
           .join('\n'),
         confidence: 80,
         isAutonomous: true
@@ -630,7 +630,7 @@ export class OptimizedAgenticBrain {
         id: `${runId}-frontier-negotiation`,
         type: 'strategy',
         title: 'Frontier Negotiation Strategy',
-        description: `${frontier.negotiation.negotiationStrategy} — agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
+        description: `${frontier.negotiation.negotiationStrategy} â€” agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
         confidence: frontier.negotiation.agreementProbability / 100,
         isAutonomous: true
       });
@@ -723,3 +723,4 @@ export class OptimizedAgenticBrain {
 export const optimizedAgenticBrain = new OptimizedAgenticBrain();
 
 export default OptimizedAgenticBrain;
+

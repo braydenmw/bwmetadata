@@ -1,4 +1,4 @@
-// Maturity Assessment & Smart Analytics Engine
+﻿// Maturity Assessment & Smart Analytics Engine
 
 export interface MaturityScore {
   dimension: string;
@@ -431,3 +431,4 @@ export const generateOpportunities = (params: any): string[] => {
   
   return opportunities;
 };
+

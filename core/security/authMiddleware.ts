@@ -1,4 +1,4 @@
-// Security & Authentication Middleware
+﻿// Security & Authentication Middleware
 // Implements JWT-based authentication and authorization
 
 import jwt from 'jsonwebtoken';

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { 
   Sparkles, Brain, Database, Map, AlertTriangle, TrendingUp, 
   FileText, Scale, Target, DollarSign, Shield, Users 
@@ -214,7 +214,7 @@ const STEP_FEATURES: Record<string, AIFeature[]> = {
     {
       id: 'fx-shock-resilience',
       title: 'FX Shock Resilience',
-      description: 'P&L deltas for ±1/2/3σ moves; hedge coverage and gaps.',
+      description: 'P&L deltas for Â±1/2/3Ïƒ moves; hedge coverage and gaps.',
       icon: DollarSign,
       badge: 'HIGH VALUE',
       action: () => {},
@@ -398,7 +398,7 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
                 </div>
               ))}
             </div>
-            <p className="text-[10px] text-indigo-700 mt-2">Runs automatically—no action needed.</p>
+            <p className="text-[10px] text-indigo-700 mt-2">Runs automaticallyâ€”no action needed.</p>
           </div>
         )}
 
@@ -462,3 +462,4 @@ const ContextualAIAssistant: React.FC<ContextualAIAssistantProps> = ({
 };
 
 export default ContextualAIAssistant;
+

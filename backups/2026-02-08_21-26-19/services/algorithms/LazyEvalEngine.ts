@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LAZY EVALUATION ENGINE - On-Demand Derivative Index Computation
  * 
  * Implements lazy evaluation for the 16 derivative indices.
@@ -329,3 +329,4 @@ export function createLazyBatch<T>(
 export const lazyEvalEngine = new LazyEvalEngine();
 
 export default LazyEvalEngine;
+

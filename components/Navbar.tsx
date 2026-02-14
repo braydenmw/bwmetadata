@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect } from 'react';
 import { LayoutGrid } from 'lucide-react';
 
@@ -43,3 +43,4 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+

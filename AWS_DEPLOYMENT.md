@@ -1,4 +1,4 @@
-# AWS Deployment Configuration for BW Nexus AI
+﻿# AWS Deployment Configuration for BWGA Ai
 
 ## Required AWS Services
 
@@ -80,7 +80,7 @@ REACT_APP_USE_REAL_DATA=true
 
 Before deploying, ensure you have requested access to Claude models:
 
-1. Go to AWS Console → Amazon Bedrock
+1. Go to AWS Console â†’ Amazon Bedrock
 2. Navigate to "Model access"
 3. Request access to:
    - Anthropic Claude 3 Sonnet
@@ -90,19 +90,19 @@ Before deploying, ensure you have requested access to Claude models:
 ## Architecture on AWS
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                         AWS Cloud                           │
-│                                                             │
-│  ┌──────────────┐     ┌──────────────┐     ┌─────────────┐ │
-│  │   CloudFront │────▶│   ALB/API    │────▶│   ECS/EC2   │ │
-│  │   (Static)   │     │   Gateway    │     │   (Node.js) │ │
-│  └──────────────┘     └──────────────┘     └──────┬──────┘ │
-│                                                    │        │
-│                                              ┌─────▼─────┐  │
-│                                              │  Bedrock  │  │
-│                                              │  (Claude) │  │
-│                                              └───────────┘  │
-└─────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                         AWS Cloud                           â”‚
+â”‚                                                             â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
+â”‚  â”‚   CloudFront â”‚â”€â”€â”€â”€â–¶â”‚   ALB/API    â”‚â”€â”€â”€â”€â–¶â”‚   ECS/EC2   â”‚ â”‚
+â”‚  â”‚   (Static)   â”‚     â”‚   Gateway    â”‚     â”‚   (Node.js) â”‚ â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”˜ â”‚
+â”‚                                                    â”‚        â”‚
+â”‚                                              â”Œâ”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                              â”‚  Bedrock  â”‚  â”‚
+â”‚                                              â”‚  (Claude) â”‚  â”‚
+â”‚                                              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ## How It Works
@@ -134,3 +134,4 @@ For issues with:
 - Bedrock access: Check IAM permissions and model access
 - Rate limits: AWS Bedrock has very high limits (100+ requests/sec)
 - Costs: Set up AWS Budgets to monitor spending
+

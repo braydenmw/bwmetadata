@@ -1,4 +1,4 @@
-import { ReportParameters } from '../types';
+﻿import { ReportParameters } from '../types';
 
 const API_BASE = '/api/reports';
 
@@ -68,3 +68,4 @@ export const ReportsService = {
     return sendJson(`${API_BASE}/${id}/duplicate`, 'POST', {});
   }
 };
+

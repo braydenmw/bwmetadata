@@ -1,4 +1,4 @@
-/**
+﻿/**
  * COUNTERFACTUAL ENGINE - Alternative Scenario Analysis
  * 
  * Generates "What if?" scenarios to test decision robustness:
@@ -621,3 +621,4 @@ export class CounterfactualEngine {
 }
 
 export default CounterfactualEngine;
+

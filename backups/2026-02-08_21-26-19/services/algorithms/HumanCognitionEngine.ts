@@ -1,39 +1,39 @@
-/**
+﻿/**
  * HUMAN COGNITION ENGINE - Neuroscience-Inspired Cognitive Models
  *
  * Implements mathematical equations and brain formulas from university-level
  * neuroscience research that haven't been adapted to AI systems.
  *
  * Mathematical Foundations:
- * ┌─────────────────────────────────────────────────────────────────┐
- * │  NEURAL FIELD THEORY (Wilson-Cowan)                            │
- * │  ├─ Differential equations for neural population dynamics     │
- * │  └─ Excitatory/inhibitory balance modeling                     │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  PREDICTIVE CODING (Rao & Ballard)                             │
- * │  ├─ Hierarchical belief updating                               │
- * │  └─ Prediction error minimization                              │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  FREE ENERGY PRINCIPLE (Friston)                               │
- * │  ├─ Variational inference for action selection                 │
- * │  └─ Surprise minimization through active inference             │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  ATTENTION MODELS (Itti & Koch)                                │
- * │  ├─ Salience map computation                                   │
- * │  └─ Winner-take-all competition                                │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  EMOTIONAL PROCESSING                                          │
- * │  ├─ Neurovisceral integration theory                           │
- * │  └─ Affective state dynamics                                   │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  CONSCIOUSNESS MODELS (Global Workspace Theory)               │
- * │  ├─ Coalition formation in neural workspace                    │
- * │  └─ Ignition dynamics for conscious access                     │
- * ├─────────────────────────────────────────────────────────────────┤
- * │  WORKING MEMORY (Baddeley's Model)                             │
- * │  ├─ Phonological loop dynamics                                 │
- * │  └─ Visuospatial sketchpad with decay functions               │
- * └─────────────────────────────────────────────────────────────────┘
+ * â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+ * â”‚  NEURAL FIELD THEORY (Wilson-Cowan)                            â”‚
+ * â”‚  â”œâ”€ Differential equations for neural population dynamics     â”‚
+ * â”‚  â””â”€ Excitatory/inhibitory balance modeling                     â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  PREDICTIVE CODING (Rao & Ballard)                             â”‚
+ * â”‚  â”œâ”€ Hierarchical belief updating                               â”‚
+ * â”‚  â””â”€ Prediction error minimization                              â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  FREE ENERGY PRINCIPLE (Friston)                               â”‚
+ * â”‚  â”œâ”€ Variational inference for action selection                 â”‚
+ * â”‚  â””â”€ Surprise minimization through active inference             â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  ATTENTION MODELS (Itti & Koch)                                â”‚
+ * â”‚  â”œâ”€ Salience map computation                                   â”‚
+ * â”‚  â””â”€ Winner-take-all competition                                â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  EMOTIONAL PROCESSING                                          â”‚
+ * â”‚  â”œâ”€ Neurovisceral integration theory                           â”‚
+ * â”‚  â””â”€ Affective state dynamics                                   â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  CONSCIOUSNESS MODELS (Global Workspace Theory)               â”‚
+ * â”‚  â”œâ”€ Coalition formation in neural workspace                    â”‚
+ * â”‚  â””â”€ Ignition dynamics for conscious access                     â”‚
+ * â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+ * â”‚  WORKING MEMORY (Baddeley's Model)                             â”‚
+ * â”‚  â”œâ”€ Phonological loop dynamics                                 â”‚
+ * â”‚  â””â”€ Visuospatial sketchpad with decay functions               â”‚
+ * â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
  */
 
 import type { ReportParameters, CopilotInsight } from '../../types';
@@ -485,10 +485,10 @@ export class HumanCognitionEngine {
    * Compute neural field dynamics using Wilson-Cowan equations
    *
    * Mathematical formulation:
-   * τ_e * dE/dt = -E + S_e(w_ee * E + w_ei * I + I_ext)
-   * τ_i * dI/dt = -I + S_i(w_ie * E + w_ii * I + I_ext)
+   * Ï„_e * dE/dt = -E + S_e(w_ee * E + w_ei * I + I_ext)
+   * Ï„_i * dI/dt = -I + S_i(w_ie * E + w_ii * I + I_ext)
    *
-   * Where S(x) = 1/(1 + exp(-β(x - θ))) is the sigmoid activation
+   * Where S(x) = 1/(1 + exp(-Î²(x - Î¸))) is the sigmoid activation
    */
   private async computeNeuralFieldDynamics(params: ReportParameters): Promise<{
     initialState: NeuralFieldState;
@@ -655,9 +655,9 @@ export class HumanCognitionEngine {
    * Compute predictive coding belief updates
    *
    * Mathematical formulation:
-   * ε = x - μ (prediction error)
-   * dμ/dt = ε * π (belief update)
-   * dπ/dt = -π² * ε² + learning (precision update)
+   * Îµ = x - Î¼ (prediction error)
+   * dÎ¼/dt = Îµ * Ï€ (belief update)
+   * dÏ€/dt = -Ï€Â² * ÎµÂ² + learning (precision update)
    */
   private computePredictiveCoding(params: ReportParameters, neuralState: NeuralFieldState): {
     beliefs: PredictiveBelief[];
@@ -747,8 +747,8 @@ export class HumanCognitionEngine {
    * Compute free energy optimization for action selection
    *
    * Mathematical formulation:
-   * F = Σ ε²/π + KL divergence terms
-   * G(π) = Σ ln P(o,π|s) (expected free energy)
+   * F = Î£ ÎµÂ²/Ï€ + KL divergence terms
+   * G(Ï€) = Î£ ln P(o,Ï€|s) (expected free energy)
    */
   private computeFreeEnergyOptimization(params: ReportParameters, predictive: {
     beliefs: PredictiveBelief[];
@@ -838,7 +838,7 @@ export class HumanCognitionEngine {
    * Compute attention allocation using Itti & Koch model
    *
    * Mathematical formulation:
-   * S = N(∑ w_f * F_f) (salience map)
+   * S = N(âˆ‘ w_f * F_f) (salience map)
    * Winner-take-all competition for attention shifts
    */
   private computeAttentionAllocation(params: ReportParameters, neuralState: NeuralFieldState): {
@@ -936,7 +936,7 @@ export class HumanCognitionEngine {
    */
   private computeOrientationFeatures(neuralState: NeuralFieldState): number[][][] {
     const resolution = neuralState.excitatory.length;
-    const orientations = 4; // 0°, 45°, 90°, 135°
+    const orientations = 4; // 0Â°, 45Â°, 90Â°, 135Â°
     const features = Array(orientations).fill(0).map(() =>
       Array(resolution).fill(0).map(() => Array(resolution).fill(0))
     );

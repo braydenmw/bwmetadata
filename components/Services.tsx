@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { 
     Network, BarChart3, TrendingUp, Layers, Database, Globe, 
@@ -114,22 +114,22 @@ export const Services: React.FC = () => {
                     
                     <div className="prose prose-lg text-stone-600 leading-[1.85] space-y-7 text-base md:text-lg">
                         <p>
-                            Regional economies face a critical visibility crisis. They hold immense value—latent assets, skilled labor, and rapid growth potential—but lack the structured data to prove it to the world.
+                            Regional economies face a critical visibility crisis. They hold immense valueâ€”latent assets, skilled labor, and rapid growth potentialâ€”but lack the structured data to prove it to the world.
                         </p>
                         <p>
-                            This system was built from the field up. Over 16 months of boots-on-the-ground observation and synthesis, we traced the repeating failure modes of regional development through 200 years of global business and growth—then converted those lessons into a machine-operable intelligence layer.
+                            This system was built from the field up. Over 16 months of boots-on-the-ground observation and synthesis, we traced the repeating failure modes of regional development through 200 years of global business and growthâ€”then converted those lessons into a machine-operable intelligence layer.
                         </p>
                         <p>
                             We built the <strong>Regional Intelligence Core</strong> to solve this specific inequity. It is not a tool for extraction; it is an engine for connection. By translating local reality into global metrics, we ensure that no viable opportunity is lost to translation errors.
                         </p>
                         <p>
-                            Most systems only see the bee and the flower—the visible transaction. This architecture is designed to see the entire meadow: the ecosystem context, the execution constraints, and the hidden connections that determine whether a strategy survives contact with reality.
+                            Most systems only see the bee and the flowerâ€”the visible transaction. This architecture is designed to see the entire meadow: the ecosystem context, the execution constraints, and the hidden connections that determine whether a strategy survives contact with reality.
                         </p>
                         <p>
                             This system is <strong>100% dedicated to regional development</strong>. It provides the same level of analytical rigor found in global financial centers, but is purpose-built to navigate the complexities of regional economic growth.
                         </p>
                         <p>
-                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPI‑driven Matchmaking</strong>, <strong>Document Suite</strong> generation, <strong>Scenario Simulation</strong>, <strong>Early‑Warning Risk Alerts</strong>, <strong>Due Diligence Intelligence</strong>, <strong>Relocation & TCO Comparison</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
+                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPIâ€‘driven Matchmaking</strong>, <strong>Document Suite</strong> generation, <strong>Scenario Simulation</strong>, <strong>Earlyâ€‘Warning Risk Alerts</strong>, <strong>Due Diligence Intelligence</strong>, <strong>Relocation & TCO Comparison</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
                         </p>
                     </div>
 
@@ -205,7 +205,7 @@ export const Services: React.FC = () => {
                                 <div className="py-4">
                                     <h4 className="text-xl font-bold text-white mb-2">Level 2: The Core Brain</h4>
                                     <p className="text-sm text-stone-400 leading-relaxed">
-                                        The central processing unit that ingests NSIL data. It doesn't just read data; it understands <i>strategic intent</i>. It was developed immediately after NSIL to parse "Case Observations (CO)"—our proprietary dataset of failure points—and to model ecosystem context, not just the visible transaction.
+                                        The central processing unit that ingests NSIL data. It doesn't just read data; it understands <i>strategic intent</i>. It was developed immediately after NSIL to parse "Case Observations (CO)"â€”our proprietary dataset of failure pointsâ€”and to model ecosystem context, not just the visible transaction.
                                     </p>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@ export const Services: React.FC = () => {
                             <div className="p-6 border-l-2 border-bw-gold bg-bw-gold/5">
                                 <h5 className="font-bold text-bw-gold uppercase text-xs tracking-widest mb-3">Verification of Origin</h5>
                                 <p className="text-sm text-stone-300 italic leading-relaxed">
-                                    "We built this because the tools didn't exist. Standard consulting models are priced for the Fortune 500 and designed for stability. We built The Core for the rest of the world—to operate in chaos, at a cost that democratizes intelligence."
+                                    "We built this because the tools didn't exist. Standard consulting models are priced for the Fortune 500 and designed for stability. We built The Core for the rest of the worldâ€”to operate in chaos, at a cost that democratizes intelligence."
                                 </p>
                             </div>
                         </div>
@@ -303,3 +303,4 @@ export const Services: React.FC = () => {
     </section>
   );
 };
+

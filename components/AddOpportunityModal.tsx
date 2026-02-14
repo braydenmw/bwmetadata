@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { LiveOpportunityItem } from '../types';
 import useEscapeKey from '../hooks/useEscapeKey';
 import { X, PlusCircle, Briefcase } from 'lucide-react';

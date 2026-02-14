@@ -1,4 +1,4 @@
-import { ReportParameters } from '../types';
+﻿import { ReportParameters } from '../types';
 import { AdvisorInputModel } from './ComprehensiveSystemModel';
 
 const STRUCTURE_MAP: Record<string, AdvisorInputModel['mandate']['governance']['preferredStructure']> = {
@@ -98,3 +98,4 @@ export const buildAdvisorInputFromParams = (params: ReportParameters): AdvisorIn
     },
   };
 };
+

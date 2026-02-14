@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Users, Plus, Trash2, TrendingUp,
   AlertTriangle, CheckCircle, Globe, Building2,
@@ -252,7 +252,7 @@ function PartnerCard({
           <div className="flex items-center gap-2 text-sm text-stone-500 mt-1">
             <Globe className="w-3 h-3" />
             {partner.country}
-            <span className="text-stone-300">•</span>
+            <span className="text-stone-300">â€¢</span>
             <Building2 className="w-3 h-3" />
             <span className="capitalize">{partner.type}</span>
           </div>
@@ -392,7 +392,7 @@ function ComparisonResultView({ result }: { result: PartnerComparisonResult }) {
                       <h5 className="font-bold text-stone-900">{alt.name}</h5>
                     </div>
                     <div className="text-sm text-stone-500 mt-1">
-                      {alt.country} • {alt.region}
+                      {alt.country} â€¢ {alt.region}
                     </div>
                   </div>
                   <div className="text-right">
@@ -744,3 +744,4 @@ function AddPartnerModal({
     </div>
   );
 }
+

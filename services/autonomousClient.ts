@@ -1,4 +1,4 @@
-export async function solveAndAct(problem: string, context: any, params: any, options: any) {
+﻿export async function solveAndAct(problem: string, context: any, params: any, options: any) {
   const res = await fetch('/api/autonomous/solve', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

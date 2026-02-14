@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+﻿import React, { ElementType } from 'react';
 export type SkillLevel = 'novice' | 'experienced' | 'expert';
 export interface IngestedDocumentMeta {
     filename: string;
@@ -1291,3 +1291,4 @@ export interface IntakeMappingSnapshot {
     ivasInput: IVASInput;
     scfInput: SCFInput;
 }
+

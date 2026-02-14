@@ -1,4 +1,4 @@
-/**
+﻿/**
  * COMPREHENSIVE INDICES ENGINE
  * 
  * Implements ALL documented indices that were previously marked as "not implemented":
@@ -890,3 +890,4 @@ export default {
   calculateIDV,
   calculateAllIndices
 };
+

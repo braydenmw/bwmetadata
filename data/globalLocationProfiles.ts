@@ -1,4 +1,4 @@
-export interface LeaderNews {
+﻿export interface LeaderNews {
   headline: string;
   date: string;
   source: string;
@@ -490,7 +490,7 @@ export const CITY_PROFILES: CityProfile[] = [
         rating: 8.3,
         imageUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop',
         internationalEngagementFocus: true,
-        officeAddress: 'Cebu City Hall, Osmeña Boulevard, Cebu City 6000',
+        officeAddress: 'Cebu City Hall, OsmeÃ±a Boulevard, Cebu City 6000',
         contactEmail: 'mayor@cebucity.gov.ph',
         bio: 'Hon. Michael "Mike" Lopez Rama is a seasoned politician who has served Cebu City for decades. First elected as Barangay Captain in 1988, he rose through the ranks to become Vice Mayor (2004-2010) and Mayor (2010-2016, 2022-present). Known as "Cebu\'s Cultural Ambassador," Mayor Rama has championed the Sinulog Festival and positioned Cebu as a global tourism and BPO destination. His administration focuses on smart city technologies, heritage preservation, and sustainable urban development.',
         education: ['Bachelor of Laws - San Jose Recoletos', 'Bachelor of Science in Commerce - University of the Visayas'],
@@ -978,3 +978,4 @@ export const CITY_PROFILES: CityProfile[] = [
     ]
   }
 ];
+

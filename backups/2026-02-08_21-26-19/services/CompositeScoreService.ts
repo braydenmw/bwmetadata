@@ -1,4 +1,4 @@
-import { ReportParameters, CompositeScoreResult } from '../types';
+﻿import { ReportParameters, CompositeScoreResult } from '../types';
 import { LiveDataService } from './LiveDataService';
 
 export interface CompositeScoreContext {
@@ -210,3 +210,4 @@ export class CompositeScoreService {
 }
 
 export default CompositeScoreService;
+

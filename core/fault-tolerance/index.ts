@@ -1,4 +1,4 @@
-// Fault Tolerance Module
+﻿// Fault Tolerance Module
 // Implements retry logic and circuit breaker pattern
 
 export class CircuitBreaker {

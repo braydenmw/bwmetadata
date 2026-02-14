@@ -1,6 +1,6 @@
-# Deployment Guide — BWGA Intelligence AI
+﻿# Deployment Guide â€” BWGA Ai
 
-This document describes how to deploy the full-stack BWGA Intelligence AI application (frontend + backend) to Render using the CI workflow included in `.github/workflows/deploy-render.yml`. It also includes local Docker test steps.
+This document describes how to deploy the full-stack BWGA Ai application (frontend + backend) to Render using the CI workflow included in `.github/workflows/deploy-render.yml`. It also includes local Docker test steps.
 
 ## Overview
 - Frontend: Vite-built static site (output `dist`).
@@ -9,23 +9,23 @@ This document describes how to deploy the full-stack BWGA Intelligence AI applic
 - CI: GitHub Actions workflows included to build, publish a Docker image to GHCR, and trigger a Render deploy.
 
 ## Required GitHub repository secrets
-Add these in GitHub → Settings → Secrets & variables → Actions.
-- `GHCR_PAT` — Personal access token with `write:packages` (if using GHCR). Optional if you use another registry.
-- `RENDER_API_KEY` — Render API key for your account (service deploy trigger).
-- `RENDER_SERVICE_ID` — Render service id (numeric id for your service).
-- `GEMINI_API_KEY` — Server-side Google/GenAI API key.
-- `VITE_GEMINI_API_KEY` — (Optional) client-exposed key — avoid if possible.
-- `FRONTEND_URL` — production URL (e.g., https://app.example.com).
+Add these in GitHub â†’ Settings â†’ Secrets & variables â†’ Actions.
+- `GHCR_PAT` â€” Personal access token with `write:packages` (if using GHCR). Optional if you use another registry.
+- `RENDER_API_KEY` â€” Render API key for your account (service deploy trigger).
+- `RENDER_SERVICE_ID` â€” Render service id (numeric id for your service).
+- `GEMINI_API_KEY` â€” Server-side Google/GenAI API key.
+- `VITE_GEMINI_API_KEY` â€” (Optional) client-exposed key â€” avoid if possible.
+- `FRONTEND_URL` â€” production URL (e.g., https://app.example.com).
 
 ## Render setup (recommended)
 1. Create a new Web Service on Render (select "Docker" or connect the repo). Note the service id (the numeric id shown in the service URL or the Render dashboard; it appears like `srv-xxxxxxxxxx`).
 2. In Render service settings, add env vars: `NODE_ENV=production`, `FRONTEND_URL` (e.g. `https://your-service.onrender.com`), `GEMINI_API_KEY` (server-only), and any DB or other API keys required.
-3. In GitHub, go to your repo → Settings → Secrets & variables → Actions and add these secrets:
-	- `GHCR_PAT` — personal access token for GHCR (if using GHCR). Scope: `write:packages`.
-	- `RENDER_API_KEY` — Render API key with permission to deploy.
-	- `RENDER_SERVICE_ID` — copy the numeric id for your Render service (without the `srv-` prefix used in some contexts).
-	- `GEMINI_API_KEY` — your server-side AI API key.
-	- `FRONTEND_URL` — production URL string.
+3. In GitHub, go to your repo â†’ Settings â†’ Secrets & variables â†’ Actions and add these secrets:
+	- `GHCR_PAT` â€” personal access token for GHCR (if using GHCR). Scope: `write:packages`.
+	- `RENDER_API_KEY` â€” Render API key with permission to deploy.
+	- `RENDER_SERVICE_ID` â€” copy the numeric id for your Render service (without the `srv-` prefix used in some contexts).
+	- `GEMINI_API_KEY` â€” your server-side AI API key.
+	- `FRONTEND_URL` â€” production URL string.
 4. Push to the `main` or `master` branch to trigger the GitHub Actions workflow: it will build assets, build/push a Docker image to GHCR, then call the Render deploy API.
 
 Quick note for non-coders: if you prefer not to create a GHCR token, you can skip the GHCR step and configure Render to build from the repo directly (Render will run the build command `npm install && npm run build && npm run build:server`). In that case add the same env vars in the Render service and enable auto-deploy from the connected branch.
@@ -74,7 +74,7 @@ This script simply calls the Render deploy API and is safe to run from your term
 
 ## Post-deploy validation
 - Visit `https://<your-host>/` and validate UI loads.
-- Accept Terms and click "Define Your First Mandate" — ensure navigation to the report-generator and that server API calls succeed.
+- Accept Terms and click "Define Your First Mandate" â€” ensure navigation to the report-generator and that server API calls succeed.
 - Check server logs on Render for any runtime errors (missing env vars, auth errors).
 
 ## Security & production hardening checklist
@@ -86,3 +86,4 @@ This script simply calls the Render deploy API and is safe to run from your term
 If you want, I can:
 - Trigger a local Docker build & run and report the health result, or
 - Create a step-by-step Render setup doc with screenshots.
+

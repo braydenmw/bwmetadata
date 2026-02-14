@@ -1,4 +1,4 @@
-import { RefinedIntake, SPIInput, IVASInput, SCFInput } from '../types';
+﻿import { RefinedIntake, SPIInput, IVASInput, SCFInput } from '../types';
 
 export function mapToSPI(intake: RefinedIntake): SPIInput {
   return {
@@ -47,3 +47,4 @@ export function evaluateDocReadiness(intake: RefinedIntake): Record<string, DocR
     'blind-spot-audit': hasMarket ? 'ready' : 'missing-fields',
   };
 }
+

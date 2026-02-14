@@ -1,4 +1,4 @@
-
+﻿
 import { ReportParameters, HistoricalCase, PrecedentMatch } from '../types';
 
 // ============================================================================
@@ -157,3 +157,4 @@ export class PrecedentMatchingEngine {
         .sort((a, b) => b.similarity.overall - a.similarity.overall);
     }
 }
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell
 } from 'recharts';
@@ -103,3 +103,4 @@ const CompetitorMap: React.FC<{ clientName?: string }> = ({ clientName = "Your O
 };
 
 export default CompetitorMap;
+

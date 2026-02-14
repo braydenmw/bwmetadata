@@ -1,4 +1,4 @@
-/**
+﻿/**
  * COMPREHENSIVE SYSTEM DEVELOPMENT DATA MODEL
  * This extends ReportParameters to capture everything needed to develop any system
  */
@@ -555,3 +555,4 @@ export interface AdvisorInputModel {
     risks?: Array<unknown>;
   };
 }
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Handshake } from 'lucide-react';
 
 const RelationshipBuilder = () => (
@@ -10,3 +10,4 @@ const RelationshipBuilder = () => (
 );
 
 export default RelationshipBuilder;
+

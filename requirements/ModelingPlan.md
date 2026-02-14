@@ -1,4 +1,4 @@
-# Modeling Plan: NSIL-Driven Live Intelligence (Production Grade)
+﻿# Modeling Plan: NSIL-Driven Live Intelligence (Production Grade)
 
 ## Objectives
 - Replace mocked logic with calibrated, explainable models powering the Control Matrix and live document preview.
@@ -16,7 +16,7 @@
 - Provenance: store source, vintage, coverage %, freshness; propagate to confidence scores.
 
 ## 12-Component Investment Algorithm (composite)
-For each component: normalize 0–100, weight, and produce contribution + confidence.
+For each component: normalize 0â€“100, weight, and produce contribution + confidence.
 1) Infrastructure (physical/digital): transport, port/airport throughput, grid reliability, broadband.
 2) Talent availability: skill depth, wage levels, STEM output, language fit.
 3) Cost efficiency: labor, energy, real estate, logistics basket vs. benchmark.
@@ -47,12 +47,12 @@ Each needs: inputs, normalization, weights, equation, confidence, and explainabi
 - Report P10/P50/P90 for IVAS timelines, SCF impacts, risk indices; include tornado chart drivers.
 
 ## Explainability & Traceability
-- Store inputs, weights, and component scores; emit “why” text per metric.
+- Store inputs, weights, and component scores; emit â€œwhyâ€ text per metric.
 - Expose NSIL trace: show XML + rendered view; include source links and freshness per data point.
 
 ## UI Integration (Control Matrix + Live Doc)
 - Pre-flight completeness meter; block/flag missing critical inputs.
-- Confidence badges per card; “why it matters” tooltips tied to formulas.
+- Confidence badges per card; â€œwhy it mattersâ€ tooltips tied to formulas.
 - Suggested follow-on docs: strategy brief, risk memo, partner shortlist, implementation plan.
 
 ## Milestones
@@ -62,3 +62,4 @@ Each needs: inputs, normalization, weights, equation, confidence, and explainabi
 4) Implement remaining derivative indices with tests.
 5) Integrate into Control Matrix + live preview; surface confidence/provenance.
 6) Wire data backbone (ETL) and refresh schedules; turn on live provenance in UI.
+

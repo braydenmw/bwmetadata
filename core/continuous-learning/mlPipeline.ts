@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ADVANCED ML PIPELINE - Real Pattern Learning & Model Persistence
  * 
  * This provides actual:
@@ -284,7 +284,7 @@ export function retrainModel(data: TrainingDataPoint[]): void {
     return;
   }
   
-  console.log(`🧠 ML Pipeline: Training on ${data.length} data points`);
+  console.log(`ðŸ§  ML Pipeline: Training on ${data.length} data points`);
   
   let modelState = loadModelState();
   let patterns = loadPatterns();
@@ -368,7 +368,7 @@ export function retrainModel(data: TrainingDataPoint[]): void {
   savePatterns(patterns);
   saveFeatureWeights(featureWeights);
   
-  console.log(`✅ Training complete: Cycles=${modelState.trainingCycles}, Accuracy=${(modelState.accuracy * 100).toFixed(1)}%, Patterns=${patterns.length}, Loss=${(totalLoss / data.length).toFixed(4)}`);
+  console.log(`âœ… Training complete: Cycles=${modelState.trainingCycles}, Accuracy=${(modelState.accuracy * 100).toFixed(1)}%, Patterns=${patterns.length}, Loss=${(totalLoss / data.length).toFixed(4)}`);
 }
 
 // ============================================================================

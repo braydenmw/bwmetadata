@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LIVE DATA SERVICE
  * 
  * Integrates real external APIs for live market intelligence:
@@ -360,3 +360,4 @@ export class LiveDataService {
 }
 
 export default LiveDataService;
+

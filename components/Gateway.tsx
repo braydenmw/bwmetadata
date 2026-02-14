@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ReportParameters, SkillLevel } from '../types';
 import { ORGANIZATION_TYPES, ORGANIZATION_SUBTYPES, REGIONS_AND_COUNTRIES, INDUSTRIES, STRATEGIC_OBJECTIVES, STRATEGIC_LENSES, INDUSTRY_NICHES, INTELLIGENCE_CATEGORIES, GLOBAL_DEPARTMENTS, GLOBAL_ROLES } from '../constants';
@@ -119,7 +119,7 @@ const MegaMultiSelect = ({
             <div className="flex flex-wrap gap-2 mb-2">
                 {selected.map(val => (
                     <span key={val} className="px-2 py-1 bg-stone-800 text-white text-xs rounded flex items-center gap-1 shadow-sm">
-                        {val} <button onClick={() => onToggle(val)} className="hover:text-red-300 ml-1">×</button>
+                        {val} <button onClick={() => onToggle(val)} className="hover:text-red-300 ml-1">Ã—</button>
                     </span>
                 ))}
             </div>
@@ -955,3 +955,4 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
         </div>
     );
 };
+

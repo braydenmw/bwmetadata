@@ -1,4 +1,4 @@
-// Industry Templates & Data Persistence Engine
+﻿// Industry Templates & Data Persistence Engine
 
 const STORAGE_KEY = 'bw-nexus-workspace';
 const TEMPLATE_KEY = 'bw-nexus-templates';
@@ -341,3 +341,4 @@ export const clearAllData = (): boolean => {
     return false;
   }
 };
+

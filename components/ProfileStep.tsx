@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ReportParameters } from '../types';
 import { ORGANIZATION_TYPES, ORGANIZATION_SUBTYPES } from '../constants';
 import { generateFastSuggestion } from '../services/engine';
@@ -198,3 +198,4 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
         </div>
     );
 };
+

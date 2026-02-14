@@ -1,4 +1,4 @@
-# NSIL Formula Suite — Full Reference
+﻿# NSIL Formula Suite â€” Full Reference
 
 Clear, standalone reference for the NSIL/Agentic Brain formula family. Each method lists intent, inputs, core equation, and outputs. Confidence and data-quality gating apply to all (low Evidence Confidence Score clamps assertions and adds caution language).
 
@@ -9,7 +9,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Partner fit for joint execution.
 - **Inputs:** Reach, credibility, incentives, ops capacity, compliance stance; weights sum to 1.
 - **Formula:** $SPI = \sum_i w_i s_i$.
-- **Outputs:** 0–100 score; top drivers; confidence band.
+- **Outputs:** 0â€“100 score; top drivers; confidence band.
 
 ### 2) Regional Return on Investment (RROI)
 <a id="rroi"></a>
@@ -23,7 +23,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Partner ecosystem alignment.
 - **Inputs:** Complementarity, non-overlap, governance fit; weights $w_c, w_n, w_g$.
 - **Formula:** $SEAM = (\text{Complementarity} \times w_c) + (\text{Non-Overlap} \times w_n) + (\text{Governance Fit} \times w_g)$.
-- **Outputs:** 0–100 alignment; fit notes; gaps.
+- **Outputs:** 0â€“100 alignment; fit notes; gaps.
 
 ### 4) Investment Viability Assessment Score (IVAS)
 <a id="ivas"></a>
@@ -46,7 +46,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Fragility to adverse scenarios.
 - **Inputs:** Top-k counterfactual losses.
 - **Formula:** $CRI = 100 - (\text{worst\_delta% among top } k)$.
-- **Outputs:** 0–100 robustness; weakest scenarios.
+- **Outputs:** 0â€“100 robustness; weakest scenarios.
 
 ### 7) Opportunity Velocity Score (OVS)
 - **Intent:** Execution pace vs. plan.
@@ -58,7 +58,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Counterparty readiness.
 - **Inputs:** Team, approvals, funding, tech, compliance; evidence flags.
 - **Formula:** $PRI = \sum_j w_j r_j$.
-- **Outputs:** 0–100; missing evidence penalties.
+- **Outputs:** 0â€“100; missing evidence penalties.
 
 ### 9) Risk Concentration Index (RCI)
 - **Intent:** Concentration of exposure.
@@ -69,7 +69,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### 10) Compliance Friction Index (CFI)
 - **Intent:** Regulatory/AML/sanctions friction.
 - **Inputs:** Sector base, licensing, data, sanctions/AML, export controls.
-- **Formula:** Sector base + weighted factors scaled 0–100.
+- **Formula:** Sector base + weighted factors scaled 0â€“100.
 - **Outputs:** Friction score; critical approvals list.
 
 ### 11) Trust & Integrity Score (TIS)
@@ -105,9 +105,9 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### 16) Evidence Confidence Score (ECS)
 <a id="ecs"></a>
 - **Intent:** Data quality gate.
-- **Inputs:** Coverage, freshness, diversity (0–1 each).
+- **Inputs:** Coverage, freshness, diversity (0â€“1 each).
 - **Formula:** $ECS = coverage \times freshness \times diversity$.
-- **Outputs:** 0–1; clamps assertions if < 0.4.
+- **Outputs:** 0â€“1; clamps assertions if < 0.4.
 
 ### 17) Perception Gap Index (PGI)
 - **Intent:** Narrative vs. observed risk gap.
@@ -124,7 +124,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### 19) Capital Efficiency Score (CES)
 - **Intent:** Value per unit capital.
 - **Inputs:** Risk-adjusted NPV, CapEx.
-- **Formula:** $CES = \frac{NPV_{risk\text{-}adj}}{CapEx}$ normalized 0–100.
+- **Formula:** $CES = \frac{NPV_{risk\text{-}adj}}{CapEx}$ normalized 0â€“100.
 - **Outputs:** Efficiency score; compare to hurdle.
 
 ### 20) Activation Velocity (AV)
@@ -186,10 +186,12 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Labor market fit.
 - **Inputs:** Skill match, labor depth, wage trend.
 - **Formula:** Weighted score; wage CAGR applied to cost base.
-- **Outputs:** 0–100 score; cost headroom/shortfall.
+- **Outputs:** 0â€“100 score; cost headroom/shortfall.
 
 ---
 ## Usage Notes
-- All scores output (value, confidence, rationale, sources). ECS < 0.4 forces a “low-confidence” flag and softens language in letters/reports.
+- All scores output (value, confidence, rationale, sources). ECS < 0.4 forces a â€œlow-confidenceâ€ flag and softens language in letters/reports.
 - PGI and LCR include a perception-vs-observed callout to avoid overstating regional risk; safer alternates can be proposed when LCR is high.
 - Counterfactual/Monte Carlo modules feed IVAS, CRI, ECI; telemetry feeds TIS, LRS, TTI.
+
+

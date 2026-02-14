@@ -1,4 +1,4 @@
-/**
+﻿/**
  * OUTCOME TRACKER - Learning from Past Decisions
  * 
  * This service tracks:
@@ -574,3 +574,4 @@ export class OutcomeTracker {
 }
 
 export default OutcomeTracker;
+

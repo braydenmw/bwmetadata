@@ -1,5 +1,5 @@
-/**
- * EventBus — Unified pub/sub for the BWGA Intelligence AI ecosystem
+﻿/**
+ * EventBus â€” Unified pub/sub for the BWGA Ai ecosystem
  *
  * Connects: agentic worker, orchestrator, self-learning engine, consultant, App
  * Enables all modules to see the whole "meadow" (bee, flower, ecosystem).
@@ -111,7 +111,7 @@ class EventBusImpl {
       console.debug(`[EventBus] No handlers for ${event.type}`);
       return;
     }
-    console.log(`[EventBus] ${event.type} → ${set.size} handler(s)`);
+    console.log(`[EventBus] ${event.type} â†’ ${set.size} handler(s)`);
     for (const handler of set) {
       try {
         (handler as Function)(event);
@@ -149,3 +149,4 @@ class EventBusImpl {
 }
 
 export const EventBus = new EventBusImpl();
+

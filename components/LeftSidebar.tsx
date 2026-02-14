@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { Zap, AlertTriangle, Lightbulb, HelpCircle, ArrowRight, Loader2, CheckCircle, Sparkles, ShieldCheck, FileText, Flag } from 'lucide-react';
 import { CopilotInsight } from '../types';
 
@@ -120,7 +120,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                 <Flag size={12} className="text-amber-500" /> {b}
               </li>
             ))}
-            {blockers.length === 0 && <li className="text-xs text-emerald-700">No blockers — ready to generate.</li>}
+            {blockers.length === 0 && <li className="text-xs text-emerald-700">No blockers â€” ready to generate.</li>}
           </ul>
         </div>
 

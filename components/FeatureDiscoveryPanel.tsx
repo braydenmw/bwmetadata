@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Sparkles, Database, Brain, Globe, TrendingUp, Shield, 
   FileText, Zap, Target, Map, Search,
@@ -249,7 +249,7 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
                       <span className={`text-xs font-medium ${
                         feature.available ? 'text-green-600' : 'text-amber-600'
                       }`}>
-                        {feature.available ? '✓ Available Now' : 'Coming Soon'}
+                        {feature.available ? 'âœ“ Available Now' : 'Coming Soon'}
                       </span>
                       <ChevronRight className="w-4 h-4 text-stone-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
                     </div>
@@ -285,3 +285,4 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
 };
 
 export default FeatureDiscoveryPanel;
+

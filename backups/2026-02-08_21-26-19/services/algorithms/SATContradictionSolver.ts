@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SAT CONTRADICTION SOLVER - Boolean Satisfiability for Input Validation
  * 
  * Uses a SAT-like approach to detect logical contradictions in user inputs.
@@ -376,7 +376,7 @@ export class SATContradictionSolver {
     for (const c of result.contradictions) {
       explanations.push(`[${c.severity.toUpperCase()}] ${c.description}`);
       if (c.suggestion) {
-        explanations.push(`  → Suggestion: ${c.suggestion}`);
+        explanations.push(`  â†’ Suggestion: ${c.suggestion}`);
       }
     }
     
@@ -388,3 +388,4 @@ export class SATContradictionSolver {
 export const satSolver = new SATContradictionSolver();
 
 export default SATContradictionSolver;
+

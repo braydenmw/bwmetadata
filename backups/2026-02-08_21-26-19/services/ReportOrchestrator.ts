@@ -1,4 +1,4 @@
-import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot } from '../types';
+﻿import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot } from '../types';
 import { calculateSPI, generateRROI, generateSEAM, generateSymbioticMatches, runEthicalSafeguards } from './engine';
 import { MarketDiversificationEngine } from './engine';
 import { runOpportunityOrchestration } from './engine';
@@ -24,7 +24,7 @@ export class ReportOrchestrator {
                           params.intentTags?.includes('full-autonomy');
 
     if (isFullAutonomy) {
-      console.log('🎯 Activating Master Autonomous Orchestrator for 100% performance');
+      console.log('ðŸŽ¯ Activating Master Autonomous Orchestrator for 100% performance');
       const masterResult = await masterAutonomousOrchestrator.orchestrateCompleteAnalysis(params);
       return masterResult.reportPayload;
     }

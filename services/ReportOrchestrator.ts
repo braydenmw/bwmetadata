@@ -1,4 +1,4 @@
-import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot, ProactiveBriefing } from '../types';
+﻿import { ReportParameters, ReportPayload, SPIResult, RROI_Index, SEAM_Blueprint, SymbioticPartner, DiversificationAnalysis, EthicalCheckResult, RefinedIntake, RegionProfile, MarketShare, AgenticBrainSnapshot, ProactiveBriefing } from '../types';
 import { calculateSPI, generateRROI, generateSEAM, generateSymbioticMatches, runEthicalSafeguards } from './engine';
 import { MarketDiversificationEngine } from './engine';
 import { runOpportunityOrchestration } from './engine';
@@ -23,7 +23,7 @@ export class ReportOrchestrator {
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
     console.log('DEBUG: Starting ReportOrchestrator assembly for', params.organizationName);
 
-    // All reports run at full autonomous performance — no separate mode needed
+    // All reports run at full autonomous performance â€” no separate mode needed
     const refinedIntake = this.toRefinedIntake(params);
     const spiInput = mapToSPI(refinedIntake);
     const ivasInput = mapToIVAS(refinedIntake);
@@ -151,7 +151,7 @@ export class ReportOrchestrator {
           processingTime: nsilReport.processingTime,
           componentsRun: nsilReport.componentsRun
         } : undefined,
-        // Situation Analysis — multi-perspective view
+        // Situation Analysis â€” multi-perspective view
         situationAnalysis: situationAnalysis ? {
           explicitNeeds: situationAnalysis.explicitNeeds,
           implicitNeeds: situationAnalysis.implicitNeeds,
@@ -179,7 +179,7 @@ export class ReportOrchestrator {
     // Run autonomous enhancement steps (always-on full performance)
     try {
       const masterEnhancements = await masterAutonomousOrchestrator.runEnhancements(params, payload);
-      console.log('🎯 Autonomous enhancements applied:', masterEnhancements.confidence);
+      console.log('ðŸŽ¯ Autonomous enhancements applied:', masterEnhancements.confidence);
     } catch (error) {
       console.warn('Autonomous enhancements skipped (non-blocking):', error);
     }

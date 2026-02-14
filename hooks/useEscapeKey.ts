@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 
 const useEscapeKey = (callback: () => void) => {
     useEffect(() => {
@@ -13,3 +13,4 @@ const useEscapeKey = (callback: () => void) => {
 };
 
 export default useEscapeKey;
+

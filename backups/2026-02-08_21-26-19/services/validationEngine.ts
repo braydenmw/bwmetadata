@@ -1,4 +1,4 @@
-// Comprehensive Form Validation Engine
+﻿// Comprehensive Form Validation Engine
 export const validationRules: { [key: string]: ((value: any) => string | null) | ((param: any) => (value: any) => string | null) } = {
   // Required field validation
   required: (value) => !value || value.toString().trim() === '' ? 'This field is required' : null,
@@ -230,3 +230,4 @@ export const validateCrossDependencies = (params: any): { [key: string]: string 
   
   return errors;
 };
+

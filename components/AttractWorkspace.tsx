@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Shield, Brain, Calculator, FileText, CheckCircle, ArrowRight, Users, Globe, Lock } from 'lucide-react';
 
 const AttractWorkspace = () => {
@@ -14,7 +14,7 @@ const AttractWorkspace = () => {
             From "Search" to "Strategic Reasoning"
           </p>
           <p className="text-lg text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Most tools help you find documents. Some help you write them. BWGA AI is different because it helps you reason about them. We built a system that behaves like a senior investment committee member—not a passive search engine.
+            Most tools help you find documents. Some help you write them. BWGA AI is different because it helps you reason about them. We built a system that behaves like a senior investment committee memberâ€”not a passive search engine.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center gap-2">
@@ -36,7 +36,7 @@ const AttractWorkspace = () => {
             </div>
             <h3 className="text-xl font-bold mb-3">Adversarial by Design</h3>
             <p className="text-slate-600 leading-relaxed">
-              We trained the system to disagree with you. While other tools try to be helpful, ours subjects every claim to adversarial review—mimicking the scrutiny of a credit committee. It finds the holes in your logic before the bank does.
+              We trained the system to disagree with you. While other tools try to be helpful, ours subjects every claim to adversarial reviewâ€”mimicking the scrutiny of a credit committee. It finds the holes in your logic before the bank does.
             </p>
           </div>
           <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
@@ -45,7 +45,7 @@ const AttractWorkspace = () => {
             </div>
             <h3 className="text-xl font-bold mb-3">Removing the "Complexity Tax"</h3>
             <p className="text-slate-600 leading-relaxed">
-              Regional deals fail because they are hard to understand—crossing languages, legal systems, and local regulations. Our system absorbs this complexity cost, synthesizing cross-domain factors into a single, verified investment thesis.
+              Regional deals fail because they are hard to understandâ€”crossing languages, legal systems, and local regulations. Our system absorbs this complexity cost, synthesizing cross-domain factors into a single, verified investment thesis.
             </p>
           </div>
           <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
@@ -54,7 +54,7 @@ const AttractWorkspace = () => {
             </div>
             <h3 className="text-xl font-bold mb-3">Actionable Documentation</h3>
             <p className="text-slate-600 leading-relaxed">
-              BWGA AI is designed to help you generate the kinds of structured documents—memos, risk registers, compliance matrices—that support real-world decision making and capital allocation.
+              BWGA AI is designed to help you generate the kinds of structured documentsâ€”memos, risk registers, compliance matricesâ€”that support real-world decision making and capital allocation.
             </p>
           </div>
         </div>
@@ -75,7 +75,7 @@ const AttractWorkspace = () => {
             <div>
               <h3 className="text-2xl font-bold mb-4">The Attract Workspace: Your Live Intelligence Partner</h3>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                At the heart of BWGA AI is Attract—a reactive workspace that works alongside you like a seasoned investment advisor. Unlike static forms or one-way submissions, Attract operates as an active collaborator.
+                At the heart of BWGA AI is Attractâ€”a reactive workspace that works alongside you like a seasoned investment advisor. Unlike static forms or one-way submissions, Attract operates as an active collaborator.
               </p>
               
               <div className="space-y-6">
@@ -176,7 +176,7 @@ const AttractWorkspace = () => {
                 5 Core Engines + 22 Derivative Indices. Automatically Engaged.
               </p>
               <p className="text-slate-600 text-sm mb-6">
-                Every opportunity is automatically scored across twenty-seven proprietary formulas. You do not select which formulas apply—the system determines relevance based on your input.
+                Every opportunity is automatically scored across twenty-seven proprietary formulas. You do not select which formulas applyâ€”the system determines relevance based on your input.
               </p>
               <button className="text-blue-600 font-bold flex items-center gap-2 hover:underline">
                 View Complete Formulas Catalog <ArrowRight className="w-4 h-4" />
@@ -184,22 +184,22 @@ const AttractWorkspace = () => {
             </div>
             <div className="md:w-2/3 grid sm:grid-cols-2 gap-4">
               <div className="p-4 border border-slate-200 rounded-lg hover:border-blue-300 transition-colors">
-                <div className="font-bold text-blue-800 mb-1">SPI™</div>
+                <div className="font-bold text-blue-800 mb-1">SPIâ„¢</div>
                 <div className="text-xs font-bold text-slate-500 uppercase mb-2">Strategic Partnership Index</div>
                 <p className="text-sm text-slate-600">Quantifies counterparty reliability, alignment, and partnership viability.</p>
               </div>
               <div className="p-4 border border-slate-200 rounded-lg hover:border-blue-300 transition-colors">
-                <div className="font-bold text-blue-800 mb-1">RROI™</div>
+                <div className="font-bold text-blue-800 mb-1">RROIâ„¢</div>
                 <div className="text-xs font-bold text-slate-500 uppercase mb-2">Regional Return on Investment</div>
                 <p className="text-sm text-slate-600">Adjusts expected yields for location-specific risk premiums and market access.</p>
               </div>
               <div className="p-4 border border-slate-200 rounded-lg hover:border-blue-300 transition-colors">
-                <div className="font-bold text-blue-800 mb-1">SEAM™</div>
+                <div className="font-bold text-blue-800 mb-1">SEAMâ„¢</div>
                 <div className="text-xs font-bold text-slate-500 uppercase mb-2">Socio-Economic Alignment</div>
                 <p className="text-sm text-slate-600">Measures community benefit, sustainability, and social license to operate.</p>
               </div>
               <div className="p-4 border border-slate-200 rounded-lg hover:border-blue-300 transition-colors">
-                <div className="font-bold text-blue-800 mb-1">IVAS™</div>
+                <div className="font-bold text-blue-800 mb-1">IVASâ„¢</div>
                 <div className="text-xs font-bold text-slate-500 uppercase mb-2">Investment Viability Assessment</div>
                 <p className="text-sm text-slate-600">Calculates capital deployment feasibility and execution probability.</p>
               </div>
@@ -232,7 +232,7 @@ const AttractWorkspace = () => {
                 The problem with AI for high-stakes decisions: Most systems work in demos but fail under production conditions.
               </p>
               <p className="text-slate-400 mb-8">
-                Our solution: We subjected every scoring formula, every persona's reasoning chain, and every output template to adversarial stress testing—real historical scenarios where we knew the outcomes.
+                Our solution: We subjected every scoring formula, every persona's reasoning chain, and every output template to adversarial stress testingâ€”real historical scenarios where we knew the outcomes.
               </p>
               <button className="bg-white text-slate-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors">
                 Explore Test Results
@@ -265,7 +265,7 @@ const AttractWorkspace = () => {
         <div className="max-w-4xl mx-auto">
           <blockquote className="text-center mb-16">
             <p className="text-2xl font-serif italic text-slate-700 mb-6">
-              "We built this system because the gap between 'investable' and 'uninvestable' is often just a gap in information. I watched for years as incredible regional opportunities were passed over—not because the fundamentals were weak, but because the cost of verifying them was too high."
+              "We built this system because the gap between 'investable' and 'uninvestable' is often just a gap in information. I watched for years as incredible regional opportunities were passed overâ€”not because the fundamentals were weak, but because the cost of verifying them was too high."
             </p>
             <footer className="text-slate-900 font-bold">
               Brayden Walls

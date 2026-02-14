@@ -1,4 +1,4 @@
-# 🧠 CRITICAL SYSTEM ANALYSIS: Mathematical Integrity & Autonomous Reasoning Roadmap
+﻿# ðŸ§  CRITICAL SYSTEM ANALYSIS: Mathematical Integrity & Autonomous Reasoning Roadmap
 
 **Date:** December 25, 2025  
 **Purpose:** Deep analysis of mathematical formulas, NSIL architecture, and roadmap to create a truly autonomous, bias-free reasoning consultant
@@ -9,26 +9,26 @@
 
 ### Current State: 21 Core Formulas Analysis
 
-The BWGA Intelligence AI system implements **21 documented mathematical constructs** across 5 primary engines and 16 derivative indices. Below is a critical assessment of each:
+The BWGA Ai system implements **21 documented mathematical constructs** across 5 primary engines and 16 derivative indices. Below is a critical assessment of each:
 
 ---
 
-### 🔴 WEAKNESSES IDENTIFIED IN EXISTING FORMULAS
+### ðŸ”´ WEAKNESSES IDENTIFIED IN EXISTING FORMULAS
 
-#### 1. SPI (Strategic Partnership Index) — **WEAKNESS: Linear Weights**
+#### 1. SPI (Strategic Partnership Index) â€” **WEAKNESS: Linear Weights**
 **Current Implementation** (engine.ts lines 438-499):
 ```
-SPI = (ER × 0.25) + (SP × 0.20) + (PS × 0.15) + (PR × 0.15) + (EA × 0.10) + (CA × 0.10) + (UT × 0.05)
+SPI = (ER Ã— 0.25) + (SP Ã— 0.20) + (PS Ã— 0.15) + (PR Ã— 0.15) + (EA Ã— 0.10) + (CA Ã— 0.10) + (UT Ã— 0.05)
 ```
 
 **Problems:**
-1. **Static weights** — Real partnerships don't have fixed importance of factors; a highly corrupt jurisdiction might make "EA" (Ethical Alignment) worth 0.60, not 0.10
-2. **No interaction effects** — If Political Stability = 20 AND Partner Reliability = 20, the combined risk is multiplicative, not additive
-3. **Linear assumption** — Human decisions are non-linear; a score of 40 vs 50 may not matter, but 70 vs 80 might be critical threshold
+1. **Static weights** â€” Real partnerships don't have fixed importance of factors; a highly corrupt jurisdiction might make "EA" (Ethical Alignment) worth 0.60, not 0.10
+2. **No interaction effects** â€” If Political Stability = 20 AND Partner Reliability = 20, the combined risk is multiplicative, not additive
+3. **Linear assumption** â€” Human decisions are non-linear; a score of 40 vs 50 may not matter, but 70 vs 80 might be critical threshold
 
 **Recommendation:**
 ```
-SPI_v2 = Σ(Component_i × DynamicWeight_i(context)) × InteractionPenalty(critical_factors)
+SPI_v2 = Î£(Component_i Ã— DynamicWeight_i(context)) Ã— InteractionPenalty(critical_factors)
 ```
 Where:
 - DynamicWeight is computed from context sensitivity analysis
@@ -36,7 +36,7 @@ Where:
 
 ---
 
-#### 2. IVAS (Investment Velocity Assessment) — **WEAKNESS: Friction Model Over-Simplified**
+#### 2. IVAS (Investment Velocity Assessment) â€” **WEAKNESS: Friction Model Over-Simplified**
 **Current Implementation** (engine.ts lines 136-170):
 ```
 frictionBase = 0.25 + random * 0.35  // 0.25-0.60 range
@@ -45,9 +45,9 @@ months = 18 - ivasScore/10 + friction * 12
 ```
 
 **Problems:**
-1. **Friction is random** — Should be derived from actual regulatory data (permit times, compliance cycles)
-2. **Partner quality is seeded** — Should come from due diligence scoring
-3. **No sector-specific delays** — Healthcare deals take 3x longer than manufacturing due to regulatory approval
+1. **Friction is random** â€” Should be derived from actual regulatory data (permit times, compliance cycles)
+2. **Partner quality is seeded** â€” Should come from due diligence scoring
+3. **No sector-specific delays** â€” Healthcare deals take 3x longer than manufacturing due to regulatory approval
 
 **Recommendation:**
 ```
@@ -57,7 +57,7 @@ With sector-specific friction tables loaded from historical deal data.
 
 ---
 
-#### 3. SCF (Strategic Cash Flow) — **WEAKNESS: Capture Rate Arbitrary**
+#### 3. SCF (Strategic Cash Flow) â€” **WEAKNESS: Capture Rate Arbitrary**
 **Current Implementation** (engine.ts lines 172-215):
 ```
 captureBase = 0.0025 + random * 0.0035  // 0.25% - 0.6% market capture
@@ -65,19 +65,19 @@ totalImpact = marketSize * capture * (0.8 + compositeScore/150)
 ```
 
 **Problems:**
-1. **0.25%-0.6% capture is arbitrary** — No sector benchmarks (SaaS might achieve 5%, heavy industry 0.1%)
-2. **Jobs calculation assumes $140K per job** — Varies wildly by country (Vietnam = $15K, Switzerland = $200K)
-3. **No temporal discounting** — Year 5 impact should be discounted to present value
+1. **0.25%-0.6% capture is arbitrary** â€” No sector benchmarks (SaaS might achieve 5%, heavy industry 0.1%)
+2. **Jobs calculation assumes $140K per job** â€” Varies wildly by country (Vietnam = $15K, Switzerland = $200K)
+3. **No temporal discounting** â€” Year 5 impact should be discounted to present value
 
 **Recommendation:**
 ```
-SCF_v2 = Σ(MarketSize × SectorCaptureRate × ReadinessMultiplier × TemporalDiscount(year, r))
+SCF_v2 = Î£(MarketSize Ã— SectorCaptureRate Ã— ReadinessMultiplier Ã— TemporalDiscount(year, r))
 JobsCreated = Impact / CountryLaborCostAdjusted
 ```
 
 ---
 
-#### 4. RROI (Regional Return on Investment) — **WEAKNESS: Weights Are Equal**
+#### 4. RROI (Regional Return on Investment) â€” **WEAKNESS: Weights Are Equal**
 **Current Implementation** (engine.ts lines 287-315):
 ```
 weights = {
@@ -88,20 +88,20 @@ weights = {
 ```
 
 **Problems:**
-1. **All weights are nearly equal** — A tech company should weight "digitalReadiness" at 0.25, not 0.07
-2. **Industry agnostic** — Mining cares about "supplyChain" (0.20+), not "innovation"
-3. **No negative weights** — Some factors should PENALIZE, not just contribute less
+1. **All weights are nearly equal** â€” A tech company should weight "digitalReadiness" at 0.25, not 0.07
+2. **Industry agnostic** â€” Mining cares about "supplyChain" (0.20+), not "innovation"
+3. **No negative weights** â€” Some factors should PENALIZE, not just contribute less
 
 **Recommendation:**
 ```
-RROI_v2 = Σ(Component_i × IndustryWeight[industry][i] × UserPriorityAdjustment)
-         - Σ(Penalty_j × PenaltyWeight[j])
+RROI_v2 = Î£(Component_i Ã— IndustryWeight[industry][i] Ã— UserPriorityAdjustment)
+         - Î£(Penalty_j Ã— PenaltyWeight[j])
 ```
 With industry-specific weight tables.
 
 ---
 
-#### 5. SEAM (Symbiotic Ecosystem Assessment) — **WEAKNESS: Static Partner Library**
+#### 5. SEAM (Symbiotic Ecosystem Assessment) â€” **WEAKNESS: Static Partner Library**
 **Current Implementation** (engine.ts lines 316-350):
 ```
 partnerBase = [
@@ -112,43 +112,43 @@ partnerBase = [
 ```
 
 **Problems:**
-1. **Partners are templated** — Not real entities from databases
-2. **Synergy is random** — Should be calculated from actual capability matching
-3. **No relationship history** — Past failed partnerships should be flagged
+1. **Partners are templated** â€” Not real entities from databases
+2. **Synergy is random** â€” Should be calculated from actual capability matching
+3. **No relationship history** â€” Past failed partnerships should be flagged
 
 **Recommendation:**
 Connect to partner databases (CrunchBase, government registries) and compute:
 ```
-SynergyScore = CapabilityOverlap × CulturalDistance × TrackRecordFactor × IncentiveAlignment
+SynergyScore = CapabilityOverlap Ã— CulturalDistance Ã— TrackRecordFactor Ã— IncentiveAlignment
 ```
 
 ---
 
-### 🟡 MODERATE WEAKNESSES
+### ðŸŸ¡ MODERATE WEAKNESSES
 
-#### 6. 12-Component Composite Scorer — **Seeded Randomness**
+#### 6. 12-Component Composite Scorer â€” **Seeded Randomness**
 ```
 const pick = () => Math.round(55 + (rnd() - 0.5) * 30);  // Generates 40-70 range
 ```
 **Problem:** Each component is randomly generated from a seed, not sourced from real data.  
 **Impact:** Medium (we now have LiveDataService, but it's not fully integrated)
 
-#### 7. Monte Carlo Trials — **Only 200 Trials**
+#### 7. Monte Carlo Trials â€” **Only 200 Trials**
 ```
 const trials = 200;
 ```
-**Problem:** 200 trials provides ~±5% error at 95% confidence. For billion-dollar decisions, need 10,000+.  
+**Problem:** 200 trials provides ~Â±5% error at 95% confidence. For billion-dollar decisions, need 10,000+.  
 **Impact:** Low (computationally trivial to increase)
 
-#### 8. Confidence Intervals — **Based on Transparency Only**
+#### 8. Confidence Intervals â€” **Based on Transparency Only**
 ```
 ciDelta = 12 * (1 - (UT / 100));  // User Transparency score
 ```
-**Problem:** CI should reflect data quality, freshness, and coverage — not just how much the user disclosed.
+**Problem:** CI should reflect data quality, freshness, and coverage â€” not just how much the user disclosed.
 
 ---
 
-### 🟢 STRENGTHS
+### ðŸŸ¢ STRENGTHS
 
 | Formula | Strength |
 |---------|----------|
@@ -159,10 +159,10 @@ ciDelta = 12 * (1 - (UT / 100));  // User Transparency score
 
 ---
 
-### ✅ Phase 1 Engine Remediation (Dec 27, 2025)
-- **SPI v2 — contextual weighting live:** $SPI_{v2} = (\sum_i c_i \cdot w_i(\text{context})) \cdot P_{\text{interaction}}$ now ships with industry + risk-aware weights plus a multiplicative interaction penalty to prevent false positives when multiple components crater. See [services/engine.ts#L175-L334](services/engine.ts#L175-L334) for the dynamic weighting tables and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042) for the new penalty curve.
-- **IVAS v2 — deterministic friction:** Sector friction profiles, permit backlog signals, and compliance drag now flow from the enriched `RegionProfile` so activation windows reflect regulatory reality instead of RNG. Implementation spans [types.ts#L256-L266](types.ts#L256-L266), [services/ReportOrchestrator.ts#L91-L119](services/ReportOrchestrator.ts#L91-L119), and [services/engine.ts#L501-L574](services/engine.ts#L501-L574).
-- **SCF v2 — sector capture & discounting:** Each archetype uses calibrated capture bands, discount factors, and localized job-cost multipliers, turning SCF into an actual economic analysis instead of a single random slice. See [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
+### âœ… Phase 1 Engine Remediation (Dec 27, 2025)
+- **SPI v2 â€” contextual weighting live:** $SPI_{v2} = (\sum_i c_i \cdot w_i(\text{context})) \cdot P_{\text{interaction}}$ now ships with industry + risk-aware weights plus a multiplicative interaction penalty to prevent false positives when multiple components crater. See [services/engine.ts#L175-L334](services/engine.ts#L175-L334) for the dynamic weighting tables and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042) for the new penalty curve.
+- **IVAS v2 â€” deterministic friction:** Sector friction profiles, permit backlog signals, and compliance drag now flow from the enriched `RegionProfile` so activation windows reflect regulatory reality instead of RNG. Implementation spans [types.ts#L256-L266](types.ts#L256-L266), [services/ReportOrchestrator.ts#L91-L119](services/ReportOrchestrator.ts#L91-L119), and [services/engine.ts#L501-L574](services/engine.ts#L501-L574).
+- **SCF v2 â€” sector capture & discounting:** Each archetype uses calibrated capture bands, discount factors, and localized job-cost multipliers, turning SCF into an actual economic analysis instead of a single random slice. See [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
 - **Harness + telemetry:** The automated NSIL runner in [scripts/nsilSimulation.ts](scripts/nsilSimulation.ts) now executes the upgraded engines end-to-end and emits JSON artifacts ([test-results-simulation.json](test-results-simulation.json)) for every queue, giving Part 10 concrete evidence.
 
 ---
@@ -174,35 +174,35 @@ The ModelingPlan.md references **16 additional indices** that are NOT yet implem
 ### Strategic Indices (Not Built)
 | Index | Purpose | Status |
 |-------|---------|--------|
-| **BARNA** | Barriers Analysis | ❌ Not implemented |
-| **NVI** | Network Value Index | ❌ Not implemented |
-| **CRI** | Country Risk Index | ❌ Not implemented |
+| **BARNA** | Barriers Analysis | âŒ Not implemented |
+| **NVI** | Network Value Index | âŒ Not implemented |
+| **CRI** | Country Risk Index | âŒ Not implemented |
 
 ### Operational Indices (Not Built)
 | Index | Purpose | Status |
 |-------|---------|--------|
-| **CAP** | Capability Assessment Profile | ❌ Not implemented |
-| **AGI** | Activation Gradient Index | ❌ Not implemented |
-| **VCI** | Value Creation Index | ❌ Not implemented |
-| **ATI** | Asset Transfer Index | ❌ Not implemented |
-| **ESI** | Ecosystem Strength Index | ❌ Not implemented |
-| **ISI** | Integration Speed Index | ❌ Not implemented |
-| **OSI** | Operational Synergy Index | ❌ Not implemented |
-| **TCO** | Total Cost of Ownership | ❌ Not implemented |
+| **CAP** | Capability Assessment Profile | âŒ Not implemented |
+| **AGI** | Activation Gradient Index | âŒ Not implemented |
+| **VCI** | Value Creation Index | âŒ Not implemented |
+| **ATI** | Asset Transfer Index | âŒ Not implemented |
+| **ESI** | Ecosystem Strength Index | âŒ Not implemented |
+| **ISI** | Integration Speed Index | âŒ Not implemented |
+| **OSI** | Operational Synergy Index | âŒ Not implemented |
+| **TCO** | Total Cost of Ownership | âŒ Not implemented |
 
 ### Risk Indices (Not Built)
 | Index | Purpose | Status |
 |-------|---------|--------|
-| **PRI** | Political Risk Index | ❌ Not implemented |
-| **RNI** | Regulatory Navigation Index | ❌ Not implemented |
-| **SRA** | Strategic Risk Assessment | ❌ Not implemented |
-| **IDV** | Investment Default Variance | ❌ Not implemented |
+| **PRI** | Political Risk Index | âŒ Not implemented |
+| **RNI** | Regulatory Navigation Index | âŒ Not implemented |
+| **SRA** | Strategic Risk Assessment | âŒ Not implemented |
+| **IDV** | Investment Default Variance | âŒ Not implemented |
 
 **Impact:** These missing indices represent 76% of the planned mathematical framework.
 
 ---
 
-## PART 3: THE REAL PROBLEM — Human Bias Cannot Be Fixed by Math Alone
+## PART 3: THE REAL PROBLEM â€” Human Bias Cannot Be Fixed by Math Alone
 
 You correctly identified the core issue:
 
@@ -380,17 +380,17 @@ No existing system combines:
 
 | Competitor | Quant | AI | Adversarial | Bias Detection | Self-Correct |
 |------------|-------|-----|-------------|----------------|--------------|
-| McKinsey Location Optimizer | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Bloomberg Terminal | ✅ | ✅ | ❌ | ❌ | ❌ |
-| ChatGPT Enterprise | ❌ | ✅ | ❌ | ❌ | ❌ |
-| Palantir Foundry | ✅ | ✅ | ❌ | ❌ | ❌ |
-| **BWGA Intelligence AI** | ✅ | ✅ | 🔄 Building | 🔄 Planned | 🔄 Planned |
+| McKinsey Location Optimizer | âœ… | âŒ | âŒ | âŒ | âŒ |
+| Bloomberg Terminal | âœ… | âœ… | âŒ | âŒ | âŒ |
+| ChatGPT Enterprise | âŒ | âœ… | âŒ | âŒ | âŒ |
+| Palantir Foundry | âœ… | âœ… | âŒ | âŒ | âŒ |
+| **BWGA Ai** | âœ… | âœ… | ðŸ”„ Building | ðŸ”„ Planned | ðŸ”„ Planned |
 
 ---
 
 ## PART 7: HOW THE LAYERS CONNECT TO NSIL + THE 21 FORMULAS
 
-The five autonomous layers do not invent new math—they wrap around the existing NSIL/Nexus Brain engines so everything stays explainable:
+The five autonomous layers do not invent new mathâ€”they wrap around the existing NSIL/Nexus Brain engines so everything stays explainable:
 
 1. **NSIL-Orchestrated Execution**
   - Every layer publishes its findings as NSIL blocks (`<nsil:adversarial_shield>`, `<nsil:persona_panel>`, `<nsil:counterfactual>`), so the report stream keeps a single source of truth.
@@ -399,17 +399,17 @@ The five autonomous layers do not invent new math—they wrap around the existin
 2. **Shared 21-Formula Backbone**
   - Input Shield validates data *before* it feeds the 12-component composite, SPI weights, IVAS Monte Carlo, SCF capture, RROI components, SEAM partners, Ethics flags, Market Diversification HHI, etc.
   - Persona Reasoner and Counterfactual Lab simply call the same functions (`calculateSPI`, `computeIVAS`, `computeSCF`, `generateRROI`, `generateSEAM`, `runEthicalSafeguards`, `MarketDiversificationEngine.analyzeConcentration`) with modified assumptions.
-  - Motivation Graph and Self-Learning Memory consume the outputs of those 21 formulas and adjust only the weights/thresholds—not the formula definitions themselves.
+  - Motivation Graph and Self-Learning Memory consume the outputs of those 21 formulas and adjust only the weights/thresholdsâ€”not the formula definitions themselves.
 
 3. **Nexus Brain Event Loop**
   - The `ReportOrchestrator` exposes an event bus so each module subscribes to `onParametersUpdated`, `onComputationComplete`, and `onOutcomeRecorded` events.
-  - That keeps the “thinking brain” synchronized with Gemini narratives, NSIL XML, and the Monte Carlo simulations already wired into the system.
+  - That keeps the â€œthinking brainâ€ synchronized with Gemini narratives, NSIL XML, and the Monte Carlo simulations already wired into the system.
 
 **Result:** The autonomous layers are augmentation wrappers on top of the NSIL + Nexus Brain core. They never fork the logic; they interrogate, reweight, and replay the same 21 formulas so every insight remains auditable.
 
 ---
 
-## PART 8: NEXT STEP — ALIGN NARRATIVE + PRODUCT SURFACE
+## PART 8: NEXT STEP â€” ALIGN NARRATIVE + PRODUCT SURFACE
 
 To keep the build synchronized with how we present it, the next immediate step is to **align the landing narrative with the NSIL architecture** described above.
 
@@ -426,11 +426,11 @@ To keep the build synchronized with how we present it, the next immediate step i
 ## APPENDIX A: LANDING PAGE NARRATIVE SCRIPT (v2025)
 
 ### 1. The Story: The Invisible Giant
-**Headline:** The World’s Growth Edge is Regional.
+**Headline:** The Worldâ€™s Growth Edge is Regional.
 **Sub:** But for too long, it has been invisible.
 
 **The Pain:**
-Regional cities are the backbone of the global economy. You have the land, the talent, and the worth—but you are struggling to be seen. The current system is broken. It relies on expensive consultants and complex networks that leave most of the world behind.
+Regional cities are the backbone of the global economy. You have the land, the talent, and the worthâ€”but you are struggling to be seen. The current system is broken. It relies on expensive consultants and complex networks that leave most of the world behind.
 
 **The Gap:**
 For centuries, there has been no 100% dedicated development system that is affordable for all. The tools to bridge the gap between local reality and global capital simply did not exist. **Until now.**
@@ -447,7 +447,7 @@ I discovered that people don't need to be told what to do. They need a way to bu
 This is not an update to an old system. This is 100% original. We built the **NSIL Brain** to look at the problem from all angles.
 
 **The Philosophy:**
-Most systems look at the "bee and the flower"—the immediate transaction. We built a brain that looks at the **"entire meadow."** It sees the ecosystem, the context, and the hidden connections that others miss.
+Most systems look at the "bee and the flower"â€”the immediate transaction. We built a brain that looks at the **"entire meadow."** It sees the ecosystem, the context, and the hidden connections that others miss.
 
 **Unbiased Intelligence:**
 This is a 24/7 service designed to answer your questions simply, without outside influence. No hidden agendas. No consultant greed. Just pure, calculated clarity to break the gap.
@@ -461,21 +461,21 @@ We provide enough information to break the gap and clarify what should be simple
 ### 5. The Engine: Autonomous Reasoning Stack (New for 2025)
 *The technology that makes the philosophy possible.*
 
-- **🛡️ Adversarial Input Shield**  
+- **ðŸ›¡ï¸ Adversarial Input Shield**  
   Auto-cross-checks your claims against World Bank data, sanctions lists, and live feeds to ensure credibility.
-- **🧠 Multi-Perspective Reasoner**  
+- **ðŸ§  Multi-Perspective Reasoner**  
   Five AI personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate every mandate to find weaknesses before investors do.
-- **⚖️ Counterfactual Lab**  
-  Generates “do the opposite” scenarios with regret probability bands to prove your strategy is robust.
-- **📈 Self-Learning Memory**  
+- **âš–ï¸ Counterfactual Lab**  
+  Generates â€œdo the oppositeâ€ scenarios with regret probability bands to prove your strategy is robust.
+- **ðŸ“ˆ Self-Learning Memory**  
   Captures real-world outcomes and retunes every scoring model without manual prompts.
 
 ### 6. Regional Intelligence Core
 *Built to execute, not just analyze.*
 
 - **Partner Discovery:** Symbiotic matchmaking (SPI) + LoI/MoU/Proposal generation suite.
-- **Multi‑Scenario Simulation:** Stress tests activation paths with live composite math.
-- **Early‑Warning Alerts:** Detects regulatory or currency shocks before deals finalize.
+- **Multiâ€‘Scenario Simulation:** Stress tests activation paths with live composite math.
+- **Earlyâ€‘Warning Alerts:** Detects regulatory or currency shocks before deals finalize.
 - **Due Diligence Intelligence:** Relocation modeling, TCO analysis, and NSIL/API export in a single pane.
 
 ### 7. Transition
@@ -486,11 +486,11 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 
 ---
 
-## PART 9: NSIL LEARNING SIMULATION — 100 GLOBAL CLIENTS
+## PART 9: NSIL LEARNING SIMULATION â€” 100 GLOBAL CLIENTS
 
 ### 9.1 Simulation Parameters
 - **Objective:** Stress-test the Nexus Strategic Intelligence Layer (NSIL) with 100 simultaneous mandates so the system can adapt sector-by-sector, learn regional nuance, and surface edge-case interactions between formulas, personas, and data provenance.
-- **Method:** Curated pipeline spans 10 sector cohorts × 10 clients each. Every client is tethered to real geopolitical, climatic, or financial dynamics observed in 2023-2025 so the scenarios remain grounded and auditable.
+- **Method:** Curated pipeline spans 10 sector cohorts Ã— 10 clients each. Every client is tethered to real geopolitical, climatic, or financial dynamics observed in 2023-2025 so the scenarios remain grounded and auditable.
 - **Engines Exercised:** Input Shield contradiction checks, SEAM partner matching, SPI/RROI/SCF recalibration, Monte Carlo expansions (10,000 trials), Counterfactual Lab, Persona Debate Board, Motivation Detection, Outcome Tracker hooks.
 - **Deliverables Captured:** For each client we log the live issue, the requested outcome, and which NSIL subsystems must lead so we can benchmark latency, accuracy, and bias exposure.
 
@@ -529,7 +529,7 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 #### Cohort 1: Government & Multilateral Stabilization (Clients 01-10)
 | ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
 | --- | --- | --- | --- | --- | --- |
-| 01 | São Paulo Metropolitan Housing Authority | LATAM / Urban Development | Floods stalled 48k-unit social housing PPP as lenders exited | Recompose blended-finance stack and phasing plan to resume builds | Input Shield data integrity, SPI dynamic weights, Counterfactual Lab on phasing |
+| 01 | SÃ£o Paulo Metropolitan Housing Authority | LATAM / Urban Development | Floods stalled 48k-unit social housing PPP as lenders exited | Recompose blended-finance stack and phasing plan to resume builds | Input Shield data integrity, SPI dynamic weights, Counterfactual Lab on phasing |
 | 02 | Ghana Dept. of Water & Sanitation | Africa / Water | Coastal aquifers salinating 12 towns after illegal sand mining | Prioritize desal + solar micro-utility PPP with tariff reform | IVAS sector friction tables, SEAM partner scoring, SCF temporal discounting |
 | 03 | Philippines Dept. of Transportation (Mindanao Rail) | SE Asia / Rail | Appropriations freeze amid insurgency hotspots | Stage financing with security-adjusted Monte Carlo and risk-sharing LoIs | Persona debate (Regulator + Operator), RROI penalties, Motivation detection |
 | 04 | Edmonton Resilience Office (Canada) | North America / Climate | Wildfire defense levy gap for peri-urban communities | Rank mitigation bundles and carbon-market backed funding | SPI interaction penalties, Counterfactual fire scenarios, SCF jobs recalibration |
@@ -562,8 +562,8 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 | 23 | Chilean Green Hydrogen Valley | LATAM / Hydrogen | Export ammonia needs port + pipeline sequencing | Align CAPEX, offtake, and EU CBAM compliance | IVAS sector friction, SCF temporal discount, Counterfactual on markets |
 | 24 | Navajo Tribal Energy Cooperative (USA) | North America / Tribal Energy | Legacy coal retirements leave revenue cliff | Monetize transmission rights + IRA incentives | SPI interaction (sovereign vs utility), Persona Advocate, Outcome tracker |
 | 25 | Vietnam Mekong Floating Solar Taskforce | SE Asia / Renewables | Sediment load + typhoon risk raise insurance costs | Evaluate anchoring tech + catastrophe pools | Monte Carlo hazard suite, Input Shield hydrology, Counterfactual land-based PV |
-| 26 | Norway North Sea CCS Alliance | Europe / CCS | EU liability for cross-border CO₂ shipping unclear | Build treaty-backed indemnity pathway | Persona Regulator, Adversarial Input Shield vs IMO, SEAM legal partners |
-| 27 | Saudi Downstream Innovation Directorate | Middle East / Petrochem | Need CO₂-to-chemicals roadmap without stranded assets | Compare circular feedstock plays + export incentives | Counterfactual (CCUS vs H2), Motivation detection, SCF jobs delta |
+| 26 | Norway North Sea CCS Alliance | Europe / CCS | EU liability for cross-border COâ‚‚ shipping unclear | Build treaty-backed indemnity pathway | Persona Regulator, Adversarial Input Shield vs IMO, SEAM legal partners |
+| 27 | Saudi Downstream Innovation Directorate | Middle East / Petrochem | Need COâ‚‚-to-chemicals roadmap without stranded assets | Compare circular feedstock plays + export incentives | Counterfactual (CCUS vs H2), Motivation detection, SCF jobs delta |
 | 28 | Kenya Rift Geothermal SME Window | Africa / Geothermal | SMEs excluded from drilling equity | Create community trust + mezzanine ladder | SEAM trust design, Persona Accountant, SPI partner reliability |
 | 29 | Yokohama Waste-to-Hydrogen Authority | East Asia / Circular | Supply chain lacks electrolyzer maintenance talent | Structure JVs + workforce pipeline | Input Shield supplier data, RROI talent weight, Education handoff |
 | 30 | Bangladesh Rural Biogas Mission | South Asia / Bioenergy | 45,000 households stuck at pilot stage | Bundle carbon revenue + micro-finance | SCF capture rural, Persona Operator, Outcome tracker feeding Self-learning |
@@ -650,14 +650,14 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 | 87 | Spain Creative Cities Lab | Europe / Culture | EU Missions require measurable creative impact | Build KPI stack + financing | SPI tourism weights, Counterfactual alt cities, Outcome tracker |
 | 88 | India Women-in-Logistics Fellowship | South Asia / Inclusion | Safety + housing block female truck leaders | Package dorms, escorts, financing | Motivation detection, Persona Operator, SCF inclusion metrics |
 | 89 | Korea eSports Academic League | East Asia / Education | Need accreditation + youth protections | Draft governance + scholarship model | Input Shield policy, Persona Regulator, Counterfactual private leagues |
-| 90 | Māori Creative Campus (New Zealand) | Oceania / Cultural Economy | Need revenue-sharing terms across iwi | Build governance + investor pack | SEAM Indigenous partners, Motivation detection, SPI cultural weighting |
+| 90 | MÄori Creative Campus (New Zealand) | Oceania / Cultural Economy | Need revenue-sharing terms across iwi | Build governance + investor pack | SEAM Indigenous partners, Motivation detection, SPI cultural weighting |
 
 #### Cohort 10: Humanitarian, Climate Resilience & NGOs (Clients 91-100)
 | ID | Entity | Region / Sector | Real-World Challenge | Desired Outcome | NSIL Focus Modules |
 | --- | --- | --- | --- | --- | --- |
 | 91 | UNHCR Sahel Mobility Corridor | Global / Humanitarian | Need route planning around insurgent zones | Optimize corridors + convoy finance | Input Shield security intel, Persona Operator, Counterfactual seasonal shifts |
 | 92 | Palestine Water Reconstruction Taskforce | Middle East / Reconstruction | Dual-use material controls stall desal rebuild | Build compliance + escrow | Persona Regulator, SEAM suppliers, Motivation detection |
-| 93 | Caribbean Disaster & Climate Alliance | LATAM / Climate Finance | Microstates can’t afford premium parametric cover | Create pooled risk and reinsurer syndicate | SCF loss avoidance, Counterfactual self-insurance, SPI partner scoring |
+| 93 | Caribbean Disaster & Climate Alliance | LATAM / Climate Finance | Microstates canâ€™t afford premium parametric cover | Create pooled risk and reinsurer syndicate | SCF loss avoidance, Counterfactual self-insurance, SPI partner scoring |
 | 94 | Arctic Council Food Security Taskforce | Global / Arctic | Shipping windows shrinking for northern communities | Map cold-chain corridors + drone resupply | RROI logistics, Persona Operator, Input Shield climate data |
 | 95 | Mozambique Cyclone Microinsurance Guild | Africa / Climate Risk | Reinsurance scarce post-Idai | Package donor-backed risk capital | SEAM reinsurers, SPI ethical weighting, Counterfactual cash relief |
 | 96 | Sri Lanka Coastal Adaptation Fund | South Asia / Climate Adapt | Fisher relocation finance unpopular | Craft benefit-sharing + housing finance | Motivation detection, Persona Advocate, SCF livelihood tracking |
@@ -669,13 +669,13 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 ### 9.4 Simulation Output Hooks
 - **Model Calibration:** Each cohort injects tagged telemetry (sector, region, issue archetype) into the Outcome Tracker so SPI, RROI, SCF, and SEAM weights can be tuned automatically once real project outcomes stream back.
 - **Bias Audits:** Motivation Detection logs why requests originate (political cycle, reputational repair, revenue chase). Persona disagreements are archived per client to analyze recurring blind spots.
-- **Counterfactual Repository:** Every client triggers at least two “do-the-opposite” branches so future users can browse precedent, reducing hallucinated narratives.
+- **Counterfactual Repository:** Every client triggers at least two â€œdo-the-oppositeâ€ branches so future users can browse precedent, reducing hallucinated narratives.
 - **Human-in-the-Loop Points:** The simulation flags where manual sign-off is still mandatory (e.g., sanctions, Indigenous governance) so we know where to embed legal reviewers inside the workflow.
 - **Learning Cadence:** Weekly replay sessions will compare predicted vs actual KPI deltas. Deviations >5 percentage points automatically queue math-engine tweaks and prompt Landing/CommandCenter copy updates so narrative and math never diverge.
 
 ---
 
-## PART 10: EXECUTION PLAYBOOK — BASELINE & FULL TESTING
+## PART 10: EXECUTION PLAYBOOK â€” BASELINE & FULL TESTING
 
 ### 10.1 Prerequisites (Week 0)
 1. **Dataset Loader:** Export the Part 9 table into `nsil/testing/client_queue_v1.json` (schema: id, entity, region, sector, issue, desiredOutcome, moduleFocus). Validate with zod to match orchestrator expectations.
@@ -698,8 +698,8 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 1. **Engine Upgrades:** Merge dynamic SPI weights, sectoral SCF capture tables, IVAS friction integrations, 10k Monte Carlo, and Input Shield live-data hooks.
 2. **Rehydrate Queue:** Replay the exact 100 clients with identical IDs. Use orchestrator flag `mode="full_test"` to write to new telemetry tables for diffing.
 3. **Comparative Analytics:**
-  - Variance reduction: compare SPI/RROI deltas vs baseline (target ±3 percentage points per cohort).
-  - Persona agreement shifts: expect ≥10% drop in unresolved disagreements due to better data.
+  - Variance reduction: compare SPI/RROI deltas vs baseline (target Â±3 percentage points per cohort).
+  - Persona agreement shifts: expect â‰¥10% drop in unresolved disagreements due to better data.
   - Counterfactual regret gap: measure change in regret probability; flag increases >5% for manual review.
 4. **Human Review Windows:** Auto-route scenarios touching sanctions, Indigenous governance, or humanitarian corridors for manual sign-off before marking test as complete.
 5. **Outcome Tracker Hooks:** For any client with real-world analogues already in CRM, backfill actual KPIs to validate calibration quickly.
@@ -714,20 +714,20 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 | 3 | Full test executed | Comparison report + remediation tickets filed |
 | 4 | Production prep | Playbook adopted into SOP, Landing copy updated with validated claims |
 
-### 10.5 Baseline Execution Log — 27 Dec 2025
+### 10.5 Baseline Execution Log â€” 27 Dec 2025
 - **Command + assets:** `npm run test:nsil -- --mode baseline` executed against `tests/client_queue_mini.json`, with outputs stored in [test-results-simulation.json](test-results-simulation.json) for reproducibility.
-- **Coverage:** 10/10 scenarios succeeded (100% success rate) with runtime spread 1.0–4.6 seconds per client, validating the upgraded SPI/IVAS/SCF stack before scaling to the 100-client cohort.
+- **Coverage:** 10/10 scenarios succeeded (100% success rate) with runtime spread 1.0â€“4.6 seconds per client, validating the upgraded SPI/IVAS/SCF stack before scaling to the 100-client cohort.
 - **Telemetry excerpt:**
 
 | ID | Entity | Sector | SPI | RROI | SCF USD |
 | --- | --- | --- | --- | --- | --- |
-| 01 | São Paulo Metropolitan Housing Authority | Urban Development | 57 | 48 | $15,921,691,714 |
+| 01 | SÃ£o Paulo Metropolitan Housing Authority | Urban Development | 57 | 48 | $15,921,691,714 |
 | 12 | Singapore FinTech Association | Financial Services | 82 | 70 | $3,840,061,717 |
 | 34 | California Inland Port Coalition | Logistics | 66 | 54 | $218,402,264,594 |
 | 56 | India Rural Vaccine Alliance | Healthcare | 60 | 47 | $38,045,121,794 |
 | 100 | Global Indigenous Data Sovereignty Alliance | Data Governance | 57 | 44 | $670,046,041 |
 
-- **Observations:** Contextual SPI weights are spreading scores (range 43–82) instead of clustering near 70, IVAS activation windows now correlate with permit friction (e.g., infrastructure IDs 01/34 spiking runtime), and SCF impact scales with sector capture assumptions (ports vs. fintech). These baselines become the comparison set for the upcoming `--mode full-test` replay.
+- **Observations:** Contextual SPI weights are spreading scores (range 43â€“82) instead of clustering near 70, IVAS activation windows now correlate with permit friction (e.g., infrastructure IDs 01/34 spiking runtime), and SCF impact scales with sector capture assumptions (ports vs. fintech). These baselines become the comparison set for the upcoming `--mode full-test` replay.
 
 **Trigger:** Once leadership approves the checklist, run `npm run nsil:simulate --queue client_queue_v1.json --mode baseline` followed by the full-test invocation. All artifacts funnel back into the CRITICAL SYSTEM ANALYSIS log for auditing.
 
@@ -737,25 +737,25 @@ You are no longer an unknown entity. You are a verified node in the global grid.
 
 The current system has **solid foundations** but the mathematical formulas have critical weaknesses:
 
-### Must Fix Immediately (Status — Dec 27, 2025):
-1. ✅ Static weights in SPI formula — replaced by contextual weighting + interaction penalties in [services/engine.ts#L175-L334](services/engine.ts#L175-L334) and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042).
-2. ✅ Random friction in IVAS — superseded by deterministic sector friction tables in [services/engine.ts#L501-L574](services/engine.ts#L501-L574) with new profile data wired through [types.ts#L256-L266](types.ts#L256-L266).
-3. ✅ Arbitrary capture rates in SCF — sector capture/discount curves now drive outputs in [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
-4. ❌ 76% of planned indices not implemented — derivative indices still pending; remains the top priority for Phase 2.
+### Must Fix Immediately (Status â€” Dec 27, 2025):
+1. âœ… Static weights in SPI formula â€” replaced by contextual weighting + interaction penalties in [services/engine.ts#L175-L334](services/engine.ts#L175-L334) and [services/engine.ts#L980-L1042](services/engine.ts#L980-L1042).
+2. âœ… Random friction in IVAS â€” superseded by deterministic sector friction tables in [services/engine.ts#L501-L574](services/engine.ts#L501-L574) with new profile data wired through [types.ts#L256-L266](types.ts#L256-L266).
+3. âœ… Arbitrary capture rates in SCF â€” sector capture/discount curves now drive outputs in [services/engine.ts#L576-L638](services/engine.ts#L576-L638).
+4. âŒ 76% of planned indices not implemented â€” derivative indices still pending; remains the top priority for Phase 2.
 
 ### System Potential:
-With the enhancements described, BWGA Intelligence AI would be the **only platform** that:
+With the enhancements described, BWGA Ai would be the **only platform** that:
 - Challenges user inputs against external evidence
 - Analyzes deals from 5 adversarial perspectives
 - Detects user motivations and hidden biases
 - Generates counterfactual "what if" scenarios
 - Self-corrects based on outcome tracking
 
-This is not just a "consultant tool" — it would be a **reasoning partner** that thinks better than any individual human could, because it systematically eliminates the biases that make human judgment fallible.
+This is not just a "consultant tool" â€” it would be a **reasoning partner** that thinks better than any individual human could, because it systematically eliminates the biases that make human judgment fallible.
 
 ---
 
-**Document prepared by:** BWGA Intelligence AI System Analysis  
+**Document prepared by:** BWGA Ai System Analysis  
 **Classification:** Internal Development Roadmap  
 **Next Action:** Review with development team for Phase 1 implementation
 
@@ -769,11 +769,11 @@ This is not just a "consultant tool" — it would be a **reasoning partner** tha
 #### A. Primary Engines (engine.ts)
 | Formula | Purpose | Current Implementation |
 | :--- | :--- | :--- |
-| **SPI™ (Success Probability Index)** | Overall success probability | Weighted composite: 7 factors including economic readiness, political stability, partner reliability |
-| **RROI™ (Regional Return on Investment)** | Location-based ROI | 12-component scoring with live World Bank data |
-| **SEAM™ (Stakeholder & Entity Alignment)** | Partnership ecosystem health | Partner synergy + gap analysis |
-| **IVAS™ (Investment Validation Assessment)** | Time-to-activation velocity | Friction model: P10/P50/P90 month estimates |
-| **SCF™ (Strategic Cash Flow)** | Economic impact projection | Market capture × readiness × temporal discount |
+| **SPIâ„¢ (Success Probability Index)** | Overall success probability | Weighted composite: 7 factors including economic readiness, political stability, partner reliability |
+| **RROIâ„¢ (Regional Return on Investment)** | Location-based ROI | 12-component scoring with live World Bank data |
+| **SEAMâ„¢ (Stakeholder & Entity Alignment)** | Partnership ecosystem health | Partner synergy + gap analysis |
+| **IVASâ„¢ (Investment Validation Assessment)** | Time-to-activation velocity | Friction model: P10/P50/P90 month estimates |
+| **SCFâ„¢ (Strategic Cash Flow)** | Economic impact projection | Market capture Ã— readiness Ã— temporal discount |
 
 #### B. Derivative Formulas (MissingFormulasEngine.ts)
 **18 additional heuristic models:**
@@ -800,9 +800,9 @@ This is not just a "consultant tool" — it would be a **reasoning partner** tha
 #### C. Quantitative + Qualitative
 The platform runs 21 mathematical formulas (e.g., Strategic Partnership Index) and pairs them with AI-written narratives that explain the results in plain language.
 
-### 2. NSIL — THE BRAIN (How the system thinks)
+### 2. NSIL â€” THE BRAIN (How the system thinks)
 
-At the center of the platform is **NSIL: the Nexus Strategic Intelligence Layer**. NSIL treats your business plan as a living simulation. It doesn't just store your inputs—it reads them, simulates outcomes, finds hidden risks, and proposes fixes.
+At the center of the platform is **NSIL: the Nexus Strategic Intelligence Layer**. NSIL treats your business plan as a living simulation. It doesn't just store your inputsâ€”it reads them, simulates outcomes, finds hidden risks, and proposes fixes.
 
 #### Five-layer Autonomous Reasoning Stack
 NSIL mimics a team of experts through thin reasoning shells that wrap around the core mathematical engines. This preserves explainability while enabling adversarial and counterfactual reasoning.
@@ -810,20 +810,21 @@ NSIL mimics a team of experts through thin reasoning shells that wrap around the
 #### Multi-Perspective Reasoning Engine
 When you submit a strategy, NSIL spawns five personas that each evaluate the plan in parallel and produce evidence-backed arguments:
 
-*   **Skeptic** — finds deal-killers, over-optimism, and hidden downside.
-*   **Advocate** — finds upside, synergies and optional levers to increase value.
-*   **Regulator** — checks legal, sanctions, and ethical constraints.
-*   **Accountant** — validates cashflow, margins, and economic durability.
-*   **Operator** — tests execution feasibility: team, supply chains, and infrastructure.
+*   **Skeptic** â€” finds deal-killers, over-optimism, and hidden downside.
+*   **Advocate** â€” finds upside, synergies and optional levers to increase value.
+*   **Regulator** â€” checks legal, sanctions, and ethical constraints.
+*   **Accountant** â€” validates cashflow, margins, and economic durability.
+*   **Operator** â€” tests execution feasibility: team, supply chains, and infrastructure.
 
-#### The Debate — How outputs are born
-Personas vote and attach evidence; NSIL synthesizes the debate. Findings are accepted only when corroborated or when a transparent disagreement is recorded, producing a clear recommendation (e.g., 'high-risk', 'requires operational fix', 'opportunity — monitor').
+#### The Debate â€” How outputs are born
+Personas vote and attach evidence; NSIL synthesizes the debate. Findings are accepted only when corroborated or when a transparent disagreement is recorded, producing a clear recommendation (e.g., 'high-risk', 'requires operational fix', 'opportunity â€” monitor').
 
 #### How it learns
 NSIL continuously improves through:
 
-*   **Motivation Detection** — learns your decision profile and adjusts how insights are framed.
-*   **Counterfactual Lab** — silently simulates opposite choices to surface robust alternatives and trade-offs.
-*   **Outcome Tracking** — compares predictions to real outcomes and recalibrates internal weights.
+*   **Motivation Detection** â€” learns your decision profile and adjusts how insights are framed.
+*   **Counterfactual Lab** â€” silently simulates opposite choices to surface robust alternatives and trade-offs.
+*   **Outcome Tracking** â€” compares predictions to real outcomes and recalibrates internal weights.
 
-**What this delivers:** Explainable, math-backed recommendations with provenance, debate logs, and counterfactual alternatives — turning passive data into an active advisory partner.
+**What this delivers:** Explainable, math-backed recommendations with provenance, debate logs, and counterfactual alternatives â€” turning passive data into an active advisory partner.
+

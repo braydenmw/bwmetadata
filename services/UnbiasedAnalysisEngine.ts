@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UNBIASED ANALYSIS ENGINE
  * 
  * Provides objective, evidence-based analysis that:
@@ -664,17 +664,17 @@ BALANCED ASSESSMENT
 -------------------
 
 STRENGTHS & OPPORTUNITIES (Pros):
-${proCon.pros.map(p => `• ${p.point} [Weight: ${p.weight}/10]
+${proCon.pros.map(p => `â€¢ ${p.point} [Weight: ${p.weight}/10]
   Evidence: ${p.evidence}
   Source: ${p.source}`).join('\n')}
 
 CHALLENGES & RISKS (Cons):
-${proCon.cons.map(c => `• ${c.point} [Weight: ${c.weight}/10]
+${proCon.cons.map(c => `â€¢ ${c.point} [Weight: ${c.weight}/10]
   Evidence: ${c.evidence}
   Source: ${c.source}`).join('\n')}
 
 NEUTRAL OBSERVATIONS:
-${proCon.neutralObservations.map(o => `• ${o}`).join('\n')}
+${proCon.neutralObservations.map(o => `â€¢ ${o}`).join('\n')}
 
 OVERALL RECOMMENDATION: ${proCon.overallAssessment.recommendation.toUpperCase()}
 Confidence Level: ${proCon.overallAssessment.confidence}%
@@ -748,3 +748,4 @@ The system does not advocate for any particular outcome - it presents evidence.
 }
 
 export default UnbiasedAnalysisEngine;
+

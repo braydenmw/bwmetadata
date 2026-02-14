@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 
 interface NegotiationAdvantageEngineProps {
     params: any;
@@ -67,7 +67,7 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
     return (
         <div className="space-y-6">
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-purple-900 mb-2">🎯 Negotiation Advantage Engine</h3>
+                <h3 className="text-lg font-semibold text-purple-900 mb-2">ðŸŽ¯ Negotiation Advantage Engine</h3>
                 <p className="text-sm text-purple-800">
                     Your personal negotiation playbook and strategic leverage analysis for winning the deal.
                 </p>
@@ -99,37 +99,37 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                 {activeTab === 'playbook' && (
                     <div className="space-y-6 animate-fade-in">
                         <div>
-                            <h4 className="text-lg font-semibold text-stone-900 mb-3">📋 Preparation Phase</h4>
+                            <h4 className="text-lg font-semibold text-stone-900 mb-3">ðŸ“‹ Preparation Phase</h4>
                             <div className="space-y-4">
                                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                                    <h5 className="font-bold text-blue-900 mb-2">💰 Know Your Value</h5>
+                                    <h5 className="font-bold text-blue-900 mb-2">ðŸ’° Know Your Value</h5>
                                     <p className="text-blue-800 text-sm">{playbook.preparation.knowYourValue}</p>
                                 </div>
                                 <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                                    <h5 className="font-bold text-green-900 mb-2">🎯 Set Firm Minimums</h5>
+                                    <h5 className="font-bold text-green-900 mb-2">ðŸŽ¯ Set Firm Minimums</h5>
                                     <p className="text-green-800 text-sm">{playbook.preparation.setFirmMinimums}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h4 className="text-lg font-semibold text-stone-900 mb-3">🤝 Engagement Phase</h4>
+                            <h4 className="text-lg font-semibold text-stone-900 mb-3">ðŸ¤ Engagement Phase</h4>
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-                                    <h5 className="font-bold text-yellow-900 mb-2">🔗 Build Rapport</h5>
+                                    <h5 className="font-bold text-yellow-900 mb-2">ðŸ”— Build Rapport</h5>
                                     <p className="text-yellow-800 text-sm">{playbook.engagement.buildRapport}</p>
                                 </div>
                                 <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
-                                    <h5 className="font-bold text-purple-900 mb-2">🌍 Cultural Adaptation</h5>
+                                    <h5 className="font-bold text-purple-900 mb-2">ðŸŒ Cultural Adaptation</h5>
                                     <p className="text-purple-800 text-sm">{playbook.engagement.culturalAdaptation}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h4 className="text-lg font-semibold text-stone-900 mb-3">✅ Closing Phase</h4>
+                            <h4 className="text-lg font-semibold text-stone-900 mb-3">âœ… Closing Phase</h4>
                             <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                                <h5 className="font-bold text-indigo-900 mb-2">📝 Get It In Writing</h5>
+                                <h5 className="font-bold text-indigo-900 mb-2">ðŸ“ Get It In Writing</h5>
                                 <p className="text-indigo-800 mb-2 text-sm">{playbook.closing.getInWriting}</p>
                                 <p className="text-indigo-800 text-sm"><strong>Follow-up:</strong> {playbook.closing.followUpCadence}</p>
                             </div>
@@ -140,7 +140,7 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                 {activeTab === 'batna' && (
                     <div className="space-y-6 animate-fade-in">
                         <div>
-                            <h4 className="text-lg font-semibold text-stone-900 mb-3">🎯 Best Alternative to Negotiated Agreement (BATNA)</h4>
+                            <h4 className="text-lg font-semibold text-stone-900 mb-3">ðŸŽ¯ Best Alternative to Negotiated Agreement (BATNA)</h4>
                             <p className="text-stone-600 mb-4 text-sm">
                                 Your BATNA gives you negotiation leverage. Knowing your alternatives empowers you to walk away from bad deals.
                             </p>
@@ -148,11 +148,11 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
 
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="bg-green-50 p-5 rounded-lg border border-green-100">
-                                <h5 className="font-bold text-green-900 mb-3">✅ Your Options (Leverage)</h5>
+                                <h5 className="font-bold text-green-900 mb-3">âœ… Your Options (Leverage)</h5>
                                 <ul className="space-y-2">
                                     {batna.yourOptions.map((option, index) => (
                                         <li key={index} className="flex items-start gap-2 text-sm text-green-800">
-                                            <span className="mt-1">•</span>
+                                            <span className="mt-1">â€¢</span>
                                             <span>{option}</span>
                                         </li>
                                     ))}
@@ -160,11 +160,11 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                             </div>
 
                             <div className="bg-red-50 p-5 rounded-lg border border-red-100">
-                                <h5 className="font-bold text-red-900 mb-3">⚠️ Their Options (Risk)</h5>
+                                <h5 className="font-bold text-red-900 mb-3">âš ï¸ Their Options (Risk)</h5>
                                 <ul className="space-y-2">
                                     {batna.theirOptions.map((option, index) => (
                                         <li key={index} className="flex items-start gap-2 text-sm text-red-800">
-                                            <span className="mt-1">•</span>
+                                            <span className="mt-1">â€¢</span>
                                             <span>{option}</span>
                                         </li>
                                     ))}
@@ -173,11 +173,11 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                         </div>
 
                         <div className="bg-white p-5 rounded-lg border border-stone-200 shadow-sm">
-                            <h5 className="font-bold text-purple-900 mb-3">💪 Key Leverage Points</h5>
+                            <h5 className="font-bold text-purple-900 mb-3">ðŸ’ª Key Leverage Points</h5>
                             <ul className="space-y-2">
                                 {batna.leveragePoints.map((point, index) => (
                                     <li key={index} className="flex items-start gap-2 text-sm text-stone-700">
-                                        <span className="text-purple-500 font-bold mt-0.5">✓</span>
+                                        <span className="text-purple-500 font-bold mt-0.5">âœ“</span>
                                         <span>{point}</span>
                                     </li>
                                 ))}
@@ -189,7 +189,7 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                 {activeTab === 'objections' && (
                     <div className="space-y-6 animate-fade-in">
                         <div>
-                            <h4 className="text-lg font-semibold text-stone-900 mb-3">🛡️ Anticipated Objections & Responses</h4>
+                            <h4 className="text-lg font-semibold text-stone-900 mb-3">ðŸ›¡ï¸ Anticipated Objections & Responses</h4>
                             <p className="text-stone-600 mb-4 text-sm">
                                 Prepare for common concerns and have data-backed responses ready.
                             </p>
@@ -201,10 +201,10 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                                 return (
                                     <div key={index} className="bg-white border border-stone-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                                         <h5 className="font-bold text-red-700 mb-2 flex items-center gap-2">
-                                            ❌ Objection: {concern}
+                                            âŒ Objection: {concern}
                                         </h5>
                                         <div className="pl-6 border-l-2 border-green-500">
-                                            <p className="text-green-800 text-sm"><strong>💡 Response:</strong> {counter}</p>
+                                            <p className="text-green-800 text-sm"><strong>ðŸ’¡ Response:</strong> {counter}</p>
                                         </div>
                                     </div>
                                 );
@@ -212,13 +212,13 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
                         </div>
 
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-                            <h5 className="font-bold text-blue-900 mb-2">🎭 General Handling Strategy</h5>
+                            <h5 className="font-bold text-blue-900 mb-2">ðŸŽ­ General Handling Strategy</h5>
                             <ul className="text-blue-800 text-sm space-y-1">
-                                <li>• Stay calm and acknowledge their concern</li>
-                                <li>• Ask clarifying questions to understand their perspective</li>
-                                <li>• Provide data and examples to support your position</li>
-                                <li>• Focus on mutual benefits and long-term value</li>
-                                <li>• Know when to walk away if terms become unfavorable</li>
+                                <li>â€¢ Stay calm and acknowledge their concern</li>
+                                <li>â€¢ Ask clarifying questions to understand their perspective</li>
+                                <li>â€¢ Provide data and examples to support your position</li>
+                                <li>â€¢ Focus on mutual benefits and long-term value</li>
+                                <li>â€¢ Know when to walk away if terms become unfavorable</li>
                             </ul>
                         </div>
                     </div>
@@ -229,3 +229,4 @@ const NegotiationAdvantageEngine: React.FC<NegotiationAdvantageEngineProps> = ({
 };
 
 export default NegotiationAdvantageEngine;
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { generateSearchGroundedContent } from '../services/geminiService';
 
 interface DueDiligenceSuiteProps {
@@ -76,7 +76,7 @@ const DueDiligenceSuite: React.FC<DueDiligenceSuiteProps> = ({ partnerName, part
                                 {report.sources.map((chunk, i) => (
                                     chunk.web?.uri && (
                                         <a key={i} href={chunk.web.uri} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-800 hover:underline truncate block flex items-center gap-2 p-1 hover:bg-white rounded transition-colors">
-                                            <span className="text-stone-400">🔗</span> {chunk.web.title || chunk.web.uri}
+                                            <span className="text-stone-400">ðŸ”—</span> {chunk.web.title || chunk.web.uri}
                                         </a>
                                     )
                                 ))}

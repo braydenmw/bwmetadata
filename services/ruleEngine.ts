@@ -1,4 +1,4 @@
-import { compile } from 'mathjs';
+﻿import { compile } from 'mathjs';
 import { NeuroSymbolicState, ChecklistItem, DynamicFormula, ReportParameters, ChecklistStatus } from '../types';
 
 // --- INITIAL DATA SEEDING ---
@@ -138,3 +138,4 @@ export class NeuroSymbolicEngine {
         };
     }
 }
+

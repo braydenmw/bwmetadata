@@ -1,4 +1,4 @@
-// System metadata with descriptions, experience levels, and help text
+﻿// System metadata with descriptions, experience levels, and help text
 // Used by MainCanvas to provide contextual guidance based on user experience level
 
 export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced';
@@ -8,7 +8,7 @@ export const EXPERIENCE_LEVELS = [
     id: 'beginner',
     label: 'Early Stage Founder/New to Planning',
     description: 'Just starting out. Need step-by-step guidance, definitions, and examples.',
-    icon: '🌱',
+    icon: 'ðŸŒ±',
     helpVerbosity: 'detailed',
     suggestDocuments: true,
   },
@@ -16,7 +16,7 @@ export const EXPERIENCE_LEVELS = [
     id: 'intermediate',
     label: 'Growing Organization',
     description: 'Have some experience. Want balanced guidance with key insights.',
-    icon: '📈',
+    icon: 'ðŸ“ˆ',
     helpVerbosity: 'moderate',
     suggestDocuments: true,
   },
@@ -24,7 +24,7 @@ export const EXPERIENCE_LEVELS = [
     id: 'advanced',
     label: 'Experienced Executive/Investor',
     description: 'Highly experienced. Just need field prompts and templates.',
-    icon: '🚀',
+    icon: 'ðŸš€',
     helpVerbosity: 'minimal',
     suggestDocuments: false,
   },
@@ -108,7 +108,7 @@ export const FIELD_DESCRIPTIONS = {
     example: '$2.5B for enterprise software, $50M for niche consulting, or $100M+ for regional services',
     helpBeginners: [
       'TAM = Total market size you\'re trying to capture',
-      'Often estimated by: target customers × average price',
+      'Often estimated by: target customers Ã— average price',
       'Don\'t worry about being perfect - reasonable estimates are fine',
       'You can research industry reports or use benchmarks'
     ]
@@ -236,7 +236,7 @@ export const FIELD_DESCRIPTIONS = {
     example: '$500K, $2M, $5M, or realistic startup projection',
     helpBeginners: [
       'Be realistic but optimistic',
-      'Calculate: expected customers × average deal size',
+      'Calculate: expected customers Ã— average deal size',
       'For startups: conservative estimate is better than aggressive',
       'Don\'t worry about decimal points - order of magnitude matters'
     ]
@@ -278,7 +278,7 @@ export const FIELD_DESCRIPTIONS = {
     example: '$1M/year ($500K team, $300K tech, $200K other), or monthly burn rate',
     helpBeginners: [
       'Include: Salaries, Cloud/hosting, Software tools, Marketing, Office space',
-      'Think monthly burn rate × 12',
+      'Think monthly burn rate Ã— 12',
       'For bootstrapped: your personal cost of running the business',
       'Helps partners understand your financial constraints'
     ]
@@ -412,7 +412,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Professional letter introducing your organization to potential partners',
     category: 'Outreach',
     sections: ['Foundation', 'Market', 'Competencies', 'Partnership Goals'],
-    icon: '📧',
+    icon: 'ðŸ“§',
   },
   {
     id: 'business-proposal',
@@ -420,7 +420,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Comprehensive proposal for a specific business opportunity or partnership',
     category: 'Engagement',
     sections: ['Foundation', 'Market', 'Operations', 'Financial', 'Partnership Goals'],
-    icon: '📄',
+    icon: 'ðŸ“„',
   },
   {
     id: 'executive-summary',
@@ -428,7 +428,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'One-page high-level overview of your organization',
     category: 'Overview',
     sections: ['Foundation', 'Market', 'Competencies', 'Traction'],
-    icon: '📋',
+    icon: 'ðŸ“‹',
   },
   {
     id: 'pitch-deck-outline',
@@ -436,7 +436,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Structure and talking points for investor or partner pitch',
     category: 'Presentation',
     sections: ['Foundation', 'Market', 'Competencies', 'Financial', 'Risks', 'Partnerships'],
-    icon: '🎯',
+    icon: 'ðŸŽ¯',
   },
   {
     id: 'partnership-proposal',
@@ -444,7 +444,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Detailed proposal for strategic partnership with specific partner',
     category: 'Engagement',
     sections: ['Foundation', 'Competencies', 'Partnership Goals', 'Operations', 'Financial'],
-    icon: '🤝',
+    icon: 'ðŸ¤',
   },
   {
     id: 'confidential-brief',
@@ -452,7 +452,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Confidential business overview for qualified partners/investors',
     category: 'Confidential',
     sections: ['Foundation', 'Market', 'Operations', 'Financial', 'Risks', 'Compliance'],
-    icon: '🔒',
+    icon: 'ðŸ”’',
   },
   {
     id: 'capability-statement',
@@ -460,7 +460,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Overview of your organization\'s capabilities and why partners should work with you',
     category: 'Marketing',
     sections: ['Foundation', 'Competencies', 'Technology', 'Track Record'],
-    icon: '⭐',
+    icon: 'â­',
   },
   {
     id: 'partner-collaboration-framework',
@@ -468,7 +468,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'How you want to work with partners - terms, expectations, benefits',
     category: 'Framework',
     sections: ['Partnerships', 'Operations', 'Governance', 'Financial'],
-    icon: '📊',
+    icon: 'ðŸ“Š',
   },
   {
     id: 'one-pager',
@@ -476,7 +476,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Quick company overview on single page',
     category: 'Overview',
     sections: ['Foundation', 'Market', 'Competencies', 'Financial'],
-    icon: '📄',
+    icon: 'ðŸ“„',
   },
   {
     id: 'contact-engagement-letter',
@@ -484,7 +484,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Template for reaching out to specific contacts with your proposal',
     category: 'Outreach',
     sections: ['Foundation', 'Partnership Goals', 'Competencies'],
-    icon: '📬',
+    icon: 'ðŸ“¬',
   },
   {
     id: 'market-analysis-brief',
@@ -492,7 +492,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Market opportunity analysis document',
     category: 'Analysis',
     sections: ['Market', 'Competitors', 'Segments', 'Growth', 'TAM'],
-    icon: '📈',
+    icon: 'ðŸ“ˆ',
   },
   {
     id: 'operations-overview',
@@ -500,7 +500,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'How your organization operates - processes, team, technology',
     category: 'Internal',
     sections: ['Operations', 'Technology', 'Team Size', 'Processes', 'KPIs'],
-    icon: '⚙️',
+    icon: 'âš™ï¸',
   },
 ];
 
@@ -547,3 +547,4 @@ export const ENGAGEMENT_STRATEGIES = [
     followUp: 'Schedule due diligence meetings'
   },
 ];
+

@@ -1,4 +1,4 @@
-import { DecisionPacket } from './DecisionPipeline';
+﻿import { DecisionPacket } from './DecisionPipeline';
 
 export interface TemplateSection {
   heading: string;
@@ -69,7 +69,7 @@ export const DocumentTemplateService = {
         {
           heading: 'Diligence & Workplan',
           bullets: packet.actions.length
-            ? packet.actions.map(a => `${a.title} — ${a.due || 'Due TBD'} (${a.owner || 'Owner TBD'})`)
+            ? packet.actions.map(a => `${a.title} â€” ${a.due || 'Due TBD'} (${a.owner || 'Owner TBD'})`)
             : ['Agree week-by-week plan; identify data room contents; schedule site review.']
         },
         {
@@ -167,3 +167,4 @@ export const DocumentTemplateService = {
     };
   }
 };
+

@@ -1,4 +1,4 @@
-// Feature flags and configuration for demo/production modes
+﻿// Feature flags and configuration for demo/production modes
 // V6.0 - Nexus Intelligence OS - ALL LIVE DATA BY DEFAULT
 export const config = {
   // AI & Backend Features - ENABLED BY DEFAULT FOR LIVE SYSTEM

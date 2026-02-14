@@ -1,29 +1,29 @@
-# NSIL Algorithm Suite - Fast-Thinking Agentic Brain
+﻿# NSIL Algorithm Suite - Fast-Thinking Agentic Brain
 
 ## Overview
 
-The BWGA Intelligence AI system now includes a complete algorithm suite that enables **1-3 second thinking** instead of the previous 10-30 seconds. This represents a **5-15x speedup** in response time.
+The BWGA Ai system now includes a complete algorithm suite that enables **1-3 second thinking** instead of the previous 10-30 seconds. This represents a **5-15x speedup** in response time.
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  INPUT LAYER                                                    │
-│  ├─ SAT Contradiction Solver (validates inputs)                │
-│  └─ Vector Memory Index (retrieves similar cases)              │
-├─────────────────────────────────────────────────────────────────┤
-│  REASONING LAYER (parallel execution)                          │
-│  ├─ DAG Scheduler (21 formulas with dependencies)              │
-│  ├─ Bayesian Debate Engine (5 personas with early stopping)    │
-│  └─ Lazy Eval Engine (derivative indices on demand)            │
-├─────────────────────────────────────────────────────────────────┤
-│  SYNTHESIS LAYER                                                │
-│  ├─ Decision Tree Synthesizer (template selection)             │
-│  └─ Gradient Ranking Engine (case relevance)                   │
-├─────────────────────────────────────────────────────────────────┤
-│  OUTPUT LAYER                                                   │
-│  └─ Executive Brief + Report Payload + Insights                │
-└─────────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  INPUT LAYER                                                    â”‚
+â”‚  â”œâ”€ SAT Contradiction Solver (validates inputs)                â”‚
+â”‚  â””â”€ Vector Memory Index (retrieves similar cases)              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  REASONING LAYER (parallel execution)                          â”‚
+â”‚  â”œâ”€ DAG Scheduler (21 formulas with dependencies)              â”‚
+â”‚  â”œâ”€ Bayesian Debate Engine (5 personas with early stopping)    â”‚
+â”‚  â””â”€ Lazy Eval Engine (derivative indices on demand)            â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  SYNTHESIS LAYER                                                â”‚
+â”‚  â”œâ”€ Decision Tree Synthesizer (template selection)             â”‚
+â”‚  â””â”€ Gradient Ranking Engine (case relevance)                   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  OUTPUT LAYER                                                   â”‚
+â”‚  â””â”€ Executive Brief + Report Payload + Insights                â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ## Algorithm Files
@@ -169,7 +169,7 @@ gradientRankingEngine.recordFeedback(feedback);
 **Purpose:** Main orchestrator that combines all algorithms
 
 **Key Features:**
-- 4-phase pipeline (Input → Reasoning → Synthesis → Output)
+- 4-phase pipeline (Input â†’ Reasoning â†’ Synthesis â†’ Output)
 - Parallel execution where possible
 - Executive brief generation
 - Copilot insights for UI
@@ -273,8 +273,8 @@ The `AgenticBrainResult` includes detailed performance metrics:
 The algorithm suite builds successfully with Vite:
 
 ```
-✓ 3002 modules transformed
-✓ built in 11.63s
+âœ“ 3002 modules transformed
+âœ“ built in 11.63s
 ```
 
 ## Future Enhancements
@@ -284,3 +284,4 @@ The algorithm suite builds successfully with Vite:
 3. **Streaming Results**: Progressive rendering as algorithms complete
 4. **Model Fine-tuning**: Personalized ranking models per user
 5. **Distributed Cache**: Shared memoization across sessions
+

@@ -1,4 +1,4 @@
-export type OsintCategory = 'government' | 'statistics' | 'news' | 'business';
+﻿export type OsintCategory = 'government' | 'statistics' | 'news' | 'business';
 
 export interface OsintResult {
   title: string;

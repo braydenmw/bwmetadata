@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PARTNER COMPARISON ENGINE
  * 
  * Allows users to:
@@ -794,3 +794,4 @@ export class PartnershipHistoryTracker {
 }
 
 export { PartnerStorage };
+

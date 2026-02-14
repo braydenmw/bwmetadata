@@ -1,4 +1,4 @@
-/**
+﻿/**
  * DAG SCHEDULER - Directed Acyclic Graph for Parallel Formula Execution
  * 
  * Implements dependency-aware parallel execution of the 21-formula suite.
@@ -10,27 +10,27 @@
  * Speed Impact: 3-5x improvement on formula execution
  * 
  * Formula Dependency Graph:
- * ┌─────────────────────────────────────────────────────────────────┐
- * │  LEVEL 0 (Independent - run in parallel)                       │
- * │  ├─ PRI (Political Risk)                                       │
- * │  ├─ CRI (Country Risk)                                         │
- * │  ├─ BARNA (Barriers)                                           │
- * │  └─ TCO (Total Cost)                                           │
- * │                                                                 │
- * │  LEVEL 1 (Depends on Level 0)                                  │
- * │  ├─ SPI (depends on PRI, CRI)                                  │
- * │  ├─ RROI (depends on TCO, CRI)                                 │
- * │  ├─ NVI (depends on BARNA)                                     │
- * │  └─ RNI (depends on PRI)                                       │
- * │                                                                 │
- * │  LEVEL 2 (Depends on Level 1)                                  │
- * │  ├─ SEAM (depends on SPI, NVI)                                 │
- * │  ├─ IVAS (depends on RROI, SPI)                                │
- * │  └─ ESI (depends on NVI, BARNA)                                │
- * │                                                                 │
- * │  LEVEL 3 (Depends on Level 2)                                  │
- * │  └─ SCF (depends on SEAM, IVAS, SPI, RROI)                     │
- * └─────────────────────────────────────────────────────────────────┘
+ * â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+ * â”‚  LEVEL 0 (Independent - run in parallel)                       â”‚
+ * â”‚  â”œâ”€ PRI (Political Risk)                                       â”‚
+ * â”‚  â”œâ”€ CRI (Country Risk)                                         â”‚
+ * â”‚  â”œâ”€ BARNA (Barriers)                                           â”‚
+ * â”‚  â””â”€ TCO (Total Cost)                                           â”‚
+ * â”‚                                                                 â”‚
+ * â”‚  LEVEL 1 (Depends on Level 0)                                  â”‚
+ * â”‚  â”œâ”€ SPI (depends on PRI, CRI)                                  â”‚
+ * â”‚  â”œâ”€ RROI (depends on TCO, CRI)                                 â”‚
+ * â”‚  â”œâ”€ NVI (depends on BARNA)                                     â”‚
+ * â”‚  â””â”€ RNI (depends on PRI)                                       â”‚
+ * â”‚                                                                 â”‚
+ * â”‚  LEVEL 2 (Depends on Level 1)                                  â”‚
+ * â”‚  â”œâ”€ SEAM (depends on SPI, NVI)                                 â”‚
+ * â”‚  â”œâ”€ IVAS (depends on RROI, SPI)                                â”‚
+ * â”‚  â””â”€ ESI (depends on NVI, BARNA)                                â”‚
+ * â”‚                                                                 â”‚
+ * â”‚  LEVEL 3 (Depends on Level 2)                                  â”‚
+ * â”‚  â””â”€ SCF (depends on SEAM, IVAS, SPI, RROI)                     â”‚
+ * â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
  */
 
 import type { ReportParameters } from '../../types';
@@ -200,7 +200,7 @@ const toGrade = (score: number): string => {
 };
 
 const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: FormulaCache) => Promise<FormulaResult>> = {
-  // ─────────────── Level 0 Executors (use CompositeScoreService directly) ───────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Level 0 Executors (use CompositeScoreService directly) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   'PRI': async (params, _cache) => {
     const start = Date.now();
@@ -282,7 +282,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // ─────────────── Level 1 Executors (use Level 0 results + composite) ───────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Level 1 Executors (use Level 0 results + composite) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'SPI': async (params, cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -377,7 +377,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // ─────────────── Level 2 Executors ───────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Level 2 Executors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'SEAM': async (params, cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -488,7 +488,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // ─────────────── Level 3 Executors ───────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Level 3 Executors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'SCF': async (params, cache) => {
     const start = Date.now();
     const c = await getComposite(params);
@@ -772,3 +772,4 @@ export class DAGScheduler {
 export const dagScheduler = new DAGScheduler();
 
 export default DAGScheduler;
+

@@ -1,4 +1,4 @@
-
+﻿
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config, features } from './config';
@@ -24,7 +24,7 @@ const getGeminiApiKey = (): string => {
 };
 
 // System instruction for the AI
-const SYSTEM_INSTRUCTION = `You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
+const SYSTEM_INSTRUCTION = `You are "BWGA Ai" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
 
 // Session ID for maintaining chat context on the server
 let sessionId: string | null = null;
@@ -336,12 +336,12 @@ export const generateReportSectionStream = async (
                 ]
             });
             
-            // ═══════════════════════════════════════════════════════════════
-            // BUILD NSIL INTELLIGENCE CONTEXT — injected into every prompt
+            // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+            // BUILD NSIL INTELLIGENCE CONTEXT â€” injected into every prompt
             // This is the brain of the system: pattern matches, historical
             // parallels, formula scores, situation analysis, ethical gate,
-            // emotional climate — ALL fed into the AI generation prompts.
-            // ═══════════════════════════════════════════════════════════════
+            // emotional climate â€” ALL fed into the AI generation prompts.
+            // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
             const enhancedPayload = (params as any).reportPayload;
             let nsilContext = '';
             if (enhancedPayload) {
@@ -708,3 +708,4 @@ export const runCopilotAnalysis = async (query: string, context: string): Promis
         followUp: "Shall we evaluate potential targets?"
     };
 };
+

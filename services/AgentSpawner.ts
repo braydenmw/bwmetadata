@@ -1,4 +1,4 @@
-import { EventBus } from './EventBus';
+﻿import { EventBus } from './EventBus';
 import { persistentMemory } from './PersistentMemorySystem';
 
 export interface SubAgent {

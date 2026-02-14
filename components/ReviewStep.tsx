@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ReportParameters, SPIResult, EthicalCheckResult } from '../types';
 
 // Placeholder for services if they don't exist in the context
@@ -132,7 +132,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">Intelligence Dossier</h1>
-                        <p className="text-xs text-stone-400 font-mono uppercase tracking-widest">Ref: {params.id || 'PENDING'} • Status: {backendStatus}</p>
+                        <p className="text-xs text-stone-400 font-mono uppercase tracking-widest">Ref: {params.id || 'PENDING'} â€¢ Status: {backendStatus}</p>
                     </div>
                 </div>
                 <div className="flex gap-3">
@@ -141,7 +141,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
                         disabled={isPlaying || audioLoading}
                         className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${isPlaying ? 'bg-green-500 text-white animate-pulse' : 'bg-white/10 text-white hover:bg-white/20'}`}
                     >
-                        {audioLoading ? '...' : isPlaying ? 'Broadcasting' : '▶ Audio Brief'}
+                        {audioLoading ? '...' : isPlaying ? 'Broadcasting' : 'â–¶ Audio Brief'}
                     </button>
                     <button onClick={() => window.print()} className="px-6 py-2 bg-white text-stone-900 rounded-lg text-sm font-bold hover:bg-stone-100 transition-colors shadow-lg flex items-center gap-2">
                         <DownloadIcon className="w-4 h-4" /> Export Dossier
@@ -331,7 +331,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
                                                     </div>
                                                     <div>
                                                         <span className="text-sm font-bold text-stone-800 block">{file.name}</span>
-                                                        <span className="text-xs text-stone-400">{file.type} • {file.size}</span>
+                                                        <span className="text-xs text-stone-400">{file.type} â€¢ {file.size}</span>
                                                     </div>
                                                 </div>
                                                 <div className="p-2 text-stone-300 group-hover:text-stone-900 transition-colors">

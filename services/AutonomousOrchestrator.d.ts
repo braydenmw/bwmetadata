@@ -1,4 +1,4 @@
-import { ProactiveAction, ThinkingChain } from './ReactiveIntelligenceEngine';
+﻿import { ProactiveAction, ThinkingChain } from './ReactiveIntelligenceEngine';
 import { ReportParameters } from '../types';
 /**
  * AutonomousOrchestrator: End-to-end autonomous problem-solving loop
@@ -26,3 +26,4 @@ export declare class AutonomousOrchestrator {
     }>;
 }
 export {};
+

@@ -1,7 +1,7 @@
-/**
- * ═══════════════════════════════════════════════════════════════════════════════
+﻿/**
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * DEEP THINKING ENGINE - Chain-of-Thought Reasoning for 100% Autonomous Operation
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * 
  * This engine implements advanced reasoning techniques:
  * 1. Chain-of-Thought (CoT) - Step-by-step reasoning traces
@@ -11,14 +11,14 @@
  * 5. Autonomous Document Improvement - Self-edits for better output
  * 
  * Target: Make the system fully autonomous and self-improving
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 import type { ReportParameters, CopilotInsight, ReportData } from '../../types';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TYPES
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export interface ThoughtNode {
   id: string;
@@ -97,9 +97,9 @@ export interface MetaCognitionState {
   learningOpportunities: string[];
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DEEP THINKING ENGINE
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export class DeepThinkingEngine {
   private thoughtHistory: ChainOfThought[] = [];
@@ -628,16 +628,16 @@ export class DeepThinkingEngine {
     insights.push({
       id: `deep-thinking-${Date.now()}`,
       type: 'strategy',
-      title: '🧠 Deep Thinking Analysis Complete',
+      title: 'ðŸ§  Deep Thinking Analysis Complete',
       description: `Analyzed ${cot.steps.length} reasoning steps with ${Math.round(cot.confidenceScore)}% confidence`,
       content: [
         '**Chain-of-Thought Summary:**',
         ...cot.reasoningTrace.slice(0, 3),
         '',
         '**Self-Awareness:**',
-        `• Known gaps: ${reflection.whatIDontKnow.length}`,
-        `• Assumptions made: ${reflection.assumptions.length}`,
-        `• Bias awareness: ${reflection.biases.length} identified`,
+        `â€¢ Known gaps: ${reflection.whatIDontKnow.length}`,
+        `â€¢ Assumptions made: ${reflection.assumptions.length}`,
+        `â€¢ Bias awareness: ${reflection.biases.length} identified`,
         '',
         '**Meta-Confidence:** ' + reflection.confidenceCalibration + '%'
       ].join('\n'),
@@ -653,7 +653,7 @@ export class DeepThinkingEngine {
     insights.push({
       id: `best-path-${Date.now()}`,
       type: 'opportunity',
-      title: `📊 Recommended Path: ${bestBranch.content}`,
+      title: `ðŸ“Š Recommended Path: ${bestBranch.content}`,
       description: `Based on tree-of-thoughts analysis with ${Math.round(bestBranch.evaluationScore)}% score`,
       content: bestBranch.reasoning.join('\n'),
       confidence: Math.round(bestBranch.evaluationScore),
@@ -665,9 +665,9 @@ export class DeepThinkingEngine {
       insights.push({
         id: `knowledge-gaps-${Date.now()}`,
         type: 'warning',
-        title: `⚠️ ${reflection.whatIDontKnow.length} Knowledge Gaps Identified`,
+        title: `âš ï¸ ${reflection.whatIDontKnow.length} Knowledge Gaps Identified`,
         description: 'Analysis may be incomplete due to missing information',
-        content: reflection.whatIDontKnow.map(g => `• ${g}`).join('\n'),
+        content: reflection.whatIDontKnow.map(g => `â€¢ ${g}`).join('\n'),
         confidence: 100,
         isAutonomous: true
       });
@@ -678,9 +678,9 @@ export class DeepThinkingEngine {
       insights.push({
         id: `improvements-${Date.now()}`,
         type: 'risk',
-        title: '💡 Suggested Analysis Improvements',
+        title: 'ðŸ’¡ Suggested Analysis Improvements',
         description: 'Actions that could improve confidence and accuracy',
-        content: reflection.suggestedImprovements.map(i => `• ${i}`).join('\n'),
+        content: reflection.suggestedImprovements.map(i => `â€¢ ${i}`).join('\n'),
         confidence: 85,
         isAutonomous: true
       });
@@ -689,9 +689,9 @@ export class DeepThinkingEngine {
     return insights;
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // HELPER METHODS
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
   private analyzeContext(params: ReportParameters): string {
     const elements = [];
@@ -782,11 +782,11 @@ export class DeepThinkingEngine {
   }
 
   private enhanceExecutiveSummary(original: string, cot: ChainOfThought): string {
-    return `${original}\n\n**Deep Analysis Summary:**\n${cot.finalConclusion}\n\n**Key Reasoning Steps:**\n${cot.reasoningTrace.slice(0, 3).map(r => `• ${r}`).join('\n')}`;
+    return `${original}\n\n**Deep Analysis Summary:**\n${cot.finalConclusion}\n\n**Key Reasoning Steps:**\n${cot.reasoningTrace.slice(0, 3).map(r => `â€¢ ${r}`).join('\n')}`;
   }
 
   private enhanceRiskSection(original: string, reflection: SelfReflection): string {
-    return `${original}\n\n**Mitigation Strategies:**\n${reflection.suggestedImprovements.map(i => `• ${i}`).join('\n')}\n\n**Known Uncertainties:**\n${reflection.uncertainties.map(u => `• ${u}`).join('\n')}`;
+    return `${original}\n\n**Mitigation Strategies:**\n${reflection.suggestedImprovements.map(i => `â€¢ ${i}`).join('\n')}\n\n**Known Uncertainties:**\n${reflection.uncertainties.map(u => `â€¢ ${u}`).join('\n')}`;
   }
 
   private enhanceRecommendations(original: string, cot: ChainOfThought): string {
@@ -798,3 +798,4 @@ export class DeepThinkingEngine {
 export const deepThinkingEngine = new DeepThinkingEngine();
 
 export default DeepThinkingEngine;
+

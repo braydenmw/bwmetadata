@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { BarChart, TrendingUpIcon, ActivityIcon } from './Icons';
 
 interface MathematicalModelsEngineProps {
@@ -78,3 +78,4 @@ const MathematicalModelsEngine: React.FC<MathematicalModelsEngineProps> = ({ reg
 };
 
 export default MathematicalModelsEngine;
+

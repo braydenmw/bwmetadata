@@ -1,4 +1,4 @@
-// Explainability Reporter
+﻿// Explainability Reporter
 // Generates detailed, user-facing reports for every autonomous cycle
 
 import fs from 'fs';
@@ -23,3 +23,4 @@ export function generateExplainabilityReport(auditTrail: any[], problem: string)
   fs.writeFileSync(filePath, JSON.stringify(report, null, 2));
   return filePath;
 }
+

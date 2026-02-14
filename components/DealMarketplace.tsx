@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Briefcase, Search, Filter, MapPin, TrendingUp, Building2, DollarSign, Zap } from 'lucide-react';
 
 interface Deal {
@@ -41,7 +41,7 @@ const DealMarketplace: React.FC = () => {
       country: 'Poland',
       type: 'Government Incentive',
       sector: 'Technology',
-      value: '€500k - €2M per project',
+      value: 'â‚¬500k - â‚¬2M per project',
       description: 'EU-backed research and development grants for technology companies establishing innovation hubs in Poland',
       deadline: '2025-06-30',
       terms: ['EU co-funding 50%', 'Polish team required', '2-3 year projects', 'IP rights negotiable'],
@@ -304,7 +304,7 @@ const DealMarketplace: React.FC = () => {
                   onClick={() => setSelectedDeal(null)}
                   className="text-2xl text-stone-400 hover:text-stone-600"
                 >
-                  ✕
+                  âœ•
                 </button>
               </div>
 
@@ -338,7 +338,7 @@ const DealMarketplace: React.FC = () => {
                   <ul className="space-y-1">
                     {selectedDeal.terms.map((term, idx) => (
                       <li key={idx} className="text-sm text-stone-700 pl-5 relative">
-                        <span className="absolute left-0">•</span> {term}
+                        <span className="absolute left-0">â€¢</span> {term}
                       </li>
                     ))}
                   </ul>
@@ -369,3 +369,4 @@ const DealMarketplace: React.FC = () => {
 };
 
 export default DealMarketplace;
+

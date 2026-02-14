@@ -1,19 +1,19 @@
-# Technical Presentation: NSIL Advanced Intelligence Platform
+﻿# Technical Presentation: NSIL Advanced Intelligence Platform
 
 ## Executive Summary
-This document presents the NSIL Advanced Intelligence Platform—a next-generation, modular, and adversarially robust decision intelligence system. Unlike traditional report builders, NSIL delivers multi-layered, bias-resistant, and self-learning analytics for high-stakes government and enterprise use.
+This document presents the NSIL Advanced Intelligence Platformâ€”a next-generation, modular, and adversarially robust decision intelligence system. Unlike traditional report builders, NSIL delivers multi-layered, bias-resistant, and self-learning analytics for high-stakes government and enterprise use.
 
 ---
 
 ## 1. System Overview
 - **Purpose:** Provide transparent, auditable, and adaptive intelligence for complex decisions (e.g., international partnerships, risk management, policy planning).
 - **Architecture:** Modular microservices with orchestrated reasoning engines, adversarial defense layers, and outcome learning.
-- **Key Differentiator:** Not a static report generator—NSIL is a living, learning, and adversarially aware intelligence engine.
+- **Key Differentiator:** Not a static report generatorâ€”NSIL is a living, learning, and adversarially aware intelligence engine.
 
 ---
 
 ## 2. Core Capabilities
-- **Advanced Indices:** Calculates BARNA, NVI, CAP, AGI, VCI, ATI, ESI, ISI, OSI, RNI, SRA, IDV—each with data-driven, explainable drivers and recommendations.
+- **Advanced Indices:** Calculates BARNA, NVI, CAP, AGI, VCI, ATI, ESI, ISI, OSI, RNI, SRA, IDVâ€”each with data-driven, explainable drivers and recommendations.
 - **Adversarial Reasoning Stack:**
   - Input Shield: Detects contradictions, fraud, and missing data using external sources and pattern libraries.
   - Persona Panel: Five-agent debate (Skeptic, Advocate, Regulator, Accountant, Operator) for multi-perspective risk/opportunity analysis.
@@ -27,7 +27,7 @@ This document presents the NSIL Advanced Intelligence Platform—a next-generati
 
 ## 3. Technical Architecture
 - **Backend:** TypeScript/Node.js, modular services (see `/services`), orchestrated by `ReportOrchestrator`.
-- **Data Layer:** Pluggable—currently supports static/mock data, but designed for live API integration (World Bank, IMF, sanctions, etc.).
+- **Data Layer:** Pluggableâ€”currently supports static/mock data, but designed for live API integration (World Bank, IMF, sanctions, etc.).
 - **Reasoning Engines:** CompositeScoreService, LiveDataService, AdversarialReasoningService, PersonaEngine, CounterfactualEngine, OutcomeTracker.
 - **Extensibility:** New indices, personas, or data sources can be added with minimal friction.
 - **Security:** Designed for government-grade data privacy and audit trails.
@@ -38,7 +38,7 @@ This document presents the NSIL Advanced Intelligence Platform—a next-generati
 - **Not a Template Engine:** NSIL does not just fill in report templates. It runs adversarial checks, simulates scenarios, and debates outcomes before producing recommendations.
 - **Bias Resistance:** Adversarial input validation and persona debate reduce the risk of groupthink, fraud, or hidden agenda manipulation.
 - **Explainability:** Every score, flag, and recommendation is accompanied by evidence, drivers, and counterfactuals.
-- **Learning Loop:** Tracks real outcomes and adapts logic over time—no more static, one-off reports.
+- **Learning Loop:** Tracks real outcomes and adapts logic over timeâ€”no more static, one-off reports.
 - **Government-Ready:** Built for transparency, compliance, and integration with public sector data and workflows.
 
 ---
@@ -72,3 +72,4 @@ This document presents the NSIL Advanced Intelligence Platform—a next-generati
 ---
 
 For further technical details, codebase access, or a live demonstration, please contact the project team.
+

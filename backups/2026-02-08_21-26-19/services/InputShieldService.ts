@@ -1,4 +1,4 @@
-/**
+﻿/**
  * INPUT SHIELD SERVICE - Adversarial Input Validation
  * 
  * This service cross-checks user-provided inputs against authoritative data sources
@@ -266,7 +266,7 @@ export class InputShieldService {
       recommendations.push('BLOCKED: Critical issues must be resolved before proceeding');
       validationResults
         .filter(r => r.flag === 'critical')
-        .forEach(r => recommendations.push(`• ${r.suggestion || 'Address: ' + r.message}`));
+        .forEach(r => recommendations.push(`â€¢ ${r.suggestion || 'Address: ' + r.message}`));
     }
     
     if (warningCount > 0 && criticalCount === 0) {
@@ -274,7 +274,7 @@ export class InputShieldService {
       validationResults
         .filter(r => r.flag === 'warning')
         .slice(0, 3)
-        .forEach(r => recommendations.push(`• ${r.suggestion || r.message}`));
+        .forEach(r => recommendations.push(`â€¢ ${r.suggestion || r.message}`));
     }
     
     if (overallStatus === 'trusted' && overallTrust >= 80) {
@@ -548,3 +548,4 @@ export class InputShieldService {
 }
 
 export default InputShieldService;
+

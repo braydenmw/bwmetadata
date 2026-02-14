@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { MapPin, DollarSign, TrendingDown, Calculator, Globe, Zap, CheckCircle, AlertCircle, BarChart3, Download } from 'lucide-react';
 
 interface Location {
@@ -144,7 +144,7 @@ const LowCostRelocationTools: React.FC = () => {
       ]
     },
     {
-      name: 'Colombia (Bogotá)',
+      name: 'Colombia (BogotÃ¡)',
       country: 'Colombia',
       region: 'Latin America',
       laborCostIndex: 28,
@@ -294,7 +294,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
               <Calculator className="w-5 h-5 text-red-600" />
               Relocation Cost-Benefit Calculator
             </h3>
-            <div className="text-2xl">{expandedSections.calculator ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.calculator ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.calculator && (
@@ -355,7 +355,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
                   
                   <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-stone-700">Salary (${employeeCount} × ${avgSalary.toLocaleString()})</span>
+                      <span className="text-sm text-stone-700">Salary (${employeeCount} Ã— ${avgSalary.toLocaleString()})</span>
                       <span className="font-bold text-stone-900">${(employeeCount * avgSalary).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -445,7 +445,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
                 <MapPin className="w-5 h-5 text-blue-600" />
                 {selectedLocation.name} - Detailed Profile
               </h3>
-              <div className="text-2xl">{expandedSections.locations ? '▼' : '▶'}</div>
+              <div className="text-2xl">{expandedSections.locations ? 'â–¼' : 'â–¶'}</div>
             </div>
 
             {expandedSections.locations && (
@@ -492,7 +492,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
                     <ul className="space-y-2">
                       {selectedLocation.advantages.map((adv, idx) => (
                         <li key={idx} className="text-sm text-stone-700 flex gap-2">
-                          <span className="text-green-600 font-bold">✓</span> {adv}
+                          <span className="text-green-600 font-bold">âœ“</span> {adv}
                         </li>
                       ))}
                     </ul>
@@ -506,7 +506,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
                     <ul className="space-y-2">
                       {selectedLocation.challenges.map((chal, idx) => (
                         <li key={idx} className="text-sm text-stone-700 flex gap-2">
-                          <span className="text-red-600 font-bold">⚠</span> {chal}
+                          <span className="text-red-600 font-bold">âš </span> {chal}
                         </li>
                       ))}
                     </ul>
@@ -532,7 +532,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
                     </h4>
                     <ul className="space-y-1">
                       {getMigrationRisks().map((risk, idx) => (
-                        <li key={idx} className="text-sm text-yellow-800">• {risk}</li>
+                        <li key={idx} className="text-sm text-yellow-800">â€¢ {risk}</li>
                       ))}
                     </ul>
                   </div>
@@ -552,7 +552,7 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
               <BarChart3 className="w-5 h-5 text-purple-600" />
               All Locations - Cost Comparison
             </h3>
-            <div className="text-2xl">{expandedSections.costs ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.costs ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.costs && (
@@ -593,3 +593,4 @@ Payback Period,${(80000 / (costs.savings / 12)).toFixed(1)} months
 };
 
 export default LowCostRelocationTools;
+

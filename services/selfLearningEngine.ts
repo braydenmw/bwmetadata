@@ -1,4 +1,4 @@
-// Self-Learning Intelligence System
+﻿// Self-Learning Intelligence System
 // Tracks system performance, user feedback, and automatically improves
 
 import { ReportParameters } from '../types';
@@ -43,18 +43,18 @@ class SelfLearningEngine {
 
   /** Subscribe to EventBus for ecosystem-wide learning */
   private subscribeToEvents(): void {
-    // Listen for outcome recordings (flower → bee feedback loop)
+    // Listen for outcome recordings (flower â†’ bee feedback loop)
     EventBus.subscribe('outcomeRecorded', (event) => {
       console.log('[SelfLearning] Outcome received:', event.reportId, event.outcome);
       this.recordOutcome(event.reportId, event.outcome);
     });
 
-    // Listen for insights to track quality (bee → meadow visibility)
+    // Listen for insights to track quality (bee â†’ meadow visibility)
     EventBus.subscribe('insightsGenerated', (event) => {
       console.log('[SelfLearning] Insights received:', event.reportId, event.insights.length);
     });
 
-    // Listen for ecosystem pulse to adjust learning weights (meadow → ecosystem adaptation)
+    // Listen for ecosystem pulse to adjust learning weights (meadow â†’ ecosystem adaptation)
     EventBus.subscribe('ecosystemPulse', (event) => {
       if (event.signals.alignment < 50) {
         console.log('[SelfLearning] Low alignment detected, adjusting weights');
@@ -148,14 +148,14 @@ class SelfLearningEngine {
     console.log(`Avg Report Quality: ${(metrics.avgReportQuality * 100).toFixed(1)}%`);
     
     if (metrics.improvementAreas.length > 0) {
-      console.log('\n🎯 Improvement Areas:');
+      console.log('\nðŸŽ¯ Improvement Areas:');
       metrics.improvementAreas.forEach((area, i) => {
         console.log(`${i + 1}. ${area}`);
       });
     }
 
     if (Object.keys(metrics.commonErrors).length > 0) {
-      console.log('\n⚠️ Most Common Errors:');
+      console.log('\nâš ï¸ Most Common Errors:');
       Object.entries(metrics.commonErrors)
         .sort(([, a], [, b]) => b - a)
         .slice(0, 5)
@@ -233,3 +233,4 @@ class SelfLearningEngine {
 
 export const selfLearningEngine = new SelfLearningEngine();
 export type { LearningData, PerformanceMetrics };
+

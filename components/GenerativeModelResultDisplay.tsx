@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { GenerativeModel } from '../types';
 
 export const GenerativeModelResultDisplay: React.FC<{ model: GenerativeModel }> = ({ model }) => (

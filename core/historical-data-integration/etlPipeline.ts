@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ADVANCED ETL PIPELINE - Historical Data Integration
  * 
  * Implements:
@@ -67,7 +67,7 @@ function getFromCache(source: string): DataRecord[] | null {
       const entry: CacheEntry = JSON.parse(fs.readFileSync(cacheFile, 'utf-8'));
       
       if (Date.now() - entry.timestamp < CACHE_TTL_MS) {
-        console.log(`📦 Cache hit for: ${source}`);
+        console.log(`ðŸ“¦ Cache hit for: ${source}`);
         return entry.data;
       }
     }
@@ -89,7 +89,7 @@ function saveToCache(source: string, data: DataRecord[]): void {
       source
     };
     fs.writeFileSync(cacheFile, JSON.stringify(entry));
-    console.log(`💾 Cached data for: ${source}`);
+    console.log(`ðŸ’¾ Cached data for: ${source}`);
   } catch (error) {
     console.warn('Failed to cache data:', error);
   }
@@ -141,7 +141,7 @@ export async function ingestCSV(filePath: string): Promise<DataRecord[]> {
   // Cache results
   saveToCache(filePath, records);
   
-  console.log(`📊 Ingested ${records.length} records from CSV`);
+  console.log(`ðŸ“Š Ingested ${records.length} records from CSV`);
   return records;
 }
 
@@ -231,7 +231,7 @@ export async function ingestJSON(filePath: string): Promise<DataRecord[]> {
   // Cache results
   saveToCache(filePath, records);
   
-  console.log(`📊 Ingested ${records.length} records from JSON`);
+  console.log(`ðŸ“Š Ingested ${records.length} records from JSON`);
   return records;
 }
 
@@ -266,7 +266,7 @@ export async function ingestAPI(
       pageUrl.searchParams.set(pageParam, String(page));
       pageUrl.searchParams.set(limitParam, String(limit));
       
-      console.log(`🌐 Fetching page ${page}: ${pageUrl.toString()}`);
+      console.log(`ðŸŒ Fetching page ${page}: ${pageUrl.toString()}`);
       
       const response = await fetch(pageUrl.toString(), {
         headers: options.headers || {}
@@ -290,7 +290,7 @@ export async function ingestAPI(
     }
   } else {
     // Single fetch
-    console.log(`🌐 Fetching: ${url}`);
+    console.log(`ðŸŒ Fetching: ${url}`);
     
     const response = await fetch(url, {
       headers: options.headers || {}
@@ -307,7 +307,7 @@ export async function ingestAPI(
   // Cache results
   saveToCache(url, allRecords);
   
-  console.log(`📊 Ingested ${allRecords.length} records from API`);
+  console.log(`ðŸ“Š Ingested ${allRecords.length} records from API`);
   return allRecords;
 }
 
@@ -554,9 +554,10 @@ export function clearCache(): void {
       for (const file of files) {
         fs.unlinkSync(path.join(CACHE_DIR, file));
       }
-      console.log('🗑️ Cache cleared');
+      console.log('ðŸ—‘ï¸ Cache cleared');
     }
   } catch (error) {
     console.warn('Failed to clear cache:', error);
   }
 }
+

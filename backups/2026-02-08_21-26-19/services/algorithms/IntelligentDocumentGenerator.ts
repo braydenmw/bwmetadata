@@ -1,7 +1,7 @@
-/**
- * ═══════════════════════════════════════════════════════════════════════════════
+﻿/**
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * INTELLIGENT DOCUMENT GENERATOR - AI-Powered Document Enhancement
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * 
  * This engine uses AI to generate and improve documents:
  * 1. Context-Aware Content Generation - Tailored to audience and purpose
@@ -10,14 +10,14 @@
  * 4. Template Intelligence - Smart template selection
  * 5. Real-Time Enhancement - Improves as user provides more data
  * 
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 import type { ReportParameters, ReportData, CopilotInsight } from '../../types';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TYPES
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export interface DocumentSection {
   id: string;
@@ -77,9 +77,9 @@ export interface DocumentConfig {
   includeAppendix: boolean;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INTELLIGENT DOCUMENT GENERATOR
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export class IntelligentDocumentGenerator {
   private generationHistory: GeneratedDocument[] = [];
@@ -269,15 +269,15 @@ export class IntelligentDocumentGenerator {
     return generator ? generator() : this.generateGenericSection(sectionId, params);
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CONTENT GENERATORS
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
   private generateExecutiveSummary(params: ReportParameters, reportData: ReportData, insights: CopilotInsight[]): string {
     const confidence = reportData.confidenceScores?.overall || 70;
     const topInsight = insights.find(i => i.isAutonomous) || insights[0];
     
-    // ── Evidence-anchored scoring ──
+    // â”€â”€ Evidence-anchored scoring â”€â”€
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const spi = (reportData.computedIntelligence?.spi as any)?.spi ?? confidence;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -288,10 +288,10 @@ export class IntelligentDocumentGenerator {
     const hceActive = insights.some(i => i.id?.includes('cognition'));
 
     const recommendation = spi >= 70 && scf >= 60
-      ? 'PROCEED — High strategic confidence backed by multi-formula consensus'
+      ? 'PROCEED â€” High strategic confidence backed by multi-formula consensus'
       : spi >= 50
-        ? 'PROCEED WITH CAUTION — Moderate confidence; strengthen weak signals before committing'
-        : 'PAUSE — Insufficient evidence to proceed; resolve critical gaps first';
+        ? 'PROCEED WITH CAUTION â€” Moderate confidence; strengthen weak signals before committing'
+        : 'PAUSE â€” Insufficient evidence to proceed; resolve critical gaps first';
 
     return `## Executive Summary
 
@@ -304,15 +304,15 @@ export class IntelligentDocumentGenerator {
 ### Computed Assessment (Evidence-Anchored)
 | Formula | Score | Grade | Interpretation |
 |---------|-------|-------|----------------|
-| SPI™ (Success Probability) | ${Math.round(spi)}/100 | ${spi >= 80 ? 'A' : spi >= 70 ? 'B' : spi >= 60 ? 'C' : 'D'} | ${spi >= 70 ? 'Strong viability' : 'Moderate viability'} |
-| RROI™ (Regional Return) | ${Math.round(rroi)}/100 | ${rroi >= 80 ? 'A' : rroi >= 70 ? 'B' : rroi >= 60 ? 'C' : 'D'} | ${rroi >= 70 ? 'Favorable economics' : 'Marginal returns'} |
-| SCF™ (Strategic Confidence) | ${Math.round(scf)}/100 | ${scf >= 80 ? 'A' : scf >= 70 ? 'B' : scf >= 60 ? 'C' : 'D'} | ${scf >= 70 ? 'High conviction' : 'Further validation needed'} |
+| SPIâ„¢ (Success Probability) | ${Math.round(spi)}/100 | ${spi >= 80 ? 'A' : spi >= 70 ? 'B' : spi >= 60 ? 'C' : 'D'} | ${spi >= 70 ? 'Strong viability' : 'Moderate viability'} |
+| RROIâ„¢ (Regional Return) | ${Math.round(rroi)}/100 | ${rroi >= 80 ? 'A' : rroi >= 70 ? 'B' : rroi >= 60 ? 'C' : 'D'} | ${rroi >= 70 ? 'Favorable economics' : 'Marginal returns'} |
+| SCFâ„¢ (Strategic Confidence) | ${Math.round(scf)}/100 | ${scf >= 80 ? 'A' : scf >= 70 ? 'B' : scf >= 60 ? 'C' : 'D'} | ${scf >= 70 ? 'High conviction' : 'Further validation needed'} |
 
 ### Recommendation
 **${recommendation}**
 
 ### Autonomous AI Insight
-${topInsight ? `> "${topInsight.description}" — Confidence: ${topInsight.confidence || 'N/A'}%` : 'AI analysis in progress...'}
+${topInsight ? `> "${topInsight.description}" â€” Confidence: ${topInsight.confidence || 'N/A'}%` : 'AI analysis in progress...'}
 
 ### Data Provenance
 - Composite scores derived from: World Bank GDP/FDI data, Exchange Rate API, REST Countries demographic data, regional baselines
@@ -385,11 +385,11 @@ ${insights.filter(i => i.type === 'warning' || i.type === 'risk').slice(0, 3).ma
 
 | Risk Category | Level | Mitigation Status |
 |--------------|-------|------------------|
-| Political/Regulatory | ${reportData.confidenceScores?.politicalStability && reportData.confidenceScores.politicalStability < 50 ? '⚠️ High' : '✅ Moderate'} | Action Required |
-| Economic | ${reportData.confidenceScores?.economicReadiness && reportData.confidenceScores.economicReadiness < 50 ? '⚠️ High' : '✅ Moderate'} | Monitoring |
-| Operational | ⚠️ To Be Assessed | Pending |
-| Financial | ⚠️ To Be Assessed | Pending |
-| Reputational | ✅ Low | Addressed |
+| Political/Regulatory | ${reportData.confidenceScores?.politicalStability && reportData.confidenceScores.politicalStability < 50 ? 'âš ï¸ High' : 'âœ… Moderate'} | Action Required |
+| Economic | ${reportData.confidenceScores?.economicReadiness && reportData.confidenceScores.economicReadiness < 50 ? 'âš ï¸ High' : 'âœ… Moderate'} | Monitoring |
+| Operational | âš ï¸ To Be Assessed | Pending |
+| Financial | âš ï¸ To Be Assessed | Pending |
+| Reputational | âœ… Low | Addressed |
 
 ### Key Risk Factors
 ${reportData.risks?.content || 'Risk assessment in progress. Detailed risk factors will be populated upon completion of analysis.'}
@@ -404,23 +404,23 @@ ${reportData.risks?.content || 'Risk assessment in progress. Detailed risk facto
   private generateNextSteps(params: ReportParameters, insights: CopilotInsight[]): string {
     const autonomousActions = insights
       .filter(i => i.isAutonomous)
-      .flatMap(i => i.content?.split('\n').filter(l => l.startsWith('•')) || [])
+      .flatMap(i => i.content?.split('\n').filter(l => l.startsWith('â€¢')) || [])
       .slice(0, 5);
     
     return `## Next Steps
 
 ### Immediate Actions (This Week)
-1. ☐ Review and validate this analysis with key stakeholders
-2. ☐ Identify 3-5 potential local partners for initial outreach
-3. ☐ Schedule regulatory consultation
+1. â˜ Review and validate this analysis with key stakeholders
+2. â˜ Identify 3-5 potential local partners for initial outreach
+3. â˜ Schedule regulatory consultation
 
 ### Short-term Actions (Next 30 Days)
-1. ☐ Complete partner due diligence on top candidates
-2. ☐ Develop detailed financial projections
-3. ☐ Establish governance framework for the initiative
+1. â˜ Complete partner due diligence on top candidates
+2. â˜ Develop detailed financial projections
+3. â˜ Establish governance framework for the initiative
 
 ### AI-Recommended Actions
-${autonomousActions.length > 0 ? autonomousActions.join('\n') : '• Continue gathering market intelligence\n• Monitor competitor activities\n• Build relationships with key stakeholders'}
+${autonomousActions.length > 0 ? autonomousActions.join('\n') : 'â€¢ Continue gathering market intelligence\nâ€¢ Monitor competitor activities\nâ€¢ Build relationships with key stakeholders'}
 
 ### Decision Points
 - **Go/No-Go Decision:** Day 30 - Based on partner due diligence results
@@ -569,11 +569,11 @@ Each identified risk should have:
 Most reports focus on what is known. This audit isolates what is **not** proven yet: sequencing risks, verification gaps, timing drift, and structural weaknesses that frequently cause deals to fail despite strong narratives.
 
 ### Unbiased formulas applied
-- **SEQ (Sequencing Integrity)**: dependency order + gate completeness − acceleration penalty
-- **FMS (Funding Match Score)**: revenue timing ÷ (capex + opex burn)
-- **DCS (Dependency Concentration)**: 100 − single-point dependency concentration
-- **DQS (Data Quality Score)**: 0.5·coverage + 0.25·freshness + 0.25·verifiability
-- **GCS (Governance Clarity)**: (decision rights + exit clarity) ÷ 2
+- **SEQ (Sequencing Integrity)**: dependency order + gate completeness âˆ’ acceleration penalty
+- **FMS (Funding Match Score)**: revenue timing Ã· (capex + opex burn)
+- **DCS (Dependency Concentration)**: 100 âˆ’ single-point dependency concentration
+- **DQS (Data Quality Score)**: 0.5Â·coverage + 0.25Â·freshness + 0.25Â·verifiability
+- **GCS (Governance Clarity)**: (decision rights + exit clarity) Ã· 2
 
 ### Blind spot scores
 - SEQ: ${seq}
@@ -850,7 +850,7 @@ ${reportData.risks?.content || 'Risk analysis pending data completion.'}
     return `## Findings
 
 ### Key Findings
-${keyFindings || 'No autonomous insights generated — input data may be insufficient.'}
+${keyFindings || 'No autonomous insights generated â€” input data may be insufficient.'}
 
 ### Evidence Basis
 | Metric | Score | Source |
@@ -869,10 +869,10 @@ ${keyFindings || 'No autonomous insights generated — input data may be insuffi
     
     return `## Conclusion
 
-### Summary Assessment — ${verdict}
+### Summary Assessment â€” ${verdict}
 Based on NSIL v3.2 analysis (21 formulas, 5-agent Bayesian debate, HCE cognitive validation), ${params.organizationName || 'the organization'}'s pursuit of ${params.strategicIntent?.[0] || 'strategic objectives'} in ${params.country || 'the target market'} scores an overall confidence of **${confidence}%**.
 
-${topInsight ? `**Lead Insight:** ${topInsight.title} — ${topInsight.description}` : ''}
+${topInsight ? `**Lead Insight:** ${topInsight.title} â€” ${topInsight.description}` : ''}
 
 ### Recommendation Basis
 | Factor | Weight | Outcome |
@@ -892,7 +892,7 @@ ${confidence >= 70
 
 ### Next Steps
 1. Review findings with key stakeholders against audited evidence table
-2. Prioritize recommended actions by SPI™ and RROI™ rankings
+2. Prioritize recommended actions by SPIâ„¢ and RROIâ„¢ rankings
 3. Establish governance framework aligned with Ethics Engine compliance rules
 4. Schedule 90-day re-analysis to capture updated World Bank and FDI data`;
   }
@@ -911,13 +911,13 @@ ${confidence >= 70
 ### Pipeline Executed
 | Phase | Component | Status |
 |-------|-----------|--------|
-| 1 | SAT Constraint Solver | ✅ Input validated |
-| 2 | Vector Memory Retrieval | ✅ Prior cases ranked |
-| 3 | Multi-Agent Bayesian Debate | ✅ 5 personas converged |
-| 4 | DAG Formula Scheduler | ✅ 21 formulas (parallel) |
-| 5 | Human Cognition Engine | ✅ Bias check complete |
-| 6 | Executive Brief Synthesis | ✅ Evidence-anchored |
-| 7 | Ethics & Compliance | ✅ Fully assessed |
+| 1 | SAT Constraint Solver | âœ… Input validated |
+| 2 | Vector Memory Retrieval | âœ… Prior cases ranked |
+| 3 | Multi-Agent Bayesian Debate | âœ… 5 personas converged |
+| 4 | DAG Formula Scheduler | âœ… 21 formulas (parallel) |
+| 5 | Human Cognition Engine | âœ… Bias check complete |
+| 6 | Executive Brief Synthesis | âœ… Evidence-anchored |
+| 7 | Ethics & Compliance | âœ… Fully assessed |
 
 ### Live Data Sources
 | Source | Endpoint | Data Retrieved |
@@ -940,23 +940,23 @@ ${JSON.stringify(scores, null, 2)}
 ### NSIL v3.2 Analytical Framework
 This analysis employs a 7-phase pipeline powered by the Nexus Strategic Intelligence Layer (NSIL):
 
-1. **Input Validation** — SAT constraint solver checks for logical contradictions in user inputs
-2. **Memory Retrieval** — Vector similarity index retrieves prior cases with gradient-boosted ranking
-3. **Multi-Agent Debate** — 5 Bayesian personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate with early-stopping consensus
-4. **DAG Formula Execution** — 21 proprietary formulas executed in parallel via directed-acyclic-graph scheduler using live World Bank, FDI, and exchange rate data
-5. **Synthesis** — Decision tree template selection with gradient ranking
-6. **Frontier Intelligence** — Negotiation strategy, synthetic foresight, and competitive positioning
-7. **Human Cognition Engine** — 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, attention allocation, emotional processing, consciousness modeling, working memory) that adjust consensus strength, amplify risk signals, and surface cognitive blind spots
+1. **Input Validation** â€” SAT constraint solver checks for logical contradictions in user inputs
+2. **Memory Retrieval** â€” Vector similarity index retrieves prior cases with gradient-boosted ranking
+3. **Multi-Agent Debate** â€” 5 Bayesian personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate with early-stopping consensus
+4. **DAG Formula Execution** â€” 21 proprietary formulas executed in parallel via directed-acyclic-graph scheduler using live World Bank, FDI, and exchange rate data
+5. **Synthesis** â€” Decision tree template selection with gradient ranking
+6. **Frontier Intelligence** â€” Negotiation strategy, synthetic foresight, and competitive positioning
+7. **Human Cognition Engine** â€” 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, attention allocation, emotional processing, consciousness modeling, working memory) that adjust consensus strength, amplify risk signals, and surface cognitive blind spots
 
 ### Data Sources (Live)
-- **World Bank API** — GDP, GDP growth, FDI inflows, trade balance, population
-- **Exchange Rate API** — Real-time currency conversion data
-- **REST Countries API** — Demographics, region classification, languages
-- **Regional Baselines** — Curated infrastructure, digital, stability, and innovation baselines per continent
-- **Case Memory** — Persistent localStorage-based prior case retrieval
+- **World Bank API** â€” GDP, GDP growth, FDI inflows, trade balance, population
+- **Exchange Rate API** â€” Real-time currency conversion data
+- **REST Countries API** â€” Demographics, region classification, languages
+- **Regional Baselines** â€” Curated infrastructure, digital, stability, and innovation baselines per continent
+- **Case Memory** â€” Persistent localStorage-based prior case retrieval
 
 ### Quality Assurance
-- All 21 DAG formulas are deterministic (no random generation) — reproducible on identical inputs
+- All 21 DAG formulas are deterministic (no random generation) â€” reproducible on identical inputs
 - SAT solver validates input consistency before analysis begins
 - Ethics Engine checks compliance against sanctions, AML, ESG, and anti-corruption rules
 - Self-Improvement Engine monitors accuracy drift and auto-recalibrates scoring weights
@@ -1024,8 +1024,8 @@ ${JSON.stringify(reportData.confidenceScores || {}, null, 2)}
 | 2 | CRI | Cultural Risk Index |
 | 3 | BARNA | Border & Regulatory Normalised Assessment |
 | 4 | TCO | Total Cost of Ownership |
-| 5 | SPI™ | Strategic Partnership Index |
-| 6 | RROI™ | Risk-Adjusted Return on Investment |
+| 5 | SPIâ„¢ | Strategic Partnership Index |
+| 6 | RROIâ„¢ | Risk-Adjusted Return on Investment |
 | 7 | NVI | Nexus Value Index |
 | 8 | RNI | Regional Network Index |
 | 9 | CAP | Capital Allocation Priority |
@@ -1035,7 +1035,7 @@ ${JSON.stringify(reportData.confidenceScores || {}, null, 2)}
 | 13 | FRS | Financial Risk Score |
 | 14 | AGI | Aggregate Growth Index |
 | 15 | VCI | Value Chain Index |
-| 16 | SCF™ | Supply Chain Flexibility |
+| 16 | SCFâ„¢ | Supply Chain Flexibility |
 | 17 | ATI | Adaptive Threshold Index |
 | 18 | ISI | Innovation Strength Index |
 | 19 | OSI | Operational Sustainability Index |
@@ -1043,13 +1043,13 @@ ${JSON.stringify(reportData.confidenceScores || {}, null, 2)}
 | 21 | IDV | Investment Decision Validator |
 
 ### D. Glossary
-- **NSIL** — Nexus Strategic Intelligence Layer (v3.2)
-- **HCE** — Human Cognition Engine (7 neuroscience models)
-- **DAG** — Directed Acyclic Graph (parallel formula execution)
-- **SPI™** — Strategic Partnership Index
-- **RROI™** — Risk-Adjusted Return on Investment
-- **SCF™** — Supply Chain Flexibility
-- **SAT** — Boolean satisfiability constraint solver
+- **NSIL** â€” Nexus Strategic Intelligence Layer (v3.2)
+- **HCE** â€” Human Cognition Engine (7 neuroscience models)
+- **DAG** â€” Directed Acyclic Graph (parallel formula execution)
+- **SPIâ„¢** â€” Strategic Partnership Index
+- **RROIâ„¢** â€” Risk-Adjusted Return on Investment
+- **SCFâ„¢** â€” Supply Chain Flexibility
+- **SAT** â€” Boolean satisfiability constraint solver
 
 ### E. Data Provenance
 All live data retrieved via HTTPS from:
@@ -1069,9 +1069,9 @@ Content for this section is being generated based on available data.
 *This section will be enhanced as more information becomes available.*`;
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // ENHANCEMENT & QUALITY METHODS
-  // ═══════════════════════════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
   private async applyAIEnhancements(sections: DocumentSection[], config: DocumentConfig): Promise<AIEnhancement[]> {
     const enhancements: AIEnhancement[] = [];
@@ -1241,3 +1241,4 @@ Content for this section is being generated based on available data.
 export const intelligentDocumentGenerator = new IntelligentDocumentGenerator();
 
 export default IntelligentDocumentGenerator;
+

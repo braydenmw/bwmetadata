@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ReportParameters } from '../types';
 
 interface MasterAutonomousOrchestratorProps {
@@ -129,13 +129,13 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">
-              🎯 Master Autonomous Orchestrator
+              ðŸŽ¯ Master Autonomous Orchestrator
             </h2>
             <button
               onClick={() => {/* Close modal */}}
               className="text-gray-400 hover:text-gray-600"
             >
-              ✕
+              âœ•
             </button>
           </div>
 
@@ -144,7 +144,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
               <h3 className="text-lg font-semibold mb-2">100% Performance Mode</h3>
               <p className="text-sm opacity-90">
                 Activate all advanced autonomous agents for complete system optimization:
-                Deep Thinking • Autonomous Research • Intelligent Document Generation • Self-Improvement
+                Deep Thinking â€¢ Autonomous Research â€¢ Intelligent Document Generation â€¢ Self-Improvement
               </p>
             </div>
           </div>
@@ -192,7 +192,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                         value === 'active' ? 'text-green-600' :
                         value === 'idle' ? 'text-yellow-600' : 'text-red-600'
                       }`}>
-                        {value === 'active' ? '●' : value === 'idle' ? '○' : '✕'}
+                        {value === 'active' ? 'â—' : value === 'idle' ? 'â—‹' : 'âœ•'}
                       </div>
                     </div>
                   );
@@ -239,10 +239,10 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
               <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
                 <p className="text-green-800 font-medium">{result.message}</p>
                 <div className="mt-2 text-sm text-green-700">
-                  <p>• Deep Thinking Analysis: {result.autonomousEnhancements?.deepThinking ? 'Completed' : 'Pending'}</p>
-                  <p>• Autonomous Research: {result.autonomousEnhancements?.researchInsights ? 'Completed' : 'Pending'}</p>
-                  <p>• Document Enhancement: {result.autonomousEnhancements?.documentQuality ? 'Completed' : 'Pending'}</p>
-                  <p>• Self-Improvement: {result.autonomousEnhancements?.selfImprovement ? 'Completed' : 'Pending'}</p>
+                  <p>â€¢ Deep Thinking Analysis: {result.autonomousEnhancements?.deepThinking ? 'Completed' : 'Pending'}</p>
+                  <p>â€¢ Autonomous Research: {result.autonomousEnhancements?.researchInsights ? 'Completed' : 'Pending'}</p>
+                  <p>â€¢ Document Enhancement: {result.autonomousEnhancements?.documentQuality ? 'Completed' : 'Pending'}</p>
+                  <p>â€¢ Self-Improvement: {result.autonomousEnhancements?.selfImprovement ? 'Completed' : 'Pending'}</p>
                 </div>
               </div>
             </div>
@@ -255,7 +255,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                 onClick={startMasterOrchestration}
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
               >
-                🚀 Start 100% Orchestration
+                ðŸš€ Start 100% Orchestration
               </button>
             )}
 
@@ -264,7 +264,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                 onClick={() => {/* Close and use results */}}
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
               >
-                ✅ Use Results
+                âœ… Use Results
               </button>
             )}
           </div>

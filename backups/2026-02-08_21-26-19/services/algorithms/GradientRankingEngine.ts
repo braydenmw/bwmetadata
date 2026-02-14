@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GRADIENT RANKING ENGINE - Learning-to-Rank for Case Relevance
  * 
  * Implements a gradient-boosted ranking algorithm for:
@@ -418,3 +418,4 @@ export class GradientRankingEngine {
 export const gradientRankingEngine = new GradientRankingEngine();
 
 export default GradientRankingEngine;
+

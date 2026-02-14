@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import type { ReportParameters, GeopoliticalAnalysisResult } from '../types';
 import { runGeopoliticalAnalysis } from '../services/geminiService';
 import { Globe, Activity } from 'lucide-react';

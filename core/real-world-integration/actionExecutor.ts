@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ADVANCED REAL-WORLD ACTION EXECUTOR
  * 
  * Implements:
@@ -472,12 +472,12 @@ export async function executeRealWorldAction(
   const integrations = loadIntegrations();
   let result: ActionResult;
   
-  console.log(`🚀 Executing action: ${action}`);
+  console.log(`ðŸš€ Executing action: ${action}`);
   
   // Route to appropriate executor
   if (action.startsWith('notify-') || action === 'send-notification') {
     result = await executeNotification(
-      params.title as string || 'BWGA Intelligence AI Notification',
+      params.title as string || 'BWGA Ai Notification',
       params.message as string || JSON.stringify(params),
       params.priority as 'low' | 'normal' | 'high' || 'normal'
     );
@@ -541,7 +541,7 @@ export async function executeRealWorldAction(
   // Log the action
   logAction(action, params, result);
   
-  console.log(`${result.success ? '✅' : '❌'} Action result: ${result.details}`);
+  console.log(`${result.success ? 'âœ…' : 'âŒ'} Action result: ${result.details}`);
   
   return result;
 }
@@ -593,3 +593,4 @@ export function addIntegration(integration: IntegrationConfig): void {
     console.error('Failed to save integration:', error);
   }
 }
+

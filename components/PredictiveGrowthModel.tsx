@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { TrendingUp, BrainCircuit, Loader2 } from 'lucide-react';
 

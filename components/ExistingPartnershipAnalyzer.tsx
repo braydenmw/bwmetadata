@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Zap, Plus, Trash2, TrendingUp, AlertCircle, CheckCircle, BarChart3, Globe, DollarSign } from 'lucide-react';
 
 interface Partnership {
@@ -219,7 +219,7 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h4 className="font-bold text-lg">{partnership.partnerName}</h4>
-                        <p className="text-sm opacity-75">{partnership.country} • {partnership.industry}</p>
+                        <p className="text-sm opacity-75">{partnership.country} â€¢ {partnership.industry}</p>
                       </div>
                       <div className="text-right">
                         <div className={`text-2xl font-black ${getHealthScoreColor(partnership.healthScore)}`}>
@@ -260,7 +260,7 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
               onClick={() => setSelectedPartnership(null)}
               className="px-4 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-700 hover:bg-stone-50"
             >
-              ← Back to Portfolio
+              â† Back to Portfolio
             </button>
 
             {/* PARTNERSHIP DEEP DIVE */}
@@ -298,7 +298,7 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
                   </h4>
                   <ul className="space-y-1">
                     {selectedPartnership.keyStrengths.map((strength, idx) => (
-                      <li key={idx} className="text-sm text-green-800">✓ {strength}</li>
+                      <li key={idx} className="text-sm text-green-800">âœ“ {strength}</li>
                     ))}
                   </ul>
                 </div>
@@ -310,7 +310,7 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
                   </h4>
                   <ul className="space-y-1">
                     {selectedPartnership.challenges.map((challenge, idx) => (
-                      <li key={idx} className={`text-sm ${selectedPartnership.healthScore < 70 ? 'text-red-800' : 'text-yellow-800'}`}>⚠ {challenge}</li>
+                      <li key={idx} className={`text-sm ${selectedPartnership.healthScore < 70 ? 'text-red-800' : 'text-yellow-800'}`}>âš  {challenge}</li>
                     ))}
                   </ul>
                 </div>
@@ -393,11 +393,11 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
                   Partnership at Risk - Intervention Plan
                 </h3>
                 <div className="space-y-2 text-sm text-red-800">
-                  <p>• Schedule executive-level meeting within 2 weeks to discuss performance gaps</p>
-                  <p>• Review governance structure and decision-making authority alignment</p>
-                  <p>• Consider bringing in mediator for conflict resolution if needed</p>
-                  <p>• Develop turnaround plan with clear KPIs and timeline</p>
-                  <p>• Prepare exit scenarios if turnaround is not feasible (6-month contingency)</p>
+                  <p>â€¢ Schedule executive-level meeting within 2 weeks to discuss performance gaps</p>
+                  <p>â€¢ Review governance structure and decision-making authority alignment</p>
+                  <p>â€¢ Consider bringing in mediator for conflict resolution if needed</p>
+                  <p>â€¢ Develop turnaround plan with clear KPIs and timeline</p>
+                  <p>â€¢ Prepare exit scenarios if turnaround is not feasible (6-month contingency)</p>
                 </div>
               </div>
             )}
@@ -409,3 +409,4 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
 };
 
 export default ExistingPartnershipAnalyzer;
+

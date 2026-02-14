@@ -1,8 +1,8 @@
-# BWGA Intelligence AI - Complete System Architecture & Documentation
+﻿# BWGA Ai - Complete System Architecture & Documentation
 
 ## Executive Summary
 
-**BWGA Intelligence AI** is an enterprise-grade partnership intelligence and deal feasibility platform built with React 19.2, TypeScript 5, Vite 6.4.1, and TailwindCSS. The system analyzes regional markets, evaluates partnership compatibility, and generates comprehensive pre-feasibility reports for strategic expansion decisions.
+**BWGA Ai** is an enterprise-grade partnership intelligence and deal feasibility platform built with React 19.2, TypeScript 5, Vite 6.4.1, and TailwindCSS. The system analyzes regional markets, evaluates partnership compatibility, and generates comprehensive pre-feasibility reports for strategic expansion decisions.
 
 **Current Build Status**: 
 - 2,341 modules | 1,326.25 kB | 359.75 kB gzipped | Exit Code 0
@@ -31,48 +31,48 @@ Export: CSV, PDF, DOCX capabilities
 
 ```
 c:\Users\brayd\Downloads\bw-nexus-ai-final-11\
-├── src/
-│   ├── App.tsx                                 # Main application routing & state
-│   ├── index.tsx                               # Entry point
-│   ├── index.html                              # HTML template
-│   ├── types.ts                                # TypeScript interfaces
-│   ├── constants.ts                            # System constants & configuration
-│   ├── components/                             # 50+ React components
-│   │   ├── CommandCenter.tsx                   # Gateway/Entry point
-│   │   ├── EntityDefinitionBuilder.tsx         # Step 1: Organization profile
-│   │   ├── GlobalMarketComparison.tsx          # Feature 1: Market analysis
-│   │   ├── PartnershipCompatibilityEngine.tsx  # Feature 2: Compatibility scoring
-│   │   ├── DealMarketplace.tsx                 # Feature 3: Deal sourcing
-│   │   ├── ExecutiveSummaryGenerator.tsx       # Feature 4: Summary generation
-│   │   ├── BusinessPracticeIntelligenceModule.tsx # Feature 5: Intelligence
-│   │   ├── DocumentGenerationSuite.tsx         # Feature 6: Document creation
-│   │   ├── ExistingPartnershipAnalyzer.tsx     # Feature 7: Partnership analysis
-│   │   ├── RelationshipDevelopmentPlanner.tsx  # Feature 8: Relationship planning
-│   │   ├── MultiScenarioPlanner.tsx            # Feature 9: Scenario modeling
-│   │   ├── SupportProgramsDatabase.tsx         # Feature 10: Support programs
-│   │   ├── AdvancedStepExpansionSystem.tsx     # Feature 11: Expansion system
-│   │   ├── PartnershipRepository.tsx           # Feature 12: Repository
-│   │   ├── AIPoweredDealRecommendation.tsx     # Feature 13: AI recommendations
-│   │   ├── LowCostRelocationTools.tsx          # Feature 14: Cost tools
-│   │   ├── IntegrationExportFramework.tsx      # Feature 15: Integration/Export
-│   │   ├── WorkbenchFeature.tsx                # Feature 16: Workbench
-│   │   ├── Navbar.tsx                          # Navigation header
-│   │   ├── Footer.tsx                          # Footer component
-│   │   └── [40+ other supporting components]
-│   ├── services/                               # Business logic & API
-│   │   ├── geminiService.ts                    # Gemini API integration
-│   │   ├── mockDataGenerator.ts                # Test data generation
-│   │   ├── engine.ts                           # Core processing engine
-│   │   ├── ruleEngine.ts                       # Rule evaluation
-│   │   └── [5+ other services]
-│   ├── hooks/                                  # Custom React hooks
-│   │   └── useEscapeKey.ts
-│   ├── vite.config.ts                          # Vite configuration
-│   ├── tsconfig.json                           # TypeScript configuration
-│   ├── package.json                            # Dependencies & scripts
-│   └── metadata.json                           # System metadata
-├── dist/                                       # Production build output
-└── node_modules/                               # Dependencies (not included)
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ App.tsx                                 # Main application routing & state
+â”‚   â”œâ”€â”€ index.tsx                               # Entry point
+â”‚   â”œâ”€â”€ index.html                              # HTML template
+â”‚   â”œâ”€â”€ types.ts                                # TypeScript interfaces
+â”‚   â”œâ”€â”€ constants.ts                            # System constants & configuration
+â”‚   â”œâ”€â”€ components/                             # 50+ React components
+â”‚   â”‚   â”œâ”€â”€ CommandCenter.tsx                   # Gateway/Entry point
+â”‚   â”‚   â”œâ”€â”€ EntityDefinitionBuilder.tsx         # Step 1: Organization profile
+â”‚   â”‚   â”œâ”€â”€ GlobalMarketComparison.tsx          # Feature 1: Market analysis
+â”‚   â”‚   â”œâ”€â”€ PartnershipCompatibilityEngine.tsx  # Feature 2: Compatibility scoring
+â”‚   â”‚   â”œâ”€â”€ DealMarketplace.tsx                 # Feature 3: Deal sourcing
+â”‚   â”‚   â”œâ”€â”€ ExecutiveSummaryGenerator.tsx       # Feature 4: Summary generation
+â”‚   â”‚   â”œâ”€â”€ BusinessPracticeIntelligenceModule.tsx # Feature 5: Intelligence
+â”‚   â”‚   â”œâ”€â”€ DocumentGenerationSuite.tsx         # Feature 6: Document creation
+â”‚   â”‚   â”œâ”€â”€ ExistingPartnershipAnalyzer.tsx     # Feature 7: Partnership analysis
+â”‚   â”‚   â”œâ”€â”€ RelationshipDevelopmentPlanner.tsx  # Feature 8: Relationship planning
+â”‚   â”‚   â”œâ”€â”€ MultiScenarioPlanner.tsx            # Feature 9: Scenario modeling
+â”‚   â”‚   â”œâ”€â”€ SupportProgramsDatabase.tsx         # Feature 10: Support programs
+â”‚   â”‚   â”œâ”€â”€ AdvancedStepExpansionSystem.tsx     # Feature 11: Expansion system
+â”‚   â”‚   â”œâ”€â”€ PartnershipRepository.tsx           # Feature 12: Repository
+â”‚   â”‚   â”œâ”€â”€ AIPoweredDealRecommendation.tsx     # Feature 13: AI recommendations
+â”‚   â”‚   â”œâ”€â”€ LowCostRelocationTools.tsx          # Feature 14: Cost tools
+â”‚   â”‚   â”œâ”€â”€ IntegrationExportFramework.tsx      # Feature 15: Integration/Export
+â”‚   â”‚   â”œâ”€â”€ WorkbenchFeature.tsx                # Feature 16: Workbench
+â”‚   â”‚   â”œâ”€â”€ Navbar.tsx                          # Navigation header
+â”‚   â”‚   â”œâ”€â”€ Footer.tsx                          # Footer component
+â”‚   â”‚   â””â”€â”€ [40+ other supporting components]
+â”‚   â”œâ”€â”€ services/                               # Business logic & API
+â”‚   â”‚   â”œâ”€â”€ geminiService.ts                    # Gemini API integration
+â”‚   â”‚   â”œâ”€â”€ mockDataGenerator.ts                # Test data generation
+â”‚   â”‚   â”œâ”€â”€ engine.ts                           # Core processing engine
+â”‚   â”‚   â”œâ”€â”€ ruleEngine.ts                       # Rule evaluation
+â”‚   â”‚   â””â”€â”€ [5+ other services]
+â”‚   â”œâ”€â”€ hooks/                                  # Custom React hooks
+â”‚   â”‚   â””â”€â”€ useEscapeKey.ts
+â”‚   â”œâ”€â”€ vite.config.ts                          # Vite configuration
+â”‚   â”œâ”€â”€ tsconfig.json                           # TypeScript configuration
+â”‚   â”œâ”€â”€ package.json                            # Dependencies & scripts
+â”‚   â””â”€â”€ metadata.json                           # System metadata
+â”œâ”€â”€ dist/                                       # Production build output
+â””â”€â”€ node_modules/                               # Dependencies (not included)
 ```
 
 ---
@@ -93,8 +93,8 @@ c:\Users\brayd\Downloads\bw-nexus-ai-final-11\
 - 7 Compliance Terms (Complementary Architecture, Decision Support, Data Privacy, Financial Models, Historical Context, Autonomous Agents, Neuro-Symbolic Gatekeepers)
 - Acceptance checkbox
 - **2 Action Buttons**:
-  - "Begin Entity Definition" (primary) → Routes to Step 1
-  - "View System Monitor" (secondary) → Shows system status
+  - "Begin Entity Definition" (primary) â†’ Routes to Step 1
+  - "View System Monitor" (secondary) â†’ Shows system status
 
 **ViewMode Route**: `"command-center"`
 
@@ -315,7 +315,7 @@ After Entity Definition, user enters the 6-stage report builder where all 16 ana
 - Financial modeling: Revenue, profit, margins, capital investment
 - IRR calculation (internal rate of return)
 - Payback period analysis
-- Sensitivity analysis (±10% on key variables)
+- Sensitivity analysis (Â±10% on key variables)
 - Decision support recommendations
 - Export scenario comparison to CSV
 
@@ -625,30 +625,30 @@ const handleLoadReport = (report: ReportParameters) => {
 
 ```
 App.tsx
-├── Navbar (top navigation)
-├── MainContent (dynamic based on ViewMode)
-│   ├── CommandCenter (viewMode === 'command-center')
-│   ├── EntityDefinitionBuilder (post-entity-definition)
-│   └── [Dynamic Feature Components]
-│       ├── GlobalMarketComparison
-│       ├── PartnershipCompatibilityEngine
-│       ├── DealMarketplace
-│       ├── ExecutiveSummaryGenerator
-│       ├── BusinessPracticeIntelligenceModule
-│       ├── DocumentGenerationSuite
-│       ├── ExistingPartnershipAnalyzer
-│       ├── RelationshipDevelopmentPlanner
-│       ├── MultiScenarioPlanner
-│       ├── SupportProgramsDatabase
-│       ├── AdvancedStepExpansionSystem
-│       ├── PartnershipRepository
-│       ├── AIPoweredDealRecommendation
-│       ├── LowCostRelocationTools
-│       ├── IntegrationExportFramework
-│       └── WorkbenchFeature
-├── CopilotSidebar (AI assistant)
-├── MonitorDashboard (system monitoring)
-└── Footer
+â”œâ”€â”€ Navbar (top navigation)
+â”œâ”€â”€ MainContent (dynamic based on ViewMode)
+â”‚   â”œâ”€â”€ CommandCenter (viewMode === 'command-center')
+â”‚   â”œâ”€â”€ EntityDefinitionBuilder (post-entity-definition)
+â”‚   â””â”€â”€ [Dynamic Feature Components]
+â”‚       â”œâ”€â”€ GlobalMarketComparison
+â”‚       â”œâ”€â”€ PartnershipCompatibilityEngine
+â”‚       â”œâ”€â”€ DealMarketplace
+â”‚       â”œâ”€â”€ ExecutiveSummaryGenerator
+â”‚       â”œâ”€â”€ BusinessPracticeIntelligenceModule
+â”‚       â”œâ”€â”€ DocumentGenerationSuite
+â”‚       â”œâ”€â”€ ExistingPartnershipAnalyzer
+â”‚       â”œâ”€â”€ RelationshipDevelopmentPlanner
+â”‚       â”œâ”€â”€ MultiScenarioPlanner
+â”‚       â”œâ”€â”€ SupportProgramsDatabase
+â”‚       â”œâ”€â”€ AdvancedStepExpansionSystem
+â”‚       â”œâ”€â”€ PartnershipRepository
+â”‚       â”œâ”€â”€ AIPoweredDealRecommendation
+â”‚       â”œâ”€â”€ LowCostRelocationTools
+â”‚       â”œâ”€â”€ IntegrationExportFramework
+â”‚       â””â”€â”€ WorkbenchFeature
+â”œâ”€â”€ CopilotSidebar (AI assistant)
+â”œâ”€â”€ MonitorDashboard (system monitoring)
+â””â”€â”€ Footer
 ```
 
 ---
@@ -682,20 +682,20 @@ App.tsx
 
 ## User Flow Summary
 
-1. **User Visits App** → Redirected to `CommandCenter`
-2. **Reads Terms & Process** → Accepts conditions
-3. **Clicks "Begin Entity Definition"** → Routes to `EntityDefinitionBuilder`
-4. **Fills Organization Profile** → Submits form
-5. **Enters 6-Stage Workflow** → Guided through analytical modules:
+1. **User Visits App** â†’ Redirected to `CommandCenter`
+2. **Reads Terms & Process** â†’ Accepts conditions
+3. **Clicks "Begin Entity Definition"** â†’ Routes to `EntityDefinitionBuilder`
+4. **Fills Organization Profile** â†’ Submits form
+5. **Enters 6-Stage Workflow** â†’ Guided through analytical modules:
    - Stage 1: Market Analysis (GlobalMarketComparison)
    - Stage 2: Partnership Feasibility (PartnershipCompatibilityEngine)
    - Stage 3: Deal Intelligence (DealMarketplace, BusinessIntelligence, PartnershipAnalyzer)
    - Stage 4: Strategy Planning (RelationshipPlanner, MultiScenarioPlanner, SupportPrograms)
    - Stage 5: Expansion Design (AdvancedExpansion, Repository, AIRecommendations, LowCostTools)
    - Stage 6: Report Generation (ExecutiveSummary, DocumentSuite, Integration, Workbench)
-6. **Reviews Generated Reports** → Exports to multiple formats
-7. **Saves Report** → Stores in `savedReports` array
-8. **Shares/Integrates** → Uses export framework to distribute
+6. **Reviews Generated Reports** â†’ Exports to multiple formats
+7. **Saves Report** â†’ Stores in `savedReports` array
+8. **Shares/Integrates** â†’ Uses export framework to distribute
 
 ---
 
@@ -739,14 +739,14 @@ Most issues are linting warnings:
 
 ## Architecture Strengths
 
-✅ **Modular Design** - 16 features are independently testable and deployable
-✅ **Scalable State** - ReportParameters object can expand without breaking
-✅ **Type-Safe** - Full TypeScript coverage with detailed interfaces
-✅ **Export Capability** - Multiple export formats (CSV, PDF, DOCX, JSON)
-✅ **Integration Ready** - API framework for external system connections
-✅ **Production Optimized** - Gzipped to 359.75 kB with code splitting potential
-✅ **Responsive UI** - TailwindCSS + mobile-first design
-✅ **Accessibility** - Semantic HTML, ARIA labels, keyboard navigation
+âœ… **Modular Design** - 16 features are independently testable and deployable
+âœ… **Scalable State** - ReportParameters object can expand without breaking
+âœ… **Type-Safe** - Full TypeScript coverage with detailed interfaces
+âœ… **Export Capability** - Multiple export formats (CSV, PDF, DOCX, JSON)
+âœ… **Integration Ready** - API framework for external system connections
+âœ… **Production Optimized** - Gzipped to 359.75 kB with code splitting potential
+âœ… **Responsive UI** - TailwindCSS + mobile-first design
+âœ… **Accessibility** - Semantic HTML, ARIA labels, keyboard navigation
 
 ---
 
@@ -757,12 +757,12 @@ Most issues are linting warnings:
 1. **Copy all TypeScript interfaces** from `types.ts` (foundation)
 2. **Extract business logic** from services/ (platform-agnostic)
 3. **Port components** by mapping to target framework:
-   - React → Vue: Use `ref`, `computed` instead of hooks
-   - React → Angular: Use Components + Services + RxJS
-   - React → Svelte: Use stores and reactive declarations
+   - React â†’ Vue: Use `ref`, `computed` instead of hooks
+   - React â†’ Angular: Use Components + Services + RxJS
+   - React â†’ Svelte: Use stores and reactive declarations
 
 4. **Preserve workflow state machine** - The 6-stage progression is core IP
-5. **Adapt UI framework** - TailwindCSS → Bootstrap, Material, etc.
+5. **Adapt UI framework** - TailwindCSS â†’ Bootstrap, Material, etc.
 6. **Integrate with your API** - Replace mock data with real endpoints
 7. **Update routing** - Map ViewModes to your routing solution
 
@@ -774,9 +774,9 @@ Most issues are linting warnings:
 - `EntityDefinitionBuilder.tsx` (entity model)
 
 ### Critical Files to Adapt:
-- `services/geminiService.ts` → Replace with your LLM integration
-- `services/mockDataGenerator.ts` → Replace with real data sources
-- All feature components → Adapt to your UI framework
+- `services/geminiService.ts` â†’ Replace with your LLM integration
+- `services/mockDataGenerator.ts` â†’ Replace with real data sources
+- All feature components â†’ Adapt to your UI framework
 
 ---
 
@@ -789,13 +789,13 @@ Most issues are linting warnings:
 **Architecture**: Component-based with centralized state machine
 **Key Innovation**: Workflow-driven module exposure (modules activate only within workflow stages, not on landing page)
 
-**To Rebuild Elsewhere**: Port types → services → state management → components (in that order). The workflow sequence is non-negotiable.
+**To Rebuild Elsewhere**: Port types â†’ services â†’ state management â†’ components (in that order). The workflow sequence is non-negotiable.
 
 ---
 
 ## Contact & Support Information
 
-**Build Status**: ✅ Production-Ready
+**Build Status**: âœ… Production-Ready
 **Last Build**: December 16, 2025
 **Bundle Size**: 1,326.25 kB (359.75 kB gzipped)
 **Module Count**: 2,341
@@ -805,3 +805,4 @@ Most issues are linting warnings:
 ---
 
 **END OF DOCUMENTATION**
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -40,3 +40,4 @@ export default class ErrorBoundary extends React.Component<React.PropsWithChildr
     return this.props.children as React.ReactElement;
   }
 }
+

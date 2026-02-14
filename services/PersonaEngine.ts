@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PERSONA ENGINE - The Five Minds of NSIL
  * 
  * This implements the core multi-perspective reasoning system:
@@ -815,3 +815,4 @@ export class PersonaEngine {
 }
 
 export default PersonaEngine;
+

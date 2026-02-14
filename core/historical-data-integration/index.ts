@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HISTORICAL DATA INTEGRATION MODULE
  * 
  * Provides intelligent data ingestion from multiple sources:
@@ -28,7 +28,7 @@ interface IngestionResult {
 }
 
 export async function ingestData(source: string): Promise<IngestionResult> {
-  console.log(`📥 Ingesting data from: ${source}`);
+  console.log(`ðŸ“¥ Ingesting data from: ${source}`);
   
   try {
     let rawData: DataRecord[];
@@ -75,7 +75,7 @@ export async function ingestData(source: string): Promise<IngestionResult> {
       ? assessDataQuality(cleanedData)
       : { qualityScore: 0, issues: ['No data available'] };
     
-    console.log(`✅ Ingested ${cleanedData.length} records (Quality: ${qualityReport.qualityScore.toFixed(0)}%)`);
+    console.log(`âœ… Ingested ${cleanedData.length} records (Quality: ${qualityReport.qualityScore.toFixed(0)}%)`);
     
     return {
       status: 'success',
@@ -89,7 +89,7 @@ export async function ingestData(source: string): Promise<IngestionResult> {
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`❌ Failed to ingest data from ${source}:`, errorMessage);
+    console.error(`âŒ Failed to ingest data from ${source}:`, errorMessage);
     
     return {
       status: 'error',
@@ -156,3 +156,4 @@ export async function ingestAndAggregate(
 }
 
 export { cleanData, assessDataQuality, normalizeData, aggregateData, clearCache };
+

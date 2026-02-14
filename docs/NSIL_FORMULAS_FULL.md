@@ -1,4 +1,4 @@
-# NSIL Formula Suite — Full Reference (21 Methods)
+﻿# NSIL Formula Suite â€” Full Reference (21 Methods)
 
 Clear, standalone reference for the NSIL/Agentic Brain formula family. Each method lists intent, inputs, core equation, and outputs. Confidence and data-quality gating apply to all (low Evidence Confidence Score clamps assertions and adds caution language).
 
@@ -6,7 +6,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Partner fit for joint execution.
 - **Inputs:** Reach, credibility, incentives, ops capacity, compliance stance; weights sum to 1.
 - **Formula:** $SPI = \sum_i w_i s_i$.
-- **Outputs:** 0–100 score; top drivers; confidence band.
+- **Outputs:** 0â€“100 score; top drivers; confidence band.
 
 ## 2) Regional Return on Investment (RROI)
 - **Intent:** Regional ROI with downside adjustment.
@@ -18,7 +18,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Partner ecosystem alignment.
 - **Inputs:** Complementarity, non-overlap, governance fit; weights $w_c, w_n, w_g$.
 - **Formula:** $SEAM = c w_c + n w_n + g w_g$.
-- **Outputs:** 0–100 alignment; fit notes; gaps.
+- **Outputs:** 0â€“100 alignment; fit notes; gaps.
 
 ## 4) Investment Viability Assessment Score (IVAS)
 - **Intent:** Probability of positive NPV under uncertainty.
@@ -36,7 +36,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Fragility to adverse scenarios.
 - **Inputs:** Top-k counterfactual losses.
 - **Formula:** $CRI = 100 - (\text{worst\_delta% among top } k)$.
-- **Outputs:** 0–100 robustness; weakest scenarios.
+- **Outputs:** 0â€“100 robustness; weakest scenarios.
 
 ## 7) Opportunity Velocity Score (OVS)
 - **Intent:** Execution pace vs. plan.
@@ -48,7 +48,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Counterparty readiness.
 - **Inputs:** Team, approvals, funding, tech, compliance; evidence flags.
 - **Formula:** $PRI = \sum_j w_j r_j$.
-- **Outputs:** 0–100; missing evidence penalties.
+- **Outputs:** 0â€“100; missing evidence penalties.
 
 ## 9) Risk Concentration Index (RCI)
 - **Intent:** Concentration of exposure.
@@ -59,7 +59,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ## 10) Compliance Friction Index (CFI)
 - **Intent:** Regulatory/AML/sanctions friction.
 - **Inputs:** Sector base, licensing, data, sanctions/AML, export controls.
-- **Formula:** Sector base + weighted factors scaled 0–100.
+- **Formula:** Sector base + weighted factors scaled 0â€“100.
 - **Outputs:** Friction score; critical approvals list.
 
 ## 11) Trust & Integrity Score (TIS)
@@ -94,9 +94,9 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 
 ## 16) Evidence Confidence Score (ECS)
 - **Intent:** Data quality gate.
-- **Inputs:** Coverage, freshness, diversity (0–1 each).
+- **Inputs:** Coverage, freshness, diversity (0â€“1 each).
 - **Formula:** $ECS = coverage \times freshness \times diversity$.
-- **Outputs:** 0–1; clamps assertions if < 0.4.
+- **Outputs:** 0â€“1; clamps assertions if < 0.4.
 
 ## 17) Perception Gap Index (PGI)
 - **Intent:** Narrative vs. observed risk gap.
@@ -113,7 +113,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ## 19) Capital Efficiency Score (CES)
 - **Intent:** Value per unit capital.
 - **Inputs:** Risk-adjusted NPV, CapEx.
-- **Formula:** $CES = \frac{NPV_{risk\text{-}adj}}{CapEx}$ normalized 0–100.
+- **Formula:** $CES = \frac{NPV_{risk\text{-}adj}}{CapEx}$ normalized 0â€“100.
 - **Outputs:** Efficiency score; compare to hurdle.
 
 ## 20) Activation Velocity (AV)
@@ -156,14 +156,14 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### Information Integrity Score (IIS)
 - **Intent:** Trustworthiness of inputs.
 - **Inputs:** Source diversity, freshness, bias, conflict count.
-- **Formula:** $IIS = diversity \times freshness - bias - conflicts$ (scaled 0–1).
+- **Formula:** $IIS = diversity \times freshness - bias - conflicts$ (scaled 0â€“1).
 - **Outputs:** Trust band; clamps assertions downstream.
 
 ### Infrastructure Uptime & Resilience (IUR)
 - **Intent:** Reliability of grid/water/telecom.
 - **Inputs:** Outage frequency/duration, redundancy, SLA.
 - **Formula:** $IUR = w_f(1-freq) + w_d(1-dur) + w_r redundancy$.
-- **Outputs:** 0–100; mitigations (gensets, storage, dual feeds).
+- **Outputs:** 0â€“100; mitigations (gensets, storage, dual feeds).
 
 ### Permit Probability & Lead-Time (PPL)
 - **Intent:** Odds and timing of approvals.
@@ -224,7 +224,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### FX Shock Resilience (FXR)
 - **Intent:** Quantify FX exposure.
 - **Inputs:** Currency mix, hedge ratio, pass-through ability.
-- **Formula:** P&L/FCF deltas for ±1/2/3σ moves; hedge coverage.
+- **Formula:** P&L/FCF deltas for Â±1/2/3Ïƒ moves; hedge coverage.
 - **Outputs:** FX delta table; residual risk.
 
 ### Inflation & Rate Pass-through (IRP)
@@ -237,7 +237,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 - **Intent:** Labor market fit.
 - **Inputs:** Skill match, labor depth, wage trend.
 - **Formula:** Weighted score; wage CAGR applied to cost base.
-- **Outputs:** 0–100 score; cost headroom/shortfall.
+- **Outputs:** 0â€“100 score; cost headroom/shortfall.
 
 ### Change Adoption Readiness (CAR)
 - **Intent:** Likelihood of rollout success.
@@ -254,7 +254,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### Maintenance Risk Index (MRI)
 - **Intent:** Unplanned downtime risk.
 - **Inputs:** Asset age, environment, parts lead time, maintenance regime.
-- **Formula:** Probability of failure × impact; flags high-risk assets.
+- **Formula:** Probability of failure Ã— impact; flags high-risk assets.
 - **Outputs:** Risk band; spares/PM plan.
 
 ### ESG Materiality Alignment (EMA)
@@ -272,7 +272,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### Vendor Substitution Ease (VSE)
 - **Intent:** Swap-out agility.
 - **Inputs:** Approved alternates count, qual time, contractual lock-in.
-- **Formula:** Ease score = alternates factor – lock-in factor.
+- **Formula:** Ease score = alternates factor â€“ lock-in factor.
 - **Outputs:** Ease band; actions to pre-qualify alternates.
 
 ### Incident Response Readiness (IRR)
@@ -290,5 +290,7 @@ Clear, standalone reference for the NSIL/Agentic Brain formula family. Each meth
 ### Scenario Coverage Depth (SCD)
 - **Intent:** Adequacy of counterfactual coverage.
 - **Inputs:** Count and diversity of scenarios run; risk dimensions covered.
-- **Formula:** Coverage = scenarios run / required scenarios (capped 1) × diversity factor.
+- **Formula:** Coverage = scenarios run / required scenarios (capped 1) Ã— diversity factor.
 - **Outputs:** Coverage score; missing scenarios to add.
+
+

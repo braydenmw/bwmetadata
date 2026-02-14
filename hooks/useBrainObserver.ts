@@ -1,4 +1,4 @@
-/**
+﻿/**
  * useBrainObserver Hook
  * Real-time brain intelligence observer that surfaces insights during intake
  * 
@@ -443,3 +443,4 @@ export function useBrainObserver(params: ReportParameters): BrainObservation {
 }
 
 export default useBrainObserver;
+

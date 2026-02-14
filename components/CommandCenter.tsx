@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info, Eye, Brain } from 'lucide-react';
 import { researchLocation, type ResearchProgress } from '../services/geminiLocationService';
 import { CITY_PROFILES } from '../data/globalLocationProfiles';
@@ -101,7 +101,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                 setResearchSummary(result.summary || 'Research completed. Review the location brief below.');
 
-                // NSIL Intelligence Enrichment — pattern matching + historical parallels
+                // NSIL Intelligence Enrichment â€” pattern matching + historical parallels
                 try {
                   const countryParams = { country: result.profile.country, region: result.profile.region || '', industry: [result.profile.keyIndustries?.[0] || 'general'], strategicIntent: ['market-entry'] };
                   const patternAssessment = PatternConfidenceEngine.assess(countryParams as unknown as import('../types').ReportParameters);
@@ -110,10 +110,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                   let nsilEnrichment = '';
                   if (patternAssessment.matchedPatterns.length > 0) {
                     const topPattern = patternAssessment.matchedPatterns[0];
-                    nsilEnrichment += `\n\n🧠 NSIL Pattern Match: "${topPattern.name}" (${topPattern.historicalDepth}yr depth, ${topPattern.geographicBreadth} countries). Stance: ${patternAssessment.reasoningStance}.`;
+                    nsilEnrichment += `\n\nðŸ§  NSIL Pattern Match: "${topPattern.name}" (${topPattern.historicalDepth}yr depth, ${topPattern.geographicBreadth} countries). Stance: ${patternAssessment.reasoningStance}.`;
                   }
                   if (historicalMatch.found) {
-                    nsilEnrichment += `\n📚 Historical Parallel: ${historicalMatch.case_title} (${historicalMatch.outcome}) — ${historicalMatch.topLesson}`;
+                    nsilEnrichment += `\nðŸ“š Historical Parallel: ${historicalMatch.case_title} (${historicalMatch.outcome}) â€” ${historicalMatch.topLesson}`;
                   }
                   if (nsilEnrichment) {
                     setResearchSummary((prev: string) => prev + nsilEnrichment);
@@ -174,14 +174,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const tenStepProtocol = [
         { step: 1, title: "Identity & Foundation", description: "Establish organizational credibility, legal structure, and competitive positioning.", details: ["Organization name, type, and legal structure", "Registration/incorporation details", "Key leadership and governance structure", "Historical track record and credentials", "Competitive positioning statement", "Core competencies and differentiators"] },
         { step: 2, title: "Mandate & Strategy", description: "Define strategic vision, objectives, target partner profile, and value proposition.", details: ["Strategic vision and mission alignment", "Short, medium, and long-term objectives", "Target partner/investor profile", "Value proposition articulation", "Strategic fit assessment criteria", "Success metrics and KPIs"] },
-        { step: 3, title: "Market & Context", description: "Analyze market dynamics, regulatory environment, and macro-economic factors.", details: ["Market size and growth projections", "Competitive landscape analysis", "Regulatory environment assessment", "Regulatory Friction Index (RFI) scoring", "Macro-economic factors and trends", "Industry-specific dynamics", "Regional context and opportunities"], gliEnabled: true, gliNote: "📍 BW Intel Fact Sheet provides GDP, demographics, trade data, and regulatory friction scores" },
-        { step: 4, title: "Partners & Ecosystem", description: "Map stakeholder landscape, alignment scores, and relationship dynamics.", details: ["Stakeholder identification and mapping", "Counterparty Integrity Score (CIS) verification", "Alignment score calculations", "Relationship strength assessment", "Ecosystem dependencies", "Partnership synergy analysis", "Stakeholder communication strategy"], gliEnabled: true, gliNote: "📍 BW Intel shows major employers, foreign companies, and government contacts" },
-        { step: 5, title: "Financial Model", description: "Structure investment requirements, revenue projections, and ROI scenarios.", details: ["Investment requirements breakdown", "Revenue model and projections", "Cost structure analysis", "ROI scenario modeling (base/best/worst)", "Funding sources and terms", "Financial sustainability metrics"], gliEnabled: true, gliNote: "📍 BW Intel provides tax incentives, economic zones, and cost indicators" },
-        { step: 6, title: "Risk & Mitigation", description: "Identify and quantify risks with probability/impact matrices and mitigation plans.", details: ["Risk identification and categorization", "Probability and impact assessment", "Risk matrix visualization", "Policy Shock Sensitivity (PSS) scenarios", "Mitigation strategies per risk", "Contingency planning", "Risk monitoring framework"], gliEnabled: true, gliNote: "📍 BW Intel includes political, economic, natural, and regulatory risk assessments" },
-        { step: 7, title: "Resources & Capability", description: "Assess organizational readiness, team strength, and capability gaps.", details: ["Current resource inventory", "Team capabilities assessment", "Capability gap analysis", "Training and development needs", "Resource acquisition strategy", "Organizational readiness score"], gliEnabled: true, gliNote: "📍 BW Intel shows labor pool quality, universities, and workforce data" },
-        { step: 8, title: "Execution Plan", description: "Define implementation roadmap, milestones, dependencies, and go/no-go gates.", details: ["Implementation roadmap with phases", "Milestone definitions and timelines", "Dependency mapping", "Go/no-go decision gates", "Resource allocation per phase", "Critical path identification"], gliEnabled: true, gliNote: "📍 BW Intel provides entry timeline guidance and infrastructure readiness" },
-        { step: 9, title: "Governance & Monitoring", description: "Establish oversight structure, decision matrices, and performance tracking.", details: ["Governance structure design", "Decision-making authority matrix", "Reporting cadence and format", "Performance tracking metrics", "Escalation procedures", "Audit and compliance framework"], gliEnabled: true, gliNote: "📍 BW Intel shows government structure, leadership, and regulatory framework" },
-        { step: 10, title: "Scoring & Readiness", description: "Final validation and readiness assessment with go/no-go recommendation.", details: ["Composite readiness score calculation", "Strength/weakness summary", "Final risk assessment", "Go/no-go recommendation", "Pre-launch checklist", "Success probability index (SPI)"], gliEnabled: true, gliNote: "📍 BW Intel provides composite scores, comparison analysis, and data quality metrics" }
+        { step: 3, title: "Market & Context", description: "Analyze market dynamics, regulatory environment, and macro-economic factors.", details: ["Market size and growth projections", "Competitive landscape analysis", "Regulatory environment assessment", "Regulatory Friction Index (RFI) scoring", "Macro-economic factors and trends", "Industry-specific dynamics", "Regional context and opportunities"], gliEnabled: true, gliNote: "ðŸ“ BW Intel Fact Sheet provides GDP, demographics, trade data, and regulatory friction scores" },
+        { step: 4, title: "Partners & Ecosystem", description: "Map stakeholder landscape, alignment scores, and relationship dynamics.", details: ["Stakeholder identification and mapping", "Counterparty Integrity Score (CIS) verification", "Alignment score calculations", "Relationship strength assessment", "Ecosystem dependencies", "Partnership synergy analysis", "Stakeholder communication strategy"], gliEnabled: true, gliNote: "ðŸ“ BW Intel shows major employers, foreign companies, and government contacts" },
+        { step: 5, title: "Financial Model", description: "Structure investment requirements, revenue projections, and ROI scenarios.", details: ["Investment requirements breakdown", "Revenue model and projections", "Cost structure analysis", "ROI scenario modeling (base/best/worst)", "Funding sources and terms", "Financial sustainability metrics"], gliEnabled: true, gliNote: "ðŸ“ BW Intel provides tax incentives, economic zones, and cost indicators" },
+        { step: 6, title: "Risk & Mitigation", description: "Identify and quantify risks with probability/impact matrices and mitigation plans.", details: ["Risk identification and categorization", "Probability and impact assessment", "Risk matrix visualization", "Policy Shock Sensitivity (PSS) scenarios", "Mitigation strategies per risk", "Contingency planning", "Risk monitoring framework"], gliEnabled: true, gliNote: "ðŸ“ BW Intel includes political, economic, natural, and regulatory risk assessments" },
+        { step: 7, title: "Resources & Capability", description: "Assess organizational readiness, team strength, and capability gaps.", details: ["Current resource inventory", "Team capabilities assessment", "Capability gap analysis", "Training and development needs", "Resource acquisition strategy", "Organizational readiness score"], gliEnabled: true, gliNote: "ðŸ“ BW Intel shows labor pool quality, universities, and workforce data" },
+        { step: 8, title: "Execution Plan", description: "Define implementation roadmap, milestones, dependencies, and go/no-go gates.", details: ["Implementation roadmap with phases", "Milestone definitions and timelines", "Dependency mapping", "Go/no-go decision gates", "Resource allocation per phase", "Critical path identification"], gliEnabled: true, gliNote: "ðŸ“ BW Intel provides entry timeline guidance and infrastructure readiness" },
+        { step: 9, title: "Governance & Monitoring", description: "Establish oversight structure, decision matrices, and performance tracking.", details: ["Governance structure design", "Decision-making authority matrix", "Reporting cadence and format", "Performance tracking metrics", "Escalation procedures", "Audit and compliance framework"], gliEnabled: true, gliNote: "ðŸ“ BW Intel shows government structure, leadership, and regulatory framework" },
+        { step: 10, title: "Scoring & Readiness", description: "Final validation and readiness assessment with go/no-go recommendation.", details: ["Composite readiness score calculation", "Strength/weakness summary", "Final risk assessment", "Go/no-go recommendation", "Pre-launch checklist", "Success probability index (SPI)"], gliEnabled: true, gliNote: "ðŸ“ BW Intel provides composite scores, comparison analysis, and data quality metrics" }
     ];
 
 
@@ -215,7 +215,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
 
 
-            {/* OUR MISSION — Header with photo banner background */}
+            {/* OUR MISSION â€” Header with photo banner background */}
             <section id="mission" className="relative pt-36 pb-20 px-4 overflow-hidden">
                 <img 
                     src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=80" 
@@ -269,7 +269,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 The practice exists because of a simple observation: <strong>every &ldquo;new idea&rdquo; is old somewhere.</strong> The 1963 Philippine Integrated Socioeconomic Plan, the 1978 Region 7 Five-Year Development Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations &mdash; they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. <strong>The past is the solution library.</strong>
                             </p>
                             <p>
-                                <strong>BWGA Intelligence AI is the answer.</strong> It is the technology arm of BW Global Advisory. Not a chatbot. Not a search engine. Not a lookup table. It is a complete digital boardroom &mdash; a system that reasons through investment, trade, and development problems using the same depth of analysis that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars.
+                                <strong>BWGA Ai is the answer.</strong> It is the technology arm of BW Global Advisory. Not a chatbot. Not a search engine. Not a lookup table. It is a complete digital boardroom &mdash; a system that reasons through investment, trade, and development problems using the same depth of analysis that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars.
                             </p>
                         </div>
                     </div>
@@ -277,7 +277,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         That&rsquo;s not a criticism &mdash; it&rsquo;s the insight that made this system possible. If the answers already exist, scattered across decades and continents, then the real problem isn&rsquo;t knowledge. It&rsquo;s access. It&rsquo;s synthesis. It&rsquo;s the ability to take what worked in Shenzhen in 1980, in Penang in 1995, in Medell&iacute;n in 2004, and translate it into a strategic roadmap for a regional council staring at a blank page today.
                     </p>
 
-                    {/* Personal Story — Brayden Walls */}
+                    {/* Personal Story â€” Brayden Walls */}
                     <div className="relative rounded-sm overflow-hidden mb-8 shadow-lg border-2 border-slate-300">
                         <img 
                             src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=1080&fit=crop&q=80" 
@@ -289,7 +289,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h3 className="text-2xl font-semibold text-white mb-6">Who I am &mdash; the founder and sole developer</h3>
                             
                             <p className="text-base text-slate-200 leading-relaxed mb-4">
-                                Hey everyone, I&rsquo;m Brayden Walls, the developer behind <strong className="text-white">BW NEXUS AI</strong>, and I&rsquo;m thrilled to finally share this with the world. For the first time, I&rsquo;m lifting the curtain on what we&rsquo;ve built&mdash;a groundbreaking neuro-symbolic intelligence system that&rsquo;s not just another AI tool, but a complete rethinking of how machines can reason like humans.
+                                Hey everyone, I&rsquo;m Brayden Walls, the developer behind <strong className="text-white">BWGA Ai</strong>, and I&rsquo;m thrilled to finally share this with the world. For the first time, I&rsquo;m lifting the curtain on what we&rsquo;ve built&mdash;a groundbreaking neuro-symbolic intelligence system that&rsquo;s not just another AI tool, but a complete rethinking of how machines can reason like humans.
                             </p>
                             <p className="text-base text-slate-200 leading-relaxed mb-4">
                                 For more than 16 months, I&rsquo;ve been living, researching, and building in a place that inspired everything you see here &mdash; the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don&rsquo;t exist.
@@ -320,9 +320,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
 
 
-            {/* ═══════════════════════════════════════════════════════ */}
-            {/* THE PLATFORM — Professional Architecture Demonstration */}
-            {/* ═══════════════════════════════════════════════════════ */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            {/* THE PLATFORM â€” Professional Architecture Demonstration */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
 
             {/* Section 1: A WORLD FIRST + Full Story Button */}
             <section id="technology" className="py-12 px-4 bg-white">
@@ -335,9 +335,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <span className="text-blue-600 font-normal">Welcome to Deterministic Intelligence.</span>
                     </p>
 
-                    {/* ── THE NARRATIVE: What I Built and Why ── */}
+                    {/* â”€â”€ THE NARRATIVE: What I Built and Why â”€â”€ */}
 
-                    {/* Block 1: The Problem — Photo left, narrative right */}
+                    {/* Block 1: The Problem â€” Photo left, narrative right */}
                     <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
                         <div className="md:w-5/12">
                             <img 
@@ -354,7 +354,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Most AI today &mdash; the language models behind ChatGPT, Claude, and others &mdash; is probabilistic. It guesses based on patterns. It can hallucinate facts, silently bias results, or give a different answer every time you ask the same question. It sounds confident, but it can&rsquo;t show its reasoning. And when the stakes are real &mdash; investments, policy decisions, people&rsquo;s livelihoods &mdash; guessing isn&rsquo;t good enough.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-5">
-                                I built BW NEXUS AI because I believed intelligence should be provable. Not generated. Not predicted. <strong>Proven.</strong> Every recommendation traceable, every output repeatable, every claim defensible. That&rsquo;s what deterministic means &mdash; and that&rsquo;s what I set out to create.
+                                I built BWGA Ai because I believed intelligence should be provable. Not generated. Not predicted. <strong>Proven.</strong> Every recommendation traceable, every output repeatable, every claim defensible. That&rsquo;s what deterministic means &mdash; and that&rsquo;s what I set out to create.
                             </p>
 
                             {/* Clean two-column comparison */}
@@ -370,7 +370,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </ul>
                                 </div>
                                 <div className="border-2 border-blue-500 rounded-sm p-4 bg-blue-50/50">
-                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">BW NEXUS AI</p>
+                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">BWGA Ai</p>
                                     <ul className="space-y-1.5 text-xs text-slate-700">
                                         <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Validates every input</li>
                                         <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-px flex-shrink-0" /> Adversarial debate</li>
@@ -392,12 +392,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
 
-                    {/* Block 2: What sparked the NSIL — Text left, photo right */}
+                    {/* Block 2: What sparked the NSIL â€” Text left, photo right */}
                     <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-8">
                         <div className="md:w-5/12">
                             <img 
                                 src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80" 
-                                alt="The NSIL — what sparked development" 
+                                alt="The NSIL â€” what sparked development" 
                                 className="w-full h-full min-h-[320px] object-cover" 
                             />
                         </div>
@@ -406,26 +406,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 What sparked this: 12 months that changed everything.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                It started with a frustration. I was watching regions with real potential — talent, resources, strategic location — get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
+                                It started with a frustration. I was watching regions with real potential â€” talent, resources, strategic location â€” get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                                The first thing I created was the formula engine â€” 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
                             <button 
                                 onClick={() => setShowBlock2More(true)}
                                 className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
                             >
-                                Read More ↓
+                                Read More â†“
                             </button>
                         </div>
                     </div>
 
-                    {/* Block 3: The Discovery — Photo left, deep narrative right */}
+                    {/* Block 3: The Discovery â€” Photo left, deep narrative right */}
                     <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
                         <div className="md:w-5/12">
                             <img 
                                 src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&q=80" 
-                                alt="The Brain — computational neuroscience discovery" 
+                                alt="The Brain â€” computational neuroscience discovery" 
                                 className="w-full h-full min-h-[320px] object-cover" 
                             />
                         </div>
@@ -434,21 +434,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Then I discovered something that changed the system forever.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                By this point, I had a working intelligence system — formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert — the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
+                                By this point, I had a working intelligence system â€” formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert â€” the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                That’s when I found computational neuroscience — real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture I’d already built. The NSIL was designed to be extensible. So I added them.
+                                Thatâ€™s when I found computational neuroscience â€” real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture Iâ€™d already built. The NSIL was designed to be extensible. So I added them.
                             </p>
                             <button 
                                 onClick={() => setShowBlock3More(true)}
                                 className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
                             >
-                                Read More ↓
+                                Read More â†“
                             </button>
                         </div>
                     </div>
 
-                    {/* Block 4: The Autonomous & Reflexive Engines — Text left, photo right */}
+                    {/* Block 4: The Autonomous & Reflexive Engines â€” Text left, photo right */}
                     <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-8">
                         <div className="md:w-5/12">
                             <img 
@@ -459,55 +459,55 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                         <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
                             <h3 className="text-2xl font-semibold text-slate-900 mb-4">
-                                It doesn’t just answer. It thinks beyond your question — and analyses how you think.
+                                It doesnâ€™t just answer. It thinks beyond your question â€” and analyses how you think.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates â€” if a path is unethical, itâ€™s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannonâ€™s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences â€” investors, government, community, partners, executives â€” in their own language.
                             </p>
                             <button 
                                 onClick={() => setShowBlock4More(true)}
                                 className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 mt-1 transition-colors"
                             >
-                                Read More ↓
+                                Read More â†“
                             </button>
                         </div>
                     </div>
 
-                    {/* Block 5: Watch it Think — Photo left, text right */}
+                    {/* Block 5: Watch it Think â€” Photo left, text right */}
                     <div className="flex flex-col md:flex-row gap-0 items-stretch mb-8">
                         <div className="md:w-5/12">
                             <img 
                                 src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&q=80" 
-                                alt="Live intelligence — watch it think" 
+                                alt="Live intelligence â€” watch it think" 
                                 className="w-full h-full min-h-[320px] object-cover" 
                             />
                         </div>
                         <div className="md:w-7/12 bg-white p-6 md:p-8 flex flex-col justify-center">
                             <h3 className="text-2xl font-semibold text-slate-900 mb-4">
-                                You don’t need to understand any of this. It’s here to help you.
+                                You donâ€™t need to understand any of this. Itâ€™s here to help you.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Everything you’ve just read — the formulas, the engines, the neuroscience models — you don’t need to understand how any of it works. You just need to know it’s there, running behind the scenes, working for you 24/7. This system was built so that you can do something you’ve only ever wished for: walk into any room — a boardroom, a government briefing, an investor meeting — and speak their language with confidence.
+                                Everything youâ€™ve just read â€” the formulas, the engines, the neuroscience models â€” you donâ€™t need to understand how any of it works. You just need to know itâ€™s there, running behind the scenes, working for you 24/7. This system was built so that you can do something youâ€™ve only ever wished for: walk into any room â€” a boardroom, a government briefing, an investor meeting â€” and speak their language with confidence.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                This isn’t about becoming a data scientist or learning complex algorithms. It’s about having a tool that does the heavy lifting for you and gives you something real to stand behind. With belief in yourself and plenty of practice, this system helps you understand a way of thinking that changes how people see you and your ideas. It helps you speak the language of those you want to attract — investors, partners, decision-makers — and it gives you the evidence to back it up.
+                                This isnâ€™t about becoming a data scientist or learning complex algorithms. Itâ€™s about having a tool that does the heavy lifting for you and gives you something real to stand behind. With belief in yourself and plenty of practice, this system helps you understand a way of thinking that changes how people see you and your ideas. It helps you speak the language of those you want to attract â€” investors, partners, decision-makers â€” and it gives you the evidence to back it up.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                The technology is real. The results are real. And it’s all here to help you succeed. That’s the only thing that matters.
+                                The technology is real. The results are real. And itâ€™s all here to help you succeed. Thatâ€™s the only thing that matters.
                             </p>
                             <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-sm p-5 mb-4">
                                 <p className="text-sm text-white leading-relaxed font-medium mb-4">
-                                    “You don’t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go — safely, reliably, every single time.”
+                                    â€œYou donâ€™t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go â€” safely, reliably, every single time.â€
                                 </p>
                                 <button 
                                     onClick={() => setShowProofPopup(true)}
                                     className="w-full py-3 bg-white/20 text-white border border-white/30 rounded-sm text-sm font-bold hover:bg-white/30 transition-all flex items-center justify-center gap-2"
                                 >
                                     <Info size={16} />
-                                    See the Proof — A Real System, A Real Report
+                                    See the Proof â€” A Real System, A Real Report
                                 </button>
                             </div>
                             <button 
@@ -520,16 +520,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Block 6: Why This Matters — Full-width statement */}
+                    {/* Block 6: Why This Matters â€” Full-width statement */}
                     <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-8 md:p-12 mb-8">
                         <h3 className="text-2xl font-semibold text-white mb-4">
                             Why this matters. Why it&rsquo;s different.
                         </h3>
                         <p className="text-sm text-slate-300 leading-relaxed mb-3">
-                            Traditional AI is probabilistic &mdash; it guesses based on patterns and hides its reasoning behind black boxes. BW NEXUS AI is deterministic &mdash; it proves every claim with audit trails and repeatable processes. While other systems rely on single-point estimates or smoothed-over disagreements, the NSIL preserves explicit decision points, stress-tests 5,000+ scenarios, and enforces ethical gates that reject unethical paths.
+                            Traditional AI is probabilistic &mdash; it guesses based on patterns and hides its reasoning behind black boxes. BWGA Ai is deterministic &mdash; it proves every claim with audit trails and repeatable processes. While other systems rely on single-point estimates or smoothed-over disagreements, the NSIL preserves explicit decision points, stress-tests 5,000+ scenarios, and enforces ethical gates that reject unethical paths.
                         </p>
                         <p className="text-sm text-slate-300 leading-relaxed mb-3">
-                            The core problem I&rsquo;m solving is trust. Most AI can&rsquo;t be relied on for real decisions because it hallucinates, biases results, or gives inconsistent answers. This leads to bad investments, flawed strategies, and ethical lapses. BW NEXUS AI solves this by delivering intelligence that&rsquo;s traceable, repeatable, and defensible &mdash; eliminating garbage-in-garbage-out through SAT validation, grounding analysis in institutional memory, and simulating human cognition so outputs have the nuance of an experienced expert.
+                            The core problem I&rsquo;m solving is trust. Most AI can&rsquo;t be relied on for real decisions because it hallucinates, biases results, or gives inconsistent answers. This leads to bad investments, flawed strategies, and ethical lapses. BWGA Ai solves this by delivering intelligence that&rsquo;s traceable, repeatable, and defensible &mdash; eliminating garbage-in-garbage-out through SAT validation, grounding analysis in institutional memory, and simulating human cognition so outputs have the nuance of an experienced expert.
                         </p>
                         <p className="text-sm text-white leading-relaxed font-medium">
                             This isn&rsquo;t just technology. It&rsquo;s a paradigm shift &mdash; built to restore confidence in artificial intelligence, so people can finally make decisions they can defend in boardrooms, government briefings, and investment committees.
@@ -542,7 +542,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
 
-            {/* Section 4: FOUR PRODUCTS — Clean cards matching WHO THIS IS FOR */}
+            {/* Section 4: FOUR PRODUCTS â€” Clean cards matching WHO THIS IS FOR */}
             <section className="relative py-16 px-4 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80" alt="Intelligence technology" className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-900/80 to-slate-900/90" />
@@ -623,7 +623,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* BW AI SEARCH — Location Intelligence */}
+            {/* BW AI SEARCH â€” Location Intelligence */}
             <section id="bwai-search" className="py-16 px-4 bg-gradient-to-b from-slate-50 to-white">
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white border-2 border-blue-200 rounded-2xl shadow-lg shadow-blue-100/50 p-8 md:p-10">
@@ -683,7 +683,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Photo Banner — Document Intelligence */}
+            {/* Photo Banner â€” Document Intelligence */}
 
             {/* WHO THIS IS FOR */}
             <section className="py-20 px-4 bg-white">
@@ -694,7 +694,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         The people who need this most are the ones who've never had access to it. That's the point.
                     </p>
 
-                    {/* WHO — narrative cards with photos */}
+                    {/* WHO â€” narrative cards with photos */}
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
                         <div className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-40 relative overflow-hidden">
@@ -765,7 +765,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* How the system adapts */}
                     <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-sm">
                         <p className="text-base text-slate-800 leading-relaxed">
-                            <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs, guided intake, and pattern confidence explained at every stage. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, visible DAG scheduling, and adjustable Monte Carlo parameters. Same engine — different depth based on who's driving.
+                            <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs, guided intake, and pattern confidence explained at every stage. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, visible DAG scheduling, and adjustable Monte Carlo parameters. Same engine â€” different depth based on who's driving.
                         </p>
                     </div>
                 </div>
@@ -825,7 +825,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* SOLVING REAL PROBLEMS — Statement Piece */}
+            {/* SOLVING REAL PROBLEMS â€” Statement Piece */}
             <section className="relative py-20 px-4 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800 overflow-hidden">
                 {/* Background pattern */}
                 <div className="absolute inset-0 opacity-10">
@@ -897,7 +897,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </button>
 
                         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                            <h4 className="text-sm font-bold text-sky-300 uppercase tracking-wider mb-3">BWGA Intelligence AI</h4>
+                            <h4 className="text-sm font-bold text-sky-300 uppercase tracking-wider mb-3">BWGA Ai</h4>
                             <p className="text-sm text-white/60 mb-4">
                                 BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.
                             </p>
@@ -910,7 +910,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h4 className="text-sm font-bold text-sky-300 uppercase tracking-wider mb-3">Development Status</h4>
                             <p className="text-sm text-white/80 mb-2"><strong>CURRENT PHASE:</strong> Research & Development</p>
                             <p className="text-sm text-white/60 mb-4">
-                                BWGA AI is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
+                                BWGA Ai is currently in active R&D phase, operating under Brayden Walls as a registered Australian sole trader. The platform is being developed for future commercial deployment to government and enterprise clients.
                             </p>
                             <div className="flex flex-wrap gap-3 text-sm text-white/50">
                                 <button onClick={() => setActiveDocument('user-manual')} className="hover:text-white transition-colors">User Manual</button>
@@ -922,9 +922,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
             </section>
 
-            {/* ═══════════════════════════════════════════════════════════ */}
-            {/* WHAT YOU GET — Detail Popup Modal                          */}
-            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            {/* WHAT YOU GET â€” Detail Popup Modal                          */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {showOutputDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowOutputDetails(false)}>
                     <div className="relative w-full max-w-3xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
@@ -1021,9 +1021,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* ═══════════════════════════════════════════════════════════ */}
-            {/* TEN-STEP PROTOCOL — Detail Popup Modal                     */}
-            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            {/* TEN-STEP PROTOCOL â€” Detail Popup Modal                     */}
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {showProtocolDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowProtocolDetails(false)}>
                     <div className="relative w-full max-w-4xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
@@ -1124,7 +1124,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* Block 2 — Read More Popup */}
+            {/* Block 2 â€” Read More Popup */}
             {showBlock2More && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock2More(false)}>
                     <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -1133,19 +1133,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 What sparked this: 12 months that changed everything.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                It started with a frustration. I was watching regions with real potential — talent, resources, strategic location — get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
+                                It started with a frustration. I was watching regions with real potential â€” talent, resources, strategic location â€” get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                The first thing I created was the formula engine — 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                                The first thing I created was the formula engine â€” 38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Then I built the validation layer — a <strong>SAT Contradiction Solver</strong> that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
+                                Then I built the validation layer â€” a <strong>SAT Contradiction Solver</strong> that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Next came the debate engine. I wanted the system to argue with itself — to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
+                                Next came the debate engine. I wanted the system to argue with itself â€” to stress-test every recommendation before it reached the user. So I built the <strong>Bayesian Debate Engine</strong> with 5 adversarial personas: the Skeptic hunts for deal-killers, the Advocate finds upside, the Regulator checks legality, the Accountant validates cash flow, and the Operator tests execution. Beliefs update via Bayesian inference. Disagreements are preserved, not smoothed over.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                Then I added autonomous intelligence — 8 engines that think beyond the question. And reflexive intelligence — 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL — the Nexus Strategic Intelligence Layer</strong> — a 10-layer pipeline I invented from scratch to make all of this run deterministically.
+                                Then I added autonomous intelligence â€” 8 engines that think beyond the question. And reflexive intelligence â€” 7 engines that analyse how <em>you</em> think. Layer by layer, month by month, the system grew. I called the orchestration engine the <strong>NSIL â€” the Nexus Strategic Intelligence Layer</strong> â€” a 10-layer pipeline I invented from scratch to make all of this run deterministically.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
                                 128 TypeScript files. 50,000 lines of code. Clean builds in under 5 seconds across 2,105 modules. Full type safety with 900+ lines of strict definitions. 209.38 kB gzipped. One person. Twelve months. Everything built from nothing.
@@ -1176,7 +1176,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* Block 3 — Read More Popup */}
+            {/* Block 3 â€” Read More Popup */}
             {showBlock3More && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock3More(false)}>
                     <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -1185,42 +1185,42 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Then I discovered something that changed the system forever.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                By this point, I had a working intelligence system — formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert — the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
+                                By this point, I had a working intelligence system â€” formulas, validation, debate, autonomous engines, reflexive analysis, all running through the NSIL pipeline. It was already producing results no other platform could match. But something was missing. The outputs were technically correct, but they lacked the instinct of a seasoned human expert â€” the ability to sense that a deal feels wrong even when the numbers look right, or to know which risk deserves attention when ten are competing for it.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                That’s when I found computational neuroscience — real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture I’d already built. The NSIL was designed to be extensible. So I added them.
+                                Thatâ€™s when I found computational neuroscience â€” real mathematical models of how the human brain makes decisions under pressure. Models from published university research that had been sitting in academic papers for decades, never implemented in a practical system. I realised they could slot directly into the architecture Iâ€™d already built. The NSIL was designed to be extensible. So I added them.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                I wrote the <strong>Human Cognition Engine</strong> — 1,307 lines of code implementing 7 neuroscience models as faithful mathematical implementations. Not simplified approximations. The real models, running live inside the NSIL pipeline. This is what turned a powerful analytics system into something genuinely new — the first platform that doesn’t just calculate answers, but thinks about them the way a human expert would.
+                                I wrote the <strong>Human Cognition Engine</strong> â€” 1,307 lines of code implementing 7 neuroscience models as faithful mathematical implementations. Not simplified approximations. The real models, running live inside the NSIL pipeline. This is what turned a powerful analytics system into something genuinely new â€” the first platform that doesnâ€™t just calculate answers, but thinks about them the way a human expert would.
                             </p>
                             <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 space-y-2 mb-3">
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Wilson-Cowan Neural Fields</strong> — Your brain has billions of neurons, some saying “go” (excitatory) and some saying “stop” (inhibitory). These differential equations (∂u/∂t = -u + ∫ w(r-r’)·f(v) dr’) model that battle on a 50×50 grid, simulating how experts balance competing factors like profit vs. risk. The NSIL runs this live with your data.
+                                    <strong className="text-slate-900">Wilson-Cowan Neural Fields</strong> â€” Your brain has billions of neurons, some saying â€œgoâ€ (excitatory) and some saying â€œstopâ€ (inhibitory). These differential equations (âˆ‚u/âˆ‚t = -u + âˆ« w(r-râ€™)Â·f(v) drâ€™) model that battle on a 50Ã—50 grid, simulating how experts balance competing factors like profit vs. risk. The NSIL runs this live with your data.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Predictive Processing (Rao &amp; Ballard)</strong> — Our brains don’t just react; they predict. Bayesian inference across 3 hierarchical levels anticipates what comes next — like forecasting market shifts from historical precedent. Learning rate 0.1, with prediction error minimisation at every level.
+                                    <strong className="text-slate-900">Predictive Processing (Rao &amp; Ballard)</strong> â€” Our brains donâ€™t just react; they predict. Bayesian inference across 3 hierarchical levels anticipates what comes next â€” like forecasting market shifts from historical precedent. Learning rate 0.1, with prediction error minimisation at every level.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Friston’s Free Energy Principle</strong> — The brain minimises “surprise” by constantly updating beliefs. Variational inference across 8 candidate policies (γ=0.95) simulates how we adapt when new information arrives — revising plans without hallucinating.
+                                    <strong className="text-slate-900">Fristonâ€™s Free Energy Principle</strong> â€” The brain minimises â€œsurpriseâ€ by constantly updating beliefs. Variational inference across 8 candidate policies (Î³=0.95) simulates how we adapt when new information arrives â€” revising plans without hallucinating.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Attention Allocation (Itti &amp; Koch)</strong> — Why do you notice one risk and miss another? Salience maps with winner-take-all competition and inhibition of return (0.7) model how the brain spots what matters in a sea of data.
+                                    <strong className="text-slate-900">Attention Allocation (Itti &amp; Koch)</strong> â€” Why do you notice one risk and miss another? Salience maps with winner-take-all competition and inhibition of return (0.7) model how the brain spots what matters in a sea of data.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Emotional Valence</strong> — Prospect theory shows the pain of losing £100 hurts more than the joy of gaining £100. This assigns emotional weight to every option, flagging deals that look good on paper but feel wrong.
+                                    <strong className="text-slate-900">Emotional Valence</strong> â€” Prospect theory shows the pain of losing Â£100 hurts more than the joy of gaining Â£100. This assigns emotional weight to every option, flagging deals that look good on paper but feel wrong.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Global Workspace Theory</strong> — Think of your brain as an office where every department shares information through one central workspace. Coalition formation with ignition threshold 0.6 ensures all layers integrate into coherent insights.
+                                    <strong className="text-slate-900">Global Workspace Theory</strong> â€” Think of your brain as an office where every department shares information through one central workspace. Coalition formation with ignition threshold 0.6 ensures all layers integrate into coherent insights.
                                 </p>
                                 <p className="text-xs text-slate-800 leading-relaxed">
-                                    <strong className="text-slate-900">Working Memory (Baddeley’s Model)</strong> — Human short-term memory is limited. Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2 — this focuses outputs on the 3–5 factors that actually matter.
+                                    <strong className="text-slate-900">Working Memory (Baddeleyâ€™s Model)</strong> â€” Human short-term memory is limited. Phonological decay 0.05, visual decay 0.03, rehearsal benefit 0.2 â€” this focuses outputs on the 3â€“5 factors that actually matter.
                                 </p>
                             </div>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                No other platform — not Palantir, not Bloomberg Terminal, not McKinsey’s analytics — implements any of these models. BW NEXUS AI implements all seven. And they work because the NSIL was built to accommodate exactly this kind of extension — I just didn’t know these models existed when I designed it. They fit perfectly into what I’d already created.
+                                No other platform â€” not Palantir, not Bloomberg Terminal, not McKinseyâ€™s analytics â€” implements any of these models. BWGA Ai implements all seven. And they work because the NSIL was built to accommodate exactly this kind of extension â€” I just didnâ€™t know these models existed when I designed it. They fit perfectly into what Iâ€™d already created.
                             </p>
                             <p className="text-xs text-slate-600 leading-relaxed italic">
-                                That’s what makes this a world first. Not just the neuroscience. Not just the formulas. Not just the debate engine or the autonomous engines. It’s the fact that one person built an architecture flexible enough to unify all of them — and then discovered the missing piece that made it complete.
+                                Thatâ€™s what makes this a world first. Not just the neuroscience. Not just the formulas. Not just the debate engine or the autonomous engines. Itâ€™s the fact that one person built an architecture flexible enough to unify all of them â€” and then discovered the missing piece that made it complete.
                             </p>
                         </div>
                         <div className="p-4 border-t border-slate-200 flex justify-end">
@@ -1230,27 +1230,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* Block 4 — Read More Popup */}
+            {/* Block 4 â€” Read More Popup */}
             {showBlock4More && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock4More(false)}>
                     <div className="bg-white rounded-sm max-w-3xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                         <div className="p-6 md:p-8">
                             <h3 className="text-2xl font-semibold text-slate-900 mb-4">
-                                It doesn’t just answer. It thinks beyond your question — and analyses how you think.
+                                It doesnâ€™t just answer. It thinks beyond your question â€” and analyses how you think.
                             </h3>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates — if a path is unethical, it’s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
+                                I created 8 autonomous engines that actively discover insights you never asked for. Creative Synthesis uses bisociation theory to find strategies from unrelated domains. Ethical Reasoning enforces Rawlsian fairness gates â€” if a path is unethical, itâ€™s rejected, no matter how profitable. Self-Evolving Algorithms tune their own formula weights using gradient descent with rollback. Scenario Simulation runs 5,000 Monte Carlo futures with causal feedback loops.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannon’s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences — investors, government, community, partners, executives — in their own language.
+                                Then 7 reflexive engines analyse <em>you</em>. User Signal Decoder uses Shannonâ€™s information theory to detect what you repeat (what matters) and what you avoid (where anxiety lives). Regional Mirroring finds your structural twin region worldwide. Latent Advantage Miner surfaces assets you mentioned casually that have real strategic significance. Every finding is then translated for 5 distinct audiences â€” investors, government, community, partners, executives â€” in their own language.
                             </p>
                             <div className="space-y-2">
                                 <div className="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-sm p-3">
-                                    <p className="text-xs font-bold text-indigo-800">Autonomous Intelligence — 8 Engines</p>
-                                    <p className="text-xs text-indigo-600">CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM — creative synthesis, cross-domain transfer, ethical gates, adaptive learning, Monte Carlo simulation.</p>
+                                    <p className="text-xs font-bold text-indigo-800">Autonomous Intelligence â€” 8 Engines</p>
+                                    <p className="text-xs text-indigo-600">CRE, CDT, AGL, ETH, EVO, ADA, EMO, SIM â€” creative synthesis, cross-domain transfer, ethical gates, adaptive learning, Monte Carlo simulation.</p>
                                 </div>
                                 <div className="bg-sky-50 border-l-4 border-sky-500 rounded-r-sm p-3">
-                                    <p className="text-xs font-bold text-sky-800">Reflexive Intelligence — 7 Engines</p>
+                                    <p className="text-xs font-bold text-sky-800">Reflexive Intelligence â€” 7 Engines</p>
                                     <p className="text-xs text-sky-600">Signal decoding, echo detection, lifecycle mapping, regional mirroring, identity decoding, latent advantage mining, universal translation.</p>
                                 </div>
                             </div>
@@ -1262,19 +1262,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* Block 5 — What You Get & How It Works Popup Modal */}
+            {/* Block 5 â€” What You Get & How It Works Popup Modal */}
             {showBlock5Popup && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock5Popup(false)}>
                     <div className="bg-white rounded-sm max-w-4xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* WHAT YOU GET section — styled like landing page */}
+                        {/* WHAT YOU GET section â€” styled like landing page */}
                         <section className="py-12 px-6 md:px-8 bg-slate-100 rounded-t-sm">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
                                 <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">So What Comes Out the Other End?</h2>
                                 
                                 <p className="text-base text-slate-700 leading-relaxed mb-6">
-                                    The output isn’t “AI text.” The output is a complete decision package: the structured case, the quantified scores, the key risks and mitigations, the stakeholder narrative, and the supporting material required to move from idea → partner conversation → formal submission.
+                                    The output isnâ€™t â€œAI text.â€ The output is a complete decision package: the structured case, the quantified scores, the key risks and mitigations, the stakeholder narrative, and the supporting material required to move from idea â†’ partner conversation â†’ formal submission.
                                 </p>
 
                                 {/* Watch it happen live */}
@@ -1283,17 +1283,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         You can watch it all happen, live.
                                     </h3>
                                     <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                        While the system builds your case, you can watch every step in real time. You’ll see the five expert personas debating your proposal, the scoring formulas running one by one, the risk models stress-testing your assumptions, and the final strategy assembling itself section by section. Nothing is hidden. Every score, every conclusion, every piece of evidence is visible and traceable.
+                                        While the system builds your case, you can watch every step in real time. Youâ€™ll see the five expert personas debating your proposal, the scoring formulas running one by one, the risk models stress-testing your assumptions, and the final strategy assembling itself section by section. Nothing is hidden. Every score, every conclusion, every piece of evidence is visible and traceable.
                                     </p>
                                     <p className="text-sm text-slate-700 leading-relaxed">
-                                        This isn’t a black box — it’s a glass box. The same inputs will always produce the same validated output. That’s the whole point: if you can’t see how it reached its answer, why would you trust it?
+                                        This isnâ€™t a black box â€” itâ€™s a glass box. The same inputs will always produce the same validated output. Thatâ€™s the whole point: if you canâ€™t see how it reached its answer, why would you trust it?
                                     </p>
                                 </div>
 
                                 {/* Reassurance message */}
                                 <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-6 mb-6">
                                     <p className="text-base text-white leading-relaxed font-medium">
-                                        The good news? You don’t need to understand how any of this works under the hood. You just need to know it’s there — working for you, 24/7 — producing rigorous, defensible, repeatable output every single time. Here’s what that actually looks like.
+                                        The good news? You donâ€™t need to understand how any of this works under the hood. You just need to know itâ€™s there â€” working for you, 24/7 â€” producing rigorous, defensible, repeatable output every single time. Hereâ€™s what that actually looks like.
                                     </p>
                                 </div>
 
@@ -1302,18 +1302,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                 >
                                     <Info size={16} />
-                                    More Details — Full Document Catalog &amp; Audit Trail
+                                    More Details â€” Full Document Catalog &amp; Audit Trail
                                 </button>
                             </div>
                         </section>
 
-                        {/* Photo Banner — Strategic Planning */}
+                        {/* Photo Banner â€” Strategic Planning */}
                         <div className="w-full h-40 md:h-52 relative overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=400&fit=crop&q=80" alt="Strategic planning session" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-slate-900/10" />
                         </div>
 
-                        {/* THE TEN-STEP PROTOCOL — styled like landing page */}
+                        {/* THE TEN-STEP PROTOCOL â€” styled like landing page */}
                         <section className="py-12 px-6 md:px-8 bg-white">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
@@ -1324,7 +1324,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
 
                                 <p className="text-base text-slate-700 leading-relaxed mb-6">
-                                    Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote — a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness.
+                                    Most projects fail not from lack of potential, but from incomplete preparation. The Ten-Step Protocol is the antidote â€” a structured process that transforms a rough idea into a complete, decision-ready input set. Each step captures a critical dimension of your opportunity: identity, strategy, market context, partnerships, financials, risks, resources, execution, governance, and final readiness.
                                 </p>
 
                                 <button 
@@ -1332,7 +1332,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     className="w-full py-3 bg-blue-600 text-white border border-blue-700 rounded-sm text-sm font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                 >
                                     <Info size={16} />
-                                    More Details — View All 10 Steps &amp; Data Requirements
+                                    More Details â€” View All 10 Steps &amp; Data Requirements
                                 </button>
                             </div>
                         </section>
@@ -1351,23 +1351,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             )}
 
 
-            {/* Proof of Capability — Full Report Popup Modal */}
+            {/* Proof of Capability â€” Full Report Popup Modal */}
             {showProofPopup && (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowProofPopup(false)}>
                     <div className="bg-white rounded-sm max-w-4xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* ── INTRODUCTION ── */}
+                        {/* â”€â”€ INTRODUCTION â”€â”€ */}
                         <section className="py-12 px-6 md:px-8 bg-slate-100 rounded-t-sm">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">PROOF OF CAPABILITY</p>
                                 <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">This Is a Real Report, Produced by the Real System</h2>
                                 <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                    What you&rsquo;re about to read is not a mockup, not a template, and not something written by a person. This is the actual output of the BW NEXUS AI system &mdash; produced in real time, from real data, using every layer of the NSIL engine. A regional council in New Zealand submitted a 5MW solar partnership proposal through the Ten-Step Protocol, and the system processed it end to end. No human edited the scores. No one pre-approved the conclusions. What came out is what you see below.
+                                    What you&rsquo;re about to read is not a mockup, not a template, and not something written by a person. This is the actual output of the BWGA Ai system &mdash; produced in real time, from real data, using every layer of the NSIL engine. A regional council in New Zealand submitted a 5MW solar partnership proposal through the Ten-Step Protocol, and the system processed it end to end. No human edited the scores. No one pre-approved the conclusions. What came out is what you see below.
                                 </p>
                             </div>
                         </section>
 
-                        {/* ── HOW THE SYSTEM WROTE THIS ── */}
+                        {/* â”€â”€ HOW THE SYSTEM WROTE THIS â”€â”€ */}
                         <section className="py-10 px-6 md:px-8 bg-white">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">HOW THIS REPORT WAS BUILT</p>
@@ -1429,7 +1429,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </section>
 
-                        {/* ── DIVIDER ── */}
+                        {/* â”€â”€ DIVIDER â”€â”€ */}
                         <div className="bg-gradient-to-r from-slate-900 to-slate-800 py-6 px-6 md:px-8">
                             <div className="max-w-4xl mx-auto text-center">
                                 <p className="text-white/80 uppercase tracking-[0.2em] text-xs font-bold mb-1">BELOW IS THE ACTUAL SYSTEM OUTPUT</p>
@@ -1444,7 +1444,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div>
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center font-bold text-white text-xs">BW</div>
-                                            <span className="text-xs text-slate-400 uppercase tracking-wider font-medium">BWGA Intelligence AI &mdash; Live Report</span>
+                                            <span className="text-xs text-slate-400 uppercase tracking-wider font-medium">BWGA Ai &mdash; Live Report</span>
                                         </div>
                                         <h2 className="text-xl font-semibold text-slate-900">Strategic Partnership Viability Assessment</h2>
                                         <p className="text-sm text-slate-500 mt-1">Northland Regional Council &times; Vestas Energy Solutions</p>
@@ -1728,12 +1728,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-xs text-slate-500 mb-4">Every score is computed by implemented TypeScript. File paths and line counts are real and verifiable.</p>
                                 <div className="grid grid-cols-2 gap-3">
                                     {[
-                                        { file: 'services/engine.ts', purpose: 'calculateSPI() — 7-component weighted scoring. computeSCF() — P10/P50/P90 impact.' },
-                                        { file: 'services/MissingFormulasEngine.ts', purpose: 'computeRFI() — Regulatory Friction Index with bottleneck detection.' },
+                                        { file: 'services/engine.ts', purpose: 'calculateSPI() â€” 7-component weighted scoring. computeSCF() â€” P10/P50/P90 impact.' },
+                                        { file: 'services/MissingFormulasEngine.ts', purpose: 'computeRFI() â€” Regulatory Friction Index with bottleneck detection.' },
                                         { file: 'services/PersonaEngine.ts', purpose: '5-persona adversarial debate engine.' },
                                         { file: 'services/ReportOrchestrator.ts', purpose: 'Full report assembly, all engines in parallel.' },
                                         { file: 'services/algorithms/DAGScheduler.ts', purpose: 'IVAS activation timeline. SCF composite scoring. Formula dependency graph.' },
-                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control — all 22 engines orchestrated.' },
+                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control â€” all 22 engines orchestrated.' },
                                     ].map((item, idx) => (
                                         <div key={idx} className="bg-slate-50 border border-slate-200 rounded-sm p-3">
                                             <p className="text-xs font-mono text-blue-600 mb-1">{item.file}</p>
@@ -1960,7 +1960,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-4xl mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="text-center md:text-left">
-                            <p className="text-xs text-white/40">© 2026 BW Global Advisory. All rights reserved.</p>
+                            <p className="text-xs text-white/40">Â© 2026 BW Global Advisory. All rights reserved.</p>
                             <p className="text-xs text-white/30">Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia</p>
                         </div>
                         <div className="flex items-center gap-3 text-xs text-white/40">
@@ -1968,15 +1968,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                                 Nexus Intelligence OS v7.0
                             </span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span>NSIL Engine v5.0</span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span className="text-blue-400">Knowledge Layer Active</span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span className="text-indigo-400">Cognition Active</span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span className="text-blue-400">Autonomous Active</span>
-                            <span>•</span>
+                            <span>â€¢</span>
                             <span className="text-slate-400">Reflexive Active</span>
                         </div>
                     </div>
@@ -1987,3 +1987,5 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 };
 
 export default CommandCenter;
+
+

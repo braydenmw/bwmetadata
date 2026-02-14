@@ -1,4 +1,4 @@
-// Command Center Data - Test Scenarios, Document Categories, and Content
+﻿// Command Center Data - Test Scenarios, Document Categories, and Content
 // Extracted for maintainability and cleaner component structure
 
 export interface TestScenarioSource {
@@ -58,7 +58,7 @@ export const testScenarios: TestScenario[] = [
         country: "Brazil", 
         sector: "Urban Dev", 
         dealSize: "$75M", 
-        flag: "🇧🇷", 
+        flag: "ðŸ‡§ðŸ‡·", 
         SPI: 72, 
         IVAS: 68, 
         risk: "Medium", 
@@ -116,7 +116,7 @@ export const testScenarios: TestScenario[] = [
         country: "Singapore", 
         sector: "FinTech", 
         dealSize: "$12M", 
-        flag: "🇸🇬", 
+        flag: "ðŸ‡¸ðŸ‡¬", 
         SPI: 89, 
         IVAS: 91, 
         risk: "Low", 
@@ -174,7 +174,7 @@ export const testScenarios: TestScenario[] = [
         country: "Chile", 
         sector: "Energy", 
         dealSize: "$450M", 
-        flag: "🇨🇱", 
+        flag: "ðŸ‡¨ðŸ‡±", 
         SPI: 78, 
         IVAS: 74, 
         risk: "Medium-High", 
@@ -234,7 +234,7 @@ export const testScenarios: TestScenario[] = [
         country: "USA", 
         sector: "Logistics", 
         dealSize: "$98M", 
-        flag: "🇺🇸", 
+        flag: "ðŸ‡ºðŸ‡¸", 
         SPI: 82, 
         IVAS: 79, 
         risk: "Medium", 
@@ -294,7 +294,7 @@ export const testScenarios: TestScenario[] = [
         country: "Ethiopia", 
         sector: "Agriculture", 
         dealSize: "$15M", 
-        flag: "🇪🇹", 
+        flag: "ðŸ‡ªðŸ‡¹", 
         SPI: 61, 
         IVAS: 58, 
         risk: "High", 
@@ -404,31 +404,31 @@ export const documentCategories: DocumentCategory[] = [
 export const coreEngines = [
     {
         id: "spi",
-        name: "SPI™ — Strategic Partnership Index",
+        name: "SPIâ„¢ â€” Strategic Partnership Index",
         description: "Evaluates whether a potential partner is reliable, aligned with your goals, and capable of executing. Uses historical data, financial indicators, and strategic fit metrics to produce a 0-100 score with confidence bands.",
         color: "border-blue-500"
     },
     {
         id: "rroi",
-        name: "RROI™ — Regional Return on Investment",
+        name: "RROIâ„¢ â€” Regional Return on Investment",
         description: "Adjusts standard ROI calculations for location-specific factors: local labor costs, infrastructure quality, regulatory burden, currency volatility, and market access premiums. Produces risk-adjusted return projections.",
         color: "border-green-500"
     },
     {
         id: "seam",
-        name: "SEAM™ — Socio-Economic Alignment Metric",
+        name: "SEAMâ„¢ â€” Socio-Economic Alignment Metric",
         description: "Measures how well an investment aligns with community needs, environmental sustainability, and social license to operate. Critical for ESG-conscious investors and development agencies.",
         color: "border-purple-500"
     },
     {
         id: "ivas",
-        name: "IVAS™ — Investment Viability Assessment Score",
+        name: "IVASâ„¢ â€” Investment Viability Assessment Score",
         description: "Determines whether capital can actually be deployed successfully. Factors include regulatory approval likelihood, local partner availability, infrastructure readiness, and execution timeline feasibility.",
         color: "border-amber-500"
     },
     {
         id: "scf",
-        name: "SCF™ — Supply Chain Friction Index",
+        name: "SCFâ„¢ â€” Supply Chain Friction Index",
         description: "Identifies bottlenecks in logistics, procurement, and operations. Calculates transportation costs, port access, customs efficiency, and supplier network density to flag execution risks.",
         color: "border-red-500"
     }
@@ -482,7 +482,7 @@ export const termsOfEngagement = [
     },
     {
         title: "4. Model Limits & Accountability",
-        content: "The 27-formula suite (including SPI™, RROI™, SEAM™, IVAS™, SCF™) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions."
+        content: "The 27-formula suite (including SPIâ„¢, RROIâ„¢, SEAMâ„¢, IVASâ„¢, SCFâ„¢) exposes fragility and leverage; it does not predict the future. Users retain final accountability for decisions."
     },
     {
         title: "5. Compliance & Ethics",
@@ -493,3 +493,4 @@ export const termsOfEngagement = [
         content: "All intellectual property, methodologies, orchestration primitives, and the 27-formula suite are owned by BW Global Advisory Pty Ltd (BWGA). Access or evaluation does not grant any license or transfer of rights. You agree to keep non-public materials confidential, use them solely for evaluation, and not disclose, copy, reverse-engineer, or use the system to build a competing product."
     }
 ];
+

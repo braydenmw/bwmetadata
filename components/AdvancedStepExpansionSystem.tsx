@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Plus, Trash2, Save, Copy, Eye, EyeOff, Lock, Unlock, GitBranch, History, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface CustomField {
@@ -185,7 +185,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
     };
 
     setVariations([...variations, newVariation]);
-    alert(`✓ Variation "${variationName}" saved successfully`);
+    alert(`âœ“ Variation "${variationName}" saved successfully`);
   };
 
   const loadVariation = (variationId: string) => {
@@ -294,7 +294,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
               <Eye className="w-5 h-5 text-purple-600" />
               Customizable Analysis Sections ({sections.length})
             </h3>
-            <div className="text-2xl">{expandedSections.sections ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.sections ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.sections && (
@@ -325,7 +325,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
                           <Unlock className="w-4 h-4 text-green-600" />
                         )}
                       </button>
-                      <div className="text-2xl text-stone-400">{section.isExpanded ? '▼' : '▶'}</div>
+                      <div className="text-2xl text-stone-400">{section.isExpanded ? 'â–¼' : 'â–¶'}</div>
                     </div>
                   </div>
 
@@ -453,7 +453,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
                         {section.scoreOverrides.map((override, idx) => (
                           <div key={idx} className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-2">
                             <div className="text-sm font-bold text-orange-900">
-                              {override.originalScore} → {override.overriddenScore}
+                              {override.originalScore} â†’ {override.overriddenScore}
                             </div>
                             <p className="text-xs text-orange-700 mt-1">{override.reason}</p>
                           </div>
@@ -502,7 +502,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
                 <GitBranch className="w-5 h-5 text-green-600" />
                 Saved Variations Library ({variations.length})
               </h3>
-              <div className="text-2xl">{expandedSections.variations ? '▼' : '▶'}</div>
+              <div className="text-2xl">{expandedSections.variations ? 'â–¼' : 'â–¶'}</div>
             </div>
 
             {expandedSections.variations && (
@@ -540,7 +540,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
                             : 'bg-stone-200 text-stone-900 hover:bg-green-200'
                         }`}
                       >
-                        {activeVariation === variation.id ? '✓ Active' : 'Load'}
+                        {activeVariation === variation.id ? 'âœ“ Active' : 'Load'}
                       </button>
                       <button
                         onClick={() => duplicateVariation(variation.id)}
@@ -563,7 +563,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
                         <p className="text-xs font-bold text-stone-700 mb-1">Changes in this variation:</p>
                         <ul className="text-xs text-stone-600 space-y-1">
                           {variation.analysisChanges.map((change, idx) => (
-                            <li key={idx}>• {change}</li>
+                            <li key={idx}>â€¢ {change}</li>
                           ))}
                         </ul>
                       </div>
@@ -585,7 +585,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
               <History className="w-5 h-5 text-orange-600" />
               Change History & Audit Trail
             </h3>
-            <div className="text-2xl">{expandedSections.history ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.history ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.history && (

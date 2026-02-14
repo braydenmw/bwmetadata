@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, Zap, AlertCircle, CheckCircle, BarChart3, GitCompare, Download, Eye } from 'lucide-react';
 
 interface Scenario {
@@ -180,7 +180,7 @@ const MultiScenarioPlanner: React.FC = () => {
               <Zap className="w-5 h-5 text-purple-600" />
               Scenario Assumptions & Parameters
             </h3>
-            <div className="text-2xl">{expandedSections.scenarios ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.scenarios ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.scenarios && (
@@ -292,7 +292,7 @@ const MultiScenarioPlanner: React.FC = () => {
                 <Download className="w-4 h-4" />
                 <span className="text-xs">Export</span>
               </button>
-              <div className="text-2xl">{expandedSections.comparison ? '▼' : '▶'}</div>
+              <div className="text-2xl">{expandedSections.comparison ? 'â–¼' : 'â–¶'}</div>
             </div>
           </div>
 
@@ -358,12 +358,12 @@ const MultiScenarioPlanner: React.FC = () => {
               <Zap className="w-5 h-5 text-orange-600" />
               Sensitivity Analysis (Realistic Scenario)
             </h3>
-            <div className="text-2xl">{expandedSections.sensitivity ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.sensitivity ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.sensitivity && (
             <div className="p-6 space-y-4">
-              <p className="text-sm text-stone-600 mb-4">Impact on 5-year cumulative profit if key variables change by ±10%:</p>
+              <p className="text-sm text-stone-600 mb-4">Impact on 5-year cumulative profit if key variables change by Â±10%:</p>
               
               {['Revenue Growth', 'Operating Margin', 'Capital Investment'].map((variable, idx) => {
                 const baselineResult = calculateScenarioResults(scenarios['realistic']);
@@ -448,7 +448,7 @@ const MultiScenarioPlanner: React.FC = () => {
               <Eye className="w-5 h-5 text-green-600" />
               Decision Support & Recommendations
             </h3>
-            <div className="text-2xl">{expandedSections.decisionSupport ? '▼' : '▶'}</div>
+            <div className="text-2xl">{expandedSections.decisionSupport ? 'â–¼' : 'â–¶'}</div>
           </div>
 
           {expandedSections.decisionSupport && (
@@ -497,10 +497,10 @@ const MultiScenarioPlanner: React.FC = () => {
                     <div className="bg-white rounded p-3 text-sm">
                       <div className="font-bold text-stone-900 mb-2">Key Takeaways:</div>
                       <ul className="space-y-1 text-stone-700">
-                        <li>• Year 5 revenue projected at {formatCurrency(result.year5Revenue)} ({((result.year5Revenue / baselineRevenue - 1) * 100).toFixed(0)}% growth)</li>
-                        <li>• Break-even on capital investment in {result.paybackPeriod.toFixed(1)} years</li>
-                        <li>• Risk level: {scenario.assumptions.riskLevel} (Score: {result.riskScore}/100)</li>
-                        <li>• Recommend {recommendation === 'STRONG GO' ? 'proceeding immediately' 
+                        <li>â€¢ Year 5 revenue projected at {formatCurrency(result.year5Revenue)} ({((result.year5Revenue / baselineRevenue - 1) * 100).toFixed(0)}% growth)</li>
+                        <li>â€¢ Break-even on capital investment in {result.paybackPeriod.toFixed(1)} years</li>
+                        <li>â€¢ Risk level: {scenario.assumptions.riskLevel} (Score: {result.riskScore}/100)</li>
+                        <li>â€¢ Recommend {recommendation === 'STRONG GO' ? 'proceeding immediately' 
                           : recommendation === 'GO WITH CONDITIONS' ? 'proceeding with risk mitigation'
                           : recommendation === 'PROCEED CAUTIOUSLY' ? 'further market validation'
                           : 'revisiting assumptions before committing'}</li>
@@ -519,3 +519,4 @@ const MultiScenarioPlanner: React.FC = () => {
 };
 
 export default MultiScenarioPlanner;
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FORMULA BOUNDS ENFORCEMENT ENGINE
  * 
  * This engine ensures all formula outputs remain within realistic bounds.
@@ -9,9 +9,9 @@
  * - Unbounded accumulation over iterations
  * 
  * STRESS TESTS FIXED:
- * - ✓ TEST 4.1: RROI with zero risk (division by zero)
- * - ✓ TEST 4.2: SPI with all perfect scores
- * - ✓ TEST 4.3: Wilson-Cowan neural field explosion
+ * - âœ“ TEST 4.1: RROI with zero risk (division by zero)
+ * - âœ“ TEST 4.2: SPI with all perfect scores
+ * - âœ“ TEST 4.3: Wilson-Cowan neural field explosion
  * 
  * All 38 formulas are covered with appropriate bounds.
  */
@@ -437,3 +437,4 @@ export const calculateSafeSPI = FormulaBoundsEngine.calculateSafeSPI;
 export const runBoundedWilsonCowan = FormulaBoundsEngine.runBoundedWilsonCowan;
 
 export default FormulaBoundsEngine;
+

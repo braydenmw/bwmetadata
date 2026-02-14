@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Users } from 'lucide-react';
 
 export const SymbioticMatchmaking = ({ onPartnerSelect }: { onPartnerSelect: (p: any) => void }) => (
@@ -8,3 +8,4 @@ export const SymbioticMatchmaking = ({ onPartnerSelect }: { onPartnerSelect: (p:
         <p className="text-sm text-stone-500">Identifying mutual benefit partners...</p>
     </div>
 );
+

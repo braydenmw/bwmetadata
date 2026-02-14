@@ -1,4 +1,4 @@
-import { ReportParameters, ReportPayload } from '../types';
+﻿import { ReportParameters, ReportPayload } from '../types';
 export declare class ReportOrchestrator {
     static assembleReportPayload(params: ReportParameters): Promise<ReportPayload>;
     private static buildRegionProfile;
@@ -16,3 +16,4 @@ export declare class ReportOrchestrator {
     static logPayload(payload: ReportPayload): void;
     private static toRefinedIntake;
 }
+

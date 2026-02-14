@@ -1,10 +1,10 @@
-# 📖 HOW THE SYSTEM WORKS - Complete Explanation
+﻿# ðŸ“– HOW THE SYSTEM WORKS - Complete Explanation
 
 ## Overview: What Problem Did We Solve?
 
 Your system had a **data limitation** that prevented it from reaching 100% capability:
 
-### ❌ THE PROBLEM
+### âŒ THE PROBLEM
 - Users could only choose from **3 entity types** (Corporation, LLC, Partnership)
 - But there are **50+ real-world business structures** (S-Corps, C-Corps, Nonprofits, Trusts, Government agencies, Investment funds, etc.)
 - **Result:** System artificially limited what users could model
@@ -17,7 +17,7 @@ Your system had a **data limitation** that prevented it from reaching 100% capab
 - But users need to specify **what industry they're in** (Technology, Finance, Healthcare, Energy, etc.)
 - **Result:** System couldn't categorize or filter by industry
 
-### ✅ THE SOLUTION
+### âœ… THE SOLUTION
 Create a **master data file** with all comprehensive options, then update components to use **data-driven dropdowns** instead of hardcoded limited options.
 
 ---
@@ -55,10 +55,10 @@ export const INDUSTRIES = [
 ```
 
 **How it helps:**
-- ✅ All options defined in one place
-- ✅ Easy to add new options (just add to the array)
-- ✅ Reusable across all components
-- ✅ Data organized by category/region/sector
+- âœ… All options defined in one place
+- âœ… Easy to add new options (just add to the array)
+- âœ… Reusable across all components
+- âœ… Data organized by category/region/sector
 
 ---
 
@@ -111,27 +111,27 @@ import { ENTITY_TYPES } from '../constants/businessData';
 #### Step 1: Component Loads
 ```
 User navigates to MainCanvas component
-↓
+â†“
 Component imports from businessData.ts
-↓
+â†“
 ENTITY_TYPES, COUNTRIES, INDUSTRIES data loaded into memory
-↓
+â†“
 Component renders with all options ready
 ```
 
 #### Step 2: User Sees Entity Type Dropdown
 ```
 User sees dropdown with 35+ options:
-├─ Corporation
-├─ LLC
-├─ S-Corp
-├─ C-Corp
-├─ B-Corp
-├─ Benefit-Corp
-├─ Public Corporation
-├─ Private Corporation
-├─ General Partnership
-├─ Limited Liability Partnership (LLP)
+â”œâ”€ Corporation
+â”œâ”€ LLC
+â”œâ”€ S-Corp
+â”œâ”€ C-Corp
+â”œâ”€ B-Corp
+â”œâ”€ Benefit-Corp
+â”œâ”€ Public Corporation
+â”œâ”€ Private Corporation
+â”œâ”€ General Partnership
+â”œâ”€ Limited Liability Partnership (LLP)
 ... and 25+ more
 ```
 
@@ -152,55 +152,55 @@ This means:
 #### Step 3: User Selects an Option
 ```
 User clicks dropdown and selects "S-Corp"
-↓
+â†“
 Event handler triggers: onChange={(e) => handleInputChange('entityType', e.target.value)}
-↓
+â†“
 Value "S-Corp" is stored in state: params.entityType = "S-Corp"
-↓
+â†“
 Live document preview updates to show selected entity type
-↓
+â†“
 Checklist marks "Entity Type" as complete
 ```
 
 #### Step 4: User Selects Country
 ```
 User clicks Country dropdown and sees 60+ countries organized by region:
-├─ Africa (10): South Africa, Egypt, Nigeria, Kenya, ...
-├─ Asia Pacific (16): China, India, Japan, Singapore, ...
-├─ Europe (23): UK, Germany, France, Italy, ...
-├─ Middle East (11): Saudi Arabia, UAE, Qatar, ...
-├─ North America (3): USA, Canada, Mexico
-└─ South America (7): Brazil, Argentina, Chile, ...
+â”œâ”€ Africa (10): South Africa, Egypt, Nigeria, Kenya, ...
+â”œâ”€ Asia Pacific (16): China, India, Japan, Singapore, ...
+â”œâ”€ Europe (23): UK, Germany, France, Italy, ...
+â”œâ”€ Middle East (11): Saudi Arabia, UAE, Qatar, ...
+â”œâ”€ North America (3): USA, Canada, Mexico
+â””â”€ South America (7): Brazil, Argentina, Chile, ...
 
 User selects "Singapore"
-↓
+â†“
 Event handler triggers: onChange={(e) => handleInputChange('country', e.target.value)}
-↓
+â†“
 Value "SG" is stored in state: params.country = "SG"
-↓
+â†“
 Live document preview updates to show selected country
 ```
 
 #### Step 5: User Selects Industry
 ```
 User clicks Industry dropdown and sees 40+ industries:
-├─ Technology (10): Software Development, Cloud Computing, AI/ML, ...
-├─ Finance (6): Banking, Insurance, Investment, FinTech, ...
-├─ Healthcare (6): Pharmaceutical, Medical Devices, Hospitals, ...
-├─ Energy (5): Oil & Gas, Renewable, Nuclear, Mining, Utilities
-├─ Manufacturing (6): Automotive, Aerospace, Electronics, ...
-├─ Consumer (5): Retail, E-commerce, Hospitality, ...
-├─ Transport (4): Shipping, Logistics, Air Cargo, Courier
-└─ Other (8): Media, Legal, Consulting, HR, Environmental, NGO, ...
+â”œâ”€ Technology (10): Software Development, Cloud Computing, AI/ML, ...
+â”œâ”€ Finance (6): Banking, Insurance, Investment, FinTech, ...
+â”œâ”€ Healthcare (6): Pharmaceutical, Medical Devices, Hospitals, ...
+â”œâ”€ Energy (5): Oil & Gas, Renewable, Nuclear, Mining, Utilities
+â”œâ”€ Manufacturing (6): Automotive, Aerospace, Electronics, ...
+â”œâ”€ Consumer (5): Retail, E-commerce, Hospitality, ...
+â”œâ”€ Transport (4): Shipping, Logistics, Air Cargo, Courier
+â””â”€ Other (8): Media, Legal, Consulting, HR, Environmental, NGO, ...
 
 User selects "Software Development"
-↓
+â†“
 Event handler triggers: onChange={(e) => handleInputChange('industry', e.target.value)}
-↓
+â†“
 Value "SoftwareDev" is stored in state: params.industry = "SoftwareDev"
-↓
+â†“
 Live document preview updates to show selected industry
-↓
+â†“
 Checklist marks "Industry/Sector" as complete
 ```
 
@@ -210,35 +210,35 @@ Checklist marks "Industry/Sector" as complete
 
 ```
 businessData.ts (Master Data)
-    ↓
-    ├─→ ENTITY_TYPES [35+ options]
-    ├─→ COUNTRIES [60+ options]
-    ├─→ INDUSTRIES [40+ options]
-    ├─→ BUSINESS_MODELS [19 options]
-    ├─→ GROWTH_STAGES [9 options]
-    └─→ ... more arrays
+    â†“
+    â”œâ”€â†’ ENTITY_TYPES [35+ options]
+    â”œâ”€â†’ COUNTRIES [60+ options]
+    â”œâ”€â†’ INDUSTRIES [40+ options]
+    â”œâ”€â†’ BUSINESS_MODELS [19 options]
+    â”œâ”€â†’ GROWTH_STAGES [9 options]
+    â””â”€â†’ ... more arrays
     
-    ↓
+    â†“
     
 Imported into MainCanvas.tsx
-    ↓
-    ├─→ Entity Type Select
-    │   {ENTITY_TYPES.map(...)} → Renders 35+ options
-    │
-    ├─→ Country Select
-    │   {COUNTRIES.map(...)} → Renders 60+ options
-    │
-    └─→ Industry Select
-        {INDUSTRIES.map(...)} → Renders 40+ options
+    â†“
+    â”œâ”€â†’ Entity Type Select
+    â”‚   {ENTITY_TYPES.map(...)} â†’ Renders 35+ options
+    â”‚
+    â”œâ”€â†’ Country Select
+    â”‚   {COUNTRIES.map(...)} â†’ Renders 60+ options
+    â”‚
+    â””â”€â†’ Industry Select
+        {INDUSTRIES.map(...)} â†’ Renders 40+ options
     
-    ↓
+    â†“
     
 User Interaction
-    ↓
-    ├─→ User selects option from dropdown
-    ├─→ onChange event triggers handleInputChange()
-    ├─→ Value stored in state: params = { entityType: "...", country: "...", industry: "..." }
-    └─→ Live preview updates with new data
+    â†“
+    â”œâ”€â†’ User selects option from dropdown
+    â”œâ”€â†’ onChange event triggers handleInputChange()
+    â”œâ”€â†’ Value stored in state: params = { entityType: "...", country: "...", industry: "..." }
+    â””â”€â†’ Live preview updates with new data
 ```
 
 ---
@@ -251,97 +251,97 @@ When user clicks a dropdown, they see:
 **Entity Type Dropdown** (35+ options)
 ```
 Select type
-├─ Corporation
-├─ LLC
-├─ S-Corp
-├─ C-Corp
-├─ B-Corp
-├─ Benefit-Corp
-├─ Public Corporation
-├─ Private Corporation
-├─ General Partnership
-├─ Limited Liability Partnership (LLP)
-├─ Limited Partnership (LP)
-├─ Consortium/Joint Venture
-├─ Cooperative
-├─ Strategic Consortium
-├─ Startup
-├─ Scaleup
-├─ Small & Medium Enterprise (SME)
-├─ Unicorn ($1B+ valuation)
-├─ Non-Governmental Organization (NGO)
-├─ Non-Profit Organization
-├─ Registered Charity
-├─ Foundation
-├─ Trust
-├─ Government Agency/Ministry
-├─ Government Department
-├─ Public Authority/Board
-├─ Sovereign Wealth Fund
-├─ State Investment Fund
-├─ Investment Fund
-├─ Private Equity Fund
-├─ Venture Capital Fund
-├─ Hedge Fund
-├─ Financial Institution/Bank
-├─ Multinational Corporation
-└─ ... more
+â”œâ”€ Corporation
+â”œâ”€ LLC
+â”œâ”€ S-Corp
+â”œâ”€ C-Corp
+â”œâ”€ B-Corp
+â”œâ”€ Benefit-Corp
+â”œâ”€ Public Corporation
+â”œâ”€ Private Corporation
+â”œâ”€ General Partnership
+â”œâ”€ Limited Liability Partnership (LLP)
+â”œâ”€ Limited Partnership (LP)
+â”œâ”€ Consortium/Joint Venture
+â”œâ”€ Cooperative
+â”œâ”€ Strategic Consortium
+â”œâ”€ Startup
+â”œâ”€ Scaleup
+â”œâ”€ Small & Medium Enterprise (SME)
+â”œâ”€ Unicorn ($1B+ valuation)
+â”œâ”€ Non-Governmental Organization (NGO)
+â”œâ”€ Non-Profit Organization
+â”œâ”€ Registered Charity
+â”œâ”€ Foundation
+â”œâ”€ Trust
+â”œâ”€ Government Agency/Ministry
+â”œâ”€ Government Department
+â”œâ”€ Public Authority/Board
+â”œâ”€ Sovereign Wealth Fund
+â”œâ”€ State Investment Fund
+â”œâ”€ Investment Fund
+â”œâ”€ Private Equity Fund
+â”œâ”€ Venture Capital Fund
+â”œâ”€ Hedge Fund
+â”œâ”€ Financial Institution/Bank
+â”œâ”€ Multinational Corporation
+â””â”€ ... more
 ```
 
 **Country Dropdown** (60+ options, grouped by region)
 ```
 Select country
-├─ AFRICA
-│  ├─ South Africa
-│  ├─ Egypt
-│  ├─ Nigeria
-│  └─ ... 7 more
-├─ ASIA PACIFIC
-│  ├─ China
-│  ├─ India
-│  ├─ Japan
-│  └─ ... 13 more
-├─ EUROPE
-│  ├─ United Kingdom
-│  ├─ Germany
-│  ├─ France
-│  └─ ... 20 more
-├─ MIDDLE EAST
-│  ├─ Saudi Arabia
-│  ├─ United Arab Emirates
-│  ├─ Qatar
-│  └─ ... 8 more
-├─ NORTH AMERICA
-│  ├─ United States
-│  ├─ Canada
-│  └─ Mexico
-└─ SOUTH AMERICA
-   ├─ Brazil
-   ├─ Argentina
-   └─ ... 5 more
+â”œâ”€ AFRICA
+â”‚  â”œâ”€ South Africa
+â”‚  â”œâ”€ Egypt
+â”‚  â”œâ”€ Nigeria
+â”‚  â””â”€ ... 7 more
+â”œâ”€ ASIA PACIFIC
+â”‚  â”œâ”€ China
+â”‚  â”œâ”€ India
+â”‚  â”œâ”€ Japan
+â”‚  â””â”€ ... 13 more
+â”œâ”€ EUROPE
+â”‚  â”œâ”€ United Kingdom
+â”‚  â”œâ”€ Germany
+â”‚  â”œâ”€ France
+â”‚  â””â”€ ... 20 more
+â”œâ”€ MIDDLE EAST
+â”‚  â”œâ”€ Saudi Arabia
+â”‚  â”œâ”€ United Arab Emirates
+â”‚  â”œâ”€ Qatar
+â”‚  â””â”€ ... 8 more
+â”œâ”€ NORTH AMERICA
+â”‚  â”œâ”€ United States
+â”‚  â”œâ”€ Canada
+â”‚  â””â”€ Mexico
+â””â”€ SOUTH AMERICA
+   â”œâ”€ Brazil
+   â”œâ”€ Argentina
+   â””â”€ ... 5 more
 ```
 
 **Industry Dropdown** (40+ options, grouped by sector)
 ```
 Select industry
-├─ TECHNOLOGY (10)
-│  ├─ Software Development
-│  ├─ Cloud Computing
-│  ├─ Artificial Intelligence & Machine Learning
-│  └─ ... 7 more
-├─ FINANCE (6)
-│  ├─ Banking & Financial Services
-│  ├─ Insurance
-│  └─ ... 4 more
-├─ HEALTHCARE (6)
-│  ├─ Pharmaceutical
-│  ├─ Medical Devices
-│  └─ ... 4 more
-├─ ENERGY (5)
-│  ├─ Oil & Gas
-│  ├─ Renewable Energy
-│  └─ ... 3 more
-└─ ... more sectors
+â”œâ”€ TECHNOLOGY (10)
+â”‚  â”œâ”€ Software Development
+â”‚  â”œâ”€ Cloud Computing
+â”‚  â”œâ”€ Artificial Intelligence & Machine Learning
+â”‚  â””â”€ ... 7 more
+â”œâ”€ FINANCE (6)
+â”‚  â”œâ”€ Banking & Financial Services
+â”‚  â”œâ”€ Insurance
+â”‚  â””â”€ ... 4 more
+â”œâ”€ HEALTHCARE (6)
+â”‚  â”œâ”€ Pharmaceutical
+â”‚  â”œâ”€ Medical Devices
+â”‚  â””â”€ ... 4 more
+â”œâ”€ ENERGY (5)
+â”‚  â”œâ”€ Oil & Gas
+â”‚  â”œâ”€ Renewable Energy
+â”‚  â””â”€ ... 3 more
+â””â”€ ... more sectors
 ```
 
 ### 2. Selected Data
@@ -368,10 +368,10 @@ The A4 document preview on the right side updates to show:
 
 ```
 STRATEGIC ANALYSIS DOCUMENT
-═════════════════════════════
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 Organization Profile
-─────────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Company Name: Acme Corp
 Entity Type: S-Corporation
 Country: United States
@@ -379,14 +379,14 @@ Primary Owner: John Smith
 Contact: john@acmecorp.com
 
 Market Position
-─────────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Total Addressable Market: $50M
 Market Growth Rate: 25% annually
 Industry: Software Development
 Target Segments: Mid-market enterprises in North America
 
 Competitive Landscape
-─────────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Key Competitors: Competitor A, Competitor B
 ...
 ```
@@ -396,16 +396,16 @@ The left sidebar checklist updates to show completion:
 
 ```
 Foundation
-✓ Organization Name .................... Complete
-✓ Entity Type .......................... Complete
-✓ Country/Location ..................... Complete
+âœ“ Organization Name .................... Complete
+âœ“ Entity Type .......................... Complete
+âœ“ Country/Location ..................... Complete
   Primary Owner ........................ (can be empty)
   Contact Email ........................ (can be empty)
 
 Market
-✓ Total Addressable Market ............. Complete
-✓ Market Growth Rate ................... Complete
-✓ Industry/Sector ...................... Complete
+âœ“ Total Addressable Market ............. Complete
+âœ“ Market Growth Rate ................... Complete
+âœ“ Industry/Sector ...................... Complete
   Target Segments ...................... (optional for now)
   Competitive Landscape ................ (optional for now)
 ```
@@ -420,15 +420,15 @@ Market
 
 2. **Fill Foundation Section:**
    - Type organization name
-   - **Click Entity Type dropdown** → Select from 35+ options
-   - **Click Country dropdown** → Select from 60+ countries
+   - **Click Entity Type dropdown** â†’ Select from 35+ options
+   - **Click Country dropdown** â†’ Select from 60+ countries
    - Type owner name (optional)
    - Type email (optional)
 
 3. **Fill Market Section:**
    - Type TAM (Total Addressable Market)
    - Type growth rate %
-   - **Click Industry dropdown** → Select from 40+ industries
+   - **Click Industry dropdown** â†’ Select from 40+ industries
    - Describe target segments
    - Describe competitors
 
@@ -461,7 +461,7 @@ export const ENTITY_TYPES = [
 
 **Step 4:** Restart dev server (hot reload will pick it up)
 
-**Step 5:** Open MainCanvas → Entity Type dropdown now shows new option
+**Step 5:** Open MainCanvas â†’ Entity Type dropdown now shows new option
 
 ### To Add New Countries:
 
@@ -480,7 +480,7 @@ export const COUNTRIES = [
 
 **Step 4:** Restart dev server
 
-**Step 5:** Open MainCanvas → Country dropdown now shows new option
+**Step 5:** Open MainCanvas â†’ Country dropdown now shows new option
 
 ### To Update Other Components:
 
@@ -570,40 +570,41 @@ import { ENTITY_TYPES, COUNTRIES, INDUSTRIES } from '../constants/businessData';
 ## Summary: The Complete Picture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Master Data File                         │
-│              constants/businessData.ts                       │
-│                                                              │
-│  Contains all options organized by category:               │
-│  ✓ ENTITY_TYPES (35+)                                      │
-│  ✓ COUNTRIES (60+)                                         │
-│  ✓ INDUSTRIES (40+)                                        │
-│  ✓ Plus 6 more data arrays                                 │
-└─────────────────────────────────────────────────────────────┘
-                          ↓ Imported into
-┌─────────────────────────────────────────────────────────────┐
-│              React Components                                │
-│          (MainCanvas.tsx, etc.)                             │
-│                                                              │
-│  Each component has dropdowns that use:                    │
-│  {ENTITY_TYPES.map(...)} → Renders 35+ options            │
-│  {COUNTRIES.map(...)} → Renders 60+ options               │
-│  {INDUSTRIES.map(...)} → Renders 40+ options              │
-└─────────────────────────────────────────────────────────────┘
-                          ↓ Used by
-┌─────────────────────────────────────────────────────────────┐
-│              User Interface                                  │
-│                                                              │
-│  Users see and interact with:                             │
-│  • Entity Type dropdown (35+ options)                      │
-│  • Country dropdown (60+ options)                          │
-│  • Industry dropdown (40+ options)                         │
-│                                                              │
-│  Selections stored in state: params = { ... }             │
-│  Live preview updates in real-time                        │
-│  Checklist tracks completion                             │
-└─────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                     Master Data File                         â”‚
+â”‚              constants/businessData.ts                       â”‚
+â”‚                                                              â”‚
+â”‚  Contains all options organized by category:               â”‚
+â”‚  âœ“ ENTITY_TYPES (35+)                                      â”‚
+â”‚  âœ“ COUNTRIES (60+)                                         â”‚
+â”‚  âœ“ INDUSTRIES (40+)                                        â”‚
+â”‚  âœ“ Plus 6 more data arrays                                 â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                          â†“ Imported into
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚              React Components                                â”‚
+â”‚          (MainCanvas.tsx, etc.)                             â”‚
+â”‚                                                              â”‚
+â”‚  Each component has dropdowns that use:                    â”‚
+â”‚  {ENTITY_TYPES.map(...)} â†’ Renders 35+ options            â”‚
+â”‚  {COUNTRIES.map(...)} â†’ Renders 60+ options               â”‚
+â”‚  {INDUSTRIES.map(...)} â†’ Renders 40+ options              â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                          â†“ Used by
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚              User Interface                                  â”‚
+â”‚                                                              â”‚
+â”‚  Users see and interact with:                             â”‚
+â”‚  â€¢ Entity Type dropdown (35+ options)                      â”‚
+â”‚  â€¢ Country dropdown (60+ options)                          â”‚
+â”‚  â€¢ Industry dropdown (40+ options)                         â”‚
+â”‚                                                              â”‚
+â”‚  Selections stored in state: params = { ... }             â”‚
+â”‚  Live preview updates in real-time                        â”‚
+â”‚  Checklist tracks completion                             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-**Result:** Users can model ANY business structure, in ANY country, in ANY industry → **100% system capability ✅**
+**Result:** Users can model ANY business structure, in ANY country, in ANY industry â†’ **100% system capability âœ…**
+
 

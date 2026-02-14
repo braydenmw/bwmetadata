@@ -1,4 +1,4 @@
-/**
+﻿/**
  * NSIL BRAIN PANEL - Visual interface for the NSIL Intelligence Hub
  * 
  * This component displays:
@@ -30,31 +30,31 @@ const PersonaCard: React.FC<{
   const config = {
     skeptic: {
       title: 'The Skeptic',
-      icon: '🔍',
+      icon: 'ðŸ”',
       color: 'red',
       description: 'Finds deal-killers and hidden risks'
     },
     advocate: {
       title: 'The Advocate',
-      icon: '🚀',
+      icon: 'ðŸš€',
       color: 'green',
       description: 'Identifies opportunities and synergies'
     },
     regulator: {
       title: 'The Regulator',
-      icon: '⚖️',
+      icon: 'âš–ï¸',
       color: 'blue',
       description: 'Checks legal and compliance requirements'
     },
     accountant: {
       title: 'The Accountant',
-      icon: '📊',
+      icon: 'ðŸ“Š',
       color: 'yellow',
       description: 'Validates financial viability'
     },
     operator: {
       title: 'The Operator',
-      icon: '⚙️',
+      icon: 'âš™ï¸',
       color: 'purple',
       description: 'Tests execution feasibility'
     }
@@ -189,7 +189,7 @@ const QuickStatusBadge: React.FC<{ assessment: QuickAssessment }> = ({ assessmen
       </div>
       <p className="text-sm">{assessment.headline}</p>
       {assessment.nextStep && (
-        <p className="text-xs mt-2 opacity-80">→ {assessment.nextStep}</p>
+        <p className="text-xs mt-2 opacity-80">â†’ {assessment.nextStep}</p>
       )}
     </div>
   );
@@ -225,12 +225,12 @@ const RecommendationCard: React.FC<{ recommendation: IntelligenceReport['recomme
       {recommendation.criticalActions.length > 0 && (
         <div className="mb-4">
           <h4 className="font-bold mb-2 flex items-center gap-2">
-            <span>⚡</span> Critical Actions
+            <span>âš¡</span> Critical Actions
           </h4>
           <ul className="space-y-1">
             {recommendation.criticalActions.map((action, idx) => (
               <li key={idx} className="text-sm flex items-start gap-2">
-                <span className="text-amber-500">→</span>
+                <span className="text-amber-500">â†’</span>
                 {action}
               </li>
             ))}
@@ -244,7 +244,7 @@ const RecommendationCard: React.FC<{ recommendation: IntelligenceReport['recomme
             <h4 className="font-bold mb-2 text-red-400">Key Risks</h4>
             <ul className="space-y-1">
               {recommendation.keyRisks.slice(0, 3).map((risk, idx) => (
-                <li key={idx} className="text-xs text-stone-300">• {risk}</li>
+                <li key={idx} className="text-xs text-stone-300">â€¢ {risk}</li>
               ))}
             </ul>
           </div>
@@ -255,7 +255,7 @@ const RecommendationCard: React.FC<{ recommendation: IntelligenceReport['recomme
             <h4 className="font-bold mb-2 text-green-400">Key Opportunities</h4>
             <ul className="space-y-1">
               {recommendation.keyOpportunities.slice(0, 3).map((opp, idx) => (
-                <li key={idx} className="text-xs text-stone-300">• {opp}</li>
+                <li key={idx} className="text-xs text-stone-300">â€¢ {opp}</li>
               ))}
             </ul>
           </div>
@@ -304,7 +304,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <span className="text-2xl">🧠</span>
+              <span className="text-2xl">ðŸ§ </span>
               NSIL Intelligence Hub
             </h2>
             <p className="text-sm text-stone-400">Multi-Perspective Analysis Engine</p>
@@ -348,7 +348,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
       <div className="p-6">
         {!fullReport && !loading && (
           <div className="text-center py-12 text-stone-400">
-            <p className="text-xl mb-2">🔮</p>
+            <p className="text-xl mb-2">ðŸ”®</p>
             <p>Click "Run Full Analysis" to activate the intelligence engine</p>
             <p className="text-sm mt-2">
               The 5 personas will analyze your inputs from different perspectives
@@ -360,7 +360,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent"></div>
             <p className="mt-4 text-stone-400">Running multi-persona analysis...</p>
-            <p className="text-sm text-stone-500">Skeptic • Advocate • Regulator • Accountant • Operator</p>
+            <p className="text-sm text-stone-500">Skeptic â€¢ Advocate â€¢ Regulator â€¢ Accountant â€¢ Operator</p>
           </div>
         )}
         
@@ -373,9 +373,9 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                 
                 {/* Processing Stats */}
                 <div className="flex items-center gap-4 text-xs text-stone-500">
-                  <span>⏱️ Processed in {fullReport.processingTime}ms</span>
-                  <span>🔧 {fullReport.componentsRun.length} components</span>
-                  <span>📊 {fullReport.applicableInsights.length} insights applied</span>
+                  <span>â±ï¸ Processed in {fullReport.processingTime}ms</span>
+                  <span>ðŸ”§ {fullReport.componentsRun.length} components</span>
+                  <span>ðŸ“Š {fullReport.applicableInsights.length} insights applied</span>
                 </div>
               </div>
             )}
@@ -394,7 +394,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                 {/* Debate Synthesis */}
                 {fullReport.personaAnalysis.synthesis.disagreements.length > 0 && (
                   <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
-                    <h4 className="font-bold text-white mb-3">🎭 Debate Summary</h4>
+                    <h4 className="font-bold text-white mb-3">ðŸŽ­ Debate Summary</h4>
                     {fullReport.personaAnalysis.synthesis.disagreements.map((disagreement, idx) => (
                       <div key={idx} className="mb-3">
                         <p className="text-sm text-stone-300 mb-2">{disagreement.topic}</p>
@@ -417,7 +417,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
               <div className="space-y-6">
                 {/* Monte Carlo Distribution */}
                 <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
-                  <h4 className="font-bold text-white mb-3">📈 Monte Carlo Simulation</h4>
+                  <h4 className="font-bold text-white mb-3">ðŸ“ˆ Monte Carlo Simulation</h4>
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div className="text-center">
                       <p className="text-xs text-stone-400">P10 (Pessimistic)</p>
@@ -439,14 +439,14 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                     </div>
                   </div>
                   <div className="text-sm text-stone-400">
-                    <p>📉 Probability of Loss: {fullReport.counterfactual.monteCarlo.probabilityOfLoss.toFixed(1)}%</p>
-                    <p>🎯 Probability of Target Return: {fullReport.counterfactual.monteCarlo.probabilityOfTargetReturn.toFixed(1)}%</p>
+                    <p>ðŸ“‰ Probability of Loss: {fullReport.counterfactual.monteCarlo.probabilityOfLoss.toFixed(1)}%</p>
+                    <p>ðŸŽ¯ Probability of Target Return: {fullReport.counterfactual.monteCarlo.probabilityOfTargetReturn.toFixed(1)}%</p>
                   </div>
                 </div>
                 
                 {/* Alternative Scenarios */}
                 <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
-                  <h4 className="font-bold text-white mb-3">🔄 Alternative Scenarios</h4>
+                  <h4 className="font-bold text-white mb-3">ðŸ”„ Alternative Scenarios</h4>
                   <div className="space-y-3">
                     {fullReport.counterfactual.alternativeScenarios.map((scenario) => (
                       <div key={scenario.id} className="bg-stone-700/50 rounded p-3">
@@ -459,7 +459,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                         <p className="text-sm text-stone-400 mb-2">{scenario.description}</p>
                         <div className="flex flex-wrap gap-1">
                           {scenario.keyDifferences.slice(0, 2).map((diff, idx) => (
-                            <span key={idx} className="text-xs text-stone-500">• {diff}</span>
+                            <span key={idx} className="text-xs text-stone-500">â€¢ {diff}</span>
                           ))}
                         </div>
                       </div>
@@ -469,7 +469,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                 
                 {/* Regret Analysis */}
                 <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
-                  <h4 className="font-bold text-white mb-3">🤔 Regret Analysis</h4>
+                  <h4 className="font-bold text-white mb-3">ðŸ¤” Regret Analysis</h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-stone-400">Do-Nothing Cost</p>
@@ -497,7 +497,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                 {/* Overall Trust */}
                 <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-white">🛡️ Input Validation Shield</h4>
+                    <h4 className="font-bold text-white">ðŸ›¡ï¸ Input Validation Shield</h4>
                     <span className={`px-3 py-1 rounded-full text-sm font-bold ${
                       fullReport.inputValidation.overallStatus === 'trusted' ? 'bg-green-500/20 text-green-400' :
                       fullReport.inputValidation.overallStatus === 'cautionary' ? 'bg-yellow-500/20 text-yellow-400' :
@@ -549,7 +549,7 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
                 {/* Pattern Matches */}
                 {fullReport.inputValidation.patternMatches.length > 0 && (
                   <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
-                    <h4 className="font-bold text-white mb-3">⚠️ Pattern Matches</h4>
+                    <h4 className="font-bold text-white mb-3">âš ï¸ Pattern Matches</h4>
                     <div className="space-y-2">
                       {fullReport.inputValidation.patternMatches.map((pattern, idx) => (
                         <div key={idx} className={`p-3 rounded text-sm ${
@@ -577,3 +577,4 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
 };
 
 export default NSILBrainPanel;
+

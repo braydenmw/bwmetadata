@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Activity } from 'lucide-react';
 
 export const TradeDisruptionWidget = ({ mode }: { mode: string }) => (
@@ -8,3 +8,4 @@ export const TradeDisruptionWidget = ({ mode }: { mode: string }) => (
         <p className="text-sm text-stone-500">Simulating supply chain shocks...</p>
     </div>
 );
+

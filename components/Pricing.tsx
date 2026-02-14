@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Check, ChevronRight, Lock } from 'lucide-react';
 import { PricingPlan } from '../types';
@@ -15,10 +15,10 @@ const plans: PricingPlan[] = [
     duration: 'One-Time Pass',
     description: 'Perfect for executing a single high-stakes mission or trial run.',
     features: [
-      'Core Trinity Engines (IVAS™, SPI™, SCF™)',
+      'Core Trinity Engines (IVASâ„¢, SPIâ„¢, SCFâ„¢)',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPI‑Driven Matchmaking',
+      'Partner Discovery & SPIâ€‘Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -31,10 +31,10 @@ const plans: PricingPlan[] = [
     duration: 'For 3 Months',
     description: 'Designed for strategic planning cycles and market analysis.',
     features: [
-      'Core Trinity Engines (IVAS™, SPI™, SCF™)',
+      'Core Trinity Engines (IVASâ„¢, SPIâ„¢, SCFâ„¢)',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPI‑Driven Matchmaking',
+      'Partner Discovery & SPIâ€‘Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -47,10 +47,10 @@ const plans: PricingPlan[] = [
     duration: 'For 6 Months',
     description: 'Sustained intelligence for regional expansion execution.',
     features: [
-      'Core Trinity Engines (IVAS™, SPI™, SCF™)',
+      'Core Trinity Engines (IVASâ„¢, SPIâ„¢, SCFâ„¢)',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPI‑Driven Matchmaking',
+      'Partner Discovery & SPIâ€‘Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -64,10 +64,10 @@ const plans: PricingPlan[] = [
     duration: 'For 12 Months',
     description: 'Maximum value. Continuous global monitoring & strategy.',
     features: [
-      'Core Trinity Engines (IVAS™, SPI™, SCF™)',
+      'Core Trinity Engines (IVASâ„¢, SPIâ„¢, SCFâ„¢)',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPI‑Driven Matchmaking',
+      'Partner Discovery & SPIâ€‘Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -87,7 +87,7 @@ export const Pricing: React.FC<PricingProps> = ({ onOpenSystem }) => {
           </div>
           <div className="lg:col-span-7">
             <p className="text-white/80 text-lg leading-relaxed max-w-3xl">
-              The full Regional Intelligence Core is available on every tier. Choose the tempo that matches how often you need to interrogate the system—from a single mission to continuous regional execution.
+              The full Regional Intelligence Core is available on every tier. Choose the tempo that matches how often you need to interrogate the systemâ€”from a single mission to continuous regional execution.
             </p>
           </div>
         </div>
@@ -141,3 +141,4 @@ export const Pricing: React.FC<PricingProps> = ({ onOpenSystem }) => {
     </section>
   );
 };
+

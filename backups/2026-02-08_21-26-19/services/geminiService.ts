@@ -1,4 +1,4 @@
-
+﻿
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config, features } from './config';
@@ -24,7 +24,7 @@ const getGeminiApiKey = (): string => {
 };
 
 // System instruction for the AI
-const SYSTEM_INSTRUCTION = `You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
+const SYSTEM_INSTRUCTION = `You are "BWGA Ai" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.`;
 
 // Session ID for maintaining chat context on the server
 let sessionId: string | null = null;
@@ -611,3 +611,4 @@ export const runCopilotAnalysis = async (query: string, context: string): Promis
         followUp: "Shall we evaluate potential targets?"
     };
 };
+

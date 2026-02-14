@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
   ResponsiveContainer, Tooltip
@@ -72,7 +72,7 @@ export const MarketDiversificationDashboard: React.FC<Props> = ({
             <PieChart className="w-5 h-5 text-purple-600" />
             Market Diversification Intelligence
           </h3>
-          <p className="text-xs text-stone-500">Sector: {sector} • Active Markets: {markets.length}</p>
+          <p className="text-xs text-stone-500">Sector: {sector} â€¢ Active Markets: {markets.length}</p>
         </div>
         <div className="flex flex-col items-end">
           <span className="text-xs font-semibold text-stone-400 uppercase">Concentration Risk</span>
@@ -190,3 +190,4 @@ export const MarketDiversificationDashboard: React.FC<Props> = ({
 export const MarketDiversificationWidget = () => (
   <MarketDiversificationDashboard />
 );
+

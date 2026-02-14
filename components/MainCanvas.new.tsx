@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Send, ChevronDown, Brain, Zap, Plus, Eye, Download, Save, Printer, Settings,
   FileText, AlertCircle, Check, TrendingUp, Users, Globe, DollarSign, Briefcase,
@@ -515,9 +515,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
               <h1 className="text-2xl font-bold text-slate-900">{params.companyName || 'Strategic Report'}</h1>
               <div className="flex justify-between items-start mt-2">
                 <div className="text-xs text-slate-700">
-                  <p><strong>Entity Type:</strong> {params.entityType || '—'}</p>
-                  <p><strong>Location:</strong> {params.country || '—'}</p>
-                  <p><strong>Owner:</strong> {params.primaryOwner || '—'}</p>
+                  <p><strong>Entity Type:</strong> {params.entityType || 'â€”'}</p>
+                  <p><strong>Location:</strong> {params.country || 'â€”'}</p>
+                  <p><strong>Owner:</strong> {params.primaryOwner || 'â€”'}</p>
                 </div>
                 <div className="text-xs text-slate-600 text-right">
                   <p>Generated: {new Date().toLocaleDateString()}</p>
@@ -540,9 +540,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Market Overview</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>TAM:</strong> {params.tam || '—'}</p>
-                <p><strong>Growth Rate:</strong> {params.growthRate ? `${params.growthRate}% p.a.` : '—'}</p>
-                <p><strong>Target Segments:</strong> {params.segments || '—'}</p>
+                <p><strong>TAM:</strong> {params.tam || 'â€”'}</p>
+                <p><strong>Growth Rate:</strong> {params.growthRate ? `${params.growthRate}% p.a.` : 'â€”'}</p>
+                <p><strong>Target Segments:</strong> {params.segments || 'â€”'}</p>
                 {params.competitors && <p><strong>Competitive Position:</strong> {params.competitors.substring(0, 100)}...</p>}
               </div>
             </div>
@@ -551,8 +551,8 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Operations</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>Team:</strong> {params.teamSize || '—'} employees</p>
-                <p><strong>Technology:</strong> {params.technology || '—'}</p>
+                <p><strong>Team:</strong> {params.teamSize || 'â€”'} employees</p>
+                <p><strong>Technology:</strong> {params.technology || 'â€”'}</p>
                 {params.competencies && <p><strong>Competencies:</strong> {params.competencies.substring(0, 80)}...</p>}
               </div>
             </div>
@@ -561,9 +561,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Financial Projections</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>Year 1 Revenue:</strong> {params.revenue1 || '—'}</p>
-                <p><strong>Year 3 Target:</strong> {params.revenue3 || '—'}</p>
-                <p><strong>Margin Target:</strong> {params.marginTarget ? `${params.marginTarget}%` : '—'}</p>
+                <p><strong>Year 1 Revenue:</strong> {params.revenue1 || 'â€”'}</p>
+                <p><strong>Year 3 Target:</strong> {params.revenue3 || 'â€”'}</p>
+                <p><strong>Margin Target:</strong> {params.marginTarget ? `${params.marginTarget}%` : 'â€”'}</p>
               </div>
             </div>
 
@@ -593,7 +593,7 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
 
             {/* Footer */}
             <div className="border-t border-slate-300 pt-4 text-center text-xs text-slate-600">
-              <p>Confidential • Strategic Planning Document</p>
+              <p>Confidential â€¢ Strategic Planning Document</p>
             </div>
           </div>
         </div>
@@ -654,3 +654,4 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
 };
 
 export default MainCanvas;
+

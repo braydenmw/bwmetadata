@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect, useRef } from 'react';
 import { Terminal, MessageSquare, ArrowRight, Activity } from 'lucide-react';
 
@@ -129,7 +129,7 @@ export const WorkbenchFeature: React.FC = () => {
                     </div>
                     <div className="lg:col-span-7">
                         <p className="text-lg text-slate-300 leading-relaxed max-w-3xl">
-                            The Workbench is the front panel for the Regional Intelligence Core. You type what you are trying to do in plain language, and the system turns it into a logic path—activating NSIL, adversarial cross-checks, multi-persona reasoning, and counterfactual simulation—so a vague concern becomes a tested strategy you can defend.
+                            The Workbench is the front panel for the Regional Intelligence Core. You type what you are trying to do in plain language, and the system turns it into a logic pathâ€”activating NSIL, adversarial cross-checks, multi-persona reasoning, and counterfactual simulationâ€”so a vague concern becomes a tested strategy you can defend.
                         </p>
                     </div>
                 </div>
@@ -212,7 +212,7 @@ export const WorkbenchFeature: React.FC = () => {
                     <div className="relative z-10 text-center">
                         <h4 className="text-slate-900 font-serif font-bold text-3xl mb-4">The Great Clarifier.</h4>
                         <p className="text-slate-600 max-w-3xl mx-auto leading-relaxed text-lg">
-                            This system is not designed to replace human expertise. Whether you are an <strong>expert</strong> running daily due diligence or a <strong>novice</strong> unsure where to start, the Workbench organises regional chaos into a structure you can act on—using the same NSIL math and engines that power SPI, IVAS, SCF, RROI, SEAM, and the rest of the stack.
+                            This system is not designed to replace human expertise. Whether you are an <strong>expert</strong> running daily due diligence or a <strong>novice</strong> unsure where to start, the Workbench organises regional chaos into a structure you can act onâ€”using the same NSIL math and engines that power SPI, IVAS, SCF, RROI, SEAM, and the rest of the stack.
                         </p>
                     </div>
                 </div>
@@ -221,3 +221,4 @@ export const WorkbenchFeature: React.FC = () => {
         </section>
     );
 };
+

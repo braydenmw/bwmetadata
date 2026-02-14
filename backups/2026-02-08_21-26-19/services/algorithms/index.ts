@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ALGORITHMS INDEX - Unified Export for All NSIL Algorithms
  * 
  * This module exports all the optimization algorithms used in the NSIL brain:
@@ -237,3 +237,4 @@ export function resetAllAlgorithms(): void {
   lazyEvalEngine.reset();
   gradientRankingEngine.resetModel();
 }
+

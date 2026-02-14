@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   FileText, Mic, Send, Paperclip, ChevronRight, 
@@ -434,3 +434,4 @@ const UnifiedReportBuilder: React.FC<UnifiedReportBuilderProps> = ({ params: ini
 };
 
 export default UnifiedReportBuilder;
+

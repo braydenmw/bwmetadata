@@ -1,12 +1,12 @@
-/**
- * ═══════════════════════════════════════════════════════════════════════════════
+﻿/**
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * MULTI-SOURCE LOCATION RESEARCH SERVICE
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * 
  * Comprehensive intelligence gathering from MULTIPLE AUTHORITATIVE sources:
  * 
  * PRIMARY SOURCES (Most Reliable):
- * 1. Google Search → Official Government Websites
+ * 1. Google Search â†’ Official Government Websites
  * 2. World Bank Open Data API
  * 3. CIA World Factbook
  * 4. Official Statistics Bureaus
@@ -16,7 +16,7 @@
  * 6. Wikipedia/Wikidata (for cross-verification only)
  * 
  * All data includes source citations with reliability ratings
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
@@ -440,7 +440,7 @@ const extractPopulation = (text: string): number | null => {
 };
 
 const extractAreaKm2 = (text: string): number | null => {
-  const match = text.match(/([\d,.]+)\s*(?:km2|km²|square kilometers)/i);
+  const match = text.match(/([\d,.]+)\s*(?:km2|kmÂ²|square kilometers)/i);
   return match ? parseNumber(match[1]) : null;
 };
 
@@ -902,7 +902,7 @@ export async function multiSourceResearch(
       stage: 'Government Sources',
       progress: 35,
       message: 'Searching official government websites...',
-      substage: 'Google Search → .gov domains'
+      substage: 'Google Search â†’ .gov domains'
     });
 
     const govSearch = await searchGovernmentSources(cityName, region, country);
@@ -1058,7 +1058,7 @@ export async function multiSourceResearch(
       timezone: countryData?.timezones?.[0] || `UTC${geo.lon >= 0 ? '+' : ''}${Math.round(geo.lon / 15)}`,
       established: 'See historical records',
       areaSize: cityStats.extracted.areaKm2
-        ? `${cityStats.extracted.areaKm2.toLocaleString()} km² (city)`
+        ? `${cityStats.extracted.areaKm2.toLocaleString()} kmÂ² (city)`
         : 'City area not verified',
       climate: geo.lat > 23.5 || geo.lat < -23.5 ? 'Temperate' : 'Tropical',
       currency: countryData?.currencies
@@ -1227,3 +1227,4 @@ export async function multiSourceResearch(
 }
 
 export type { CityProfile, CityLeader };
+

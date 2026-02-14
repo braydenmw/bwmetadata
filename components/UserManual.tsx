@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, Briefcase, Scale, TrendingUp, Eye, CheckCircle2, Target, ShieldCheck } from 'lucide-react';
 import { termsOfEngagement } from '../constants/commandCenterData';
 
@@ -79,7 +79,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <span className="font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">They deserve to be seen.</span>
             </h1>
             <p className="text-xl text-slate-200 leading-relaxed max-w-xl">
-              Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity—giving every community the tools to tell their story, attract investment, and grow.
+              Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunityâ€”giving every community the tools to tell their story, attract investment, and grow.
             </p>
           </div>
         </div>
@@ -93,11 +93,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             <div className="lg:col-span-3">
               <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">OUR MISSION</p>
               <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
-                <strong className="text-slate-900">Strong nations are built on strong regions.</strong> The communities that feed nations, power industries, and drive real economic activity are often the last to receive the resources they need to grow. Capital cities have teams, budgets, and connections. Regional areas have determination—but rarely the tools to match it.
+                <strong className="text-slate-900">Strong nations are built on strong regions.</strong> The communities that feed nations, power industries, and drive real economic activity are often the last to receive the resources they need to grow. Capital cities have teams, budgets, and connections. Regional areas have determinationâ€”but rarely the tools to match it.
               </p>
 
               <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                Every nation depends on its regions—for food, resources, industry, and resilience. But when it comes to competing for investment and partnerships, regional communities are expected to play the same game with a fraction of the resources. Outside the major cities, there are people building real industries, solving real problems, and creating real opportunity. But without access to institutional-grade tools, their stories go untold and their potential stays hidden.
+                Every nation depends on its regionsâ€”for food, resources, industry, and resilience. But when it comes to competing for investment and partnerships, regional communities are expected to play the same game with a fraction of the resources. Outside the major cities, there are people building real industries, solving real problems, and creating real opportunity. But without access to institutional-grade tools, their stories go untold and their potential stays hidden.
               </p>
 
               <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
@@ -110,10 +110,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <div className="bg-white p-6 shadow-xl border-4 border-black text-center">
                 <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">WHY THIS PLATFORM EXISTS</p>
                 <p className="text-slate-900 text-base leading-relaxed font-bold mb-4">
-                  We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use—so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
+                  We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations useâ€”so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
                 </p>
                 <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
-                  — Brayden Walls, Founder
+                  â€” Brayden Walls, Founder
                 </p>
               </div>
             </div>
@@ -135,13 +135,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Brayden Walls Global Advisory (BWGA) wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
                     </p>
                     <p className="text-base text-slate-700 leading-relaxed text-justify">
-                      For years, we watched dedicated regional leaders—mayors, local entrepreneurs, and councils—work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
+                      For years, we watched dedicated regional leadersâ€”mayors, local entrepreneurs, and councilsâ€”work tirelessly to attract investment to their communities. They had the vision. They had the drive. They had the raw assets. But time and again, they were ignored by global capital.
                     </p>
                     <p className="text-base text-slate-700 leading-relaxed text-justify">
                       We realized the problem wasn't their ideas; it was their language. Wall Street and global investors speak a specific dialect of risk matrices, financial models, and feasibility studies. If you can't speak that language, you don't get a seat at the table. Wealthy corporations hire armies of consultants costing $50,000 a month to write these documents for them. Regional communities simply couldn't afford that admission fee, so they were left behind.
                     </p>
                     <p className="text-base text-slate-700 leading-relaxed text-justify">
-                      We built BWGA to break that barrier. Our mission is simple: to give the underdog—the regional council, the local business, the emerging exporter—the same strategic firepower as a multinational corporation.
+                      We built BWGA to break that barrier. Our mission is simple: to give the underdogâ€”the regional council, the local business, the emerging exporterâ€”the same strategic firepower as a multinational corporation.
                     </p>
                   </div>
                 </div>
@@ -157,13 +157,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">THE TECHNOLOGY</p>
               <h3 className="text-2xl font-light text-slate-900 mb-4">What BWGA AI Actually Is</h3>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                Standard AI tools generate text—they predict the next word. That's useful for writing emails, but it's not enough to structure a complex deal, stress-test a business case, or produce a document you'd stake your reputation on. We built BWGA AI to close that gap: an intelligence system that reasons through problems, validates assumptions with hard data, and delivers outputs you can confidently present to investors, boards, and government bodies.
+                Standard AI tools generate textâ€”they predict the next word. That's useful for writing emails, but it's not enough to structure a complex deal, stress-test a business case, or produce a document you'd stake your reputation on. We built BWGA AI to close that gap: an intelligence system that reasons through problems, validates assumptions with hard data, and delivers outputs you can confidently present to investors, boards, and government bodies.
               </p>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                <strong className="text-slate-900">BWGA Intelligence AI</strong> is a Sovereign-Grade Intelligence Operating System. It is not a chatbot. It is a <strong className="text-slate-900">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and write—coordinated by two proprietary engines working in concert. The <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong> is a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction.
+                <strong className="text-slate-900">BWGA Ai</strong> is a Sovereign-Grade Intelligence Operating System. It is not a chatbot. It is a <strong className="text-slate-900">digital boardroom</strong>: a team of specialized AI agents that research, debate, score, and writeâ€”coordinated by two proprietary engines working in concert. The <strong className="text-slate-900">NSIL (Nexus Strategic Intelligence Layer)</strong> is a reasoning engine with 38 proprietary mathematical formulas that stress-test every dimension of your project, from financial viability to regulatory friction.
               </p>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                The second engine is the <strong className="text-slate-900">Human Cognition Engine</strong>—7 proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure. These models address neural field dynamics, predictive processing, attention allocation, emotional valence, and working memory constraints. Together, these <strong className="text-slate-900">38 mathematical formulations</strong> create an intelligence platform that doesn't just analyze data—it anticipates how humans will respond to it.
+                The second engine is the <strong className="text-slate-900">Human Cognition Engine</strong>â€”7 proprietary behavioural models that simulate how real decision-makers process complexity, allocate attention, and react under pressure. These models address neural field dynamics, predictive processing, attention allocation, emotional valence, and working memory constraints. Together, these <strong className="text-slate-900">38 mathematical formulations</strong> create an intelligence platform that doesn't just analyze dataâ€”it anticipates how humans will respond to it.
               </p>
               <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
                 In practice, this powers every feature of the platform: <strong className="text-slate-900">BW AI Search</strong> for instant intelligence on any city, company, or government; the <strong className="text-slate-900">Live Report System</strong> for real-time multi-agent analysis; the <strong className="text-slate-900">BW Consultant</strong> as an embedded AI advisor; and a <strong className="text-slate-900">Document Factory</strong> producing 200+ institutional-grade outputs.
@@ -187,7 +187,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <p className="text-lg text-slate-900 font-bold mb-2">Beyond Echo Chambers</p>
                       <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Unlike generic Large Language Models (LLMs) such as ChatGPT or Bard, which are designed to be helpful and agreeable, BWGA AI is built for adversarial reasoning. These LLMs can generate business plans, but independent analysis reveals a tendency to confirm user biases and a lack of critical evaluation. They are optimized for language prediction, not strategic validation. BWGA AI, in contrast, actively seeks weaknesses.</p>
                       <p className="text-lg text-slate-900 font-bold mb-2">Consultant-Level Scrutiny, Automated</p>
-                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas – a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
+                      <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">Traditional consulting firms do offer critical review, but this process is expensive and often subjective. A small team of analysts, potentially lacking diverse expertise or regional understanding, formulates an opinion. BWGA AI replicates this scrutiny using a multi-agent system. It splits your project into five specialized AI personas â€“ a Skeptic, Regulator, Accountant, Advocate, and Operator. Each persona acts as a dedicated consultant, applying its own analytical framework to assess your plan from a unique angle.</p>
                       <p className="text-lg text-slate-900 font-bold mb-2">Quantified, Not Just "Considered"</p>
                       <p className="text-base text-slate-600 leading-relaxed mb-0 text-justify">While other systems might acknowledge risks qualitatively, BWGA AI goes further: The system subjects your project to <strong className="text-slate-900">38 proprietary mathematical formulas</strong>, generating hard metrics like the Success Probability Index (SPI) and Regional Return on Investment (RROI). These indices aren't based on subjective opinion; they provide a quantifiable, comparable score, allowing you to benchmark your project against a data-backed standard. This level of granular, quantitative analysis is rarely found in standard strategic AI platforms that focus on text generation rather than numerical validation.</p>
                       <p className="text-lg text-slate-900 font-bold mb-2">Simulating Real-World Pressure</p>
@@ -206,7 +206,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <h3 className="text-2xl font-light text-slate-900 mb-4">Why This Matters</h3>
                   
                   <p className="text-base text-slate-600 leading-relaxed mb-4 text-justify">
-                    This system changes the game because it <strong className="text-slate-900">turns ambition into proof</strong>. Instead of a rough idea, you walk away with <strong className="text-slate-900">institutional-grade documentation</strong>—Investment Prospectuses, Risk Assessments, and Legal Frameworks—that look like they came from a top-tier firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
+                    This system changes the game because it <strong className="text-slate-900">turns ambition into proof</strong>. Instead of a rough idea, you walk away with <strong className="text-slate-900">institutional-grade documentation</strong>â€”Investment Prospectuses, Risk Assessments, and Legal Frameworksâ€”that look like they came from a top-tier firm. Every document comes with an audit trail showing exactly why the system made its recommendations.
                   </p>
                   <p className="text-base text-slate-700 leading-relaxed text-justify">
                     <strong className="text-slate-900">This is the massive difference:</strong> It means a small town in regional Australia or a startup in Southeast Asia can finally compete on a level playing field with the biggest players in the world. It removes the "consultant tax" and ensures that great projects are judged on their merit, not on who they know or how much they paid for advice.
@@ -231,7 +231,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             
             <p className="text-slate-200 leading-relaxed text-base mb-10 max-w-3xl mx-auto">
               Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. 
-              It was built for the person staring at a blank page, wondering where to even start—and for the 
+              It was built for the person staring at a blank page, wondering where to even startâ€”and for the 
               experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
             </p>
 
@@ -240,11 +240,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 text-left">
                 <p className="text-orange-400 uppercase tracking-widest text-xs mb-3 font-semibold">WHO THIS IS BUILT FOR</p>
                 <p className="text-white font-medium mb-3 text-base">
-                  Regional Councils & RDAs · State & Federal Agencies · Businesses Looking Regional · First-Time Exporters
+                  Regional Councils & RDAs Â· State & Federal Agencies Â· Businesses Looking Regional Â· First-Time Exporters
                 </p>
                 <p className="text-slate-200 text-base leading-relaxed">
                   Whether you're a council trying to attract new industries, a government agency evaluating investment proposals, 
-                  a business exploring regional expansion, or an entrepreneur looking to export for the first time—this platform 
+                  a business exploring regional expansion, or an entrepreneur looking to export for the first timeâ€”this platform 
                   gives you the analytical firepower and document automation that was once reserved for major corporations.
                 </p>
               </div>
@@ -263,7 +263,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             {/* Closing statement */}
             <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-3xl mx-auto">
               <p className="text-slate-100 leading-relaxed text-base">
-                The technology behind this is complex—27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. 
+                The technology behind this is complexâ€”27 formulas, five AI personas, Monte Carlo simulations, 200+ document types. 
                 But you don't need to understand any of that. <strong className="text-white">The complexity is hidden. What you see is clarity.</strong>
               </p>
             </div>
@@ -315,7 +315,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <div className="p-6">
                 <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 border border-amber-300">
                   <p className="text-amber-800 font-medium mb-1">Vision for the Future</p>
-                  <p className="text-slate-600 text-sm">Deploy as a shared, national strategic asset—a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.</p>
+                  <p className="text-slate-600 text-sm">Deploy as a shared, national strategic assetâ€”a sovereign-grade intelligence platform enhancing high-stakes decision-making across government.</p>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <h2 className="text-2xl font-light text-slate-900 mb-4">From Rough Brief to Board-Ready Package</h2>
               <p className="text-slate-600 max-w-4xl mx-auto text-base leading-relaxed mb-4">
                 Most AI tools take your input and generate a response. This system takes your input and <strong className="text-slate-900">interrogates it</strong>. 
-                It doesn't ask "what do you want me to write?"—it asks "is this opportunity real, and can you prove it?"
+                It doesn't ask "what do you want me to write?"â€”it asks "is this opportunity real, and can you prove it?"
               </p>
               <p className="text-slate-600 max-w-4xl mx-auto text-base leading-relaxed">
                 The pipeline works in three stages: <strong className="text-slate-900">Structured Intake</strong> (the 10-Step Protocol forces you to articulate every dimension of your opportunity), 
@@ -360,13 +360,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   Without institutional-grade formatting, credible projects get dismissed.
                 </p>
                 <p className="text-slate-300 text-sm mb-3 leading-relaxed">
-                  <strong className="text-white">How it works:</strong> The Document Factory doesn't just fill in templates—it synthesizes your 10-Step Protocol data 
+                  <strong className="text-white">How it works:</strong> The Document Factory doesn't just fill in templatesâ€”it synthesizes your 10-Step Protocol data 
                   with NSIL's analysis scores, persona debate outcomes, and risk simulations into cohesive narratives. Every document includes 
                   embedded provenance: the specific formulas used, the confidence intervals, and the audit trail for every claim.
                 </p>
                 <p className="text-slate-300 text-sm mb-4 leading-relaxed">
                   <strong className="text-white">What you get:</strong> Investment Prospectuses, Risk Assessment Matrices, Partnership Briefs, LOI/MOU Templates, 
-                  Grant Applications, Due Diligence Packs—all scored, cross-referenced, and ready for board-level presentation.
+                  Grant Applications, Due Diligence Packsâ€”all scored, cross-referenced, and ready for board-level presentation.
                 </p>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-white/10 rounded-lg p-2 border border-orange-400/30 text-center">
@@ -386,7 +386,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 </div>
                 <p>
                   <strong className="text-slate-900">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, 
-                  and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly 
+                  and persona debate transcripts. This isn't a black boxâ€”it's court-defensible, investor-ready documentation of exactly 
                   why the system reached each conclusion.
                 </p>
                 <div className="flex gap-2">
@@ -404,15 +404,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <Brain className="w-5 h-5 text-purple-400" />
                   <span className="text-purple-400 uppercase tracking-widest text-xs">THE REASONING ENGINE</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-3">NSIL — Nexus Strategic Intelligence Layer</h3>
+                <h3 className="text-lg font-semibold mb-3">NSIL â€” Nexus Strategic Intelligence Layer</h3>
                 <p className="text-slate-300 text-sm mb-3 leading-relaxed">
                   <strong className="text-white">The problem it solves:</strong> Standard AI (GPT, Claude, etc.) predicts the next word. It has no concept of "is this actually viable?" or "what could go wrong?" It will happily write you a business plan for an impossible idea because it has no mechanism to challenge assumptions.
                 </p>
                 <p className="text-slate-300 text-sm mb-3 leading-relaxed">
-                  <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic system—it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusions—and those conclusions are scored by 27 proprietary formulas including SPI™ (Success Probability Index), RROI™ (Regional ROI), and SEAM™ (Stakeholder Alignment Matrix).
+                  <strong className="text-white">The architecture:</strong> NSIL is a Neuro-Symbolic systemâ€”it fuses neural network creativity with symbolic logic and mathematical proof. Before generating any output, it runs your opportunity through five specialized AI personas (Advocate, Skeptic, Regulator, Accountant, Operator) that argue with each other. Only after reaching consensus does it generate conclusionsâ€”and those conclusions are scored by 27 proprietary formulas including SPIâ„¢ (Success Probability Index), RROIâ„¢ (Regional ROI), and SEAMâ„¢ (Stakeholder Alignment Matrix).
                 </p>
                 <p className="text-slate-300 text-sm mb-4 leading-relaxed">
-                  <strong className="text-white">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black box—it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
+                  <strong className="text-white">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn't a black boxâ€”it's court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
                 </p>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-white p-2.5 rounded-lg border border-slate-200">
@@ -421,11 +421,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <span className="text-xs font-semibold text-slate-900">5-Layer Architecture</span>
                     </div>
                     <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Input Validation & Governance</li>
-                      <li>• Multi-Agent Adversarial Debate</li>
-                      <li>• Quantitative Formula Scoring</li>
-                      <li>• Monte Carlo Stress Testing</li>
-                      <li>• Output Synthesis & Provenance</li>
+                      <li>â€¢ Input Validation & Governance</li>
+                      <li>â€¢ Multi-Agent Adversarial Debate</li>
+                      <li>â€¢ Quantitative Formula Scoring</li>
+                      <li>â€¢ Monte Carlo Stress Testing</li>
+                      <li>â€¢ Output Synthesis & Provenance</li>
                     </ul>
                   </div>
                   <div className="bg-white p-2.5 rounded-lg border border-slate-200">
@@ -434,11 +434,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <span className="text-xs font-semibold text-slate-900">5 AI Personas</span>
                     </div>
                     <ul className="text-[11px] text-slate-500 space-y-0">
-                      <li>• Advocate — finds the upside</li>
-                      <li>• Skeptic — attacks weak points</li>
-                      <li>• Regulator — checks compliance</li>
-                      <li>• Accountant — validates numbers</li>
-                      <li>• Operator — tests execution</li>
+                      <li>â€¢ Advocate â€” finds the upside</li>
+                      <li>â€¢ Skeptic â€” attacks weak points</li>
+                      <li>â€¢ Regulator â€” checks compliance</li>
+                      <li>â€¢ Accountant â€” validates numbers</li>
+                      <li>â€¢ Operator â€” tests execution</li>
                     </ul>
                   </div>
                 </div>
@@ -455,11 +455,11 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <h2 className="text-3xl font-light text-slate-900 mb-4 text-center">The Ten-Step Protocol</h2>
           <p className="text-lg text-slate-500 mb-4 max-w-3xl mx-auto text-center">
             Before <strong className="text-slate-700">NSIL (Nexus Strategic Intelligence Layer)</strong> can analyze, it must understand. 
-            This professional-grade intake framework guides you through every critical dimension of your strategic plan—forcing clarity, 
+            This professional-grade intake framework guides you through every critical dimension of your strategic planâ€”forcing clarity, 
             eliminating blind spots, and ensuring the AI reasoning engine works with complete, well-structured inputs.
           </p>
           <p className="text-xs text-slate-400 mb-4 max-w-xl mx-auto text-center">
-            <span className="text-indigo-500">→</span> For more on how NSIL transforms your inputs into intelligence, see the 
+            <span className="text-indigo-500">â†’</span> For more on how NSIL transforms your inputs into intelligence, see the 
             <button onClick={() => setActiveModal('architecture')} className="text-indigo-600 hover:underline font-medium ml-1">Technical Architecture</button> section above.
           </p>
           <p className="text-sm text-slate-400 mb-8 max-w-2xl mx-auto text-center">
@@ -608,13 +608,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 <h2 className="text-3xl md:text-4xl font-light text-white mb-6 text-center">Regional Challenges, Intelligent Solutions</h2>
                 
                 <p className="text-lg text-slate-200 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
-                  This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlooked—despite holding extraordinary, investable potential.
+                  This platform exists for one reason: to help capital, partnerships, and capability reach the places that are too often overlookedâ€”despite holding extraordinary, investable potential.
                 </p>
                 <p className="text-lg text-slate-200 mb-6 max-w-3xl mx-auto text-center leading-relaxed">
-                  BWGA Intelligence AI is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that <strong className="text-white">10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report system—it's a practical bridge between global decision-makers and real opportunities on the ground.
+                  BWGA Ai is 100% dedicated to regional growth. During this beta phase and in future subscriptions, we commit that <strong className="text-white">10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This is more than an AI/human report systemâ€”it's a practical bridge between global decision-makers and real opportunities on the ground.
                 </p>
                 <p className="text-lg text-slate-300 max-w-3xl mx-auto text-center leading-relaxed">
-                  What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluated—anywhere in the world.
+                  What started as an "over-engineered" idea is now a working intelligence layer designed to clarify complexity, surface what matters, and turn promising briefs into credible, defensible action. A new voice for regions. A new standard for how opportunity is evaluatedâ€”anywhere in the world.
                 </p>
               </div>
             </div>
@@ -678,19 +678,19 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 <div>
                   <strong className="text-white">Report Length Options:</strong>
                   <ul className="mt-1 space-y-1">
-                    <li>• 1-Page Executive Summary</li>
-                    <li>• 5-10 Page Strategic Brief</li>
-                    <li>• 20-50 Page Comprehensive Analysis</li>
-                    <li>• Multi-Paper Research Reports</li>
+                    <li>â€¢ 1-Page Executive Summary</li>
+                    <li>â€¢ 5-10 Page Strategic Brief</li>
+                    <li>â€¢ 20-50 Page Comprehensive Analysis</li>
+                    <li>â€¢ Multi-Paper Research Reports</li>
                   </ul>
                 </div>
                 <div>
                   <strong className="text-white">Selection Flexibility:</strong>
                   <ul className="mt-1 space-y-1">
-                    <li>• Pick multiple reports to cover all areas</li>
-                    <li>• Select as many letters as needed</li>
-                    <li>• Mix document types for complete coverage</li>
-                    <li>• No limits on your approach to understanding</li>
+                    <li>â€¢ Pick multiple reports to cover all areas</li>
+                    <li>â€¢ Select as many letters as needed</li>
+                    <li>â€¢ Mix document types for complete coverage</li>
+                    <li>â€¢ No limits on your approach to understanding</li>
                   </ul>
                 </div>
               </div>
@@ -942,7 +942,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
             <div className="p-4 grid md:grid-cols-3 gap-2 text-xs">
               <div className="p-2 bg-slate-50 rounded">Partner Compatibility Assessment</div>
-              <div className="p-2 bg-slate-50 rounded">SEAM™ Alignment Report</div>
+              <div className="p-2 bg-slate-50 rounded">SEAMâ„¢ Alignment Report</div>
               <div className="p-2 bg-slate-50 rounded">Stakeholder Analysis</div>
               <div className="p-2 bg-slate-50 rounded">Network Value Assessment</div>
               <div className="p-2 bg-slate-50 rounded">Cultural Fit Scorecard</div>
@@ -972,79 +972,79 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Outreach & Introduction</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Initial Contact Letter</div>
-                    <div>• Introduction Request</div>
-                    <div>• Meeting Request</div>
-                    <div>• Partnership Inquiry</div>
-                    <div>• Investment Interest Letter</div>
-                    <div>• JV Exploration Letter</div>
-                    <div>• Alliance Proposal</div>
-                    <div>• Collaboration Request</div>
+                    <div>â€¢ Initial Contact Letter</div>
+                    <div>â€¢ Introduction Request</div>
+                    <div>â€¢ Meeting Request</div>
+                    <div>â€¢ Partnership Inquiry</div>
+                    <div>â€¢ Investment Interest Letter</div>
+                    <div>â€¢ JV Exploration Letter</div>
+                    <div>â€¢ Alliance Proposal</div>
+                    <div>â€¢ Collaboration Request</div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Formal Agreements</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Letter of Intent (LOI)</div>
-                    <div>• Memorandum of Understanding</div>
-                    <div>• Non-Disclosure Agreement</div>
-                    <div>• Exclusivity Agreement</div>
-                    <div>• Term Sheet Cover Letter</div>
-                    <div>• Heads of Terms</div>
-                    <div>• Binding Offer Letter</div>
-                    <div>• Acceptance Letter</div>
+                    <div>â€¢ Letter of Intent (LOI)</div>
+                    <div>â€¢ Memorandum of Understanding</div>
+                    <div>â€¢ Non-Disclosure Agreement</div>
+                    <div>â€¢ Exclusivity Agreement</div>
+                    <div>â€¢ Term Sheet Cover Letter</div>
+                    <div>â€¢ Heads of Terms</div>
+                    <div>â€¢ Binding Offer Letter</div>
+                    <div>â€¢ Acceptance Letter</div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Government & Regulatory</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Minister Introduction Letter</div>
-                    <div>• Embassy Correspondence</div>
-                    <div>• Trade Commissioner Letter</div>
-                    <div>• Regulatory Inquiry</div>
-                    <div>• License Application Cover</div>
-                    <div>• Permit Request</div>
-                    <div>• Compliance Certification</div>
-                    <div>• Policy Submission</div>
+                    <div>â€¢ Minister Introduction Letter</div>
+                    <div>â€¢ Embassy Correspondence</div>
+                    <div>â€¢ Trade Commissioner Letter</div>
+                    <div>â€¢ Regulatory Inquiry</div>
+                    <div>â€¢ License Application Cover</div>
+                    <div>â€¢ Permit Request</div>
+                    <div>â€¢ Compliance Certification</div>
+                    <div>â€¢ Policy Submission</div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Investor Relations</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Investor Update Letter</div>
-                    <div>• Funding Request</div>
-                    <div>• Capital Call Notice</div>
-                    <div>• Distribution Notice</div>
-                    <div>• Annual Letter to Investors</div>
-                    <div>• Quarterly Update</div>
-                    <div>• Board Report Cover</div>
-                    <div>• Shareholder Communication</div>
+                    <div>â€¢ Investor Update Letter</div>
+                    <div>â€¢ Funding Request</div>
+                    <div>â€¢ Capital Call Notice</div>
+                    <div>â€¢ Distribution Notice</div>
+                    <div>â€¢ Annual Letter to Investors</div>
+                    <div>â€¢ Quarterly Update</div>
+                    <div>â€¢ Board Report Cover</div>
+                    <div>â€¢ Shareholder Communication</div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Negotiation & Deal</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Counter-Proposal Letter</div>
-                    <div>• Price Adjustment Request</div>
-                    <div>• Extension Request</div>
-                    <div>• Deadline Modification</div>
-                    <div>• Condition Waiver Request</div>
-                    <div>• Closing Confirmation</div>
-                    <div>• Signing Ceremony Agenda</div>
-                    <div>• Post-Signing Acknowledgment</div>
+                    <div>â€¢ Counter-Proposal Letter</div>
+                    <div>â€¢ Price Adjustment Request</div>
+                    <div>â€¢ Extension Request</div>
+                    <div>â€¢ Deadline Modification</div>
+                    <div>â€¢ Condition Waiver Request</div>
+                    <div>â€¢ Closing Confirmation</div>
+                    <div>â€¢ Signing Ceremony Agenda</div>
+                    <div>â€¢ Post-Signing Acknowledgment</div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-2">Follow-Up & Relationship</h4>
                   <div className="space-y-1 text-slate-600">
-                    <div>• Thank You Letter</div>
-                    <div>• Meeting Follow-Up</div>
-                    <div>• Action Item Summary</div>
-                    <div>• Progress Update</div>
-                    <div>• Milestone Celebration</div>
-                    <div>• Anniversary Acknowledgment</div>
-                    <div>• Relationship Renewal</div>
-                    <div>• Referral Request</div>
+                    <div>â€¢ Thank You Letter</div>
+                    <div>â€¢ Meeting Follow-Up</div>
+                    <div>â€¢ Action Item Summary</div>
+                    <div>â€¢ Progress Update</div>
+                    <div>â€¢ Milestone Celebration</div>
+                    <div>â€¢ Anniversary Acknowledgment</div>
+                    <div>â€¢ Relationship Renewal</div>
+                    <div>â€¢ Referral Request</div>
                   </div>
                 </div>
               </div>
@@ -1086,7 +1086,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
           </div>
 
-          {/* GOVERNMENT SUBMISSIONS & INTERNATIONAL BODY APPLICATIONS (20+ types) — NEW */}
+          {/* GOVERNMENT SUBMISSIONS & INTERNATIONAL BODY APPLICATIONS (20+ types) â€” NEW */}
           <div className="border border-blue-200 rounded-lg overflow-hidden">
             <div className="bg-blue-50 px-4 py-3 border-b border-blue-200">
               <h3 className="font-bold text-slate-900 flex items-center gap-2">
@@ -1118,7 +1118,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
           </div>
 
-          {/* TRADE & CUSTOMS DOCUMENTS (15+ types) — NEW */}
+          {/* TRADE & CUSTOMS DOCUMENTS (15+ types) â€” NEW */}
           <div className="border border-green-200 rounded-lg overflow-hidden">
             <div className="bg-green-50 px-4 py-3 border-b border-green-200">
               <h3 className="font-bold text-slate-900 flex items-center gap-2">
@@ -1145,7 +1145,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
           </div>
 
-          {/* COMMUNITY & SOCIAL IMPACT (15+ types) — NEW */}
+          {/* COMMUNITY & SOCIAL IMPACT (15+ types) â€” NEW */}
           <div className="border border-purple-200 rounded-lg overflow-hidden">
             <div className="bg-purple-50 px-4 py-3 border-b border-purple-200">
               <h3 className="font-bold text-slate-900 flex items-center gap-2">
@@ -1172,7 +1172,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </div>
           </div>
 
-          {/* COMPLIANCE & REGULATORY (15+ types) — NEW */}
+          {/* COMPLIANCE & REGULATORY (15+ types) â€” NEW */}
           <div className="border border-amber-200 rounded-lg overflow-hidden">
             <div className="bg-amber-50 px-4 py-3 border-b border-amber-200">
               <h3 className="font-bold text-slate-900 flex items-center gap-2">
@@ -1211,31 +1211,31 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
       </Modal>
 
       {/* ARCHITECTURE MODAL - Formal University Technical Report */}
-      <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="BWGA Intelligence AI: Technical Architecture Report">
+      <Modal isOpen={activeModal === 'architecture'} onClose={() => setActiveModal(null)} title="BWGA Ai: Technical Architecture Report">
         <div className="space-y-6 text-slate-700 text-sm leading-relaxed">
           
           {/* Title Block */}
           <div className="text-center border-b border-slate-300 pb-6">
-            <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Technical Report · January 2026</p>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">BWGA Intelligence AI</h2>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Technical Report Â· January 2026</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">BWGA Ai</h2>
             <h3 className="text-lg text-slate-700 mb-4">A Neuro-Symbolic Decision-Support Architecture for Cross-Border Partnership Intelligence</h3>
-            <p className="text-xs text-slate-500">Brayden Walls Global Advisory · Research & Development Division</p>
+            <p className="text-xs text-slate-500">Brayden Walls Global Advisory Â· Research & Development Division</p>
           </div>
 
           {/* Abstract */}
           <div className="border-l-4 border-slate-400 pl-4 py-2 bg-slate-50">
             <h4 className="font-bold text-slate-900 mb-2">Abstract</h4>
             <p className="text-slate-700 mb-2">
-              This document presents the technical architecture of BWGA Intelligence AI, a decision-support system designed for cross-border partnership analysis and regional investment intelligence. The system integrates three core innovations: (1) a neuro-symbolic reasoning layer combining large language models with formal logic validation, (2) a multi-agent adversarial debate framework using five specialist personas, and (3) a 21-formula quantified scoring suite executed via directed acyclic graph (DAG) scheduling.
+              This document presents the technical architecture of BWGA Ai, a decision-support system designed for cross-border partnership analysis and regional investment intelligence. The system integrates three core innovations: (1) a neuro-symbolic reasoning layer combining large language models with formal logic validation, (2) a multi-agent adversarial debate framework using five specialist personas, and (3) a 21-formula quantified scoring suite executed via directed acyclic graph (DAG) scheduling.
             </p>
             <p className="text-slate-700 mb-4">
-              Unlike conventional AI assistants that produce unstructured text, BWGA Intelligence AI generates auditable, explainable outputs where every recommendation is traceable to its inputs, scoring components, and debate evidence. This architecture addresses the limitations of both traditional consulting (slow, expensive, subjective) and generic AI tools (unstructured, unverifiable, hallucination-prone).
+              Unlike conventional AI assistants that produce unstructured text, BWGA Ai generates auditable, explainable outputs where every recommendation is traceable to its inputs, scoring components, and debate evidence. This architecture addresses the limitations of both traditional consulting (slow, expensive, subjective) and generic AI tools (unstructured, unverifiable, hallucination-prone).
             </p>
             {/* Sample Formula */}
             <div className="text-center py-4 border-t border-slate-300">
               <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Sample Quantified Index</p>
               <p className="text-base font-bold text-slate-900" style={{ fontSize: '16px' }}>
-                RROI = (1 − TCO) × 0.3 + CRI × 0.4 + DealMultiplier × 0.8
+                RROI = (1 âˆ’ TCO) Ã— 0.3 + CRI Ã— 0.4 + DealMultiplier Ã— 0.8
               </p>
               <p className="text-xs text-slate-500 mt-2 italic">
                 Risk-adjusted Return on Investment: Inversely weighted cost efficiency plus country readiness plus deal scale factor
@@ -1253,7 +1253,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               Recent advances in large language models (LLMs) offer speed and accessibility, but introduce new problems: outputs are unstructured, unverifiable, and prone to hallucination. There is no audit trail, no quantified scoring, and no mechanism to detect logical contradictions in user inputs or AI reasoning.
             </p>
             <p>
-              BWGA Intelligence AI addresses these gaps by implementing a hybrid architecture that preserves the generative capabilities of LLMs while adding structure, validation, and explainability. The system processes user inputs through a formal intake protocol, validates them for logical consistency, subjects strategic options to multi-perspective adversarial debate, scores outcomes using mathematical indices, and delivers recommendations with full provenance chains.
+              BWGA Ai addresses these gaps by implementing a hybrid architecture that preserves the generative capabilities of LLMs while adding structure, validation, and explainability. The system processes user inputs through a formal intake protocol, validates them for logical consistency, subjects strategic options to multi-perspective adversarial debate, scores outcomes using mathematical indices, and delivers recommendations with full provenance chains.
             </p>
           </div>
 
@@ -1480,7 +1480,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">6. Provenance & Auditability</h4>
             <p className="mb-3">
-              Every recommendation produced by BWGA Intelligence AI includes a complete provenance chain. This chain links each output to:
+              Every recommendation produced by BWGA Ai includes a complete provenance chain. This chain links each output to:
             </p>
             <ul className="list-disc list-inside mb-3 text-slate-700">
               <li><strong>Input Provenance:</strong> Source data, timestamp, and confidence level for each input parameter</li>
@@ -1496,7 +1496,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">7. Comparative Analysis</h4>
             <p className="mb-4">
-              The following table compares BWGA Intelligence AI capabilities against alternative approaches:
+              The following table compares BWGA Ai capabilities against alternative approaches:
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-xs border border-slate-200 rounded overflow-hidden">
@@ -1563,7 +1563,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-base">9. Conclusion</h4>
             <p className="mb-3">
-              BWGA Intelligence AI represents a novel approach to strategic decision-support that addresses fundamental limitations of both traditional consulting and generic AI tools. By combining neuro-symbolic reasoning, multi-agent adversarial debate, and quantified scoring with full provenance tracking, the system produces outputs that are:
+              BWGA Ai represents a novel approach to strategic decision-support that addresses fundamental limitations of both traditional consulting and generic AI tools. By combining neuro-symbolic reasoning, multi-agent adversarial debate, and quantified scoring with full provenance tracking, the system produces outputs that are:
             </p>
             <ul className="list-disc list-inside mb-3 text-slate-700">
               <li>Explainable (every score traces to its inputs and reasoning)</li>
@@ -1580,8 +1580,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           {/* References Footer */}
           <div className="border-t border-slate-300 pt-4 mt-6">
             <p className="text-xs text-slate-500 text-center">
-              BWGA Intelligence AI · Technical Architecture Report · Version 3.2 · January 2026<br/>
-              © 2026 Brayden Walls Global Advisory. All formulas and methodologies are proprietary.
+              BWGA Ai Â· Technical Architecture Report Â· Version 3.2 Â· January 2026<br/>
+              Â© 2026 Brayden Walls Global Advisory. All formulas and methodologies are proprietary.
             </p>
           </div>
 
@@ -1606,12 +1606,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <span className="bg-slate-700 rounded px-2 py-1 text-white font-semibold">1</span>
                   <span>10-Step Protocol Completed</span>
                 </div>
-                <span className="text-slate-500">→</span>
+                <span className="text-slate-500">â†’</span>
                 <div className="flex items-center gap-2">
                   <span className="bg-slate-700 rounded px-2 py-1 text-white font-semibold">2</span>
                   <span>27 Algorithms Applied</span>
                 </div>
-                <span className="text-slate-500">→</span>
+                <span className="text-slate-500">â†’</span>
                 <div className="flex items-center gap-2">
                   <span className="bg-slate-700 rounded px-2 py-1 text-white font-semibold">3</span>
                   <span>Full Report Generated</span>
@@ -1641,8 +1641,8 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <p className="mb-2">Dear [Partner Name],</p>
               <p className="mb-2">
                 [Organization] is exploring strategic opportunities in [Target Region] within the [Industry] sector. 
-                Based on our analysis using BWGA Intelligence AI's proprietary scoring framework, we have identified 
-                your organization as a high-compatibility partner (SEAM™ Score: [XX]/100).
+                Based on our analysis using BWGA Ai's proprietary scoring framework, we have identified 
+                your organization as a high-compatibility partner (SEAMâ„¢ Score: [XX]/100).
               </p>
               <p className="mb-2">
                 We would welcome the opportunity to discuss potential collaboration models including [JV/Alliance/Investment]. 
@@ -1659,30 +1659,30 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           {/* 12 Sample Reports Grid */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-slate-900">12 Training Reports — Full Strategic Dossiers</h3>
+              <h3 className="text-lg font-bold text-slate-900">12 Training Reports â€” Full Strategic Dossiers</h3>
               <div className="text-sm text-slate-600 bg-slate-100 px-3 py-1 rounded-lg">
                 <strong>Note:</strong> Click any report to view full one-page document
               </div>
             </div>
             <p className="text-sm text-slate-600 mb-4">
               Each report demonstrates the system's ability to produce comprehensive strategic intelligence. 
-              Reports can be generated at varying lengths — from 1-2 page executive briefs to 50+ page comprehensive dossiers 
+              Reports can be generated at varying lengths â€” from 1-2 page executive briefs to 50+ page comprehensive dossiers 
               based on client requirements.
             </p>
             <div className="space-y-4">
               
-              {/* Report 1: Australian AgriTech → Vietnam */}
+              {/* Report 1: Australian AgriTech â†’ Vietnam */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 1 ? null : 1)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #1: Market Entry — AgriTech</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SEAM™: 89/100</span>
+                    <span className="font-bold text-slate-900">Report #1: Market Entry â€” AgriTech</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SEAMâ„¢: 89/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 1 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 1 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 
@@ -1693,12 +1693,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">GreenHarvest Technologies Pty Ltd</div>
-                      <div className="text-xs text-slate-500">Australia • Private • AUD $45M Revenue</div>
+                      <div className="text-xs text-slate-500">Australia â€¢ Private â€¢ AUD $45M Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Ho Chi Minh City, Vietnam</div>
-                      <div className="text-xs text-slate-500">Joint Venture • $15M Investment</div>
+                      <div className="text-xs text-slate-500">Joint Venture â€¢ $15M Investment</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -1709,15 +1709,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="bg-slate-50 rounded-lg p-3 mb-3 text-xs">
                     <div className="font-semibold text-slate-700 mb-2">AI Analysis Summary:</div>
                     <p className="text-slate-600 mb-2">
-                      Vietnam's AgriTech market ($1.8B → $3.2B by 2027, CAGR 21.4%) presents compelling expansion opportunity. 
-                      Recommended JV partner: Vietnam Agricultural Supply Co. (VASCO) — 12 provinces, $38M revenue, MARD relationships.
+                      Vietnam's AgriTech market ($1.8B â†’ $3.2B by 2027, CAGR 21.4%) presents compelling expansion opportunity. 
+                      Recommended JV partner: Vietnam Agricultural Supply Co. (VASCO) â€” 12 provinces, $38M revenue, MARD relationships.
                       Monte Carlo simulation (10,000 iterations): P50 IRR 18.4%, break-even Month 28, 8% probability of loss.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">82</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">18.4%</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">IVAS™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">FRS™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">82</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">18.4%</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">IVASâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">FRSâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -1738,7 +1738,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                         <p className="text-slate-600">Market Entry Analysis: Vietnam AgriTech Sector</p>
                       </div>
                       <div className="text-right text-sm">
-                        <div className="font-bold text-slate-900">BWGA Intelligence AI</div>
+                        <div className="font-bold text-slate-900">BWGA Ai</div>
                         <div className="text-slate-500">Report Generated: {new Date().toLocaleDateString()}</div>
                         <div className="text-slate-500">Classification: CONFIDENTIAL</div>
                       </div>
@@ -1756,7 +1756,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <p className="text-sm text-slate-700 mb-3">
                       Our analysis indicates Vietnam represents a <strong>high-opportunity market</strong> with the AgriTech sector 
                       projected to grow from $1.8B (2024) to $3.2B by 2027, representing a CAGR of 21.4%. The recommended partner, 
-                      Vietnam Agricultural Supply Co. (VASCO), demonstrates strong strategic alignment with a SEAM™ score of 89/100.
+                      Vietnam Agricultural Supply Co. (VASCO), demonstrates strong strategic alignment with a SEAMâ„¢ score of 89/100.
                     </p>
                     <div className="bg-slate-100 rounded-lg p-4 mt-4">
                       <div className="font-bold text-slate-900 mb-2">RECOMMENDATION: PROCEED</div>
@@ -1773,22 +1773,22 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div className="grid grid-cols-4 gap-4">
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
                         <div className="text-3xl font-bold">82</div>
-                        <div className="text-xs text-slate-400">SPI™ Score</div>
+                        <div className="text-xs text-slate-400">SPIâ„¢ Score</div>
                         <div className="text-xs text-slate-300 mt-1">Strategic Priority Index</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
                         <div className="text-3xl font-bold">89</div>
-                        <div className="text-xs text-slate-400">SEAM™ Score</div>
+                        <div className="text-xs text-slate-400">SEAMâ„¢ Score</div>
                         <div className="text-xs text-slate-300 mt-1">Partner Alignment</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
                         <div className="text-3xl font-bold">18.4%</div>
-                        <div className="text-xs text-slate-400">RROI™</div>
+                        <div className="text-xs text-slate-400">RROIâ„¢</div>
                         <div className="text-xs text-slate-300 mt-1">Risk-Adjusted Return</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
                         <div className="text-3xl font-bold">76</div>
-                        <div className="text-xs text-slate-400">IVAS™ Score</div>
+                        <div className="text-xs text-slate-400">IVASâ„¢ Score</div>
                         <div className="text-xs text-slate-300 mt-1">Implementation Viability</div>
                       </div>
                     </div>
@@ -1801,21 +1801,21 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <div>
                         <h4 className="font-semibold text-slate-700 mb-2">Market Size & Growth</h4>
                         <ul className="space-y-1 text-slate-600">
-                          <li>• Current Market Size: $1.8B (2024)</li>
-                          <li>• Projected Size: $3.2B (2027)</li>
-                          <li>• CAGR: 21.4%</li>
-                          <li>• TAM Addressable: $420M</li>
-                          <li>• SAM Realistic: $85M</li>
+                          <li>â€¢ Current Market Size: $1.8B (2024)</li>
+                          <li>â€¢ Projected Size: $3.2B (2027)</li>
+                          <li>â€¢ CAGR: 21.4%</li>
+                          <li>â€¢ TAM Addressable: $420M</li>
+                          <li>â€¢ SAM Realistic: $85M</li>
                         </ul>
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-700 mb-2">Competitive Landscape</h4>
                         <ul className="space-y-1 text-slate-600">
-                          <li>• Fragmented market, no dominant player</li>
-                          <li>• Top 5 players hold 23% market share</li>
-                          <li>• High demand for precision agriculture</li>
-                          <li>• Government subsidies for AgriTech adoption</li>
-                          <li>• Limited competition from Western firms</li>
+                          <li>â€¢ Fragmented market, no dominant player</li>
+                          <li>â€¢ Top 5 players hold 23% market share</li>
+                          <li>â€¢ High demand for precision agriculture</li>
+                          <li>â€¢ Government subsidies for AgriTech adoption</li>
+                          <li>â€¢ Limited competition from Western firms</li>
                         </ul>
                       </div>
                     </div>
@@ -1847,7 +1847,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                         <div>
                           <div className="font-semibold text-slate-700">Strategic Fit</div>
                           <div className="text-slate-600 mt-1">
-                            SEAM™ Score: 89/100<br/>
+                            SEAMâ„¢ Score: 89/100<br/>
                             Cultural Alignment: High<br/>
                             Technology Readiness: Moderate<br/>
                             Financial Stability: Strong
@@ -1864,19 +1864,19 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       <div>
                         <h4 className="font-semibold text-slate-700 mb-2">Investment Structure</h4>
                         <ul className="space-y-1 text-slate-600">
-                          <li>• Total Investment: $15M</li>
-                          <li>• GreenHarvest Equity: $9M (60%)</li>
-                          <li>• VASCO Equity: $6M (40%)</li>
-                          <li>• Working Capital Reserve: $2M</li>
+                          <li>â€¢ Total Investment: $15M</li>
+                          <li>â€¢ GreenHarvest Equity: $9M (60%)</li>
+                          <li>â€¢ VASCO Equity: $6M (40%)</li>
+                          <li>â€¢ Working Capital Reserve: $2M</li>
                         </ul>
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-700 mb-2">Return Analysis</h4>
                         <ul className="space-y-1 text-slate-600">
-                          <li>• P50 IRR: 18.4%</li>
-                          <li>• Break-even: Month 28</li>
-                          <li>• 5-Year NPV: $12.3M</li>
-                          <li>• Probability of Loss: 8%</li>
+                          <li>â€¢ P50 IRR: 18.4%</li>
+                          <li>â€¢ Break-even: Month 28</li>
+                          <li>â€¢ 5-Year NPV: $12.3M</li>
+                          <li>â€¢ Probability of Loss: 8%</li>
                         </ul>
                       </div>
                     </div>
@@ -1915,24 +1915,24 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
 
                   {/* Footer */}
                   <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">
-                    Generated by BWGA Intelligence AI • ABN: 55 978 113 300 • This report is confidential and intended for internal strategic planning purposes only.
+                    Generated by BWGA Ai â€¢ ABN: 55 978 113 300 â€¢ This report is confidential and intended for internal strategic planning purposes only.
                   </div>
                 </div>
                 )}
               </div>
 
-              {/* Report 2: Singapore MedTech → Vietnam */}
+              {/* Report 2: Singapore MedTech â†’ Vietnam */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 2 ? null : 2)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #2: Manufacturing Expansion — Medical Devices</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 78/100</span>
+                    <span className="font-bold text-slate-900">Report #2: Manufacturing Expansion â€” Medical Devices</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 78/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 2 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 2 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 
@@ -1943,12 +1943,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">MediTech Solutions Inc.</div>
-                      <div className="text-xs text-slate-500">Singapore • Private • $75M Revenue • 320 Employees</div>
+                      <div className="text-xs text-slate-500">Singapore â€¢ Private â€¢ $75M Revenue â€¢ 320 Employees</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Ho Chi Minh City, Vietnam</div>
-                      <div className="text-xs text-slate-500">Greenfield Manufacturing • $15M Investment</div>
+                      <div className="text-xs text-slate-500">Greenfield Manufacturing â€¢ $15M Investment</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -1964,10 +1964,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Investment structure: $8M factory, $4M partner equity, $2M regulatory, $1M working capital.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.4x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">IVAS™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">85%</div><div className="text-slate-400">SCF™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.4x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">IVASâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">85%</div><div className="text-slate-400">SCFâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -1987,7 +1987,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                         <p className="text-slate-600">Manufacturing Expansion: Vietnam Medical Device Sector</p>
                       </div>
                       <div className="text-right text-sm">
-                        <div className="font-bold text-slate-900">BWGA Intelligence AI</div>
+                        <div className="font-bold text-slate-900">BWGA Ai</div>
                         <div className="text-slate-500">Classification: CONFIDENTIAL</div>
                       </div>
                     </div>
@@ -2008,24 +2008,24 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
-                        <div className="text-3xl font-bold">78</div><div className="text-xs">SPI™</div>
+                        <div className="text-3xl font-bold">78</div><div className="text-xs">SPIâ„¢</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
-                        <div className="text-3xl font-bold">2.4x</div><div className="text-xs">RROI™</div>
+                        <div className="text-3xl font-bold">2.4x</div><div className="text-xs">RROIâ„¢</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
-                        <div className="text-3xl font-bold">72</div><div className="text-xs">IVAS™</div>
+                        <div className="text-3xl font-bold">72</div><div className="text-xs">IVASâ„¢</div>
                       </div>
                       <div className="bg-slate-900 text-white rounded-lg p-4 text-center">
-                        <div className="text-3xl font-bold">85%</div><div className="text-xs">SCF™</div>
+                        <div className="text-3xl font-bold">85%</div><div className="text-xs">SCFâ„¢</div>
                       </div>
                     </div>
                   </div>
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">INVESTMENT STRUCTURE</h3>
                     <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div><ul className="space-y-1 text-slate-600"><li>• Factory Construction: $8M</li><li>• Partner Equity: $4M</li><li>• Regulatory Compliance: $2M</li><li>• Working Capital: $1M</li></ul></div>
-                      <div><ul className="space-y-1 text-slate-600"><li>• Total Investment: $15M</li><li>• Expected ROI: 2.4x over 5 years</li><li>• Break-even: Month 32</li><li>• Annual Cost Savings: $3.2M</li></ul></div>
+                      <div><ul className="space-y-1 text-slate-600"><li>â€¢ Factory Construction: $8M</li><li>â€¢ Partner Equity: $4M</li><li>â€¢ Regulatory Compliance: $2M</li><li>â€¢ Working Capital: $1M</li></ul></div>
+                      <div><ul className="space-y-1 text-slate-600"><li>â€¢ Total Investment: $15M</li><li>â€¢ Expected ROI: 2.4x over 5 years</li><li>â€¢ Break-even: Month 32</li><li>â€¢ Annual Cost Savings: $3.2M</li></ul></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
@@ -2037,24 +2037,24 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     </ol>
                   </div>
                   <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">
-                    Generated by BWGA Intelligence AI • ABN: 55 978 113 300
+                    Generated by BWGA Ai â€¢ ABN: 55 978 113 300
                   </div>
                 </div>
                 )}
               </div>
 
-              {/* Report 3: US FinTech → EU */}
+              {/* Report 3: US FinTech â†’ EU */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 3 ? null : 3)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #3: Regulatory Expansion — FinTech</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 71/100</span>
+                    <span className="font-bold text-slate-900">Report #3: Regulatory Expansion â€” FinTech</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 71/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 3 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 3 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 3 && (
@@ -2063,12 +2063,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">PayStream Technologies</div>
-                      <div className="text-xs text-slate-500">USA (Delaware) • Series C • $120M Revenue</div>
+                      <div className="text-xs text-slate-500">USA (Delaware) â€¢ Series C â€¢ $120M Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
-                      <div className="font-medium">Dublin, Ireland → EU Passporting</div>
-                      <div className="text-xs text-slate-500">Regulatory License • $8M Setup</div>
+                      <div className="font-medium">Dublin, Ireland â†’ EU Passporting</div>
+                      <div className="text-xs text-slate-500">Regulatory License â€¢ $8M Setup</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2084,10 +2084,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Risk factors: Brexit uncertainty, GDPR compliance costs, ECB regulatory tightening cycle.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">71</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">22.1%</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">68</div><div className="text-slate-400">RNI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">82</div><div className="text-slate-400">NVI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">71</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">22.1%</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">68</div><div className="text-slate-400">RNIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">82</div><div className="text-slate-400">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2110,33 +2110,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">71</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">22.1%</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">68</div><div className="text-xs">RNI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">82</div><div className="text-xs">NVI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">71</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">22.1%</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">68</div><div className="text-xs">RNIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">82</div><div className="text-xs">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Engage Irish regulatory counsel and CBI pre-application</li><li>2. GDPR compliance framework development</li><li>3. Dublin office setup and talent acquisition</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 4: Japanese Manufacturer → Mexico */}
+              {/* Report 4: Japanese Manufacturer â†’ Mexico */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 4 ? null : 4)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #4: Nearshoring — Automotive Components</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 84/100</span>
+                    <span className="font-bold text-slate-900">Report #4: Nearshoring â€” Automotive Components</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 84/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 4 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 4 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 4 && (
@@ -2145,12 +2145,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">Takahashi Precision Parts K.K.</div>
-                      <div className="text-xs text-slate-500">Japan • Public (TSE) • ¥85B Revenue</div>
+                      <div className="text-xs text-slate-500">Japan â€¢ Public (TSE) â€¢ Â¥85B Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
-                      <div className="font-medium">Monterrey, Nuevo León, Mexico</div>
-                      <div className="text-xs text-slate-500">Greenfield Factory • $45M Investment</div>
+                      <div className="font-medium">Monterrey, Nuevo LeÃ³n, Mexico</div>
+                      <div className="text-xs text-slate-500">Greenfield Factory â€¢ $45M Investment</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2161,15 +2161,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="bg-slate-50 rounded-lg p-3 mb-3 text-xs">
                     <div className="font-semibold text-slate-700 mb-2">AI Analysis Summary:</div>
                     <p className="text-slate-600 mb-2">
-                      Monterrey = "Mexico's Industrial Capital" — 400+ Japanese manufacturers, mature supplier ecosystem, bilingual engineering talent.
+                      Monterrey = "Mexico's Industrial Capital" â€” 400+ Japanese manufacturers, mature supplier ecosystem, bilingual engineering talent.
                       USMCA Rule of Origin compliance achieved with 75%+ regional content. Logistics: 24hr trucking to Texas OEM plants.
-                      Risk: Peso volatility (±12% annual), cartel activity in transit corridors (mitigated by established security protocols).
+                      Risk: Peso volatility (Â±12% annual), cartel activity in transit corridors (mitigated by established security protocols).
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">84</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.8x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">91</div><div className="text-slate-400">ESI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">PRI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">84</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.8x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">91</div><div className="text-slate-400">ESIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">PRIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2192,33 +2192,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">84</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.8x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">91</div><div className="text-xs">ESI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">76</div><div className="text-xs">PRI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">84</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.8x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">91</div><div className="text-xs">ESIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">76</div><div className="text-xs">PRIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Industrial park site selection (FINSA/PIMSA)</li><li>2. USMCA Rule of Origin compliance mapping</li><li>3. Engage JETRO Mexico for investment support</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 5: German Renewables → Saudi Arabia */}
+              {/* Report 5: German Renewables â†’ Saudi Arabia */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 5 ? null : 5)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #5: Government Partnership — Renewable Energy</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 76/100</span>
+                    <span className="font-bold text-slate-900">Report #5: Government Partnership â€” Renewable Energy</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 76/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 5 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 5 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 5 && (
@@ -2227,12 +2227,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">SolarWind GmbH</div>
-                      <div className="text-xs text-slate-500">Germany • Private (Family) • €320M Revenue</div>
+                      <div className="text-xs text-slate-500">Germany â€¢ Private (Family) â€¢ â‚¬320M Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">NEOM / Riyadh, Saudi Arabia</div>
-                      <div className="text-xs text-slate-500">PPP Contract • $200M+ Project Value</div>
+                      <div className="text-xs text-slate-500">PPP Contract â€¢ $200M+ Project Value</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2245,13 +2245,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <p className="text-slate-600 mb-2">
                       Saudi Vision 2030 targets 50% renewable by 2030 (from 0.3% today). NEOM green hydrogen project = $5B opportunity.
                       Required: Local partner (51% Saudi ownership for PPP), technology transfer agreement, Saudization employment quotas.
-                      SEAM™ partner match: ACWA Power (84/100 fit), Public Investment Fund subsidiaries.
+                      SEAMâ„¢ partner match: ACWA Power (84/100 fit), Public Investment Fund subsidiaries.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">3.2x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">62</div><div className="text-slate-400">PRI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">88</div><div className="text-slate-400">VCI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">76</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">3.2x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">62</div><div className="text-slate-400">PRIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">88</div><div className="text-slate-400">VCIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2269,38 +2269,38 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">EXECUTIVE SUMMARY</h3>
                     <p className="text-sm text-slate-700 mb-3">SolarWind GmbH targets Saudi Arabia's Vision 2030 renewable energy transformation, which aims to achieve 50% renewable capacity by 2030 from a current 0.3%. The NEOM green hydrogen project represents a $5B+ opportunity. Entry requires local partnership (51% Saudi ownership for PPP), technology transfer agreements, and compliance with Saudization employment quotas.</p>
-                    <div className="bg-slate-100 rounded-lg p-4"><div className="font-bold text-slate-900 mb-2">RECOMMENDATION: PROCEED WITH CONDITIONS</div><p className="text-sm text-slate-600">High opportunity but complex entry requirements; engage ACWA Power (SEAM™ 84/100) for partnership.</p></div>
+                    <div className="bg-slate-100 rounded-lg p-4"><div className="font-bold text-slate-900 mb-2">RECOMMENDATION: PROCEED WITH CONDITIONS</div><p className="text-sm text-slate-600">High opportunity but complex entry requirements; engage ACWA Power (SEAMâ„¢ 84/100) for partnership.</p></div>
                   </div>
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">76</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">3.2x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">62</div><div className="text-xs">PRI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">88</div><div className="text-xs">VCI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">76</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">3.2x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">62</div><div className="text-xs">PRIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">88</div><div className="text-xs">VCIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Initiate ACWA Power partnership discussions</li><li>2. Develop technology transfer framework</li><li>3. Engage MISA for investment licensing</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 6: UK EdTech → India */}
+              {/* Report 6: UK EdTech â†’ India */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 6 ? null : 6)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #6: Market Expansion — EdTech</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 81/100</span>
+                    <span className="font-bold text-slate-900">Report #6: Market Expansion â€” EdTech</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 81/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 6 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 6 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 6 && (
@@ -2309,12 +2309,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">LearnPath Digital Ltd</div>
-                      <div className="text-xs text-slate-500">UK • Series B • £28M Revenue</div>
+                      <div className="text-xs text-slate-500">UK â€¢ Series B â€¢ Â£28M Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Bangalore / Mumbai, India</div>
-                      <div className="text-xs text-slate-500">Acquisition + Organic • $12M Budget</div>
+                      <div className="text-xs text-slate-500">Acquisition + Organic â€¢ $12M Budget</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2330,10 +2330,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Recommended approach: Acquire regional player + build vernacular content team (Hindi, Tamil, Telugu priority).
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">81</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">4.1x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">94</div><div className="text-slate-400">FRS™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">79</div><div className="text-slate-400">NVI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">81</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">4.1x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">94</div><div className="text-slate-400">FRSâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">79</div><div className="text-slate-400">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2356,33 +2356,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">81</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">4.1x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">94</div><div className="text-xs">FRS™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">79</div><div className="text-xs">NVI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">81</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">4.1x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">94</div><div className="text-xs">FRSâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">79</div><div className="text-xs">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Engage M&A advisors for target outreach</li><li>2. Conduct commercial due diligence on TestBook</li><li>3. Build vernacular content team in Bangalore</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 7: Canadian Mining → Chile */}
+              {/* Report 7: Canadian Mining â†’ Chile */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 7 ? null : 7)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #7: Resource Investment — Lithium Mining</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 69/100</span>
+                    <span className="font-bold text-slate-900">Report #7: Resource Investment â€” Lithium Mining</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 69/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 7 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 7 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 7 && (
@@ -2391,12 +2391,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">Northern Minerals Corp</div>
-                      <div className="text-xs text-slate-500">Canada (TSX) • Public • CAD $890M Market Cap</div>
+                      <div className="text-xs text-slate-500">Canada (TSX) â€¢ Public â€¢ CAD $890M Market Cap</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Atacama Region, Chile</div>
-                      <div className="text-xs text-slate-500">Concession Acquisition • $65M Investment</div>
+                      <div className="text-xs text-slate-500">Concession Acquisition â€¢ $65M Investment</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2408,14 +2408,14 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div className="font-semibold text-slate-700 mb-2">AI Analysis Summary:</div>
                     <p className="text-slate-600 mb-2">
                       Chile holds 52% of global lithium reserves. New royalty framework (2023) increases state take to 40% above $10K/ton.
-                      Community relations critical: Atacameño indigenous consultation required per ILO 169. Water usage under SEIA scrutiny.
+                      Community relations critical: AtacameÃ±o indigenous consultation required per ILO 169. Water usage under SEIA scrutiny.
                       Comparable: SQM-Albemarle model = government partnership with private operation. Timeline: 3-5 years to production.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">69</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.1x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">58</div><div className="text-slate-400">PRI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">CRI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">69</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.1x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">58</div><div className="text-slate-400">PRIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">CRIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2432,39 +2432,39 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   </div>
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">EXECUTIVE SUMMARY</h3>
-                    <p className="text-sm text-slate-700 mb-3">Chile holds 52% of global lithium reserves, critical for EV battery supply chains. The 2023 royalty framework increases government take to 40% above $10K/ton, requiring careful financial modeling. Indigenous consultation (Atacameño communities per ILO 169) and water usage (SEIA environmental review) are critical path items. Timeline to production: 3-5 years.</p>
+                    <p className="text-sm text-slate-700 mb-3">Chile holds 52% of global lithium reserves, critical for EV battery supply chains. The 2023 royalty framework increases government take to 40% above $10K/ton, requiring careful financial modeling. Indigenous consultation (AtacameÃ±o communities per ILO 169) and water usage (SEIA environmental review) are critical path items. Timeline to production: 3-5 years.</p>
                     <div className="bg-slate-100 rounded-lg p-4"><div className="font-bold text-slate-900 mb-2">RECOMMENDATION: PROCEED WITH CAUTION</div><p className="text-sm text-slate-600">High strategic value but complex regulatory and community engagement requirements.</p></div>
                   </div>
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">69</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.1x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">58</div><div className="text-xs">PRI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">72</div><div className="text-xs">CRI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">69</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.1x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">58</div><div className="text-xs">PRIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">72</div><div className="text-xs">CRIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Engage indigenous community liaison specialists</li><li>2. Commission SEIA environmental pre-assessment</li><li>3. Model 40% royalty impact on project economics</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 8: Swiss Pharma → Singapore */}
+              {/* Report 8: Swiss Pharma â†’ Singapore */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 8 ? null : 8)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #8: R&D Hub Establishment — Pharmaceuticals</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 88/100</span>
+                    <span className="font-bold text-slate-900">Report #8: R&D Hub Establishment â€” Pharmaceuticals</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 88/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 8 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 8 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 8 && (
@@ -2473,12 +2473,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">Helvetica BioSciences AG</div>
-                      <div className="text-xs text-slate-500">Switzerland • Public (SIX) • CHF 4.2B Revenue</div>
+                      <div className="text-xs text-slate-500">Switzerland â€¢ Public (SIX) â€¢ CHF 4.2B Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Biopolis, Singapore</div>
-                      <div className="text-xs text-slate-500">R&D Center • $85M over 5 Years</div>
+                      <div className="text-xs text-slate-500">R&D Center â€¢ $85M over 5 Years</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2491,13 +2491,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <p className="text-slate-600 mb-2">
                       Singapore Biopolis = purpose-built biomedical hub, A*STAR collaboration opportunities, HSA regulatory fast-track.
                       Tax incentives: Pioneer Certificate (5% tax for 15 years), R&D tax deduction (250%), IP development incentive.
-                      Talent pool: NUS, Duke-NUS, Nanyang — 2,000+ PhD graduates annually in life sciences.
+                      Talent pool: NUS, Duke-NUS, Nanyang â€” 2,000+ PhD graduates annually in life sciences.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">88</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">1.9x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">96</div><div className="text-slate-400">ESI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">94</div><div className="text-slate-400">RNI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">88</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">1.9x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">96</div><div className="text-slate-400">ESIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">94</div><div className="text-slate-400">RNIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2520,33 +2520,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">88</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">1.9x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">96</div><div className="text-xs">ESI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">94</div><div className="text-xs">RNI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">88</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">1.9x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">96</div><div className="text-xs">ESIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">94</div><div className="text-xs">RNIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. EDB Singapore investment negotiation</li><li>2. A*STAR collaboration framework</li><li>3. Pioneer Certificate application</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 9: UAE Logistics → East Africa */}
+              {/* Report 9: UAE Logistics â†’ East Africa */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 9 ? null : 9)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #9: Infrastructure Investment — Logistics</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 72/100</span>
+                    <span className="font-bold text-slate-900">Report #9: Infrastructure Investment â€” Logistics</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 72/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 9 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 9 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 9 && (
@@ -2555,12 +2555,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">Emirates Global Logistics</div>
-                      <div className="text-xs text-slate-500">UAE • Sovereign-Linked • $2.8B Revenue</div>
+                      <div className="text-xs text-slate-500">UAE â€¢ Sovereign-Linked â€¢ $2.8B Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Mombasa, Kenya + Dar es Salaam, Tanzania</div>
-                      <div className="text-xs text-slate-500">Port & Warehouse Concession • $180M</div>
+                      <div className="text-xs text-slate-500">Port & Warehouse Concession â€¢ $180M</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2576,10 +2576,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Kenya political risk moderate (2027 election cycle), Tanzania more stable under Samia government.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.6x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">64</div><div className="text-slate-400">PRI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">81</div><div className="text-slate-400">AGI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">72</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.6x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">64</div><div className="text-slate-400">PRIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">81</div><div className="text-slate-400">AGIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2602,33 +2602,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">72</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.6x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">64</div><div className="text-xs">PRI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">81</div><div className="text-xs">AGI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">72</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.6x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">64</div><div className="text-xs">PRIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">81</div><div className="text-xs">AGIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Kenya Ports Authority concession negotiations</li><li>2. TPA Tanzania partnership framework</li><li>3. Corridor feasibility study commissioning</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 10: Korean Gaming → Southeast Asia */}
+              {/* Report 10: Korean Gaming â†’ Southeast Asia */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 10 ? null : 10)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #10: Market Expansion — Gaming & Entertainment</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 85/100</span>
+                    <span className="font-bold text-slate-900">Report #10: Market Expansion â€” Gaming & Entertainment</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 85/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 10 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 10 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 10 && (
@@ -2637,12 +2637,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">StarPlay Entertainment Co., Ltd</div>
-                      <div className="text-xs text-slate-500">South Korea (KOSDAQ) • Public • ₩420B Revenue</div>
+                      <div className="text-xs text-slate-500">South Korea (KOSDAQ) â€¢ Public â€¢ â‚©420B Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Indonesia, Thailand, Philippines</div>
-                      <div className="text-xs text-slate-500">Publishing Partnerships • $25M Budget</div>
+                      <div className="text-xs text-slate-500">Publishing Partnerships â€¢ $25M Budget</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2658,10 +2658,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Regulatory: Indonesia content restrictions (religious/cultural), Philippines PAGCOR licensing for real-money elements.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">85</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">3.8x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">92</div><div className="text-slate-400">FRS™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">NVI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">85</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">3.8x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">92</div><div className="text-slate-400">FRSâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">78</div><div className="text-slate-400">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2684,33 +2684,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">85</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">3.8x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">92</div><div className="text-xs">FRS™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">78</div><div className="text-xs">NVI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">85</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">3.8x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">92</div><div className="text-xs">FRSâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">78</div><div className="text-xs">NVIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Local publisher partnership (Garena, VNG consideration)</li><li>2. Localization team setup in Jakarta</li><li>3. Payment gateway integration roadmap</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 11: Brazilian Agribusiness → Africa */}
+              {/* Report 11: Brazilian Agribusiness â†’ Africa */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 11 ? null : 11)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #11: Technology Transfer — Agribusiness</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 74/100</span>
+                    <span className="font-bold text-slate-900">Report #11: Technology Transfer â€” Agribusiness</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 74/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 11 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 11 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 11 && (
@@ -2719,12 +2719,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">AgroBrasil Tecnologia S.A.</div>
-                      <div className="text-xs text-slate-500">Brazil (B3) • Public • BRL 2.1B Revenue</div>
+                      <div className="text-xs text-slate-500">Brazil (B3) â€¢ Public â€¢ BRL 2.1B Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Mozambique, Angola, Nigeria</div>
-                      <div className="text-xs text-slate-500">Tech Transfer + Land Lease • $40M Phase 1</div>
+                      <div className="text-xs text-slate-500">Tech Transfer + Land Lease â€¢ $40M Phase 1</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2740,10 +2740,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Portuguese-speaking markets (Mozambique, Angola) reduce cultural friction. Nigeria = largest market but higher risk.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">74</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.3x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">61</div><div className="text-slate-400">PRI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">86</div><div className="text-slate-400">ATI™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">74</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.3x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">61</div><div className="text-slate-400">PRIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">86</div><div className="text-slate-400">ATIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2766,33 +2766,33 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">74</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.3x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">61</div><div className="text-xs">PRI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">86</div><div className="text-xs">ATI™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">74</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.3x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">61</div><div className="text-xs">PRIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">86</div><div className="text-xs">ATIâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Mozambique Ministry of Agriculture engagement</li><li>2. ProSAVANA framework alignment review</li><li>3. Pilot project in Nacala Corridor design</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
 
-              {/* Report 12: Indian IT Services → Middle East */}
+              {/* Report 12: Indian IT Services â†’ Middle East */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
                   onClick={() => setExpandedReport(expandedReport === 12 ? null : 12)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-slate-900">Report #12: Government Digital Transformation — IT Services</span>
-                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPI™: 79/100</span>
+                    <span className="font-bold text-slate-900">Report #12: Government Digital Transformation â€” IT Services</span>
+                    <span className="text-xs bg-slate-700 text-white px-2 py-1 rounded">SPIâ„¢: 79/100</span>
                   </div>
                   <button className="px-3 py-1 bg-slate-900 text-white text-xs font-medium rounded hover:bg-slate-700 transition-all">
-                    {expandedReport === 12 ? '← Close Report' : 'View Full Report →'}
+                    {expandedReport === 12 ? 'â† Close Report' : 'View Full Report â†’'}
                   </button>
                 </div>
                 {expandedReport !== 12 && (
@@ -2801,12 +2801,12 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Organization</span>
                       <div className="font-medium">Nexus Digital Solutions Ltd</div>
-                      <div className="text-xs text-slate-500">India (NSE) • Public • INR 8,500Cr Revenue</div>
+                      <div className="text-xs text-slate-500">India (NSE) â€¢ Public â€¢ INR 8,500Cr Revenue</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
                       <div className="font-medium">Saudi Arabia, UAE, Qatar</div>
-                      <div className="text-xs text-slate-500">Government Contracts • $120M Pipeline</div>
+                      <div className="text-xs text-slate-500">Government Contracts â€¢ $120M Pipeline</div>
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Strategic Intent</span>
@@ -2822,10 +2822,10 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                       Required: Saudi CITC certification, UAE TDRA approvals, security clearances for government projects.
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center mt-2">
-                      <div className="bg-white rounded p-2"><div className="font-bold">79</div><div className="text-slate-400">SPI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">2.7x</div><div className="text-slate-400">RROI™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">71</div><div className="text-slate-400">BARNA™</div></div>
-                      <div className="bg-white rounded p-2"><div className="font-bold">84</div><div className="text-slate-400">CAP™</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">79</div><div className="text-slate-400">SPIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">2.7x</div><div className="text-slate-400">RROIâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">71</div><div className="text-slate-400">BARNAâ„¢</div></div>
+                      <div className="bg-white rounded p-2"><div className="font-bold">84</div><div className="text-slate-400">CAPâ„¢</div></div>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500">
@@ -2848,17 +2848,17 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-slate-900 border-b border-slate-300 pb-2 mb-3">ALGORITHM SCORES</h3>
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">79</div><div className="text-xs">SPI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.7x</div><div className="text-xs">RROI™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">71</div><div className="text-xs">BARNA™</div></div>
-                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">84</div><div className="text-xs">CAP™</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">79</div><div className="text-xs">SPIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">2.7x</div><div className="text-xs">RROIâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">71</div><div className="text-xs">BARNAâ„¢</div></div>
+                      <div className="bg-slate-900 text-white rounded-lg p-4 text-center"><div className="text-3xl font-bold">84</div><div className="text-xs">CAPâ„¢</div></div>
                     </div>
                   </div>
                   <div className="bg-slate-900 text-white rounded-lg p-4">
                     <h3 className="font-bold mb-2">NEXT STEPS</h3>
                     <ol className="text-sm space-y-1 text-slate-300"><li>1. Saudi CITC certification application</li><li>2. Local partner identification (51% ownership structure)</li><li>3. AI/ML center of excellence establishment</li></ol>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Intelligence AI • ABN: 55 978 113 300</div>
+                  <div className="mt-6 pt-4 border-t border-slate-300 text-xs text-slate-500 text-center">Generated by BWGA Ai â€¢ ABN: 55 978 113 300</div>
                 </div>
                 )}
               </div>
@@ -2880,7 +2880,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               </div>
               <div className="bg-white p-3 rounded border border-slate-200">
                 <div className="font-semibold text-slate-900 mb-1">Regions Analyzed</div>
-                <p className="text-slate-600">Asia-Pacific, Europe, Middle East, Africa, Latin America, North America — 20+ countries total</p>
+                <p className="text-slate-600">Asia-Pacific, Europe, Middle East, Africa, Latin America, North America â€” 20+ countries total</p>
               </div>
               <div className="bg-white p-3 rounded border border-slate-200">
                 <div className="font-semibold text-slate-900 mb-1">Data Sources Used</div>
@@ -2898,7 +2898,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-xl">
             <h3 className="text-2xl font-bold mb-4">Worldwide Intelligence Capability</h3>
             <p className="text-slate-300 mb-6">
-              BWGA Intelligence AI processes strategic scenarios across every continent, leveraging real-time data feeds 
+              BWGA Ai processes strategic scenarios across every continent, leveraging real-time data feeds 
               from international organizations, government databases, and proprietary research networks. The system can 
               generate one-page executive briefs for rapid assessment, or comprehensive 50+ page strategic dossiers 
               with full due diligence documentation.
@@ -2972,18 +2972,18 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </h3>
             <div className="grid md:grid-cols-4 gap-3">
               {[
-                { name: "Agriculture & AgriTech", icon: "🌾", count: "12 sub-sectors" },
-                { name: "Healthcare & MedTech", icon: "🏥", count: "15 sub-sectors" },
-                { name: "Financial Services", icon: "💳", count: "18 sub-sectors" },
-                { name: "Manufacturing", icon: "🏭", count: "22 sub-sectors" },
-                { name: "Energy & Renewables", icon: "⚡", count: "10 sub-sectors" },
-                { name: "Education & EdTech", icon: "📚", count: "8 sub-sectors" },
-                { name: "Mining & Resources", icon: "⛏️", count: "14 sub-sectors" },
-                { name: "Pharmaceuticals", icon: "💊", count: "12 sub-sectors" },
-                { name: "Logistics & Transport", icon: "🚚", count: "11 sub-sectors" },
-                { name: "Gaming & Entertainment", icon: "🎮", count: "9 sub-sectors" },
-                { name: "IT Services & Software", icon: "💻", count: "16 sub-sectors" },
-                { name: "Real Estate & Construction", icon: "🏗️", count: "13 sub-sectors" },
+                { name: "Agriculture & AgriTech", icon: "ðŸŒ¾", count: "12 sub-sectors" },
+                { name: "Healthcare & MedTech", icon: "ðŸ¥", count: "15 sub-sectors" },
+                { name: "Financial Services", icon: "ðŸ’³", count: "18 sub-sectors" },
+                { name: "Manufacturing", icon: "ðŸ­", count: "22 sub-sectors" },
+                { name: "Energy & Renewables", icon: "âš¡", count: "10 sub-sectors" },
+                { name: "Education & EdTech", icon: "ðŸ“š", count: "8 sub-sectors" },
+                { name: "Mining & Resources", icon: "â›ï¸", count: "14 sub-sectors" },
+                { name: "Pharmaceuticals", icon: "ðŸ’Š", count: "12 sub-sectors" },
+                { name: "Logistics & Transport", icon: "ðŸšš", count: "11 sub-sectors" },
+                { name: "Gaming & Entertainment", icon: "ðŸŽ®", count: "9 sub-sectors" },
+                { name: "IT Services & Software", icon: "ðŸ’»", count: "16 sub-sectors" },
+                { name: "Real Estate & Construction", icon: "ðŸ—ï¸", count: "13 sub-sectors" },
               ].map((industry, idx) => (
                 <div key={idx} className="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-slate-400 transition-all cursor-pointer">
                   <div className="text-2xl mb-2">{industry.icon}</div>
@@ -3068,7 +3068,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     <ul className="space-y-2">
                       {section.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                          <span className="text-slate-400 mt-1">•</span>
+                          <span className="text-slate-400 mt-1">â€¢</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -3099,7 +3099,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <Brain className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="font-bold">BWGA Intelligence AI</span>
+                  <span className="font-bold">BWGA Ai</span>
                   <p className="text-xs text-slate-400">Strategic Partnership Intelligence</p>
                 </div>
               </div>
@@ -3145,7 +3145,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-center md:text-left">
                 <p className="text-sm text-slate-400">
-                  © 2026 BW Global Advisory. All rights reserved. | brayden@bwglobaladvis.info | +63 960 835 4283
+                  Â© 2026 BW Global Advisory. All rights reserved. | brayden@bwglobaladvis.info | +63 960 835 4283
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
                   Trading as Sole Trader (R&D Phase) | ABN 55 978 113 300 | Melbourne, Australia
@@ -3153,7 +3153,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               </div>
               <div className="flex items-center gap-4 text-xs text-slate-500">
                 <span>Nexus Intelligence OS v6.0</span>
-                <span>•</span>
+                <span>â€¢</span>
                 <span>NSIL Engine v3.2</span>
               </div>
             </div>
@@ -3314,3 +3314,4 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
 };
 
 export default UserManual;
+

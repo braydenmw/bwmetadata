@@ -1,4 +1,4 @@
-import {
+﻿import {
   ReportParameters,
   SPIResult,
   RROI_Index,
@@ -276,7 +276,7 @@ const buildInstitutionalMemory = async (params: ReportParameters): Promise<Insti
   ];
 
   const learnedRules = [
-    'Regulatory certainty precedes capital velocity by 2–4 quarters',
+    'Regulatory certainty precedes capital velocity by 2â€“4 quarters',
     'Local partner credibility accelerates permit throughput',
     'FX volatility above 6% requires hedging in contract terms'
   ];
@@ -413,7 +413,7 @@ const buildStakeholderSimulation = (base: ReturnType<typeof deriveBaseScores>): 
 const buildExplainabilityContract = (params: ReportParameters, inputs: FrontierIntelligenceInputs): ExplainabilityContract => {
   const assumptions = [
     params.revenueBand ? 'Revenue band validated' : 'Revenue band missing: assume mid-market baseline',
-    params.headcountBand ? 'Headcount band validated' : 'Headcount band missing: assume 250–500 employees',
+    params.headcountBand ? 'Headcount band validated' : 'Headcount band missing: assume 250â€“500 employees',
     params.strategicIntent?.length ? 'Strategic intent provided' : 'Strategic intent inferred from mandate'
   ];
 
@@ -425,11 +425,11 @@ const buildExplainabilityContract = (params: ReportParameters, inputs: FrontierI
   ];
 
   const formulaTrace = [
-    'SPI™',
-    'RROI™',
-    'SEAM™',
-    'IVAS™',
-    'SCF™',
+    'SPIâ„¢',
+    'RROIâ„¢',
+    'SEAMâ„¢',
+    'IVASâ„¢',
+    'SCFâ„¢',
     'PRI',
     'TCO',
     'CRI',
@@ -524,7 +524,7 @@ const buildGovernanceAutoUpdate = (
   const auditControls = [
     'Versioned evidence ledger for every formula input',
     'Persona dissent register captured in final report',
-    'Approval workflow enforced at draft → review → approved'
+    'Approval workflow enforced at draft â†’ review â†’ approved'
   ];
 
   const governanceScore = clamp(70 + explainability.assumptions.length * -2 + (params.ingestedDocuments?.length ?? 0) * 2, 40, 95);
@@ -565,3 +565,4 @@ export async function computeFrontierIntelligence(
     governanceAutoUpdate
   };
 }
+

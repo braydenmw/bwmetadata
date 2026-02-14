@@ -1,4 +1,4 @@
-/**
+﻿/**
  * DECISION TREE SYNTHESIZER - Template Selection for Report Synthesis
  * 
  * Uses a decision tree to select the optimal report template and structure
@@ -301,7 +301,7 @@ export class DecisionTreeSynthesizer {
     while (typeof currentNode !== 'string') {
       decisionPath.push(currentNode.id);
       const result = currentNode.condition(params, payload);
-      decisionPath.push(`→ ${result ? 'true' : 'false'}`);
+      decisionPath.push(`â†’ ${result ? 'true' : 'false'}`);
       
       if (result) {
         currentNode = currentNode.trueChild || 'comprehensive';
@@ -545,3 +545,4 @@ export class DecisionTreeSynthesizer {
 export const decisionTreeSynthesizer = new DecisionTreeSynthesizer();
 
 export default DecisionTreeSynthesizer;
+

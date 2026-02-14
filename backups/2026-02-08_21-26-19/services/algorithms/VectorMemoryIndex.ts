@@ -1,4 +1,4 @@
-/**
+﻿/**
  * VECTOR MEMORY INDEX - Cosine Similarity + Approximate Nearest Neighbor (ANN)
  * 
  * Provides O(log n) memory retrieval instead of O(n) linear scan.
@@ -369,3 +369,4 @@ export class VectorMemoryIndex {
 export const globalVectorIndex = new VectorMemoryIndex(128);
 
 export default VectorMemoryIndex;
+

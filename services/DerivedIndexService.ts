@@ -1,4 +1,4 @@
-import { ReportParameters, PRIResult, TCOResult, CRIResult } from '../types';
+﻿import { ReportParameters, PRIResult, TCOResult, CRIResult } from '../types';
 import CompositeScoreService from './CompositeScoreService';
 import { GLOBAL_CITY_DATABASE } from '../constants';
 
@@ -184,3 +184,4 @@ export class DerivedIndexService {
 }
 
 export default DerivedIndexService;
+

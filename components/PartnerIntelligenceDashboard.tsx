@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Target, Users, BarChart } from './Icons';
 
 interface PartnerIntelligenceDashboardProps {
@@ -38,3 +38,4 @@ const PartnerIntelligenceDashboard: React.FC<PartnerIntelligenceDashboardProps> 
 };
 
 export default PartnerIntelligenceDashboard;
+

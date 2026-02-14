@@ -1,9 +1,9 @@
-// ============================================================================
+﻿// ============================================================================
 // ETHICS & GOVERNANCE ENGINE v6.0
 // Real compliance validation, bias detection, and decision explainability
 // ============================================================================
 
-// ──────────── Compliance Rule Registry ────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Compliance Rule Registry â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ComplianceRule {
   id: string;
   name: string;
@@ -49,7 +49,7 @@ interface AuditEntry {
   rules_evaluated: string[];
 }
 
-// ──────────── Sanctioned & High-Risk Lists ────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Sanctioned & High-Risk Lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SANCTIONED_COUNTRIES = new Set([
   'north korea', 'iran', 'syria', 'cuba', 'crimea', 'donetsk', 'luhansk',
   'dprk', 'myanmar'
@@ -70,7 +70,7 @@ const SENSITIVE_INDUSTRIES = new Set([
   'defence', 'nuclear', 'chemical'
 ]);
 
-// ──────────── Rule Definitions ────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Rule Definitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const COMPLIANCE_RULES: ComplianceRule[] = [
   {
     id: 'SANCTIONS-001',
@@ -246,7 +246,7 @@ const COMPLIANCE_RULES: ComplianceRule[] = [
   }
 ];
 
-// ──────────── Audit Trail ────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Audit Trail â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const auditLog: AuditEntry[] = [];
 
 function addAuditEntry(action: string, decision: string, reasoning: string, rulesEvaluated: string[]): void {
@@ -261,7 +261,7 @@ function addAuditEntry(action: string, decision: string, reasoning: string, rule
   if (auditLog.length > 200) auditLog.splice(0, auditLog.length - 200);
 }
 
-// ──────────── Public API ────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Public API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Full compliance check: runs all rules against the action and parameters.
@@ -347,7 +347,7 @@ export function detectBias(data: any): BiasReport[] {
 
   if (!data || typeof data !== 'object') return biases;
 
-  // 1. Geographic bias — overweight towards wealthy nations
+  // 1. Geographic bias â€” overweight towards wealthy nations
   const country = (data.country || '').toLowerCase();
   const region = (data.region || '').toLowerCase();
   if (['united states', 'united kingdom', 'australia', 'canada', 'germany'].includes(country)) {
@@ -361,7 +361,7 @@ export function detectBias(data: any): BiasReport[] {
     });
   }
 
-  // 2. Sector bias — tech sectors may receive overly optimistic scores
+  // 2. Sector bias â€” tech sectors may receive overly optimistic scores
   const industries: string[] = data.industry || [];
   if (industries.some(i => ['technology', 'tech', 'software', 'saas', 'ai'].includes(i.toLowerCase()))) {
     biases.push({
@@ -374,7 +374,7 @@ export function detectBias(data: any): BiasReport[] {
     });
   }
 
-  // 3. Missing data bias — critical fields not provided
+  // 3. Missing data bias â€” critical fields not provided
   const missingFields: string[] = [];
   if (!data.country) missingFields.push('country');
   if (!data.industry || data.industry.length === 0) missingFields.push('industry');
@@ -394,7 +394,7 @@ export function detectBias(data: any): BiasReport[] {
     });
   }
 
-  // 4. Confirmation bias — if stakeholder alignment is strong but risk is also high
+  // 4. Confirmation bias â€” if stakeholder alignment is strong but risk is also high
   if (data.stakeholderAlignment?.length > 2 && data.riskTolerance === 'high') {
     biases.push({
       biasType: 'confirmation_bias',
@@ -406,7 +406,7 @@ export function detectBias(data: any): BiasReport[] {
     });
   }
 
-  // 5. Recency bias — if expansion timeline is "immediate"
+  // 5. Recency bias â€” if expansion timeline is "immediate"
   if (data.expansionTimeline === 'immediate') {
     biases.push({
       biasType: 'urgency_bias',

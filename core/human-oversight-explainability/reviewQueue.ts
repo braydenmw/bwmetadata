@@ -1,4 +1,4 @@
-// Human Review Queue for Oversight
+﻿// Human Review Queue for Oversight
 // Actions requiring human approval are queued here
 
 const reviewQueue: Array<{ action: string; params: any; reason: string }> = [];
@@ -18,3 +18,4 @@ export function approveAction(index: number): { action: string; params: any } | 
   }
   return null;
 }
+

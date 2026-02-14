@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState } from 'react';
 import { Shield, Users, Database, Lock, Key, CheckCircle, Save } from 'lucide-react';
 
@@ -102,3 +102,4 @@ const AdminCard = ({ title, icon, value, color = 'text-stone-900' }: any) => (
 );
 
 export default AdminDashboard;
+

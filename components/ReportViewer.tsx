@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { 
     ShieldCheck, TrendingUp, AlertTriangle, Globe, Target, Users, MapPin, 
     CheckCircle, Cpu, BarChart3, FileText 
@@ -245,7 +245,7 @@ export const ReportViewer: React.FC<ReportViewerProps> = ({ nsilContent }) => {
                     <ul className="space-y-1">
                       {phase.milestones.map((milestone, j) => (
                         <li key={j} className="text-sm text-stone-700 flex items-start gap-2">
-                          <span className="text-green-500 font-bold">•</span>
+                          <span className="text-green-500 font-bold">â€¢</span>
                           {milestone}
                         </li>
                       ))}
@@ -271,3 +271,4 @@ export const ReportViewer: React.FC<ReportViewerProps> = ({ nsilContent }) => {
     </div>
   );
 };
+

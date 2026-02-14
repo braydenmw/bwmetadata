@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { NeuroSymbolicState, ChecklistItem } from '../types';
 import { CheckCircle, Circle, AlertCircle, ListTodo } from 'lucide-react';
 
@@ -82,3 +82,4 @@ export const ChecklistGatekeeper: React.FC<ChecklistGatekeeperProps> = ({ state,
         </div>
     );
 };
+

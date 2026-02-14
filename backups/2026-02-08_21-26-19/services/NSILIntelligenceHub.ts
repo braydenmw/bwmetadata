@@ -1,4 +1,4 @@
-/**
+﻿/**
  * NSIL INTELLIGENCE HUB - Unified Brain Interface
  * 
  * This is the central orchestrator that brings together all intelligence components:
@@ -400,3 +400,4 @@ export class NSILIntelligenceHub {
 }
 
 export default NSILIntelligenceHub;
+

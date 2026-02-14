@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 
 export default function ExportModal({ open, onClose }: any) {
   const [format, setFormat] = useState('pdf');
@@ -100,10 +100,10 @@ export default function ExportModal({ open, onClose }: any) {
 
           <div className="bg-stone-50 p-3 rounded text-xs text-stone-600">
             <div className="font-medium mb-1">Export Summary:</div>
-            <div>• Report sections: All included</div>
-            <div>• Intelligence data: {includeIntelligence ? 'Included' : 'Excluded'}</div>
-            <div>• Model visualizations: {includeModels ? 'Included' : 'Excluded'}</div>
-            <div>• Format: {format.toUpperCase()}</div>
+            <div>â€¢ Report sections: All included</div>
+            <div>â€¢ Intelligence data: {includeIntelligence ? 'Included' : 'Excluded'}</div>
+            <div>â€¢ Model visualizations: {includeModels ? 'Included' : 'Excluded'}</div>
+            <div>â€¢ Format: {format.toUpperCase()}</div>
           </div>
         </div>
 

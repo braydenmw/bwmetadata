@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Agentic Location Intelligence Service
  * 
  * This service provides an AI-powered system for dynamically researching
@@ -543,3 +543,4 @@ export function useLocationResearch(sessionId: string | null) {
 
 // Import React for the hook
 import * as React from 'react';
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ReportParameters, RROI_Index, RROI_Component } from '../types';
 import { generateRROI } from '../services/engine';
 import { TrendingUp, BarChart3, Activity } from 'lucide-react';

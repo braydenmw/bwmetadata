@@ -1,4 +1,4 @@
-// Comprehensive Business Data Constants
+﻿// Comprehensive Business Data Constants
 // Replaces hardcoded limited options with extensive industry, country, and business data
 
 export const ENTITY_TYPES = [
@@ -75,7 +75,7 @@ export const COUNTRIES = [
   { value: 'MA', label: 'Morocco', region: 'Africa', code: '+212' },
   { value: 'TZ', label: 'Tanzania', region: 'Africa', code: '+255' },
   { value: 'UG', label: 'Uganda', region: 'Africa', code: '+256' },
-  { value: 'CI', label: 'Côte d\'Ivoire', region: 'Africa', code: '+225' },
+  { value: 'CI', label: 'CÃ´te d\'Ivoire', region: 'Africa', code: '+225' },
   
   // Asia Pacific
   { value: 'CN', label: 'China', region: 'Asia Pacific', code: '+86' },
@@ -310,3 +310,4 @@ export const MARKETS = [
   'International (Global)',
   'Export-Focused',
 ];
+

@@ -1,17 +1,17 @@
-/**
- * ═══════════════════════════════════════════════════════════════════════════════
+﻿/**
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * DOCUMENT TYPE ROUTER
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  *
  * Maps the 200+ document types and 150+ letter types from the Document Factory
  * catalog to DISTINCT generation paths. Each document type gets:
  *
- *   1. Unique section structure — different documents have different sections
- *   2. Tone and audience configuration — investor vs government vs community
- *   3. Prompt templates — AI receives document-type-specific instructions
- *   4. Length constraints — executive brief (2pg) vs full report (40pg)
- *   5. NSIL intelligence injection — which intelligence to prioritise
- *   6. Compliance framing — what disclaimers and standards apply
+ *   1. Unique section structure â€” different documents have different sections
+ *   2. Tone and audience configuration â€” investor vs government vs community
+ *   3. Prompt templates â€” AI receives document-type-specific instructions
+ *   4. Length constraints â€” executive brief (2pg) vs full report (40pg)
+ *   5. NSIL intelligence injection â€” which intelligence to prioritise
+ *   6. Compliance framing â€” what disclaimers and standards apply
  *
  * Categories:
  *   - Strategic Documents (25+ types)
@@ -27,7 +27,7 @@
  *   - Community & Social Impact (10+ types)
  *   - Letters (150+ types across 8 categories)
  *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 // ============================================================================
@@ -78,7 +78,7 @@ export interface LetterTypeConfig {
 // ============================================================================
 
 const DOCUMENT_TYPES: DocumentTypeConfig[] = [
-  // ── STRATEGIC DOCUMENTS ──
+  // â”€â”€ STRATEGIC DOCUMENTS â”€â”€
   {
     id: 'executive-brief',
     name: 'Executive Brief',
@@ -91,7 +91,7 @@ const DOCUMENT_TYPES: DocumentTypeConfig[] = [
     complianceFramework: ['corporate-governance', 'fiduciary-duty'],
     sections: [
       { id: 'exec-context', title: 'Strategic Context', promptInstruction: 'Provide a crisp 2-paragraph overview of the opportunity, situating it within global and regional trends. Use pattern match data to establish that this type of initiative has a documented track record.', maxWords: 400, required: true, intelligencePriority: ['patterns', 'situationAnalysis'] },
-      { id: 'exec-opportunity', title: 'Opportunity Assessment', promptInstruction: 'Assess the specific opportunity using NSIL formula scores. Quantify the potential using historical parallels — cite specific comparable cases and their outcomes.', maxWords: 500, required: true, intelligencePriority: ['formulaScores', 'historicalParallels'] },
+      { id: 'exec-opportunity', title: 'Opportunity Assessment', promptInstruction: 'Assess the specific opportunity using NSIL formula scores. Quantify the potential using historical parallels â€” cite specific comparable cases and their outcomes.', maxWords: 500, required: true, intelligencePriority: ['formulaScores', 'historicalParallels'] },
       { id: 'exec-risks', title: 'Key Risks & Mitigations', promptInstruction: 'Identify top 5 risks using the ethical assessment and situational analysis. For each risk, provide a specific mitigation strategy grounded in what has worked in similar contexts.', maxWords: 400, required: true, intelligencePriority: ['ethicalAssessment', 'situationAnalysis', 'emotionalClimate'] },
       { id: 'exec-recommendation', title: 'Recommendation', promptInstruction: 'Provide a clear GO/NO-GO/CONDITIONAL recommendation with specific conditions and next steps. Reference the ethical gate result.', maxWords: 300, required: true, intelligencePriority: ['ethicalAssessment', 'formulaScores'] },
     ]
@@ -302,26 +302,26 @@ const DOCUMENT_TYPES: DocumentTypeConfig[] = [
 // ============================================================================
 
 const LETTER_TYPES: LetterTypeConfig[] = [
-  // ── INVESTMENT LETTERS ──
-  { id: 'loi-investment', name: 'Letter of Intent — Investment', category: 'Investment', tone: 'formal-corporate', audience: 'investors', maxWords: 1500, structure: ['Preamble', 'Parties', 'Purpose', 'Key Terms', 'Conditions Precedent', 'Confidentiality', 'Non-Binding Statement', 'Signatures'], keyElements: ['Investment amount', 'Equity structure', 'Valuation basis', 'Due diligence period', 'Exclusivity'] },
-  { id: 'loi-partnership', name: 'Letter of Intent — Partnership', category: 'Partnership', tone: 'formal-corporate', audience: 'board-directors', maxWords: 1500, structure: ['Introduction', 'Partnership Rationale', 'Scope of Collaboration', 'Governance Principles', 'Resource Commitments', 'Timeline', 'Confidentiality', 'Non-Binding'], keyElements: ['Mutual objectives', 'Contribution framework', 'Decision-making', 'IP treatment', 'Exit provisions'] },
-  { id: 'eoi-government', name: 'Expression of Interest — Government Project', category: 'Government', tone: 'formal-government', audience: 'government-officials', maxWords: 2000, structure: ['Covering Statement', 'Company Profile', 'Relevant Experience', 'Proposed Approach', 'Team Qualifications', 'Financial Capacity', 'Compliance Declarations'], keyElements: ['Company credentials', 'Relevant track record', 'Technical capability', 'Financial standing', 'Compliance history'] },
+  // â”€â”€ INVESTMENT LETTERS â”€â”€
+  { id: 'loi-investment', name: 'Letter of Intent â€” Investment', category: 'Investment', tone: 'formal-corporate', audience: 'investors', maxWords: 1500, structure: ['Preamble', 'Parties', 'Purpose', 'Key Terms', 'Conditions Precedent', 'Confidentiality', 'Non-Binding Statement', 'Signatures'], keyElements: ['Investment amount', 'Equity structure', 'Valuation basis', 'Due diligence period', 'Exclusivity'] },
+  { id: 'loi-partnership', name: 'Letter of Intent â€” Partnership', category: 'Partnership', tone: 'formal-corporate', audience: 'board-directors', maxWords: 1500, structure: ['Introduction', 'Partnership Rationale', 'Scope of Collaboration', 'Governance Principles', 'Resource Commitments', 'Timeline', 'Confidentiality', 'Non-Binding'], keyElements: ['Mutual objectives', 'Contribution framework', 'Decision-making', 'IP treatment', 'Exit provisions'] },
+  { id: 'eoi-government', name: 'Expression of Interest â€” Government Project', category: 'Government', tone: 'formal-government', audience: 'government-officials', maxWords: 2000, structure: ['Covering Statement', 'Company Profile', 'Relevant Experience', 'Proposed Approach', 'Team Qualifications', 'Financial Capacity', 'Compliance Declarations'], keyElements: ['Company credentials', 'Relevant track record', 'Technical capability', 'Financial standing', 'Compliance history'] },
   { id: 'proposal-cover', name: 'Proposal Cover Letter', category: 'Proposal', tone: 'formal-corporate', audience: 'investors', maxWords: 800, structure: ['Addressee', 'Reference to RFP/opportunity', 'Executive summary of proposal', 'Key differentiators', 'Closing commitment'], keyElements: ['Proposal reference', 'Key value proposition', 'Compliance statement', 'Contact details'] },
   { id: 'investor-update', name: 'Investor Update Letter', category: 'Investment', tone: 'formal-corporate', audience: 'investors', maxWords: 1500, structure: ['Summary', 'Key Metrics', 'Progress Update', 'Challenges & Mitigations', 'Upcoming Milestones', 'Financial Summary', 'Ask/Next Steps'], keyElements: ['KPI dashboard', 'Progress vs targets', 'Risk updates', 'Capital deployment'] },
-  // ── GOVERNMENT LETTERS ──
+  // â”€â”€ GOVERNMENT LETTERS â”€â”€
   { id: 'gov-incentive-request', name: 'Investment Incentive Application Letter', category: 'Government', tone: 'formal-government', audience: 'government-officials', maxWords: 2000, structure: ['Formal Address', 'Application Reference', 'Company Introduction', 'Investment Description', 'Economic Impact', 'Incentive Request', 'Compliance Commitment', 'Supporting Documents List'], keyElements: ['Investment value', 'Job creation', 'Technology transfer', 'Export potential', 'Local content'] },
   { id: 'gov-regulatory-inquiry', name: 'Regulatory Inquiry Letter', category: 'Government', tone: 'formal-government', audience: 'government-officials', maxWords: 1000, structure: ['Reference', 'Company Introduction', 'Specific Inquiry', 'Context', 'Request for Clarification', 'Timeline Request'], keyElements: ['Specific regulation cited', 'Compliance question', 'Timeframe for response'] },
   { id: 'gov-mou-proposal', name: 'MoU Proposal Letter', category: 'Government', tone: 'formal-government', audience: 'government-officials', maxWords: 2000, structure: ['Formal Address', 'Context', 'Proposed Scope', 'Objectives', 'Commitments', 'Duration', 'Governance', 'Non-Legal Statement'], keyElements: ['MoU objectives', 'Respective commitments', 'Duration', 'Review mechanism'] },
-  // ── COMPLIANCE LETTERS ──
+  // â”€â”€ COMPLIANCE LETTERS â”€â”€
   { id: 'aml-declaration', name: 'AML/KYC Declaration Letter', category: 'Compliance', tone: 'formal-corporate', audience: 'legal-counsel', maxWords: 1000, structure: ['Declaration', 'Beneficial Owner Disclosure', 'Source of Funds', 'PEP Declaration', 'Sanctions Declaration', 'Compliance Undertaking', 'Signature'], keyElements: ['UBO details', 'Source of funds', 'PEP status', 'Sanctions clearance'] },
   { id: 'compliance-assurance', name: 'Compliance Assurance Letter', category: 'Compliance', tone: 'formal-corporate', audience: 'legal-counsel', maxWords: 1200, structure: ['Scope of Assurance', 'Compliance Framework', 'Key Controls', 'Findings', 'Recommendations', 'Management Response'], keyElements: ['Applicable regulations', 'Control framework', 'Testing results', 'Material findings'] },
-  // ── STAKEHOLDER LETTERS ──
+  // â”€â”€ STAKEHOLDER LETTERS â”€â”€
   { id: 'community-notification', name: 'Community Notification Letter', category: 'Community', tone: 'community-engagement', audience: 'community-stakeholders', maxWords: 1000, structure: ['Plain Language Introduction', 'What Is Being Proposed', 'How It May Affect You', 'How You Can Participate', 'Contact Information', 'Feedback Timeline'], keyElements: ['Plain language', 'Impact summary', 'Participation channels', 'Feedback mechanism'] },
   { id: 'stakeholder-engagement', name: 'Stakeholder Engagement Letter', category: 'Community', tone: 'community-engagement', audience: 'community-stakeholders', maxWords: 1200, structure: ['Introduction', 'Project Description', 'Your Role', 'Consultation Process', 'How Your Input Will Be Used', 'Contact Information'], keyElements: ['Clear language', 'Specific role of stakeholder', 'Consultation timeline', 'How feedback is incorporated'] },
-  // ── TRADE LETTERS ──
+  // â”€â”€ TRADE LETTERS â”€â”€
   { id: 'trade-inquiry', name: 'Trade Inquiry Letter', category: 'Trade', tone: 'formal-corporate', audience: 'investors', maxWords: 800, structure: ['Introduction', 'Product/Service Interest', 'Volume/Specification', 'Pricing Request', 'Delivery Terms', 'Payment Terms', 'Quality Standards'], keyElements: ['Product specifications', 'Volume requirements', 'Incoterms', 'Payment method', 'Quality certification'] },
   { id: 'customs-application', name: 'Customs/Trade Facilitation Letter', category: 'Trade', tone: 'formal-government', audience: 'government-officials', maxWords: 1500, structure: ['Application Reference', 'Company Details', 'Trade Description', 'Tariff Classification', 'Country of Origin', 'Preferential Treatment Claim', 'Supporting Documentation'], keyElements: ['HS classification', 'Origin determination', 'FTA/RTA preference', 'Certificate of origin'] },
-  // ── INTERNATIONAL BODY LETTERS ──
+  // â”€â”€ INTERNATIONAL BODY LETTERS â”€â”€
   { id: 'dfi-concept-note', name: 'DFI Concept Note Cover Letter', category: 'International', tone: 'formal-government', audience: 'international-bodies', maxWords: 1500, structure: ['Formal Address to DFI', 'Project Title', 'Country/Region', 'Sector', 'Funding Request', 'Development Impact Summary', 'Alignment with DFI Strategy', 'NDA/Government Endorsement'], keyElements: ['DFI strategic alignment', 'Development impact', 'Government endorsement', 'Co-financing'] },
   { id: 'un-submission', name: 'UN Agency Submission Letter', category: 'International', tone: 'diplomatic', audience: 'international-bodies', maxWords: 2000, structure: ['Formal Protocol Address', 'Subject Reference', 'Background', 'Submission Content', 'Supporting Evidence', 'Request for Action', 'Respectful Closing'], keyElements: ['Protocol compliance', 'SDG alignment', 'Evidence-based arguments', 'Specific request'] },
 ];
@@ -375,7 +375,7 @@ export class DocumentTypeRouter {
   }
 
   /**
-   * Route document generation — returns the full section structure and prompt instructions
+   * Route document generation â€” returns the full section structure and prompt instructions
    * for any given document type
    */
   static routeDocument(documentTypeId: string): {
@@ -404,7 +404,7 @@ export class DocumentTypeRouter {
   }
 
   /**
-   * Route letter generation — returns structure and key elements
+   * Route letter generation â€” returns structure and key elements
    */
   static routeLetter(letterTypeId: string): {
     config: LetterTypeConfig;
@@ -433,14 +433,14 @@ export class DocumentTypeRouter {
       ...config.structure.map((s, i) => `${i + 1}. ${s}`),
       ``,
       `Key elements to include:`,
-      ...config.keyElements.map(k => `• ${k}`),
+      ...config.keyElements.map(k => `â€¢ ${k}`),
     ].join('\n');
 
     return { config, promptInstruction };
   }
 
   /**
-   * Get catalog summary — how many document and letter types available
+   * Get catalog summary â€” how many document and letter types available
    */
   static getCatalogSummary(): {
     totalDocumentTypes: number;
@@ -516,3 +516,4 @@ export class DocumentTypeRouter {
 }
 
 export default DocumentTypeRouter;
+

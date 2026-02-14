@@ -1,2 +1,3 @@
-import React from 'react';
+﻿import React from 'react';
 export const StrategicCanvas = () => <div>Strategic Canvas</div>;
+

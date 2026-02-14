@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react';
+﻿import { useMemo, useState, useCallback } from 'react';
 import { ReportParameters } from '../types';
 import { AdvisorSnapshot } from '../services/ComprehensiveSystemModel';
 import { buildAdvisorSnapshot } from '../services/GlobalIntelligenceEngine';
@@ -26,3 +26,4 @@ const useAdvisorSnapshot = (params: ReportParameters): UseAdvisorSnapshotResult 
 };
 
 export default useAdvisorSnapshot;
+

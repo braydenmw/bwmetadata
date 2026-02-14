@@ -1,4 +1,4 @@
-import { EventBus } from './EventBus';
+﻿import { EventBus } from './EventBus';
 import { persistentMemory } from './PersistentMemorySystem';
 import { automaticSearchService, type SearchResult } from './AutomaticSearchService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
@@ -43,7 +43,7 @@ export class BWConsultantAgenticAI {
   // Main consultant interface
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async consult(params: any, context: string = 'general'): Promise<ConsultantInsight[]> {
-    console.log('🤖 BW Consultant: Starting consultation for', context);
+    console.log('ðŸ¤– BW Consultant: Starting consultation for', context);
 
     // Update focus
     this.state.currentFocus = context;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ChevronDown, Plus, X, Building2, Zap, Shield, DollarSign } from 'lucide-react';
 import { ReportParameters } from '../types';
 
@@ -546,3 +546,4 @@ const EntityDefinitionBuilder: React.FC<EntityDefinitionBuilderProps> = ({ onEnt
 };
 
 export default EntityDefinitionBuilder;
+

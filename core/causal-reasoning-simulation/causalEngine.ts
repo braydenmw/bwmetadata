@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ADVANCED CAUSAL REASONING & SIMULATION ENGINE
  * 
  * Implements:
@@ -492,3 +492,4 @@ export function sensitivityAnalysis(
 
 export { discoverCausalStructure, BayesianNetwork };
 export type { CausalNode, CausalEdge, InterventionResult, CounterfactualResult };
+
