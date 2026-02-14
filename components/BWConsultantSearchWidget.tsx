@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Search, Loader, ArrowRight, CheckCircle2, AlertCircle, TrendingUp } from 'lucide-react';
 
 export interface SearchResult {
@@ -17,7 +17,7 @@ export interface BWConsultantSearchWidgetProps {
 export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> = ({
   onSearch,
   placeholder = 'Search any location, company, or entity...',
-  context = 'landing'
+  _context = 'landing'
 }) => {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -82,7 +82,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch(e as any);
+      handleSearch((e as unknown) as React.FormEvent<HTMLFormElement>);
     }
   };
 

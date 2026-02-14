@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader, MessageCircle, ChevronDown } from 'lucide-react';
 import { GlobalIssueResolver, type IssueAnalysis } from '../services/GlobalIssueResolver';
-import { IssueAnalysisPanel } from './IssueAnalysisPanel';
 
 interface Message {
   id: string;
@@ -162,8 +161,36 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
                   </button>
 
                   {expandedMessageId === message.id && (
-                    <div className="mt-4">
-                      <IssueAnalysisPanel analysis={message.analysis} />
+                    <div className="mt-4 space-y-3 text-xs text-slate-200 bg-slate-800 -mx-4 -mb-3 px-4 py-3 rounded-b">
+                      <div>
+                        <p className="font-semibold text-blue-300 mb-1">NSIL Layers:</p>
+                        <div className="space-y-1">
+                          {message.analysis.nsisLayers.slice(0, 3).map((layer) => (
+                            <p key={layer.layer} className="text-slate-300">
+                              Layer {layer.layer}: {layer.name} ({(layer.confidence * 100).toFixed(0)}%)
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-green-300 mb-1">Strategic Recommendations:</p>
+                        {message.analysis.strategicRecommendations.slice(0, 2).map((rec, i) => (
+                          <p key={i} className="text-slate-300">• {rec}</p>
+                        ))}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-purple-300 mb-1">Implementation Timeline:</p>
+                        <p className="text-slate-300">{message.analysis.timeline}</p>
+                      </div>
+                      <button
+                        className="w-full text-center mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold"
+                        onClick={() => {
+                          // Would open detailed analysis panel here
+                          console.log('Open full analysis:', message.analysis);
+                        }}
+                      >
+                        View Complete Analysis →
+                      </button>
                     </div>
                   )}
                 </div>
