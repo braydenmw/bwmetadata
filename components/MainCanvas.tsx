@@ -106,15 +106,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [generatedDocs, setGeneratedDocs] = useState<{id: string, title: string, desc: string, timestamp: Date}[]>([]);
   const [showDocumentUpload, setShowDocumentUpload] = useState(false);
   const chatMessagesEndRef = useRef<HTMLDivElement>(null);
-
-  const handleDocumentProcessed = (doc: { filename: string; content: string }) => {
-    setChatMessages(prev => [...prev, { text: `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`, sender: 'bw', timestamp: new Date() }]);
-    setParams({ ...params, ingestedDocuments: [...(params.ingestedDocuments || []), doc] });
-  };
-
-  useEffect(() => {
-    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   // Apply intelligence enhancements to report data
@@ -156,6 +147,15 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
+
+  const handleDocumentProcessed = (doc: { filename: string; content: string }) => {
+    setChatMessages(prev => [...prev, { text: `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`, sender: 'bw', timestamp: new Date() }]);
+    setParams({ ...params, ingestedDocuments: [...(params.ingestedDocuments || []), doc] });
+  };
+
+  useEffect(() => {
+    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const requiredFields: Record<string, string[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
@@ -622,24 +622,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         <div className="flex flex-col bg-white border-r border-stone-200 overflow-hidden" style={{ flexBasis: '30%' }}>
             <div className="flex-1 overflow-y-auto custom-scrollbar">
                 <div className="p-5 space-y-4">
-                    {/* SUPPORTING DOCUMENTS + BW CONSULTANT CHAT */}
+                    {/* BW CONSULTANT CHAT */}
                     <div>
-                      <div className="mb-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-                          <div className="text-xs font-bold text-indigo-900 mb-1 flex items-center gap-2">
-                              <FileText size={14} className="text-indigo-600" />
-                              Supporting Documents
-                          </div>
-                          <p className="text-xs text-indigo-800 leading-relaxed mb-2">Upload RFPs, mandates, briefing decks, or clearance letters. The BW Consultant will analyze these documents to provide deeper, more contextual recommendations tailored to your specific situation.</p>
-                          <div className="flex gap-2">
-                              <button
-                                  onClick={() => setShowDocumentUpload(true)}
-                                  className="px-3 py-2 rounded bg-indigo-600 text-white text-sm"
-                              >
-                                  Upload Documents
-                              </button>
-                              <div className="text-xs text-indigo-700 mt-2">{params.ingestedDocuments?.length || 0} document{(params.ingestedDocuments?.length || 0) !== 1 ? 's' : ''} uploaded</div>
-                          </div>
-                      </div>
 
                       <div className="bg-stone-50 border border-stone-200 rounded-lg flex flex-col">
                           <div className="h-10 bg-blue-900 text-white flex items-center justify-between px-4 rounded-t-lg">
