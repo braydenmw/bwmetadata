@@ -15,9 +15,7 @@ import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnaly
 import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
 import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
 import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
-import { bwConsultantAI, type ConsultantInsight } from '../services/BWConsultantAgenticAI';
-import { GlobalIssueResolver } from '../services/GlobalIssueResolver';
-import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
+import { invokeAI } from '../services/awsBedrockService';
 import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS } from '../constants';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, IngestedDocumentMeta } from '../types';
@@ -147,7 +145,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   }, [reportData, selectedIntelligenceEnhancements, roiResult, params.country, params.organizationName]);
 
 
-  const globalResolverRef = useRef(new GlobalIssueResolver());
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
     { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
@@ -192,113 +189,45 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
       setChatInput('');
 
       // Add thinking indicator
-      setChatMessages(prev => [...prev, { text: '\u23f3 Researching with live intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
+      setChatMessages(prev => [...prev, { text: '\u23f3 Thinking...', sender: 'bw' as const, timestamp: new Date() }]);
 
       try {
-        const input = userText.toLowerCase();
+        // Build conversation history for context
+        const recentMessages = chatMessages.slice(-10).map(m => 
+          `${m.sender === 'user' ? 'User' : 'BW Consultant'}: ${m.text}`
+        ).join('\n');
 
-        // Simple greeting/thanks handling
-        if (/^(hello|hi|hey|thanks?|thank you)$/i.test(input)) {
-          setChatMessages(prev => {
-            const msgs = [...prev];
-            msgs.pop();
-            return [...msgs, {
-              text: input.includes('thank')
-                ? "You're welcome! I'm here to support your analysis with full NSIL intelligence and live research. What else can I help with?"
-                : `Hello! I'm your BW Consultant, powered by live intelligence, NSIL formulas, and real-time research. How can I help ${params.organizationName || 'you'} today?`,
-              sender: 'bw' as const,
-              timestamp: new Date()
-            }];
-          });
-          return;
-        }
+        // Build session context from form params
+        let sessionContext = '';
+        if (params.organizationName) sessionContext += `Organization: ${params.organizationName}. `;
+        if (params.country) sessionContext += `Target Country: ${params.country}. `;
+        if (params.region) sessionContext += `Region: ${params.region}. `;
+        if (params.industry?.length) sessionContext += `Industry: ${params.industry.join(', ')}. `;
+        if (params.problemStatement) sessionContext += `Objective: ${params.problemStatement}. `;
+        if (params.strategicIntent?.length) sessionContext += `Strategic Intent: ${params.strategicIntent.join(', ')}. `;
 
-        // Extract context hints from the query
-        const qLower = userText.toLowerCase();
-        const consultParams: Record<string, unknown> = { query: userText };
-        const countries = ['philippines', 'vietnam', 'thailand', 'indonesia', 'malaysia', 'singapore', 'japan', 'china', 'india', 'korea', 'cambodia', 'myanmar', 'laos', 'bangladesh', 'pakistan', 'sri lanka', 'nepal', 'australia', 'new zealand', 'mexico', 'brazil', 'nigeria', 'kenya', 'south africa', 'poland', 'romania'];
-        for (const c of countries) {
-          if (qLower.includes(c)) { consultParams.country = c.charAt(0).toUpperCase() + c.slice(1); break; }
-        }
-        // Also use session params as context
-        if (!consultParams.country && params.country) consultParams.country = params.country;
-        if (params.industry?.length) consultParams.industry = params.industry;
-        const matchedInds: string[] = [];
-        const industries = ['technology', 'manufacturing', 'healthcare', 'agriculture', 'finance', 'energy', 'mining', 'tourism', 'logistics'];
-        for (const ind of industries) { if (qLower.includes(ind)) matchedInds.push(ind); }
-        if (matchedInds.length) consultParams.industry = matchedInds;
+        const prompt = `You are BW Consultant AI, a knowledgeable strategic business advisor. You answer questions directly and conversationally, like a human expert would. You have deep knowledge of global markets, politics, business leaders, cities, investment climates, regulatory frameworks, and regional development.
 
-        // Run all three real intelligence systems in parallel + NSIL local assessment
-        const [consultInsights, issueAnalysis, liveEvidence] = await Promise.all([
-          bwConsultantAI.consult(consultParams, 'report_chat').catch(() => [] as ConsultantInsight[]),
-          globalResolverRef.current.resolveIssue(userText).catch(() => null),
-          ReactiveIntelligenceEngine.liveSearch(userText, consultParams).catch(() => [] as Array<{ title: string; snippet?: string }>)
-        ]);
+IMPORTANT RULES:
+- Answer the user's actual question directly and naturally, like ChatGPT or a human advisor would
+- If they ask about a person, tell them about that person
+- If they ask about a city, tell them about that city
+- If they ask about a market, explain the market
+- Do NOT return structured assessment data, trust scores, NSIL layers, or framework outputs
+- Be conversational, helpful, and informative
+- Use your knowledge to provide real, useful information
+- If you don't know something specific, say so honestly
+- Keep responses focused and readable (2-4 paragraphs typical)${sessionContext ? `\n\nCurrent session context: ${sessionContext}` : ''}${recentMessages ? `\n\nRecent conversation:\n${recentMessages}` : ''}
 
-        // Also get NSIL local context for enrichment
-        const quickAssess = NSILIntelligenceHub.quickAssess(params);
-        const situation = SituationAnalysisEngine.quickSummary(params);
-        const historical = HistoricalParallelMatcher.quickMatch(params);
+User question: ${userText}`;
 
-        // Build comprehensive response
-        let responseText = '**BW Consultant AI \u2014 Live Analysis**\n\n';
-
-        // Live intelligence from BWConsultantAgenticAI
-        if (consultInsights && consultInsights.length > 0) {
-          responseText += '**Live Intelligence:**\n';
-          for (const insight of consultInsights.slice(0, 4)) {
-            responseText += `\u2022 **${insight.title}** (${(insight.confidence * 100).toFixed(0)}% confidence): ${insight.content}\n`;
-          }
-          responseText += '\n';
-        }
-
-        // Live evidence from ReactiveIntelligenceEngine
-        if (liveEvidence && liveEvidence.length > 0) {
-          responseText += '**Real-Time Sources:**\n';
-          for (const ev of liveEvidence.slice(0, 3)) {
-            responseText += `\u2022 ${ev.title}${ev.snippet ? `: ${ev.snippet.slice(0, 150)}` : ''}\n`;
-          }
-          responseText += '\n';
-        }
-
-        // Issue analysis from GlobalIssueResolver
-        if (issueAnalysis) {
-          responseText += `**Issue Category:** ${issueAnalysis.issueCategory.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}\n\n`;
-          if (issueAnalysis.strategicRecommendations?.length > 0) {
-            responseText += '**Strategic Recommendations:**\n';
-            issueAnalysis.strategicRecommendations.slice(0, 3).forEach((rec: string, i: number) => {
-              responseText += `${i + 1}. ${rec}\n`;
-            });
-            responseText += '\n';
-          }
-          if (issueAnalysis.riskMitigation?.length > 0) {
-            responseText += '**Risk Factors:**\n';
-            issueAnalysis.riskMitigation.slice(0, 2).forEach((r: any) => {
-              responseText += `\u2022 ${r.risk}: ${r.mitigation}\n`;
-            });
-            responseText += '\n';
-          }
-          responseText += `**Timeline:** ${issueAnalysis.timeline}\n`;
-          responseText += `**Confidence:** ${(issueAnalysis.overallConfidence * 100).toFixed(0)}%\n\n`;
-        }
-
-        // NSIL session context enrichment
-        if (quickAssess.trustScore > 0) {
-          responseText += `**Session Context** (Trust Score: ${quickAssess.trustScore.toFixed(0)}/100):\n`;
-          responseText += `\u2022 ${quickAssess.headline}\n`;
-          if (situation.topUnconsideredNeed) {
-            responseText += `\u2022 Unconsidered: ${situation.topUnconsideredNeed}\n`;
-          }
-          if (historical.found) {
-            responseText += `\u2022 Historical Parallel: ${historical.case_title} \u2014 ${historical.topLesson}\n`;
-          }
-        }
+        const aiResponse = await invokeAI(prompt);
 
         setChatMessages(prev => {
           const msgs = [...prev];
-          msgs.pop();
+          msgs.pop(); // Remove thinking indicator
           return [...msgs, {
-            text: responseText,
+            text: aiResponse.text,
             sender: 'bw' as const,
             timestamp: new Date()
           }];
@@ -310,7 +239,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
           const msgs = [...prev];
           msgs.pop();
           return [...msgs, {
-            text: `I encountered an issue running the live intelligence analysis. Please try your question again.`,
+            text: 'I encountered an issue processing your request. Please try again.',
             sender: 'bw' as const,
             timestamp: new Date()
           }];
