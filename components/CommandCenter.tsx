@@ -218,7 +218,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 {/* Subtle background texture */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-4xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Problem</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
                         The Trust Gap in Artificial Intelligence
                     </h2>
@@ -242,7 +241,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80" alt="Standard AI limitations" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/20" />
                                 <div className="absolute bottom-4 left-5 right-5">
-                                    <p className="text-xs font-bold text-red-300 uppercase tracking-wider mb-0.5">The Problem</p>
                                     <h3 className="text-lg font-bold text-white">Standard AI</h3>
                                     <p className="text-[11px] text-slate-300">Probabilistic &bull; Opaque &bull; Inconsistent</p>
                                 </div>
@@ -260,7 +258,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&h=400&fit=crop&q=80" alt="BW Ai intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-blue-900/20" />
                                 <div className="absolute bottom-4 left-5 right-5">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">The Solution</p>
                                     <h3 className="text-lg font-bold text-white">BW Ai</h3>
                                     <p className="text-[11px] text-blue-200">Deterministic &bull; Auditable &bull; Defensible</p>
                                 </div>
@@ -283,8 +280,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&h=900&fit=crop&q=80" alt="Global connectivity" className="w-full h-full object-cover opacity-20" />
                 </div>
                 <div className="relative max-w-4xl mx-auto">
-                    <p className="text-blue-400 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Origin</p>
-                    <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-2">One Person, One Mission</h2>
                     <p className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-6">&ldquo;12 Months That Changed Everything&rdquo;</p>
                     <p className="text-lg text-slate-300 leading-relaxed mb-6">
                         BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong className="text-white">38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
@@ -301,7 +296,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <p className="text-blue-600 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Innovation</p>
                         <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">How It &ldquo;Thinks&rdquo;</h2>
                     </div>
 
@@ -381,7 +375,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-blue-900/80" />
                 </div>
                 <div className="relative max-w-4xl mx-auto text-center">
-                    <p className="text-blue-400 uppercase tracking-[0.3em] text-xs font-bold mb-4">Live Intelligence</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</h2>
                     <p className="text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
                         The interface is simple by design. Under the hood, BW Ai runs as a <strong className="text-white">digital strategy boardroom</strong>: specialized engines, formula evaluators, and agentic routines process your case continuously, pressure-test assumptions, and return decisions in actionable form. You are not receiving generic advice; you are receiving structured intelligence built to survive scrutiny and move to execution.
@@ -402,7 +395,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=500&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                                 <div className="absolute bottom-5 left-6">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">Deliverables</p>
                                     <h2 className="text-2xl md:text-3xl font-bold text-white">What You Walk Away With</h2>
                                 </div>
                             </div>
@@ -422,7 +414,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <img src="https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&h=400&fit=crop&q=80" alt="Assurance Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">Assurance Architecture</p>
                                     <h3 className="text-lg font-bold text-white">Trust Is Structural, Not Promotional</h3>
                                 </div>
                             </div>
@@ -439,7 +430,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&h=400&fit=crop&q=80" alt="Document Factory" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">The Document Factory</p>
                                     <h3 className="text-lg font-bold text-white">From Analysis to Execution Assets</h3>
                                 </div>
                             </div>
