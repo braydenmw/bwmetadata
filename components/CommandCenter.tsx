@@ -598,70 +598,105 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* NEXT STEPS - Partnership & Pilot Programs */}
-            <section id="pilots" className="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <p className="text-blue-400 uppercase tracking-[0.25em] text-sm mb-3 font-bold">NEXT STEPS</p>
-                        <h2 className="text-3xl md:text-4xl font-light text-white mb-4">Work With Us</h2>
-                        <p className="text-base text-white/70 max-w-3xl mx-auto">We&rsquo;re looking for forward-thinking organisations who want to pilot a new standard for how investment decisions get made &mdash; and help shape the platform before it goes to market.</p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-5 mb-8">
-                        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-9 h-9 bg-blue-500/20 border border-blue-400/30 rounded-lg flex items-center justify-center">
-                                    <Zap size={18} className="text-blue-400" />
-                                </div>
-                                <h3 className="text-sm font-bold text-white">Investment Promotion Agencies</h3>
-                            </div>
-                            <p className="text-sm text-white/60 mb-3">You review hundreds of investment leads a year. Most don&rsquo;t go anywhere. The ones that do take months of manual due diligence before you can even bring them to a board.</p>
-                            <p className="text-sm text-blue-300 font-medium">Pilot the system on your next intake cycle &mdash; screen proposals in hours instead of weeks, with board-ready scoring and a defensible evidence trail from day one.</p>
+            <section id="pilots" className="py-12 px-4 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm font-bold text-center mb-6">NEXT STEPS</p>
+                    <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">Work With Us</h2>
+                    <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
+                        We&rsquo;re looking for forward-thinking organisations who want to pilot a new standard for how investment decisions get made &mdash; and help shape the platform before it goes to market.
+                    </p>
+
+                    {/* Built on World-Class Ethics - Photo Left Block */}
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
+                        <div className="md:w-4/12">
+                            <img 
+                                src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=600&fit=crop&q=80" 
+                                alt="Global Standards and Ethics"
+                                className="w-full h-full min-h-[200px] object-cover" 
+                            />
                         </div>
-                        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-9 h-9 bg-blue-500/20 border border-blue-400/30 rounded-lg flex items-center justify-center">
-                                    <TrendingUp size={18} className="text-blue-400" />
-                                </div>
-                                <h3 className="text-sm font-bold text-white">Regional Economic Development</h3>
-                            </div>
-                            <p className="text-sm text-white/60 mb-3">Your region has real assets &mdash; a port, a university, agricultural land, a diaspora network &mdash; but the investment prospectus hasn&rsquo;t been written, or the one you have reads like every other region in the country.</p>
-                            <p className="text-sm text-blue-300 font-medium">Partner on a regional intelligence project &mdash; we&rsquo;ll identify what your region actually has, find your structural twins globally, and produce the documents that get you into the room with the right investors.</p>
-                        </div>
-                        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-9 h-9 bg-blue-500/20 border border-blue-400/30 rounded-lg flex items-center justify-center">
-                                    <Building2 size={18} className="text-blue-400" />
-                                </div>
-                                <h3 className="text-sm font-bold text-white">Public-Private Partnerships</h3>
-                            </div>
-                            <p className="text-sm text-white/60 mb-3">PPP proposals fail most often not because the project is bad, but because stakeholder alignment was assumed instead of modelled. The economics looked good on paper but nobody stress-tested the assumptions.</p>
-                            <p className="text-sm text-blue-300 font-medium">Run your next PPP proposal through the system &mdash; stress-test the financials across 5,000 scenarios, model every stakeholder&rsquo;s incentives, and surface the deal-killers before they reach the minister&rsquo;s desk.</p>
-                        </div>
-                        <div className="md:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 backdrop-blur-sm border border-white/20 rounded-xl p-8">
-                            <h3 className="text-xl font-bold text-white mb-4">Built on World-Class Ethics</h3>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
+                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
+                            <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">Global Standards and Ethics</p>
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                                Built on World-Class Ethics
+                            </h3>
+                            <p className="text-base text-slate-700 leading-relaxed mb-3">
                                 This system doesn&rsquo;t just aim for compliance &mdash; it sets the gold standard. Every analysis is measured against IFC Performance Standards and UN SDGs, ensuring your projects meet the highest global benchmarks before you even know the local law.
                             </p>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
-                                <strong className="text-white">Universal Law Translator:</strong> The system operates as a Universal Translator for Law &mdash; translating your local idea into global standards, then translating global requirements back into local legal actions.
-                            </p>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
-                                <strong className="text-green-400">1. Universal Skeleton:</strong> Before checking local law, the system applies IFC Performance Standards (PS1-PS8) &mdash; the &ldquo;Gold Standard&rdquo; used by the World Bank and 100+ global financial institutions. PS1: Environmental &amp; Social Management. PS2: Labour and Working Conditions. PS5: Land Acquisition &amp; Resettlement. PS7: Indigenous Peoples (FPIC).
-                            </p>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
-                                <strong className="text-amber-400">2. Gap Analysis:</strong> The system checks your inputs against every Performance Standard, flagging exactly where you fall short &mdash; with severity ratings and business impact assessment. Example: &ldquo;This project meets global environmental standards but fails land acquisition protocols (PS5). Critical gap: No Resettlement Action Plan for displaced communities.&rdquo;
-                            </p>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
-                                <strong className="text-blue-400">3. Local Law Hunt:</strong> Once a gap is detected, the AI searches for the specific local regulations to bridge it &mdash; with exact legal references, required forms, and enforcing agencies. Example: &ldquo;To fix your PS5 gap in Vietnam, you must file Form 3B with the local People&rsquo;s Committee as per Vietnam Land Law Article 62.&rdquo;
-                            </p>
-                            <p className="text-sm text-white/80 leading-relaxed mb-4">
-                                <strong className="text-white">Universal Access:</strong> Anyone, anywhere can start a report immediately. No need to wait for specific country laws to be programmed &mdash; the global baseline works everywhere. <strong className="text-white">Investor Confidence:</strong> Global investors prefer IFC Standards over local laws anyway &mdash; they&rsquo;re stricter and safer. Meeting these standards opens doors to DFI financing. <strong className="text-white">Safety Net:</strong> Reports can be generated (business doesn&rsquo;t stop) but with exact red flags highlighted &mdash; protecting you from illegal actions and reputational damage.
-                            </p>
-                            <p className="text-sm text-blue-300 leading-relaxed">
-                                Every pilot teaches us something. Every partnership sharpens the intelligence. The long-term vision is a sovereign-grade national strategic asset &mdash; 34 intelligence engines working in concert, translating the same analysis into the language every stakeholder actually needs. <strong className="text-white">Early partners don&rsquo;t just get access to the platform. They help define what it becomes.</strong>
+                            <p className="text-base text-slate-700 leading-relaxed">
+                                <strong>Universal Law Translator:</strong> The system operates as a Universal Translator for Law &mdash; translating your local idea into global standards, then translating global requirements back into local legal actions.
                             </p>
                         </div>
                     </div>
+
+                    {/* IFC Performance Standards - Full Width */}
+                    <div className="mb-6 pl-0 md:pl-6">
+                        <div className="space-y-3">
+                            <p className="text-base text-slate-700 leading-relaxed">
+                                <strong>1. Universal Skeleton:</strong> Before checking local law, the system applies IFC Performance Standards (PS1-PS8) &mdash; the &ldquo;Gold Standard&rdquo; used by the World Bank and 100+ global financial institutions. PS1: Environmental &amp; Social Management. PS2: Labour and Working Conditions. PS5: Land Acquisition &amp; Resettlement. PS7: Indigenous Peoples (FPIC).
+                            </p>
+                            <p className="text-base text-slate-700 leading-relaxed">
+                                <strong>2. Gap Analysis:</strong> The system checks your inputs against every Performance Standard, flagging exactly where you fall short &mdash; with severity ratings and business impact assessment.
+                            </p>
+                            <p className="text-base text-slate-700 leading-relaxed">
+                                <strong>3. Local Law Hunt:</strong> Once a gap is detected, the AI searches for the specific local regulations to bridge it &mdash; with exact legal references, required forms, and enforcing agencies.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Universal Access - Full Width (No Photo) */}
+                    <div className="mb-6">
+                        <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                            Universal Access &amp; Investor Confidence
+                        </h3>
+                        <p className="text-base text-slate-700 leading-relaxed mb-3">
+                            <strong>Universal Access:</strong> Anyone, anywhere can start a report immediately. No need to wait for specific country laws to be programmed &mdash; the global baseline works everywhere.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-3">
+                            <strong>Investor Confidence:</strong> Global investors prefer IFC Standards over local laws anyway &mdash; they&rsquo;re stricter and safer. Meeting these standards opens doors to DFI financing.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-3">
+                            <strong>Safety Net:</strong> Reports can be generated (business doesn&rsquo;t stop) but with exact red flags highlighted &mdash; protecting you from illegal actions and reputational damage.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            Every pilot teaches us something. Every partnership sharpens the intelligence. The long-term vision is a sovereign-grade national strategic asset &mdash; 34 intelligence engines working in concert. <strong>Early partners don&rsquo;t just get access to the platform. They help define what it becomes.</strong>
+                        </p>
+                    </div>
+
+                    {/* Three Partnership Cards */}
+                    <div className="grid md:grid-cols-3 gap-5 mt-8">
+                        <div className="bg-white border-2 border-slate-200 rounded-sm p-6 hover:border-blue-300 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 border border-blue-200 rounded-sm flex items-center justify-center">
+                                    <Zap size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Investment Promotion Agencies</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">You review hundreds of investment leads a year. Most don&rsquo;t go anywhere. The ones that do take months of manual due diligence before you can even bring them to a board.</p>
+                            <p className="text-sm text-blue-600 font-medium">Pilot the system on your next intake cycle &mdash; screen proposals in hours instead of weeks, with board-ready scoring and a defensible evidence trail from day one.</p>
+                        </div>
+                        <div className="bg-white border-2 border-slate-200 rounded-sm p-6 hover:border-blue-300 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 border border-blue-200 rounded-sm flex items-center justify-center">
+                                    <TrendingUp size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Regional Economic Development</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">Your region has real assets &mdash; a port, a university, agricultural land, a diaspora network &mdash; but the investment prospectus hasn&rsquo;t been written, or the one you have reads like every other region in the country.</p>
+                            <p className="text-sm text-blue-600 font-medium">Partner on a regional intelligence project &mdash; we&rsquo;ll identify what your region actually has, find your structural twins globally, and produce the documents that get you into the room with the right investors.</p>
+                        </div>
+                        <div className="bg-white border-2 border-slate-200 rounded-sm p-6 hover:border-blue-300 transition-all">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 bg-blue-100 border border-blue-200 rounded-sm flex items-center justify-center">
+                                    <Building2 size={18} className="text-blue-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-slate-900">Public-Private Partnerships</h3>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3">PPP proposals fail most often not because the project is bad, but because stakeholder alignment was assumed instead of modelled. The economics looked good on paper but nobody stress-tested the assumptions.</p>
+                            <p className="text-sm text-blue-600 font-medium">Run your next PPP proposal through the system &mdash; stress-test the financials across 5,000 scenarios, model every stakeholder&rsquo;s incentives, and surface the deal-killers before they reach the minister&rsquo;s desk.</p>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
