@@ -188,33 +188,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-
-
-
-
-
-
-            {/* ------------------------------------------------------- */}
-            {/* THE PLATFORM  -  Professional Architecture Demonstration */}
-            {/* ------------------------------------------------------- */}
-
-            {/* Section 1: A WORLD FIRST + Full Story Button */}
-            <section id="technology" className="py-12 px-4 bg-white">
-                <div className="max-w-5xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm font-bold text-center mb-6">A WORLD FIRST</p>
-                    <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">
-                        A Neuro-Symbolic Economic Intelligence Engine
-                    </h2>
-                    <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
-                        Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
-                    </p>
-                </div>
-            </section>
-
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 1: HERO HOOK — The Trust Gap (Full-Width Narrative)
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative py-20 px-4 bg-white overflow-hidden">
+            <section id="technology" className="relative py-12 px-4 bg-white overflow-hidden">
                 {/* Subtle background texture */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-4xl mx-auto">
