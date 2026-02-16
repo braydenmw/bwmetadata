@@ -323,6 +323,12 @@ export interface ReportParameters {
   technologyRisks?: string;
   capabilityGaps?: string;
   buildBuyPartnerPlan?: string;
+  criticalPath?: string;
+  goNoGoCriteria?: string;
+  resourceAllocationPerPhase?: string;
+  authorityMatrix?: string;
+  escalationProcedures?: string;
+  auditFramework?: string;
 
   // Metadata
   id: string;

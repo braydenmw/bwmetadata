@@ -119,6 +119,12 @@ export const INITIAL_PARAMETERS: ReportParameters = {
         technologyRisks: '',
         capabilityGaps: '',
         buildBuyPartnerPlan: '',
+        criticalPath: '',
+        goNoGoCriteria: '',
+        resourceAllocationPerPhase: '',
+        authorityMatrix: '',
+        escalationProcedures: '',
+        auditFramework: '',
 
   // Metadata
   id: '',

@@ -7,7 +7,8 @@ import {
   Users, GitBranch,
   FileText, BarChart3, Handshake, TrendingUp,
   Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, MessageCircle, Send, User
+  X, Plus, MessageCircle, Send, User,
+  DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight } from '../types';
@@ -145,7 +146,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     mandate: ['strategicIntent', 'problemStatement'],
     market: ['userCity'],
     'partner-personas': ['partnerPersonas'],
+    'financial-model': ['totalInvestment'],
     risk: ['riskTolerance'],
+    resources: ['executiveLead'],
+    execution: ['milestonePlan'],
+    governance: ['riskReportingCadence'],
+    scoring: [],
   };
 
   const toggleSubsection = (key: string) => {
@@ -441,12 +447,16 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     <p className="text-xs text-stone-500 mb-4">Follow these steps sequentially to build the data foundation for your strategic analysis. Each completed step enriches the live document preview on the right.</p>
                     <div className="grid grid-cols-2 gap-3">
                         {[
-                            {id: 'identity', label: '01. Identity', description: "Define your organization's profile", icon: Building2, color: 'text-blue-600'},
-                            {id: 'mandate', label: '02. Mandate', description: 'Outline partnership objectives', icon: Target, color: 'text-green-600'},
-                            {id: 'market', label: '03. Market', description: 'Analyze the target market', icon: Globe, color: 'text-purple-600'},
-                            {id: 'partner-personas', label: '04. Personas', description: 'Define partner personas', icon: Users, color: 'text-yellow-600'},
-                            {id: 'risk', label: '05. Risk', description: 'Assess risks & mitigation', icon: Shield, color: 'text-red-600'},
-                            {id: 'generation', label: '06. Generation', description: 'Generate the final report', icon: FileText, color: 'text-orange-600'},
+                            {id: 'identity', label: '01. Identity & Foundation', description: 'Establish organizational credibility & legal structure', icon: Building2, color: 'text-blue-600'},
+                            {id: 'mandate', label: '02. Mandate & Strategy', description: 'Define strategic vision & objectives', icon: Target, color: 'text-green-600'},
+                            {id: 'market', label: '03. Market & Context', description: 'Analyze market dynamics & regulatory environment', icon: Globe, color: 'text-purple-600'},
+                            {id: 'partner-personas', label: '04. Partners & Ecosystem', description: 'Map stakeholder landscape & alignment', icon: Users, color: 'text-yellow-600'},
+                            {id: 'financial-model', label: '05. Financial Model', description: 'Investment requirements & ROI scenarios', icon: DollarSign, color: 'text-emerald-600'},
+                            {id: 'risk', label: '06. Risk & Mitigation', description: 'Identify, quantify risks & mitigation plans', icon: Shield, color: 'text-red-600'},
+                            {id: 'resources', label: '07. Resources & Capability', description: 'Assess readiness, team strength & gaps', icon: Briefcase, color: 'text-cyan-600'},
+                            {id: 'execution', label: '08. Execution Plan', description: 'Implementation roadmap & milestones', icon: ClipboardList, color: 'text-indigo-600'},
+                            {id: 'governance', label: '09. Governance & Monitoring', description: 'Oversight structure & performance tracking', icon: Settings, color: 'text-slate-600'},
+                            {id: 'scoring', label: '10. Scoring & Readiness', description: 'Final validation & go/no-go recommendation', icon: Award, color: 'text-orange-600'},
                         ].map(section => (
                             <button
                                 key={section.id}
@@ -1382,6 +1392,94 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                     </CollapsibleSection>
                                 </div>
                             )}
+                            {activeModal === 'financial-model' && (
+                                <div className="space-y-4">
+                                    <CollapsibleSection
+                                        title="5.1 Investment Requirements"
+                                        description="Define capital needs, funding sources, and allocation"
+                                        isExpanded={!!expandedSubsections['fin-investment']}
+                                        onToggle={() => toggleSubsection('fin-investment')}
+                                        color="from-emerald-50 to-emerald-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Total Investment Required <span className="text-red-500">*</span></label>
+                                                <input type="text" className={`w-full p-2 border rounded text-sm ${isFieldInvalid('totalInvestment') ? 'border-red-500' : 'border-stone-200'}`} placeholder="e.g., $2.5M" value={params.totalInvestment || ''} onChange={e => setParams({...params, totalInvestment: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Capital Allocation Breakdown</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="How capital is allocated: infrastructure, operations, marketing, reserves..." value={params.capitalAllocation || ''} onChange={e => setParams({...params, capitalAllocation: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Funding Source</label>
+                                                <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., Equity, Debt, DFI, Mixed" value={params.fundingSource || ''} onChange={e => setParams({...params, fundingSource: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                    <CollapsibleSection
+                                        title="5.2 Revenue Model & Projections"
+                                        description="Revenue streams, growth trajectory, and financial scenarios"
+                                        isExpanded={!!expandedSubsections['fin-revenue']}
+                                        onToggle={() => toggleSubsection('fin-revenue')}
+                                        color="from-emerald-50 to-emerald-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Streams</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Primary and secondary revenue sources" value={params.revenueStreams || ''} onChange={e => setParams({...params, revenueStreams: e.target.value})} />
+                                            </div>
+                                            <div className="grid grid-cols-3 gap-3">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 1</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear1 || ''} onChange={e => setParams({...params, revenueYear1: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 3</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear3 || ''} onChange={e => setParams({...params, revenueYear3: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 5</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear5 || ''} onChange={e => setParams({...params, revenueYear5: e.target.value})} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                    <CollapsibleSection
+                                        title="5.3 ROI & Financial Scenarios"
+                                        description="Return projections and scenario modeling"
+                                        isExpanded={!!expandedSubsections['fin-roi']}
+                                        onToggle={() => toggleSubsection('fin-roi')}
+                                        color="from-emerald-50 to-emerald-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Expected IRR</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 18%" value={params.expectedIrr || ''} onChange={e => setParams({...params, expectedIrr: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Payback Period</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 3.5 years" value={params.paybackPeriod || ''} onChange={e => setParams({...params, paybackPeriod: e.target.value})} />
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-3 gap-3">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Downside Case</label>
+                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Worst scenario" value={params.downsideCase || ''} onChange={e => setParams({...params, downsideCase: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Base Case</label>
+                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Expected scenario" value={params.baseCase || ''} onChange={e => setParams({...params, baseCase: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Upside Case</label>
+                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Best scenario" value={params.upsideCase || ''} onChange={e => setParams({...params, upsideCase: e.target.value})} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                </div>
+                            )}
                             {activeModal === 'risk' && (
                                 <div className="space-y-4">
                                     <CollapsibleSection
@@ -1462,6 +1560,185 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                             </div>
                                         </div>
                                     </CollapsibleSection>
+                                </div>
+                            )}
+                            {activeModal === 'resources' && (
+                                <div className="space-y-4">
+                                    <CollapsibleSection
+                                        title="7.1 Team & Leadership"
+                                        description="Assess team strength, leadership, and organizational readiness"
+                                        isExpanded={!!expandedSubsections['res-team']}
+                                        onToggle={() => toggleSubsection('res-team')}
+                                        color="from-cyan-50 to-cyan-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Executive Lead <span className="text-red-500">*</span></label>
+                                                <input type="text" className={`w-full p-2 border rounded text-sm ${isFieldInvalid('executiveLead') ? 'border-red-500' : 'border-stone-200'}`} placeholder="Name and role of project sponsor" value={params.executiveLead || ''} onChange={e => setParams({...params, executiveLead: e.target.value})} />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">CFO / Finance Lead</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Finance lead" value={params.cfoLead || ''} onChange={e => setParams({...params, cfoLead: e.target.value})} />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Operations Lead</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Operations lead" value={params.opsLead || ''} onChange={e => setParams({...params, opsLead: e.target.value})} />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Team Bench Assessment</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Depth of team, key person dependencies, succession readiness" value={params.teamBenchAssessment || ''} onChange={e => setParams({...params, teamBenchAssessment: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                    <CollapsibleSection
+                                        title="7.2 Capability Gaps & Technology"
+                                        description="Identify gaps and technology stack requirements"
+                                        isExpanded={!!expandedSubsections['res-capability']}
+                                        onToggle={() => toggleSubsection('res-capability')}
+                                        color="from-cyan-50 to-cyan-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Capability Gaps</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Where are the skill or resource gaps?" value={params.capabilityGaps || ''} onChange={e => setParams({...params, capabilityGaps: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Technology Stack</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Current technology, systems, and integration requirements" value={params.technologyStack || ''} onChange={e => setParams({...params, technologyStack: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Build / Buy / Partner Plan</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How will gaps be filled? Build in-house, acquire, or partner?" value={params.buildBuyPartnerPlan || ''} onChange={e => setParams({...params, buildBuyPartnerPlan: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                </div>
+                            )}
+                            {activeModal === 'execution' && (
+                                <div className="space-y-4">
+                                    <CollapsibleSection
+                                        title="8.1 Implementation Roadmap"
+                                        description="Define phases, milestones, and dependencies"
+                                        isExpanded={!!expandedSubsections['exec-roadmap']}
+                                        onToggle={() => toggleSubsection('exec-roadmap')}
+                                        color="from-indigo-50 to-indigo-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Milestone Plan <span className="text-red-500">*</span></label>
+                                                <textarea className={`w-full p-2 border rounded text-sm h-28 ${isFieldInvalid('milestonePlan') ? 'border-red-500' : 'border-stone-200'}`} placeholder={"Phase 1: Due Diligence (Month 1-3)\nPhase 2: Setup & Registration (Month 3-6)\nPhase 3: Operations Launch (Month 6-9)\nPhase 4: Scale & Optimize (Month 9-12)"} value={params.milestonePlan || ''} onChange={e => setParams({...params, milestonePlan: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Critical Path & Dependencies</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="What must happen before other things can start? Key bottlenecks?" value={params.criticalPath || ''} onChange={e => setParams({...params, criticalPath: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                    <CollapsibleSection
+                                        title="8.2 Go/No-Go Decision Gates"
+                                        description="Define checkpoints and decision criteria"
+                                        isExpanded={!!expandedSubsections['exec-gates']}
+                                        onToggle={() => toggleSubsection('exec-gates')}
+                                        color="from-indigo-50 to-indigo-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Go/No-Go Criteria</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="What conditions must be met at each gate to proceed? What triggers a stop?" value={params.goNoGoCriteria || ''} onChange={e => setParams({...params, goNoGoCriteria: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Resource Allocation Per Phase</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Budget and team allocation for each implementation phase" value={params.resourceAllocationPerPhase || ''} onChange={e => setParams({...params, resourceAllocationPerPhase: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                </div>
+                            )}
+                            {activeModal === 'governance' && (
+                                <div className="space-y-4">
+                                    <CollapsibleSection
+                                        title="9.1 Governance Structure"
+                                        description="Decision-making authority and oversight"
+                                        isExpanded={!!expandedSubsections['gov-structure']}
+                                        onToggle={() => toggleSubsection('gov-structure')}
+                                        color="from-slate-50 to-slate-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Decision-Making Authority Matrix</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Who approves what? Spending limits, strategic decisions, operational changes..." value={params.authorityMatrix || ''} onChange={e => setParams({...params, authorityMatrix: e.target.value})} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Escalation Procedures</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How are issues elevated? What triggers board-level review?" value={params.escalationProcedures || ''} onChange={e => setParams({...params, escalationProcedures: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                    <CollapsibleSection
+                                        title="9.2 Performance Tracking"
+                                        description="KPIs, reporting cadence, and compliance"
+                                        isExpanded={!!expandedSubsections['gov-tracking']}
+                                        onToggle={() => toggleSubsection('gov-tracking')}
+                                        color="from-slate-50 to-slate-100"
+                                    >
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Reporting Cadence <span className="text-red-500">*</span></label>
+                                                    <select className={`w-full p-2 border rounded text-sm ${isFieldInvalid('riskReportingCadence') ? 'border-red-500' : 'border-stone-200'}`} value={params.riskReportingCadence || ''} onChange={e => setParams({...params, riskReportingCadence: e.target.value})}>
+                                                        <option value="">Select...</option>
+                                                        <option>Weekly</option>
+                                                        <option>Bi-Weekly</option>
+                                                        <option>Monthly</option>
+                                                        <option>Quarterly</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Audit Framework</label>
+                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., Internal + External quarterly" value={params.auditFramework || ''} onChange={e => setParams({...params, auditFramework: e.target.value})} />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-stone-700 mb-1">Compliance Evidence</label>
+                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How will compliance be documented and verified?" value={params.complianceEvidence || ''} onChange={e => setParams({...params, complianceEvidence: e.target.value})} />
+                                            </div>
+                                        </div>
+                                    </CollapsibleSection>
+                                </div>
+                            )}
+                            {activeModal === 'scoring' && (
+                                <div className="space-y-4">
+                                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg p-6">
+                                        <h4 className="font-bold text-stone-900 text-sm mb-3">10. Final Readiness Assessment</h4>
+                                        <p className="text-sm text-stone-600 mb-4">This step automatically calculates your composite readiness score based on all previous inputs. The system will assess strengths, weaknesses, and provide a Go/No-Go recommendation.</p>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle size={16} className="text-green-500" />
+                                                <span className="text-sm text-stone-700">Composite Readiness Score (auto-calculated)</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle size={16} className="text-green-500" />
+                                                <span className="text-sm text-stone-700">Strength / Weakness Summary</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle size={16} className="text-green-500" />
+                                                <span className="text-sm text-stone-700">Final Risk Assessment</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle size={16} className="text-green-500" />
+                                                <span className="text-sm text-stone-700">Go / No-Go Recommendation</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle size={16} className="text-green-500" />
+                                                <span className="text-sm text-stone-700">Success Probability Index (SPI)</span>
+                                            </div>
+                                        </div>
+                                        <button onClick={onGenerate} className="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-bold text-sm hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md">
+                                            Calculate Readiness Score & Generate Report
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                              {activeModal === 'analysis' && modalView === 'main' && (
