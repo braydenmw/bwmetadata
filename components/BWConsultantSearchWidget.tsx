@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Search, Loader, ArrowRight, AlertCircle, TrendingUp, X, ExternalLink } from 'lucide-react';
-import { bwConsultantAI, type ConsultantInsight } from '../services/BWConsultantAgenticAI';
-import { GlobalIssueResolver, type IssueAnalysis } from '../services/GlobalIssueResolver';
-import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
+import { invokeAI } from '../services/awsBedrockService';
 
 export interface SearchResult {
   title: string;
@@ -38,91 +36,62 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
 
     setIsSearching(true);
     setShowResults(true);
-    setSearchProgress({ message: 'Detecting issue type...', progress: 15 });
+    setSearchProgress({ message: 'Connecting to BW Consultant AI...', progress: 20 });
 
     try {
-      // Step 1: Run BWConsultantAgenticAI consultation (real service)
-      setSearchProgress({ message: 'Running BW Consultant intelligence...', progress: 25 });
-      const consultParams = { query: query.trim(), country: '', industry: [] as string[] };
-      // Extract country/industry hints from query
-      const qLower = query.toLowerCase();
-      const countries = ['philippines', 'vietnam', 'thailand', 'indonesia', 'malaysia', 'singapore', 'japan', 'china', 'india', 'korea', 'cambodia', 'myanmar', 'laos', 'bangladesh', 'pakistan', 'sri lanka', 'nepal', 'australia', 'new zealand'];
-      for (const c of countries) {
-        if (qLower.includes(c)) { consultParams.country = c.charAt(0).toUpperCase() + c.slice(1); break; }
-      }
-      const industries = ['technology', 'manufacturing', 'healthcare', 'agriculture', 'finance', 'fintech', 'energy', 'renewable', 'mining', 'tourism', 'real estate', 'logistics', 'education', 'retail'];
-      for (const ind of industries) {
-        if (qLower.includes(ind)) { consultParams.industry.push(ind); }
-      }
+      setSearchProgress({ message: 'Researching your query...', progress: 50 });
 
-      const [consultInsights, issueAnalysis] = await Promise.all([
-        bwConsultantAI.consult(consultParams, 'landing_search').catch(() => [] as ConsultantInsight[]),
-        new GlobalIssueResolver().resolveIssue(query.trim()).catch(() => null as IssueAnalysis | null)
-      ]);
+      const prompt = `You are BW Consultant AI, a knowledgeable strategic business advisor. A user has asked you a question from a landing page search bar. Provide a helpful, direct answer.
 
-      setSearchProgress({ message: 'Gathering live intelligence...', progress: 55 });
+IMPORTANT:
+- Answer the question directly and conversationally, like ChatGPT would
+- If they ask about a person, tell them about that person
+- If they ask about a city or location, tell them about it
+- If they ask about a market or industry, explain it
+- Be informative and specific
+- Provide 3-5 key points as separate findings
 
-      // Step 2: Run live search for real-time evidence
-      let liveEvidence: Array<{ title: string; url?: string; snippet?: string }> = [];
+Respond in this exact JSON format (no markdown, just raw JSON):
+[{"title": "Finding title", "description": "2-3 sentence explanation", "confidence": 0.85, "category": "Category Name"}]
+
+Provide 3-5 results. Categories can be: "Key Information", "Background", "Analysis", "Opportunities", "Risks", "Recommendations".
+
+User query: ${query.trim()}`;
+
+      const aiResponse = await invokeAI(prompt);
+
+      setSearchProgress({ message: 'Processing results...', progress: 85 });
+
+      // Parse AI response into search results
+      let realResults: SearchResult[] = [];
       try {
-        liveEvidence = await ReactiveIntelligenceEngine.liveSearch(query.trim(), consultParams);
-      } catch { /* live search optional */ }
-
-      setSearchProgress({ message: 'Synthesizing results...', progress: 85 });
-
-      // Step 3: Build real results from consultant insights + issue analysis + live evidence
-      const realResults: SearchResult[] = [];
-
-      // Add consultant insights as results
-      for (const insight of consultInsights.slice(0, 3)) {
-        realResults.push({
-          title: insight.title,
-          description: insight.content,
-          confidence: insight.confidence,
-          category: insight.type === 'location_intel' ? 'Location Intelligence' :
-                   insight.type === 'market_analysis' ? 'Market Analysis' :
-                   insight.type === 'risk_assessment' ? 'Risk Assessment' : 'Recommendation'
-        });
+        // Try to parse as JSON array
+        const cleaned = aiResponse.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+        const parsed = JSON.parse(cleaned);
+        if (Array.isArray(parsed)) {
+          realResults = parsed.map((item: any) => ({
+            title: item.title || 'Analysis',
+            description: item.description || item.content || '',
+            confidence: typeof item.confidence === 'number' ? item.confidence : 0.8,
+            category: item.category || 'Analysis'
+          }));
+        }
+      } catch {
+        // If JSON parsing fails, use the raw text as a single result
+        realResults = [{
+          title: `Analysis: ${query.trim()}`,
+          description: aiResponse.text.slice(0, 500),
+          confidence: 0.85,
+          category: 'AI Response'
+        }];
       }
 
-      // Add issue analysis results if available
-      if (issueAnalysis) {
-        if (realResults.length < 4) {
-          realResults.push({
-            title: `Strategic Analysis: ${issueAnalysis.issueCategory.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
-            description: issueAnalysis.strategicRecommendations.slice(0, 2).join(' | '),
-            confidence: issueAnalysis.overallConfidence,
-            category: 'Strategic Analysis'
-          });
-        }
-        if (realResults.length < 5 && issueAnalysis.riskMitigation.length > 0) {
-          realResults.push({
-            title: 'Risk Mitigation Strategy',
-            description: issueAnalysis.riskMitigation.map(r => `${r.risk}: ${r.mitigation}`).slice(0, 2).join(' | '),
-            confidence: 0.87,
-            category: 'Risk Analysis'
-          });
-        }
-      }
-
-      // Add live evidence as results
-      for (const evidence of liveEvidence.slice(0, 2)) {
-        if (realResults.length < 6) {
-          realResults.push({
-            title: evidence.title || 'Live Intelligence',
-            description: evidence.snippet || 'Real-time market intelligence from live sources.',
-            confidence: 0.78,
-            category: 'Live Intelligence'
-          });
-        }
-      }
-
-      // Ensure at least one result even if all services fail
+      // Ensure at least one result
       if (realResults.length === 0) {
         realResults.push({
           title: `Analysis: ${query.trim()}`,
-          description: 'Initial assessment complete. Enter the platform for full NSIL 10-layer analysis with live data, risk modeling, and strategic recommendations.',
-          confidence: 0.7,
+          description: aiResponse.text.slice(0, 500),
+          confidence: 0.8,
           category: 'General Analysis'
         });
       }
@@ -133,10 +102,10 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
     } catch (error) {
       console.error('Search error:', error);
       setResults([{
-        title: 'Analysis In Progress',
-        description: 'Enter the platform for comprehensive NSIL analysis with live intelligence.',
-        confidence: 0.7,
-        category: 'General'
+        title: 'Search Unavailable',
+        description: 'Could not connect to AI services. Please check your API key or try again.',
+        confidence: 0.5,
+        category: 'Error'
       }]);
     } finally {
       setIsSearching(false);
