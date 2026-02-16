@@ -254,39 +254,6 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
         )}
         </div>
       </div>
-
-      {/* Info Box - Global Standards Commitment */}
-      <div className="mt-6 grid md:grid-cols-3 gap-4">
-        <div className="bg-white border border-slate-200 rounded-sm p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-sm bg-green-50 flex items-center justify-center">
-              <CheckCircle2 size={18} className="text-green-600" />
-            </div>
-            <p className="font-semibold text-base text-slate-900">IFC Performance Standards</p>
-          </div>
-          <p className="text-sm text-slate-600">World Bank gold standard applied to every analysis &mdash; the universal baseline for global finance</p>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-sm p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-sm bg-blue-50 flex items-center justify-center">
-              <TrendingUp size={18} className="text-blue-600" />
-            </div>
-            <p className="font-semibold text-base text-slate-900">195 Country Coverage</p>
-          </div>
-          <p className="text-sm text-slate-600">Complete compliance database with local law references to bridge global standards to local reality</p>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-sm p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-sm bg-purple-50 flex items-center justify-center">
-              <ArrowRight size={18} className="text-purple-600" />
-            </div>
-            <p className="font-semibold text-base text-slate-900">Gap Analysis &amp; Remediation</p>
-          </div>
-          <p className="text-sm text-slate-600">Identifies compliance gaps and provides specific local legal pathways to fix them</p>
-        </div>
-      </div>
     </div>
   );
 };
