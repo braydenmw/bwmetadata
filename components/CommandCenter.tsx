@@ -211,136 +211,63 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Block 1: The Problem + The Origin - White Background */}
-            <section className="py-10 px-4 bg-white">
-                <div className="max-w-5xl mx-auto">
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=800&fit=crop&q=80" 
-                                alt="Global connectivity"
-                                className="w-full h-full min-h-[400px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-6 md:p-8">
-                            {/* Section 1: The Problem */}
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The Problem: The Trust Gap in Artificial Intelligence
-                            </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;operates probabilistically. It predicts the next likely token from patterns in training data. That is useful for drafting ideas and summarizing text. It is not sufficient for high-stakes strategic decisions.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                In decision environments involving public money, sovereign priorities, infrastructure, employment, or institutional capital, leaders are judged on defensibility. They must explain how conclusions were reached, what assumptions were used, which data was trusted, what uncertainty was modeled, and whether the same process yields the same answer tomorrow.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Standard AI tools can hallucinate under ambiguity, produce inconsistent responses to equivalent prompts, and hide reasoning inside opaque model behavior. They cannot reliably provide deterministic scoring, end-to-end traceability, or committee-ready audit evidence. <strong>BW Ai was built to close that trust gap.</strong>
-                            </p>
-                            <div className="grid grid-cols-2 gap-0 mb-4 border border-slate-200 rounded-sm overflow-hidden">
-                                <div className="p-5 bg-white border-r border-slate-200">
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Standard AI</p>
-                                    <ul className="space-y-3 text-sm text-slate-600">
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Hallucinates facts and fabricated references under uncertainty</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Limited explainability for internal reasoning behavior</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Non-deterministic outputs on repeated prompts</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Weak audit trails for high-stakes governance review</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Difficult to defend under board, ministry, or committee scrutiny</li>
-                                    </ul>
-                                </div>
-                                <div className="p-5 bg-white">
-                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-4">BW Ai</p>
-                                    <ul className="space-y-3 text-sm text-slate-800">
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Validates inputs before scoring and recommendation generation</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail from intake to final conclusion</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring &mdash; same data, same outcome</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every conclusion traceable to formulas, assumptions, and evidence</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Board-ready, audit-committee-defensible outputs</li>
-                                    </ul>
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 1: HERO HOOK — The Trust Gap (Full-Width Narrative)
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="relative py-20 px-4 bg-white overflow-hidden">
+                {/* Subtle background texture */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
+                <div className="relative max-w-4xl mx-auto">
+                    <p className="text-blue-600 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Problem</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
+                        The Trust Gap in Artificial Intelligence
+                    </h2>
+                    <div className="space-y-4 mb-10">
+                        <p className="text-lg text-slate-700 leading-relaxed">
+                            Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;operates probabilistically. It predicts the next likely token from patterns in training data. That is useful for drafting ideas and summarizing text. It is not sufficient for high-stakes strategic decisions.
+                        </p>
+                        <p className="text-lg text-slate-700 leading-relaxed">
+                            In decision environments involving public money, sovereign priorities, infrastructure, employment, or institutional capital, leaders are judged on defensibility. They must explain how conclusions were reached, what assumptions were used, which data was trusted, what uncertainty was modeled, and whether the same process yields the same answer tomorrow.
+                        </p>
+                        <p className="text-lg text-slate-700 leading-relaxed">
+                            Standard AI tools can hallucinate under ambiguity, produce inconsistent responses to equivalent prompts, and hide reasoning inside opaque model behavior. They cannot reliably provide deterministic scoring, end-to-end traceability, or committee-ready audit evidence. <strong className="text-slate-900">BW Ai was built to close that trust gap.</strong>
+                        </p>
+                    </div>
+
+                    {/* Comparison — Photo + Script Cards (matches How It Thinks pattern) */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* Standard AI Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80" alt="Standard AI limitations" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/20" />
+                                <div className="absolute bottom-4 left-5 right-5">
+                                    <p className="text-xs font-bold text-red-300 uppercase tracking-wider mb-0.5">The Problem</p>
+                                    <h3 className="text-lg font-bold text-white">Standard AI</h3>
+                                    <p className="text-[11px] text-slate-300">Probabilistic &bull; Opaque &bull; Inconsistent</p>
                                 </div>
                             </div>
-                            
-                            {/* Section 2: The Origin */}
-                            <div className="border-t border-slate-200 pt-4 mt-4">
-                                <h3 className="text-2xl font-semibold text-slate-900 mb-2">The Origin: One Person, One Mission</h3>
-                                <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;12 Months That Changed Everything&rdquo;</p>
-                                <p className="text-base text-slate-700 leading-relaxed">
-                                    BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong>38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Standard AI tools hallucinate facts and fabricated references under uncertainty. They offer limited explainability for internal reasoning behavior, produce non-deterministic outputs on repeated prompts, leave weak audit trails for high-stakes governance review, and are difficult to defend under board, ministry, or committee scrutiny.
                                 </p>
                             </div>
-                            <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
-                                <GitBranch size={16} /> View Full Architecture &amp; 38+ Formulas &rarr;
-                            </button>
                         </div>
-                    </div>
-                </div>
-            </section>
 
-            {/* Block 2: The Innovation + Reflexive Intelligence - Slate Background */}
-            <section className="py-10 px-4 bg-slate-50">
-                <div className="max-w-5xl mx-auto">
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=800&fit=crop&q=80" 
-                                alt="How It Thinks"
-                                className="w-full h-full min-h-[400px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-slate-50 p-6 md:p-8">
-                            {/* Section 1: The Innovation */}
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Innovation: How It &ldquo;Thinks&rdquo;</h3>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">1. The Brain: Computational Neuroscience</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                Formulas alone do not create strategic intelligence. BW Ai integrates <strong>7 computational neuroscience models</strong> covering attention allocation, signal prioritization, uncertainty weighting, stress response behavior, and decision pressure dynamics.
-                            </p>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">2. NSIL Core Architecture</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                At the center of BW Ai is NSIL: a layered strategic intelligence architecture powered by <strong>34+ specialized engines</strong> and <strong>38+ formulas</strong>. Key capabilities include multi-layer signal ingestion and validation, cross-domain synthesis for fragmented data, formula-driven scoring with confidence calibration, historical pattern detection, and regional-to-global strategy translation.
-                            </p>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">3. Agentic Intelligence System</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                BW Ai is not a passive chat assistant. It is an <strong>agentic system</strong> that executes autonomous strategic workflows: multi-step reasoning through the 10-step BWGA protocol, dynamic engine orchestration (sequential + parallel), constraint-aware planning with ethical and governance gates, and 5,000-scenario Monte Carlo stress testing before output release.
-                            </p>
-                            
-                            {/* Section 2: Reflexive Intelligence */}
-                            <div className="border-t border-slate-300 pt-4 mt-4">
-                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">Reflexive Intelligence: Analyzing You</h3>
-                                <p className="text-base text-slate-700 leading-relaxed">
-                                    Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
-                                </p>
+                        {/* BW Ai Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&h=400&fit=crop&q=80" alt="BW Ai intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-blue-900/20" />
+                                <div className="absolute bottom-4 left-5 right-5">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">The Solution</p>
+                                    <h3 className="text-lg font-bold text-white">BW Ai</h3>
+                                    <p className="text-[11px] text-blue-200">Deterministic &bull; Auditable &bull; Defensible</p>
+                                </div>
                             </div>
-                            <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
-                                <Info size={16} /> View Complete System: Protocol, 232 Documents &amp; 156 Letters &rarr;
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Block 3: Live Intelligence + What You Get - White Background */}
-            <section className="py-10 px-4 bg-white">
-                <div className="max-w-5xl mx-auto">
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=800&fit=crop&q=80" 
-                                alt="Live Intelligence"
-                                className="w-full h-full min-h-[400px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-6 md:p-8">
-                            {/* Section 1: Live Intelligence */}
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-2">The User Experience: Live Intelligence</h3>
-                            <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                The interface is simple by design. Under the hood, BW Ai runs as a <strong>digital strategy boardroom</strong>: specialized engines, formula evaluators, and agentic routines process your case continuously, pressure-test assumptions, and return decisions in actionable form. You are not receiving generic advice; you are receiving structured intelligence built to survive scrutiny and move to execution.
-                            </p>
-                            
-                            {/* Section 2: What You Get */}
-                            <div className="border-t border-slate-200 pt-4 mt-4">
-                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">What You Walk Away With</h3>
-                                <p className="text-base text-slate-700 leading-relaxed">
-                                    BW Ai outputs are tangible, defensible, and execution-ready: <strong>232 custom documents</strong> tailored to your context, <strong>156 strategic letters</strong> for outreach and negotiation, investor-grade dossiers with risk and pathway logic, defense packs for committee questions, implementation roadmaps aligned to ownership and dependency, and audience-specific versions for capital, policy, partner, and community stakeholders.
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    BW Ai validates inputs before scoring and recommendation generation. It provides a full audit trail from intake to final conclusion, deterministic scoring&mdash;same data, same outcome&mdash;with every conclusion traceable to formulas, assumptions, and evidence. The result: board-ready, audit-committee-defensible outputs.
                                 </p>
                             </div>
                         </div>
@@ -348,29 +275,177 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Block 4: System Commitments + Document Factory - Slate Background */}
-            <section className="py-10 px-4 bg-slate-50">
-                <div className="max-w-5xl mx-auto">
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=800&fit=crop&q=80" 
-                                alt="System Commitments"
-                                className="w-full h-full min-h-[400px] object-cover" 
-                            />
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 1 CONTINUED: The Origin (Full-Width Story Block with Image)
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="relative py-16 px-4 bg-slate-900 text-white overflow-hidden">
+                <div className="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&h=900&fit=crop&q=80" alt="Global connectivity" className="w-full h-full object-cover opacity-20" />
+                </div>
+                <div className="relative max-w-4xl mx-auto">
+                    <p className="text-blue-400 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Origin</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-2">One Person, One Mission</h2>
+                    <p className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-6">&ldquo;12 Months That Changed Everything&rdquo;</p>
+                    <p className="text-lg text-slate-300 leading-relaxed mb-6">
+                        BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong className="text-white">38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
+                    </p>
+                    <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors">
+                        <GitBranch size={16} /> View Full Architecture &amp; 38+ Formulas &rarr;
+                    </button>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 2: THREE FEATURE CARDS — How It Thinks (Marketing Speak)
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-blue-600 uppercase tracking-[0.25em] text-xs font-bold mb-4">The Innovation</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">How It &ldquo;Thinks&rdquo;</h2>
+                    </div>
+
+                    {/* Three Feature Cards with Images */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                        {/* Card 1: Computational Neuroscience */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop&q=80" alt="Computational Neuroscience" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">01</span>
+                                    <h3 className="text-lg font-bold text-white">Computational Neuroscience</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Formulas alone do not create strategic intelligence. BW Ai integrates <strong>7 computational neuroscience models</strong> covering attention allocation, signal prioritization, uncertainty weighting, stress response behavior, and decision pressure dynamics.
+                                </p>
+                            </div>
                         </div>
-                        <div className="md:w-8/12 bg-slate-50 p-6 md:p-8">
-                            {/* Section 1: System Commitments */}
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">Assurance Architecture (Replacing &ldquo;System Commitments&rdquo;)</h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Trust in BW Ai is structural, not promotional: deterministic scoring for reproducible outcomes, formula-level traceability for every recommendation, end-to-end audit logging, continuous recalibration using live macro and market feeds, and human sign-off requirements for high-impact decisions.
-                            </p>
-                            
-                            {/* Section 2: Document Factory */}
-                            <div className="border-t border-slate-300 pt-4 mt-4">
-                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Output: The Document Factory</h3>
+
+                        {/* Card 2: NSIL Core Architecture */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80" alt="NSIL Core Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">02</span>
+                                    <h3 className="text-lg font-bold text-white">NSIL Core Architecture</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    At the center of BW Ai is NSIL: a layered strategic intelligence architecture powered by <strong>34+ specialized engines</strong> and <strong>38+ formulas</strong>. Key capabilities include multi-layer signal ingestion and validation, cross-domain synthesis for fragmented data, formula-driven scoring with confidence calibration, historical pattern detection, and regional-to-global strategy translation.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 3: Agentic Intelligence */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop&q=80" alt="Agentic Intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">03</span>
+                                    <h3 className="text-lg font-bold text-white">Agentic Intelligence</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    BW Ai is not a passive chat assistant. It is an <strong>agentic system</strong> that executes autonomous strategic workflows: multi-step reasoning through the 10-step BWGA protocol, dynamic engine orchestration (sequential + parallel), constraint-aware planning with ethical and governance gates, and 5,000-scenario Monte Carlo stress testing before output release.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Reflexive Intelligence — Full Width Callout */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 md:p-10">
+                        <h3 className="text-2xl font-bold text-slate-900 mb-4">Reflexive Intelligence: Analyzing You</h3>
+                        <p className="text-base text-slate-700 leading-relaxed mb-6">
+                            Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
+                        </p>
+                        <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
+                            <Info size={16} /> View Complete System: Protocol, 232 Documents &amp; 156 Letters &rarr;
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                INTERSTITIAL CTA — Full-Width Break
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="relative py-16 px-4 overflow-hidden">
+                <div className="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=600&fit=crop&q=80" alt="Strategic Intelligence" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-blue-900/80" />
+                </div>
+                <div className="relative max-w-4xl mx-auto text-center">
+                    <p className="text-blue-400 uppercase tracking-[0.3em] text-xs font-bold mb-4">Live Intelligence</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</h2>
+                    <p className="text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
+                        The interface is simple by design. Under the hood, BW Ai runs as a <strong className="text-white">digital strategy boardroom</strong>: specialized engines, formula evaluators, and agentic routines process your case continuously, pressure-test assumptions, and return decisions in actionable form. You are not receiving generic advice; you are receiving structured intelligence built to survive scrutiny and move to execution.
+                    </p>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 3: SUPPORTING INFORMATION — Outputs, Assurance, Factory
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto">
+
+                    {/* What You Walk Away With — Photo + Script Card */}
+                    <div className="mb-16">
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-56 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=500&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+                                <div className="absolute bottom-5 left-6">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">Deliverables</p>
+                                    <h2 className="text-2xl md:text-3xl font-bold text-white">What You Walk Away With</h2>
+                                </div>
+                            </div>
+                            <div className="p-6 md:p-8">
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    BW Ai does not end at analysis. It generates execution artifacts teams can use immediately: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), Term Sheets, strategic briefs, stakeholder narratives, and partnership negotiation frameworks. This compresses weeks of advisory and drafting cycles into a decision-ready operating flow.
+                                    BW Ai outputs are tangible, defensible, and execution-ready: <strong>232 custom documents</strong> tailored to your context and objectives, <strong>156 strategic letters</strong> for outreach and negotiation, investor-grade dossiers with risk and pathway logic, defense packs for committee questions, implementation roadmaps aligned to ownership and dependency, and audience-specific versions for capital, policy, partner, and community stakeholders.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Assurance + Document Factory — Two Photo + Script Cards */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* Assurance Architecture Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=800&h=400&fit=crop&q=80" alt="Assurance Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">Assurance Architecture</p>
+                                    <h3 className="text-lg font-bold text-white">Trust Is Structural, Not Promotional</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Trust in BW Ai is structural, not promotional: deterministic scoring for reproducible outcomes, formula-level traceability for every recommendation, end-to-end audit logging from intake to output, continuous recalibration using live macro and market feeds, and human sign-off requirements for high-impact decisions.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Document Factory Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&h=400&fit=crop&q=80" alt="Document Factory" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">The Document Factory</p>
+                                    <h3 className="text-lg font-bold text-white">From Analysis to Execution Assets</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    BW Ai does not end at analysis. It generates execution artifacts teams can use immediately: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), Term Sheets and strategic briefs, stakeholder narratives, and partnership negotiation frameworks. This compresses weeks of advisory and drafting cycles into a decision-ready operating flow.
                                 </p>
                             </div>
                         </div>
@@ -378,14 +453,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Block 6: Conclusion - Dark Gradient Full Width */}
-            <section className="py-10 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
-                <div className="max-w-5xl mx-auto">
-                    <h3 className="text-2xl font-semibold text-white mb-3">Conclusion: A Paradigm Shift</h3>
-                    <p className="text-base text-slate-300 leading-relaxed mb-2">
+            {/* ═══════════════════════════════════════════════════════════════
+                CLOSING — Dark Full-Width Position Statement
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-16 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold text-white mb-4">A Paradigm Shift</h2>
+                    <p className="text-lg text-slate-300 leading-relaxed mb-4">
                         The core problem I&rsquo;m solving is <strong className="text-white">Trust</strong>. This isn&rsquo;t just technology. It is a system built to restore confidence in artificial intelligence. It empowers the &ldquo;underdogs&rdquo; of the global economy&mdash;regional councils, developing nations, and ambitious entrepreneurs&mdash;to make decisions they can legally and strategically defend in boardrooms, government briefings, and investment committees.
                     </p>
-                    <p className="text-base text-white leading-relaxed font-medium">
+                    <p className="text-lg text-white leading-relaxed font-semibold">
                         The technology is real. The results are real. And it&rsquo;s all here to help you succeed.
                     </p>
                 </div>
