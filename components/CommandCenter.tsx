@@ -281,42 +281,29 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">How It &ldquo;Thinks&rdquo;</h2>
                     </div>
 
-                    {/* Three Feature Cards with Images */}
-                    <div className="grid md:grid-cols-3 gap-8 mb-12">
-                        {/* Card 1: NSIL Core Architecture */}
+                    {/* Feature Cards with Images */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                        {/* Card 1: NSIL */}
                         <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                             <div className="h-48 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80" alt="NSIL Core Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
                                     <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">01</span>
-                                    <h3 className="text-lg font-bold text-white">NSIL &mdash; 10&ndash;Layer Intelligence Pipeline</h3>
+                                    <h3 className="text-lg font-bold text-white">NSIL &mdash; The Core Intelligence Layer</h3>
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    The Nexus Strategic Intelligence Layer is a <strong>10&ndash;layer pipeline</strong> built from scratch &mdash; not adapted from existing frameworks. Every input passes through adversarial validation, multi-agent debate, 46 DAG-scheduled formulas, Monte Carlo stress testing, human cognition simulation, and provenance-tracked output synthesis before reaching you.
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    The Nexus Strategic Intelligence Layer is a <strong>10&ndash;layer deterministic pipeline</strong> invented from scratch. It is the central nervous system of BW Ai &mdash; every input you provide is validated, debated, scored by 46 proprietary formulas, stress-tested across 5,000 scenarios, processed through neuroscience models, and synthesised into provenance-tracked outputs. Nothing is skipped. Nothing is approximate. Every layer must pass before the next one fires.
                                 </p>
-                                <div className="space-y-1 text-xs text-slate-600">
-                                    <p><strong className="text-slate-800">Layer 0:</strong> Knowledge Architecture &mdash; pattern confidence + methodology base</p>
-                                    <p><strong className="text-slate-800">Layer 1:</strong> Input Shield &mdash; adversarial validation, contradiction detection</p>
-                                    <p><strong className="text-slate-800">Layer 2:</strong> Multi-Agent Debate &mdash; 5 personas, Bayesian belief updating</p>
-                                    <p><strong className="text-slate-800">Layer 3:</strong> Formula Scoring &mdash; 46 proprietary formulas + 8 autonomous indices</p>
-                                    <p><strong className="text-slate-800">Layer 4:</strong> Stress Testing &mdash; counterfactuals + 5,000-scenario Monte Carlo</p>
-                                    <p><strong className="text-slate-800">Layer 5:</strong> Human Cognition &mdash; 7 neuroscience models (see below)</p>
-                                    <p><strong className="text-slate-800">Layer 6:</strong> Autonomous Intelligence &mdash; 8 self-directed engines</p>
-                                    <p><strong className="text-slate-800">Layer 7:</strong> Proactive Layer &mdash; drift detection, backtesting, monitoring</p>
-                                    <p><strong className="text-slate-800">Layer 8:</strong> Output Synthesis &mdash; 247 documents, 156 letters, full audit trail</p>
-                                    <p><strong className="text-slate-800">Layer 9:</strong> Reflexive Intelligence &mdash; 7 engines that analyse <em>you</em></p>
-                                </div>
-                                <p className="text-xs text-slate-500 mt-3">No other platform runs a deterministic 10-layer pipeline. Most use a single LLM prompt.</p>
                             </div>
                         </div>
 
-                        {/* Card 2: Computational Neuroscience */}
+                        {/* Card 2: Human Cognition Engine */}
                         <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                             <div className="h-48 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop&q=80" alt="Computational Neuroscience" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop&q=80" alt="Human Cognition Engine" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
                                     <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">02</span>
@@ -324,50 +311,86 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    <strong>1,307 lines of code</strong> implementing 7 neuroscience models from published university research &mdash; not simplified approximations, but faithful mathematical implementations running live inside the pipeline. This is why BW Ai doesn&rsquo;t just calculate answers &mdash; it processes them the way a seasoned human expert would.
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    <strong>1,307 lines of code</strong> implementing 7 mathematical models from published neuroscience research &mdash; Wilson-Cowan neural fields, Rao &amp; Ballard predictive processing, Friston&rsquo;s free energy principle, Itti &amp; Koch attention allocation, prospect theory emotional valence, global workspace theory, and Baddeley&rsquo;s working memory. These aren&rsquo;t simplified approximations. They are faithful implementations of how the human brain allocates attention, weighs risk, and makes decisions under pressure &mdash; running live inside the pipeline on your data.
                                 </p>
-                                <div className="space-y-1 text-xs text-slate-600">
-                                    <p><strong className="text-slate-800">Wilson-Cowan Neural Fields</strong> &mdash; differential equations modelling excitatory/inhibitory balance across competing factors</p>
-                                    <p><strong className="text-slate-800">Predictive Processing</strong> (Rao &amp; Ballard) &mdash; Bayesian inference across 3 hierarchical levels forecasting outcomes from precedent</p>
-                                    <p><strong className="text-slate-800">Free Energy Principle</strong> (Friston) &mdash; variational inference across 8 candidate policies, revising plans as new data arrives</p>
-                                    <p><strong className="text-slate-800">Attention Allocation</strong> (Itti &amp; Koch) &mdash; salience maps with winner-take-all competition, surfacing what matters most</p>
-                                    <p><strong className="text-slate-800">Emotional Valence</strong> &mdash; prospect theory weighting flags deals that look right on paper but feel wrong</p>
-                                    <p><strong className="text-slate-800">Global Workspace Theory</strong> &mdash; coalition formation ensuring all layers integrate into coherent insights</p>
-                                    <p><strong className="text-slate-800">Working Memory</strong> (Baddeley) &mdash; constrains outputs to the 3&ndash;5 factors that actually drive the decision</p>
-                                </div>
-                                <p className="text-xs text-slate-500 mt-3">Palantir doesn&rsquo;t have this. Bloomberg doesn&rsquo;t have this. No consulting firm implements any of these models.</p>
                             </div>
                         </div>
 
-                        {/* Card 3: Agentic Intelligence */}
+                        {/* Card 3: Bayesian Debate Engine */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1573167243872-43c6433b9d40?w=800&h=400&fit=crop&q=80" alt="Adversarial Debate" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">03</span>
+                                    <h3 className="text-lg font-bold text-white">Bayesian Debate Engine</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Before any recommendation reaches you, <strong>five adversarial personas</strong> debate it. The Skeptic hunts for deal-killers. The Advocate finds upside. The Regulator checks legality. The Accountant validates cash flow. The Operator tests execution. Beliefs update through Bayesian inference &mdash; not majority vote. Disagreements are preserved, not smoothed over. The Skeptic carries 1.2x weight because bad news matters more than good news.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 4: Agentic Intelligence */}
                         <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                             <div className="h-48 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop&q=80" alt="Agentic Intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
-                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">03</span>
-                                    <h3 className="text-lg font-bold text-white">Agentic &amp; Autonomous Intelligence</h3>
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">04</span>
+                                    <h3 className="text-lg font-bold text-white">Autonomous &amp; Agentic Engines</h3>
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    BW Ai is not a chatbot that waits for your prompt. It is a <strong>multi-agent system</strong> that thinks beyond your question &mdash; identifying risks you haven&rsquo;t asked about, opportunities you haven&rsquo;t considered, and contradictions in your own assumptions. 8 autonomous engines + 7 reflexive engines operate continuously.
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    BW Ai doesn&rsquo;t wait for your next question. <strong>8 autonomous engines</strong> run continuously &mdash; finding opportunities you haven&rsquo;t asked about, applying lessons from unrelated industries, generating follow-up research, stress-testing assumptions across thousands of scenarios, and flagging ethical risks before any output is released. Every engine passes through IFC and UN SDG governance gates. Nothing reaches you without adversarial stress-testing first.
                                 </p>
-                                <div className="space-y-1 text-xs text-slate-600">
-                                    <p className="font-semibold text-slate-800 mb-0.5">8 Autonomous Engines:</p>
-                                    <p><strong className="text-slate-800">Creative Synthesis</strong> &mdash; finds non-obvious opportunities from cross-domain patterns</p>
-                                    <p><strong className="text-slate-800">Cross-Domain Transfer</strong> &mdash; applies lessons from unrelated industries to your sector</p>
-                                    <p><strong className="text-slate-800">Ethical Reasoning</strong> &mdash; IFC PS1-PS8 and UN SDG gates before any output releases</p>
-                                    <p><strong className="text-slate-800">Self-Evolving Algorithm</strong> &mdash; adjusts scoring weights based on outcome feedback</p>
-                                    <p><strong className="text-slate-800">Adaptive Learning</strong> &mdash; improves accuracy with each report cycle</p>
-                                    <p><strong className="text-slate-800">Emotional Intelligence</strong> &mdash; reads stakeholder dynamics and negotiation postures</p>
-                                    <p><strong className="text-slate-800">Scenario Simulation</strong> &mdash; 5,000 Monte Carlo runs before any recommendation</p>
-                                    <p><strong className="text-slate-800">Autonomous Goal Setting</strong> &mdash; generates follow-up research you didn&rsquo;t ask for but need</p>
-                                </div>
-                                <p className="text-xs text-slate-500 mt-3">Every engine runs through governance gates. Nothing reaches you without adversarial stress-testing first.</p>
                             </div>
                         </div>
+
+                        {/* Card 5: Reflexive Intelligence */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=800&h=400&fit=crop&q=80" alt="Reflexive Intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">05</span>
+                                    <h3 className="text-lg font-bold text-white">Reflexive Intelligence</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Most systems only analyse external conditions. BW Ai also analyses <strong>you</strong> &mdash; the person making the decision. <strong>7 reflexive engines</strong> detect your recurring priorities, surface assets hidden in your own narrative, identify unspoken barriers and risk assumptions you haven&rsquo;t articulated, map where you are in the investment lifecycle, and reframe conclusions for every audience &mdash; investors, governments, communities, partners, and executive teams.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 6: Formula & Scoring Architecture */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&q=80" alt="Formula Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                                <div className="absolute bottom-4 left-5">
+                                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">06</span>
+                                    <h3 className="text-lg font-bold text-white">46 Proprietary Formulas</h3>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    Every score you see is calculated by <strong>proprietary mathematical formulas</strong> &mdash; not LLM-generated estimates. DAG-scheduled execution ensures formulas run in the correct dependency order. Confidence calibration adjusts for data completeness. Monte Carlo simulation stress-tests every result across 5,000 scenarios so you see the realistic range of outcomes, not just the optimistic projection. Every score is traceable back to the exact formula, exact inputs, and exact weights that produced it.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Final caption */}
+                    <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-xl p-6 md:p-8 text-center">
+                        <p className="text-base md:text-lg text-white/90 leading-relaxed max-w-4xl mx-auto">
+                            A 10-layer intelligence pipeline. 7 neuroscience models from published research. 5 adversarial personas debating every recommendation. 46 proprietary formulas. 8 autonomous engines. 7 reflexive engines that analyse the decision-maker, not just the decision. <strong className="text-white">No other operating system in the world combines all of these for regional development and cross-border investment.</strong> This is what makes BW Ai a sovereign-grade national strategic asset &mdash; not a dashboard, not a chatbot, not a consulting deck with a login screen.
+                        </p>
                     </div>
 
                 </div>
