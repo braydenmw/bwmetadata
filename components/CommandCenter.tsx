@@ -227,24 +227,34 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h3 className="text-2xl font-semibold text-slate-900 mb-3">
                                 The Problem: The Trust Gap in Artificial Intelligence
                             </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                Most AI today&mdash;the language models behind ChatGPT, Claude, and others&mdash;is <strong>probabilistic</strong>. It guesses the next word based on patterns. While impressive, this approach has fatal flaws for high-stakes decision-making: it hallucinates facts, hides its reasoning, and gives different answers to the same question. When the stakes are real&mdash;investments, policy decisions, people&rsquo;s livelihoods&mdash;guessing isn&rsquo;t good enough.
+                            <p className="text-base text-slate-700 leading-relaxed mb-2">
+                                Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;works the same way: it predicts the next word based on statistical patterns. That&rsquo;s powerful for conversation. It&rsquo;s dangerous for decisions.
                             </p>
-                            <div className="grid grid-cols-2 gap-3 mb-4">
-                                <div className="border border-slate-200 rounded-sm p-3">
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Standard AI</p>
-                                    <ul className="space-y-1 text-sm text-slate-600">
-                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Hallucinates facts</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Hidden reasoning</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Inconsistent outputs</li>
+                            <p className="text-base text-slate-700 leading-relaxed mb-2">
+                                These models <strong>hallucinate facts</strong>, present fabricated data as truth, and produce different answers to the same question asked twice. They cannot show their working. They cannot be audited. They have no concept of accountability.
+                            </p>
+                            <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                When the decision involves public money, someone&rsquo;s livelihood, or a region&rsquo;s economic future&mdash;<strong>guessing isn&rsquo;t good enough</strong>. The people making these decisions need a system they can defend under scrutiny, trace to its source, and trust to give the same answer today, tomorrow, and in front of an audit committee.
+                            </p>
+                            <div className="grid grid-cols-2 gap-0 mb-4 border border-slate-200 rounded-sm overflow-hidden">
+                                <div className="p-5 bg-white border-r border-slate-200">
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Standard AI</p>
+                                    <ul className="space-y-3 text-sm text-slate-600">
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Hallucinates facts &amp; fabricates citations</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Reasoning is hidden &amp; unexplainable</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Different answers to the same question</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> No audit trail, no accountability</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Cannot be defended under scrutiny</li>
                                     </ul>
                                 </div>
-                                <div className="border-2 border-blue-500 rounded-sm p-3 bg-blue-50/50">
-                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">BW Nexus AI</p>
-                                    <ul className="space-y-1 text-sm text-slate-700">
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Validates every input</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring</li>
+                                <div className="p-5 bg-white">
+                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-4">BW Ai</p>
+                                    <ul className="space-y-3 text-sm text-slate-800">
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every input validated before processing</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail from input to conclusion</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring &mdash; same data, same result</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every conclusion traceable to a formula</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Board-ready, audit-committee defensible</li>
                                     </ul>
                                 </div>
                             </div>
@@ -319,7 +329,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h3 className="text-2xl font-semibold text-slate-900 mb-2">The User Experience: Live Intelligence</h3>
                             <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</p>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                You don&rsquo;t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go&mdash;safely, reliably, every single time. When you use BW Nexus AI, you aren&rsquo;t just typing into a chatbox. You are engaging a <strong>Digital Boardroom</strong>. Behind the scenes, 34 intelligence engines and 5 AI personas are debating your project, crunching the numbers, and stress-testing your strategy 24/7. <strong>The Result:</strong> You walk away with something you&rsquo;ve only ever wished for: <em>Confidence</em>.
+                                You don&rsquo;t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go&mdash;safely, reliably, every single time. When you use BW Ai, you aren&rsquo;t just typing into a chatbox. You are engaging a <strong>Digital Boardroom</strong>. Behind the scenes, 34 intelligence engines and 5 AI personas are debating your project, crunching the numbers, and stress-testing your strategy 24/7. <strong>The Result:</strong> You walk away with something you&rsquo;ve only ever wished for: <em>Confidence</em>.
                             </p>
                             
                             {/* Section 2: What You Get */}
