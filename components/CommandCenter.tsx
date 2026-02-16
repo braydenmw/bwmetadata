@@ -208,290 +208,172 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
                         Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
                     </p>
+                </div>
+            </section>
 
-                    {/* --- THE NARRATIVE: A Global Intelligence Operating System --- */}
-
-                    {/* Block 1: The Opening Statement  -  Photo left, narrative right */}
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
+            {/* Block 1: The Problem + The Origin - White Background */}
+            <section className="py-10 px-4 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
                         <div className="md:w-4/12">
                             <img 
-                                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80" 
+                                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=800&fit=crop&q=80" 
                                 alt="Global connectivity"
-                                className="w-full h-full min-h-[200px] object-cover" 
+                                className="w-full h-full min-h-[400px] object-cover" 
                             />
                         </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
+                        <div className="md:w-8/12 bg-white p-6 md:p-8">
+                            {/* Section 1: The Problem */}
                             <h3 className="text-2xl font-semibold text-slate-900 mb-3">
                                 The Problem: The Trust Gap in Artificial Intelligence
                             </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                Most AI today&mdash;the language models behind ChatGPT, Claude, and others&mdash;is <strong>probabilistic</strong>. It guesses the next word based on patterns. While impressive, this approach has fatal flaws for high-stakes decision-making: it hallucinates facts, hides its reasoning, and gives different answers to the same question.
-                            </p>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                When the stakes are real&mdash;investments, policy decisions, people&rsquo;s livelihoods&mdash;guessing isn&rsquo;t good enough. You cannot build a national strategy or a multi-million dollar investment on a &ldquo;black box&rdquo; that might be wrong.
+                                Most AI today&mdash;the language models behind ChatGPT, Claude, and others&mdash;is <strong>probabilistic</strong>. It guesses the next word based on patterns. While impressive, this approach has fatal flaws for high-stakes decision-making: it hallucinates facts, hides its reasoning, and gives different answers to the same question. When the stakes are real&mdash;investments, policy decisions, people&rsquo;s livelihoods&mdash;guessing isn&rsquo;t good enough.
                             </p>
-
-                            {/* Clean two-column comparison */}
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                                <div className="border border-slate-200 rounded-sm p-4">
-                                    <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Standard AI (Language-First)</p>
-                                    <ul className="space-y-1.5 text-sm text-slate-600">
-                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Hallucinates facts (invents data)</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Hidden reasoning (Black Box)</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Inconsistent outputs</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> Silent bias (Agrees with you)</li>
-                                        <li className="flex items-start gap-2"><span className="text-slate-400 mt-px">&bull;</span> No safety rails</li>
+                            <div className="grid grid-cols-2 gap-3 mb-4">
+                                <div className="border border-slate-200 rounded-sm p-3">
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Standard AI</p>
+                                    <ul className="space-y-1 text-sm text-slate-600">
+                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Hallucinates facts</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Hidden reasoning</li>
+                                        <li className="flex items-start gap-2"><span className="text-slate-400">&bull;</span> Inconsistent outputs</li>
                                     </ul>
                                 </div>
-                                <div className="border-2 border-blue-500 rounded-sm p-4 bg-blue-50/50">
-                                    <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">BW Nexus AI (Logic-First)</p>
-                                    <ul className="space-y-1.5 text-sm text-slate-700">
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={14} className="text-blue-500 mt-px flex-shrink-0" /> Validates every input (SAT logic)</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={14} className="text-blue-500 mt-px flex-shrink-0" /> Full audit trail (Traceable)</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={14} className="text-blue-500 mt-px flex-shrink-0" /> Deterministic scoring</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={14} className="text-blue-500 mt-px flex-shrink-0" /> Adversarial debate (Challenges you)</li>
-                                        <li className="flex items-start gap-2"><CheckCircle2 size={14} className="text-blue-500 mt-px flex-shrink-0" /> Ethical enforcement (Hard gates)</li>
+                                <div className="border-2 border-blue-500 rounded-sm p-3 bg-blue-50/50">
+                                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">BW Nexus AI</p>
+                                    <ul className="space-y-1 text-sm text-slate-700">
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Validates every input</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail</li>
+                                        <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring</li>
                                     </ul>
                                 </div>
                             </div>
-
-                            <button 
-                                onClick={() => setShowFormulas(true)}
-                                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-base font-semibold transition-colors"
-                            >
-                                <GitBranch size={18} />
-                                View Full Architecture &amp; 38+ Formulas &rarr;
+                            
+                            {/* Section 2: The Origin */}
+                            <div className="border-t border-slate-200 pt-4 mt-4">
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-2">The Origin: One Person, One Mission</h3>
+                                <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;12 Months That Changed Everything&rdquo;</p>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    This system wasn&rsquo;t built in a corporate boardroom. It started with a frustration. I was watching regions with incredible potential get passed over by global investors simply because they didn&rsquo;t know how to &ldquo;speak the language&rdquo; of capital. I realized that <strong>the gap wasn&rsquo;t a lack of value; it was a lack of translation</strong>. So, I spent a year building the NSIL&mdash;38+ proprietary formulas like SPI and RROI, with a scheduler ensuring no formula executes until inputs are verified.
+                                </p>
+                            </div>
+                            <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
+                                <GitBranch size={16} /> View Full Architecture &amp; 38+ Formulas &rarr;
                             </button>
                         </div>
                     </div>
+                </div>
+            </section>
 
-
-                    {/* Block 1b: The Solution */}
-                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-6">
+            {/* Block 2: The Innovation + Reflexive Intelligence - Slate Background */}
+            <section className="py-10 px-4 bg-slate-50">
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
                         <div className="md:w-4/12">
                             <img 
-                                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80" 
-                                alt="Intelligence You Can Prove" 
-                                className="w-full h-full min-h-[200px] object-cover" 
+                                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=800&fit=crop&q=80" 
+                                alt="How It Thinks"
+                                className="w-full h-full min-h-[400px] object-cover" 
                             />
                         </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The Solution: Intelligence You Can Prove
-                            </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                I built BW Nexus AI because I believed intelligence should be <strong>provable</strong>. Not generated. Not predicted. <em>Proven</em>.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                This is a <strong>Deterministic Intelligence Engine</strong>. It validates every input, traces every recommendation, and enforces strict ethical gates. It doesn&rsquo;t just give you an answer; it gives you the mathematical proof behind it.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                Every recommendation is traceable, every output repeatable, every claim defensible. That&rsquo;s what deterministic means&mdash;and that&rsquo;s what I set out to create.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Block 2: The Origin  -  Text left, photo right */}
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=600&fit=crop&q=80" 
-                                alt="One Person, One Year, One Idea" 
-                                className="w-full h-full min-h-[200px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The Origin: One Person, One Mission
-                            </h3>
-                            <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;12 Months That Changed Everything&rdquo;</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                This system wasn&rsquo;t built in a corporate boardroom. It started with a frustration. I was watching regions with incredible potential&mdash;talent, resources, strategic location&mdash;get passed over by global investors simply because they didn&rsquo;t know how to &ldquo;speak the language&rdquo; of capital. They lacked the tools to objectively prove their case.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                I realized that <strong>the gap wasn&rsquo;t a lack of value; it was a lack of translation</strong>.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                So, I spent a year building the NSIL (Nexus Strategic Intelligence Layer). I started with the formula engine&mdash;38+ proprietary formulas like SPI (Strategic Positioning Index) and RROI (Risk-Adjusted Return on Investment). I built a scheduler to run them in parallel, ensuring that no formula executes until its inputs are verified. That was the foundation: a system that could quantify the unquantifiable.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Block 3: The Innovation - How It Thinks */}
-                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-6">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop&q=80" 
-                                alt="How It Thinks" 
-                                className="w-full h-full min-h-[200px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The Innovation: How It &ldquo;Thinks&rdquo;
-                            </h3>
+                        <div className="md:w-8/12 bg-slate-50 p-6 md:p-8">
+                            {/* Section 1: The Innovation */}
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Innovation: How It &ldquo;Thinks&rdquo;</h3>
                             <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">1. The Brain: Computational Neuroscience</p>
                             <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                Formulas were just the start. To make the system truly useful, it needed to think like a human expert. I integrated <strong>7 computational neuroscience models</strong>&mdash;real mathematical implementations of how the human brain processes complexity, allocates attention, and reacts under pressure. This allows the system to not just calculate numbers, but to understand the nuance of a deal.
+                                Formulas were just the start. To make the system truly useful, it needed to think like a human expert. I integrated <strong>7 computational neuroscience models</strong>&mdash;real mathematical implementations of how the human brain processes complexity, allocates attention, and reacts under pressure.
                             </p>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">2. Autonomous Intelligence: Thinking Beyond the Question</p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600 mb-3">
-                                <div><strong>Creative Synthesis:</strong> Uses bisociation theory to find strategies from unrelated domains.</div>
-                                <div><strong>Ethical Reasoning:</strong> Enforces fairness gates. If a path is unethical, it is rejected, no matter how profitable.</div>
-                                <div><strong>Scenario Simulation:</strong> Runs 5,000 Monte Carlo futures to stress-test your plan against economic shocks.</div>
+                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">2. Autonomous Intelligence</p>
+                            <p className="text-base text-slate-700 leading-relaxed mb-3">
+                                <strong>Creative Synthesis:</strong> Uses bisociation theory to find strategies from unrelated domains. <strong>Ethical Reasoning:</strong> Enforces fairness gates. <strong>Scenario Simulation:</strong> Runs 5,000 Monte Carlo futures to stress-test your plan.
+                            </p>
+                            
+                            {/* Section 2: Reflexive Intelligence */}
+                            <div className="border-t border-slate-300 pt-4 mt-4">
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">Reflexive Intelligence: Analyzing You</h3>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    The system doesn&rsquo;t just analyze the market; <strong>it analyzes you</strong>. <strong>Signal Decoder:</strong> Detects what you repeat (what matters to you) and what you avoid (where your anxiety lives). <strong>Latent Advantage Miner:</strong> Surfaces assets you mentioned casually that have massive strategic value. <strong>Universal Translator:</strong> Translates every finding into 5 distinct languages: for Investors, Governments, Communities, Partners, and Executives.
+                                </p>
                             </div>
-                            <button 
-                                onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }}
-                                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-base font-semibold transition-colors"
-                            >
-                                <Info size={16} />
-                                View Complete System: Protocol, 232 Documents &amp; 156 Letters &rarr;
+                            <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
+                                <Info size={16} /> View Complete System: Protocol, 232 Documents &amp; 156 Letters &rarr;
                             </button>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    {/* Block 3a: Reflexive Intelligence */}
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
+            {/* Block 3: Live Intelligence + What You Get - White Background */}
+            <section className="py-10 px-4 bg-white">
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
                         <div className="md:w-4/12">
                             <img 
-                                src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop&q=80" 
-                                alt="Reflexive Intelligence" 
-                                className="w-full h-full min-h-[200px] object-cover" 
+                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=800&fit=crop&q=80" 
+                                alt="Live Intelligence"
+                                className="w-full h-full min-h-[400px] object-cover" 
                             />
                         </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                Reflexive Intelligence: Analyzing You
-                            </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                The system doesn&rsquo;t just analyze the market; <strong>it analyzes you</strong>.
-                            </p>
-                            <ul className="text-sm text-slate-600 space-y-2 mb-2">
-                                <li><strong>Signal Decoder:</strong> Detects what you repeat (what matters to you) and what you avoid (where your anxiety lives).</li>
-                                <li><strong>Latent Advantage Miner:</strong> Surfaces assets you mentioned casually that have massive strategic value.</li>
-                                <li><strong>Universal Translator:</strong> Translates every finding into 5 distinct languages: for Investors, Governments, Communities, Partners, and Executives.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Block 3b: The User Experience */}
-                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-6">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&q=80" 
-                                alt="Live Intelligence" 
-                                className="w-full h-full min-h-[200px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The User Experience: Live Intelligence
-                            </h3>
+                        <div className="md:w-8/12 bg-white p-6 md:p-8">
+                            {/* Section 1: Live Intelligence */}
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-2">The User Experience: Live Intelligence</h3>
                             <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                You don&rsquo;t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go&mdash;safely, reliably, every single time.
+                            <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                You don&rsquo;t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go&mdash;safely, reliably, every single time. When you use BW Nexus AI, you aren&rsquo;t just typing into a chatbox. You are engaging a <strong>Digital Boardroom</strong>. Behind the scenes, 34 intelligence engines and 5 AI personas are debating your project, crunching the numbers, and stress-testing your strategy 24/7. <strong>The Result:</strong> You walk away with something you&rsquo;ve only ever wished for: <em>Confidence</em>.
                             </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                When you use BW Nexus AI, you aren&rsquo;t just typing into a chatbox. You are engaging a <strong>Digital Boardroom</strong>. Behind the scenes, 34 intelligence engines and 5 AI personas are debating your project, crunching the numbers, and stress-testing your strategy 24/7.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                <strong>The Result:</strong> You walk away with something you&rsquo;ve only ever wished for: <em>Confidence</em>.
-                            </p>
+                            
+                            {/* Section 2: What You Get */}
+                            <div className="border-t border-slate-200 pt-4 mt-4">
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">What You Walk Away With</h3>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    <strong>The Proof:</strong> A dossier that looks like it cost $100,000 to produce. <strong>The Defense:</strong> Answers to the hardest questions an investor could ask. <strong>The Strategy:</strong> A roadmap that connects your local reality to the global economy. <strong>Audience-Specific Outputs:</strong> The system translates the same analysis into the language of whoever you need to convince&mdash;bankers (ROI focus), governments (job creation), or partners (synergy fit).
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    {/* Block 3c: What You Get */}
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
+            {/* Block 4: System Commitments + Document Factory - Slate Background */}
+            <section className="py-10 px-4 bg-slate-50">
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-0 items-stretch">
                         <div className="md:w-4/12">
                             <img 
-                                src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop&q=80" 
-                                alt="What You Get" 
-                                className="w-full h-full min-h-[200px] object-cover" 
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=800&fit=crop&q=80" 
+                                alt="System Commitments"
+                                className="w-full h-full min-h-[400px] object-cover" 
                             />
                         </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                What You Walk Away With
-                            </h3>
-                            <ul className="text-sm text-slate-600 space-y-2 mb-3">
-                                <li><strong>The Proof:</strong> A dossier that looks like it cost $100,000 to produce.</li>
-                                <li><strong>The Defense:</strong> Answers to the hardest questions an investor could ask.</li>
-                                <li><strong>The Strategy:</strong> A roadmap that connects your local reality to the global economy.</li>
-                            </ul>
-                            <p className="text-base text-slate-700 leading-relaxed">
-                                <strong>Audience-Specific Outputs:</strong> The system translates the same analysis into the language of whoever you need to convince&mdash;bankers (ROI focus), governments (job creation), or partners (synergy fit).
+                        <div className="md:w-8/12 bg-slate-50 p-6 md:p-8">
+                            {/* Section 1: System Commitments */}
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">System Commitments: Built for Trust</h3>
+                            <p className="text-base text-slate-700 leading-relaxed mb-4">
+                                <strong>The &ldquo;Reality Check&rdquo;:</strong> Continuous calibration via real-world scenarios to tune formula weights. <strong>The &ldquo;Social Contract&rdquo;:</strong> 10% of all revenue is reinvested into regional development. <strong>The &ldquo;Live Wire&rdquo;:</strong> Connected to World Bank and IMF feeds&mdash;if a currency crashes today, reports generated tomorrow reflect that risk. <strong>Human-in-the-Loop:</strong> For high-stakes decisions involving millions, a human expert must sign off before final documents are issued.
                             </p>
+                            
+                            {/* Section 2: Document Factory */}
+                            <div className="border-t border-slate-300 pt-4 mt-4">
+                                <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Output: The Document Factory</h3>
+                                <p className="text-base text-slate-700 leading-relaxed">
+                                    This system replaces the need for a legal drafter in the early stages. It doesn&rsquo;t just give you advice; it gives you <strong>Tangible Assets</strong>. It auto-generates specific, legally-structured drafts: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), and Term Sheets. This saves thousands of dollars in legal fees and weeks of time, allowing you to walk into a meeting with the paperwork already done.
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    {/* Block 4: System Commitments */}
-                    <div className="flex flex-col md:flex-row-reverse gap-0 items-stretch mb-6">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80" 
-                                alt="System Commitments" 
-                                className="w-full h-full min-h-[200px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                System Commitments: Built for Trust
-                            </h3>
-                            <ul className="text-sm text-slate-600 space-y-2 mb-2">
-                                <li><strong>The &ldquo;Reality Check&rdquo; (Calibration):</strong> The system undergoes continuous calibration via real-world historical scenarios to tune formula weights&mdash;so it learns whether &ldquo;Political Stability&rdquo; matters more for a solar farm in Vietnam or a tech startup in Poland.</li>
-                                <li><strong>The &ldquo;Social Contract&rdquo; (10% Pledge):</strong> 10% of all revenue is reinvested into regional development. This system is designed to give back to the regions it analyzes, not just extract data from them.</li>
-                                <li><strong>The &ldquo;Live Wire&rdquo; (Real-Time Data):</strong> Connected to World Bank and IMF feeds&mdash;if a currency crashes or law passes today, reports generated tomorrow reflect that risk automatically.</li>
-                                <li><strong>Human-in-the-Loop Guardrails:</strong> For high-stakes decisions involving millions, a human expert must sign off on the AI&rsquo;s logic before final documents are issued.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Block 5: The Document Factory */}
-                    <div className="flex flex-col md:flex-row gap-0 items-stretch mb-6">
-                        <div className="md:w-4/12">
-                            <img 
-                                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&q=80" 
-                                alt="Document Factory" 
-                                className="w-full h-full min-h-[200px] object-cover" 
-                            />
-                        </div>
-                        <div className="md:w-8/12 bg-white p-5 md:p-6 flex flex-col justify-center">
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                                The Output: The Document Factory
-                            </h3>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                This system replaces the need for a legal drafter in the early stages. It doesn&rsquo;t just give you advice; it gives you <strong>Tangible Assets</strong>.
-                            </p>
-                            <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                It auto-generates specific, legally-structured drafts:
-                            </p>
-                            <ul className="text-sm text-slate-600 space-y-1 mb-2">
-                                <li>&bull; Letters of Intent (LOI)</li>
-                                <li>&bull; Memorandums of Understanding (MOU)</li>
-                                <li>&bull; Non-Disclosure Agreements (NDA)</li>
-                                <li>&bull; Term Sheets</li>
-                            </ul>
-                            <p className="text-sm text-slate-600 italic">
-                                This saves thousands of dollars in legal fees and weeks of time, allowing you to walk into a meeting with the paperwork already done.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Block 6: Conclusion  -  Full-width statement */}
-                    <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-sm p-6 md:p-8 mb-6">
-                        <h3 className="text-2xl font-semibold text-white mb-3">
-                            Conclusion: A Paradigm Shift
-                        </h3>
-                        <p className="text-base text-slate-300 leading-relaxed mb-2">
-                            The core problem I&rsquo;m solving is <strong className="text-white">Trust</strong>. This isn&rsquo;t just technology. It is a system built to restore confidence in artificial intelligence. It empowers the &ldquo;underdogs&rdquo; of the global economy&mdash;regional councils, developing nations, and ambitious entrepreneurs&mdash;to make decisions they can legally and strategically defend in boardrooms, government briefings, and investment committees.
-                        </p>
-                        <p className="text-base text-white leading-relaxed font-medium">
-                            The technology is real. The results are real. And it&rsquo;s all here to help you succeed.
-                        </p>
-                    </div>
-
-
-
+            {/* Block 6: Conclusion - Dark Gradient Full Width */}
+            <section className="py-10 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
+                <div className="max-w-5xl mx-auto">
+                    <h3 className="text-2xl font-semibold text-white mb-3">Conclusion: A Paradigm Shift</h3>
+                    <p className="text-base text-slate-300 leading-relaxed mb-2">
+                        The core problem I&rsquo;m solving is <strong className="text-white">Trust</strong>. This isn&rsquo;t just technology. It is a system built to restore confidence in artificial intelligence. It empowers the &ldquo;underdogs&rdquo; of the global economy&mdash;regional councils, developing nations, and ambitious entrepreneurs&mdash;to make decisions they can legally and strategically defend in boardrooms, government briefings, and investment committees.
+                    </p>
+                    <p className="text-base text-white leading-relaxed font-medium">
+                        The technology is real. The results are real. And it&rsquo;s all here to help you succeed.
+                    </p>
                 </div>
             </section>
 
