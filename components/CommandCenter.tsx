@@ -419,7 +419,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Assurance Architecture Card */}
                         <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                             <div className="h-48 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80" alt="Assurance Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src="https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&h=400&fit=crop&q=80" alt="Assurance Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                                 <div className="absolute bottom-4 left-5">
                                     <p className="text-xs font-bold text-blue-300 uppercase tracking-wider mb-0.5">Assurance Architecture</p>
