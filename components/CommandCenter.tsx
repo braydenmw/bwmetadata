@@ -511,8 +511,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         context="landing"
                         onSearch={(query) => {
                             console.log('Landing page search:', query);
-                            if (onEnterPlatform) onEnterPlatform();
                         }}
+                        onEnterPlatform={onEnterPlatform}
                     />
                 </div>
             </section>

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Loader, ArrowRight, AlertCircle, TrendingUp } from 'lucide-react';
+import { Search, Loader, ArrowRight, AlertCircle, TrendingUp, X, ExternalLink } from 'lucide-react';
 import { bwConsultantAI, type ConsultantInsight } from '../services/BWConsultantAgenticAI';
 import { GlobalIssueResolver, type IssueAnalysis } from '../services/GlobalIssueResolver';
 import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
@@ -13,12 +13,14 @@ export interface SearchResult {
 
 export interface BWConsultantSearchWidgetProps {
   onSearch?: (query: string) => void;
+  onEnterPlatform?: () => void;
   placeholder?: string;
   context?: 'landing' | 'report';
 }
 
 export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> = ({
   onSearch,
+  onEnterPlatform,
   placeholder = 'Search any location, company, or entity...',
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context = 'landing'
@@ -231,53 +233,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
           </div>
         )}
 
-        {/* Results Section */}
-        {showResults && results.length > 0 && !isSearching && (
-          <div className="space-y-4 mt-6 border-t border-slate-600 pt-6">
-            <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-4">
-              Analysis Results
-            </p>
-
-            <div className="space-y-3 max-w-3xl">
-              {results.map((result, index) => (
-                <div
-                  key={index}
-                  className="bg-slate-800/80 backdrop-blur border border-slate-600 rounded-sm p-4 hover:bg-slate-700/80 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-white text-base">{result.title}</h3>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp size={14} className="text-blue-400" />
-                      <span className="text-sm font-bold text-blue-400">
-                        {Math.round(result.confidence * 100)}%
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-base text-slate-300 mb-3">{result.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm bg-slate-700 text-slate-300 px-2 py-1 rounded-sm font-medium">
-                      {result.category}
-                    </span>
-                    <button className="text-blue-400 hover:text-blue-300 flex items-center gap-1 text-sm font-semibold transition">
-                      View Details
-                      <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3 mt-6 pt-6 border-t border-slate-600 max-w-3xl">
-              <button className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-sm font-semibold text-sm hover:bg-blue-500 transition">
-                Generate Report
-              </button>
-              <button className="flex-1 px-4 py-3 bg-slate-700 text-white rounded-sm font-semibold text-sm hover:bg-slate-600 transition border border-slate-600">
-                Create Document
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Results shown in modal popup - see below */}
 
         {/* Empty State Message */}
         {!showResults && !isSearching && (
@@ -304,6 +260,79 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
         )}
         </div>
       </div>
+
+      {/* ═══════════════════ RESULTS MODAL POPUP ═══════════════════ */}
+      {showResults && results.length > 0 && !isSearching && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setShowResults(false)}>
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+          {/* Modal */}
+          <div
+            className="relative bg-slate-900 border border-slate-600 rounded-lg shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700 bg-slate-800/80">
+              <div>
+                <p className="text-xs text-blue-400 uppercase tracking-widest font-semibold mb-1">BW Consultant AI</p>
+                <h3 className="text-lg font-bold text-white">Analysis Results</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Query: &ldquo;{query}&rdquo;</p>
+              </div>
+              <button
+                onClick={() => setShowResults(false)}
+                className="p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body — Scrollable Results */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-3">
+              {results.map((result, index) => (
+                <div
+                  key={index}
+                  className="bg-slate-800/80 border border-slate-700 rounded-lg p-4 hover:bg-slate-700/60 transition-colors"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-semibold text-white text-base flex-1 pr-3">{result.title}</h4>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <TrendingUp size={14} className="text-blue-400" />
+                      <span className="text-sm font-bold text-blue-400">
+                        {Math.round(result.confidence * 100)}%
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-300 leading-relaxed mb-3">{result.description}</p>
+                  <span className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded font-medium">
+                    {result.category}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Modal Footer — Actions */}
+            <div className="flex items-center gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+              <button
+                onClick={() => {
+                  setShowResults(false);
+                  if (onEnterPlatform) onEnterPlatform();
+                }}
+                className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-500 transition flex items-center justify-center gap-2"
+              >
+                <ExternalLink size={16} />
+                Continue to Live Report Builder
+              </button>
+              <button
+                onClick={() => setShowResults(false)}
+                className="px-6 py-3 bg-slate-700 text-white rounded-lg font-semibold text-sm hover:bg-slate-600 transition border border-slate-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
