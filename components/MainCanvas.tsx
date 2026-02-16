@@ -7,7 +7,7 @@ import {
   Users, GitBranch,
   FileText, BarChart3, Handshake, TrendingUp,
   Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, MessageCircle, Send, User,
+  X, Plus, MessageCircle, Send,
   DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
@@ -438,413 +438,185 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
   return (
     <div className="flex-1 w-full flex h-full bg-stone-100 font-sans text-stone-900 overflow-hidden">
-        {/* --- LEFT PANEL: CONTROLS & FORMS --- */}
-        <div className="flex flex-col bg-white border-r border-stone-200 overflow-y-auto custom-scrollbar" style={{ flexBasis: '30%' }}>
-            <div className="p-6 space-y-6">
-                {/* Section Navigation */}
-                <div>
-                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Primary Steps</h3>
-                    <p className="text-xs text-stone-500 mb-4">Follow these steps sequentially to build the data foundation for your strategic analysis. Each completed step enriches the live document preview on the right.</p>
-                    <div className="grid grid-cols-2 gap-3">
-                        {[
-                            {id: 'identity', label: '01. Identity & Foundation', description: 'Establish organizational credibility & legal structure', icon: Building2, color: 'text-blue-600'},
-                            {id: 'mandate', label: '02. Mandate & Strategy', description: 'Define strategic vision & objectives', icon: Target, color: 'text-green-600'},
-                            {id: 'market', label: '03. Market & Context', description: 'Analyze market dynamics & regulatory environment', icon: Globe, color: 'text-purple-600'},
-                            {id: 'partner-personas', label: '04. Partners & Ecosystem', description: 'Map stakeholder landscape & alignment', icon: Users, color: 'text-yellow-600'},
-                            {id: 'financial-model', label: '05. Financial Model', description: 'Investment requirements & ROI scenarios', icon: DollarSign, color: 'text-emerald-600'},
-                            {id: 'risk', label: '06. Risk & Mitigation', description: 'Identify, quantify risks & mitigation plans', icon: Shield, color: 'text-red-600'},
-                            {id: 'resources', label: '07. Resources & Capability', description: 'Assess readiness, team strength & gaps', icon: Briefcase, color: 'text-cyan-600'},
-                            {id: 'execution', label: '08. Execution Plan', description: 'Implementation roadmap & milestones', icon: ClipboardList, color: 'text-indigo-600'},
-                            {id: 'governance', label: '09. Governance & Monitoring', description: 'Oversight structure & performance tracking', icon: Settings, color: 'text-slate-600'},
-                            {id: 'scoring', label: '10. Scoring & Readiness', description: 'Final validation & go/no-go recommendation', icon: Award, color: 'text-orange-600'},
-                        ].map(section => (
-                            <button
-                                key={section.id}
-                                onClick={() => openModal(section.id)}
-                                className={`p-3 bg-white border rounded-lg hover:shadow-md transition-all text-left group ${
-                                    activeModal === section.id
-                                        ? 'border-bw-navy shadow-md'
-                                        : 'border-stone-200 hover:border-blue-300'
-                                }`}
-                            >
-                                <div className="flex items-center gap-2 mb-1">
-                                    <section.icon size={16} className={section.color} />
-                                    <span className="text-sm font-bold text-stone-900 flex items-center gap-1">
-                                      {section.label}
-                                      {isStepComplete(section.id) && <Check size={14} className="text-green-500" />}
-                                    </span>
-                                </div>
-                                <p className="text-[10px] text-stone-600 pl-6">{section.description}</p>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="w-full h-px bg-stone-200"></div>
-
-                {/* Optional Intelligence Enhancements */}
-                <div>
-                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Optional Intelligence Enhancements</h3>
-                    <p className="text-xs text-stone-500 mb-4">Enhance your Strategic Roadmap draft with specialized analysis. Select any combination to add depth and insights that will improve your final reports and letters.</p>
-                    <div className="grid grid-cols-2 gap-3">
-                        <label className="flex items-start gap-2 p-4 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group min-h-[60px]">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('roi-diagnostic')}
-                                onChange={() => handleIntelligenceEnhancementToggle('roi-diagnostic')}
-                                className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <BarChart3 className="w-4 h-4 text-indigo-600 flex-shrink-0" />
-                                    <span className="text-xs font-bold text-stone-900 leading-tight">ROI Diagnostic</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600 leading-tight">Financial viability assessment</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('scenario-planning')}
-                                onChange={() => handleIntelligenceEnhancementToggle('scenario-planning')}
-                                className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Network className="w-4 h-4 text-blue-600" />
-                                    <span className="text-xs font-bold text-stone-900">Scenario Planning</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Multi-outcome modeling</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('due-diligence')}
-                                onChange={() => handleIntelligenceEnhancementToggle('due-diligence')}
-                                className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <ShieldCheck className="w-4 h-4 text-green-600" />
-                                    <span className="text-xs font-bold text-stone-900">Due Diligence</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Background verification</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-pink-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('partner-compatibility')}
-                                onChange={() => handleIntelligenceEnhancementToggle('partner-compatibility')}
-                                className="mt-1 h-4 w-4 text-pink-600 focus:ring-pink-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Handshake className="w-4 h-4 text-pink-600" />
-                                    <span className="text-xs font-bold text-stone-900">Partner Compatibility</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Strategic matching</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('diversification-analysis')}
-                                onChange={() => handleIntelligenceEnhancementToggle('diversification-analysis')}
-                                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <PieChart className="w-4 h-4 text-purple-600" />
-                                    <span className="text-xs font-bold text-stone-900">Diversification Analysis</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Portfolio optimization</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-red-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('ethical-compliance')}
-                                onChange={() => handleIntelligenceEnhancementToggle('ethical-compliance')}
-                                className="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Shield className="w-4 h-4 text-red-600" />
-                                    <span className="text-xs font-bold text-stone-900">Ethical Compliance</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Sustainability assessment</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-amber-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('historical-precedents')}
-                                onChange={() => handleIntelligenceEnhancementToggle('historical-precedents')}
-                                className="mt-1 h-4 w-4 text-amber-600 focus:ring-amber-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <History className="w-4 h-4 text-amber-600" />
-                                    <span className="text-xs font-bold text-stone-900">Historical Precedents</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Data-driven insights</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-teal-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('growth-modeling')}
-                                onChange={() => handleIntelligenceEnhancementToggle('growth-modeling')}
-                                className="mt-1 h-4 w-4 text-teal-600 focus:ring-teal-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <TrendingUp className="w-4 h-4 text-teal-600" />
-                                    <span className="text-xs font-bold text-stone-900">Growth Modeling</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Revenue projections</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-orange-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('stakeholder-analysis')}
-                                onChange={() => handleIntelligenceEnhancementToggle('stakeholder-analysis')}
-                                className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Users className="w-4 h-4 text-orange-600" />
-                                    <span className="text-xs font-bold text-stone-900">Stakeholder Analysis</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Interest mapping</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-cyan-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('geopolitical-risk')}
-                                onChange={() => handleIntelligenceEnhancementToggle('geopolitical-risk')}
-                                className="mt-1 h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Globe className="w-4 h-4 text-cyan-600" />
-                                    <span className="text-xs font-bold text-stone-900">Geopolitical Risk</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Regional stability analysis</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-lime-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('valuation-engine')}
-                                onChange={() => handleIntelligenceEnhancementToggle('valuation-engine')}
-                                className="mt-1 h-4 w-4 text-lime-600 focus:ring-lime-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Calculator className="w-4 h-4 text-lime-600" />
-                                    <span className="text-xs font-bold text-stone-900">Valuation Engine</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Asset valuation models</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('performance-metrics')}
-                                onChange={() => handleIntelligenceEnhancementToggle('performance-metrics')}
-                                className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Activity className="w-4 h-4 text-indigo-600" />
-                                    <span className="text-xs font-bold text-stone-900">Performance Metrics</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">KPI benchmarking</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-rose-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('supply-chain-analysis')}
-                                onChange={() => handleIntelligenceEnhancementToggle('supply-chain-analysis')}
-                                className="mt-1 h-4 w-4 text-rose-600 focus:ring-rose-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <GitBranch className="w-4 h-4 text-rose-600" />
-                                    <span className="text-xs font-bold text-stone-900">Supply Chain Analysis</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Dependency mapping</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('charts')}
-                                onChange={() => handleIntelligenceEnhancementToggle('charts')}
-                                className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <BarChart3 className="w-4 h-4 text-blue-600" />
-                                    <span className="text-xs font-bold text-stone-900">Charts</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Visual data representation</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('data')}
-                                onChange={() => handleIntelligenceEnhancementToggle('data')}
-                                className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Database className="w-4 h-4 text-green-600" />
-                                    <span className="text-xs font-bold text-stone-900">Data</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Data tables and metrics</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('ai-analysis')}
-                                onChange={() => handleIntelligenceEnhancementToggle('ai-analysis')}
-                                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Cpu className="w-4 h-4 text-purple-600" />
-                                    <span className="text-xs font-bold text-stone-900">AI Analysis</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">AI-driven insights</p>
-                            </div>
-                        </label>
-
-                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-orange-300 transition-all cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedIntelligenceEnhancements.includes('content')}
-                                onChange={() => handleIntelligenceEnhancementToggle('content')}
-                                className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-stone-300 rounded"
-                            />
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <FileText className="w-4 h-4 text-orange-600" />
-                                    <span className="text-xs font-bold text-stone-900">Content</span>
-                                </div>
-                                <p className="text-[10px] text-stone-600">Enhanced content blocks</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div className="w-full h-px bg-stone-200"></div>
-
-                {/* BW Consultant Chat */}
-                <div className="bg-stone-50 border border-stone-200 rounded-lg flex flex-col">
-                    <div className="h-12 bg-bw-navy text-white flex items-center justify-between px-4 rounded-t-lg">
-                        <div className="flex items-center gap-2">
-                            <User size={16} />
-                            <span className="text-sm font-bold">AI Consultant</span>
-                        </div>
-                        <div className="text-xs opacity-75">Live Assistant</div>
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto p-4 space-y-3 h-48 custom-scrollbar">
-                        {chatMessages.map((msg, index) => (
-                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                                    msg.sender === 'user'
-                                        ? 'bg-bw-navy text-white'
-                                        : 'bg-white border border-stone-200 text-stone-900'
-                                }`}>
-                                    {msg.text}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="h-12 border-t border-stone-200 flex items-center gap-2 px-4">
-                        <input
-                            type="text"
-                            value={chatInput}
-                            onChange={(e) => setChatInput(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            placeholder="Ask your AI Consultant..."
-                            className="flex-1 text-sm border border-stone-200 rounded px-3 py-1 focus:ring-1 focus:ring-bw-gold focus:border-transparent"
-                        />
-                        <button
-                            onClick={handleSendMessage}
-                            className="p-2 bg-bw-navy text-white rounded hover:bg-bw-gold hover:text-bw-navy transition-all"
-                        >
-                            <Send size={14} />
-                        </button>
-                    </div>
-                </div>
-
-                <div className="w-full h-px bg-stone-200"></div>
-
-                <div>
-                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Document Generation</h3>
-                    <div className="p-4">
-                        <button
-                            onClick={() => setShowDocGenSuite(true)}
-                            className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700 flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl"
-                        >
-                            <FileText className="w-5 h-5" />
-                            Launch Document Generation Suite
-                        </button>
-                        <p className="text-xs text-stone-500 mt-2 text-center">Generate official documents from your finalized Strategic Roadmap.</p>
-                    </div>
-                </div>
-
-                {generatedDocs.length > 0 && (
-                  <>
-                    <div className="w-full h-px bg-stone-200"></div>
+        {/* --- LEFT PANEL: CONTROLS & FORMS (v6.0 Design) --- */}
+        <div className="flex flex-col bg-white border-r border-stone-200 overflow-hidden" style={{ flexBasis: '30%' }}>
+            <div className="flex-1 overflow-y-auto custom-scrollbar">
+                <div className="p-5 space-y-4">
+                    {/* 10-STEP INTAKE PROTOCOL */}
                     <div>
-                      <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Generated Documents</h3>
-                      <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                        {generatedDocs.map(doc => (
-                          <div key={doc.id} className="p-3 bg-white border border-stone-200 rounded-lg group">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <FileText size={14} className="text-green-600" />
-                                <span className="text-xs font-bold text-stone-800">{doc.title}</span>
-                              </div>
-                              <button className="px-2 py-1 text-[10px] font-bold bg-stone-100 text-stone-600 rounded hover:bg-stone-200 opacity-0 group-hover:opacity-100 transition-opacity">View</button>
-                            </div>
-                            <p className="text-[10px] text-stone-500 mt-1">{doc.timestamp.toLocaleTimeString()}</p>
-                          </div>
-                        ))}
-                      </div>
+                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">10-Step Intake Protocol</h3>
+                        <div className="space-y-2">
+                            {[
+                                {id: 'identity', label: 'Identity & Foundation', description: 'Organization credibility & legal structure', icon: Building2},
+                                {id: 'mandate', label: 'Mandate & Strategy', description: 'Strategic vision & objectives', icon: Target},
+                                {id: 'market', label: 'Market & Context', description: 'Market dynamics & regulatory environment', icon: Globe},
+                                {id: 'partner-personas', label: 'Partners & Ecosystem', description: 'Stakeholder landscape & alignment', icon: Users},
+                                {id: 'financial-model', label: 'Financial Model', description: 'Investment requirements & ROI scenarios', icon: DollarSign},
+                                {id: 'risk', label: 'Risk & Mitigation', description: 'Risk identification & mitigation plans', icon: Shield},
+                                {id: 'resources', label: 'Resources & Capability', description: 'Readiness, team strength & gaps', icon: Briefcase},
+                                {id: 'execution', label: 'Execution Plan', description: 'Implementation roadmap & milestones', icon: ClipboardList},
+                                {id: 'governance', label: 'Governance & Monitoring', description: 'Oversight & performance tracking', icon: Settings},
+                                {id: 'scoring', label: 'Scoring & Readiness', description: 'Final validation & go/no-go', icon: Award},
+                            ].map((step, idx) => (
+                                <button
+                                    key={step.id}
+                                    onClick={() => openModal(step.id)}
+                                    className={`w-full p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
+                                        activeModal === step.id
+                                            ? 'bg-blue-50 border-blue-200'
+                                            : 'bg-white border-stone-200 hover:border-stone-300'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-7 h-7 rounded flex items-center justify-center shrink-0 text-xs font-bold ${activeModal === step.id ? 'bg-blue-600 text-white' : isStepComplete(step.id) ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                                            {isStepComplete(step.id) ? <Check size={14} /> : <step.icon size={14} />}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[10px] font-bold text-stone-400">{String(idx + 1).padStart(2, '0')}</span>
+                                                <span className="text-sm font-semibold text-stone-900">{step.label}</span>
+                                                {isStepComplete(step.id) && <Check size={14} className="text-emerald-600 shrink-0" />}
+                                            </div>
+                                            <div className="text-xs text-stone-500 truncate">{step.description}</div>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                  </>
-                )}
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
+                    {/* ACTION CENTER */}
+                    <div>
+                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Actions</h3>
+                        <div className="space-y-2">
+                            <button
+                                onClick={onGenerate}
+                                className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+                            >
+                                <FileText size={14} />
+                                Generate Draft
+                            </button>
+                            <button
+                                onClick={() => setShowDocGenSuite(true)}
+                                className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 border border-blue-300 text-blue-600 hover:bg-blue-50"
+                            >
+                                <Download size={14} />
+                                Generate Documents
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
+                    {/* INTELLIGENCE ENHANCEMENTS - Collapsible */}
+                    <details className="bg-white border border-stone-200 rounded-lg overflow-hidden">
+                        <summary className="cursor-pointer select-none px-4 py-3 bg-stone-50 flex items-center justify-between hover:bg-stone-100">
+                            <div>
+                                <div className="text-sm font-semibold text-stone-900">Intelligence Enhancements</div>
+                                <div className="text-xs text-stone-600">Add analytical depth (optional)</div>
+                            </div>
+                            <span className="text-xs text-stone-500 font-semibold">{selectedIntelligenceEnhancements.length} selected</span>
+                        </summary>
+                        <div className="p-3 bg-white border-t border-stone-200 max-h-60 overflow-y-auto custom-scrollbar">
+                            <div className="grid grid-cols-1 gap-1">
+                                {[
+                                    { id: 'roi-diagnostic', label: 'ROI Diagnostic', icon: BarChart3 },
+                                    { id: 'scenario-planning', label: 'Scenario Planning', icon: Network },
+                                    { id: 'due-diligence', label: 'Due Diligence', icon: ShieldCheck },
+                                    { id: 'partner-compatibility', label: 'Partner Fit', icon: Handshake },
+                                    { id: 'diversification-analysis', label: 'Diversification', icon: PieChart },
+                                    { id: 'ethical-compliance', label: 'ESG Compliance', icon: Shield },
+                                    { id: 'historical-precedents', label: 'Precedents', icon: History },
+                                    { id: 'growth-modeling', label: 'Growth Model', icon: TrendingUp },
+                                    { id: 'stakeholder-analysis', label: 'Stakeholders', icon: Users },
+                                    { id: 'geopolitical-risk', label: 'Geopolitical Risk', icon: Globe },
+                                    { id: 'valuation-engine', label: 'Valuation', icon: Calculator },
+                                    { id: 'performance-metrics', label: 'KPI Targets', icon: Activity },
+                                    { id: 'supply-chain-analysis', label: 'Supply Chain', icon: GitBranch },
+                                    { id: 'charts', label: 'Charts', icon: BarChart3 },
+                                    { id: 'data', label: 'Data Tables', icon: Database },
+                                    { id: 'ai-analysis', label: 'AI Insights', icon: Cpu },
+                                    { id: 'content', label: 'Content Enhance', icon: FileText },
+                                ].map(option => (
+                                    <label key={option.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-xs transition-all ${selectedIntelligenceEnhancements.includes(option.id) ? 'bg-blue-50 border border-blue-200' : 'hover:bg-stone-50'}`}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedIntelligenceEnhancements.includes(option.id)}
+                                            onChange={() => handleIntelligenceEnhancementToggle(option.id)}
+                                            className="h-3 w-3 text-blue-600"
+                                        />
+                                        <option.icon size={12} className="text-stone-600" />
+                                        <span className="font-semibold text-stone-900">{option.label}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    </details>
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
+                    {/* CONSULTANT CHAT */}
+                    <div>
+                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Ask a Question</h3>
+                        <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-48">
+                            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
+                                {chatMessages.map((msg, index) => (
+                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
+                                            msg.sender === 'user'
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-stone-100 text-stone-900'
+                                        }`}>
+                                            {msg.text}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-2 bg-white">
+                                <input
+                                    type="text"
+                                    value={chatInput}
+                                    onChange={(e) => setChatInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                    placeholder="Ask..."
+                                    className="flex-1 text-xs border border-stone-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-300 focus:border-transparent bg-white"
+                                />
+                                <button
+                                    onClick={handleSendMessage}
+                                    className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
+                                >
+                                    <Send size={12} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {generatedDocs.length > 0 && (
+                        <>
+                            <div className="w-full h-px bg-stone-200"></div>
+                            <div>
+                                <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Generated Documents</h3>
+                                <div className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar">
+                                    {generatedDocs.map(doc => (
+                                        <div key={doc.id} className="p-2 bg-green-50 border border-green-200 rounded-lg group">
+                                            <div className="flex items-center justify-between gap-2">
+                                                <div className="flex items-center gap-2 min-w-0">
+                                                    <FileText size={12} className="text-green-600 shrink-0" />
+                                                    <span className="text-xs font-bold text-stone-800 truncate">{doc.title}</span>
+                                                </div>
+                                                <button className="px-2 py-0.5 text-[10px] font-bold bg-stone-200 text-stone-700 rounded hover:bg-stone-300 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">View</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </div> {/* This closes the left panel's inner padding div */}
+        </div>
 
         {/* --- MODAL FOR FORMS --- */}
         <AnimatePresence>
