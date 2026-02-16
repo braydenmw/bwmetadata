@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Loader, ArrowRight, CheckCircle2, AlertCircle, TrendingUp } from 'lucide-react';
+import { Search, Loader, ArrowRight, AlertCircle, TrendingUp } from 'lucide-react';
 
 export interface SearchResult {
   title: string;
@@ -110,18 +110,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
           <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-3 max-w-2xl">
             I&rsquo;m not a chatbot &mdash; I&rsquo;m a sovereign-grade intelligence system built to help you navigate global business, investment, and regional development challenges.
           </p>
-          <p className="text-base text-slate-400 leading-relaxed mb-4 max-w-2xl">
-            Ask me anything. I&rsquo;ll run your question through 34 intelligence engines, 38 proprietary formulas, and 10 analytical layers &mdash; then deliver deterministic, audit-ready analysis. Not hallucinations. Not guesses. Real intelligence backed by mathematical proof.
-          </p>
-          
-          {/* Consultant Capabilities */}
-          <div className="flex flex-wrap gap-2 mb-8 max-w-3xl">
-            <span className="text-xs bg-slate-700/60 text-blue-300 px-3 py-1.5 rounded-sm border border-slate-600">IFC Performance Standards</span>
-            <span className="text-xs bg-slate-700/60 text-blue-300 px-3 py-1.5 rounded-sm border border-slate-600">195 Country Compliance</span>
-            <span className="text-xs bg-slate-700/60 text-blue-300 px-3 py-1.5 rounded-sm border border-slate-600">Global Gap Analysis</span>
-            <span className="text-xs bg-slate-700/60 text-blue-300 px-3 py-1.5 rounded-sm border border-slate-600">ESG Assessment</span>
-            <span className="text-xs bg-slate-700/60 text-blue-300 px-3 py-1.5 rounded-sm border border-slate-600">UN SDG Alignment</span>
-          </div>
+
 
           {/* Search Input */}
           <form onSubmit={handleSearch} className="mb-6">
@@ -137,7 +126,7 @@ export const BWConsultantSearchWidget: React.FC<BWConsultantSearchWidgetProps> =
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask BW Consultant anything..."
+                  placeholder={placeholder}
                   className="w-full pl-12 pr-4 py-4 bg-white/95 border-2 border-transparent rounded-sm text-base text-slate-900 placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:bg-white transition-all shadow-lg"
                 />
               </div>

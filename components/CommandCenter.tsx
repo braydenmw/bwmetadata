@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, Search, X, Info, Brain, FileText } from 'lucide-react';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 import { BWConsultantSearchWidget } from './BWConsultantSearchWidget';
 // OSINT search removed - using unified location research
@@ -228,33 +228,33 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 The Problem: The Trust Gap in Artificial Intelligence
                             </h3>
                             <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;works the same way: it predicts the next word based on statistical patterns. That&rsquo;s powerful for conversation. It&rsquo;s dangerous for decisions.
+                                Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;operates probabilistically. It predicts the next likely token from patterns in training data. That is useful for drafting ideas and summarizing text. It is not sufficient for high-stakes strategic decisions.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed mb-2">
-                                These models <strong>hallucinate facts</strong>, present fabricated data as truth, and produce different answers to the same question asked twice. They cannot show their working. They cannot be audited. They have no concept of accountability.
+                                In decision environments involving public money, sovereign priorities, infrastructure, employment, or institutional capital, leaders are judged on defensibility. They must explain how conclusions were reached, what assumptions were used, which data was trusted, what uncertainty was modeled, and whether the same process yields the same answer tomorrow.
                             </p>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                When the decision involves public money, someone&rsquo;s livelihood, or a region&rsquo;s economic future&mdash;<strong>guessing isn&rsquo;t good enough</strong>. The people making these decisions need a system they can defend under scrutiny, trace to its source, and trust to give the same answer today, tomorrow, and in front of an audit committee.
+                                Standard AI tools can hallucinate under ambiguity, produce inconsistent responses to equivalent prompts, and hide reasoning inside opaque model behavior. They cannot reliably provide deterministic scoring, end-to-end traceability, or committee-ready audit evidence. <strong>BW Ai was built to close that trust gap.</strong>
                             </p>
                             <div className="grid grid-cols-2 gap-0 mb-4 border border-slate-200 rounded-sm overflow-hidden">
                                 <div className="p-5 bg-white border-r border-slate-200">
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Standard AI</p>
                                     <ul className="space-y-3 text-sm text-slate-600">
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Hallucinates facts &amp; fabricates citations</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Reasoning is hidden &amp; unexplainable</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Different answers to the same question</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> No audit trail, no accountability</li>
-                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Cannot be defended under scrutiny</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Hallucinates facts and fabricated references under uncertainty</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Limited explainability for internal reasoning behavior</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Non-deterministic outputs on repeated prompts</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Weak audit trails for high-stakes governance review</li>
+                                        <li className="flex items-start gap-2.5"><span className="text-slate-300 mt-px">&times;</span> Difficult to defend under board, ministry, or committee scrutiny</li>
                                     </ul>
                                 </div>
                                 <div className="p-5 bg-white">
                                     <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-4">BW Ai</p>
                                     <ul className="space-y-3 text-sm text-slate-800">
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every input validated before processing</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail from input to conclusion</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring &mdash; same data, same result</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every conclusion traceable to a formula</li>
-                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Board-ready, audit-committee defensible</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Validates inputs before scoring and recommendation generation</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Full audit trail from intake to final conclusion</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Deterministic scoring &mdash; same data, same outcome</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Every conclusion traceable to formulas, assumptions, and evidence</li>
+                                        <li className="flex items-start gap-2.5"><CheckCircle2 size={14} className="text-blue-500 mt-0.5 flex-shrink-0" /> Board-ready, audit-committee-defensible outputs</li>
                                     </ul>
                                 </div>
                             </div>
@@ -264,7 +264,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <h3 className="text-2xl font-semibold text-slate-900 mb-2">The Origin: One Person, One Mission</h3>
                                 <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;12 Months That Changed Everything&rdquo;</p>
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    This system wasn&rsquo;t built in a corporate boardroom. It started with a frustration. I was watching regions with incredible potential get passed over by global investors simply because they didn&rsquo;t know how to &ldquo;speak the language&rdquo; of capital. I realized that <strong>the gap wasn&rsquo;t a lack of value; it was a lack of translation</strong>. So, I spent a year building the NSIL&mdash;38+ proprietary formulas like SPI and RROI, with a scheduler ensuring no formula executes until inputs are verified.
+                                    BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong>38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
                                 </p>
                             </div>
                             <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
@@ -291,18 +291,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Innovation: How It &ldquo;Thinks&rdquo;</h3>
                             <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">1. The Brain: Computational Neuroscience</p>
                             <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                Formulas were just the start. To make the system truly useful, it needed to think like a human expert. I integrated <strong>7 computational neuroscience models</strong>&mdash;real mathematical implementations of how the human brain processes complexity, allocates attention, and reacts under pressure.
+                                Formulas alone do not create strategic intelligence. BW Ai integrates <strong>7 computational neuroscience models</strong> covering attention allocation, signal prioritization, uncertainty weighting, stress response behavior, and decision pressure dynamics.
                             </p>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">2. Autonomous Intelligence</p>
+                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">2. NSIL Core Architecture</p>
                             <p className="text-base text-slate-700 leading-relaxed mb-3">
-                                <strong>Creative Synthesis:</strong> Uses bisociation theory to find strategies from unrelated domains. <strong>Ethical Reasoning:</strong> Enforces fairness gates. <strong>Scenario Simulation:</strong> Runs 5,000 Monte Carlo futures to stress-test your plan.
+                                At the center of BW Ai is NSIL: a layered strategic intelligence architecture powered by <strong>34+ specialized engines</strong> and <strong>38+ formulas</strong>. Key capabilities include multi-layer signal ingestion and validation, cross-domain synthesis for fragmented data, formula-driven scoring with confidence calibration, historical pattern detection, and regional-to-global strategy translation.
+                            </p>
+                            <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">3. Agentic Intelligence System</p>
+                            <p className="text-base text-slate-700 leading-relaxed mb-3">
+                                BW Ai is not a passive chat assistant. It is an <strong>agentic system</strong> that executes autonomous strategic workflows: multi-step reasoning through the 10-step BWGA protocol, dynamic engine orchestration (sequential + parallel), constraint-aware planning with ethical and governance gates, and 5,000-scenario Monte Carlo stress testing before output release.
                             </p>
                             
                             {/* Section 2: Reflexive Intelligence */}
                             <div className="border-t border-slate-300 pt-4 mt-4">
                                 <h3 className="text-2xl font-semibold text-slate-900 mb-3">Reflexive Intelligence: Analyzing You</h3>
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    The system doesn&rsquo;t just analyze the market; <strong>it analyzes you</strong>. <strong>Signal Decoder:</strong> Detects what you repeat (what matters to you) and what you avoid (where your anxiety lives). <strong>Latent Advantage Miner:</strong> Surfaces assets you mentioned casually that have massive strategic value. <strong>Universal Translator:</strong> Translates every finding into 5 distinct languages: for Investors, Governments, Communities, Partners, and Executives.
+                                    Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
                                 </p>
                             </div>
                             <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors mt-4">
@@ -329,14 +333,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h3 className="text-2xl font-semibold text-slate-900 mb-2">The User Experience: Live Intelligence</h3>
                             <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-2">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</p>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                You don&rsquo;t need to understand how the engine works to drive the car. You just need to know it will get you where you want to go&mdash;safely, reliably, every single time. When you use BW Ai, you aren&rsquo;t just typing into a chatbox. You are engaging a <strong>Digital Boardroom</strong>. Behind the scenes, 34 intelligence engines and 5 AI personas are debating your project, crunching the numbers, and stress-testing your strategy 24/7. <strong>The Result:</strong> You walk away with something you&rsquo;ve only ever wished for: <em>Confidence</em>.
+                                The interface is simple by design. Under the hood, BW Ai runs as a <strong>digital strategy boardroom</strong>: specialized engines, formula evaluators, and agentic routines process your case continuously, pressure-test assumptions, and return decisions in actionable form. You are not receiving generic advice; you are receiving structured intelligence built to survive scrutiny and move to execution.
                             </p>
                             
                             {/* Section 2: What You Get */}
                             <div className="border-t border-slate-200 pt-4 mt-4">
                                 <h3 className="text-2xl font-semibold text-slate-900 mb-3">What You Walk Away With</h3>
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    <strong>The Proof:</strong> A dossier that looks like it cost $100,000 to produce. <strong>The Defense:</strong> Answers to the hardest questions an investor could ask. <strong>The Strategy:</strong> A roadmap that connects your local reality to the global economy. <strong>Audience-Specific Outputs:</strong> The system translates the same analysis into the language of whoever you need to convince&mdash;bankers (ROI focus), governments (job creation), or partners (synergy fit).
+                                    BW Ai outputs are tangible, defensible, and execution-ready: <strong>232 custom documents</strong> tailored to your context, <strong>156 strategic letters</strong> for outreach and negotiation, investor-grade dossiers with risk and pathway logic, defense packs for committee questions, implementation roadmaps aligned to ownership and dependency, and audience-specific versions for capital, policy, partner, and community stakeholders.
                                 </p>
                             </div>
                         </div>
@@ -357,16 +361,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                         <div className="md:w-8/12 bg-slate-50 p-6 md:p-8">
                             {/* Section 1: System Commitments */}
-                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">System Commitments: Built for Trust</h3>
+                            <h3 className="text-2xl font-semibold text-slate-900 mb-3">Assurance Architecture (Replacing &ldquo;System Commitments&rdquo;)</h3>
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                <strong>The &ldquo;Reality Check&rdquo;:</strong> Continuous calibration via real-world scenarios to tune formula weights. <strong>The &ldquo;Social Contract&rdquo;:</strong> 10% of all revenue is reinvested into regional development. <strong>The &ldquo;Live Wire&rdquo;:</strong> Connected to World Bank and IMF feeds&mdash;if a currency crashes today, reports generated tomorrow reflect that risk. <strong>Human-in-the-Loop:</strong> For high-stakes decisions involving millions, a human expert must sign off before final documents are issued.
+                                Trust in BW Ai is structural, not promotional: deterministic scoring for reproducible outcomes, formula-level traceability for every recommendation, end-to-end audit logging, continuous recalibration using live macro and market feeds, and human sign-off requirements for high-impact decisions.
                             </p>
                             
                             {/* Section 2: Document Factory */}
                             <div className="border-t border-slate-300 pt-4 mt-4">
                                 <h3 className="text-2xl font-semibold text-slate-900 mb-3">The Output: The Document Factory</h3>
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    This system replaces the need for a legal drafter in the early stages. It doesn&rsquo;t just give you advice; it gives you <strong>Tangible Assets</strong>. It auto-generates specific, legally-structured drafts: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), and Term Sheets. This saves thousands of dollars in legal fees and weeks of time, allowing you to walk into a meeting with the paperwork already done.
+                                    BW Ai does not end at analysis. It generates execution artifacts teams can use immediately: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), Term Sheets, strategic briefs, stakeholder narratives, and partnership negotiation frameworks. This compresses weeks of advisory and drafting cycles into a decision-ready operating flow.
                                 </p>
                             </div>
                         </div>
