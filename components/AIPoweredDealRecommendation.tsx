@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Brain, Zap, TrendingUp, CheckCircle, AlertCircle, BarChart3, Download, RefreshCw } from 'lucide-react';
 
 interface EntityProfile {
@@ -279,7 +279,7 @@ const AIPoweredDealRecommendation: React.FC = () => {
               <Zap className="w-5 h-5 text-violet-600" />
               Entity Profile for Matching
             </h3>
-            <div className="text-2xl">{expandedSections.profile ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.profile ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.profile && (
@@ -440,7 +440,7 @@ const AIPoweredDealRecommendation: React.FC = () => {
               <TrendingUp className="w-5 h-5 text-green-600" />
               AI-Ranked Opportunity Pipeline ({calculateRecommendations.length})
             </h3>
-            <div className="text-2xl">{expandedSections.recommendations ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.recommendations ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.recommendations && (
@@ -453,7 +453,7 @@ const AIPoweredDealRecommendation: React.FC = () => {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h4 className="font-bold text-lg">{rec.deal.name}</h4>
-                      <p className="text-xs opacity-75">{rec.deal.country} â€¢ {rec.deal.industry} â€¢ {rec.deal.type}</p>
+                      <p className="text-xs opacity-75">{rec.deal.country} * {rec.deal.industry} * {rec.deal.type}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-black">{rec.compatibilityScore}%</div>
@@ -492,7 +492,7 @@ const AIPoweredDealRecommendation: React.FC = () => {
                         <p className="text-xs font-bold opacity-75">Why this opportunity:</p>
                         <ul className="text-xs space-y-1">
                           {rec.reasoning.map((reason, i) => (
-                            <li key={i}>â€¢ {reason}</li>
+                            <li key={i}>* {reason}</li>
                           ))}
                         </ul>
                       </div>
@@ -505,7 +505,7 @@ const AIPoweredDealRecommendation: React.FC = () => {
                         </p>
                         <ul className="text-xs space-y-1">
                           {rec.redFlags.map((flag, i) => (
-                            <li key={i}>â€¢ {flag}</li>
+                            <li key={i}>* {flag}</li>
                           ))}
                         </ul>
                       </div>

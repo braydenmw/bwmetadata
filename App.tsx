@@ -105,11 +105,11 @@ const App: React.FC = () => {
         return [...insights, ...autonomousInsights];
     }, [insights, autonomousInsights]);
 
-    // --- EventBus subscriptions (bee ↔ flower ↔ meadow) ---
+    // --- EventBus subscriptions (bee  flower  meadow) ---
     useEffect(() => {
         // Subscribe to insights from anywhere in the system
         const unsubInsights = EventBus.subscribe('insightsGenerated', (event) => {
-            console.log('[App] EventBus → insightsGenerated', event.reportId);
+            console.log('[App] EventBus  insightsGenerated', event.reportId);
             // Merge ecosystem insights with existing
             setAutonomousInsights(prev => {
                 const ids = new Set(prev.map(i => i.id));
@@ -120,50 +120,50 @@ const App: React.FC = () => {
 
         // Subscribe to suggestions from anywhere in the system
         const unsubSuggestions = EventBus.subscribe('suggestionsReady', (event) => {
-            console.log('[App] EventBus → suggestionsReady', event.reportId);
+            console.log('[App] EventBus  suggestionsReady', event.reportId);
             setAutonomousSuggestions(event.actions);
         });
 
         // Subscribe to ecosystem pulse ("meadow" view)
         const unsubPulse = EventBus.subscribe('ecosystemPulse', (event) => {
-            console.log('[App] EventBus → ecosystemPulse', event.signals);
+            console.log('[App] EventBus  ecosystemPulse', event.signals);
             setEcosystemPulse(event.signals);
         });
 
         // Subscribe to learning updates (self-learning feedback)
         const unsubLearning = EventBus.subscribe('learningUpdate', (event) => {
-            console.log('[App] EventBus → learningUpdate', event.message);
+            console.log('[App] EventBus  learningUpdate', event.message);
             // Could show a toast or update a learning status indicator
         });
 
         // Subscribe to fully autonomous system events
         const unsubFullyAutonomous = EventBus.subscribe('fullyAutonomousRunComplete', (event) => {
-            console.log('[App] EventBus → fullyAutonomousRunComplete', event.runId);
+            console.log('[App] EventBus  fullyAutonomousRunComplete', event.runId);
             setAutonomousSystemStatus(event);
             setSelfImprovementSuggestions(event.improvements || []);
             setActiveSubAgents(event.spawnedAgents || []);
         });
 
         const unsubImprovements = EventBus.subscribe('improvementsSuggested', (event) => {
-            console.log('[App] EventBus → improvementsSuggested', event.suggestions.length);
+            console.log('[App] EventBus  improvementsSuggested', event.suggestions.length);
             setSelfImprovementSuggestions(event.suggestions);
         });
 
         const unsubAgentSpawned = EventBus.subscribe('agentSpawned', (event) => {
-            console.log('[App] EventBus → agentSpawned', event.agent.name);
+            console.log('[App] EventBus  agentSpawned', event.agent.name);
             setActiveSubAgents(prev => [...prev, event.agent]);
         });
 
         // Subscribe to consultant AI events
         const unsubConsultantInsights = EventBus.subscribe('consultantInsightsGenerated', (event) => {
-            console.log('[App] EventBus → consultantInsightsGenerated', event.insights.length);
+            console.log('[App] EventBus  consultantInsightsGenerated', event.insights.length);
             setConsultantInsights(event.insights);
         });
 
         const unsubSearchResult = EventBus.subscribe('searchResultReady', (event) => {
-            console.log('[App] EventBus → searchResultReady', event.query);
+            console.log('[App] EventBus  searchResultReady', event.query);
             // Note: Do NOT call bwConsultantAI.consult() here.
-            // It triggers proactiveSearchForReport → triggerSearch → emit(searchResultReady) → consult → infinite loop.
+            // It triggers proactiveSearchForReport  triggerSearch  emit(searchResultReady)  consult  infinite loop.
             // Search results are already stored and available to the consultant when next consulted.
         });
 
@@ -209,7 +209,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (autonomousMode && params.organizationName && params.country && params.organizationName.length > 2) {
             const timer = setTimeout(async () => {
-                console.log("🤖 AGENTIC WORKER: Starting autonomous digital worker");
+                console.log(" AGENTIC WORKER: Starting autonomous digital worker");
                 setIsAutonomousThinking(true);
                 try {
                     // Run the full agentic pipeline (tools + memory + payload)
@@ -221,13 +221,13 @@ const App: React.FC = () => {
                     // Proactive suggestions based on next actions
                     setAutonomousSuggestions(agenticResult.executiveBrief.nextActions);
 
-                    console.log("🤖 AGENTIC WORKER: Run complete", {
+                    console.log(" AGENTIC WORKER: Run complete", {
                         runId: agenticResult.runId,
                         signal: agenticResult.executiveBrief.proceedSignal,
                         memory: agenticResult.memory.similarCases.length
                     });
                 } catch (error) {
-                    console.error("🤖 AGENTIC WORKER: Error running digital worker:", error);
+                    console.error(" AGENTIC WORKER: Error running digital worker:", error);
                     // Fallback to legacy autonomous solve
                     try {
                         const problem = `Analyze partnership and investment opportunities for ${params.organizationName} in ${params.country}`;
@@ -266,7 +266,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (isConsultantActive && (params.organizationName || params.country || params.industry)) {
             const timer = setTimeout(async () => {
-                console.log('🤖 BW Consultant: Analyzing current parameters for insights');
+                console.log(' BW Consultant: Analyzing current parameters for insights');
                 try {
                     const insights = await bwConsultantAI.consult(params, 'parameter_analysis');
                     setConsultantInsights(insights);
@@ -275,7 +275,7 @@ const App: React.FC = () => {
                     await automaticSearchService.proactiveSearchForReport(params);
 
                 } catch (error) {
-                    console.error('🤖 BW Consultant: Error during analysis:', error);
+                    console.error(' BW Consultant: Error during analysis:', error);
                 }
             }, 2000); // 2 second delay to avoid too frequent updates
 
@@ -286,7 +286,7 @@ const App: React.FC = () => {
     // Self-Learning Data Collection - Records performance after report generation
     useEffect(() => {
         if (genPhase === 'complete' && params.id) {
-            console.log("📊 SELF-LEARNING: Recording performance data");
+            console.log(" SELF-LEARNING: Recording performance data");
             try {
                 // Calculate performance metrics
                 const startTime = Date.now() - (genProgress * 1000); // Estimate based on progress
@@ -312,9 +312,9 @@ const App: React.FC = () => {
                     improvements: ['Enhanced autonomous analysis', 'Improved insight generation']
                 });
 
-                console.log("📊 SELF-LEARNING: Performance data recorded");
+                console.log(" SELF-LEARNING: Performance data recorded");
             } catch (error) {
-                console.error("📊 SELF-LEARNING: Error recording data:", error);
+                console.error(" SELF-LEARNING: Error recording data:", error);
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -325,7 +325,7 @@ const App: React.FC = () => {
         if (autonomousMode && params.organizationName) {
             const interval = setInterval(async () => {
                 try {
-                    console.log("🔍 PROACTIVE: Checking for new opportunities");
+                    console.log(" PROACTIVE: Checking for new opportunities");
                     const opportunities = await ReactiveIntelligenceEngine.thinkAndAct(
                         `Monitor for new opportunities related to ${params.organizationName} in ${params.country || 'target markets'}`,
                         params,
@@ -335,10 +335,10 @@ const App: React.FC = () => {
                     if (opportunities.actions.length > 0) {
                         const newSuggestions = opportunities.actions.map(action => action.action);
                         setAutonomousSuggestions(prev => [...new Set([...prev, ...newSuggestions])]);
-                        console.log("🔍 PROACTIVE: Found", opportunities.actions.length, "new opportunities");
+                        console.log(" PROACTIVE: Found", opportunities.actions.length, "new opportunities");
                     }
                 } catch (error) {
-                    console.error("🔍 PROACTIVE: Error in monitoring:", error);
+                    console.error(" PROACTIVE: Error in monitoring:", error);
                 }
             }, 30000); // Check every 30 seconds
 
@@ -415,9 +415,9 @@ const App: React.FC = () => {
             console.warn('DEBUG: Incomplete payload, missing fields:', validation.missingFields);
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // ETHICAL GATE ENFORCEMENT — block or warn based on ethical assessment
-        // ═══════════════════════════════════════════════════════════════
+        // 
+        // ETHICAL GATE ENFORCEMENT  -  block or warn based on ethical assessment
+        // 
         const extendedPayload = reportPayload as ReportPayload & { ethicalAssessment?: { gate?: string; conditions?: string[] }; patternIntelligence?: { matchedPatterns?: unknown[] } };
         const ethicalGate = extendedPayload.ethicalAssessment?.gate;
         if (ethicalGate === 'reject') {
@@ -427,7 +427,7 @@ const App: React.FC = () => {
                 ...prev,
                 executiveSummary: {
                     ...prev.executiveSummary,
-                    content: `# ⛔ Report Generation Blocked — Ethical Review\n\nThe NSIL Ethical Reasoning Engine has determined that this engagement cannot proceed in its current form.\n\n**Reasons:**\n${ethicalReasons.map((r: string) => `- ${r}`).join('\n')}\n\n**What this means:** The system has identified fundamental ethical concerns that prevent responsible analysis. This is not a technical limitation — it is a governance safeguard.\n\n**Next Steps:**\n- Review and address the ethical concerns identified above\n- Consider restructuring the engagement parameters\n- Consult with compliance officers on the flagged issues\n\n*This gate is enforced by the Autonomous Ethical Reasoning Engine (7-dimension framework) and cannot be overridden.*`,
+                    content: `#  Report Generation Blocked  -  Ethical Review\n\nThe NSIL Ethical Reasoning Engine has determined that this engagement cannot proceed in its current form.\n\n**Reasons:**\n${ethicalReasons.map((r: string) => `- ${r}`).join('\n')}\n\n**What this means:** The system has identified fundamental ethical concerns that prevent responsible analysis. This is not a technical limitation  -  it is a governance safeguard.\n\n**Next Steps:**\n- Review and address the ethical concerns identified above\n- Consider restructuring the engagement parameters\n- Consult with compliance officers on the flagged issues\n\n*This gate is enforced by the Autonomous Ethical Reasoning Engine (7-dimension framework) and cannot be overridden.*`,
                     status: 'completed'
                 }
             }));
@@ -444,14 +444,14 @@ const App: React.FC = () => {
                 ...prev,
                 executiveSummary: {
                     ...prev.executiveSummary,
-                    content: `> ⚠️ **Ethical Advisory:** ${ethicalWarnings.slice(0, 3).join(' | ')}\n\n`
+                    content: `>  **Ethical Advisory:** ${ethicalWarnings.slice(0, 3).join(' | ')}\n\n`
                 }
             }));
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // DOCUMENT INTEGRITY — wrap with provenance tracking
-        // ═══════════════════════════════════════════════════════════════
+        // 
+        // DOCUMENT INTEGRITY  -  wrap with provenance tracking
+        // 
         const dataSources = ['NSIL Intelligence Hub', 'Pattern Confidence Engine', 'Historical Parallel Matcher',
                              'Situation Analysis Engine', 'Formula Suite (29 formulas)', 'Ethical Reasoning Engine'];
         if ((extendedPayload.patternIntelligence?.matchedPatterns?.length ?? 0) > 0) {
@@ -547,7 +547,7 @@ const App: React.FC = () => {
     const runFullyAutonomousSystem = useCallback(async () => {
         setIsFullyAutonomous(true);
         try {
-            console.log('🚀 FULLY AUTONOMOUS SYSTEM: Starting self-thinking analysis');
+            console.log(' FULLY AUTONOMOUS SYSTEM: Starting self-thinking analysis');
 
             const result = await runFullyAutonomousAgenticWorker(params, {
                 generateDocument: true,
@@ -557,7 +557,7 @@ const App: React.FC = () => {
                 spawnSubAgents: true
             });
 
-            console.log('🚀 FULLY AUTONOMOUS SYSTEM: Analysis complete', {
+            console.log(' FULLY AUTONOMOUS SYSTEM: Analysis complete', {
                 runId: result.runId,
                 improvements: result.improvements?.length || 0,
                 agents: result.spawnedAgents?.length || 0,
@@ -568,7 +568,7 @@ const App: React.FC = () => {
             setAutonomousSystemStatus(result);
 
         } catch (error) {
-            console.error('🚀 FULLY AUTONOMOUS SYSTEM: Error', error);
+            console.error(' FULLY AUTONOMOUS SYSTEM: Error', error);
         } finally {
             setIsFullyAutonomous(false);
         }

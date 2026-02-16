@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { FileText, Download, Copy, X, ChevronRight, Filter, Search } from 'lucide-react';
 import { DOCUMENT_TEMPLATES, ENGAGEMENT_STRATEGIES } from '../constants/systemMetadata';
 
@@ -69,15 +69,15 @@ Contact: ${data.primaryOwner || 'Leadership Team'}
 
 OUR CAPABILITIES:
 -----------------
-${data.competencies ? `â€¢ ${data.competencies}` : 'â€¢ Industry expertise and proven track record'}
-${data.technology ? `â€¢ Technology: ${data.technology}` : 'â€¢ Advanced technology platform'}
-${data.teamSize ? `â€¢ Team: ${data.teamSize} professionals` : 'â€¢ Dedicated professional team'}
+${data.competencies ? `* ${data.competencies}` : '* Industry expertise and proven track record'}
+${data.technology ? `* Technology: ${data.technology}` : '* Advanced technology platform'}
+${data.teamSize ? `* Team: ${data.teamSize} professionals` : '* Dedicated professional team'}
 
 MARKET FOCUS:
 -------------
-${data.industry ? `â€¢ Industry: ${data.industry}` : 'â€¢ Strategic industry focus'}
-${data.segments ? `â€¢ Target Segments: ${data.segments}` : 'â€¢ Enterprise and strategic segments'}
-${data.tam ? `â€¢ Market Opportunity: ${data.tam}` : 'â€¢ Significant market opportunity'}
+${data.industry ? `* Industry: ${data.industry}` : '* Strategic industry focus'}
+${data.segments ? `* Target Segments: ${data.segments}` : '* Enterprise and strategic segments'}
+${data.tam ? `* Market Opportunity: ${data.tam}` : '* Significant market opportunity'}
 
 WHY WE SHOULD PARTNER:
 ----------------------
@@ -126,14 +126,14 @@ Target Segments: ${data.segments || 'Enterprise and strategic accounts'}
 OUR COMPETITIVE ADVANTAGE:
 ---------------------------
 Core Competencies:
-${data.competencies ? `  â€¢ ${data.competencies}` : '  â€¢ Proven expertise and execution capability'}
+${data.competencies ? `  * ${data.competencies}` : '  * Proven expertise and execution capability'}
 
 Technology Stack:
-${data.technology ? `  â€¢ ${data.technology}` : '  â€¢ Cutting-edge technology platform'}
+${data.technology ? `  * ${data.technology}` : '  * Cutting-edge technology platform'}
 
 Operations:
-  â€¢ Team Size: ${data.teamSize || 'Experienced team'}
-  â€¢ Key Processes: ${data.processes || 'Proven delivery methodologies'}
+  * Team Size: ${data.teamSize || 'Experienced team'}
+  * Key Processes: ${data.processes || 'Proven delivery methodologies'}
 
 FINANCIAL PROJECTIONS:
 -----------------------
@@ -189,9 +189,9 @@ Growth Rate: ${data.growthRate || 'Positive trajectory'}
 
 OUR COMPETITIVE ADVANTAGE:
 --------------------------
-â€¢ ${data.competencies || 'Deep expertise in our market'}
-â€¢ ${data.technology || 'Proven technology and systems'}
-â€¢ ${data.teamSize || 'Experienced and dedicated team'}
+* ${data.competencies || 'Deep expertise in our market'}
+* ${data.technology || 'Proven technology and systems'}
+* ${data.teamSize || 'Experienced and dedicated team'}
 
 TRACTION & RESULTS:
 -------------------
@@ -205,8 +205,8 @@ ${data.partners || 'Strategic partnerships with industry leaders'}
 
 GOVERNANCE & COMPLIANCE:
 ------------------------
-â€¢ Risk Management: ${data.risks || 'Comprehensive risk framework'}
-â€¢ Compliance: ${data.compliance || 'Full regulatory compliance'}
+* Risk Management: ${data.risks || 'Comprehensive risk framework'}
+* Compliance: ${data.compliance || 'Full regulatory compliance'}
 
 CONTACT:
 --------
@@ -243,10 +243,10 @@ Based on your work in ${data.segments || 'this space'}, I think there could be g
 
 WHAT WE BRING TO THE TABLE:
 ---------------------------
-â€¢ Proven expertise: ${data.competencies || 'Deep knowledge and proven track record'}
-â€¢ Capability: ${data.teamSize || 'Strong'} team with relevant experience
-â€¢ Technology: ${data.technology || 'Advanced platform and systems'}}
-â€¢ Track record: ${data.partners || 'Strong partnerships and collaborations'}}
+* Proven expertise: ${data.competencies || 'Deep knowledge and proven track record'}
+* Capability: ${data.teamSize || 'Strong'} team with relevant experience
+* Technology: ${data.technology || 'Advanced platform and systems'}}
+* Track record: ${data.partners || 'Strong partnerships and collaborations'}}
 
 MY PROPOSAL:
 ------------
@@ -288,15 +288,15 @@ Email: ${contactEmail}
 [Add your document content here]
 
 Key sections can include:
-â€¢ Executive summary
-â€¢ Company overview
-â€¢ Market opportunity
-â€¢ Competitive advantage
-â€¢ Financial projections
-â€¢ Partnership opportunities
-â€¢ Risk management
-â€¢ Compliance and governance
-â€¢ Contact information
+* Executive summary
+* Company overview
+* Market opportunity
+* Competitive advantage
+* Financial projections
+* Partnership opportunities
+* Risk management
+* Compliance and governance
+* Contact information
 
 ================================================================================
       `
@@ -403,7 +403,7 @@ Key sections can include:
 
             {/* Engagement Strategies Info */}
             <div className="px-6 py-4 bg-blue-50 border-t">
-              <p className="text-xs font-semibold text-gray-700 mb-2">ðŸ’¡ Engagement Strategies:</p>
+              <p className="text-xs font-semibold text-gray-700 mb-2">💡 Engagement Strategies:</p>
               <div className="text-xs text-gray-600 space-y-1">
                 {ENGAGEMENT_STRATEGIES.slice(0, 3).map(strategy => (
                   <p key={strategy.id}><strong>{strategy.name}:</strong> {strategy.description}</p>
@@ -420,7 +420,7 @@ Key sections can include:
                   onClick={() => setShowPreview(false)}
                   className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
                 >
-                  â† Back
+                  <- Back
                 </button>
                 <button
                   onClick={() => {
@@ -456,7 +456,7 @@ Key sections can include:
               </div>
 
               <p className="text-xs text-gray-500 text-center">
-                ðŸ’¡ Customize this document with specific details about the recipient and tailor the messaging to your needs
+                💡 Customize this document with specific details about the recipient and tailor the messaging to your needs
               </p>
             </div>
           </>

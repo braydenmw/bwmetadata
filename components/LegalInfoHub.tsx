@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Scale, Lock, Users, BookOpen, LayoutGrid, X } from 'lucide-react';
 
 interface LegalInfoHubProps {
@@ -91,7 +91,7 @@ export const LegalInfoHub: React.FC<LegalInfoHubProps> = ({ onBack, initialSecti
                         <div className="prose prose-stone max-w-none text-sm leading-relaxed text-stone-700">
                             <h3 className="text-lg font-bold text-stone-900 mt-8 mb-4">1. Statement of Commitment</h3>
                             <p>
-                                BW Global Advisory (â€œBWGAâ€) is founded upon the principle that artificial intelligence must be developed and deployed with the highest degree of ethical responsibility. The firm acknowledges that the power of advanced computational systems carries a corresponding obligation to ensure that technology is never used in a manner that compromises human rights, privacy, or social stability.
+                                BW Global Advisory ("BWGA") is founded upon the principle that artificial intelligence must be developed and deployed with the highest degree of ethical responsibility. The firm acknowledges that the power of advanced computational systems carries a corresponding obligation to ensure that technology is never used in a manner that compromises human rights, privacy, or social stability.
                             </p>
                             
                             <h3 className="text-lg font-bold text-stone-900 mt-8 mb-4">2. Human Authority and Decision Governance</h3>
@@ -106,7 +106,7 @@ export const LegalInfoHub: React.FC<LegalInfoHubProps> = ({ onBack, initialSecti
 
                             <h3 className="text-lg font-bold text-stone-900 mt-8 mb-4">4. Data Collection, Limitation and Integrity Control</h3>
                             <p>
-                                BWGAâ€™s data strategy is governed by the principle of data restraint. The firm collects and processes only those data necessary to fulfill legitimate analytical purposes.
+                                BWGA's data strategy is governed by the principle of data restraint. The firm collects and processes only those data necessary to fulfill legitimate analytical purposes.
                             </p>
                         </div>
                     </section>

@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEscapeKey from '../hooks/useEscapeKey';
 import { X, Mail, Loader2, CheckCircle, AlertCircle, FileText } from 'lucide-react';
@@ -55,9 +55,9 @@ EVIDENCE-BASED PRECEDENT:
 Our due diligence team has analyzed historical investment patterns and identified a critical precedent: the ${caseStudy.id} initiative in ${caseStudy.country} (${caseStudy.year}).
 
 That initiative achieved:
-â€¢ ${caseStudy.outcomes.jobsCreated?.toLocaleString() || 'Significant'} high-value jobs created
-â€¢ ${roiAchieved}
-â€¢ ${caseStudy.outcomes.result === 'success' ? 'Sustainable, long-term operations' : 'Critical infrastructure development'}
+* ${caseStudy.outcomes.jobsCreated?.toLocaleString() || 'Significant'} high-value jobs created
+* ${roiAchieved}
+* ${caseStudy.outcomes.result === 'success' ? 'Sustainable, long-term operations' : 'Critical infrastructure development'}
 
 We believe ${orgName} is positioned to replicate and exceed these metrics.
 
@@ -99,10 +99,10 @@ OPPORTUNITY OVERVIEW:
 We are seeking to establish operations in ${country} with the strategic intent to ${reportParameters.strategicIntent || 'expand our market presence'}. This represents a significant opportunity for mutual value creation.
 
 KEY CONSIDERATIONS:
-â€¢ Target Region: ${country}
-â€¢ Investment Scale: ${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}
-â€¢ Target Partners: ${reportParameters.targetCounterpartType || 'Strategic partners'}
-â€¢ Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to positive ROI
+* Target Region: ${country}
+* Investment Scale: ${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}
+* Target Partners: ${reportParameters.targetCounterpartType || 'Strategic partners'}
+* Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to positive ROI
 
 NEXT STEPS:
 We would like to propose an initial meeting to discuss:
@@ -140,10 +140,10 @@ Dear [Minister/Secretary/Director],
 ${orgName} is pleased to present a strategic investment proposal that aligns with ${country}'s economic development objectives and creates substantial value for all stakeholders.
 
 INVESTMENT OVERVIEW:
-â€¢ Total Investment: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
-â€¢ Job Creation: ${reportParameters.expansionTimeline ? Math.floor(parseInt(reportParameters.expansionTimeline) * 50) : '500+'} direct and indirect positions
-â€¢ Technology Transfer: Advanced capabilities in ${reportParameters.strategicIntent || 'key industries'}
-â€¢ Economic Impact: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 3).toFixed(1)}M in economic multiplier effects
+* Total Investment: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Job Creation: ${reportParameters.expansionTimeline ? Math.floor(parseInt(reportParameters.expansionTimeline) * 50) : '500+'} direct and indirect positions
+* Technology Transfer: Advanced capabilities in ${reportParameters.strategicIntent || 'key industries'}
+* Economic Impact: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 3).toFixed(1)}M in economic multiplier effects
 
 STRATEGIC ALIGNMENT:
 Our investment supports ${country}'s priorities in:
@@ -179,16 +179,16 @@ Dear Committee Members,
 We recommend approval of a $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment in ${country} through partnership with ${reportParameters.targetCounterpartType || 'local partner'}.
 
 INVESTMENT RATIONALE:
-â€¢ Market Opportunity: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 80).toFixed(0)}B addressable market
-â€¢ Competitive Advantage: First-mover positioning with established partner
-â€¢ Financial Returns: 35-40% IRR with 3.2x MOIC
-â€¢ Strategic Fit: Aligns with our expansion objectives
+* Market Opportunity: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 80).toFixed(0)}B addressable market
+* Competitive Advantage: First-mover positioning with established partner
+* Financial Returns: 35-40% IRR with 3.2x MOIC
+* Strategic Fit: Aligns with our expansion objectives
 
 RISK ASSESSMENT:
-â€¢ Regulatory Risk: Mitigated through government relations
-â€¢ Market Risk: Addressed via pilot program
-â€¢ Operational Risk: Managed with experienced team
-â€¢ Overall Risk Rating: Medium (acceptable for returns)
+* Regulatory Risk: Mitigated through government relations
+* Market Risk: Addressed via pilot program
+* Operational Risk: Managed with experienced team
+* Overall Risk Rating: Medium (acceptable for returns)
 
 RECOMMENDATION: APPROVE investment subject to due diligence completion.
 
@@ -215,10 +215,10 @@ Dear Counsel,
 Enclosed is the proposed term sheet for our strategic partnership. This document outlines the key economic and governance terms for the $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment.
 
 KEY TERMS SUMMARY:
-â€¢ Investment Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
-â€¢ Equity Structure: 60/40 ownership split
-â€¢ Governance: Joint steering committee
-â€¢ Timeline: 90 days to definitive agreements
+* Investment Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Equity Structure: 60/40 ownership split
+* Governance: Joint steering committee
+* Timeline: 90 days to definitive agreements
 
 We request your review and feedback within 14 days to proceed with detailed negotiations.
 
@@ -247,10 +247,10 @@ Dear [Contact Name],
 Following our initial discussions, ${orgName} is pleased to submit this formal proposal for strategic partnership in ${country}.
 
 PROPOSAL OVERVIEW:
-â€¢ Partnership Structure: Joint venture with $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment
-â€¢ Strategic Objectives: Market expansion and technology transfer
-â€¢ Value Creation: Revenue synergies and shared growth opportunities
-â€¢ Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to profitability
+* Partnership Structure: Joint venture with $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment
+* Strategic Objectives: Market expansion and technology transfer
+* Value Creation: Revenue synergies and shared growth opportunities
+* Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to profitability
 
 We believe this partnership represents a mutually beneficial opportunity and look forward to your detailed review and response.
 
@@ -281,15 +281,15 @@ EXECUTIVE SUMMARY:
 ${orgName} has identified a compelling investment opportunity in ${country} with projected returns of 35-40% IRR.
 
 MARKET ANALYSIS:
-â€¢ Market Size: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 80).toFixed(0)}B
-â€¢ Growth Rate: 12-15% CAGR
-â€¢ Competitive Position: First-mover advantage available
+* Market Size: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 80).toFixed(0)}B
+* Growth Rate: 12-15% CAGR
+* Competitive Position: First-mover advantage available
 
 INVESTMENT PROPOSAL:
-â€¢ Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
-â€¢ Structure: Partnership with local entity
-â€¢ Timeline: ${reportParameters.expansionTimeline || '24 months'} to positive cash flow
-â€¢ Risk Rating: Medium
+* Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Structure: Partnership with local entity
+* Timeline: ${reportParameters.expansionTimeline || '24 months'} to positive cash flow
+* Risk Rating: Medium
 
 RECOMMENDATION: Proceed with due diligence and partner negotiations.
 
@@ -312,22 +312,22 @@ Dear [Contact Name],
 As we progress toward definitive agreements for our strategic partnership, we require the following information for our due diligence process:
 
 FINANCIAL INFORMATION:
-â€¢ Audited financial statements (past 3 years)
-â€¢ Tax returns and compliance records
-â€¢ Debt schedule and financing agreements
-â€¢ Key customer and supplier contracts
+* Audited financial statements (past 3 years)
+* Tax returns and compliance records
+* Debt schedule and financing agreements
+* Key customer and supplier contracts
 
 LEGAL INFORMATION:
-â€¢ Certificate of incorporation and bylaws
-â€¢ List of shareholders and ownership structure
-â€¢ Pending litigation or regulatory issues
-â€¢ Intellectual property portfolio
+* Certificate of incorporation and bylaws
+* List of shareholders and ownership structure
+* Pending litigation or regulatory issues
+* Intellectual property portfolio
 
 OPERATIONAL INFORMATION:
-â€¢ Organization chart and key personnel
-â€¢ Operational processes and procedures
-â€¢ Technology systems and capabilities
-â€¢ Risk management policies
+* Organization chart and key personnel
+* Operational processes and procedures
+* Technology systems and capabilities
+* Risk management policies
 
 Please provide this information within 14 business days. Our legal counsel will review all materials and maintain confidentiality.
 
@@ -355,20 +355,20 @@ Dear Board Members,
 We are pleased to propose the formation of a joint venture between ${orgName} and ${reportParameters.targetCounterpartType || 'your organization'} for ${reportParameters.country || 'market'} expansion.
 
 JV STRUCTURE:
-â€¢ Legal Entity: New company with 60/40 ownership split
-â€¢ Capital Contribution: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M total investment
-â€¢ Management: Joint board with equal representation
-â€¢ Profit Distribution: Pro-rata based on ownership
+* Legal Entity: New company with 60/40 ownership split
+* Capital Contribution: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M total investment
+* Management: Joint board with equal representation
+* Profit Distribution: Pro-rata based on ownership
 
 GOVERNANCE:
-â€¢ Board of Directors: 6 members (3 from each party)
-â€¢ CEO: Appointed by majority owner
-â€¢ Key Decisions: Unanimous approval for strategic matters
+* Board of Directors: 6 members (3 from each party)
+* CEO: Appointed by majority owner
+* Key Decisions: Unanimous approval for strategic matters
 
 SCOPE OF OPERATIONS:
-â€¢ Geographic Focus: ${reportParameters.country || 'Target market'}
-â€¢ Business Activities: ${reportParameters.strategicIntent || 'Market expansion and growth'}
-â€¢ Duration: 10 years with renewal options
+* Geographic Focus: ${reportParameters.country || 'Target market'}
+* Business Activities: ${reportParameters.strategicIntent || 'Market expansion and growth'}
+* Duration: 10 years with renewal options
 
 We believe this joint venture will create significant value for both organizations and look forward to your consideration.
 
@@ -396,17 +396,17 @@ Dear Legal Counsel,
 To facilitate discussions regarding our potential strategic partnership, we propose entering into a mutual non-disclosure agreement.
 
 AGREEMENT SCOPE:
-â€¢ Confidential Information: All proprietary business, technical, and financial information
-â€¢ Term: 3 years from execution
-â€¢ Permitted Use: Evaluation of partnership opportunities only
-â€¢ Return/Destruction: Upon termination or completion of discussions
+* Confidential Information: All proprietary business, technical, and financial information
+* Term: 3 years from execution
+* Permitted Use: Evaluation of partnership opportunities only
+* Return/Destruction: Upon termination or completion of discussions
 
 STANDARD PROVISIONS:
-â€¢ Definition of Confidential Information
-â€¢ Exclusions (publicly available information)
-â€¢ Obligations of Receiving Party
-â€¢ Remedies for breach
-â€¢ Governing Law and jurisdiction
+* Definition of Confidential Information
+* Exclusions (publicly available information)
+* Obligations of Receiving Party
+* Remedies for breach
+* Governing Law and jurisdiction
 
 Please review the attached NDA template and provide any proposed modifications within 5 business days.
 
@@ -434,17 +434,17 @@ Dear [Contact Name],
 ${orgName} is interested in exploring a licensing arrangement for our technology/IP in ${reportParameters.country || 'your market'}.
 
 PROPOSED TERMS:
-â€¢ Licensed Technology: [Specify technology/IP]
-â€¢ Territory: ${reportParameters.country || 'Target market'}
-â€¢ Term: 5 years with renewal options
-â€¢ Royalties: [Specify royalty structure]
-â€¢ Performance Obligations: Minimum sales targets
+* Licensed Technology: [Specify technology/IP]
+* Territory: ${reportParameters.country || 'Target market'}
+* Term: 5 years with renewal options
+* Royalties: [Specify royalty structure]
+* Performance Obligations: Minimum sales targets
 
 COMMERCIAL BENEFITS:
-â€¢ Technology Access: Advanced capabilities without development costs
-â€¢ Market Expansion: Accelerated entry through established partner
-â€¢ Revenue Generation: Royalty income from successful commercialization
-â€¢ Strategic Partnership: Foundation for broader collaboration
+* Technology Access: Advanced capabilities without development costs
+* Market Expansion: Accelerated entry through established partner
+* Revenue Generation: Royalty income from successful commercialization
+* Strategic Partnership: Foundation for broader collaboration
 
 We propose an initial meeting to discuss specific licensing opportunities and terms.
 

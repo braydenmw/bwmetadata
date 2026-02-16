@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { ShieldCheck, AlertTriangle, CheckCircle } from 'lucide-react';
 
 export default function EthicsPanel({ ethics }: any) {

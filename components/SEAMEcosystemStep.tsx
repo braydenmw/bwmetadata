@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReportParameters, SEAM_Blueprint } from '../types';
 import { generateSEAM } from '../services/engine';
 import { Network, Users, Zap, AlertTriangle } from 'lucide-react';
@@ -72,7 +72,7 @@ const SEAMEcosystemStep: React.FC<SEAMEcosystemStepProps> = ({ params }) => {
                             <ul className="space-y-1">
                                 {seam.gaps.map((gap, i) => (
                                     <li key={i} className="text-xs text-red-300 flex items-start gap-2">
-                                        <span className="mt-1 opacity-50">â€¢</span> {gap}
+                                        <span className="mt-1 opacity-50">*</span> {gap}
                                     </li>
                                 ))}
                             </ul>

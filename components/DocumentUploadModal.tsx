@@ -1,4 +1,4 @@
-﻿import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { X, FileText, Upload, CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface DocumentUploadModalProps {
@@ -123,11 +123,11 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
   const getFileTypeIcon = (fileType: string) => {
     switch (fileType) {
-      case 'pdf': return 'ðŸ“„';
-      case 'docx': return 'ðŸ“';
-      case 'txt': return 'ðŸ“ƒ';
-      case 'image': return 'ðŸ–¼ï¸';
-      default: return 'ðŸ“„';
+      case 'pdf': return '📄"';
+      case 'docx': return '📄';
+      case 'txt': return '📄f';
+      case 'image': return '📁';
+      default: return '📄"';
     }
   };
 
@@ -270,19 +270,19 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
             <h5 className="font-medium text-stone-900 mb-2">Supported Formats</h5>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <span>ðŸ“„</span>
+                <span>📄"</span>
                 <span>PDF</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>ðŸ“</span>
+                <span>📄</span>
                 <span>DOCX</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>ðŸ“ƒ</span>
+                <span>📄f</span>
                 <span>TXT</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>ðŸ–¼ï¸</span>
+                <span>📁</span>
                 <span>Images (OCR)</span>
               </div>
             </div>

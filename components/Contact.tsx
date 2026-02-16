@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, CheckCircle, Loader2 } from 'lucide-react';
 
 export const Contact: React.FC = () => {

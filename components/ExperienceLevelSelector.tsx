@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { EXPERIENCE_LEVELS, ExperienceLevel } from '../constants/systemMetadata';
 import { ChevronRight, Info } from 'lucide-react';
 
@@ -69,29 +69,29 @@ const ExperienceLevelSelector: React.FC<ExperienceLevelSelectorProps> = ({
                     <ul className="text-xs text-gray-600 space-y-1">
                       {level.id === 'beginner' && (
                         <>
-                          <li>âœ“ Detailed step-by-step guidance</li>
-                          <li>âœ“ Definitions and examples for every field</li>
-                          <li>âœ“ Best practice recommendations</li>
-                          <li>âœ“ Suggested documents to use</li>
-                          <li>âœ“ Tips for talking to potential partners</li>
+                          <li>✓ Detailed step-by-step guidance</li>
+                          <li>✓ Definitions and examples for every field</li>
+                          <li>✓ Best practice recommendations</li>
+                          <li>✓ Suggested documents to use</li>
+                          <li>✓ Tips for talking to potential partners</li>
                         </>
                       )}
                       {level.id === 'intermediate' && (
                         <>
-                          <li>âœ“ Clear guidance with key insights</li>
-                          <li>âœ“ Examples and best practices</li>
-                          <li>âœ“ Document recommendations</li>
-                          <li>âœ“ Tips for specific scenarios</li>
-                          <li>âœ“ Growth-focused suggestions</li>
+                          <li>✓ Clear guidance with key insights</li>
+                          <li>✓ Examples and best practices</li>
+                          <li>✓ Document recommendations</li>
+                          <li>✓ Tips for specific scenarios</li>
+                          <li>✓ Growth-focused suggestions</li>
                         </>
                       )}
                       {level.id === 'advanced' && (
                         <>
-                          <li>âœ“ Minimal guidance, maximum flexibility</li>
-                          <li>âœ“ Field prompts and templates only</li>
-                          <li>âœ“ Advanced features and options</li>
-                          <li>âœ“ Direct access to all tools</li>
-                          <li>âœ“ Full customization capability</li>
+                          <li>✓ Minimal guidance, maximum flexibility</li>
+                          <li>✓ Field prompts and templates only</li>
+                          <li>✓ Advanced features and options</li>
+                          <li>✓ Direct access to all tools</li>
+                          <li>✓ Full customization capability</li>
                         </>
                       )}
                     </ul>

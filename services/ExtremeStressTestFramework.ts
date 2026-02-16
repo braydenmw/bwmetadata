@@ -705,14 +705,14 @@ export class ExtremeStressTestFramework {
 
         let summary = `\nSTRESS TEST RESULTS:\n`;
         summary += `Total Tests: ${this.results.length}\n`;
-        summary += `âœ“ Passed: ${passed} (${(passed / this.results.length * 100).toFixed(1)}%)\n`;
-        summary += `âœ— Failed: ${failed} (${(failed / this.results.length * 100).toFixed(1)}%)\n`;
-        summary += `ðŸ”´ Critical Failures: ${critical}\n`;
-        summary += `ðŸŸ  High Severity: ${high}\n\n`;
+        summary += `✓ Passed: ${passed} (${(passed / this.results.length * 100).toFixed(1)}%)\n`;
+        summary += `✗ Failed: ${failed} (${(failed / this.results.length * 100).toFixed(1)}%)\n`;
+        summary += `🔴 Critical Failures: ${critical}\n`;
+        summary += `🟠 High Severity: ${high}\n\n`;
 
         summary += `BREAKDOWN BY CATEGORY:\n`;
         for (const [category, stats] of Object.entries(categorySummary)) {
-            summary += `  ${category}: ${stats.passed}âœ“ ${stats.failed}âœ—\n`;
+            summary += `  ${category}: ${stats.passed}✓ ${stats.failed}✗\n`;
         }
 
         summary += `\nTOP 5 CRITICAL ISSUES:\n`;

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Users, Calendar, Zap, MessageCircle, Target, CheckCircle, AlertCircle, Clock, Handshake } from 'lucide-react';
 
 interface RelationshipPhase {
@@ -312,7 +312,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Calendar className="w-5 h-5 text-blue-600" />
               5-Phase Relationship Development Timeline
             </h3>
-            <div className="text-2xl">{expandedSections.phases ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.phases ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.phases && (
@@ -360,7 +360,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   <ul className="space-y-2">
                     {relationshipPhases[selectedPhase - 1]?.goals.map((goal, idx) => (
                       <li key={idx} className="text-sm text-stone-700 pl-4 relative">
-                        <span className="absolute left-0 text-green-600 font-bold">âœ“</span>
+                        <span className="absolute left-0 text-green-600 font-bold">✓</span>
                         {goal}
                       </li>
                     ))}
@@ -377,7 +377,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   <ul className="space-y-2">
                     {relationshipPhases[selectedPhase - 1]?.successMetrics.map((metric, idx) => (
                       <li key={idx} className="text-sm text-stone-700 pl-4 relative">
-                        <span className="absolute left-0 text-blue-600 font-bold">â†’</span>
+                        <span className="absolute left-0 text-blue-600 font-bold">a'</span>
                         {metric}
                       </li>
                     ))}
@@ -413,7 +413,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Handshake className="w-5 h-5 text-purple-600" />
               Negotiation Playbook
             </h3>
-            <div className="text-2xl">{expandedSections.playbook ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.playbook ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.playbook && (
@@ -429,7 +429,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                       <ul className="space-y-1">
                         {play.tactics.map((tactic, i) => (
                           <li key={i} className="text-xs text-stone-700 pl-3 relative">
-                            <span className="absolute left-0">â€¢</span> {tactic}
+                            <span className="absolute left-0">*</span> {tactic}
                           </li>
                         ))}
                       </ul>
@@ -443,7 +443,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                       <ul className="space-y-1">
                         {play.redFlags.map((flag, i) => (
                           <li key={i} className="text-xs text-red-700 pl-3 relative">
-                            <span className="absolute left-0">âš </span> {flag}
+                            <span className="absolute left-0">as </span> {flag}
                           </li>
                         ))}
                       </ul>
@@ -451,10 +451,10 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   </div>
 
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <div className="font-bold text-green-900 mb-2 text-sm">âœ“ Best Practices:</div>
+                    <div className="font-bold text-green-900 mb-2 text-sm">✓ Best Practices:</div>
                     <ul className="space-y-1">
                       {play.bestPractices.map((practice, i) => (
-                        <li key={i} className="text-xs text-green-800">â€¢ {practice}</li>
+                        <li key={i} className="text-xs text-green-800">* {practice}</li>
                       ))}
                     </ul>
                   </div>
@@ -474,7 +474,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <MessageCircle className="w-5 h-5 text-orange-600" />
               Decision-Making Styles & Approach
             </h3>
-            <div className="text-2xl">{expandedSections.decisionMaking ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.decisionMaking ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.decisionMaking && (
@@ -486,7 +486,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   <div className="text-xs text-orange-800 space-y-1">
                     {profile.approach.map((tip, i) => (
                       <div key={i} className="pl-3 relative">
-                        <span className="absolute left-0">â†’</span> {tip}
+                        <span className="absolute left-0">a'</span> {tip}
                       </div>
                     ))}
                   </div>
@@ -506,7 +506,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Clock className="w-5 h-5 text-teal-600" />
               Communication & Engagement Timeline
             </h3>
-            <div className="text-2xl">{expandedSections.timeline ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.timeline ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.timeline && (

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 
 const RegionalComfortIndex = ({ region, country }: { region: string, country: string }) => (

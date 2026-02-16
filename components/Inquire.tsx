@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ReportParameters, ChatMessage, CopilotOption } from '../types';
 import { runCopilotAnalysis, generateSearchGroundedContent } from '../services/geminiService';
 import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
@@ -206,13 +206,13 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
             {/* Quick Actions */}
             <div className="px-4 py-3 bg-stone-50 border-t border-stone-100 flex gap-2 overflow-x-auto flex-shrink-0 scrollbar-hide">
                 <button onClick={() => runQuickAction('clarify')} className="flex-shrink-0 px-3 py-1.5 bg-white border border-stone-200 rounded-full text-xs font-medium text-stone-600 hover:bg-stone-100 transition-colors shadow-sm whitespace-nowrap">
-                    âœ¨ Clarify Objective
+                    🔍 Clarify Objective
                 </button>
                 <button onClick={() => runQuickAction('partners')} className="flex-shrink-0 px-3 py-1.5 bg-white border border-stone-200 rounded-full text-xs font-medium text-stone-600 hover:bg-stone-100 transition-colors shadow-sm whitespace-nowrap">
-                    ðŸ¤ Find Partners
+                    🤝 Find Partners
                 </button>
                 <button onClick={() => runQuickAction('risk')} className="flex-shrink-0 px-3 py-1.5 bg-white border border-stone-200 rounded-full text-xs font-medium text-stone-600 hover:bg-stone-100 transition-colors shadow-sm whitespace-nowrap">
-                    ðŸ›¡ï¸ Check Risks
+                    🛡 Check Risks
                 </button>
             </div>
 

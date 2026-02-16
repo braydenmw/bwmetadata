@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ArrowLeft, ArrowRight, ShieldCheck, Sparkles, Layers, BookOpen, Brain } from 'lucide-react';
 
 interface NSILShowcasePageProps {
@@ -33,7 +33,7 @@ const NSILShowcasePage: React.FC<NSILShowcasePageProps> = ({ onBack, onStart }) 
                         </div>
                         <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                             <p className="text-xs font-bold text-stone-900 mb-1">Adversarial Governance</p>
-                            <p>Validate â†’ Debate â†’ Counterfactuals â†’ Score â†’ Synthesize â†’ Deliver. False confidence is blocked by design.</p>
+                            <p>Validate a' Debate a' Counterfactuals a' Score a' Synthesize a' Deliver. False confidence is blocked by design.</p>
                         </div>
                         <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                             <p className="text-xs font-bold text-stone-900 mb-1">Agentic Brain</p>
@@ -52,20 +52,20 @@ const NSILShowcasePage: React.FC<NSILShowcasePageProps> = ({ onBack, onStart }) 
                             <p className="text-sm text-stone-700">Five primary engines drive the stack, with sixteen derivative indices expanding coverage across alignment, risk, viability, capacity, velocity, and resilience.</p>
                             <div className="grid sm:grid-cols-2 gap-3">
                                 {[{
-                                    title: 'SPIâ„¢ â€” Strategic Proof Index',
+                                    title: 'SPI(TM) - Strategic Proof Index',
                                     desc: 'Pressure-tests the mandate for internal contradictions and strategic coherence.'
                                 }, {
-                                    title: 'RROIâ„¢ â€” Real Return on Intent',
+                                    title: 'RROI(TM) - Real Return on Intent',
                                     desc: 'Scores intent against executable outcomes; exposes value at risk and leakage.'
                                 }, {
-                                    title: 'SEAMâ„¢ â€” Symbiotic Ecosystem Alignment Model',
+                                    title: 'SEAM(TM) - Symbiotic Ecosystem Alignment Model',
                                     desc: 'Quantifies partner fit, mutualism, and ecosystem lift versus dependency.'
                                 }, {
-                                    title: 'IVASâ„¢ â€” Integrity, Viability, Accountability Score',
+                                    title: 'IVAS(TM) - Integrity, Viability, Accountability Score',
                                     desc: 'Flags probity, compliance, and operational integrity gaps.'
                                 }, {
-                                    title: 'SCFâ„¢ â€” Strategic Counterfactual Framework',
-                                    desc: 'Runs â€œwhat ifâ€ shocks to prove durability under stress.'
+                                    title: 'SCF(TM) - Strategic Counterfactual Framework',
+                                    desc: 'Runs "what if" shocks to prove durability under stress.'
                                 }].map((item) => (
                                     <div key={item.title} className="rounded-sm border border-stone-200 p-3 bg-stone-50">
                                         <p className="text-[13px] font-bold text-stone-900">{item.title}</p>
@@ -100,11 +100,11 @@ const NSILShowcasePage: React.FC<NSILShowcasePageProps> = ({ onBack, onStart }) 
                         <div className="rounded-sm border border-stone-200 p-6 bg-stone-50 space-y-2">
                             <p className="text-xs font-bold text-stone-900 uppercase tracking-wide">From mandate to model</p>
                             <ul className="list-disc pl-5 space-y-2">
-                                <li>Intent Capture â†’ computable mandate with constraints, risk appetite, and stakeholder map.</li>
-                                <li>Debate Engine â†’ five personas argue the plan; contradictions are flagged, not buried.</li>
-                                <li>Counterfactual Lab â†’ shocks for rates, liquidity, partners, policy, and supply chain.</li>
-                                <li>Scoring Layer â†’ 21 formulas calculate exposure, leverage, and resilience.</li>
-                                <li>Learning Loop â†’ outcomes feed back; accuracy improves over time.</li>
+                                <li>Intent Capture a' computable mandate with constraints, risk appetite, and stakeholder map.</li>
+                                <li>Debate Engine a' five personas argue the plan; contradictions are flagged, not buried.</li>
+                                <li>Counterfactual Lab a' shocks for rates, liquidity, partners, policy, and supply chain.</li>
+                                <li>Scoring Layer a' 21 formulas calculate exposure, leverage, and resilience.</li>
+                                <li>Learning Loop a' outcomes feed back; accuracy improves over time.</li>
                             </ul>
                         </div>
                         <div className="rounded-sm border border-stone-200 p-6 bg-white space-y-2">

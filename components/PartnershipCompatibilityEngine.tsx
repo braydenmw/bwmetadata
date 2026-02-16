@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { CheckCircle, AlertCircle, TrendingUp, Heart, Shield, Target } from 'lucide-react';
 
 interface CompatibilityDimension {
@@ -149,7 +149,7 @@ const PartnershipCompatibilityEngine: React.FC<PartnershipCompatibilityProps> = 
             <div className="space-y-2">
               <div className="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="text-sm font-bold text-blue-900">{yourEntity?.legalName || 'Your Organization'}</div>
-                <div className="text-xs text-blue-700">{yourEntity?.country || 'Location'} â€¢ {yourEntity?.industry || 'Industry'}</div>
+                <div className="text-xs text-blue-700">{yourEntity?.country || 'Location'} * {yourEntity?.industry || 'Industry'}</div>
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@ const PartnershipCompatibilityEngine: React.FC<PartnershipCompatibilityProps> = 
             <div className="space-y-2">
               <div className="px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg">
                 <div className="text-sm font-bold text-purple-900">{targetPartner?.name || 'Partner Organization'}</div>
-                <div className="text-xs text-purple-700">{targetPartner?.country || 'Location'} â€¢ {targetPartner?.type || 'Type'}</div>
+                <div className="text-xs text-purple-700">{targetPartner?.country || 'Location'} * {targetPartner?.type || 'Type'}</div>
               </div>
             </div>
           </div>
@@ -246,7 +246,7 @@ const PartnershipCompatibilityEngine: React.FC<PartnershipCompatibilityProps> = 
                       <ul className="space-y-1">
                         {dim.greenFlags.map((flag, i) => (
                           <li key={i} className="text-xs text-green-700 pl-5 relative">
-                            <span className="absolute left-0">âœ“</span> {flag}
+                            <span className="absolute left-0">✓</span> {flag}
                           </li>
                         ))}
                       </ul>
@@ -261,7 +261,7 @@ const PartnershipCompatibilityEngine: React.FC<PartnershipCompatibilityProps> = 
                       <ul className="space-y-1">
                         {dim.redFlags.map((flag, i) => (
                           <li key={i} className="text-xs text-red-700 pl-5 relative">
-                            <span className="absolute left-0">âš </span> {flag}
+                            <span className="absolute left-0">as </span> {flag}
                           </li>
                         ))}
                       </ul>
@@ -294,7 +294,7 @@ const PartnershipCompatibilityEngine: React.FC<PartnershipCompatibilityProps> = 
                 <ul className="space-y-2">
                   {result.risks.map((risk, idx) => (
                     <li key={idx} className="text-sm text-stone-700 pl-5 relative">
-                      <span className="absolute left-0 text-red-600">âš </span> {risk}
+                      <span className="absolute left-0 text-red-600">as </span> {risk}
                     </li>
                   ))}
                 </ul>

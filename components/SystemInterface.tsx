@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -35,7 +35,7 @@ const getContextualInsight = (field: string, value: string) => {
         country: {
             type: 'risk',
             title: 'Jurisdiction Analysis',
-            text: `Analyzing regulatory friction in ${value}. \nâ€¢ Political Stability: ${value === 'Vietnam' ? 'High' : 'Moderate'}\nâ€¢ FDI Incentives: Active\nâ€¢ Currency Risk: Hedging Recommended`
+            text: `Analyzing regulatory friction in ${value}. \n* Political Stability: ${value === 'Vietnam' ? 'High' : 'Moderate'}\n* FDI Incentives: Active\n* Currency Risk: Hedging Recommended`
         },
         industry: {
             type: 'opportunity',
@@ -415,10 +415,10 @@ export const SystemInterface: React.FC<SystemInterfaceProps> = ({ onClose }) => 
                     {/* Quick Prompts */}
                     <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                         <button onClick={() => setChatInput("Check regulatory risks")} className="whitespace-nowrap px-3 py-1 bg-stone-50 border border-stone-200 rounded-full text-[10px] font-bold text-stone-500 hover:text-bw-navy hover:border-bw-navy transition-colors">
-                            ðŸ›¡ï¸ Risks?
+                            🛡 Risks?
                         </button>
                         <button onClick={() => setChatInput("Suggest partner profiles")} className="whitespace-nowrap px-3 py-1 bg-stone-50 border border-stone-200 rounded-full text-[10px] font-bold text-stone-500 hover:text-bw-navy hover:border-bw-navy transition-colors">
-                            ðŸ¤ Partners?
+                            🤝 Partners?
                         </button>
                     </div>
                 </div>

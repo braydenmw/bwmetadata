@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { BookOpen, Globe, Users, Zap, AlertCircle, CheckCircle, TrendingUp, Clock } from 'lucide-react';
 
 interface CountryProfile {
@@ -44,7 +44,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
       'Never rush. Initial meetings are about building rapport, not closing deals',
       'Avoid direct confrontation. Use intermediaries if disagreements arise',
       'Small gifts appropriate for relationship building (avoid anything with 4 items)',
-      'Expect flexibility on termsâ€”they prefer win-win arrangements'
+      'Expect flexibility on terms - they prefer win-win arrangements'
     ],
     contractTerms: 'Formal, detailed contracts required but often renegotiated. Government contracts especially fluid until ink dries.',
     contractRisks: [
@@ -58,7 +58,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
       'Always include highest-ranking contact in email chains',
       'Use formal titles and respectful language',
       'Follow up verbal meetings with detailed written summary',
-      'Patience is virtueâ€”expect slower response times'
+      'Patience is virtue - expect slower response times'
     ],
     legalFramework: 'Foreign investment law reformed 2020, but still opaque enforcement. Labor laws strict but selectively enforced.',
     legalRisks: [
@@ -110,13 +110,13 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     negotiationTips: [
       'Be explicit and clear. Ambiguity creates legal liability',
       'Separate friendship from business. They appreciate professionalism',
-      'Move fastâ€”slow negotiations signal weakness or indecision',
+      'Move fast - slow negotiations signal weakness or indecision',
       'Get everything in writing. Verbal agreements have no value'
     ],
-    contractTerms: 'Detailed, legally binding. Subject to extensive due diligence. "Paper trail" mentalityâ€”document everything.',
+    contractTerms: 'Detailed, legally binding. Subject to extensive due diligence. "Paper trail" mentality - document everything.',
     contractRisks: [
       'Litigation risk high if disputes arise. Legal costs substantial',
-      'IP protection weak in some statesâ€”verify carefully',
+      'IP protection weak in some states - verify carefully',
       'Contract disputes can tie up capital for years'
     ],
     paymentPractices: '30-45 day terms standard. ACH transfers, checks standard. Credit cards used for smaller transactions.',
@@ -125,12 +125,12 @@ const countryProfiles: { [key: string]: CountryProfile } = {
       'Get straight to point. Small talk minimal and optional',
       'Use email freely for decisions (no need for formal hierarchy)',
       'Expect rapid email responses within 24 hours',
-      'Conference calls/Zoom standardâ€”no need for in-person initially'
+      'Conference calls/Zoom standard - no need for in-person initially'
     ],
     legalFramework: 'Highly regulated. Transparent legal system. IP protected well. State variations significant.',
     legalRisks: [
-      'Regulatory compliance complexâ€”tax, labor, environmental all critical',
-      'Litigation culture strongâ€”disputes escalate to courts easily',
+      'Regulatory compliance complex - tax, labor, environmental all critical',
+      'Litigation culture strong - disputes escalate to courts easily',
       'Compliance failures can result in criminal charges, not just civil fines'
     ],
     corruptionLevel: 'VERY LOW (CPI: 69/100)',
@@ -175,11 +175,11 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     negotiationStyle: 'FACTUAL & THOROUGH',
     negotiationTips: [
       'Prepare comprehensive data. Vague promises will lose you credibility',
-      'Acknowledge weaknesses openlyâ€”it builds trust',
+      'Acknowledge weaknesses openly - it builds trust',
       'Expect exhaustive questioning. This isn\'t distrust, it\'s diligence',
       'Flexibility on price shows weakness. Deliver value, not discounts'
     ],
-    contractTerms: 'Extremely detailed with extensive appendices. Process-orientedâ€”every scenario considered.',
+    contractTerms: 'Extremely detailed with extensive appendices. Process-oriented - every scenario considered.',
     contractRisks: [
       'Contracts extremely difficult to modify once signed',
       'Penalties for non-performance strictly enforced',
@@ -190,21 +190,21 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     communicationTips: [
       'Use full titles and formal address until invited otherwise',
       'Agendas required for all meetings, circulated in advance',
-      'Punctuality criticalâ€”being 5 minutes late signals disrespect',
+      'Punctuality critical - being 5 minutes late signals disrespect',
       'Small talk minimal; move quickly to business'
     ],
     legalFramework: 'Excellent protection for contracts and IP. Labor regulations among strictest globally.',
     legalRisks: [
       'Labor costs very high and difficult to reduce',
       'Environmental compliance rigorous and expensive',
-      'Works councils required in larger companiesâ€”can slow decisions'
+      'Works councils required in larger companies - can slow decisions'
     ],
     corruptionLevel: 'VERY LOW (CPI: 78/100)',
     corruptionExamples: 'Corruption virtually non-existent in formal business. Any bribery attempt likely to end partnership immediately.',
     relationshipImportance: 'MODERATE',
     relationshipTips: [
       'Relationships built on consistency and reliability, not socializing',
-      'Respect personal timeâ€”don\'t expect availability outside business hours',
+      'Respect personal time - don\'t expect availability outside business hours',
       'Regular visits demonstrate commitment but not required for maintenance',
       'Remember details about business preferences but not personal gossip'
     ],
@@ -224,7 +224,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     ],
     bestPractices: [
       'Allow 8-12 weeks for negotiation cycles (they don\'t hurry)',
-      'Hire a German legal advisorâ€”contract complexity high',
+      'Hire a German legal advisor - contract complexity high',
       'Understand co-determination laws if manufacturing/large operation',
       'Budget for labor costs conservatively (union scales likely apply)',
       'Plan for 24-month payback on capital investments (their benchmark)'
@@ -240,14 +240,14 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     hierarchyNotes: 'Party/Government hierarchy matters as much as corporate hierarchy. Personal relationships (guanxi) often trump formal authority.',
     negotiationStyle: 'STRATEGIC & LONG-TERM FOCUSED',
     negotiationTips: [
-      'Expect to be testedâ€”they\'re assessing your commitment and character',
+      'Expect to be tested - they\'re assessing your commitment and character',
       'Don\'t reveal your full position early. Information is currency',
       'Patience is advantage. They can outwaita Western partner',
       'Government relationships more important than commercial terms'
     ],
     contractTerms: 'Contracts are starting points, not endpoints. Renegotiation expected as circumstances change.',
     contractRisks: [
-      'IP theft risk highâ€”many state-owned or politically-connected competitors',
+      'IP theft risk high - many state-owned or politically-connected competitors',
       'Contract enforcement inconsistent, depends on political winds',
       'Foreign investment subject to "national security" review anytime',
       'Technology transfer often expected as condition for market access'
@@ -255,9 +255,9 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     paymentPractices: '90-120 day terms common. Bank transfers required. Some facilitation payments expected in state interactions.',
     communicationNorms: 'Formal hierarchy respected. Chinese language appreciated (even if translated). Government channels often used.',
     communicationTips: [
-      'Use intermediaries for sensitive topicsâ€”direct criticism = loss of face',
+      'Use intermediaries for sensitive topics - direct criticism = loss of face',
       'Always cc: government liaison if any exist',
-      'Accept hierarchyâ€”don\'t try to bypass it',
+      'Accept hierarchy - don\'t try to bypass it',
       'Meetings often involve audience (observers not always identified)'
     ],
     legalFramework: 'Laws exist but interpreted politically. Foreign companies have fewer protections than state-owned enterprises.',
@@ -275,7 +275,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
       'Regular in-person engagement essential (Chinese value face-to-face)',
       'Introduce yourself through mutual connections when possible',
       'Share meals and some personal information to build trust',
-      'Remember that partners report to governmentâ€”maintain diplomatic tone'
+      'Remember that partners report to government - maintain diplomatic tone'
     ],
     redFlags: [
       'Partner has no visible government relationship',
@@ -307,12 +307,12 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     decisionSpeed: 'FAST (when approved by decision-maker)',
     decisionSpeedScore: 70,
     hierarchy: 'ROYAL/POLITICAL WITH WASTA',
-    hierarchyNotes: 'Royal family and appointed ministers have absolute authority. "Wasta" (connections) matters enormously.',
+    hierarchyNotes: 'Royal family and appointed ministers have absolute authority. "Wast- (connections) matters enormously.',
     negotiationStyle: 'RELATIONSHIP-CENTRIC & STATUS-AWARE',
     negotiationTips: [
-      'First meetings about respect and understanding culturesâ€”not deal terms',
+      'First meetings about respect and understanding cultures - not deal terms',
       'Always accept hospitality offered (coffee, meals) as part of relationship',
-      'Avoid direct contradictionâ€”face is critical in Middle Eastern context',
+      'Avoid direct contradiction - face is critical in Middle Eastern context',
       'Deal flexibility expected; fixed terms signal inflexibility'
     ],
     contractTerms: 'Formal but subject to royal decree changes. Issued contracts sometimes overridden by higher authority.',
@@ -363,7 +363,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     bestPractices: [
       'Hire local advisor with royal/government connections (expensive but essential)',
       'Allocate 12-18 months for real negotiations',
-      'Understand that "yes" often means "maybe"â€”follow-up constantly',
+      'Understand that "yes" often means "maybe"a"follow-up constantly',
       'Budget for high-level engagement (executive travel, extended stays)',
       'Plan for facilitation payments and consulting fees ($50K-$500K+ common)',
       'Have cultural training on Islam and Middle Eastern business norms'
@@ -381,7 +381,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     negotiationTips: [
       'Never rush. Speed signals disrespect for process',
       'Consensus-building informal; decisions made before formal meetings',
-      'Losing face is devastatingâ€”frame issues carefully',
+      'Losing face is devastating - frame issues carefully',
       'Small gifts exchanged as part of building relationships'
     ],
     contractTerms: 'Detailed but often supplemented by handshake understandings. Written and unwritten agreements equally binding.',
@@ -431,7 +431,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
       'Budget 6-12 months minimum for entire negotiation and approval process',
       'Hire Japanese-speaking advisor familiar with corporate culture',
       'Plan for regular visits (budget 1-2 per year, 1-2 weeks each)',
-      'Accept that "no" is often communicated very subtlyâ€”ask clarifying questions',
+      'Accept that "no" is often communicated very subtly - ask clarifying questions',
       'Once in partnership, very stable and long-term focused',
       'Respect consensus decision-making even if slower'
     ]
@@ -505,9 +505,9 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
           <div className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-stone-200 flex items-center justify-between">
             <h3 className="text-lg font-bold text-stone-900 flex items-center gap-2">
               <Globe className="w-5 h-5 text-indigo-600" />
-              {profile.country} â€” {profile.region}
+              {profile.country} - {profile.region}
             </h3>
-            <div className="text-2xl">{expandedSections.overview ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.overview ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.overview && (
@@ -548,7 +548,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <Zap className="w-5 h-5 text-blue-600" />
               Negotiation Strategy
             </h3>
-            <div className="text-2xl">{expandedSections.negotiation ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.negotiation ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.negotiation && (
@@ -562,7 +562,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                 <div className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-2">Key Tips</div>
                 {profile.negotiationTips.map((tip, idx) => (
                   <div key={idx} className="flex gap-2 items-start p-2 bg-blue-50 rounded-lg border border-blue-100">
-                    <div className="text-blue-600 font-bold flex-shrink-0 mt-0.5">â€¢</div>
+                    <div className="text-blue-600 font-bold flex-shrink-0 mt-0.5">*</div>
                     <p className="text-sm text-stone-700">{tip}</p>
                   </div>
                 ))}
@@ -580,7 +580,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                   </div>
                   {profile.contractRisks.map((risk, idx) => (
                     <div key={idx} className="flex gap-2 items-start p-2 bg-red-50 rounded-lg border border-red-100">
-                      <div className="text-red-600 font-bold flex-shrink-0 mt-0.5">âš </div>
+                      <div className="text-red-600 font-bold flex-shrink-0 mt-0.5">as </div>
                       <p className="text-sm text-red-800">{risk}</p>
                     </div>
                   ))}
@@ -600,7 +600,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <TrendingUp className="w-5 h-5 text-green-600" />
               Operations & Practicalities
             </h3>
-            <div className="text-2xl">{expandedSections.operations ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.operations ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.operations && (
@@ -621,7 +621,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                   <p className="text-sm text-indigo-900 mb-2">{profile.communicationNorms}</p>
                   <ul className="space-y-1">
                     {profile.communicationTips.map((tip, idx) => (
-                      <li key={idx} className="text-xs text-indigo-800">â€¢ {tip}</li>
+                      <li key={idx} className="text-xs text-indigo-800">* {tip}</li>
                     ))}
                   </ul>
                 </div>
@@ -630,7 +630,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                   <div className="text-xs font-bold text-orange-900 uppercase tracking-wider mb-2">Legal Risks</div>
                   <ul className="space-y-1">
                     {profile.legalRisks.slice(0, 3).map((risk, idx) => (
-                      <li key={idx} className="text-xs text-orange-800">â€¢ {risk}</li>
+                      <li key={idx} className="text-xs text-orange-800">* {risk}</li>
                     ))}
                   </ul>
                 </div>
@@ -649,7 +649,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <Users className="w-5 h-5 text-pink-600" />
               Relationship Building ({profile.relationshipImportance})
             </h3>
-            <div className="text-2xl">{expandedSections.relationships ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.relationships ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.relationships && (
@@ -666,7 +666,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                 <div className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-2">Relationship Tips</div>
                 {profile.relationshipTips.map((tip, idx) => (
                   <div key={idx} className="flex gap-2 items-start p-2 bg-pink-50 rounded-lg border border-pink-100">
-                    <div className="text-pink-600 font-bold flex-shrink-0 mt-0.5">âœ“</div>
+                    <div className="text-pink-600 font-bold flex-shrink-0 mt-0.5">✓</div>
                     <p className="text-sm text-stone-700">{tip}</p>
                   </div>
                 ))}
@@ -685,7 +685,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <AlertCircle className="w-5 h-5 text-red-600" />
               Red Flags & Green Flags
             </h3>
-            <div className="text-2xl">{expandedSections.risks ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.risks ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.risks && (
@@ -696,7 +696,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                 </div>
                 {profile.redFlags.map((flag, idx) => (
                   <div key={idx} className="flex gap-2 items-start p-2 bg-red-50 rounded-lg border border-red-100">
-                    <div className="text-red-600 font-bold text-lg flex-shrink-0">âœ•</div>
+                    <div className="text-red-600 font-bold text-lg flex-shrink-0">✗</div>
                     <p className="text-sm text-red-900">{flag}</p>
                   </div>
                 ))}
@@ -708,7 +708,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                 </div>
                 {profile.greenFlags.map((flag, idx) => (
                   <div key={idx} className="flex gap-2 items-start p-2 bg-green-50 rounded-lg border border-green-100">
-                    <div className="text-green-600 font-bold text-lg flex-shrink-0">âœ“</div>
+                    <div className="text-green-600 font-bold text-lg flex-shrink-0">✓</div>
                     <p className="text-sm text-green-900">{flag}</p>
                   </div>
                 ))}
@@ -727,7 +727,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <CheckCircle className="w-5 h-5 text-purple-600" />
               Best Practices for {profile.country}
             </h3>
-            <div className="text-2xl">{expandedSections.bestPractices ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.bestPractices ? 'a-1/4' : 'a-'}</div>
           </div>
           
           {expandedSections.bestPractices && (

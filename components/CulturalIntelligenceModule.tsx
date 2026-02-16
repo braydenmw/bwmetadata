@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 
 interface CulturalIntelligenceModuleProps {
     targetCountry?: string;
@@ -50,7 +50,7 @@ const CulturalIntelligenceModule: React.FC<CulturalIntelligenceModuleProps> = ({
     return (
         <div className="space-y-6">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">ðŸŒ Cultural Intelligence Brief</h3>
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">🌍 Cultural Intelligence Brief</h3>
                 <p className="text-sm text-blue-800">
                     Understanding cultural nuances is crucial for successful international partnerships.
                     Here's what you need to know for <strong>{targetCountry || 'your target region'}</strong>.
@@ -60,21 +60,21 @@ const CulturalIntelligenceModule: React.FC<CulturalIntelligenceModuleProps> = ({
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <div className="bg-white p-4 rounded-lg border border-stone-200 shadow-sm">
-                        <h4 className="font-semibold text-stone-900 mb-2">ðŸ¤ Negotiation Style</h4>
+                        <h4 className="font-semibold text-stone-900 mb-2">🤝 Negotiation Style</h4>
                         <p className="text-sm text-stone-600">{brief.negotiation}</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg border border-stone-200 shadow-sm">
-                        <h4 className="font-semibold text-stone-900 mb-2">ðŸŽ­ Business Etiquette</h4>
+                        <h4 className="font-semibold text-stone-900 mb-2">⭐ Business Etiquette</h4>
                         <p className="text-sm text-stone-600">{brief.etiquette}</p>
                     </div>
                 </div>
                 <div className="space-y-4">
                     <div className="bg-white p-4 rounded-lg border border-stone-200 shadow-sm">
-                        <h4 className="font-semibold text-stone-900 mb-2">ðŸ’¬ Communication Style</h4>
+                        <h4 className="font-semibold text-stone-900 mb-2">💬 Communication Style</h4>
                         <p className="text-sm text-stone-600">{brief.communication}</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg border border-stone-200 shadow-sm">
-                        <h4 className="font-semibold text-stone-900 mb-2">ðŸ”‘ Key Phrases</h4>
+                        <h4 className="font-semibold text-stone-900 mb-2">📄' Key Phrases</h4>
                         <ul className="text-sm text-stone-600 space-y-2">
                             {brief.keyPhrases.map((phrase: string, index: number) => (
                                 <li key={index} className="flex items-center gap-2">
@@ -88,12 +88,12 @@ const CulturalIntelligenceModule: React.FC<CulturalIntelligenceModuleProps> = ({
             </div>
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h4 className="font-semibold text-yellow-900 mb-2">âš ï¸ Important Notes</h4>
+                <h4 className="font-semibold text-yellow-900 mb-2">as i Important Notes</h4>
                 <ul className="text-sm text-yellow-800 space-y-1">
-                    <li>â€¢ Research specific individuals and companies for additional context</li>
-                    <li>â€¢ Consider hiring local cultural consultants for complex deals</li>
-                    <li>â€¢ Always show respect for local customs and traditions</li>
-                    <li>â€¢ Building trust takes time - don't rush the relationship</li>
+                    <li>* Research specific individuals and companies for additional context</li>
+                    <li>* Consider hiring local cultural consultants for complex deals</li>
+                    <li>* Always show respect for local customs and traditions</li>
+                    <li>* Building trust takes time - don't rush the relationship</li>
                 </ul>
             </div>
         </div>

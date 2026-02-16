@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 
 
 import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, PanelLeftClose, PanelRightClose, X, Link2, Eye, Info } from 'lucide-react';
@@ -543,7 +543,7 @@ th { background: #f1f5f9; }
 </head>
 <body>
   <h1>${profile.city} Intelligence Brief</h1>
-  <div class="meta">${profile.region} Â· ${profile.country}</div>
+  <div class="meta">${profile.region} * ${profile.country}</div>
   <div class="meta">Established: ${profile.established} | Timezone: ${profile.timezone || 'N/A'}</div>
   <p class="badge">Composite Score: ${computeCompositeScore(profile)} / 100</p>
   
@@ -677,14 +677,14 @@ th { background: #f1f5f9; }
                         className="w-full text-left px-4 py-3 hover:bg-amber-500/10 border-b border-white/5 last:border-b-0"
                       >
                         <div className="text-white font-semibold">{result.city}</div>
-                        <div className="text-[11px] text-slate-400">{result.region} Â· {result.country}</div>
+                        <div className="text-[11px] text-slate-400">{result.region} * {result.country}</div>
                       </button>
                     ))}
                     <button
                       onClick={() => handleSearchSubmit(searchQuery)}
                       className="w-full text-left px-4 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300"
                     >
-                      <div className="font-semibold">ðŸ” Research "{searchQuery}" with AI Agent</div>
+                      <div className="font-semibold">📄 Research "{searchQuery}" with AI Agent</div>
                       <div className="text-[10px] text-purple-400">Search globally for any location not in database</div>
                     </button>
                   </div>
@@ -695,7 +695,7 @@ th { background: #f1f5f9; }
               {isResearching
                 ? <span className="text-purple-400 flex items-center gap-2"><Loader2 className="w-3 h-3 animate-spin" /> AI Agent researching...</span>
                 : hasSelection && activeProfile
-                  ? <span className="text-emerald-400">âœ“ Viewing: {activeProfile.city}, {activeProfile.country}</span>
+                  ? <span className="text-emerald-400">✓ Viewing: {activeProfile.city}, {activeProfile.country}</span>
                   : 'Enter any location worldwide to generate intelligence report'}
             </div>
           </div>
@@ -803,15 +803,15 @@ th { background: #f1f5f9; }
             {/* Research Status */}
             <div className="bg-black/40 rounded-lg p-3 text-[11px] font-mono text-slate-400">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-400">â—</span>
+                <span className="text-emerald-400">a - </span>
                 <span>Searching government websites, World Bank, and official sources...</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-blue-400">â—</span>
+                <span className="text-blue-400">a - </span>
                 <span>Cross-referencing data from international organizations</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-amber-400">â—</span>
+                <span className="text-amber-400">a - </span>
                 <span>Compiling verified economic data and leadership profiles</span>
               </div>
 
@@ -882,10 +882,10 @@ th { background: #f1f5f9; }
                 <div>
                   <h3 className="text-sm font-semibold text-blue-300 mb-2">Search Tips for Best Results:</h3>
                   <ul className="text-xs text-slate-300 space-y-1">
-                    <li>â€¢ <strong>People / Companies:</strong> "Mayor John Doe", "Ayala Corporation", "Amazon", "Tokyo"</li>
-                    <li>â€¢ <strong>Regions:</strong> "Silicon Valley", "Cebu Province", "Bavaria"</li>
-                    <li>â€¢ <strong>Companies:</strong> "Microsoft", "Toyota", "Jollibee"</li>
-                    <li>â€¢ <strong>Government Bodies:</strong> "Philippine government", "EU Commission"</li>
+                    <li>* <strong>People / Companies:</strong> "Mayor John Doe", "Ayala Corporation", "Amazon", "Tokyo"</li>
+                    <li>* <strong>Regions:</strong> "Silicon Valley", "Cebu Province", "Bavari</li>
+                    <li>* <strong>Companies:</strong> "Microsoft", "Toyota", "Jollibee"</li>
+                    <li>* <strong>Government Bodies:</strong> "Philippine government", "EU Commission"</li>
                   </ul>
                 </div>
               </div>
@@ -895,13 +895,13 @@ th { background: #f1f5f9; }
             </div>
             
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡µðŸ‡­ Philippines</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¦ðŸ‡º Australia</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¯ðŸ‡µ Japan</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡ºðŸ‡¸ USA</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¬ðŸ‡§ UK</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡©ðŸ‡ª Germany</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸŒ Any Location</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇵🇭 Philippines</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇦🇺 Australia</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇯🇵 Japan</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇺🇸 USA</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇬🇧 UK</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇩🇪 Germany</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🌍 Any Location</span>
             </div>
             
             {/* Quick Access to Existing Profiles */}
@@ -1042,7 +1042,7 @@ th { background: #f1f5f9; }
                     <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
                   </div>
                   <div className="absolute bottom-3 right-3 bg-black/80 text-xs text-slate-200 px-3 py-1.5 rounded pointer-events-none">
-                    {activeProfile.latitude.toFixed(4)}Â°, {activeProfile.longitude.toFixed(4)}Â°
+                    {activeProfile.latitude.toFixed(4)} degrees, {activeProfile.longitude.toFixed(4)} degrees
                   </div>
                 </div>
               </section>
@@ -1057,7 +1057,7 @@ th { background: #f1f5f9; }
                   <span className="text-white">
                     {isLocationProfile
                       ? (activeProfile.latitude && activeProfile.longitude
-                        ? `${activeProfile.latitude.toFixed(4)}Â°, ${activeProfile.longitude.toFixed(4)}Â°`
+                        ? `${activeProfile.latitude.toFixed(4)} degrees, ${activeProfile.longitude.toFixed(4)} degrees`
                         : safeDisplay(null))
                       : safeDisplay(displayRegion)}
                   </span>
@@ -1621,7 +1621,7 @@ th { background: #f1f5f9; }
                     )}
                     {activeLeader.internationalEngagementFocus && (
                       <span className="inline-block ml-2 mt-2 px-3 py-1 bg-amber-500/20 border border-amber-500/40 rounded-full text-xs text-amber-300">
-                        ðŸŒ Int'l Engagement Lead
+                        🌍 Int'l Engagement Lead
                       </span>
                     )}
                   </div>
@@ -1657,7 +1657,7 @@ th { background: #f1f5f9; }
                     </h4>
                     <ul className="space-y-2 text-xs text-slate-300">
                       {activeLeader.education.map((edu, i) => (
-                        <li key={i}>â€¢ {edu}</li>
+                        <li key={i}>* {edu}</li>
                       ))}
                     </ul>
                   </div>
@@ -1669,7 +1669,7 @@ th { background: #f1f5f9; }
                     </h4>
                     <ul className="space-y-2 text-xs text-slate-300">
                       {activeLeader.previousPositions.map((pos, i) => (
-                        <li key={i}>â€¢ {pos}</li>
+                        <li key={i}>* {pos}</li>
                       ))}
                     </ul>
                   </div>
@@ -1684,7 +1684,7 @@ th { background: #f1f5f9; }
                 <div className="flex flex-wrap gap-2">
                   {activeLeader.achievements.map(item => (
                     <span key={item} className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs text-emerald-300">
-                      âœ“ {item}
+                      ✓ {item}
                     </span>
                   ))}
                 </div>
@@ -1700,7 +1700,7 @@ th { background: #f1f5f9; }
                     {activeLeader.newsReports.map((news, i) => (
                       <div key={i} className="p-3 border border-slate-800 rounded-lg">
                         <div className="font-semibold text-sm text-white">{news.headline}</div>
-                        <div className="text-[10px] text-slate-400 mt-1">{news.date} Â· {news.source}</div>
+                        <div className="text-[10px] text-slate-400 mt-1">{news.date} * {news.source}</div>
                         {news.summary && <p className="text-xs text-slate-300 mt-2">{news.summary}</p>}
                         {news.url && (
                           <a href={news.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 mt-2 text-xs text-blue-400 hover:text-blue-300">
@@ -1814,7 +1814,7 @@ th { background: #f1f5f9; }
                   )}
                   {activeLeader.contactEmail && (
                     <div className="flex items-center gap-2 text-slate-300">
-                      <span className="text-slate-500">ðŸ“§</span>
+                      <span className="text-slate-500">📊</span>
                       <a href={`mailto:${activeLeader.contactEmail}`} className="text-blue-400 hover:underline">{activeLeader.contactEmail}</a>
                     </div>
                   )}

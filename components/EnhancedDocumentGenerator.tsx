@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ENHANCED DOCUMENT GENERATOR
  * 
  * This component connects the expanded document library (200+ types) to the UI
@@ -319,10 +319,10 @@ Document ID: ${docId}
       return `${entityName} is pursuing ${params.strategicIntent?.[0] || 'a strategic initiative'} in ${market}. This document provides a comprehensive analysis of the opportunity, risks, and recommended approach.
 
 Key findings indicate:
-â€¢ Market opportunity valued at ${params.calibration?.constraints?.budgetCap || '$10-50M'} potential
-â€¢ Strategic alignment score: High
-â€¢ Risk profile: Moderate with mitigation strategies available
-â€¢ Recommended timeline: 12-18 months for initial phase`;
+* Market opportunity valued at ${params.calibration?.constraints?.budgetCap || '$10-50M'} potential
+* Strategic alignment score: High
+* Risk profile: Moderate with mitigation strategies available
+* Recommended timeline: 12-18 months for initial phase`;
     }
     
     if (sectionLower.includes('risk')) {
@@ -396,10 +396,10 @@ KEY ASSUMPTIONS
     return `This section provides detailed analysis of ${section.toLowerCase()} considerations for ${entityName}'s initiative in ${market}.
 
 The analysis draws on:
-â€¢ Historical precedent from similar initiatives
-â€¢ Current market intelligence
-â€¢ Multi-source data synthesis
-â€¢ Expert system recommendations
+* Historical precedent from similar initiatives
+* Current market intelligence
+* Multi-source data synthesis
+* Expert system recommendations
 
 Key points are documented in the following subsections with supporting evidence and recommendations for action.`;
   };
@@ -425,7 +425,7 @@ Key points are documented in the following subsections with supporting evidence 
               Document Generation Suite
             </h2>
             <p className="text-sm text-slate-400">
-              200+ document types â€¢ 150+ letter types â€¢ 1-100 pages â€¢ Unbiased analysis
+              200+ document types * 150+ letter types * 1-100 pages * Unbiased analysis
             </p>
           </div>
           
@@ -967,7 +967,7 @@ const DebateModePanel: React.FC<{ params: Partial<ReportParameters> }> = ({ para
                 <h5 className="text-xs font-semibold text-slate-400 mb-1">ARGUMENTS</h5>
                 <ul className="space-y-1">
                   {position.arguments.slice(0, 3).map((arg, i) => (
-                    <li key={i} className="text-xs text-slate-300">â€¢ {arg}</li>
+                    <li key={i} className="text-xs text-slate-300">* {arg}</li>
                   ))}
                 </ul>
               </div>
@@ -976,7 +976,7 @@ const DebateModePanel: React.FC<{ params: Partial<ReportParameters> }> = ({ para
                 <h5 className="text-xs font-semibold text-slate-400 mb-1">EVIDENCE</h5>
                 <ul className="space-y-1">
                   {position.evidence.slice(0, 2).map((ev, i) => (
-                    <li key={i} className="text-xs text-slate-400 italic">â€¢ {ev}</li>
+                    <li key={i} className="text-xs text-slate-400 italic">* {ev}</li>
                   ))}
                 </ul>
               </div>
@@ -1006,7 +1006,7 @@ const DebateModePanel: React.FC<{ params: Partial<ReportParameters> }> = ({ para
             <h5 className="text-sm font-medium text-emerald-400 mb-2">Common Ground</h5>
             <ul className="space-y-1">
               {debate.synthesis.commonGround.map((item, idx) => (
-                <li key={idx} className="text-sm text-slate-300">â€¢ {item}</li>
+                <li key={idx} className="text-sm text-slate-300">* {item}</li>
               ))}
             </ul>
           </div>
@@ -1014,7 +1014,7 @@ const DebateModePanel: React.FC<{ params: Partial<ReportParameters> }> = ({ para
             <h5 className="text-sm font-medium text-rose-400 mb-2">Irreconcilable Differences</h5>
             <ul className="space-y-1">
               {debate.synthesis.irreconcilableDifferences.map((item, idx) => (
-                <li key={idx} className="text-sm text-slate-300">â€¢ {item}</li>
+                <li key={idx} className="text-sm text-slate-300">* {item}</li>
               ))}
             </ul>
           </div>

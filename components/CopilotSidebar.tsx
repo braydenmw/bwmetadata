@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrainCircuit, AlertTriangle, CheckCircle, Zap } from 'lucide-react';
 import { askCopilot } from '../services/geminiService';
 import { ReportParameters } from '../types';
@@ -17,7 +17,7 @@ export default function CopilotSidebar({ caseId, currentContext }: {
   currentContext?: { phase?: string; params?: ReportParameters }
 }) {
   const [messages, setMessages] = useState<string[]>([
-    'ðŸ§  BWGA AI Copilot â€” Dynamic Strategic Partner',
+    '📊  BWGA AI Copilot - Dynamic Strategic Partner',
     'I\'m analyzing your mission in real-time. Here are my initial insights:'
   ]);
   const [loading, setLoading] = useState(false);
@@ -152,7 +152,7 @@ export default function CopilotSidebar({ caseId, currentContext }: {
             <div
               key={suggestion.id}
               className={`p-3 rounded-lg border ${getSuggestionColor(suggestion.type)} cursor-pointer hover:shadow-sm transition-all`}
-              onClick={() => append(`ðŸ’¡ ${suggestion.title}: ${suggestion.content}`)}
+              onClick={() => append(`💡 ${suggestion.title}: ${suggestion.content}`)}
             >
               <div className="flex items-start gap-2">
                 {getSuggestionIcon(suggestion.type)}
@@ -166,7 +166,7 @@ export default function CopilotSidebar({ caseId, currentContext }: {
                   <p className="text-xs text-stone-700 mt-1 leading-relaxed">{suggestion.content}</p>
                   {suggestion.action && (
                     <span className="text-xs font-bold text-blue-600 mt-1 block hover:underline">
-                      â†’ {suggestion.action}
+                      a' {suggestion.action}
                     </span>
                   )}
                 </div>

@@ -91,7 +91,7 @@ export const IssueAnalysisPanel: React.FC<IssueAnalysisPanelProps> = ({ analysis
               <ul className="space-y-1">
                 {analysis.contributingFactors.map((factor, i) => (
                   <li key={i} className="text-sm text-slate-200 flex gap-2">
-                    <span className="text-indigo-400">•</span>
+                    <span className="text-indigo-400">*</span>
                     <span>{factor}</span>
                   </li>
                 ))}
@@ -159,7 +159,7 @@ export const IssueAnalysisPanel: React.FC<IssueAnalysisPanelProps> = ({ analysis
                   <p className="text-xs font-semibold text-slate-300 mb-1">Key Actions:</p>
                   <ul className="text-xs text-slate-300 space-y-1 ml-2">
                     {phase.keyActions.map((action, j) => (
-                      <li key={j}>• {action}</li>
+                      <li key={j}>* {action}</li>
                     ))}
                   </ul>
                 </div>

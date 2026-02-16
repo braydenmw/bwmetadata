@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { runOpportunityOrchestration } from '../services/engine';
 import type { ReportParameters, RegionProfile, OrchResult } from '../types';
 import { RocketIcon, ActivityIcon, Zap, TrendingUp, BarChart, SlidersIcon, FileText } from './Icons';

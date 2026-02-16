@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Info, Sparkles } from 'lucide-react';
 import { features } from '../services/config';
 

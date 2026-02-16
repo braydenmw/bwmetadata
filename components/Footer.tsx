@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Cpu, Github, X, Shield, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -6,19 +6,19 @@ const PrivacyContent: React.FC = () => (
     <div className="space-y-8">
       <div>
         <h3 className="text-xl font-serif font-bold text-bw-gold mb-2">Ethical AI & Data Governance Framework</h3>
-        <p className="text-sm text-gray-400 mb-4">Version 1.0 â€“ May 2025</p>
+        <p className="text-sm text-gray-400 mb-4">Version 1.0 - May 2025</p>
         
         <div className="space-y-4 text-sm text-gray-300">
           <div>
             <h4 className="font-bold text-white mb-1">1. Our Commitment to Responsible AI & Ethical Data Stewardship</h4>
-            <p>At BW Global Advisory (BWGA), we believe that Artificial Intelligence holds immense potential to unlock regional economic opportunities and foster inclusive, sustainable development globally. However, we recognize that this power must be wielded with profound responsibility. Our developing BWGA Nexusâ„¢ AI platform is being built upon a foundation of strong ethical principles and robust data governance practices. We are committed to ensuring our technology serves humanity, respects individual rights, and promotes equitable outcomes.</p>
+            <p>At BW Global Advisory (BWGA), we believe that Artificial Intelligence holds immense potential to unlock regional economic opportunities and foster inclusive, sustainable development globally. However, we recognize that this power must be wielded with profound responsibility. Our developing BWGA Nexus(TM) AI platform is being built upon a foundation of strong ethical principles and robust data governance practices. We are committed to ensuring our technology serves humanity, respects individual rights, and promotes equitable outcomes.</p>
             <p className="mt-2">This framework outlines our guiding principles for the ethical development and deployment of AI and the responsible management of data within the BWGA Nexus ecosystem. It is a living document and will evolve as AI technologies and global best practices advance.</p>
           </div>
           
           <div>
             <h4 className="font-bold text-white mb-1">2. Core Ethical Principles for AI Development & Application</h4>
             <p><strong className="text-bw-gold/80">Human-Centricity & Beneficial Purpose:</strong> The primary objective of BWGA's AI is to augment human intelligence and support decisions that lead to positive socio-economic outcomes, particularly for underserved regional communities. We prioritize applications of AI that aim to alleviate poverty, enhance inclusive growth, promote environmental sustainability, and improve governance, in alignment with the UN Sustainable Development Goals (SDGs).</p>
-            <p className="mt-2"><strong className="text-bw-gold/80">Fairness & Non-Discrimination (Bias Mitigation):</strong> We acknowledge the potential for biases in data and algorithms. BWGA is committed to proactively identifying and mitigating such biases throughout the AI lifecycle â€“ from data collection and model training to deployment and monitoring.</p>
+            <p className="mt-2"><strong className="text-bw-gold/80">Fairness & Non-Discrimination (Bias Mitigation):</strong> We acknowledge the potential for biases in data and algorithms. BWGA is committed to proactively identifying and mitigating such biases throughout the AI lifecycle - from data collection and model training to deployment and monitoring.</p>
             <p className="mt-2"><strong className="text-bw-gold/80">Transparency & Explainability (Appropriate to Context):</strong> While the deepest algorithmic complexities of our proprietary "Nexus AI" may remain trade secrets, we are committed to transparency regarding Data Sourcing, Methodological Approach (High-Level), and the Limitations of AI.</p>
             <p className="mt-2"><strong className="text-bw-gold/80">Accountability & Human Oversight (Human-in-the-Loop):</strong> BWGA operates on an AI-Human Symbiosis Model. Critical strategic recommendations are always subject to review, validation, and contextualization by qualified human experts.</p>
             <p className="mt-2"><strong className="text-bw-gold/80">Security & Safety:</strong> We are committed to developing AI systems that are robust, secure, and operate safely within their intended parameters, minimizing risks of unintended consequences.</p>

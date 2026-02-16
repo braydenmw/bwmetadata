@@ -56,6 +56,9 @@ import { RegionalIdentityDecoder, type IdentityReport } from './reflexive/Region
 import { LatentAdvantageMiner, type LatentAdvantageReport } from './reflexive/LatentAdvantageMiner';
 import { UniversalTranslationLayer, type TranslationInput, type TranslationReport } from './reflexive/UniversalTranslationLayer';
 
+// IFC Global Standards Engine (Layer 10 - Universal Compliance)
+import { IFCGlobalStandardsEngine, type GlobalStandardsAssessment } from './IFCGlobalStandardsEngine';
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -142,6 +145,9 @@ export interface IntelligenceReport {
   // Unbiased analysis
   unbiasedAnalysis?: FullUnbiasedAnalysis;
   
+  // IFC Global Standards Assessment (Universal Skeleton + Gap Analysis + Local Law Hunt)
+  globalStandards?: GlobalStandardsAssessment;
+  
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
   
@@ -227,28 +233,42 @@ export class NSILIntelligenceHub {
     let personaAnalysis: FullPersonaAnalysis | undefined;
     let counterfactual: CounterfactualAnalysis | undefined;
     let unbiasedAnalysis: FullUnbiasedAnalysis | undefined;
+    let globalStandards: GlobalStandardsAssessment | undefined;
     let autonomous: AutonomousIntelligence;
     let reflexive: ReflexiveIntelligence | undefined;
     
     if (inputValidation.overallStatus !== 'rejected') {
       // Run ALL engines in parallel for maximum speed
-      const [personaResult, counterfactualResult, unbiasedResult, autonomousResult] = await Promise.all([
+      const [personaResult, counterfactualResult, unbiasedResult, autonomousResult, globalStandardsResult] = await Promise.all([
         PersonaEngine.runFullAnalysis(params),
         Promise.resolve(CounterfactualEngine.analyze(params)),
         Promise.resolve(UnbiasedAnalysisEngine.analyze(params)),
-        Promise.resolve(this.runAutonomousLayer(params))
+        Promise.resolve(this.runAutonomousLayer(params)),
+        Promise.resolve(IFCGlobalStandardsEngine.assessProject({
+          projectName: (params as Record<string, string>).projectName || 'Investment Project',
+          country: (params as Record<string, string>).country || 'Unknown',
+          sector: ((params as Record<string, string[]>).industry || ['general'])[0] || 'general',
+          investmentAmount: 10000000,
+          projectType: 'greenfield',
+          description: (params as Record<string, string>).description || 'Investment project under analysis',
+          environmentalFootprint: { landUseHa: 10, waterUsageM3PerDay: 100, emissions: 'moderate' },
+          socialContext: { workforceSize: 100, communityProximity: 'adjacent', indigenousLandRisk: false },
+          governanceStructure: { localOwnershipPercent: 50, transparencyLevel: 'moderate' }
+        }))
       ]);
       
       personaAnalysis = personaResult;
       counterfactual = counterfactualResult;
       unbiasedAnalysis = unbiasedResult;
       autonomous = autonomousResult;
+      globalStandards = globalStandardsResult;
       
       // Run reflexive intelligence layer
       reflexive = this.runReflexiveLayer(params, autonomous);
       
       componentsRun.push(
         'PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis',
+        'IFCGlobalStandardsEngine',
         'CreativeSynthesis', 'CrossDomainTransfer', 'AutonomousGoal',
         'EthicalReasoning', 'EmotionalIntelligence', 'ScenarioSimulation',
         'SelfEvolvingAlgorithm', 'AdaptiveLearning',
@@ -300,6 +320,7 @@ export class NSILIntelligenceHub {
       personaAnalysis,
       counterfactual,
       unbiasedAnalysis,
+      globalStandards,
       autonomous,
       reflexive,
       applicableInsights,
@@ -310,6 +331,7 @@ export class NSILIntelligenceHub {
         nsil: '5.0',
         autonomous: '1.0',
         reflexive: '1.0',
+        globalStandards: '1.0',
         knowledge: '2.0',
         cognition: '1.5',
         proactive: '1.2'

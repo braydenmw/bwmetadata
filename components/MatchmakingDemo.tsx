@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Globe, FileText, Target, Zap, Activity, CheckCircle, Cpu, ArrowRight, Sparkles } from 'lucide-react';
 import DocumentGenerationSuite from './DocumentGenerationSuite';
 import { RefinedIntake } from '../types';
@@ -135,7 +135,7 @@ export default function MatchmakingDemo() {
                     onClick={() => { setShowDocGeneration(false); setSelectedMatch(null); }}
                     className="mb-4 flex items-center gap-2 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
                 >
-                    â† Back to Matching
+                    <- Back to Matching
                 </button>
                 <DocumentGenerationSuite 
                     entityName={currentScenario.context.industry}
@@ -206,7 +206,7 @@ export default function MatchmakingDemo() {
                                         <div key={i} className="flex justify-between items-center p-3 border border-slate-200 rounded hover:border-blue-400 transition-all bg-white shadow-sm hover:shadow-md hover:bg-blue-50/50">
                                             <div>
                                                 <div className="font-bold text-xs text-slate-900">{m.name}</div>
-                                                <div className="text-[9px] text-slate-500 uppercase">{m.location} â€¢ {m.readiness}</div>
+                                                <div className="text-[9px] text-slate-500 uppercase">{m.location} * {m.readiness}</div>
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 <div className="text-right">

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Building2, Target, ShieldCheck, Shield,
   Download, Printer, Globe,
@@ -54,7 +54,7 @@ const CollapsibleSection: React.FC<{
           <p className="text-xs text-stone-600">{description}</p>
         </div>
       </div>
-      <div className="text-lg text-stone-400">{isExpanded ? 'Ôû╝' : 'ÔûÂ'}</div>
+      <div className="text-lg text-stone-400">{isExpanded ? 'Ou' : 'OuA'}</div>
     </div>
     {isExpanded && <div className="p-4 bg-white border-t border-stone-200">{children}</div>}
   </div>
@@ -113,7 +113,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
       setChatInput('');
 
       // Add thinking indicator
-      setChatMessages(prev => [...prev, { text: '🧠 Analysing with NSIL Intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
+      setChatMessages(prev => [...prev, { text: ' Analysing with NSIL Intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
 
       try {
         const input = userText.toLowerCase();
@@ -147,70 +147,70 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         let responseText = '';
 
         // Header with trust score
-        responseText += `**NSIL Intelligence Assessment** (Trust Score: ${quickAssess.trustScore}/100 — ${quickAssess.status.toUpperCase()})\n\n`;
+        responseText += `**NSIL Intelligence Assessment** (Trust Score: ${quickAssess.trustScore}/100  -  ${quickAssess.status.toUpperCase()})\n\n`;
 
         // Context-aware analysis based on query topic
         if (input.includes('risk')) {
           responseText += `**Risk Analysis for ${params.organizationName || 'Your Organisation'}:**\n`;
-          responseText += `• Current risk tolerance: ${params.riskTolerance || 'not set'}\n`;
-          responseText += `• Ethical gate: ${quickAssess.ethicalPass ? '✅ PASS' : '⚠️ CONCERNS DETECTED'}\n`;
-          responseText += `• Emotional climate: ${quickAssess.emotionalClimateNotes}\n`;
+          responseText += `* Current risk tolerance: ${params.riskTolerance || 'not set'}\n`;
+          responseText += `* Ethical gate: ${quickAssess.ethicalPass ? ' PASS' : ' CONCERNS DETECTED'}\n`;
+          responseText += `* Emotional climate: ${quickAssess.emotionalClimateNotes}\n`;
           if (quickAssess.topConcerns.length > 0) {
             responseText += `\n**Top Concerns:**\n`;
-            quickAssess.topConcerns.forEach(c => { responseText += `• ${c}\n`; });
+            quickAssess.topConcerns.forEach(c => { responseText += `* ${c}\n`; });
           }
         } else if (input.includes('partner') || input.includes('match')) {
           responseText += `**Partnership Intelligence for ${params.organizationName || 'Your Organisation'}:**\n`;
-          responseText += `• Strategic intent: ${params.strategicIntent?.[0] || 'partnership development'}\n`;
-          responseText += `• Ideal partner profile: ${params.idealPartnerProfile || 'Not yet defined — complete Step 4 for AI matching'}\n`;
+          responseText += `* Strategic intent: ${params.strategicIntent?.[0] || 'partnership development'}\n`;
+          responseText += `* Ideal partner profile: ${params.idealPartnerProfile || 'Not yet defined  -  complete Step 4 for AI matching'}\n`;
           if (quickAssess.topOpportunities.length > 0) {
             responseText += `\n**Opportunities Identified:**\n`;
-            quickAssess.topOpportunities.forEach(o => { responseText += `• ${o}\n`; });
+            quickAssess.topOpportunities.forEach(o => { responseText += `* ${o}\n`; });
           }
         } else if (input.includes('strateg') || input.includes('objective') || input.includes('goal')) {
           responseText += `**Strategic Analysis:**\n`;
           const objectives = params.strategicObjectives?.length > 0 ? params.strategicObjectives.join(', ') : 'Not yet defined';
-          responseText += `• Objectives: ${objectives}\n`;
-          responseText += `• Readiness score: ${situation.readiness}/100\n`;
-          responseText += `• Blind spots detected: ${situation.blindSpotCount}\n`;
-          responseText += `• Critical unconsidered needs: ${situation.criticalUnconsideredCount}\n`;
+          responseText += `* Objectives: ${objectives}\n`;
+          responseText += `* Readiness score: ${situation.readiness}/100\n`;
+          responseText += `* Blind spots detected: ${situation.blindSpotCount}\n`;
+          responseText += `* Critical unconsidered needs: ${situation.criticalUnconsideredCount}\n`;
         } else if (input.includes('countr') || input.includes('region') || input.includes('location') || input.includes('market')) {
-          responseText += `**Market Intelligence — ${params.country || 'Target Market'}:**\n`;
-          responseText += `• Region: ${params.region || 'Not specified'}\n`;
-          responseText += `• Industry: ${params.industry?.join(', ') || 'Not specified'}\n`;
+          responseText += `**Market Intelligence  -  ${params.country || 'Target Market'}:**\n`;
+          responseText += `* Region: ${params.region || 'Not specified'}\n`;
+          responseText += `* Industry: ${params.industry?.join(', ') || 'Not specified'}\n`;
           if (historical.found) {
             responseText += `\n**Historical Precedent:** ${historical.case_title} (${historical.outcome})\n`;
-            responseText += `• Key lesson: ${historical.topLesson}\n`;
+            responseText += `* Key lesson: ${historical.topLesson}\n`;
           }
         } else if (input.includes('ready') || input.includes('status') || input.includes('progress') || input.includes('what next')) {
           responseText += `**Current Session Readiness:**\n`;
-          responseText += `• Overall readiness: ${situation.readiness}/100\n`;
-          responseText += `• Trust score: ${quickAssess.trustScore}/100\n`;
-          responseText += `• Status: ${quickAssess.headline}\n`;
-          responseText += `• Next step: ${quickAssess.nextStep}\n`;
-          responseText += `• Top blind spot: ${situation.topBlindSpot}\n`;
-          responseText += `• Top unconsidered need: ${situation.topUnconsideredNeed}\n`;
+          responseText += `* Overall readiness: ${situation.readiness}/100\n`;
+          responseText += `* Trust score: ${quickAssess.trustScore}/100\n`;
+          responseText += `* Status: ${quickAssess.headline}\n`;
+          responseText += `* Next step: ${quickAssess.nextStep}\n`;
+          responseText += `* Top blind spot: ${situation.topBlindSpot}\n`;
+          responseText += `* Top unconsidered need: ${situation.topUnconsideredNeed}\n`;
         } else {
-          // Default — full intelligence synthesis
+          // Default  -  full intelligence synthesis
           responseText += `**Analysis of "${userText}":**\n`;
-          responseText += `• Status: ${quickAssess.headline}\n`;
-          responseText += `• Next step: ${quickAssess.nextStep}\n`;
+          responseText += `* Status: ${quickAssess.headline}\n`;
+          responseText += `* Next step: ${quickAssess.nextStep}\n`;
           if (quickAssess.topConcerns.length > 0) {
-            responseText += `• Top concern: ${quickAssess.topConcerns[0]}\n`;
+            responseText += `* Top concern: ${quickAssess.topConcerns[0]}\n`;
           }
           if (quickAssess.topOpportunities.length > 0) {
-            responseText += `• Opportunity: ${quickAssess.topOpportunities[0]}\n`;
+            responseText += `* Opportunity: ${quickAssess.topOpportunities[0]}\n`;
           }
         }
 
         // Always append situation awareness
         responseText += `\n**What You Haven't Considered:**\n`;
-        responseText += `• ${situation.topUnconsideredNeed}\n`;
+        responseText += `* ${situation.topUnconsideredNeed}\n`;
         responseText += `\n**Recommended Question:** ${situation.topQuestion}\n`;
 
         // Historical parallel if found
         if (historical.found) {
-          responseText += `\n**Historical Parallel:** ${historical.case_title} — ${historical.topLesson}\n`;
+          responseText += `\n**Historical Parallel:** ${historical.case_title}  -  ${historical.topLesson}\n`;
         }
 
         // Remove thinking indicator and add real response
@@ -253,12 +253,12 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         const situation = SituationAnalysisEngine.quickSummary(params);
         const historical = HistoricalParallelMatcher.quickMatch(params);
         
-        let genText = `**Draft Compiled — Pre-Generation Intelligence Briefing:**\n\n`;
-        genText += `• Readiness Score: ${situation.readiness}/100\n`;
-        genText += `• Blind Spots: ${situation.blindSpotCount} detected\n`;
-        genText += `• Critical Unconsidered Needs: ${situation.criticalUnconsideredCount}\n`;
+        let genText = `**Draft Compiled  -  Pre-Generation Intelligence Briefing:**\n\n`;
+        genText += `* Readiness Score: ${situation.readiness}/100\n`;
+        genText += `* Blind Spots: ${situation.blindSpotCount} detected\n`;
+        genText += `* Critical Unconsidered Needs: ${situation.criticalUnconsideredCount}\n`;
         if (historical.found) {
-          genText += `• Historical Parallel: ${historical.case_title} (${historical.outcome}) — ${historical.topLesson}\n`;
+          genText += `* Historical Parallel: ${historical.case_title} (${historical.outcome})  -  ${historical.topLesson}\n`;
         }
         genText += `\nPlease review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.`;
         
@@ -298,13 +298,13 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
       if (missing.length > 0) {
         setChatMessages(prev => [...prev, {
-          text: `📋 **Opening ${stepName}** — ${missing.length} field(s) still needed. Readiness: ${situation.readiness}/100.\n\n💡 **Tip:** ${situation.topQuestion}`,
+          text: ` **Opening ${stepName}**  -  ${missing.length} field(s) still needed. Readiness: ${situation.readiness}/100.\n\n **Tip:** ${situation.topQuestion}`,
           sender: 'bw',
           timestamp: new Date()
         }]);
       } else if (isStepComplete(id)) {
         setChatMessages(prev => [...prev, {
-          text: `✅ **${stepName} is complete.** The NSIL brain will incorporate this data into all 46 scoring formulas. Current readiness: ${situation.readiness}/100.`,
+          text: ` **${stepName} is complete.** The NSIL brain will incorporate this data into all 46 scoring formulas. Current readiness: ${situation.readiness}/100.`,
           sender: 'bw',
           timestamp: new Date()
         }]);
@@ -956,7 +956,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                       </div>
 
                       <div className="mt-3 p-3 bg-indigo-50 border border-indigo-200 rounded text-xs text-indigo-800">
-                          <strong>NSIL:</strong> Nexus Strategic Intelligence Layer — THE COMPREHENSIVE INTAKE FRAMEWORK. The Ten-Step Protocol: Before NSIL can analyze, it must understand. This professional-grade intake framework guides you through every critical dimension of your strategic plan—forcing clarity, eliminating blind spots, and ensuring the AI reasoning engine works with complete, well-structured inputs.
+                          <strong>NSIL:</strong> Nexus Strategic Intelligence Layer  -  THE COMPREHENSIVE INTAKE FRAMEWORK. The Ten-Step Protocol: Before NSIL can analyze, it must understand. This professional-grade intake framework guides you through every critical dimension of your strategic plan - forcing clarity, eliminating blind spots, and ensuring the AI reasoning engine works with complete, well-structured inputs.
                       </div>
 
                       <div className="mt-2 p-3 bg-purple-50 border border-purple-200 rounded text-xs text-purple-800">
@@ -1600,7 +1600,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                                         value={params.fxAssumption || ''}
                                                         onChange={(e) => setParams({ ...params, fxAssumption: e.target.value })}
                                                         className="w-full p-2 border border-stone-200 rounded text-sm focus:ring-1 focus:ring-bw-gold focus:border-transparent"
-                                                        placeholder="e.g., USD base, ±5% fx swing"
+                                                        placeholder="e.g., USD base, +/-5% fx swing"
                                                     />
                                                 </div>
                                             </div>
@@ -2795,10 +2795,10 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         <div className="mb-12 p-6 bg-slate-50 border border-slate-200 rounded-lg">
                             <h2 className="text-xl font-bold text-slate-800 mb-2">The Entire Meadow Philosophy: A New Way to See</h2>
                             <p className="text-sm text-slate-700 leading-relaxed">
-                                Most tools focus on the "bee and the flower"—the immediate transaction. This is dangerously incomplete.
+                                Most tools focus on the "bee and the flower" - the immediate transaction. This is dangerously incomplete.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mt-2">
-                                Nexus AI models the <strong>entire meadow</strong>: the full ecosystem, the hidden context, and all stakeholders. Real-world success depends on alignment with culture, regulation, and incentives—not just the deal itself. We built a system that sees the whole picture, because that’s the only way to deliver outcomes that last.
+                                Nexus AI models the <strong>entire meadow</strong>: the full ecosystem, the hidden context, and all stakeholders. Real-world success depends on alignment with culture, regulation, and incentives - not just the deal itself. We built a system that sees the whole picture, because that's the only way to deliver outcomes that last.
                             </p>
                         </div>
 
@@ -2809,7 +2809,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                 <>
                                     <div className="text-3xl font-bold text-stone-900 mb-2">{params.organizationName}</div>
                                     <div className="text-lg text-stone-600 italic mb-4">
-                                        {params.organizationType} ÔÇó {params.country}
+                                        {params.organizationType} OCo {params.country}
                                     </div>
                                 </>
                             ) : (
@@ -2897,7 +2897,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                                         <span className="font-semibold text-xs">Top Symbiotic Partners:</span>
                                         <ul className="text-xs mt-1">
                                             {params.reportPayload.computedIntelligence.symbioticPartners.slice(0, 2).map((partner, idx) => (
-                                                <li key={idx} className="text-stone-700">ÔÇó {partner.entityName} (Score: {partner.symbiosisScore})</li>
+                                                <li key={idx} className="text-stone-700">OCo {partner.entityName} (Score: {partner.symbiosisScore})</li>
                                             ))}
                                         </ul>
                                     </div>
@@ -2931,7 +2931,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
                     {/* Doc Footer */}
                     <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[9px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
-                        <span>Generated by Nexus Intelligence OS v6.0 · NSIL v3.2</span>
+                        <span>Generated by Nexus Intelligence OS v6.0 * NSIL v3.2</span>
                         <span>Page 1 of 1</span>
                     </div>
                 </motion.div>

@@ -1,10 +1,10 @@
-﻿import React from 'react';
+import React from 'react';
 import { X, Shield, FileText, BookOpen, Scale } from 'lucide-react';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// LEGAL & REFERENCE DOCUMENTS â€” Full Popup Modals
+// ---------------------------------------------------------------------------
+// LEGAL & REFERENCE DOCUMENTS - Full Popup Modals
 // User Manual, Terms & Conditions, Privacy Policy, Ethical AI Framework
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ---------------------------------------------------------------------------
 
 export type DocumentType = 'user-manual' | 'terms' | 'privacy' | 'ethics' | null;
 
@@ -27,7 +27,7 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ activeDocument, onClose }
 
     const getTitle = () => {
         switch (activeDocument) {
-            case 'user-manual': return 'BWGA Ai â€” User Manual';
+            case 'user-manual': return 'BWGA Ai - User Manual';
             case 'terms': return 'Terms & Conditions';
             case 'privacy': return 'Privacy Policy';
             case 'ethics': return 'Ethical AI Framework';
@@ -52,7 +52,7 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ activeDocument, onClose }
                                 {getIcon()}
                                 <h1 className="text-lg font-semibold text-white">{getTitle()}</h1>
                             </div>
-                            <p className="text-xs text-white/50 mt-1">BW Global Advisory â€” ABN 55 978 113 300</p>
+                            <p className="text-xs text-white/50 mt-1">BW Global Advisory - ABN 55 978 113 300</p>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ activeDocument, onClose }
 
                     {/* Footer */}
                     <div className="border-t border-slate-200 px-8 py-4 bg-slate-50 flex items-center justify-between">
-                        <p className="text-[10px] text-slate-400">Â© 2026 BW Global Advisory. All rights reserved. | ABN 55 978 113 300 | Melbourne, Australia</p>
+                        <p className="text-[10px] text-slate-400">A(c) 2026 BW Global Advisory. All rights reserved. | ABN 55 978 113 300 | Melbourne, Australia</p>
                         <button onClick={onClose} className="px-4 py-2 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800">Close</button>
                     </div>
                 </div>
@@ -75,9 +75,9 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ activeDocument, onClose }
     );
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// USER MANUAL â€” Comprehensive Platform Guide (~15 pages)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
+// USER MANUAL - Comprehensive Platform Guide (~15 pages)
+// -------------------------------------------------------------------------------
 const UserManualContent: React.FC = () => (
     <div className="space-y-8">
         {/* Cover / Title */}
@@ -85,7 +85,7 @@ const UserManualContent: React.FC = () => (
             <p className="text-xs text-amber-600 uppercase tracking-[0.3em] font-semibold mb-2">Official User Manual</p>
             <h1 className="text-3xl font-light text-slate-900 mb-2">BWGA Ai</h1>
             <h2 className="text-lg text-slate-500 font-light">Nexus Intelligence Operating System v6.0</h2>
-            <p className="text-xs text-slate-400 mt-4">Version 6.0 Â· February 2026 Â· R&D Phase</p>
+            <p className="text-xs text-slate-400 mt-4">Version 6.0 * February 2026 * R&D Phase</p>
             <p className="text-xs text-slate-400">Developed in Melbourne, Australia & Manila, Philippines</p>
         </div>
 
@@ -94,18 +94,18 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Table of Contents</h3>
             <div className="grid md:grid-cols-2 gap-1 text-xs text-slate-600">
                 <p>1. Welcome & Getting Started</p>
-                <p>8. Step 5 â€” Financial Model</p>
+                <p>8. Step 5 - Financial Model</p>
                 <p>2. System Requirements & Access</p>
-                <p>9. Step 6 â€” Risk & Mitigation</p>
+                <p>9. Step 6 - Risk & Mitigation</p>
                 <p>3. Platform Overview</p>
-                <p>10. Step 7 â€” Resources & Capability</p>
+                <p>10. Step 7 - Resources & Capability</p>
                 <p>4. The Command Page (Landing)</p>
-                <p>11. Step 8 â€” Execution Plan</p>
+                <p>11. Step 8 - Execution Plan</p>
                 <p>5. Entering the Platform</p>
-                <p>12. Step 9 â€” Governance & Monitoring</p>
-                <p>6. Step 1 â€” Identity & Foundation</p>
-                <p>13. Step 10 â€” Scoring & Readiness</p>
-                <p>7. Steps 2â€“4 â€” Strategy, Market, Partners</p>
+                <p>12. Step 9 - Governance & Monitoring</p>
+                <p>6. Step 1 - Identity & Foundation</p>
+                <p>13. Step 10 - Scoring & Readiness</p>
+                <p>7. Steps 2a"4 - Strategy, Market, Partners</p>
                 <p>14. Generating Your Report</p>
                 <p>&nbsp;</p>
                 <p>15. The BW Consultant</p>
@@ -124,7 +124,7 @@ const UserManualContent: React.FC = () => (
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">1. Welcome & Getting Started</h3>
             <p className="mb-3">Thank you for choosing BWGA Ai. This manual will guide you through every feature of the platform, from your first search to exporting board-ready documents.</p>
-            <p className="mb-3"><strong>What is BWGA Ai?</strong> It is a Sovereign-Grade Intelligence Operating System designed to help regional communities, businesses, government agencies, and first-time exporters produce institutional-quality strategic analysis â€” the same calibre of work that multinational corporations commission from top-tier consulting firms.</p>
+            <p className="mb-3"><strong>What is BWGA Ai?</strong> It is a Sovereign-Grade Intelligence Operating System designed to help regional communities, businesses, government agencies, and first-time exporters produce institutional-quality strategic analysis - the same calibre of work that multinational corporations commission from top-tier consulting firms.</p>
             <p className="mb-3">The platform is not a chatbot. It is a structured intelligence pipeline that:</p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
                 <li>Captures your opportunity through a structured 10-step intake process</li>
@@ -143,7 +143,7 @@ const UserManualContent: React.FC = () => (
         {/* Chapter 2 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">2. System Requirements & Access</h3>
-            <p className="mb-3"><strong>Supported Browsers:</strong> Google Chrome (recommended), Microsoft Edge, Mozilla Firefox, Safari. The platform is web-based â€” no software installation required.</p>
+            <p className="mb-3"><strong>Supported Browsers:</strong> Google Chrome (recommended), Microsoft Edge, Mozilla Firefox, Safari. The platform is web-based - no software installation required.</p>
             <p className="mb-3"><strong>Device Compatibility:</strong> Desktop and laptop computers are recommended for the full experience. Tablet devices are supported with a responsive layout. Mobile phones can access the Command Page and BW AI Search but the full report builder is optimised for larger screens.</p>
             <p className="mb-3"><strong>Internet Connection:</strong> A stable broadband connection is required. The platform communicates with AI services and live data sources in real time. Slow or intermittent connections may cause search timeouts or report generation delays.</p>
             <p className="mb-3"><strong>Access:</strong> During the R&D phase, access is provided via direct URL. No account registration is currently required. Future commercial releases will include authenticated user accounts with role-based access controls.</p>
@@ -154,20 +154,20 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">3. Platform Overview</h3>
             <p className="mb-3">The platform consists of four primary areas:</p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3 mb-3">
-                <div><strong className="text-slate-900">Command Page</strong> â€” The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study demo. It is your launch point into the system.</div>
-                <div><strong className="text-slate-900">Main Canvas (Report Builder)</strong> â€” The primary workspace where you complete the 10-step intake protocol, view live report generation, and interact with the BW Consultant.</div>
-                <div><strong className="text-slate-900">BW Consultant</strong> â€” A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything â€” location research, company analysis, strategic advice, score explanations â€” all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation.</div>
-                <div><strong className="text-slate-900">Document Factory</strong> â€” The output system that compiles your analysis into 200+ institutional-grade document types.</div>
+                <div><strong className="text-slate-900">Command Page</strong> - The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study demo. It is your launch point into the system.</div>
+                <div><strong className="text-slate-900">Main Canvas (Report Builder)</strong> - The primary workspace where you complete the 10-step intake protocol, view live report generation, and interact with the BW Consultant.</div>
+                <div><strong className="text-slate-900">BW Consultant</strong> - A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything - location research, company analysis, strategic advice, score explanations - all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation.</div>
+                <div><strong className="text-slate-900">Document Factory</strong> - The output system that compiles your analysis into 200+ institutional-grade document types.</div>
             </div>
             <p className="mb-3"><strong>7-Layer Processing Architecture:</strong> Every report passes through seven processing layers:</p>
             <ol className="list-decimal ml-6 space-y-1">
-                <li><strong>Input Validation & Governance</strong> â€” Screens inputs for completeness and consistency</li>
-                <li><strong>Multi-Agent Adversarial Debate</strong> â€” 5 AI personas challenge every claim</li>
-                <li><strong>Quantitative Formula Scoring</strong> â€” 38 formulas calculate hard metrics</li>
-                <li><strong>Monte Carlo Stress Testing</strong> â€” 10,000+ scenario simulations</li>
-                <li><strong>Human Cognition Engine</strong> â€” 7 behavioural models simulate decision-maker responses</li>
-                <li><strong>Output Synthesis & Provenance</strong> â€” Traceable, auditable conclusions</li>
-                <li><strong>Proactive Intelligence</strong> â€” Autonomous monitoring, calibration, and self-improvement</li>
+                <li><strong>Input Validation & Governance</strong> - Screens inputs for completeness and consistency</li>
+                <li><strong>Multi-Agent Adversarial Debate</strong> - 5 AI personas challenge every claim</li>
+                <li><strong>Quantitative Formula Scoring</strong> - 38 formulas calculate hard metrics</li>
+                <li><strong>Monte Carlo Stress Testing</strong> - 10,000+ scenario simulations</li>
+                <li><strong>Human Cognition Engine</strong> - 7 behavioural models simulate decision-maker responses</li>
+                <li><strong>Output Synthesis & Provenance</strong> - Traceable, auditable conclusions</li>
+                <li><strong>Proactive Intelligence</strong> - Autonomous monitoring, calibration, and self-improvement</li>
             </ol>
         </div>
 
@@ -176,16 +176,16 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">4. The Command Page (Landing)</h3>
             <p className="mb-3">When you first visit the platform, you arrive at the Command Page. This page serves two purposes:</p>
             <ol className="list-decimal ml-6 space-y-2 mb-3">
-                <li><strong>Education</strong> â€” Explains what the system does, how it works, and who it is built for. Scroll down to read about the 7-layer architecture, the scoring engine, proprietary behavioural models, and a live case-study demonstration with real outputs.</li>
-                <li><strong>Launch</strong> â€” At the bottom of the page, accept the Terms & Conditions checkbox and click "Launch Intelligence OS" to enter the full report builder and access the BW Consultant.</li>
+                <li><strong>Education</strong> - Explains what the system does, how it works, and who it is built for. Scroll down to read about the 7-layer architecture, the scoring engine, proprietary behavioural models, and a live case-study demonstration with real outputs.</li>
+                <li><strong>Launch</strong> - At the bottom of the page, accept the Terms & Conditions checkbox and click "Launch Intelligence OS" to enter the full report builder and access the BW Consultant.</li>
             </ol>
             <p className="mb-3"><strong>What you'll find on the page:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
                 <li>7-Layer Processing Architecture breakdown</li>
-                <li>World-First Technology section â€” what makes this platform unique</li>
+                <li>World-First Technology section - what makes this platform unique</li>
                 <li>Proactive Intelligence Layer overview</li>
-                <li>Live case-study walkthrough (Vestas Ã— Philippines)</li>
-                <li>Legal documents â€” User Manual, Terms & Conditions, Privacy Policy, Ethical AI Framework</li>
+                <li>Live case-study walkthrough (Vestas A -  Philippines)</li>
+                <li>Legal documents - User Manual, Terms & Conditions, Privacy Policy, Ethical AI Framework</li>
             </ul>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-xs font-semibold text-blue-800 mb-1">Tip</p>
@@ -196,20 +196,20 @@ const UserManualContent: React.FC = () => (
         {/* Chapter 5 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">5. Entering the Platform</h3>
-            <p className="mb-3">After accepting the Terms & Conditions and clicking "Launch Intelligence OS" on the Command Page, you enter the Main Canvas â€” the primary workspace.</p>
+            <p className="mb-3">After accepting the Terms & Conditions and clicking "Launch Intelligence OS" on the Command Page, you enter the Main Canvas - the primary workspace.</p>
             <p className="mb-3"><strong>Layout Overview:</strong></p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2 mb-3">
                 <div><strong>Left Sidebar (narrow):</strong> Navigation icons for switching between the wizard steps, accessing the document factory, and system controls.</div>
                 <div><strong>Centre Panel (main area):</strong> The live document view. This is where your report builds in real time as you complete each intake step. It displays formatted sections, scores, and analysis as they are generated.</div>
-                <div><strong>Right Sidebar â€” BW Consultant:</strong> A single unified AI advisor chat that fills the entire right sidebar. You can ask it anything: location research, company analysis, score explanations, strategic recommendations. It also proactively pushes intelligence briefings and live analysis summaries into the conversation as you work.</div>
+                <div><strong>Right Sidebar - BW Consultant:</strong> A single unified AI advisor chat that fills the entire right sidebar. You can ask it anything: location research, company analysis, score explanations, strategic recommendations. It also proactively pushes intelligence briefings and live analysis summaries into the conversation as you work.</div>
                 <div><strong>Top Bar:</strong> Contains the 10-step intake wizard progress indicators, the Report Library, and the Generate Report button.</div>
             </div>
-            <p className="mb-3"><strong>Getting Started:</strong> When you first enter the platform, the BW Consultant will greet you and explain what it can do. You can begin by completing Step 1 of the intake wizard, or type a question directly into the consultant chat â€” for example, "Research Manila, Philippines" to get a full intelligence brief.</p>
+            <p className="mb-3"><strong>Getting Started:</strong> When you first enter the platform, the BW Consultant will greet you and explain what it can do. You can begin by completing Step 1 of the intake wizard, or type a question directly into the consultant chat - for example, "Research Manila, Philippines" to get a full intelligence brief.</p>
         </div>
 
         {/* Chapter 6 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">6. Step 1 â€” Identity & Foundation</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">6. Step 1 - Identity & Foundation</h3>
             <p className="mb-3">Click on Step 1 in the intake wizard to open the Identity modal. This is where you establish who you are.</p>
             <p className="mb-3"><strong>Required Information:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
@@ -228,22 +228,22 @@ const UserManualContent: React.FC = () => (
 
         {/* Chapter 7 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">7. Steps 2â€“4 â€” Strategy, Market & Partners</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">7. Steps 2a"4 - Strategy, Market & Partners</h3>
             
-            <p className="mb-2"><strong>Step 2 â€” Mandate & Strategy:</strong> Define your strategic vision, objectives (short/medium/long-term), target partner profile, and value proposition. This feeds the SPI strategic intent calculation.</p>
+            <p className="mb-2"><strong>Step 2 - Mandate & Strategy:</strong> Define your strategic vision, objectives (short/medium/long-term), target partner profile, and value proposition. This feeds the SPI strategic intent calculation.</p>
             
-            <p className="mb-2"><strong>Step 3 â€” Market & Context:</strong> Describe your market size, growth projections, competitive landscape, and regulatory environment. You can ask the BW Consultant to research any target location and it will provide relevant data to inform this step. This feeds the RROI (Regional Return on Investment) market access component and the RFI (Regulatory Friction Index).</p>
+            <p className="mb-2"><strong>Step 3 - Market & Context:</strong> Describe your market size, growth projections, competitive landscape, and regulatory environment. You can ask the BW Consultant to research any target location and it will provide relevant data to inform this step. This feeds the RROI (Regional Return on Investment) market access component and the RFI (Regulatory Friction Index).</p>
             
-            <p className="mb-2"><strong>Step 4 â€” Partners & Ecosystem:</strong> Map your stakeholder landscape â€” who are your potential partners, what are their profiles, and how do they align with your objectives? This feeds the CIS (Counterparty Integrity Score) and SPI partner reliability component.</p>
+            <p className="mb-2"><strong>Step 4 - Partners & Ecosystem:</strong> Map your stakeholder landscape - who are your potential partners, what are their profiles, and how do they align with your objectives? This feeds the CIS (Counterparty Integrity Score) and SPI partner reliability component.</p>
 
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-3">
-                <p className="text-xs text-purple-700"><strong>Location Intelligence Integration:</strong> Steps 3â€“10 are enhanced by research data. Ask the BW Consultant to research your target location (e.g. "Research Manila, Philippines") and it will provide GDP data, demographics, regulatory frameworks, and risk assessments to inform your inputs.</p>
+                <p className="text-xs text-purple-700"><strong>Location Intelligence Integration:</strong> Steps 3a"10 are enhanced by research data. Ask the BW Consultant to research your target location (e.g. "Research Manila, Philippines") and it will provide GDP data, demographics, regulatory frameworks, and risk assessments to inform your inputs.</p>
             </div>
         </div>
 
         {/* Chapter 8 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">8. Step 5 â€” Financial Model</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">8. Step 5 - Financial Model</h3>
             <p className="mb-3">This step captures your investment requirements, revenue projections, cost structure, and ROI scenarios.</p>
             <p className="mb-3"><strong>Key Fields:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
@@ -254,13 +254,13 @@ const UserManualContent: React.FC = () => (
                 <li>Base case / best case / worst case scenarios</li>
             </ul>
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-xs text-red-700"><strong>Important:</strong> The Accountant persona and SCF (Strategic Cash Flow) formula will flag revenue projections that significantly exceed regional benchmarks. Be prepared to justify or revise projections â€” this is the system working as designed, stress-testing your assumptions before an investor does.</p>
+                <p className="text-xs text-red-700"><strong>Important:</strong> The Accountant persona and SCF (Strategic Cash Flow) formula will flag revenue projections that significantly exceed regional benchmarks. Be prepared to justify or revise projections - this is the system working as designed, stress-testing your assumptions before an investor does.</p>
             </div>
         </div>
 
         {/* Chapter 9 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">9. Step 6 â€” Risk & Mitigation</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">9. Step 6 - Risk & Mitigation</h3>
             <p className="mb-3">Identify and categorise the risks facing your project. The system uses your inputs to calculate the CRPS (Composite Risk Priority Score), PSS (Policy Shock Sensitivity), and RFI bottleneck detection.</p>
             <p className="mb-3"><strong>Risk Categories:</strong> Political, Economic, Regulatory, Operational, Environmental, Financial, Reputational, Supply Chain.</p>
             <p className="mb-3">For each risk, you assign a probability (Low/Medium/High) and impact level. The system generates a risk matrix and mitigation framework automatically.</p>
@@ -268,28 +268,28 @@ const UserManualContent: React.FC = () => (
 
         {/* Chapter 10 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">10. Step 7 â€” Resources & Capability</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">10. Step 7 - Resources & Capability</h3>
             <p className="mb-3">Assess your team's strengths, technology stack, and capability gaps. This feeds the ORS (Organisational Readiness Score), TCS (Team Capability Score), and CGI (Capability Gap Index).</p>
-            <p className="mb-3">Be honest about gaps â€” the system is designed to identify them constructively and recommend how to address them, not penalise you for transparency.</p>
+            <p className="mb-3">Be honest about gaps - the system is designed to identify them constructively and recommend how to address them, not penalise you for transparency.</p>
         </div>
 
         {/* Chapter 11 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">11. Step 8 â€” Execution Plan</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">11. Step 8 - Execution Plan</h3>
             <p className="mb-3">Define your implementation roadmap: phases, milestones, dependencies, timelines, go/no-go decision gates, and resource allocation per phase.</p>
             <p className="mb-3">This feeds the IVAS (Investment Velocity & Activation Speed) calculation, which estimates your activation timeline across P10 (best case), P50 (median), and P90 (worst case) scenarios.</p>
         </div>
 
         {/* Chapter 12 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">12. Step 9 â€” Governance & Monitoring</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">12. Step 9 - Governance & Monitoring</h3>
             <p className="mb-3">Establish your oversight structure: decision-making authority, reporting cadence, escalation procedures, KPI tracking, and audit frameworks.</p>
             <p className="mb-3">This feeds the GCI (Governance Confidence Index), CCS (Compliance Certainty Score), and SPI ethical alignment component.</p>
         </div>
 
         {/* Chapter 13 */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">13. Step 10 â€” Scoring & Readiness</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">13. Step 10 - Scoring & Readiness</h3>
             <p className="mb-3">The final intake step is a readiness self-assessment. Rate your confidence levels, review the pre-launch checklist, and confirm your data is complete.</p>
             <p className="mb-3">Once all 10 steps are complete, the system has a comprehensive, machine-readable dataset. You are now ready to generate your report.</p>
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
@@ -302,13 +302,13 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">14. Generating Your Report</h3>
             <p className="mb-3">Click the <strong>"Generate Report"</strong> button in the top bar. The system will:</p>
             <ol className="list-decimal ml-6 space-y-2 mb-3">
-                <li><strong>Validate your inputs</strong> â€” Checks for completeness and consistency</li>
-                <li><strong>Run the NSIL engine</strong> â€” Calculates all 38 formula scores across your data</li>
-                <li><strong>Activate adversarial personas</strong> â€” 5 AI agents (Advocate, Skeptic, Regulator, Accountant, Operator) debate your project's merits</li>
-                <li><strong>Apply Monte Carlo simulations</strong> â€” 10,000+ scenarios test your project's resilience</li>
-                <li><strong>Engage the Human Cognition Engine</strong> â€” 7 behavioural models simulate how decision-makers will react</li>
-                <li><strong>Run proactive intelligence agents</strong> â€” Deep research, document enhancement, and self-improvement agents refine the output</li>
-                <li><strong>Assemble the report</strong> â€” All scores, debates, and analysis are compiled into a formatted, traceable document</li>
+                <li><strong>Validate your inputs</strong> - Checks for completeness and consistency</li>
+                <li><strong>Run the NSIL engine</strong> - Calculates all 38 formula scores across your data</li>
+                <li><strong>Activate adversarial personas</strong> - 5 AI agents (Advocate, Skeptic, Regulator, Accountant, Operator) debate your project's merits</li>
+                <li><strong>Apply Monte Carlo simulations</strong> - 10,000+ scenarios test your project's resilience</li>
+                <li><strong>Engage the Human Cognition Engine</strong> - 7 behavioural models simulate how decision-makers will react</li>
+                <li><strong>Run proactive intelligence agents</strong> - Deep research, document enhancement, and self-improvement agents refine the output</li>
+                <li><strong>Assemble the report</strong> - All scores, debates, and analysis are compiled into a formatted, traceable document</li>
             </ol>
             <p className="mb-3"><strong>Real-Time Visibility:</strong> You can watch this process happen live in the centre panel. Progress indicators show which agents are active, which formulas are being calculated, and the current completeness percentage.</p>
             <p className="mb-3"><strong>Classification:</strong> Your project will receive a final classification:</p>
@@ -316,9 +316,9 @@ const UserManualContent: React.FC = () => (
                 <table className="w-full text-xs">
                     <thead><tr className="border-b border-slate-300"><th className="text-left py-2">SPI Score</th><th className="text-left py-2">Grade</th><th className="text-left py-2">Classification</th></tr></thead>
                     <tbody>
-                        <tr className="border-b border-slate-100"><td className="py-1.5 text-emerald-700 font-bold">â‰¥ 80</td><td>Grade A</td><td>Investment Ready</td></tr>
-                        <tr className="border-b border-slate-100"><td className="py-1.5 text-emerald-600 font-bold">â‰¥ 70</td><td>Grade B</td><td>Investment Ready</td></tr>
-                        <tr className="border-b border-slate-100"><td className="py-1.5 text-amber-600 font-bold">â‰¥ 60</td><td>Grade C</td><td>Proceed With Caution</td></tr>
+                        <tr className="border-b border-slate-100"><td className="py-1.5 text-emerald-700 font-bold">aJPY 80</td><td>Grade A</td><td>Investment Ready</td></tr>
+                        <tr className="border-b border-slate-100"><td className="py-1.5 text-emerald-600 font-bold">aJPY 70</td><td>Grade B</td><td>Investment Ready</td></tr>
+                        <tr className="border-b border-slate-100"><td className="py-1.5 text-amber-600 font-bold">aJPY 60</td><td>Grade C</td><td>Proceed With Caution</td></tr>
                         <tr><td className="py-1.5 text-red-600 font-bold">&lt; 60</td><td>Grade D</td><td>Do Not Proceed</td></tr>
                     </tbody>
                 </table>
@@ -329,14 +329,14 @@ const UserManualContent: React.FC = () => (
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">15. The BW Consultant</h3>
             <p className="mb-3">The BW Consultant is the unified AI advisor that occupies the entire right sidebar of the report builder. It is your single point of contact for all intelligence, research, analysis, and strategic guidance within the platform.</p>
-            <p className="mb-3"><strong>Capabilities â€” what you can do in one chat window:</strong></p>
+            <p className="mb-3"><strong>Capabilities - what you can do in one chat window:</strong></p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
-                <li><strong>Location Research:</strong> "Research Manila, Philippines" â€” returns a full intelligence brief with demographics, GDP, industries, leadership, infrastructure, regulatory environment, and risk assessment</li>
-                <li><strong>Company Analysis:</strong> "Tell me about Vestas" â€” returns corporate intelligence and strategic context</li>
-                <li><strong>Score Explanations:</strong> "Why is my SPI score low?" â€” analyses your intake data and explains score drivers</li>
-                <li><strong>Strategic Advice:</strong> "What partners should I consider for this project?" â€” provides contextual recommendations</li>
-                <li><strong>Risk Analysis:</strong> "What are the regulatory risks in Indonesia?" â€” delivers region-specific risk intelligence</li>
-                <li><strong>Formula Explanations:</strong> "Explain the RFI bottleneck on my project" â€” breaks down how scoring formulas apply to your data</li>
+                <li><strong>Location Research:</strong> "Research Manila, Philippines" - returns a full intelligence brief with demographics, GDP, industries, leadership, infrastructure, regulatory environment, and risk assessment</li>
+                <li><strong>Company Analysis:</strong> "Tell me about Vestas" - returns corporate intelligence and strategic context</li>
+                <li><strong>Score Explanations:</strong> "Why is my SPI score low?" - analyses your intake data and explains score drivers</li>
+                <li><strong>Strategic Advice:</strong> "What partners should I consider for this project?" - provides contextual recommendations</li>
+                <li><strong>Risk Analysis:</strong> "What are the regulatory risks in Indonesia?" - delivers region-specific risk intelligence</li>
+                <li><strong>Formula Explanations:</strong> "Explain the RFI bottleneck on my project" - breaks down how scoring formulas apply to your data</li>
             </ul>
             <p className="mb-3"><strong>Proactive Intelligence:</strong> The BW Consultant is not just reactive. It proactively pushes intelligence into the conversation without being asked:</p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
@@ -360,41 +360,41 @@ const UserManualContent: React.FC = () => (
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900 mb-2">Strategic Reports</p>
                     <ul className="text-xs text-slate-600 space-y-1">
-                        <li>â€¢ Investment Prospectus</li>
-                        <li>â€¢ Partnership Viability Assessment</li>
-                        <li>â€¢ Market Entry Analysis</li>
-                        <li>â€¢ Risk Assessment Report</li>
-                        <li>â€¢ Competitive Landscape Report</li>
+                        <li>* Investment Prospectus</li>
+                        <li>* Partnership Viability Assessment</li>
+                        <li>* Market Entry Analysis</li>
+                        <li>* Risk Assessment Report</li>
+                        <li>* Competitive Landscape Report</li>
                     </ul>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900 mb-2">Financial Documents</p>
                     <ul className="text-xs text-slate-600 space-y-1">
-                        <li>â€¢ ROI Projection Model</li>
-                        <li>â€¢ Financial Due Diligence Pack</li>
-                        <li>â€¢ Investment Term Sheet</li>
-                        <li>â€¢ Monte Carlo Simulation Report</li>
-                        <li>â€¢ Sensitivity Analysis</li>
+                        <li>* ROI Projection Model</li>
+                        <li>* Financial Due Diligence Pack</li>
+                        <li>* Investment Term Sheet</li>
+                        <li>* Monte Carlo Simulation Report</li>
+                        <li>* Sensitivity Analysis</li>
                     </ul>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900 mb-2">Legal Templates</p>
                     <ul className="text-xs text-slate-600 space-y-1">
-                        <li>â€¢ Letter of Intent (LOI)</li>
-                        <li>â€¢ Memorandum of Understanding</li>
-                        <li>â€¢ Non-Disclosure Agreement</li>
-                        <li>â€¢ Grant Application Template</li>
-                        <li>â€¢ Compliance Checklist</li>
+                        <li>* Letter of Intent (LOI)</li>
+                        <li>* Memorandum of Understanding</li>
+                        <li>* Non-Disclosure Agreement</li>
+                        <li>* Grant Application Template</li>
+                        <li>* Compliance Checklist</li>
                     </ul>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900 mb-2">Communication Packs</p>
                     <ul className="text-xs text-slate-600 space-y-1">
-                        <li>â€¢ Executive Summary Brief</li>
-                        <li>â€¢ Board Presentation Deck</li>
-                        <li>â€¢ Investor Pitch Document</li>
-                        <li>â€¢ Stakeholder Update Letter</li>
-                        <li>â€¢ Media Release Template</li>
+                        <li>* Executive Summary Brief</li>
+                        <li>* Board Presentation Deck</li>
+                        <li>* Investor Pitch Document</li>
+                        <li>* Stakeholder Update Letter</li>
+                        <li>* Media Release Template</li>
                     </ul>
                 </div>
             </div>
@@ -412,26 +412,26 @@ const UserManualContent: React.FC = () => (
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900">Risk Formulas (7)</p>
-                    <p className="text-xs text-slate-600">CRPS, RME, VaR, SRCI, DCS, PSS, PRS â€” covering composite risk, mitigation effectiveness, value at risk, supply chain, dependency, policy sensitivity, and political risk</p>
+                    <p className="text-xs text-slate-600">CRPS, RME, VaR, SRCI, DCS, PSS, PRS - covering composite risk, mitigation effectiveness, value at risk, supply chain, dependency, policy sensitivity, and political risk</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900">Financial Metrics (6)</p>
-                    <p className="text-xs text-slate-600">IRR, NPV, WACC, DSCR, FMS, ROE â€” standard financial analysis adapted for regional development contexts</p>
+                    <p className="text-xs text-slate-600">IRR, NPV, WACC, DSCR, FMS, ROE - standard financial analysis adapted for regional development contexts</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900">Operational Scores (6)</p>
-                    <p className="text-xs text-slate-600">ORS, TCS, EEI, SEQ, CGI, LCI â€” measuring organisational readiness, team capability, execution efficiency, and leadership confidence</p>
+                    <p className="text-xs text-slate-600">ORS, TCS, EEI, SEQ, CGI, LCI - measuring organisational readiness, team capability, execution efficiency, and leadership confidence</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900">Market Formulas (5)</p>
-                    <p className="text-xs text-slate-600">MPI, CAI, TAM, SAM, GRI â€” market penetration, competitive advantage, total/serviceable market, growth rate</p>
+                    <p className="text-xs text-slate-600">MPI, CAI, TAM, SAM, GRI - market penetration, competitive advantage, total/serviceable market, growth rate</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                     <p className="font-semibold text-xs text-slate-900">Governance Metrics (9)</p>
-                    <p className="text-xs text-slate-600">GCI, CCS, TPI, ARI, DQS, GCS, RFI, CIS, ESG â€” covering governance confidence, compliance, transparency, audit readiness, data quality, regulatory friction, counterparty integrity, and ESG</p>
+                    <p className="text-xs text-slate-600">GCI, CCS, TPI, ARI, DQS, GCS, RFI, CIS, ESG - covering governance confidence, compliance, transparency, audit readiness, data quality, regulatory friction, counterparty integrity, and ESG</p>
                 </div>
             </div>
-            <p className="mb-3">Each score is presented on a 0â€“100 scale. Scores above 70 are generally considered strong. Scores below 50 indicate areas requiring attention. The system colour-codes scores: <span className="text-emerald-600 font-semibold">green (strong)</span>, <span className="text-amber-600 font-semibold">amber (caution)</span>, <span className="text-red-600 font-semibold">red (critical)</span>.</p>
+            <p className="mb-3">Each score is presented on a 0a"100 scale. Scores above 70 are generally considered strong. Scores below 50 indicate areas requiring attention. The system colour-codes scores: <span className="text-emerald-600 font-semibold">green (strong)</span>, <span className="text-amber-600 font-semibold">amber (caution)</span>, <span className="text-red-600 font-semibold">red (critical)</span>.</p>
         </div>
 
         {/* Chapter 18 */}
@@ -440,15 +440,15 @@ const UserManualContent: React.FC = () => (
             <p className="mb-3">Before beginning, you can select your preferred guidance level. The system adapts its explanations, prompts, and interface density accordingly.</p>
             <div className="space-y-3 mb-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <p className="font-semibold text-sm text-slate-900 mb-1">ðŸ§­ Orientation Mode</p>
+                    <p className="font-semibold text-sm text-slate-900 mb-1">📊 Orientation Mode</p>
                     <p className="text-xs text-slate-600">Full explanations at every step, contextual help panels, step-by-step walkthroughs, and educational tooltips. Recommended for first-time users, community groups, and anyone new to strategic planning.</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <p className="font-semibold text-sm text-slate-900 mb-1">ðŸ¤ Collaborative Mode</p>
+                    <p className="font-semibold text-sm text-slate-900 mb-1">🤝 Collaborative Mode</p>
                     <p className="text-xs text-slate-600">Balanced guidance with smart suggestions. You drive the process while the system surfaces insights. Recommended for regional councils, growing businesses, and small teams.</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <p className="font-semibold text-sm text-slate-900 mb-1">âš¡ Expert Mode</p>
+                    <p className="font-semibold text-sm text-slate-900 mb-1">⚡ Expert Mode</p>
                     <p className="text-xs text-slate-600">Streamlined interface, minimal hand-holding, full access to advanced controls and raw formula outputs. Recommended for experienced operators, government analysts, and corporate development teams.</p>
                 </div>
             </div>
@@ -461,15 +461,15 @@ const UserManualContent: React.FC = () => (
             <div className="space-y-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                     <p className="font-semibold text-xs text-slate-900 mb-1">Search returns an error or times out</p>
-                    <p className="text-xs text-slate-600">Check your internet connection. Try a simpler search term (e.g., city name only). If the problem persists, try again in a few minutes â€” the AI service may be experiencing high demand.</p>
+                    <p className="text-xs text-slate-600">Check your internet connection. Try a simpler search term (e.g., city name only). If the problem persists, try again in a few minutes - the AI service may be experiencing high demand.</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                     <p className="font-semibold text-xs text-slate-900 mb-1">Report generation stalls or shows no progress</p>
-                    <p className="text-xs text-slate-600">Ensure you have a stable internet connection. Reports require multiple AI service calls. On slower connections, generation may take 30â€“60 seconds. If stalled beyond 2 minutes, refresh the page and try again â€” your intake data is preserved in local storage.</p>
+                    <p className="text-xs text-slate-600">Ensure you have a stable internet connection. Reports require multiple AI service calls. On slower connections, generation may take 30a"60 seconds. If stalled beyond 2 minutes, refresh the page and try again - your intake data is preserved in local storage.</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                     <p className="font-semibold text-xs text-slate-900 mb-1">Scores seem unexpected or low</p>
-                    <p className="text-xs text-slate-600">This is usually caused by incomplete intake data. Check your completeness percentage in the right sidebar. Fill in any missing steps and re-generate. The system scores conservatively â€” missing data is treated as risk.</p>
+                    <p className="text-xs text-slate-600">This is usually caused by incomplete intake data. Check your completeness percentage in the right sidebar. Fill in any missing steps and re-generate. The system scores conservatively - missing data is treated as risk.</p>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                     <p className="font-semibold text-xs text-slate-900 mb-1">Need help or want to provide feedback?</p>
@@ -480,21 +480,21 @@ const UserManualContent: React.FC = () => (
 
         {/* End Mark */}
         <div className="text-center border-t border-slate-200 pt-6">
-            <p className="text-xs text-slate-400">â€” End of User Manual â€”</p>
-            <p className="text-xs text-slate-400">BWGA Ai Â· Nexus Intelligence OS v6.0 Â· NSIL Engine v3.2</p>
+            <p className="text-xs text-slate-400">- End of User Manual a"</p>
+            <p className="text-xs text-slate-400">BWGA Ai * Nexus Intelligence OS v6.0 * NSIL Engine v3.2</p>
         </div>
     </div>
 );
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 // TERMS & CONDITIONS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 const TermsContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
             <h1 className="text-2xl font-light text-slate-900 mb-1">Terms & Conditions</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 Â· Last Updated: 9 February 2026</p>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
         </div>
 
         <p>These Terms & Conditions ("Terms") govern your access to and use of the BWGA Ai platform ("Platform"), operated by BW Global Advisory, trading as a registered Australian sole trader under ABN 55 978 113 300 ("BWGA", "we", "us", "our").</p>
@@ -522,13 +522,13 @@ const TermsContent: React.FC = () => (
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">4. Intellectual Property</h4>
-        <p>4.1. All intellectual property in the Platform â€” including but not limited to the NSIL engine, 38 proprietary formulas, Human Cognition Engine, Proactive Intelligence Layer, persona architecture, and Document Factory templates â€” is owned exclusively by BW Global Advisory.</p>
-        <p>4.2. The following are proprietary indices created by BWGA: SPIâ„¢, RROIâ„¢, SEAMâ„¢, PVIâ„¢, RRIâ„¢, and all other named indices listed in the Platform's architecture documentation.</p>
+        <p>4.1. All intellectual property in the Platform - including but not limited to the NSIL engine, 38 proprietary formulas, Human Cognition Engine, Proactive Intelligence Layer, persona architecture, and Document Factory templates - is owned exclusively by BW Global Advisory.</p>
+        <p>4.2. The following are proprietary indices created by BWGA: SPI(TM), RROI(TM), SEAM(TM), PVI(TM), RRI(TM), and all other named indices listed in the Platform's architecture documentation.</p>
         <p>4.3. You retain ownership of all data you input into the Platform. You grant BWGA a limited, non-exclusive licence to process your data solely for the purpose of providing the Platform's services.</p>
         <p>4.4. Documents generated by the Platform are produced for your use. You may use, distribute, and present these documents as your own. However, you may not claim authorship of the underlying analytical methodology or scoring architecture.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">5. Advisory Nature & Disclaimer</h4>
-        <p>5.1. <strong>All Platform outputs are advisory.</strong> Scores, classifications, persona debates, risk assessments, and document outputs are produced by automated systems and are intended to inform â€” not replace â€” human decision-making.</p>
+        <p>5.1. <strong>All Platform outputs are advisory.</strong> Scores, classifications, persona debates, risk assessments, and document outputs are produced by automated systems and are intended to inform - not replace - human decision-making.</p>
         <p>5.2. BWGA does not guarantee the accuracy, completeness, or suitability of any output for any particular purpose. Outputs are generated based on user inputs and available data sources, which may be incomplete or contain inaccuracies.</p>
         <p>5.3. Users retain full and sole accountability for all decisions made using the Platform's analysis, recommendations, and documents.</p>
         <p>5.4. BWGA is not liable for any loss, damage, or adverse outcome arising from reliance on Platform outputs, including but not limited to investment losses, regulatory penalties, failed partnerships, or reputational damage.</p>
@@ -552,7 +552,7 @@ const TermsContent: React.FC = () => (
             <li>Australian Privacy Act 1988 and Australian Privacy Principles (APPs)</li>
             <li>EU General Data Protection Regulation (GDPR)</li>
             <li>Philippines Data Privacy Act of 2012 (Republic Act No. 10173)</li>
-            <li>ISO/IEC 27001 (Information Security Management) â€” alignment target</li>
+            <li>ISO/IEC 27001 (Information Security Management) - alignment target</li>
             <li>OECD AI Principles</li>
             <li>UNESCO Recommendation on the Ethics of Artificial Intelligence</li>
             <li>EU AI Act transparency and risk classification requirements</li>
@@ -573,20 +573,20 @@ const TermsContent: React.FC = () => (
         <p className="mt-2"><strong>BW Global Advisory</strong><br />Email: brayden@bwglobaladvis.info<br />Phone: +63 960 835 4283<br />ABN: 55 978 113 300<br />Melbourne, Australia</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">â€” End of Terms & Conditions â€”</p>
+            <p className="text-xs text-slate-400">- End of Terms & Conditions a"</p>
         </div>
     </div>
 );
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 // PRIVACY POLICY
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 const PrivacyContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
             <h1 className="text-2xl font-light text-slate-900 mb-1">Privacy Policy</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 Â· Last Updated: 9 February 2026</p>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
         </div>
 
         <p>This Privacy Policy explains how BW Global Advisory (ABN 55 978 113 300) ("BWGA", "we", "us", "our") collects, uses, stores, and protects your personal information when you use the BWGA Ai platform ("Platform").</p>
@@ -612,8 +612,8 @@ const PrivacyContent: React.FC = () => (
         </ul>
         <p className="mt-3"><strong>1.3. Information from Third-Party Sources:</strong></p>
         <ul className="list-disc ml-6 space-y-1">
-            <li>Public data from government databases, World Bank, REST Countries API, and other open data sources â€” used to enrich location intelligence and scoring</li>
-            <li>AI-generated research content from API providers (Google Gemini, OpenAI) â€” processed transiently and not stored with your personal data</li>
+            <li>Public data from government databases, World Bank, REST Countries API, and other open data sources - used to enrich location intelligence and scoring</li>
+            <li>AI-generated research content from API providers (Google Gemini, OpenAI) - processed transiently and not stored with your personal data</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">2. How We Use Your Information</h4>
@@ -636,9 +636,9 @@ const PrivacyContent: React.FC = () => (
         <p>4.1. We do not sell your personal information to third parties.</p>
         <p>4.2. We may share data with:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li><strong>AI Service Providers</strong> (Google, OpenAI) â€” for processing queries and generating analysis, subject to their data processing terms</li>
-            <li><strong>Public Data Sources</strong> â€” we access publicly available datasets; no personal data is shared with these sources</li>
-            <li><strong>Law Enforcement</strong> â€” only where required by law or valid legal process</li>
+            <li><strong>AI Service Providers</strong> (Google, OpenAI) - for processing queries and generating analysis, subject to their data processing terms</li>
+            <li><strong>Public Data Sources</strong> - we access publicly available datasets; no personal data is shared with these sources</li>
+            <li><strong>Law Enforcement</strong> - only where required by law or valid legal process</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">5. Your Rights</h4>
@@ -658,13 +658,13 @@ const PrivacyContent: React.FC = () => (
         <p>6.2. Where personal data is transferred internationally, we ensure appropriate safeguards are in place, including reliance on adequacy decisions, standard contractual clauses, or binding corporate rules as applicable.</p>
         <p>6.3. The Platform is designed as a global application and aims to comply with data protection requirements in all jurisdictions where it operates, including but not limited to:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li>Australia â€” Privacy Act 1988, APPs</li>
-            <li>European Union â€” GDPR</li>
-            <li>Philippines â€” Data Privacy Act of 2012</li>
-            <li>United Kingdom â€” UK GDPR and Data Protection Act 2018</li>
-            <li>New Zealand â€” Privacy Act 2020</li>
-            <li>Canada â€” PIPEDA</li>
-            <li>United States â€” applicable state privacy laws (CCPA/CPRA where relevant)</li>
+            <li>Australia - Privacy Act 1988, APPs</li>
+            <li>European Union - GDPR</li>
+            <li>Philippines - Data Privacy Act of 2012</li>
+            <li>United Kingdom - UK GDPR and Data Protection Act 2018</li>
+            <li>New Zealand - Privacy Act 2020</li>
+            <li>Canada - PIPEDA</li>
+            <li>United States - applicable state privacy laws (CCPA/CPRA where relevant)</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">7. Cookies & Tracking</h4>
@@ -673,7 +673,7 @@ const PrivacyContent: React.FC = () => (
 
         <h4 className="font-bold text-slate-900 mt-6">8. Data Retention</h4>
         <p>8.1. Browser local storage data persists until you clear your browser data or explicitly reset the Platform.</p>
-        <p>8.2. AI processing data is transient â€” queries are processed and responses returned without permanent storage by BWGA.</p>
+        <p>8.2. AI processing data is transient - queries are processed and responses returned without permanent storage by BWGA.</p>
         <p>8.3. Contact information voluntarily provided is retained until you request its deletion.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">9. Children's Privacy</h4>
@@ -689,20 +689,20 @@ const PrivacyContent: React.FC = () => (
         <p><strong>EU/UK Complaints:</strong> You may lodge a complaint with your local supervisory authority.</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">â€” End of Privacy Policy â€”</p>
+            <p className="text-xs text-slate-400">- End of Privacy Policy a"</p>
         </div>
     </div>
 );
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 // ETHICAL AI FRAMEWORK
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// -------------------------------------------------------------------------------
 const EthicsContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
             <h1 className="text-2xl font-light text-slate-900 mb-1">Ethical AI Framework</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 Â· Last Updated: 9 February 2026</p>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
         </div>
 
         <p>This Ethical AI Framework sets out the principles, safeguards, and governance structures that guide the design, development, and deployment of BWGA Ai. It reflects our commitment to responsible AI practices aligned with international standards.</p>
@@ -720,7 +720,7 @@ const EthicsContent: React.FC = () => (
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                 <p className="font-semibold text-sm text-slate-900 mb-1">Fairness & Non-Discrimination</p>
-                <p className="text-xs text-slate-600">The platform is designed to serve all users equally â€” from regional councils in rural Australia to government agencies in Southeast Asia. Scoring formulas do not discriminate based on location, organisation size, or economic status.</p>
+                <p className="text-xs text-slate-600">The platform is designed to serve all users equally - from regional councils in rural Australia to government agencies in Southeast Asia. Scoring formulas do not discriminate based on location, organisation size, or economic status.</p>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                 <p className="font-semibold text-sm text-slate-900 mb-1">Privacy & Data Protection</p>
@@ -732,18 +732,18 @@ const EthicsContent: React.FC = () => (
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                 <p className="font-semibold text-sm text-slate-900 mb-1">Public Benefit</p>
-                <p className="text-xs text-slate-600">The platform exists to democratise access to institutional-quality strategic analysis â€” specifically for communities and organisations that have historically been excluded from such tools.</p>
+                <p className="text-xs text-slate-600">The platform exists to democratise access to institutional-quality strategic analysis - specifically for communities and organisations that have historically been excluded from such tools.</p>
             </div>
         </div>
 
         <h4 className="font-bold text-slate-900 mt-6">2. Adversarial Design as an Ethical Safeguard</h4>
         <p>Unlike most AI systems that optimise for agreeable responses, BWGA AI is designed for adversarial reasoning. The 5-persona system (Advocate, Skeptic, Regulator, Accountant, Operator) ensures that every analysis is stress-tested from multiple perspectives before a recommendation is issued.</p>
-        <p className="mt-2">This design is an ethical safeguard in itself â€” it prevents the system from producing uncritical, confirmation-biased outputs that could mislead users into overconfident decisions.</p>
+        <p className="mt-2">This design is an ethical safeguard in itself - it prevents the system from producing uncritical, confirmation-biased outputs that could mislead users into overconfident decisions.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">3. Transparency & Auditability</h4>
         <p>3.1. <strong>Formula Transparency:</strong> All 38 scoring formulas have defined methodology, documented inputs, and published calculation logic. Users can inspect how every score was derived.</p>
         <p>3.2. <strong>Audit Trail:</strong> Every document produced by the Platform carries a provenance chain showing: which data inputs were used, which formulas were applied, how persona debates concluded, and what threshold gates were evaluated.</p>
-        <p>3.3. <strong>Reproducibility:</strong> Given identical inputs, the scoring pipeline produces identical outputs. There is no randomness in the formula layer â€” only in Monte Carlo simulation ranges, which are documented with P10/P50/P90 bands.</p>
+        <p>3.3. <strong>Reproducibility:</strong> Given identical inputs, the scoring pipeline produces identical outputs. There is no randomness in the formula layer - only in Monte Carlo simulation ranges, which are documented with P10/P50/P90 bands.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">4. AI Risk Classification</h4>
         <p>Under the EU AI Act risk classification framework, BWGA Ai would be classified as a <strong>limited-risk</strong> system. It does not:</p>
@@ -757,14 +757,14 @@ const EthicsContent: React.FC = () => (
 
         <h4 className="font-bold text-slate-900 mt-6">5. Bias Mitigation</h4>
         <p>5.1. <strong>Formula-Based Scoring:</strong> The primary scoring pipeline uses deterministic mathematical formulas, not language-model generation. This eliminates the majority of LLM-related bias risks in the scoring layer.</p>
-        <p>5.2. <strong>Regional Equity:</strong> The platform is purpose-built for regional and underserved communities. Scoring benchmarks are calibrated for diverse economic contexts â€” not biased toward developed-market norms.</p>
+        <p>5.2. <strong>Regional Equity:</strong> The platform is purpose-built for regional and underserved communities. Scoring benchmarks are calibrated for diverse economic contexts - not biased toward developed-market norms.</p>
         <p>5.3. <strong>Persona Diversity:</strong> The adversarial persona system ensures multiple viewpoints are represented in every analysis, reducing the risk of single-perspective bias.</p>
         <p>5.4. <strong>Continuous Calibration:</strong> The Proactive Intelligence Layer includes a backtesting calibration engine that validates scoring accuracy against real-world outcomes and flags drift.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">6. Human-in-the-Loop</h4>
         <p>BWGA AI is designed with a strict human-in-the-loop philosophy:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li>No output is automatically actioned â€” all reports, documents, and recommendations require human review</li>
+            <li>No output is automatically actioned - all reports, documents, and recommendations require human review</li>
             <li>Users explicitly initiate report generation and document production</li>
             <li>The system presents go/no-go recommendations but does not execute actions on users' behalf</li>
             <li>The "Draft Finalization" step requires explicit user acceptance before documents are finalised</li>
@@ -777,16 +777,16 @@ const EthicsContent: React.FC = () => (
         <h4 className="font-bold text-slate-900 mt-6">8. International Standards Alignment</h4>
         <p>This Ethical AI Framework is designed to align with:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li><strong>OECD AI Principles</strong> â€” including inclusive growth, human-centred values, transparency, robustness, and accountability</li>
-            <li><strong>UNESCO Recommendation on the Ethics of AI</strong> â€” proportionality, safety, fairness, sustainability, and human oversight</li>
-            <li><strong>EU AI Act</strong> â€” transparency requirements and risk classification</li>
-            <li><strong>NIST AI Risk Management Framework</strong> â€” governance, mapping, measurement, and management of AI risks</li>
-            <li><strong>Australia's AI Ethics Principles</strong> â€” human-centred, fairness, privacy, reliability, transparency, contestability, and accountability</li>
-            <li><strong>Philippines DICT AI Roadmap</strong> â€” responsible and ethical AI development aligned with national development goals</li>
+            <li><strong>OECD AI Principles</strong> - including inclusive growth, human-centred values, transparency, robustness, and accountability</li>
+            <li><strong>UNESCO Recommendation on the Ethics of AI</strong> - proportionality, safety, fairness, sustainability, and human oversight</li>
+            <li><strong>EU AI Act</strong> - transparency requirements and risk classification</li>
+            <li><strong>NIST AI Risk Management Framework</strong> - governance, mapping, measurement, and management of AI risks</li>
+            <li><strong>Australia's AI Ethics Principles</strong> - human-centred, fairness, privacy, reliability, transparency, contestability, and accountability</li>
+            <li><strong>Philippines DICT AI Roadmap</strong> - responsible and ethical AI development aligned with national development goals</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">9. 10% Community Commitment</h4>
-        <p>BWGA commits that during the beta phase and in future commercial subscriptions, <strong>10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This commitment is a core part of our ethical framework â€” ensuring that the value created by this platform flows back to the communities it serves.</p>
+        <p>BWGA commits that during the beta phase and in future commercial subscriptions, <strong>10% of every paid transaction</strong> will be directed back into initiatives that support regional development and long-term community outcomes. This commitment is a core part of our ethical framework - ensuring that the value created by this platform flows back to the communities it serves.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">10. Reporting Concerns</h4>
         <p>If you believe the Platform has produced biased, inaccurate, or harmful outputs, or if you have any ethical concerns about the system, please contact us:</p>
@@ -794,7 +794,7 @@ const EthicsContent: React.FC = () => (
         <p className="mt-2">All concerns will be reviewed, investigated, and responded to within 14 business days.</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">â€” End of Ethical AI Framework â€”</p>
+            <p className="text-xs text-slate-400">- End of Ethical AI Framework a"</p>
         </div>
     </div>
 );

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GlobalCityData, AlternativeLocationMatch } from '../types';
 import { GLOBAL_CITY_DATABASE } from '../constants';
 import { Globe, ShieldCheck, MapPin, Loader2, ArrowRight } from 'lucide-react';
@@ -389,7 +389,7 @@ const AlternativeLocationMatcher: React.FC<AlternativeLocationMatcherProps> = ({
                 <h5 className="font-bold text-blue-900 text-xs mb-2">Risk Mitigation</h5>
                 <ul className="text-xs text-blue-800 space-y-1">
                   {matches.relocationStrategy.riskMitigation.slice(0, 3).map((mitigation, i) => (
-                    <li key={i}>â€¢ {mitigation}</li>
+                    <li key={i}>* {mitigation}</li>
                   ))}
                 </ul>
               </div>

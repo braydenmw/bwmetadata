@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   FileText, Settings, Database, Download, Printer, Plus, Eye, Filter, Zap, Share2, Save, Search,
   CheckCircle, AlertCircle, TrendingUp, PieChart, Users, BarChart3, DollarSign, Globe, Shield, Target, Upload,

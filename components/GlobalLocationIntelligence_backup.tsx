@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { Globe, Landmark, Target, ArrowLeft, Download, Database, Users, TrendingUp, Plane, Ship, Zap, Calendar, Newspaper, ExternalLink, MapPin, Clock, DollarSign, Briefcase, GraduationCap, Factory, Activity, ChevronDown, ChevronUp, FileText, Award, History, Rocket, Search, Loader2, AlertCircle, CheckCircle2, BookOpen, Link2, BarChart3, Shield, Building2, AlertTriangle, Leaf, Scale, TrendingDown, Info } from 'lucide-react';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
@@ -70,14 +70,14 @@ const buildNarrative = (profile: CityProfile) => {
 
   const overview = [
     `${profile.city} anchors ${profile.region} as a strategic urban node within ${profile.country}. Established ${established}, the city evolved around ${knownFor}, creating a durable economic base that continues to shape investment priorities and governance focus today.`,
-    `The cityâ€™s modern economy is driven by ${sectors}, supported by access to ${access}. This access underpins trade and logistics viability, while the local climate (${climate}) influences infrastructure resilience planning and long-term development sequencing.`,
-    `Current macro indicatorsâ€”including population ${population} and GDP ${gdp}â€”frame the capacity of the local market and workforce, while trade relationships with ${trade} provide external demand signals that validate opportunity sizing.`
+    `The city's modern economy is driven by ${sectors}, supported by access to ${access}. This access underpins trade and logistics viability, while the local climate (${climate}) influences infrastructure resilience planning and long-term development sequencing.`,
+    `Current macro indicators - including population ${population} and GDP ${gdp}a"frame the capacity of the local market and workforce, while trade relationships with ${trade} provide external demand signals that validate opportunity sizing.`
   ];
 
   const historical = [
-    `Historically, ${profile.city} grew as a regional interchange point, shaped by governance reforms, commercial expansion, and infrastructure investments that tied it to wider national priorities. These historical phases created todayâ€™s institutional footprint across ports, trade corridors, and civic administration.`,
-    `The cityâ€™s evolution has produced layered administrative capabilities that now influence permitting speed, public-private partnership readiness, and the reliability of long-term policy execution. This history matters because it explains why present-day outcomes are feasible within existing local institutions.`,
-    `Taken together, the historical arc supports a defensible thesis: ${profile.city} has repeatedly converted strategic geography into sustained economic utilityâ€”a core prerequisite for regional investment and partnership alignment.`
+    `Historically, ${profile.city} grew as a regional interchange point, shaped by governance reforms, commercial expansion, and infrastructure investments that tied it to wider national priorities. These historical phases created today's institutional footprint across ports, trade corridors, and civic administration.`,
+    `The city's evolution has produced layered administrative capabilities that now influence permitting speed, public-private partnership readiness, and the reliability of long-term policy execution. This history matters because it explains why present-day outcomes are feasible within existing local institutions.`,
+    `Taken together, the historical arc supports a defensible thesis: ${profile.city} has repeatedly converted strategic geography into sustained economic utility - a core prerequisite for regional investment and partnership alignment.`
   ];
 
   return { overview, historical };
@@ -441,7 +441,7 @@ th { background: #f1f5f9; }
 </head>
 <body>
   <h1>${profile.city} Intelligence Brief</h1>
-  <div class="meta">${profile.region} Â· ${profile.country}</div>
+  <div class="meta">${profile.region} * ${profile.country}</div>
   <div class="meta">Established: ${profile.established} | Timezone: ${profile.timezone || 'N/A'}</div>
   <p class="badge">Composite Score: ${computeCompositeScore(profile)} / 100</p>
   
@@ -581,14 +581,14 @@ th { background: #f1f5f9; }
                         className="w-full text-left px-4 py-3 hover:bg-amber-500/10 border-b border-white/5 last:border-b-0"
                       >
                         <div className="text-white font-semibold">{result.city}</div>
-                        <div className="text-[11px] text-slate-400">{result.region} Â· {result.country}</div>
+                        <div className="text-[11px] text-slate-400">{result.region} * {result.country}</div>
                       </button>
                     ))}
                     <button
                       onClick={() => handleSearchSubmit(searchQuery)}
                       className="w-full text-left px-4 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300"
                     >
-                      <div className="font-semibold">ðŸ” Research "{searchQuery}" with AI Agent</div>
+                      <div className="font-semibold">📄 Research "{searchQuery}" with AI Agent</div>
                       <div className="text-[10px] text-purple-400">Search globally for any location not in database</div>
                     </button>
                   </div>
@@ -599,7 +599,7 @@ th { background: #f1f5f9; }
               {isResearching
                 ? <span className="text-purple-400 flex items-center gap-2"><Loader2 className="w-3 h-3 animate-spin" /> AI Agent researching...</span>
                 : hasSelection && activeProfile
-                  ? <span className="text-emerald-400">âœ“ Viewing: {activeProfile.city}, {activeProfile.country}</span>
+                  ? <span className="text-emerald-400">✓ Viewing: {activeProfile.city}, {activeProfile.country}</span>
                   : 'Enter any location worldwide to generate intelligence report'}
             </div>
           </div>
@@ -672,7 +672,7 @@ th { background: #f1f5f9; }
                   <MapPin className="w-3 h-3" /> {activeProfile.city}, {activeProfile.country}
                 </div>
                 <div className="absolute bottom-3 right-3 bg-black/70 text-[10px] text-slate-200 px-2 py-1 rounded">
-                  {activeProfile.latitude?.toFixed(4)}Â°, {activeProfile.longitude?.toFixed(4)}Â°
+                  {activeProfile.latitude?.toFixed(4)} degrees, {activeProfile.longitude?.toFixed(4)} degrees
                 </div>
               </div>
             ) : (
@@ -745,26 +745,26 @@ th { background: #f1f5f9; }
             {/* Research Status */}
             <div className="bg-black/40 rounded-lg p-3 text-[11px] font-mono text-slate-400">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-400">â—</span>
+                <span className="text-emerald-400">a - </span>
                 <span>Searching government websites, World Bank, and official sources...</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-blue-400">â—</span>
+                <span className="text-blue-400">a - </span>
                 <span>Cross-referencing data from international organizations</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-amber-400">â—</span>
+                <span className="text-amber-400">a - </span>
                 <span>Compiling verified economic data and leadership profiles</span>
               </div>
               {researchProgress?.substage && (
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-purple-400">â†’</span>
+                  <span className="text-purple-400">a'</span>
                   <span className="text-purple-300">Currently: {researchProgress.substage}</span>
                 </div>
               )}
               {researchProgress?.sourcesFound && (
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-cyan-400">âœ“</span>
+                  <span className="text-cyan-400">✓</span>
                   <span className="text-cyan-300">{researchProgress.sourcesFound} authoritative sources found</span>
                 </div>
               )}
@@ -782,13 +782,13 @@ th { background: #f1f5f9; }
               Our AI agent will research leadership, economy, infrastructure, demographics, and more.
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡µðŸ‡­ Philippines</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¦ðŸ‡º Australia</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¯ðŸ‡µ Japan</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡ºðŸ‡¸ USA</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡¬ðŸ‡§ UK</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸ‡©ðŸ‡ª Germany</span>
-              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">ðŸŒ Any Location</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇵🇭 Philippines</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇦🇺 Australia</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇯🇵 Japan</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇺🇸 USA</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇬🇧 UK</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🇩🇪 Germany</span>
+              <span className="text-[11px] px-3 py-1.5 bg-slate-800 rounded-full text-slate-300">🌍 Any Location</span>
             </div>
             
             {/* Quick Access to Existing Profiles */}
@@ -837,8 +837,8 @@ th { background: #f1f5f9; }
               <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
                 <div>
                   <h1 className="text-4xl font-bold text-white">{activeProfile.city}</h1>
-                  <p className="text-slate-400 text-lg">{activeProfile.region} Â· {activeProfile.country}</p>
-                  <p className="text-xs text-slate-500 mt-1">Est. {activeProfile.established} Â· {activeProfile.timezone}</p>
+                  <p className="text-slate-400 text-lg">{activeProfile.region} * {activeProfile.country}</p>
+                  <p className="text-xs text-slate-500 mt-1">Est. {activeProfile.established} * {activeProfile.timezone}</p>
                   {researchResult?.dataQuality && (
                     <div className="flex items-center gap-2 mt-2">
                       <span className={`text-[10px] px-2 py-1 rounded-full ${
@@ -870,15 +870,15 @@ th { background: #f1f5f9; }
                 <div className="flex items-center gap-2 text-[11px] text-slate-400 flex-wrap">
                   <span className="font-semibold text-slate-300 mr-2">Sections:</span>
                   <span className="text-amber-400">Executive Summary</span>
-                  <span className="text-slate-600">â†’</span>
+                  <span className="text-slate-600">a'</span>
                   <span className="hover:text-amber-400 cursor-pointer">Government</span>
-                  <span className="text-slate-600">â†’</span>
+                  <span className="text-slate-600">a'</span>
                   <span className="hover:text-amber-400 cursor-pointer">Economy</span>
-                  <span className="text-slate-600">â†’</span>
+                  <span className="text-slate-600">a'</span>
                   <span className="hover:text-amber-400 cursor-pointer">Demographics</span>
-                  <span className="text-slate-600">â†’</span>
+                  <span className="text-slate-600">a'</span>
                   <span className="hover:text-amber-400 cursor-pointer">Infrastructure</span>
-                  <span className="text-slate-600">â†’</span>
+                  <span className="text-slate-600">a'</span>
                   <span className="hover:text-amber-400 cursor-pointer">Contact Directory</span>
                 </div>
               </div>
@@ -984,7 +984,7 @@ th { background: #f1f5f9; }
                             </div>
                             {official.verified && (
                               <div className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
-                                âœ“ Verified
+                                ✓ Verified
                               </div>
                             )}
                           </div>
@@ -1017,7 +1017,7 @@ th { background: #f1f5f9; }
                   </div>
                   <div className="p-3 bg-black/30 rounded-lg">
                     <div className="text-[10px] text-slate-400 uppercase">Coordinates</div>
-                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.latitude?.toFixed(2)}Â°, {activeProfile.longitude?.toFixed(2)}Â°</div>
+                    <div className="text-sm font-semibold text-white mt-1">{activeProfile.latitude?.toFixed(2)} degrees, {activeProfile.longitude?.toFixed(2)} degrees</div>
                   </div>
                 </div>
 
@@ -1045,7 +1045,7 @@ th { background: #f1f5f9; }
                       <div>
                         <div className="text-sm font-semibold text-white">Data Quality: {researchResult.dataQuality.completeness}%</div>
                         <div className="text-xs text-slate-400">
-                          {researchResult.dataQuality.governmentSourcesUsed} govt â€¢ {researchResult.dataQuality.internationalSourcesUsed} int'l â€¢ {researchResult.dataQuality.newsSourcesUsed} news sources
+                          {researchResult.dataQuality.governmentSourcesUsed} govt * {researchResult.dataQuality.internationalSourcesUsed} int'l * {researchResult.dataQuality.newsSourcesUsed} news sources
                         </div>
                       </div>
                     </div>
@@ -1277,7 +1277,7 @@ th { background: #f1f5f9; }
                           <div className="text-[10px] text-slate-400 uppercase">Latest signals</div>
                           <ul className="mt-1 space-y-1">
                             {activeProfile.recentNews.slice(0, 3).map(item => (
-                              <li key={item.title} className="text-[11px] text-slate-300">â€¢ {item.title}</li>
+                              <li key={item.title} className="text-[11px] text-slate-300">* {item.title}</li>
                             ))}
                           </ul>
                         </div>
@@ -1315,12 +1315,12 @@ th { background: #f1f5f9; }
                     <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">3</div>
                     <span className="text-xs font-semibold text-emerald-300">Market & Context</span>
                   </div>
-                  <div className="text-[10px] text-emerald-200 mb-2">âœ“ Fully Covered</div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
                   <ul className="text-[10px] text-slate-400 space-y-1">
-                    <li>â€¢ GDP & economic data</li>
-                    <li>â€¢ Regulatory friction</li>
-                    <li>â€¢ Demographics</li>
-                    <li>â€¢ Trade partners</li>
+                    <li>* GDP & economic data</li>
+                    <li>* Regulatory friction</li>
+                    <li>* Demographics</li>
+                    <li>* Trade partners</li>
                   </ul>
                 </div>
 
@@ -1330,12 +1330,12 @@ th { background: #f1f5f9; }
                     <div className="w-6 h-6 bg-amber-500/30 rounded-full flex items-center justify-center text-xs font-bold text-amber-300">4</div>
                     <span className="text-xs font-semibold text-amber-300">Partners & Ecosystem</span>
                   </div>
-                  <div className="text-[10px] text-amber-200 mb-2">â— Partially Covered</div>
+                  <div className="text-[10px] text-amber-200 mb-2">a -  Partially Covered</div>
                   <ul className="text-[10px] text-slate-400 space-y-1">
-                    <li>â€¢ Major employers</li>
-                    <li>â€¢ Foreign companies</li>
-                    <li>â€¢ Key sectors</li>
-                    <li>â€¢ Gov't contacts</li>
+                    <li>* Major employers</li>
+                    <li>* Foreign companies</li>
+                    <li>* Key sectors</li>
+                    <li>* Gov't contacts</li>
                   </ul>
                 </div>
 
@@ -1345,12 +1345,12 @@ th { background: #f1f5f9; }
                     <div className="w-6 h-6 bg-cyan-500/30 rounded-full flex items-center justify-center text-xs font-bold text-cyan-300">5</div>
                     <span className="text-xs font-semibold text-cyan-300">Financial Model</span>
                   </div>
-                  <div className="text-[10px] text-cyan-200 mb-2">â— Inputs Available</div>
+                  <div className="text-[10px] text-cyan-200 mb-2">a -  Inputs Available</div>
                   <ul className="text-[10px] text-slate-400 space-y-1">
-                    <li>â€¢ Investment programs</li>
-                    <li>â€¢ Tax incentives</li>
-                    <li>â€¢ Cost indicators</li>
-                    <li>â€¢ Economic zones</li>
+                    <li>* Investment programs</li>
+                    <li>* Tax incentives</li>
+                    <li>* Cost indicators</li>
+                    <li>* Economic zones</li>
                   </ul>
                 </div>
 
@@ -1360,12 +1360,12 @@ th { background: #f1f5f9; }
                     <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">6</div>
                     <span className="text-xs font-semibold text-emerald-300">Risk & Mitigation</span>
                   </div>
-                  <div className="text-[10px] text-emerald-200 mb-2">âœ“ Fully Covered</div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
                   <ul className="text-[10px] text-slate-400 space-y-1">
-                    <li>â€¢ Political risk</li>
-                    <li>â€¢ Economic risk</li>
-                    <li>â€¢ Natural hazards</li>
-                    <li>â€¢ Regulatory risk</li>
+                    <li>* Political risk</li>
+                    <li>* Economic risk</li>
+                    <li>* Natural hazards</li>
+                    <li>* Regulatory risk</li>
                   </ul>
                 </div>
 
@@ -1375,12 +1375,12 @@ th { background: #f1f5f9; }
                     <div className="w-6 h-6 bg-emerald-500/30 rounded-full flex items-center justify-center text-xs font-bold text-emerald-300">10</div>
                     <span className="text-xs font-semibold text-emerald-300">Scoring & Readiness</span>
                   </div>
-                  <div className="text-[10px] text-emerald-200 mb-2">âœ“ Fully Covered</div>
+                  <div className="text-[10px] text-emerald-200 mb-2">✓ Fully Covered</div>
                   <ul className="text-[10px] text-slate-400 space-y-1">
-                    <li>â€¢ Composite score</li>
-                    <li>â€¢ Investment readiness</li>
-                    <li>â€¢ Comparison analysis</li>
-                    <li>â€¢ Data quality</li>
+                    <li>* Composite score</li>
+                    <li>* Investment readiness</li>
+                    <li>* Comparison analysis</li>
+                    <li>* Data quality</li>
                   </ul>
                 </div>
               </div>
@@ -1417,19 +1417,19 @@ th { background: #f1f5f9; }
                   </div>
                   <ul className="text-[10px] text-slate-300 space-y-2">
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">â€¢</span>
+                      <span className="text-emerald-400">*</span>
                       <span>Labor pool quality: {activeProfile.laborPool || 60}/100</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">â€¢</span>
+                      <span className="text-emerald-400">*</span>
                       <span>Universities: {activeProfile.demographics?.universitiesColleges || 'See education data'}</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">â€¢</span>
+                      <span className="text-emerald-400">*</span>
                       <span>Literacy: {activeProfile.demographics?.literacyRate || 'See demographics'}</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">â€¢</span>
+                      <span className="text-emerald-400">*</span>
                       <span>Languages: {activeProfile.demographics?.languages?.slice(0, 2).join(', ') || 'See language data'}</span>
                     </li>
                   </ul>
@@ -1441,19 +1441,19 @@ th { background: #f1f5f9; }
                   </div>
                   <ul className="text-[10px] text-slate-300 space-y-2">
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â€¢</span>
+                      <span className="text-amber-400">*</span>
                       <span>Cost index: {activeProfile.costOfDoing || 50}/100 (lower is better)</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â€¢</span>
+                      <span className="text-amber-400">*</span>
                       <span>Avg income: {activeProfile.economics?.avgIncome || 'See economic data'}</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â€¢</span>
+                      <span className="text-amber-400">*</span>
                       <span>Tax incentives: {activeProfile.taxIncentives?.length || 0} programs</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â€¢</span>
+                      <span className="text-amber-400">*</span>
                       <span>Economic zones: {activeProfile.infrastructure?.specialEconomicZones?.length || 0} zones</span>
                     </li>
                   </ul>
@@ -1474,26 +1474,26 @@ th { background: #f1f5f9; }
                   <div>
                     <div className="text-slate-400 mb-1">Coverage Highlights:</div>
                     <ul className="text-emerald-300 space-y-1">
-                      <li>âœ“ Market context indicators present</li>
-                      <li>âœ“ Risk indicators present</li>
-                      <li>âœ“ Scoring inputs present</li>
+                      <li>✓ Market context indicators present</li>
+                      <li>✓ Risk indicators present</li>
+                      <li>✓ Scoring inputs present</li>
                     </ul>
                   </div>
                   <div>
                     <div className="text-slate-400 mb-1">Verification Checklist:</div>
                     <ul className="text-blue-300 space-y-1">
-                      <li>â†’ Confirm leadership via official portals</li>
-                      <li>â†’ Validate incentives with investment authority</li>
-                      <li>â†’ Verify current regulations and timelines</li>
+                      <li>a' Confirm leadership via official portals</li>
+                      <li>a' Validate incentives with investment authority</li>
+                      <li>a' Verify current regulations and timelines</li>
                     </ul>
                   </div>
                   <div>
                     <div className="text-slate-400 mb-1">Known Data Gaps:</div>
                     <ul className="text-amber-300 space-y-1">
-                      {!activeProfile.leaders?.length && <li>â€¢ Leadership verification needed</li>}
-                      {(activeProfile.laborPool || 0) < 50 && <li>â€¢ Workforce assessment recommended</li>}
-                      {!activeProfile.taxIncentives?.length && <li>â€¢ Incentive details to confirm</li>}
-                      {activeProfile.leaders?.length && (activeProfile.laborPool || 0) >= 50 && activeProfile.taxIncentives?.length && <li>â€¢ Data largely complete</li>}
+                      {!activeProfile.leaders?.length && <li>* Leadership verification needed</li>}
+                      {(activeProfile.laborPool || 0) < 50 && <li>* Workforce assessment recommended</li>}
+                      {!activeProfile.taxIncentives?.length && <li>* Incentive details to confirm</li>}
+                      {activeProfile.leaders?.length && (activeProfile.laborPool || 0) >= 50 && activeProfile.taxIncentives?.length && <li>* Data largely complete</li>}
                     </ul>
                   </div>
                 </div>
@@ -1528,18 +1528,18 @@ th { background: #f1f5f9; }
                             {leader.office && <div className="text-xs text-slate-400 mt-1">Office: {leader.office}</div>}
                             {leader.email && (
                               <div className="text-xs text-blue-400 mt-1 flex items-center gap-1">
-                                ðŸ“§ {leader.email}
+                                📊 {leader.email}
                               </div>
                             )}
                             {leader.website && (
                               <a href={leader.website} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline mt-1 block">
-                                ðŸŒ Official Website â†’
+                                🌍 Official Website a'
                               </a>
                             )}
                           </div>
                           {leader.verified && (
                             <div className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded border border-emerald-500/40">
-                              âœ“ Verified
+                              ✓ Verified
                             </div>
                           )}
                         </div>
@@ -1743,7 +1743,7 @@ th { background: #f1f5f9; }
                             </a>
                           )}
                           {leader.internationalEngagementFocus && (
-                            <div className="text-[10px] text-purple-300 mt-1">ðŸŒ Int'l Engagement Focus</div>
+                            <div className="text-[10px] text-purple-300 mt-1">🌍 Int'l Engagement Focus</div>
                           )}
                         </div>
                       </div>
@@ -1758,13 +1758,13 @@ th { background: #f1f5f9; }
                         <div className="mt-2 flex flex-wrap gap-1">
                           {leader.achievements.slice(0, 2).map((ach, idx) => (
                             <span key={idx} className="text-[9px] px-2 py-0.5 bg-emerald-500/10 text-emerald-300 rounded-full">
-                              âœ“ {ach.substring(0, 40)}{ach.length > 40 ? '...' : ''}
+                              ✓ {ach.substring(0, 40)}{ach.length > 40 ? '...' : ''}
                             </span>
                           ))}
                         </div>
                       )}
                       <div className="mt-3 text-[10px] text-purple-300 flex items-center gap-1">
-                        Click for full bio, news & projects â†’
+                        Click for full bio, news & projects a'
                       </div>
                     </button>
                   ))}
@@ -2030,7 +2030,7 @@ th { background: #f1f5f9; }
                     </div>
                     <div className="p-2 bg-slate-800/50 rounded">
                       <div className="text-slate-400 mb-1">Coordinates</div>
-                      <div className="font-mono text-white">{activeProfile.latitude?.toFixed(4)}Â°, {activeProfile.longitude?.toFixed(4)}Â°</div>
+                      <div className="font-mono text-white">{activeProfile.latitude?.toFixed(4)} degrees, {activeProfile.longitude?.toFixed(4)} degrees</div>
                     </div>
                   </div>
                 </div>
@@ -2043,19 +2043,19 @@ th { background: #f1f5f9; }
                   </div>
                   <div className="space-y-2 text-xs text-slate-300">
                     <div className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-0.5">â€¢</span>
+                      <span className="text-emerald-400 mt-0.5">*</span>
                       <span>Power infrastructure: {activeProfile.infrastructure?.powerCapacity || 'See utilities data'}</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-0.5">â€¢</span>
+                      <span className="text-emerald-400 mt-0.5">*</span>
                       <span>Internet connectivity: {activeProfile.infrastructure?.internetPenetration || 'High connectivity'}</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-0.5">â€¢</span>
+                      <span className="text-emerald-400 mt-0.5">*</span>
                       <span>Special economic zones support sustainable development initiatives</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-0.5">â€¢</span>
+                      <span className="text-emerald-400 mt-0.5">*</span>
                       <span>Urban planning aligns with regional sustainability frameworks</span>
                     </div>
                   </div>
@@ -2072,10 +2072,10 @@ th { background: #f1f5f9; }
                       <p>{((researchResult.narratives.risks as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.[0]?.text as string || 'Environmental assessment data being compiled.'}</p>
                     ) : (
                       <>
-                        <p>â€¢ Assess local weather patterns and seasonal variations for operational planning</p>
-                        <p>â€¢ Review disaster preparedness and infrastructure resilience measures</p>
-                        <p>â€¢ Consider water availability and resource management policies</p>
-                        <p>â€¢ Evaluate air quality and environmental compliance requirements</p>
+                        <p>* Assess local weather patterns and seasonal variations for operational planning</p>
+                        <p>* Review disaster preparedness and infrastructure resilience measures</p>
+                        <p>* Consider water availability and resource management policies</p>
+                        <p>* Evaluate air quality and environmental compliance requirements</p>
                       </>
                     )}
                   </div>
@@ -2202,9 +2202,9 @@ th { background: #f1f5f9; }
                         <p>{((researchResult.narratives.risks as unknown as Record<string, unknown>)?.paragraphs as Array<Record<string, unknown>>)?.[0]?.text as string || 'Environmental risk data being compiled.'}</p>
                       ) : (
                         <>
-                          <p>â€¢ Consider local weather patterns and seasonal variations</p>
-                          <p>â€¢ Review disaster preparedness and infrastructure resilience</p>
-                          <p>â€¢ Assess water and resource availability</p>
+                          <p>* Consider local weather patterns and seasonal variations</p>
+                          <p>* Review disaster preparedness and infrastructure resilience</p>
+                          <p>* Assess water and resource availability</p>
                         </>
                       )}
                     </div>
@@ -2252,16 +2252,16 @@ th { background: #f1f5f9; }
                 </div>
                 <ul className="text-[11px] text-slate-300 space-y-1">
                   {(activeProfile.politicalStability || 50) < 60 && (
-                    <li>â€¢ Consider political risk insurance for long-term investments</li>
+                    <li>* Consider political risk insurance for long-term investments</li>
                   )}
                   {(activeProfile.regulatoryFriction || 50) > 50 && (
-                    <li>â€¢ Engage local legal counsel for regulatory navigation</li>
+                    <li>* Engage local legal counsel for regulatory navigation</li>
                   )}
                   {(activeProfile.investmentMomentum || 50) < 50 && (
-                    <li>â€¢ Monitor economic indicators and maintain flexible exit strategies</li>
+                    <li>* Monitor economic indicators and maintain flexible exit strategies</li>
                   )}
-                  <li>â€¢ Conduct due diligence with local partners and government offices</li>
-                  <li>â€¢ Review bilateral investment treaties and investor protections</li>
+                  <li>* Conduct due diligence with local partners and government offices</li>
+                  <li>* Review bilateral investment treaties and investor protections</li>
                 </ul>
               </div>
             </div>
@@ -2273,7 +2273,7 @@ th { background: #f1f5f9; }
                 <ul className="space-y-2 text-xs text-slate-300">
                   {activeProfile.strategicAdvantages.map(item => (
                     <li key={item} className="flex items-start gap-2">
-                      <span className="text-emerald-400 mt-0.5">âœ“</span>
+                      <span className="text-emerald-400 mt-0.5">✓</span>
                       {item}
                     </li>
                   ))}
@@ -2284,7 +2284,7 @@ th { background: #f1f5f9; }
                 <ul className="space-y-2 text-xs text-slate-300">
                   {deriveNeeds(activeProfile).map(item => (
                     <li key={item} className="flex items-start gap-2">
-                      <span className="text-amber-400 mt-0.5">â†’</span>
+                      <span className="text-amber-400 mt-0.5">a'</span>
                       {item}
                     </li>
                   ))}
@@ -2342,7 +2342,7 @@ th { background: #f1f5f9; }
                   {activeProfile.departments?.length ? (
                     <ul className="text-xs text-slate-300 space-y-1">
                       {activeProfile.departments.map((dept) => (
-                        <li key={dept}>â€¢ {dept}</li>
+                        <li key={dept}>* {dept}</li>
                       ))}
                     </ul>
                   ) : (
@@ -2462,7 +2462,7 @@ th { background: #f1f5f9; }
                         {activeProfile.realTimeIndicators?.newsAlerts?.map(alert => (
                           <div key={alert.headline} className="p-3 border border-slate-800 rounded-lg">
                             <div className="font-semibold text-xs">{alert.headline}</div>
-                            <div className="text-[10px] text-slate-400 mt-1">{alert.date} Â· {alert.source}</div>
+                            <div className="text-[10px] text-slate-400 mt-1">{alert.date} * {alert.source}</div>
                           </div>
                         ))}
                       </div>
@@ -2531,7 +2531,7 @@ th { background: #f1f5f9; }
                           </div>
                         </div>
                         <div className="mt-3 text-xs text-slate-400">
-                          <span className="text-emerald-300">âœ“</span> Primary sources (government, World Bank, int'l organizations) prioritized over secondary sources.
+                          <span className="text-emerald-300">✓</span> Primary sources (government, World Bank, int'l organizations) prioritized over secondary sources.
                         </div>
                       </div>
                     )}
@@ -2566,7 +2566,7 @@ th { background: #f1f5f9; }
                                source.type === 'news' ? <Newspaper className="w-4 h-4" /> :
                                <FileText className="w-4 h-4" />}
                               <span className="text-[8px] mt-0.5">
-                                {source.reliability === 'high' ? 'â˜…â˜…â˜…' : source.reliability === 'medium' ? 'â˜…â˜…' : 'â˜…'}
+                                {source.reliability === 'high' ? 'a~...a~...a~...' : source.reliability === 'medium' ? 'a~...a~...' : 'a~...'}
                               </span>
                             </div>
                             <div className="flex-1 min-w-0">
@@ -2584,7 +2584,7 @@ th { background: #f1f5f9; }
                               </div>
                               <div className="text-[10px] text-slate-300 mt-0.5 capitalize">
                                 {source.type === 'worldbank' ? 'World Bank' : source.type}
-                                {source.organization ? ` Â· ${source.organization}` : ''}
+                                {source.organization ? ` * ${source.organization}` : ''}
                               </div>
                               {source.dataExtracted && (
                                 <div className="text-[10px] text-slate-400 mt-1 line-clamp-2">{source.dataExtracted}</div>
@@ -2592,7 +2592,7 @@ th { background: #f1f5f9; }
                               <div className="text-[10px] text-slate-500 mt-1 flex items-center gap-2">
                                 <Link2 className="w-3 h-3" />
                                 <span className="truncate">{new URL(source.url).hostname}</span>
-                                <span>Â· {source.accessDate}</span>
+                                <span>* {source.accessDate}</span>
                               </div>
                             </div>
                             <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-blue-400" />
@@ -2652,7 +2652,7 @@ th { background: #f1f5f9; }
                               <span className="text-amber-400 font-bold">Current</span>
                             </td>
                             <td className="py-3 px-2 text-slate-300">Base comparison location</td>
-                            <td className="py-3 px-2 text-slate-400">â€”</td>
+                            <td className="py-3 px-2 text-slate-400">a"</td>
                             <td className="py-3 px-2 text-center">
                               <span className="text-[10px] text-amber-300">Selected</span>
                             </td>
@@ -2671,7 +2671,7 @@ th { background: #f1f5f9; }
                                   (similar.similarity || 0) >= 60 ? 'bg-cyan-500/20 text-cyan-400' :
                                   'bg-slate-700 text-slate-300'
                                 }`}>
-                                  <span className="text-lg font-bold">{similar.similarity || 'â€”'}%</span>
+                                  <span className="text-lg font-bold">{similar.similarity || 'a"'}%</span>
                                 </div>
                               </td>
                               <td className="py-3 px-2 text-slate-300 max-w-[200px]">
@@ -2685,7 +2685,7 @@ th { background: #f1f5f9; }
                                   onClick={() => handleSearchSubmit(`${similar.city}, ${similar.country}`)}
                                   className="px-3 py-1.5 text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/30"
                                 >
-                                  Research â†’
+                                  Research a'
                                 </button>
                               </td>
                             </tr>
@@ -2711,7 +2711,7 @@ th { background: #f1f5f9; }
                               (similar.similarity || 0) >= 60 ? 'text-cyan-400' :
                               'text-slate-400'
                             }`}>
-                              {similar.similarity || 'â€”'}%
+                              {similar.similarity || 'a"'}%
                             </div>
                           </div>
                           <div className="text-lg font-semibold text-white group-hover:text-cyan-300">
@@ -2758,19 +2758,19 @@ th { background: #f1f5f9; }
                   </div>
                   <ul className="space-y-2 text-[11px] text-slate-300">
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">âœ“</span>
+                      <span className="text-emerald-400">✓</span>
                       <span><strong>Government Portals:</strong> Official .gov websites, census bureaus, statistical offices</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">âœ“</span>
+                      <span className="text-emerald-400">✓</span>
                       <span><strong>World Bank:</strong> GDP, population, economic indicators, development data</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">âœ“</span>
+                      <span className="text-emerald-400">✓</span>
                       <span><strong>International Organizations:</strong> IMF, UN, OECD, ADB, regional development banks</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-emerald-400">âœ“</span>
+                      <span className="text-emerald-400">✓</span>
                       <span><strong>Investment Authorities:</strong> Trade offices, investment promotion agencies</span>
                     </li>
                   </ul>
@@ -2784,19 +2784,19 @@ th { background: #f1f5f9; }
                   </div>
                   <ul className="space-y-2 text-[11px] text-slate-300">
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â—‹</span>
+                      <span className="text-amber-400">a - </span>
                       <span><strong>News Media:</strong> Major news outlets, business publications, local newspapers</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â—‹</span>
+                      <span className="text-amber-400">a - </span>
                       <span><strong>Academic Sources:</strong> Research papers, university studies, think tanks</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â—‹</span>
+                      <span className="text-amber-400">a - </span>
                       <span><strong>Encyclopedias:</strong> Wikipedia (cross-referenced with primary sources)</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-amber-400">â—‹</span>
+                      <span className="text-amber-400">a - </span>
                       <span><strong>Industry Reports:</strong> Market research, sector analyses</span>
                     </li>
                   </ul>
@@ -2836,15 +2836,15 @@ th { background: #f1f5f9; }
                   </div>
                   <div className="space-y-3 text-[11px]">
                     <div className="flex items-center justify-between p-2 bg-emerald-500/10 border border-emerald-500/30 rounded">
-                      <span className="text-emerald-300">â˜…â˜…â˜… High Reliability</span>
+                      <span className="text-emerald-300">a~...a~...a~... High Reliability</span>
                       <span className="text-emerald-400">Government, World Bank, Int'l Orgs</span>
                     </div>
                     <div className="flex items-center justify-between p-2 bg-amber-500/10 border border-amber-500/30 rounded">
-                      <span className="text-amber-300">â˜…â˜… Medium Reliability</span>
+                      <span className="text-amber-300">a~...a~... Medium Reliability</span>
                       <span className="text-amber-400">News, Research, Academia</span>
                     </div>
                     <div className="flex items-center justify-between p-2 bg-slate-700/50 border border-slate-600 rounded">
-                      <span className="text-slate-300">â˜… Lower Reliability</span>
+                      <span className="text-slate-300">a~... Lower Reliability</span>
                       <span className="text-slate-400">User content, unverified sources</span>
                     </div>
                   </div>
@@ -2928,7 +2928,7 @@ th { background: #f1f5f9; }
                     )}
                     {activeLeader.internationalEngagementFocus && (
                       <span className="inline-block ml-2 mt-2 px-3 py-1 bg-amber-500/20 border border-amber-500/40 rounded-full text-xs text-amber-300">
-                        ðŸŒ Int'l Engagement Lead
+                        🌍 Int'l Engagement Lead
                       </span>
                     )}
                   </div>
@@ -2964,7 +2964,7 @@ th { background: #f1f5f9; }
                     </h4>
                     <ul className="space-y-2 text-xs text-slate-300">
                       {activeLeader.education.map((edu, i) => (
-                        <li key={i}>â€¢ {edu}</li>
+                        <li key={i}>* {edu}</li>
                       ))}
                     </ul>
                   </div>
@@ -2976,7 +2976,7 @@ th { background: #f1f5f9; }
                     </h4>
                     <ul className="space-y-2 text-xs text-slate-300">
                       {activeLeader.previousPositions.map((pos, i) => (
-                        <li key={i}>â€¢ {pos}</li>
+                        <li key={i}>* {pos}</li>
                       ))}
                     </ul>
                   </div>
@@ -2991,7 +2991,7 @@ th { background: #f1f5f9; }
                 <div className="flex flex-wrap gap-2">
                   {activeLeader.achievements.map(item => (
                     <span key={item} className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs text-emerald-300">
-                      âœ“ {item}
+                      ✓ {item}
                     </span>
                   ))}
                 </div>
@@ -3007,7 +3007,7 @@ th { background: #f1f5f9; }
                     {activeLeader.newsReports.map((news, i) => (
                       <div key={i} className="p-3 border border-slate-800 rounded-lg">
                         <div className="font-semibold text-sm text-white">{news.headline}</div>
-                        <div className="text-[10px] text-slate-400 mt-1">{news.date} Â· {news.source}</div>
+                        <div className="text-[10px] text-slate-400 mt-1">{news.date} * {news.source}</div>
                         {news.summary && <p className="text-xs text-slate-300 mt-2">{news.summary}</p>}
                         {news.url && (
                           <a href={news.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 mt-2 text-xs text-blue-400 hover:text-blue-300">
@@ -3121,7 +3121,7 @@ th { background: #f1f5f9; }
                   )}
                   {activeLeader.contactEmail && (
                     <div className="flex items-center gap-2 text-slate-300">
-                      <span className="text-slate-500">ðŸ“§</span>
+                      <span className="text-slate-500">📊</span>
                       <a href={`mailto:${activeLeader.contactEmail}`} className="text-blue-400 hover:underline">{activeLeader.contactEmail}</a>
                     </div>
                   )}

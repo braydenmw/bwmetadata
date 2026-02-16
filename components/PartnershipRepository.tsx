@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Archive, TrendingUp, TrendingDown, PieChart, BarChart3, AlertCircle, CheckCircle, Star, Filter, Download, Eye } from 'lucide-react';
 
 interface PartnershipRecord {
@@ -261,7 +261,7 @@ const PartnershipRepository: React.FC = () => {
               <PieChart className="w-5 h-5 text-teal-600" />
               Portfolio Overview
             </h3>
-            <div className="text-2xl">{expandedSections.portfolio ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.portfolio ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.portfolio && (
@@ -269,7 +269,7 @@ const PartnershipRepository: React.FC = () => {
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <div className="text-xs font-bold text-green-900 uppercase mb-1">Total Partnerships</div>
                 <div className="text-4xl font-black text-green-600">{portfolioStats.total}</div>
-                <div className="text-xs text-green-700 mt-2">{portfolioStats.successful} Successful â€¢ {portfolioStats.failed} Failed</div>
+                <div className="text-xs text-green-700 mt-2">{portfolioStats.successful} Successful * {portfolioStats.failed} Failed</div>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -298,7 +298,7 @@ const PartnershipRepository: React.FC = () => {
 
               <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
                 <div className="text-xs font-bold text-pink-900 uppercase mb-1">Portfolio Health</div>
-                <div className="text-4xl font-black text-pink-600">{portfolioStats.avgProfitability > 70 ? 'âœ“ Strong' : portfolioStats.avgProfitability > 50 ? 'Fair' : 'Weak'}</div>
+                <div className="text-4xl font-black text-pink-600">{portfolioStats.avgProfitability > 70 ? '✓ Strong' : portfolioStats.avgProfitability > 50 ? 'Fair' : 'Weak'}</div>
                 <div className="text-xs text-pink-700 mt-2">Profitability trend</div>
               </div>
             </div>
@@ -316,7 +316,7 @@ const PartnershipRepository: React.FC = () => {
                 <CheckCircle className="w-5 h-5 text-green-600" />
                 Success Patterns
               </h3>
-              <div className="text-2xl">{expandedSections.patterns ? 'â–¼' : 'â–¶'}</div>
+              <div className="text-2xl">{expandedSections.patterns ? 'a-1/4' : 'a-'}</div>
             </div>
 
             {expandedSections.patterns && (
@@ -343,7 +343,7 @@ const PartnershipRepository: React.FC = () => {
                 <AlertCircle className="w-5 h-5 text-red-600" />
                 Failure Patterns to Avoid
               </h3>
-              <div className="text-2xl">{expandedSections.patterns ? 'â–¼' : 'â–¶'}</div>
+              <div className="text-2xl">{expandedSections.patterns ? 'a-1/4' : 'a-'}</div>
             </div>
 
             {expandedSections.patterns && (
@@ -372,7 +372,7 @@ const PartnershipRepository: React.FC = () => {
               <BarChart3 className="w-5 h-5 text-blue-600" />
               Partnership Records ({filteredPartnerships.length})
             </h3>
-            <div className="text-2xl">{expandedSections.records ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.records ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.records && (
@@ -423,7 +423,7 @@ const PartnershipRepository: React.FC = () => {
                     <div className="grid md:grid-cols-5 gap-4 items-center">
                       <div>
                         <h4 className="font-bold text-stone-900">{partnership.name}</h4>
-                        <p className="text-xs text-stone-600">{partnership.country} â€¢ {partnership.industry}</p>
+                        <p className="text-xs text-stone-600">{partnership.country} * {partnership.industry}</p>
                       </div>
 
                       <div>
@@ -481,7 +481,7 @@ const PartnershipRepository: React.FC = () => {
           <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-6 space-y-6">
             <div className="border-b border-stone-200 pb-4">
               <h3 className="text-2xl font-bold text-stone-900">{selectedPartnership.name}</h3>
-              <p className="text-stone-600">{selectedPartnership.country} â€¢ {selectedPartnership.industry}</p>
+              <p className="text-stone-600">{selectedPartnership.country} * {selectedPartnership.industry}</p>
             </div>
 
             <div className="grid md:grid-cols-4 gap-4">
@@ -516,7 +516,7 @@ const PartnershipRepository: React.FC = () => {
                 <ul className="space-y-2">
                   {selectedPartnership.keySuccessFactors.map((factor, idx) => (
                     <li key={idx} className="text-sm text-stone-700 flex gap-2">
-                      <span className="text-green-600 font-bold">âœ“</span> {factor}
+                      <span className="text-green-600 font-bold">✓</span> {factor}
                     </li>
                   ))}
                 </ul>
@@ -527,7 +527,7 @@ const PartnershipRepository: React.FC = () => {
                 <ul className="space-y-2">
                   {selectedPartnership.lessonsLearned.map((lesson, idx) => (
                     <li key={idx} className="text-sm text-stone-700 flex gap-2">
-                      <span className="text-blue-600 font-bold">â†’</span> {lesson}
+                      <span className="text-blue-600 font-bold">a'</span> {lesson}
                     </li>
                   ))}
                 </ul>
@@ -540,7 +540,7 @@ const PartnershipRepository: React.FC = () => {
                 <ul className="space-y-2">
                   {selectedPartnership.failureReasons.map((reason, idx) => (
                     <li key={idx} className="text-sm text-red-800 flex gap-2">
-                      <span className="text-red-600 font-bold">âš </span> {reason}
+                      <span className="text-red-600 font-bold">as </span> {reason}
                     </li>
                   ))}
                 </ul>

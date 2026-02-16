@@ -1,4 +1,4 @@
-﻿
+
 import React, { useEffect, useState } from 'react';
 import { Radio, ScanLine, Users, Activity, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -40,7 +40,7 @@ export const Hero: React.FC = () => {
                             <div className="inline-flex items-center gap-3">
                                 <span className="h-px w-10 bg-bw-gold/70" aria-hidden="true" />
                                 <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-bw-navy/70">
-                                    Built boots-on-the-ground â€¢ 16 months â€¢ 200 years decoded â€¢ NSIL Brain
+                                    Built boots-on-the-ground * 16 months * 200 years decoded * NSIL Brain
                                 </span>
                             </div>
 
@@ -51,16 +51,16 @@ export const Hero: React.FC = () => {
 
                             <div className="space-y-5 max-w-3xl text-[15px] sm:text-lg text-slate-700 leading-[1.85]">
                                 <p>
-                                    Regional cities carry real assets, real labor, and compounding growthâ€”but they are consistently misread as risk because their reality is hard to translate into global-grade proof.
+                                    Regional cities carry real assets, real labor, and compounding growth - but they are consistently misread as risk because their reality is hard to translate into global-grade proof.
                                 </p>
                                 <p className="text-bw-navy font-medium">
                                     Regional markets are not chaotic; they are simply complex. They operate on a different frequency than global capitals, driven by relationships and informal networks.
                                 </p>
                                 <p>
-                                    We architected the <strong className="text-bw-navy">Regional Intelligence Core</strong> to decode this frequency. It is not a passive consultancy tool; it is a deterministic engine designed to translate the specific â€œblind spotsâ€ of regional expansion into the language of global capital.
+                                    We architected the <strong className="text-bw-navy">Regional Intelligence Core</strong> to decode this frequency. It is not a passive consultancy tool; it is a deterministic engine designed to translate the specific "blind spots" of regional expansion into the language of global capital.
                                 </p>
                                 <p>
-                                    The mission is straightforward: reduce the high cost of trust, remove outside influence, and give every region the same level of analytical rigor that global hubs take for grantedâ€”at a cost that makes intelligence accessible.
+                                    The mission is straightforward: reduce the high cost of trust, remove outside influence, and give every region the same level of analytical rigor that global hubs take for granted - at a cost that makes intelligence accessible.
                                 </p>
                             </div>
 
@@ -68,13 +68,13 @@ export const Hero: React.FC = () => {
                                 <div className="p-5 bg-white/70 border border-black/5 rounded-xl">
                                     <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Built To Execute</div>
                                     <div className="text-sm text-slate-700 leading-relaxed">
-                                        Partner Discovery, Symbiotic Matchmaking (SPI), Document Suite (LoI, MoU, Proposal), Multiâ€‘Scenario Simulation.
+                                        Partner Discovery, Symbiotic Matchmaking (SPI), Document Suite (LoI, MoU, Proposal), Multia'Scenario Simulation.
                                     </div>
                                 </div>
                                 <div className="p-5 bg-white/70 border border-black/5 rounded-xl">
                                     <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Always-On Guardrails</div>
                                     <div className="text-sm text-slate-700 leading-relaxed">
-                                        Earlyâ€‘Warning Alerts, Due Diligence Intelligence, Relocation & TCO, NSIL/API Export.
+                                        Earlya'Warning Alerts, Due Diligence Intelligence, Relocation & TCO, NSIL/API Export.
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@ export const Hero: React.FC = () => {
                                     <Activity className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Simulation
                                 </span>
                                 <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-bw-navy text-white rounded-full border border-bw-navy/20 text-[11px] font-bold uppercase tracking-widest">
-                                    <AlertTriangle className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Earlyâ€‘Warning
+                                    <AlertTriangle className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Earlya'Warning
                                 </span>
                             </div>
                         </motion.div>
@@ -107,7 +107,7 @@ export const Hero: React.FC = () => {
                                         <ScanLine className="w-4 h-4 text-bw-gold" />
                                         <span className="text-xs font-bold uppercase tracking-[0.3em] text-bw-navy/70">Signal Panel</span>
                                     </div>
-                                    <span className="text-[10px] font-mono text-bw-navy/60">Parsing Economic Physicsâ€¦</span>
+                                    <span className="text-[10px] font-mono text-bw-navy/60">Parsing Economic Physics...</span>
                                 </div>
 
                                 <div className="relative p-6 bg-bw-navy text-white">
@@ -129,7 +129,7 @@ export const Hero: React.FC = () => {
                                         <div className="mt-5 grid grid-cols-2 gap-4">
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                                                 <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Translation</div>
-                                                <div className="mt-1 text-sm text-white/90">Local reality â†’ Global metrics</div>
+                                                <div className="mt-1 text-sm text-white/90">Local reality a' Global metrics</div>
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                                                 <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Rigour</div>
@@ -153,7 +153,7 @@ export const Hero: React.FC = () => {
                                     <Radio className="w-4 h-4" /> The Core Mandate
                                 </h3>
                                 <p className="text-bw-navy text-sm leading-relaxed">
-                                    â€œWe don't guess. We calculate. By giving regional markets a standardized data language, we give them a fair chance to compete for global capital.â€
+                                    "We don't guess. We calculate. By giving regional markets a standardized data language, we give them a fair chance to compete for global capital."
                                 </p>
                             </div>
                         </motion.div>

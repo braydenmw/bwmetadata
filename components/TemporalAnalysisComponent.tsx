@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { TrendingUp, Clock, AlertCircle, MapPin, BarChart3, Zap } from 'lucide-react';
 import type { TemporalAnalysis, ReportParameters } from '../types';
 
@@ -100,11 +100,11 @@ export const TemporalAnalysisComponent: React.FC<TemporalAnalysisProps> = ({
                     analysis.progression.trajectoryRisk === 'slowing' ? 'text-amber-600' : 'text-red-600';
 
   const phaseEmoji = {
-    'nascent': 'ðŸŒ±',
-    'emerging': 'ðŸŒ¿',
-    'developing': 'ðŸ“ˆ',
-    'mature': 'ðŸ†',
-    'post_mature': 'â­'
+    'nascent': '🌍+/-',
+    'emerging': '🌍?',
+    'developing': '📈',
+    'mature': '●',
+    'post_mature': ''
   };
 
   return (
@@ -187,7 +187,7 @@ export const TemporalAnalysisComponent: React.FC<TemporalAnalysisProps> = ({
               <div className="space-y-1">
                 {analysis.progression.accelerators.map((acc, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-sm">
-                    <span className="text-green-600 font-bold mt-0.5">â†‘</span>
+                    <span className="text-green-600 font-bold mt-0.5">a'</span>
                     <span className="text-stone-700">{acc}</span>
                   </div>
                 ))}
@@ -202,7 +202,7 @@ export const TemporalAnalysisComponent: React.FC<TemporalAnalysisProps> = ({
               <div className="space-y-1">
                 {analysis.progression.decelerators.map((dec, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-sm">
-                    <span className="text-red-600 font-bold mt-0.5">â†“</span>
+                    <span className="text-red-600 font-bold mt-0.5">a"</span>
                     <span className="text-stone-700">{dec}</span>
                   </div>
                 ))}
@@ -330,21 +330,21 @@ export const TemporalAnalysisComponent: React.FC<TemporalAnalysisProps> = ({
         <h4 className="font-bold mb-3">Key Temporal Insights</h4>
         <ul className="space-y-2 text-sm">
           <li className="flex items-start gap-2">
-            <span className="font-bold mt-0.5">â€¢</span>
+            <span className="font-bold mt-0.5">*</span>
             <span>
               Based on historical precedent, regions in the <strong>{analysis.currentPhase.overall}</strong> phase typically 
               take <strong>~{analysis.progression.historicalPaceMonths} months</strong> to advance to the next stage.
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="font-bold mt-0.5">â€¢</span>
+            <span className="font-bold mt-0.5">*</span>
             <span>
               {analysis.progression.estimatedYearsToNextPhase} years to next phase means your market entry window 
               is <strong>optimal for {analysis.currentPhase.overall} phase strategies</strong>.
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="font-bold mt-0.5">â€¢</span>
+            <span className="font-bold mt-0.5">*</span>
             <span>
               Current trajectory is <strong>{analysis.progression.trajectoryRisk}</strong> - 
               adjust timelines and expectations accordingly.

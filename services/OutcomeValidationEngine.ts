@@ -461,7 +461,7 @@ export class OutcomeValidationEngine {
         }
 
         if (underperformingFormulas.length > 0) {
-            console.log(`[LEARNING] âš ï¸  Under-performing formulas: ${underperformingFormulas.join(', ')}`);
+            console.log(`[LEARNING] WARNING: Under-performing formulas: ${underperformingFormulas.join(', ')}`);
             // In real system: Decrease weights or flag for review
             
             this.learningInsights.push({

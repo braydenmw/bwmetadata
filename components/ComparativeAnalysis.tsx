@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ReportParameters } from '../types';
 import { ArrowRight, AlertTriangle, CheckCircle, Scale, TrendingUp, TrendingDown, X, Minus } from 'lucide-react';
 
@@ -88,7 +88,7 @@ export const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({ report
                         <div className="col-span-4 bg-white p-6 rounded-xl border border-stone-200 shadow-sm relative overflow-hidden">
                             <div className={`absolute top-0 left-0 w-full h-2 ${reportA.outcome === 'Success' ? 'bg-green-500' : reportA.outcome === 'Failure' ? 'bg-red-500' : 'bg-amber-500'}`}></div>
                             <h3 className="font-black text-xl text-stone-900 mb-1">{reportA.organizationName}</h3>
-                            <div className="text-sm text-stone-500 mb-4">{reportA.country} â€¢ {reportA.industry[0]}</div>
+                            <div className="text-sm text-stone-500 mb-4">{reportA.country} * {reportA.industry[0]}</div>
                             
                             <div className="mb-6">
                                 <div className="text-xs font-bold text-stone-400 uppercase">Outcome</div>
@@ -166,7 +166,7 @@ export const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({ report
                         <div className="col-span-4 bg-white p-6 rounded-xl border border-stone-200 shadow-sm relative overflow-hidden">
                             <div className={`absolute top-0 left-0 w-full h-2 ${reportB.outcome === 'Success' ? 'bg-green-500' : reportB.outcome === 'Failure' ? 'bg-red-500' : 'bg-amber-500'}`}></div>
                             <h3 className="font-black text-xl text-stone-900 mb-1">{reportB.organizationName}</h3>
-                            <div className="text-sm text-stone-500 mb-4">{reportB.country} â€¢ {reportB.industry[0]}</div>
+                            <div className="text-sm text-stone-500 mb-4">{reportB.country} * {reportB.industry[0]}</div>
                             
                             <div className="mb-6">
                                 <div className="text-xs font-bold text-stone-400 uppercase">Outcome</div>

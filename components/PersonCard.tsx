@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { type CityLeader } from '../data/globalLocationProfiles';
 
 const PersonCard: React.FC<{ leader: CityLeader }> = ({ leader }) => {

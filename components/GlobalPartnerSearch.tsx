@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useMemo } from 'react';
 import { INDUSTRIES, REGIONS_AND_COUNTRIES } from '../constants';
 import { Search, Users, Globe } from 'lucide-react';

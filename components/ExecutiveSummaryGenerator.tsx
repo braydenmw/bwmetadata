@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Download, Mail, Share2, Clock, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface ExecutiveSummary {
@@ -109,7 +109,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
           synergy: 'Cost optimization, local expertise, labor access'
         }
       ],
-      recommendation: 'STRONG GO â€” Proceed with phased entry strategy. Market fundamentals are strong, government support is available, and multiple partnership pathways exist. Recommend 18-month pilot phase with full commitment decision at month 12.',
+      recommendation: 'STRONG GO - Proceed with phased entry strategy. Market fundamentals are strong, government support is available, and multiple partnership pathways exist. Recommend 18-month pilot phase with full commitment decision at month 12.',
       nextSteps: [
         'Schedule government agency outreach (Week 1-2)',
         'Conduct on-ground market visit (Week 3-4)',
@@ -232,7 +232,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
 
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-800">
-                <span className="font-bold">âš¡ How it works:</span> Provide your organization details and target market. The system will instantly analyze market opportunity, identify top 3 partnership targets, assess compatibility, and generate a strategic recommendation with a phased execution plan.
+                <span className="font-bold">💡 How it works:</span> Provide your organization details and target market. The system will instantly analyze market opportunity, identify top 3 partnership targets, assess compatibility, and generate a strategic recommendation with a phased execution plan.
               </p>
             </div>
 
@@ -260,10 +260,10 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
               <h3 className="text-2xl font-bold text-stone-900 mb-2">Analyzing Your Market Entry Strategy</h3>
               <p className="text-stone-600 mb-4">Running multi-dimensional analysis across market, compatibility, and risk dimensions...</p>
               <div className="space-y-2 text-sm text-stone-600">
-                <div>âœ“ Scanning market data and opportunities</div>
-                <div>âœ“ Evaluating partnership compatibility</div>
-                <div>âœ“ Calculating risk-adjusted scores</div>
-                <div>âœ“ Generating strategic recommendations</div>
+                <div>✓ Scanning market data and opportunities</div>
+                <div>✓ Evaluating partnership compatibility</div>
+                <div>✓ Calculating risk-adjusted scores</div>
+                <div>✓ Generating strategic recommendations</div>
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
                   <div className="space-y-1 text-sm">
                     <div><span className="text-blue-700">Country:</span> <span className="font-bold text-blue-900">{summary.marketAnalysis.targetCountry}</span></div>
                     <div><span className="text-blue-700">Market Size:</span> <span className="font-bold text-blue-900">{summary.marketAnalysis.marketSize}</span></div>
-                    <div><span className="text-blue-700">Opportunity:</span> <span className="font-bold text-green-600">â†‘ {summary.marketAnalysis.opportunityScore}/100</span></div>
+                    <div><span className="text-blue-700">Opportunity:</span> <span className="font-bold text-green-600">a' {summary.marketAnalysis.opportunityScore}/100</span></div>
                     <div><span className="text-blue-700">Risk Level:</span> <span className={`font-bold ${summary.marketAnalysis.riskLevel === 'MODERATE' ? 'text-yellow-600' : 'text-red-600'}`}>{summary.marketAnalysis.riskLevel}</span></div>
                   </div>
                 </div>
@@ -333,7 +333,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
                   <ul className="space-y-2">
                     {summary.marketAnalysis.topThreats.map((threat, idx) => (
                       <li key={idx} className="text-xs text-red-800 pl-4 relative">
-                        <span className="absolute left-0">âš </span> {threat}
+                        <span className="absolute left-0">as </span> {threat}
                       </li>
                     ))}
                   </ul>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ReportParameters, GovernanceAuditResult } from '../types';
 import { runGovernanceAudit } from '../services/geminiService';
 import { ShieldCheck, BookOpen } from 'lucide-react';
@@ -82,18 +82,18 @@ const GovernanceAuditStep: React.FC<GovernanceAuditStepProps> = ({ params }) => 
 
                     <div className="space-y-6">
                         <div className="bg-red-50 p-5 rounded-xl border border-red-100">
-                            <h4 className="text-sm font-bold text-red-800 uppercase mb-3">ðŸš© Operational Red Flags</h4>
+                            <h4 className="text-sm font-bold text-red-800 uppercase mb-3">🚨 Operational Red Flags</h4>
                             <ul className="space-y-2">
                                 {audit.redFlags.map((flag, i) => (
                                     <li key={i} className="text-sm text-red-700 flex items-start gap-2">
-                                        <span className="mt-1 text-red-500">â€¢</span> {flag}
+                                        <span className="mt-1 text-red-500">*</span> {flag}
                                     </li>
                                 ))}
                             </ul>
                         </div>
 
                         <div className="bg-green-50 p-5 rounded-xl border border-green-100">
-                            <h4 className="text-sm font-bold text-green-800 uppercase mb-3">ðŸ“‹ Compliance Roadmap</h4>
+                            <h4 className="text-sm font-bold text-green-800 uppercase mb-3">📄 Compliance Roadmap</h4>
                             <ul className="space-y-2">
                                 {audit.complianceRoadmap.map((step, i) => (
                                     <li key={i} className="text-sm text-green-700 flex items-start gap-2">

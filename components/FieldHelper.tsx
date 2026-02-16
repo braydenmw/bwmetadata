@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp, Lightbulb, BookOpen, Users } from 'lucide-react';
 import { ExperienceLevel, FIELD_DESCRIPTIONS } from '../constants/systemMetadata';
 

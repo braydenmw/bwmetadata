@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Layers, ChevronLeft, Ruler, PencilRuler } from 'lucide-react';
 
 interface ArchitectPageProps {

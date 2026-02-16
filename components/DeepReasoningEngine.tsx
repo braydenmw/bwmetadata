@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generateDeepReasoning } from '../services/geminiService';
 import { BrainCircuit, ShieldCheck, Scale, Microscope } from 'lucide-react';
 import type { DeepReasoningAnalysis } from '../types';
@@ -70,7 +70,7 @@ export const DeepReasoningEngine: React.FC<DeepReasoningEngineProps> = ({ userOr
                         <ul className="space-y-2">
                             {analysis.dealKillers.map((dk, i) => (
                                 <li key={i} className="text-sm text-red-700 flex items-start gap-2">
-                                    <span className="mt-1">â€¢</span> {dk}
+                                    <span className="mt-1">*</span> {dk}
                                 </li>
                             ))}
                         </ul>
@@ -83,7 +83,7 @@ export const DeepReasoningEngine: React.FC<DeepReasoningEngineProps> = ({ userOr
                         <ul className="space-y-2">
                             {analysis.hiddenGems.map((hg, i) => (
                                 <li key={i} className="text-sm text-emerald-700 flex items-start gap-2">
-                                    <span className="mt-1">â€¢</span> {hg}
+                                    <span className="mt-1">*</span> {hg}
                                 </li>
                             ))}
                         </ul>

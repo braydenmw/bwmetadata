@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Globe, AlertTriangle, ShieldCheck, ShieldOff, Zap } from 'lucide-react';
 
 export const RegionalContextIntro: React.FC = () => {
@@ -7,14 +7,14 @@ export const RegionalContextIntro: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
           <div className="lg:col-span-5">
-            <div className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">The Problem â†’ The Bridge</div>
+            <div className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">The Problem a' The Bridge</div>
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-bw-navy leading-tight">
               The Invisible Potential of Regional Cities
             </h2>
           </div>
           <div className="lg:col-span-7">
             <p className="text-lg text-slate-700 leading-relaxed">
-              Why cities like yours are consistently underpricedâ€”and how this system turns that into a calculable advantage.
+              Why cities like yours are consistently underpriced - and how this system turns that into a calculable advantage.
             </p>
             <div className="mt-6 p-6 bg-bw-light border border-black/5 rounded-2xl">
               <div className="text-xs font-bold uppercase tracking-[0.35em] text-bw-navy/60">How It Shows Up For You</div>
@@ -25,15 +25,15 @@ export const RegionalContextIntro: React.FC = () => {
                 </div>
                 <div className="p-4 bg-white rounded-xl border border-black/5">
                   <div className="flex items-center gap-2 text-bw-navy font-bold text-sm"><ShieldCheck className="w-4 h-4 text-bw-gold" /> Be Verified</div>
-                  <p className="mt-2 text-sm text-slate-700 leading-relaxed">Claims are cross-checked against live feedsâ€”so you present evidence, not belief.</p>
+                  <p className="mt-2 text-sm text-slate-700 leading-relaxed">Claims are cross-checked against live feeds - so you present evidence, not belief.</p>
                 </div>
                 <div className="p-4 bg-white rounded-xl border border-black/5">
                   <div className="flex items-center gap-2 text-bw-navy font-bold text-sm"><Zap className="w-4 h-4 text-bw-gold" /> Be Ready</div>
-                  <p className="mt-2 text-sm text-slate-700 leading-relaxed">Mandates, decks, and negotiations get backed by computed â€œwhat happens next.â€</p>
+                  <p className="mt-2 text-sm text-slate-700 leading-relaxed">Mandates, decks, and negotiations get backed by computed "what happens next."</p>
                 </div>
               </div>
               <p className="mt-5 text-xs text-slate-600 italic">
-                The rest of this page walks you through how that operating system worksâ€”from the core protocol, to the engines, to the Workbench you use every day.
+                The rest of this page walks you through how that operating system works - from the core protocol, to the engines, to the Workbench you use every day.
               </p>
             </div>
           </div>
@@ -46,7 +46,7 @@ export const RegionalContextIntro: React.FC = () => {
             </div>
             <h3 className="mt-5 text-lg font-bold text-bw-navy">The Problem: The Global Investment Gap</h3>
             <p className="mt-3 text-sm text-slate-700 leading-relaxed">
-              Regional cities are frequently mispriced by perception. Investors donâ€™t see the asset baseâ€”they see uncertainty, fragmented data, and â€œlocal complexityâ€ that is hard to underwrite.
+              Regional cities are frequently mispriced by perception. Investors don't see the asset base - they see uncertainty, fragmented data, and "local complexity" that is hard to underwrite.
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export const RegionalContextIntro: React.FC = () => {
             </div>
             <h3 className="mt-5 text-lg font-bold">The Solution: Democratising Intelligence</h3>
             <p className="mt-3 text-sm text-white/80 leading-relaxed">
-              Translate local reality into global metricsâ€”turning complexity into investable math, and giving your city a structured, repeatable way to prove its case.
+              Translate local reality into global metrics - turning complexity into investable math, and giving your city a structured, repeatable way to prove its case.
             </p>
           </div>
         </div>
@@ -75,16 +75,16 @@ export const RegionalContextIntro: React.FC = () => {
           <div className="lg:col-span-7 space-y-6">
             <div className="text-xs tracking-[0.4em] text-bw-gold uppercase">Why This System Exists</div>
             <p className="text-base md:text-lg text-slate-700 leading-[1.85]">
-              I built NSILâ€”the Nexus Strategic Intelligence Layerâ€”because regional markets needed more than another dashboard. They needed a deterministic operating system that could read messy, local reality and express it in the precise, structured language that global capital already trusts.
+              I built NSIL - the Nexus Strategic Intelligence Layer - because regional markets needed more than another dashboard. They needed a deterministic operating system that could read messy, local reality and express it in the precise, structured language that global capital already trusts.
             </p>
             <p className="text-base md:text-lg text-slate-700 leading-[1.85]">
-              For centuries, the bridge between local reality and global underwriting was elite consulting: expensive, slow, and inaccessible to most regions. There was no affordable, end-to-end development system designed to standardize proof for everyoneâ€”until now.
+              For centuries, the bridge between local reality and global underwriting was elite consulting: expensive, slow, and inaccessible to most regions. There was no affordable, end-to-end development system designed to standardize proof for everyone - until now.
             </p>
             <p className="text-base md:text-lg text-slate-700 leading-[1.85]">
-              This system began boots-on-the-ground and was built through 16 months of field observation and synthesisâ€”mapping how the last 200 years of business growth repeatedly fails in regional environments when translation, trust, and execution capacity are ignored.
+              This system began boots-on-the-ground and was built through 16 months of field observation and synthesis - mapping how the last 200 years of business growth repeatedly fails in regional environments when translation, trust, and execution capacity are ignored.
             </p>
             <p className="text-base md:text-lg text-slate-700 leading-[1.85]">
-              It is not a passive report generator. It is an always-on engine that sits between your mandate and the worldâ€™s data: it ingests your intent, cross-checks it against live feeds, and returns a strategy that has already been argued with, stress-tested, and quantifiedâ€”so your documents match what you actually need, not what youâ€™re told you should want.
+              It is not a passive report generator. It is an always-on engine that sits between your mandate and the world's data: it ingests your intent, cross-checks it against live feeds, and returns a strategy that has already been argued with, stress-tested, and quantified - so your documents match what you actually need, not what you're told you should want.
             </p>
           </div>
           <div className="lg:col-span-5 rounded-2xl border border-black/5 bg-bw-light p-7">

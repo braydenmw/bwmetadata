@@ -305,13 +305,13 @@ export class StressTestVerification {
 
         if (issueFound && (blocked || hasIssues)) {
             status = 'FIXED';
-            explanation = `âœ“ Now detected: ${report.issues.find(i => patterns.some(p => i.code.includes(p)))?.message || 'Issue caught'}`;
+            explanation = `✓ Now detected: ${report.issues.find(i => patterns.some(p => i.code.includes(p)))?.message || 'Issue caught'}`;
         } else if (hasIssues) {
             status = 'PARTIAL';
-            explanation = `âš  Different issue detected: ${report.issues[0]?.code}`;
+            explanation = `⚠ Different issue detected: ${report.issues[0]?.code}`;
         } else {
             status = 'STILL_FAILING';
-            explanation = `âœ— Not detected - validation passed when it should have failed`;
+            explanation = `✗ Not detected - validation passed when it should have failed`;
         }
 
         console.log(`  ${status === 'FIXED' ? 'âœ“' : status === 'PARTIAL' ? 'âš ' : 'âœ—'} ${testName}: ${status}`);
@@ -353,7 +353,7 @@ export class StressTestVerification {
             explanation = `âœ“ Formula bounded: ${result.warningFlags.join(', ')}`;
         } else if (hasWarnings || confidenceReduced) {
             status = 'PARTIAL';
-            explanation = `âš  Some handling: confidence=${result.confidence.toFixed(2)}, warnings=${result.warningFlags.length}`;
+            explanation = `⚠ Some handling: confidence=${result.confidence.toFixed(2)}, warnings=${result.warningFlags.length}`;
         } else {
             status = 'STILL_FAILING';
             explanation = `âœ— Formula produced result without warnings`;
@@ -393,7 +393,7 @@ export class StressTestVerification {
             explanation = `âœ“ Neural field bounded: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}, stable=${stable}`;
         } else if (isBounded) {
             status = 'PARTIAL';
-            explanation = `âš  Bounded but no warnings: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}`;
+            explanation = `⚠ Bounded but no warnings: E=${result.E.toFixed(4)}, I=${result.I.toFixed(4)}`;
         } else {
             status = 'STILL_FAILING';
             explanation = `âœ— Field exploded: E=${result.E}, I=${result.I}`;
@@ -422,7 +422,7 @@ export class StressTestVerification {
 
         summary += `Total Previously-Failing Tests: ${total}\n`;
         summary += `âœ“ FIXED: ${fixed} (${(fixed / total * 100).toFixed(1)}%)\n`;
-        summary += `âš  PARTIAL: ${partial} (${(partial / total * 100).toFixed(1)}%)\n`;
+        summary += `⚠ PARTIAL: ${partial} (${(partial / total * 100).toFixed(1)}%)\n`;
         summary += `âœ— STILL FAILING: ${stillFailing} (${(stillFailing / total * 100).toFixed(1)}%)\n\n`;
 
         summary += 'BY CATEGORY:\n';
@@ -435,7 +435,7 @@ export class StressTestVerification {
         }, {} as Record<string, { fixed: number; partial: number; failing: number }>);
 
         for (const [cat, stats] of Object.entries(byCategory)) {
-            summary += `  ${cat}: ${stats.fixed}âœ“ ${stats.partial}âš  ${stats.failing}âœ—\n`;
+            summary += `  ${cat}: ${stats.fixed}✓ ${stats.partial}⚠ ${stats.failing}✗\n`;
         }
 
         summary += '\n' + '='.repeat(80) + '\n';

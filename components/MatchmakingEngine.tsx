@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generateSymbioticMatches } from '../services/engine';
 import { ReportParameters, SymbioticPartner } from '../types';
 import { Users, Zap, MapPin, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';

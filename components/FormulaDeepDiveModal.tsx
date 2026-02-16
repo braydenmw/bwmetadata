@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { X, BookOpen } from 'lucide-react';
 
 type FormulaDeepDiveModalProps = {
@@ -16,7 +16,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                 <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
                     <div className="flex items-center gap-3">
                         <BookOpen className="w-6 h-6 text-blue-600" />
-                        <h2 className="text-xl font-bold text-slate-900">Brayden Walls Â· BW Global Advisory â€” Full Technical Brief &amp; System Audit</h2>
+                        <h2 className="text-xl font-bold text-slate-900">Brayden Walls * BW Global Advisory - Full Technical Brief &amp; System Audit</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -38,8 +38,8 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div>
-                                <h3 className="text-lg font-bold text-slate-900">BWGA AI â€” Technical Proof &amp; Comparative Brief</h3>
-                                <p className="text-slate-600 text-sm leading-relaxed">Prepared for funding partners, strategic partners, government, institutions, banks, enterprises. Prepared by BW Global Advisory (BWGA) â€” Founding Architect: Brayden Walls.</p>
+                                <h3 className="text-lg font-bold text-slate-900">BWGA AI - Technical Proof &amp; Comparative Brief</h3>
+                                <p className="text-slate-600 text-sm leading-relaxed">Prepared for funding partners, strategic partners, government, institutions, banks, enterprises. Prepared by BW Global Advisory (BWGA) - Founding Architect: Brayden Walls.</p>
                                 <p className="text-slate-600 text-sm leading-relaxed">System: BWGA AI + NSIL (Nexus Strategic Intelligence Layer) with the Agentic Brain. Sovereign-grade, explainable, auditable, continuously learning; not a black box.</p>
                             </div>
                             <div className="flex gap-2">
@@ -67,7 +67,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                         </div>
                         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
                             <p className="text-xs font-bold text-emerald-900 mb-1">Outcome</p>
-                            <p className="text-sm text-emerald-900">Adversarial debate â†’ counterfactuals â†’ explainable scores â†’ traceable recommendations â†’ live deliverables.</p>
+                            <p className="text-sm text-emerald-900">Adversarial debate a' counterfactuals a' explainable scores a' traceable recommendations a' live deliverables.</p>
                         </div>
                         <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
                             <p className="text-xs font-bold text-amber-900 mb-1">Why New</p>
@@ -84,7 +84,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                             <h4 className="text-sm font-bold text-slate-800 mb-2">Novelty</h4>
                             <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
                                 <li><span className="font-semibold">Intent Computation:</span> Machine-legible mandates without losing richness.</li>
-                                <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate â†’ Debate â†’ Counterfactuals â†’ Score â†’ Synthesize â†’ Deliver.</li>
+                                <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate a' Debate a' Counterfactuals a' Score a' Synthesize a' Deliver.</li>
                                 <li><span className="font-semibold">Agentic Brain:</span> Owns the case, anticipates questions, surfaces contradictions, learns continuously.</li>
                             </ul>
                         </div>
@@ -101,8 +101,8 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                         </div>
                         <div className="rounded-lg border border-slate-200 bg-white p-4">
                             <h4 className="text-sm font-bold text-slate-800 mb-2">21-Formula Suite</h4>
-                            <p className="text-slate-600 text-sm mb-2">Primary engines: SPIâ„¢, RROIâ„¢, SEAMâ„¢, IVASâ„¢, SCFâ„¢. Plus 16 indices for alignment, risk, viability, capacity, velocity, resilience.</p>
-                            <p className="text-slate-600 text-sm">Purpose: expose fragility, leverage, and misalignmentâ€”not mere prediction.</p>
+                            <p className="text-slate-600 text-sm mb-2">Primary engines: SPI(TM), RROI(TM), SEAM(TM), IVAS(TM), SCF(TM). Plus 16 indices for alignment, risk, viability, capacity, velocity, resilience.</p>
+                            <p className="text-slate-600 text-sm">Purpose: expose fragility, leverage, and misalignment - not mere prediction.</p>
                         </div>
                     </section>
 
@@ -118,7 +118,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                             </div>
                             <div className="space-y-1">
                                 <p className="font-semibold text-slate-800">Nexus Path</p>
-                                <p>Governed debate â†’ counterfactuals â†’ explainable scores â†’ live documents that update instantly.</p>
+                                <p>Governed debate a' counterfactuals a' explainable scores a' live documents that update instantly.</p>
                             </div>
                         </div>
                     </section>
@@ -168,7 +168,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                             <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
                                 <li>IP boundary: governance protocols + formula suite + orchestration primitives.</li>
                                 <li>Audit posture: provenance, explainability contracts; advisory outputs need professional validation.</li>
-                                <li>Falsifiability: if contradictions arenâ€™t caught, scores arenâ€™t explainable, or docs arenâ€™t live, the claim fails.</li>
+                                <li>Falsifiability: if contradictions aren't caught, scores aren't explainable, or docs aren't live, the claim fails.</li>
                             </ul>
                         </div>
                         <div className="rounded-lg border border-slate-200 bg-white p-4">
@@ -235,10 +235,10 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                         <h4 className="text-sm font-bold text-slate-800 mb-2">Appendices &amp; Addendum</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-700">
                             <ul className="list-disc list-inside space-y-1">
-                                <li>Appendix A â€” Backend API Catalog</li>
-                                <li>Appendix B â€” Environment Variables</li>
-                                <li>Appendix C â€” Evidence Sources</li>
-                                <li>Appendix D â€” Terminology</li>
+                                <li>Appendix A - Backend API Catalog</li>
+                                <li>Appendix B - Environment Variables</li>
+                                <li>Appendix C - Evidence Sources</li>
+                                <li>Appendix D - Terminology</li>
                                 <li>A1) System Inventory</li>
                                 <li>A2) API Surface</li>
                                 <li>A3) Report Lifecycle</li>

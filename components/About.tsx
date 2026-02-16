@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Cpu, Globe, Activity, Layers, Radio } from 'lucide-react';
 
 export const About: React.FC = () => {
@@ -44,7 +44,7 @@ export const About: React.FC = () => {
                             This is not a consultancy that sells subjective advice. It is an <strong>Intelligence Operating System</strong> built to run in high-complexity, high-uncertainty environments.
                         </p>
                         <p className="leading-[1.85] text-[15px] md:text-base mt-4 text-[#808080]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            It ingests your strategic intent and stress-tests it against a century of economic precedent, replacing "expert opinion" with calculated probability. We don't guess if a strategy will work; we calculate the specific ways it might failâ€”and how to correct for them.
+                            It ingests your strategic intent and stress-tests it against a century of economic precedent, replacing "expert opinion" with calculated probability. We don't guess if a strategy will work; we calculate the specific ways it might fail - and how to correct for them.
                         </p>
                     </div>
 
@@ -56,7 +56,7 @@ export const About: React.FC = () => {
                         <h4 className="text-xl font-bold text-bw-navy mb-3">NSIL: The Live Data Spine</h4>
                         <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Provenance Anchored.</h5>
                         <p className="leading-[1.85] text-[15px] md:text-base text-[#1C1C1C]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            NSILâ€”Nexus Strategic Intelligence Layerâ€”standardises regional signals and feeds the engines with live data. Each calculation is anchored to sources like World Bank indicators, sanctions ledgers, exchange rates, and our Composite Score Engine v2.
+                            NSIL - Nexus Strategic Intelligence Layer - standardises regional signals and feeds the engines with live data. Each calculation is anchored to sources like World Bank indicators, sanctions ledgers, exchange rates, and our Composite Score Engine v2.
                         </p>
                         <p className="leading-[1.85] text-[15px] md:text-base mt-4 text-[#808080]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
                             Outputs like <strong>SPI</strong>, <strong>IVAS</strong>, <strong>SCF</strong>, <strong>RROI</strong>, and <strong>SEAM</strong> stay explainable and auditable: the same logic that scores a mandate is what shapes the narrative, the dossier, and the Workbench guidance.

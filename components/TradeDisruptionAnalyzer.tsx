@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Activity } from 'lucide-react';
 
 export const TradeDisruptionWidget = ({ mode }: { mode: string }) => (

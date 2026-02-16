@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { TrendingUp, AlertTriangle, CheckCircle, Clock, DollarSign, Users, Target } from 'lucide-react';
 import type { ReportParameters } from '../types';
 import { PrecedentMatchingEngine } from '../services/historicalDataEngine';
@@ -43,7 +43,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <h3 className="text-lg font-bold text-stone-900 mb-1 flex items-center gap-2">
-              <span className="text-xl">ðŸ“š</span> Historical Precedent Identified
+              <span className="text-xl">📚</span> Historical Precedent Identified
             </h3>
             <p className="text-sm text-stone-600">
               Closest structural match: <span className="font-semibold text-stone-900">{bestMatch.historicalCase.title}</span>
@@ -61,7 +61,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
                 <div>
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Entity & Sector</p>
                 <p className="text-sm font-bold text-stone-900">
-                    {bestMatch.historicalCase.entity} â€¢ {bestMatch.historicalCase.sector}
+                    {bestMatch.historicalCase.entity} * {bestMatch.historicalCase.sector}
                 </p>
                 <p className="text-xs text-stone-500">
                     {bestMatch.historicalCase.country}, {bestMatch.historicalCase.year}
@@ -137,7 +137,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
                 <ul className="space-y-2">
                     {bestMatch.applicableFactors.successFactors.slice(0, 4).map((factor, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-emerald-800 leading-relaxed">
-                        <span className="text-emerald-500 font-bold mt-0.5">âœ“</span>
+                        <span className="text-emerald-500 font-bold mt-0.5">✓</span>
                         <span>{factor}</span>
                     </li>
                     ))}
@@ -154,7 +154,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
                 <ul className="space-y-2">
                     {bestMatch.applicableFactors.warnings.slice(0, 4).map((warning, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-red-800 leading-relaxed">
-                        <span className="text-red-500 font-bold mt-0.5">âš </span>
+                        <span className="text-red-500 font-bold mt-0.5">as </span>
                         <span>{warning}</span>
                     </li>
                     ))}
@@ -201,13 +201,13 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
                 <div className="space-y-2 text-xs text-blue-800">
                     {bestMatch.applicableFactors.timingConsiderations.map((consideration, idx) => (
                     <p key={idx} className="flex items-start gap-2">
-                        <span className="text-blue-400 font-bold">â€¢</span>
+                        <span className="text-blue-400 font-bold">*</span>
                         {consideration}
                     </p>
                     ))}
                     {bestMatch.timeToMaturity && (
                     <p className="flex items-start gap-2 mt-3 pt-3 border-t border-blue-200 font-semibold">
-                        <span className="text-blue-600">â±</span>
+                        <span className="text-blue-600"></span>
                         <span>
                         Expected maturity: {Math.floor(bestMatch.timeToMaturity)} - {Math.floor(bestMatch.timeToMaturity + 1.5)} years
                         </span>
@@ -228,7 +228,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
                 <div className="flex-1">
                   <p className="text-xs font-bold text-stone-900">{match.historicalCase.title}</p>
                   <p className="text-[10px] text-stone-500">
-                    {match.historicalCase.country}, {match.historicalCase.year} â€¢ {match.historicalCase.outcomes.result.toUpperCase()}
+                    {match.historicalCase.country}, {match.historicalCase.year} * {match.historicalCase.outcomes.result.toUpperCase()}
                   </p>
                 </div>
                 <div className="text-right">

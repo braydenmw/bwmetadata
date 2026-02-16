@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FileText, Download, Copy, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { RefinedIntake, ReportData, ReportParameters } from '../types';
@@ -357,7 +357,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
       return text.length > maxChars ? text.slice(0, maxChars) + '\n\n[...brief summary truncated...]' : text;
     }
     if (lengthPreset === 'extended') {
-      return text + '\n\nAPPENDIX: Local Considerations\nâ€¢ Workforce norms\nâ€¢ Compliance checkpoints\nâ€¢ Government touchpoints\nâ€¢ Logistics & infrastructure notes\n\nAPPENDIX: Contacts & Checklists\nâ€¢ Stakeholder map\nâ€¢ Required certifications\nâ€¢ First 90 days plan';
+      return text + '\n\nAPPENDIX: Local Considerations\n* Workforce norms\n* Compliance checkpoints\n* Government touchpoints\n* Logistics & infrastructure notes\n\nAPPENDIX: Contacts & Checklists\n* Stakeholder map\n* Required certifications\n* First 90 days plan';
     }
     return text; // standard
   };
@@ -502,10 +502,10 @@ Dear [Partner Contact],
 ${entityName} is pleased to express its interest in exploring a strategic partnership with ${targetPartnerName} focused on market entry and expansion into ${targetMarket}.
 
 PROPOSED PARTNERSHIP TERMS:
-â€¢ Investment Amount: $${(dealValue / 1000000).toFixed(1)}M
-â€¢ Timeline for Full Agreement: 90-180 days
-â€¢ Governance Structure: Joint steering committee with quarterly reviews
-â€¢ Equity Structure: To be negotiated (proposed range: 40-60%)
+* Investment Amount: $${(dealValue / 1000000).toFixed(1)}M
+* Timeline for Full Agreement: 90-180 days
+* Governance Structure: Joint steering committee with quarterly reviews
+* Equity Structure: To be negotiated (proposed range: 40-60%)
 
 AREAS OF COLLABORATION:
 1. Market Access & Distribution
@@ -542,20 +542,20 @@ NOW, THEREFORE, the parties agree as follows:
 The purpose of this partnership is to establish a profitable and sustainable business operation in ${targetMarket}, with projected annual revenue of $${(dealValue * 0.15 / 1000000).toFixed(1)}M within 18 months.
 
 2. GOVERNANCE STRUCTURE
-â€¢ Joint Steering Committee: Quarterly meetings, monthly calls
-â€¢ Decision Authority: Decisions â‰¥$500K require both parties' approval
-â€¢ Dispute Resolution: Negotiation â†’ Mediation â†’ Arbitration
+* Joint Steering Committee: Quarterly meetings, monthly calls
+* Decision Authority: Decisions aJPY$500K require both parties' approval
+* Dispute Resolution: Negotiation a' Mediation a' Arbitration
 
 3. FINANCIAL TERMS
-â€¢ Total Investment: $${(dealValue / 1000000).toFixed(1)}M
-â€¢ Funding Source: Party A responsible for 60%, Party B for 40%
-â€¢ Profit Sharing: 50% to each party after cost recovery
-â€¢ Payment Schedule: Quarterly based on milestones
+* Total Investment: $${(dealValue / 1000000).toFixed(1)}M
+* Funding Source: Party A responsible for 60%, Party B for 40%
+* Profit Sharing: 50% to each party after cost recovery
+* Payment Schedule: Quarterly based on milestones
 
 4. TERM & TERMINATION
-â€¢ Initial Term: 5 years with annual renewal options
-â€¢ Termination: 180 days notice with cause; 360 days without cause
-â€¢ Wind-down: 12-month orderly transition period
+* Initial Term: 5 years with annual renewal options
+* Termination: 180 days notice with cause; 360 days without cause
+* Wind-down: 12-month orderly transition period
 
 5. CONFIDENTIALITY & IP RIGHTS
 All proprietary information remains confidential. IP developed jointly shall be shared equally.
@@ -582,10 +582,10 @@ Executive Overview:
 This proposal outlines a comprehensive partnership framework for ${entityName} and ${targetPartnerName} to jointly capture market opportunities in ${targetMarket}.
 
 MARKET OPPORTUNITY:
-â€¢ Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B addressable
-â€¢ Growth Rate: 12-15% CAGR (next 5 years)
-â€¢ Entry Timing: Optimal window 12-18 months
-â€¢ Competitive Position: First-mover advantage available
+* Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B addressable
+* Growth Rate: 12-15% CAGR (next 5 years)
+* Entry Timing: Optimal window 12-18 months
+* Competitive Position: First-mover advantage available
 
 PROPOSED VALUE CREATION:
 1. Market Entry: Accelerated access via ${targetPartnerName}'s network
@@ -606,15 +606,15 @@ Year 3: Revenue $${(dealValue * 0.65 / 1000000).toFixed(1)}M, EBITDA Margin 18%
 Year 5: Revenue $${(dealValue / 1000000).toFixed(1)}M, EBITDA Margin 28%
 
 INVESTMENT REQUIREMENTS:
-â€¢ Capital Required: $${(dealValue / 1000000).toFixed(1)}M over 18 months
-â€¢ Working Capital: $${(dealValue * 0.1 / 1000000).toFixed(1)}M ongoing
-â€¢ Expected ROI: 35-40% over 5 years
+* Capital Required: $${(dealValue / 1000000).toFixed(1)}M over 18 months
+* Working Capital: $${(dealValue * 0.1 / 1000000).toFixed(1)}M ongoing
+* Expected ROI: 35-40% over 5 years
 
 RISK MITIGATION:
-â€¢ Regulatory: Dedicated compliance team, government liaisons
-â€¢ Market: Diversified customer base, long-term contracts
-â€¢ Operational: Local management team with 10+ year experience
-â€¢ Financial: Quarterly performance reviews with adjustment mechanisms
+* Regulatory: Dedicated compliance team, government liaisons
+* Market: Diversified customer base, long-term contracts
+* Operational: Local management team with 10+ year experience
+* Financial: Quarterly performance reviews with adjustment mechanisms
 
 NEXT STEPS:
 1. Steering committee kickoff meeting
@@ -630,23 +630,23 @@ OPPORTUNITY:
 ${entityName} has identified a significant market entry opportunity in ${targetMarket} with ${targetPartnerName} as the preferred partner. This partnership positions us to capture $${(dealValue / 1000000).toFixed(1)}M in addressable demand over 5 years.
 
 KEY METRICS:
-â€¢ Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B
-â€¢ Projected Market Share: 2-3% (5-year horizon)
-â€¢ Entry Investment: $${(dealValue / 1000000).toFixed(1)}M
-â€¢ Break-even Timeline: 24-30 months
-â€¢ 5-Year ROI: 35-40%
+* Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B
+* Projected Market Share: 2-3% (5-year horizon)
+* Entry Investment: $${(dealValue / 1000000).toFixed(1)}M
+* Break-even Timeline: 24-30 months
+* 5-Year ROI: 35-40%
 
 STRATEGIC FIT:
-âœ“ ${targetPartnerName} brings essential market access
-âœ“ Combined entity creates competitive moat (cost leadership)
-âœ“ Aligned growth objectives and timeline
-âœ“ Complementary operational strengths
+✓ ${targetPartnerName} brings essential market access
+✓ Combined entity creates competitive moat (cost leadership)
+✓ Aligned growth objectives and timeline
+✓ Complementary operational strengths
 
 RISKS & MITIGATION:
-1. Regulatory Changes â†’ Government relations team + scenario planning
-2. Market Adoption â†’ Pilot program + customer contracts pre-signed
-3. Operational Complexity â†’ Experienced management team + board oversight
-4. Currency Exposure â†’ Hedging program + local financing
+1. Regulatory Changes a' Government relations team + scenario planning
+2. Market Adoption a' Pilot program + customer contracts pre-signed
+3. Operational Complexity a' Experienced management team + board oversight
+4. Currency Exposure a' Hedging program + local financing
 
 RECOMMENDATION:
 PROCEED with partnership formation. Market timing is favorable, competitive positioning is strong, and financial returns justify the investment.
@@ -686,10 +686,10 @@ EBITDA: $${(dealValue * 0.117 / 1000000).toFixed(1)}M (18%)
 Year 4-5: Continued growth at 25% annually, EBITDA margin expanding to 25-28%
 
 CASH FLOW ANALYSIS:
-â€¢ Operating CF Y1-Y2: Negative
-â€¢ Operating CF Y3+: Strongly positive
-â€¢ Cumulative CF Break-even: Month 28
-â€¢ Free CF (5-year cumulative): $${(dealValue * 1.2 / 1000000).toFixed(1)}M
+* Operating CF Y1-Y2: Negative
+* Operating CF Y3+: Strongly positive
+* Cumulative CF Break-even: Month 28
+* Free CF (5-year cumulative): $${(dealValue * 1.2 / 1000000).toFixed(1)}M
 
 INVESTMENT REQUIREMENTS:
 Phase 1 (Months 1-6): $${(dealValue * 0.35 / 1000000).toFixed(1)}M (CapEx + working capital)
@@ -697,10 +697,10 @@ Phase 2 (Months 7-12): $${(dealValue * 0.35 / 1000000).toFixed(1)}M (scaling)
 Phase 3 (Months 13-24): $${(dealValue * 0.3 / 1000000).toFixed(1)}M (optimization)
 
 RETURN METRICS:
-â€¢ IRR (5-year): 38%
-â€¢ MOIC: 3.2x
-â€¢ Payback Period: 30 months
-â€¢ Terminal Value (Year 5): $${(dealValue * 4 / 1000000).toFixed(1)}M
+* IRR (5-year): 38%
+* MOIC: 3.2x
+* Payback Period: 30 months
+* Terminal Value (Year 5): $${(dealValue * 4 / 1000000).toFixed(1)}M
 
 SENSITIVITY ANALYSIS:
 Scenarios: Base, Bull, Bear
@@ -719,50 +719,50 @@ IDENTIFIED RISKS & RESPONSES:
    Probability: 40%
    Impact: High ($${(dealValue * 0.2 / 1000000).toFixed(1)}M exposure)
    Mitigation:
-   â€¢ Hire government relations firm with direct ministry contacts
-   â€¢ Build 6-month policy buffer into timeline
-   â€¢ Negotiate contract flexibility clauses
-   â€¢ Establish regulatory steering committee (board + external advisors)
+   * Hire government relations firm with direct ministry contacts
+   * Build 6-month policy buffer into timeline
+   * Negotiate contract flexibility clauses
+   * Establish regulatory steering committee (board + external advisors)
 
 2. MARKET ADOPTION RISK (MEDIUM-HIGH)
    Description: Customer acceptance slower than projected
    Probability: 35%
    Impact: High ($${(dealValue * 0.15 / 1000000).toFixed(1)}M revenue impact)
    Mitigation:
-   â€¢ Launch pilot program with 5-10 anchor customers pre-signed
-   â€¢ Conduct monthly market feedback surveys
-   â€¢ Maintain flexible pricing strategy for first 18 months
-   â€¢ Build brand awareness program ($2-3M marketing budget)
+   * Launch pilot program with 5-10 anchor customers pre-signed
+   * Conduct monthly market feedback surveys
+   * Maintain flexible pricing strategy for first 18 months
+   * Build brand awareness program ($2-3M marketing budget)
 
 3. OPERATIONAL COMPLEXITY (MEDIUM)
    Description: Integration challenges with existing operations
    Probability: 45%
    Impact: Medium ($${(dealValue * 0.08 / 1000000).toFixed(1)}M cost overrun)
    Mitigation:
-   â€¢ Hire integration management office (IMO) early
-   â€¢ Develop detailed 100-day plan for each operational area
-   â€¢ Establish KPIs with monthly tracking
-   â€¢ Implement change management program
+   * Hire integration management office (IMO) early
+   * Develop detailed 100-day plan for each operational area
+   * Establish KPIs with monthly tracking
+   * Implement change management program
 
 4. CURRENCY & FINANCIAL RISK (MEDIUM)
    Description: Exchange rate volatility, interest rate changes
    Probability: 60%
    Impact: Medium ($${(dealValue * 0.05 / 1000000).toFixed(1)}M impact)
    Mitigation:
-   â€¢ Implement 12-month forward currency hedge
-   â€¢ Structure financing with local currency borrowing
-   â€¢ Monitor and rehedge quarterly
-   â€¢ Maintain 15% contingency reserve
+   * Implement 12-month forward currency hedge
+   * Structure financing with local currency borrowing
+   * Monitor and rehedge quarterly
+   * Maintain 15% contingency reserve
 
 5. PARTNERSHIP DISSOLUTION RISK (MEDIUM-LOW)
    Description: Partnership breakdown due to disagreements
    Probability: 20%
    Impact: Very High ($${(dealValue / 1000000).toFixed(1)}M exit costs)
    Mitigation:
-   â€¢ Clear governance structure with dispute resolution process
-   â€¢ Quarterly alignment meetings at executive level
-   â€¢ Define decision rights matrix upfront
-   â€¢ Structure exit scenarios in original MOU
+   * Clear governance structure with dispute resolution process
+   * Quarterly alignment meetings at executive level
+   * Define decision rights matrix upfront
+   * Structure exit scenarios in original MOU
 
 OVERALL RISK RATING: MEDIUM (with proper mitigation)
 Recommendation: Proceed with risk management framework in place
@@ -799,39 +799,39 @@ EXECUTIVE SUMMARY:
 This audit surfaces hidden failure modes, sequencing gaps, verification risks, and timing drift that most reports ignore. It uses unbiased formulas grounded in real-world execution patterns across global industries.
 
 CORE FORMULAS (UNBIASED):
-â€¢ SEQ (Sequencing Integrity): dependency order + gate completeness âˆ’ acceleration penalty
-â€¢ FMS (Funding Match Score): revenue timing Ã· (capex + opex burn)
-â€¢ DCS (Dependency Concentration): 100 âˆ’ singleâ€‘point dependency concentration
-â€¢ DQS (Data Quality Score): 0.5Â·coverage + 0.25Â·freshness + 0.25Â·verifiability
-â€¢ GCS (Governance Clarity): (decision rights + exit clarity) Ã· 2
+* SEQ (Sequencing Integrity): dependency order + gate completeness a^' acceleration penalty
+* FMS (Funding Match Score): revenue timing A* (capex + opex burn)
+* DCS (Dependency Concentration): 100 a^' singlea'point dependency concentration
+* DQS (Data Quality Score): 0.5*coverage + 0.25*freshness + 0.25*verifiability
+* GCS (Governance Clarity): (decision rights + exit clarity) A* 2
 
 BLIND SPOT SCORES:
-â€¢ SEQ: ${seq}/100
-â€¢ FMS: ${fms}/100
-â€¢ DCS: ${dcs}/100
-â€¢ DQS: ${dqs}/100
-â€¢ GCS: ${gcs}/100
+* SEQ: ${seq}/100
+* FMS: ${fms}/100
+* DCS: ${dcs}/100
+* DQS: ${dqs}/100
+* GCS: ${gcs}/100
 
 PRIMARY BLIND SPOTS IDENTIFIED:
-${gapSummary.map(gap => `â€¢ ${gap}`).join('\n')}
+${gapSummary.map(gap => `* ${gap}`).join('\n')}
 
 WHAT OTHERS MISS (AND THIS FLAGS):
-â€¢ Regulatory friction & approval timing drift
-â€¢ Misâ€‘sequenced execution dependencies
-â€¢ Financing mismatch between cashflow and capex/opex timing
-â€¢ Counterparty integrity and verification gaps
-â€¢ Hidden singleâ€‘point dependencies
-â€¢ Operational capacity gaps
-â€¢ Marketâ€‘entry timing windows (policy cycles, elections, budget approvals)
-â€¢ Supply chain fragility
-â€¢ Contract structure weakness (decision rights, exit clauses)
-â€¢ Data confidence gaps and unverifiable inputs
+* Regulatory friction & approval timing drift
+* Misa'sequenced execution dependencies
+* Financing mismatch between cashflow and capex/opex timing
+* Counterparty integrity and verification gaps
+* Hidden singlea'point dependencies
+* Operational capacity gaps
+* Marketa'entry timing windows (policy cycles, elections, budget approvals)
+* Supply chain fragility
+* Contract structure weakness (decision rights, exit clauses)
+* Data confidence gaps and unverifiable inputs
 
 RECOMMENDED ACTIONS:
-1. Lock sequencing with hard dependency gates and stageâ€‘gated approvals.
+1. Lock sequencing with hard dependency gates and stagea'gated approvals.
 2. Align funding tranches to cashflow timing; maintain reserves for timing drift.
 3. Expand verification signals (KYC, adverse media, beneficial ownership checks).
-4. Diversify suppliers/approvals to remove singleâ€‘point failures.
+4. Diversify suppliers/approvals to remove singlea'point failures.
 5. Document governance decision rights and exit clauses before commitment.
 6. Refresh data sources and expand evidence coverage before signing.
 
@@ -849,53 +849,53 @@ This 15-page dossier provides comprehensive analysis of the proposed partnership
 
 RECOMMENDATION: PROCEED with Phase 1 implementation
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 1: MARKET ANALYSIS
 
 Market Size & Growth:
-â€¢ Total Addressable Market (TAM): $${(dealValue * 8 / 1000000).toFixed(0)}B
-â€¢ Serviceable Addressable Market (SAM): $${(dealValue * 2 / 1000000).toFixed(1)}B
-â€¢ CAGR (2025-2030): 12-15%
-â€¢ Regional Growth Drivers: Urbanization, digital adoption, policy support
+* Total Addressable Market (TAM): $${(dealValue * 8 / 1000000).toFixed(0)}B
+* Serviceable Addressable Market (SAM): $${(dealValue * 2 / 1000000).toFixed(1)}B
+* CAGR (2025-2030): 12-15%
+* Regional Growth Drivers: Urbanization, digital adoption, policy support
 
 Competitive Landscape:
-â€¢ 3-4 major players with 60% market share
-â€¢ 15-20 mid-sized competitors with 30% share
-â€¢ 50+ small/emerging players with 10% share
-â€¢ Clear opportunity for consolidator / fast-mover advantage
+* 3-4 major players with 60% market share
+* 15-20 mid-sized competitors with 30% share
+* 50+ small/emerging players with 10% share
+* Clear opportunity for consolidator / fast-mover advantage
 
 Entry Barriers & Advantages:
-â€¢ Regulatory approval: 6-12 months (manageable)
-â€¢ Capital requirement: $${(dealValue / 1000000).toFixed(1)}M (achievable)
-â€¢ Talent availability: Good (tech talent abundant)
-â€¢ Partner access: CRITICAL - ${targetPartnerName} provides 60% of value
+* Regulatory approval: 6-12 months (manageable)
+* Capital requirement: $${(dealValue / 1000000).toFixed(1)}M (achievable)
+* Talent availability: Good (tech talent abundant)
+* Partner access: CRITICAL - ${targetPartnerName} provides 60% of value
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 2: PARTNERSHIP STRUCTURE
 
 Partner Fit Analysis:
-â€¢ Market access: Score 9/10 (established relationships with key customers)
-â€¢ Operational capability: Score 8/10 (proven track record)
-â€¢ Financial strength: Score 8/10 (can co-invest $${(dealValue * 0.4 / 1000000).toFixed(1)}M)
-â€¢ Cultural alignment: Score 8/10 (similar business values)
-â€¢ OVERALL FIT: 8.25/10 - STRONG
+* Market access: Score 9/10 (established relationships with key customers)
+* Operational capability: Score 8/10 (proven track record)
+* Financial strength: Score 8/10 (can co-invest $${(dealValue * 0.4 / 1000000).toFixed(1)}M)
+* Cultural alignment: Score 8/10 (similar business values)
+* OVERALL FIT: 8.25/10 - STRONG
 
 Governance Model:
-â€¢ Joint Steering Committee (monthly)
-â€¢ Executive sponsor from each organization (weekly check-ins)
-â€¢ Finance subcommittee (monthly budget review)
-â€¢ Operations subcommittee (weekly operational updates)
-â€¢ Escalation path for disputes (CEO â†’ Board)
+* Joint Steering Committee (monthly)
+* Executive sponsor from each organization (weekly check-ins)
+* Finance subcommittee (monthly budget review)
+* Operations subcommittee (weekly operational updates)
+* Escalation path for disputes (CEO a' Board)
 
 Financial Terms:
-â€¢ Investment: $${(dealValue / 1000000).toFixed(1)}M total ($${(dealValue * 0.6 / 1000000).toFixed(1)}M from ${entityName}, $${(dealValue * 0.4 / 1000000).toFixed(1)}M from ${targetPartnerName})
-â€¢ Equity split: 60/40
-â€¢ Profit distribution: 50/50 after capital recovery
-â€¢ Dividend policy: Annual, reinvest first 2 years
+* Investment: $${(dealValue / 1000000).toFixed(1)}M total ($${(dealValue * 0.6 / 1000000).toFixed(1)}M from ${entityName}, $${(dealValue * 0.4 / 1000000).toFixed(1)}M from ${targetPartnerName})
+* Equity split: 60/40
+* Profit distribution: 50/50 after capital recovery
+* Dividend policy: Annual, reinvest first 2 years
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 3: FINANCIAL PROJECTIONS
 
@@ -907,73 +907,73 @@ Year 4: $${(dealValue * 0.85 / 1000000).toFixed(1)}M revenue, 24% EBITDA margin
 Year 5: $${(dealValue / 1000000).toFixed(1)}M revenue, 28% EBITDA margin
 
 Investment Returns:
-â€¢ IRR: 38% (5-year)
-â€¢ MOIC: 3.2x
-â€¢ Break-even: Month 28
-â€¢ Terminal Value: $${(dealValue * 4 / 1000000).toFixed(1)}M (at 8x EBITDA multiple)
+* IRR: 38% (5-year)
+* MOIC: 3.2x
+* Break-even: Month 28
+* Terminal Value: $${(dealValue * 4 / 1000000).toFixed(1)}M (at 8x EBITDA multiple)
 
 Cash Flow Profile:
-â€¢ Cumulative investment: $${(dealValue / 1000000).toFixed(1)}M
-â€¢ Cumulative cash return (5-yr): $${(dealValue * 1.2 / 1000000).toFixed(1)}M
-â€¢ Cash breakeven: Month 28
-â€¢ Positive cumulative CF from Year 3 onward
+* Cumulative investment: $${(dealValue / 1000000).toFixed(1)}M
+* Cumulative cash return (5-yr): $${(dealValue * 1.2 / 1000000).toFixed(1)}M
+* Cash breakeven: Month 28
+* Positive cumulative CF from Year 3 onward
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 4: RISKS & MITIGATION
 
 Top 5 Risks:
-1. Regulatory changes (40% probability) â†’ Mitigation: Policy monitoring team
-2. Market adoption slower than expected (35%) â†’ Pilot program with locked-in contracts
-3. Operational integration challenges (45%) â†’ Integration management office
-4. Currency volatility (60%) â†’ 12-month forward hedge
-5. Partnership dynamics (20%) â†’ Clear governance structure
+1. Regulatory changes (40% probability) a' Mitigation: Policy monitoring team
+2. Market adoption slower than expected (35%) a' Pilot program with locked-in contracts
+3. Operational integration challenges (45%) a' Integration management office
+4. Currency volatility (60%) a' 12-month forward hedge
+5. Partnership dynamics (20%) a' Clear governance structure
 
 Overall Risk Rating: MEDIUM (manageable with proper frameworks)
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 5: IMPLEMENTATION ROADMAP
 
 Immediate (Days 1-30):
-â€¢ Steering committee kick-off
-â€¢ Regulatory roadmap finalized
-â€¢ Team structure and hiring plan approved
-â€¢ 100-day detailed plan for each function
+* Steering committee kick-off
+* Regulatory roadmap finalized
+* Team structure and hiring plan approved
+* 100-day detailed plan for each function
 
 Short-term (Months 1-3):
-â€¢ Legal entity formation
-â€¢ Regulatory approvals submitted
-â€¢ Core team assembled (20-25 people)
-â€¢ Pilot customer discussions initiated
+* Legal entity formation
+* Regulatory approvals submitted
+* Core team assembled (20-25 people)
+* Pilot customer discussions initiated
 
 Medium-term (Months 4-9):
-â€¢ Operations launch
-â€¢ Product/service customization
-â€¢ Marketing campaign rollout
-â€¢ Pilot customer onboarding
+* Operations launch
+* Product/service customization
+* Marketing campaign rollout
+* Pilot customer onboarding
 
 Long-term (Months 10-18):
-â€¢ Scale to full operations
-â€¢ Profitability target achieved
-â€¢ Market expansion phase begins
+* Scale to full operations
+* Profitability target achieved
+* Market expansion phase begins
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 SECTION 6: DECISION FRAMEWORK
 
 Go/No-Go Criteria:
-âœ“ Partnership fit score > 8.0 (ACHIEVED: 8.25)
-âœ“ IRR projection > 30% (ACHIEVED: 38%)
-âœ“ Market growth rate > 10% (ACHIEVED: 12-15%)
-âœ“ Regulatory path clarity > 70% (ACHIEVED: 80%)
-âœ“ Partner financial strength confirmed (ACHIEVED)
+✓ Partnership fit score > 8.0 (ACHIEVED: 8.25)
+✓ IRR projection > 30% (ACHIEVED: 38%)
+✓ Market growth rate > 10% (ACHIEVED: 12-15%)
+✓ Regulatory path clarity > 70% (ACHIEVED: 80%)
+✓ Partner financial strength confirmed (ACHIEVED)
 
 Recommendation: ALL CRITERIA MET - PROCEED TO PHASE 1
 
 DECISION DEADLINE: ${decisionDeadline}
 
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-----------------------------------------------------------
 
 Next Steps:
 1. Board approval from both organizations
@@ -988,20 +988,20 @@ PARTNER COMPARISON MATRIX
 
 ${entityName} is evaluating three potential partnership options for ${targetMarket} market entry.
 
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ Criteria            â”‚ ${targetPartnerName}        â”‚ Alternative A    â”‚ Alternative B    â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ Market Access       â”‚ 9/10             â”‚ 7/10             â”‚ 5/10             â”‚
-â”‚ Financial Strength  â”‚ 8/10             â”‚ 9/10             â”‚ 6/10             â”‚
-â”‚ Technical Capabilityâ”‚ 8/10             â”‚ 8/10             â”‚ 9/10             â”‚
-â”‚ Cultural Fit        â”‚ 8/10             â”‚ 6/10             â”‚ 7/10             â”‚
-â”‚ Investment Capacity â”‚ $${(dealValue * 0.4 / 1000000).toFixed(1)}M        â”‚ $${(dealValue * 0.3 / 1000000).toFixed(1)}M        â”‚ $${(dealValue * 0.5 / 1000000).toFixed(1)}M        â”‚
-â”‚ Timeline Agreement  â”‚ 18-24 months     â”‚ 24-30 months     â”‚ 12-18 months     â”‚
-â”‚ Governance Clarity  â”‚ 8/10             â”‚ 6/10             â”‚ 7/10             â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ OVERALL SCORE       â”‚ 8.25/10 âœ“        â”‚ 7.29/10          â”‚ 7.14/10          â”‚
-â”‚ RECOMMENDATION      â”‚ PRIMARY CHOICE   â”‚ BACKUP OPTION    â”‚ LAST RESORT       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+a"OE - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"
+a"' Criteria            a"' ${targetPartnerName}        a"' Alternative A    a"' Alternative B    a"'
+a"oe - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"
+a"' Market Access       a"' 9/10             a"' 7/10             a"' 5/10             a"'
+a"' Financial Strength  a"' 8/10             a"' 9/10             a"' 6/10             a"'
+a"' Technical Capabilitya"' 8/10             a"' 8/10             a"' 9/10             a"'
+a"' Cultural Fit        a"' 8/10             a"' 6/10             a"' 7/10             a"'
+a"' Investment Capacity a"' $${(dealValue * 0.4 / 1000000).toFixed(1)}M        a"' $${(dealValue * 0.3 / 1000000).toFixed(1)}M        a"' $${(dealValue * 0.5 / 1000000).toFixed(1)}M        a"'
+a"' Timeline Agreement  a"' 18-24 months     a"' 24-30 months     a"' 12-18 months     a"'
+a"' Governance Clarity  a"' 8/10             a"' 6/10             a"' 7/10             a"'
+a"oe - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"1/4 - a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"
+a"' OVERALL SCORE       a"' 8.25/10 ✓        a"' 7.29/10          a"' 7.14/10          a"'
+a"' RECOMMENDATION      a"' PRIMARY CHOICE   a"' BACKUP OPTION    a"' LAST RESORT       a"'
+a""a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"'a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"'a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"'a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"a"~
 
 FINANCIAL COMPARISON:
 
@@ -1016,16 +1016,16 @@ Alternative A: 32% IRR, 2.6x MOIC
 Alternative B: 42% IRR, 3.8x MOIC (but 45% failure risk)
 
 Risk-Adjusted Return:
-${targetPartnerName}: 36% (38% Ã— 95% confidence)
-Alternative A: 29% (32% Ã— 90% confidence)
-Alternative B: 23% (42% Ã— 55% confidence)
+${targetPartnerName}: 36% (38% A -  95% confidence)
+Alternative A: 29% (32% A -  90% confidence)
+Alternative B: 23% (42% A -  55% confidence)
 
 CONCLUSION:
 ${targetPartnerName} offers the optimal balance of:
-â€¢ Market access and customer relationships (9/10)
-â€¢ Financial stability and commitment (8/10)
-â€¢ Realistic timelines and achievable milestones
-â€¢ Lowest risk-adjusted downside risk
+* Market access and customer relationships (9/10)
+* Financial stability and commitment (8/10)
+* Realistic timelines and achievable milestones
+* Lowest risk-adjusted downside risk
 
 RECOMMENDATION: Proceed with ${targetPartnerName} as primary partner.
 Establish backup discussions with Alternative A (contingency planning).
@@ -1039,36 +1039,36 @@ ${entityName} - ${targetPartnerName} Strategic Partnership
 Date: ${new Date().toLocaleDateString()}
 
 PARTIES:
-â€¢ ${entityName} ("Company A")
-â€¢ ${targetPartnerName} ("Company B")
+* ${entityName} ("Company A")
+* ${targetPartnerName} ("Company B")
 
 TRANSACTION OVERVIEW:
 Company A and Company B intend to form a strategic partnership for market entry and expansion in ${targetMarket}, with total committed capital of $${(dealValue / 1000000).toFixed(1)}M.
 
 KEY ECONOMIC TERMS:
-â€¢ Total Investment: $${(dealValue / 1000000).toFixed(1)}M
-â€¢ Equity Split: 60% Company A / 40% Company B
-â€¢ Profit Sharing: Pro-rata based on equity ownership
-â€¢ Dividend Policy: Annual distributions after debt service
-â€¢ Exit Rights: Tag-along/drag-along rights for majority shareholder
+* Total Investment: $${(dealValue / 1000000).toFixed(1)}M
+* Equity Split: 60% Company A / 40% Company B
+* Profit Sharing: Pro-rata based on equity ownership
+* Dividend Policy: Annual distributions after debt service
+* Exit Rights: Tag-along/drag-along rights for majority shareholder
 
 GOVERNANCE:
-â€¢ Board Composition: 5 members (3 from Company A, 2 from Company B)
-â€¢ CEO: Appointed by Company A
-â€¢ CFO: Appointed by Company B
-â€¢ Decision Rights: Unanimous approval for investments >$1M
-â€¢ Reporting: Monthly financials, quarterly board meetings
+* Board Composition: 5 members (3 from Company A, 2 from Company B)
+* CEO: Appointed by Company A
+* CFO: Appointed by Company B
+* Decision Rights: Unanimous approval for investments >$1M
+* Reporting: Monthly financials, quarterly board meetings
 
 CONDITIONS PRECEDENT:
-â€¢ Satisfactory due diligence completion
-â€¢ Regulatory approvals obtained
-â€¢ Definitive agreements executed within 90 days
-â€¢ Financing commitments secured
+* Satisfactory due diligence completion
+* Regulatory approvals obtained
+* Definitive agreements executed within 90 days
+* Financing commitments secured
 
 TIMELINE:
-â€¢ Due Diligence: 30 days
-â€¢ Definitive Agreements: 60 days
-â€¢ Closing: 90 days from term sheet execution
+* Due Diligence: 30 days
+* Definitive Agreements: 60 days
+* Closing: 90 days from term sheet execution
 
 This term sheet is non-binding and subject to definitive agreements.
   `;
@@ -1085,10 +1085,10 @@ EXECUTIVE SUMMARY:
 We recommend proceeding with a $${(dealValue / 1000000).toFixed(1)}M investment in a strategic partnership with ${targetPartnerName} for ${targetMarket} market entry. The opportunity presents a compelling risk-adjusted return profile with 38% IRR and 3.2x MOIC over 5 years.
 
 INVESTMENT THESIS:
-â€¢ Market Opportunity: $${(dealValue * 8 / 1000000).toFixed(0)}B addressable market with 12-15% CAGR
-â€¢ Competitive Advantage: First-mover positioning through ${targetPartnerName}'s established relationships
-â€¢ Value Creation: Revenue synergies of $${(dealValue * 0.25 / 1000000).toFixed(1)}M annually through cross-selling
-â€¢ Risk Mitigation: Diversified customer base and long-term contracts
+* Market Opportunity: $${(dealValue * 8 / 1000000).toFixed(0)}B addressable market with 12-15% CAGR
+* Competitive Advantage: First-mover positioning through ${targetPartnerName}'s established relationships
+* Value Creation: Revenue synergies of $${(dealValue * 0.25 / 1000000).toFixed(1)}M annually through cross-selling
+* Risk Mitigation: Diversified customer base and long-term contracts
 
 FINANCIAL PROJECTIONS:
 Year 1: Revenue $${(dealValue * 0.15 / 1000000).toFixed(1)}M, EBITDA -40%
@@ -1097,9 +1097,9 @@ Year 3: Revenue $${(dealValue * 0.65 / 1000000).toFixed(1)}M, EBITDA 18%
 Year 5: Revenue $${(dealValue / 1000000).toFixed(1)}M, EBITDA 28%
 
 RETURN METRICS:
-â€¢ IRR: 38%
-â€¢ Payback Period: 30 months
-â€¢ Terminal Value: $${(dealValue * 4 / 1000000).toFixed(1)}M (8x EBITDA exit multiple)
+* IRR: 38%
+* Payback Period: 30 months
+* Terminal Value: $${(dealValue * 4 / 1000000).toFixed(1)}M (8x EBITDA exit multiple)
 
 RISKS & MITIGATIONS:
 1. Regulatory Risk: Government relations team + 6-month buffer
@@ -1111,9 +1111,9 @@ RECOMMENDATION:
 APPROVE investment subject to due diligence completion and final term negotiation.
 
 REQUIRED APPROVALS:
-â€¢ Investment Committee: Required
-â€¢ Board of Directors: Required for investments >$25M
-â€¢ Legal/Compliance: Satisfactory due diligence
+* Investment Committee: Required
+* Board of Directors: Required for investments >$25M
+* Legal/Compliance: Satisfactory due diligence
   `;
 
   const generateDueDiligenceRequest = () => `
@@ -1177,34 +1177,34 @@ EXECUTIVE SUMMARY:
 This report provides comprehensive market intelligence on ${targetMarket}, supporting the strategic partnership evaluation with ${targetPartnerName}. The market represents a $${(dealValue * 8 / 1000000).toFixed(0)}B opportunity with favorable entry conditions.
 
 MARKET OVERVIEW:
-â€¢ Total Addressable Market (TAM): $${(dealValue * 8 / 1000000).toFixed(0)}B
-â€¢ Serviceable Addressable Market (SAM): $${(dealValue * 2 / 1000000).toFixed(1)}B
-â€¢ Compound Annual Growth Rate (CAGR): 12-15%
-â€¢ Key Growth Drivers: Urbanization, digital adoption, regulatory support
+* Total Addressable Market (TAM): $${(dealValue * 8 / 1000000).toFixed(0)}B
+* Serviceable Addressable Market (SAM): $${(dealValue * 2 / 1000000).toFixed(1)}B
+* Compound Annual Growth Rate (CAGR): 12-15%
+* Key Growth Drivers: Urbanization, digital adoption, regulatory support
 
 COMPETITIVE LANDSCAPE:
-â€¢ Market Leaders: 3 major players controlling 60% market share
-â€¢ Mid-tier Competitors: 15-20 companies with 30% share
-â€¢ Emerging Players: 50+ small entities with 10% share
-â€¢ Barriers to Entry: Regulatory approval (6-12 months), capital requirements ($${dealValue / 1000000}M), talent availability
+* Market Leaders: 3 major players controlling 60% market share
+* Mid-tier Competitors: 15-20 companies with 30% share
+* Emerging Players: 50+ small entities with 10% share
+* Barriers to Entry: Regulatory approval (6-12 months), capital requirements ($${dealValue / 1000000}M), talent availability
 
 CUSTOMER ANALYSIS:
-â€¢ Primary Segments: Enterprise clients (60%), mid-market (30%), SMB (10%)
-â€¢ Buying Behavior: Relationship-driven, long sales cycles (6-12 months)
-â€¢ Key Decision Criteria: Price (40%), quality (30%), service (20%), brand (10%)
-â€¢ Customer Concentration: Top 10 customers represent 45% of market revenue
+* Primary Segments: Enterprise clients (60%), mid-market (30%), SMB (10%)
+* Buying Behavior: Relationship-driven, long sales cycles (6-12 months)
+* Key Decision Criteria: Price (40%), quality (30%), service (20%), brand (10%)
+* Customer Concentration: Top 10 customers represent 45% of market revenue
 
 TECHNOLOGY TRENDS:
-â€¢ Digital Transformation: 70% of customers planning major IT investments
-â€¢ Cloud Adoption: Expected to reach 85% penetration by 2026
-â€¢ AI/ML Integration: Growing demand for intelligent solutions
-â€¢ Cybersecurity: Increasing focus on data protection and compliance
+* Digital Transformation: 70% of customers planning major IT investments
+* Cloud Adoption: Expected to reach 85% penetration by 2026
+* AI/ML Integration: Growing demand for intelligent solutions
+* Cybersecurity: Increasing focus on data protection and compliance
 
 REGULATORY ENVIRONMENT:
-â€¢ Key Regulations: Data protection laws, industry-specific licensing
-â€¢ Approval Timeline: 6-12 months for foreign investment
-â€¢ Compliance Requirements: Local content rules, employment quotas
-â€¢ Political Risk: Moderate, with stable government policies
+* Key Regulations: Data protection laws, industry-specific licensing
+* Approval Timeline: 6-12 months for foreign investment
+* Compliance Requirements: Local content rules, employment quotas
+* Political Risk: Moderate, with stable government policies
 
 ENTRY STRATEGY RECOMMENDATIONS:
 1. Partner with established local entity (${targetPartnerName})
@@ -1228,31 +1228,31 @@ PARTNERSHIP OVERVIEW:
 This analysis evaluates the existing partnership framework between ${entityName} and ${targetPartnerName} for ${targetMarket} market entry, assessing performance, synergies, and future opportunities.
 
 CURRENT PERFORMANCE METRICS:
-â€¢ Revenue Contribution: $${(dealValue * 0.15 / 1000000).toFixed(1)}M (Year 1 actual)
-â€¢ Market Share Achieved: 2.1% (target: 2-3%)
-â€¢ Customer Acquisition: 45 new clients (target: 50)
-â€¢ Operational Efficiency: 15% cost savings realized
-â€¢ Partnership Satisfaction: 8.5/10 (both parties)
+* Revenue Contribution: $${(dealValue * 0.15 / 1000000).toFixed(1)}M (Year 1 actual)
+* Market Share Achieved: 2.1% (target: 2-3%)
+* Customer Acquisition: 45 new clients (target: 50)
+* Operational Efficiency: 15% cost savings realized
+* Partnership Satisfaction: 8.5/10 (both parties)
 
 STRENGTHS:
-âœ“ Strong market access through ${targetPartnerName}'s network
-âœ“ Complementary technical capabilities
-âœ“ Shared risk appetite and growth objectives
-âœ“ Effective governance structure with quarterly reviews
-âœ“ Cultural alignment and communication
+✓ Strong market access through ${targetPartnerName}'s network
+✓ Complementary technical capabilities
+✓ Shared risk appetite and growth objectives
+✓ Effective governance structure with quarterly reviews
+✓ Cultural alignment and communication
 
 AREAS FOR IMPROVEMENT:
-âš  Customer onboarding process needs streamlining
-âš  Technology integration behind schedule
-âš  Profit sharing mechanism requires refinement
-âš  Geographic expansion planning incomplete
+as  Customer onboarding process needs streamlining
+as  Technology integration behind schedule
+as  Profit sharing mechanism requires refinement
+as  Geographic expansion planning incomplete
 
 FINANCIAL ANALYSIS:
-â€¢ Investment Deployed: $${(dealValue * 0.35 / 1000000).toFixed(1)}M
-â€¢ Revenue Generated: $${(dealValue * 0.15 / 1000000).toFixed(1)}M
-â€¢ EBITDA Margin: -40% (as expected for investment phase)
-â€¢ ROI to Date: -25% (on track for 38% IRR target)
-â€¢ Cash Flow: Negative (funding ongoing expansion)
+* Investment Deployed: $${(dealValue * 0.35 / 1000000).toFixed(1)}M
+* Revenue Generated: $${(dealValue * 0.15 / 1000000).toFixed(1)}M
+* EBITDA Margin: -40% (as expected for investment phase)
+* ROI to Date: -25% (on track for 38% IRR target)
+* Cash Flow: Negative (funding ongoing expansion)
 
 STRATEGIC OPPORTUNITIES:
 1. Adjacent Market Expansion: Leverage existing infrastructure
@@ -1261,10 +1261,10 @@ STRATEGIC OPPORTUNITIES:
 4. International Growth: Regional expansion planning
 
 RISKS & MITIGATIONS:
-â€¢ Partnership Dynamics: Regular alignment meetings
-â€¢ Market Changes: Flexible business model
-â€¢ Regulatory Shifts: Dedicated compliance team
-â€¢ Competitive Pressure: Continuous innovation
+* Partnership Dynamics: Regular alignment meetings
+* Market Changes: Flexible business model
+* Regulatory Shifts: Dedicated compliance team
+* Competitive Pressure: Continuous innovation
 
 RECOMMENDATIONS:
 1. Accelerate technology integration (target: 3 months)
@@ -1286,39 +1286,39 @@ Date: ${new Date().toLocaleDateString()}
 STAKEHOLDER MAPPING:
 
 HIGH INFLUENCE / HIGH INTEREST:
-â€¢ ${targetPartnerName} Executive Team: Critical partner, direct involvement
+* ${targetPartnerName} Executive Team: Critical partner, direct involvement
  - Interest: Mutual value creation, strategic alignment
  - Influence: High (decision-making authority)
  - Engagement: Weekly calls, monthly meetings
 
-â€¢ Government Regulators: Key approvals required
+* Government Regulators: Key approvals required
  - Interest: Economic development, job creation
  - Influence: High (licensing and compliance)
  - Engagement: Quarterly briefings, policy advocacy
 
-â€¢ Key Customers: Revenue drivers
+* Key Customers: Revenue drivers
  - Interest: Product quality, service reliability
  - Influence: Medium (market validation)
  - Engagement: Customer advisory board, satisfaction surveys
 
 HIGH INFLUENCE / LOW INTEREST:
-â€¢ Industry Associations: Regulatory influence
+* Industry Associations: Regulatory influence
  - Interest: Industry standards, advocacy
  - Influence: High (policy recommendations)
  - Engagement: Membership, conference participation
 
-â€¢ Local Banks: Financing partners
+* Local Banks: Financing partners
  - Interest: Loan portfolio growth, relationship banking
  - Influence: Medium-High (financing availability)
  - Engagement: Credit committee presentations
 
 LOW INFLUENCE / HIGH INTEREST:
-â€¢ Local Community: Social license to operate
+* Local Community: Social license to operate
  - Interest: Employment opportunities, community development
  - Influence: Low-Medium (public opinion)
  - Engagement: CSR programs, community outreach
 
-â€¢ Employees: Internal stakeholders
+* Employees: Internal stakeholders
  - Interest: Job security, career development
  - Influence: Low (operational execution)
  - Engagement: Town halls, internal communications
@@ -1330,10 +1330,10 @@ ENGAGEMENT STRATEGY:
 4. Value Creation: Ensure all stakeholders see clear benefits
 
 MONITORING & MEASUREMENT:
-â€¢ Stakeholder satisfaction surveys (quarterly)
-â€¢ Media monitoring and sentiment analysis
-â€¢ Regulatory compliance tracking
-â€¢ Partnership performance metrics
+* Stakeholder satisfaction surveys (quarterly)
+* Media monitoring and sentiment analysis
+* Regulatory compliance tracking
+* Partnership performance metrics
 
 CONCLUSION:
 Successful stakeholder management is critical for partnership success. Focus on high-influence stakeholders while maintaining positive relationships with all parties.
@@ -1350,10 +1350,10 @@ EXECUTIVE SUMMARY:
 This strategy outlines a comprehensive approach for ${entityName} to enter ${targetMarket} through partnership with ${targetPartnerName}. The plan focuses on sustainable growth, risk mitigation, and value creation over a 5-year horizon.
 
 MARKET ASSESSMENT:
-â€¢ Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B TAM
-â€¢ Growth Rate: 12-15% CAGR
-â€¢ Competitive Intensity: Moderate (consolidation opportunity)
-â€¢ Entry Barriers: Regulatory (6-12 months), capital ($${dealValue / 1000000}M), relationships
+* Market Size: $${(dealValue * 8 / 1000000).toFixed(0)}B TAM
+* Growth Rate: 12-15% CAGR
+* Competitive Intensity: Moderate (consolidation opportunity)
+* Entry Barriers: Regulatory (6-12 months), capital ($${dealValue / 1000000}M), relationships
 
 STRATEGIC OBJECTIVES:
 1. Achieve 2-3% market share within 5 years
@@ -1362,58 +1362,58 @@ STRATEGIC OBJECTIVES:
 4. Create platform for regional expansion
 
 ENTRY APPROACH: STRATEGIC PARTNERSHIP
-â€¢ Partner: ${targetPartnerName} (market leader in distribution)
-â€¢ Investment: $${(dealValue / 1000000).toFixed(1)}M total capital
-â€¢ Ownership: 60% ${entityName} / 40% ${targetPartnerName}
-â€¢ Governance: Joint steering committee
+* Partner: ${targetPartnerName} (market leader in distribution)
+* Investment: $${(dealValue / 1000000).toFixed(1)}M total capital
+* Ownership: 60% ${entityName} / 40% ${targetPartnerName}
+* Governance: Joint steering committee
 
 PHASED IMPLEMENTATION:
 
 PHASE 1: FOUNDATION (Months 1-6)
-â€¢ Legal entity formation and regulatory approvals
-â€¢ Core team recruitment (20-25 local hires)
-â€¢ Office establishment and infrastructure setup
-â€¢ Partnership agreement finalization
-â€¢ Initial market research and customer identification
+* Legal entity formation and regulatory approvals
+* Core team recruitment (20-25 local hires)
+* Office establishment and infrastructure setup
+* Partnership agreement finalization
+* Initial market research and customer identification
 
 PHASE 2: MARKET PENETRATION (Months 7-18)
-â€¢ Product localization and customization
-â€¢ Pilot customer acquisition (5-10 anchor clients)
-â€¢ Sales and marketing team expansion
-â€¢ Operational processes implementation
-â€¢ Performance monitoring systems deployment
+* Product localization and customization
+* Pilot customer acquisition (5-10 anchor clients)
+* Sales and marketing team expansion
+* Operational processes implementation
+* Performance monitoring systems deployment
 
 PHASE 3: SCALE & OPTIMIZE (Months 19-36)
-â€¢ Full market launch across all segments
-â€¢ Revenue growth acceleration
-â€¢ Cost optimization and efficiency improvements
-â€¢ Additional market segment expansion
-â€¢ Profitability target achievement
+* Full market launch across all segments
+* Revenue growth acceleration
+* Cost optimization and efficiency improvements
+* Additional market segment expansion
+* Profitability target achievement
 
 PHASE 4: LEADERSHIP & EXPANSION (Months 37-60)
-â€¢ Market leadership position consolidation
-â€¢ Regional expansion planning
-â€¢ New product development
-â€¢ Strategic acquisitions evaluation
-â€¢ IPO or exit preparation
+* Market leadership position consolidation
+* Regional expansion planning
+* New product development
+* Strategic acquisitions evaluation
+* IPO or exit preparation
 
 RISK MANAGEMENT:
-â€¢ Regulatory: Dedicated government relations team
-â€¢ Market: Pilot program with guaranteed contracts
-â€¢ Operational: Experienced local management
-â€¢ Financial: Conservative cash flow projections
+* Regulatory: Dedicated government relations team
+* Market: Pilot program with guaranteed contracts
+* Operational: Experienced local management
+* Financial: Conservative cash flow projections
 
 SUCCESS METRICS:
-â€¢ Year 1: Market presence established, first revenues
-â€¢ Year 2: Break-even achieved, customer base of 50
-â€¢ Year 3: Profitable operations, 1% market share
-â€¢ Year 5: 2-3% market share, industry leadership position
+* Year 1: Market presence established, first revenues
+* Year 2: Break-even achieved, customer base of 50
+* Year 3: Profitable operations, 1% market share
+* Year 5: 2-3% market share, industry leadership position
 
 RESOURCE REQUIREMENTS:
-â€¢ Capital: $${(dealValue / 1000000).toFixed(1)}M investment
-â€¢ Personnel: 75-100 full-time employees
-â€¢ Technology: ERP, CRM, and industry-specific software
-â€¢ Facilities: Office space, warehouse, showroom
+* Capital: $${(dealValue / 1000000).toFixed(1)}M investment
+* Personnel: 75-100 full-time employees
+* Technology: ERP, CRM, and industry-specific software
+* Facilities: Office space, warehouse, showroom
 
 CONCLUSION:
 This market entry strategy provides a structured path to success in ${targetMarket} with manageable risks and attractive financial returns. The partnership with ${targetPartnerName} is critical to execution success.
@@ -1451,9 +1451,9 @@ MAJOR PLAYERS:
   - Strategy: Global expansion
 
 MID-TIER COMPETITORS:
-â€¢ Regional Player A: Strong local relationships, limited scalability
-â€¢ Regional Player B: Cost leadership, quality concerns
-â€¢ Regional Player C: Niche focus, growth potential
+* Regional Player A: Strong local relationships, limited scalability
+* Regional Player B: Cost leadership, quality concerns
+* Regional Player C: Niche focus, growth potential
 
 COMPETITIVE ADVANTAGES:
 Through partnership with ${targetPartnerName}, ${entityName} can leverage:
@@ -1465,17 +1465,17 @@ Through partnership with ${targetPartnerName}, ${entityName} can leverage:
 5. SPEED TO MARKET: Accelerated entry through partnership
 
 THREAT ANALYSIS:
-â€¢ New Entrants: Moderate barrier (regulatory, capital requirements)
-â€¢ Substitute Products: Low threat (limited alternatives available)
-â€¢ Supplier Power: Medium (key component availability)
-â€¢ Buyer Power: High (price-sensitive customers, consolidation)
-â€¢ Competitive Rivalry: High (price competition, feature differentiation)
+* New Entrants: Moderate barrier (regulatory, capital requirements)
+* Substitute Products: Low threat (limited alternatives available)
+* Supplier Power: Medium (key component availability)
+* Buyer Power: High (price-sensitive customers, consolidation)
+* Competitive Rivalry: High (price competition, feature differentiation)
 
 STRATEGIC POSITIONING:
 ${entityName} should position as:
-â€¢ Quality Leader: Premium pricing, superior service
-â€¢ Innovation Driver: Technology differentiation
-â€¢ Partnership Expert: Ecosystem approach to value creation
+* Quality Leader: Premium pricing, superior service
+* Innovation Driver: Technology differentiation
+* Partnership Expert: Ecosystem approach to value creation
 
 COMPETITIVE RESPONSE STRATEGIES:
 1. Monitor competitor pricing and promotions
@@ -1485,10 +1485,10 @@ COMPETITIVE RESPONSE STRATEGIES:
 5. Develop strategic partnerships and alliances
 
 MARKET OPPORTUNITIES:
-â€¢ Consolidation: Acquire smaller competitors for market share
-â€¢ Niche Markets: Target underserved segments
-â€¢ Technology Gaps: Address customer pain points with innovation
-â€¢ Geographic Expansion: Follow customer migration patterns
+* Consolidation: Acquire smaller competitors for market share
+* Niche Markets: Target underserved segments
+* Technology Gaps: Address customer pain points with innovation
+* Geographic Expansion: Follow customer migration patterns
 
 CONCLUSION:
 The competitive landscape presents both challenges and opportunities. Through strategic partnership and focused execution, ${entityName} can establish a strong market position and drive sustainable growth.
@@ -1507,53 +1507,53 @@ This operational plan outlines the implementation framework for ${entityName}'s 
 ORGANIZATIONAL STRUCTURE:
 
 LEADERSHIP TEAM:
-â€¢ CEO: Overall responsibility and strategic direction
-â€¢ COO: Operations management and execution
-â€¢ CFO: Financial management and investor relations
-â€¢ Chief Commercial Officer: Sales and marketing leadership
-â€¢ Chief Technology Officer: Technology and product development
+* CEO: Overall responsibility and strategic direction
+* COO: Operations management and execution
+* CFO: Financial management and investor relations
+* Chief Commercial Officer: Sales and marketing leadership
+* Chief Technology Officer: Technology and product development
 
 DEPARTMENTAL STRUCTURE:
-â€¢ Sales & Marketing: 15-20 personnel
-â€¢ Operations & Customer Service: 20-25 personnel
-â€¢ Finance & Administration: 8-10 personnel
-â€¢ Technology & IT: 5-8 personnel
-â€¢ Human Resources: 3-5 personnel
+* Sales & Marketing: 15-20 personnel
+* Operations & Customer Service: 20-25 personnel
+* Finance & Administration: 8-10 personnel
+* Technology & IT: 5-8 personnel
+* Human Resources: 3-5 personnel
 
 LOCAL MANAGEMENT:
-â€¢ Country Manager: Overall P&L responsibility
-â€¢ Sales Director: Revenue generation and customer management
-â€¢ Operations Manager: Day-to-day execution
-â€¢ Finance Manager: Local financial management
+* Country Manager: Overall P&L responsibility
+* Sales Director: Revenue generation and customer management
+* Operations Manager: Day-to-day execution
+* Finance Manager: Local financial management
 
 IMPLEMENTATION PHASES:
 
 PHASE 1: SETUP & PLANNING (Days 1-90)
 Objectives: Establish foundation for operations
-â€¢ Legal entity registration and regulatory approvals
-â€¢ Office space acquisition and fit-out
-â€¢ Core team recruitment and onboarding
-â€¢ IT infrastructure deployment
-â€¢ Banking relationships establishment
-â€¢ Initial market research completion
+* Legal entity registration and regulatory approvals
+* Office space acquisition and fit-out
+* Core team recruitment and onboarding
+* IT infrastructure deployment
+* Banking relationships establishment
+* Initial market research completion
 
 PHASE 2: PILOT OPERATIONS (Days 91-180)
 Objectives: Test systems and processes
-â€¢ Pilot customer acquisition (5-10 clients)
-â€¢ Product/service customization and testing
-â€¢ Sales process implementation
-â€¢ Customer service setup
-â€¢ Quality assurance procedures
-â€¢ Performance metrics establishment
+* Pilot customer acquisition (5-10 clients)
+* Product/service customization and testing
+* Sales process implementation
+* Customer service setup
+* Quality assurance procedures
+* Performance metrics establishment
 
 PHASE 3: FULL OPERATIONS (Days 181-365)
 Objectives: Scale to full market presence
-â€¢ Full sales team deployment
-â€¢ Marketing campaign launch
-â€¢ Customer base expansion to 50+ clients
-â€¢ Operational process optimization
-â€¢ Staff expansion to full complement
-â€¢ Profitability target achievement
+* Full sales team deployment
+* Marketing campaign launch
+* Customer base expansion to 50+ clients
+* Operational process optimization
+* Staff expansion to full complement
+* Profitability target achievement
 
 KEY PROCESSES:
 
@@ -1580,25 +1580,25 @@ OPERATIONAL PROCESSES:
 5. Compliance: Regulatory and legal requirements
 
 TECHNOLOGY SYSTEMS:
-â€¢ ERP System: SAP or equivalent for core operations
-â€¢ CRM System: Salesforce for customer management
-â€¢ Financial Software: QuickBooks/Oracle for accounting
-â€¢ Communication Tools: Microsoft Teams/Slack
-â€¢ Project Management: Asana/Jira for task tracking
+* ERP System: SAP or equivalent for core operations
+* CRM System: Salesforce for customer management
+* Financial Software: QuickBooks/Oracle for accounting
+* Communication Tools: Microsoft Teams/Slack
+* Project Management: Asana/Jira for task tracking
 
 PERFORMANCE METRICS:
-â€¢ Revenue Growth: Monthly targets and actuals
-â€¢ Customer Acquisition: Number of new clients
-â€¢ Customer Satisfaction: NPS scores and feedback
-â€¢ Operational Efficiency: Cost per transaction, processing time
-â€¢ Employee Productivity: Revenue per employee
-â€¢ Quality Metrics: Defect rates, compliance scores
+* Revenue Growth: Monthly targets and actuals
+* Customer Acquisition: Number of new clients
+* Customer Satisfaction: NPS scores and feedback
+* Operational Efficiency: Cost per transaction, processing time
+* Employee Productivity: Revenue per employee
+* Quality Metrics: Defect rates, compliance scores
 
 RISK MANAGEMENT:
-â€¢ Operational Risks: Business continuity planning
-â€¢ Financial Risks: Cash flow monitoring, budget controls
-â€¢ Compliance Risks: Regular audits and training
-â€¢ People Risks: Succession planning, retention programs
+* Operational Risks: Business continuity planning
+* Financial Risks: Cash flow monitoring, budget controls
+* Compliance Risks: Regular audits and training
+* People Risks: Succession planning, retention programs
 
 SUCCESS FACTORS:
 1. Strong local leadership team
@@ -1634,108 +1634,108 @@ The integration will follow a phased approach with clear milestones, accountabil
 PHASED INTEGRATION PLAN:
 
 PHASE 1: PLANNING & DESIGN (Days 1-30)
-â€¢ Integration team formation and charter
-â€¢ Current state assessment and gap analysis
-â€¢ Target operating model design
-â€¢ Integration roadmap development
-â€¢ Communication plan creation
-â€¢ Risk assessment and mitigation planning
+* Integration team formation and charter
+* Current state assessment and gap analysis
+* Target operating model design
+* Integration roadmap development
+* Communication plan creation
+* Risk assessment and mitigation planning
 
 PHASE 2: FOUNDATION BUILDING (Days 31-90)
-â€¢ Legal entity integration completion
-â€¢ Leadership team alignment and decisions
-â€¢ Core team identification and retention
-â€¢ IT systems integration planning
-â€¢ Financial systems consolidation
-â€¢ Brand and messaging alignment
+* Legal entity integration completion
+* Leadership team alignment and decisions
+* Core team identification and retention
+* IT systems integration planning
+* Financial systems consolidation
+* Brand and messaging alignment
 
 PHASE 3: OPERATIONAL INTEGRATION (Days 91-180)
-â€¢ Sales and marketing function integration
-â€¢ Operations and supply chain combination
-â€¢ Customer service transition
-â€¢ Technology platform migration
-â€¢ Financial reporting unification
-â€¢ HR policies and systems harmonization
+* Sales and marketing function integration
+* Operations and supply chain combination
+* Customer service transition
+* Technology platform migration
+* Financial reporting unification
+* HR policies and systems harmonization
 
 PHASE 4: OPTIMIZATION & SCALE (Days 181-365)
-â€¢ Process standardization and optimization
-â€¢ Performance management implementation
-â€¢ Cultural integration initiatives
-â€¢ Growth initiatives launch
-â€¢ Continuous improvement programs
-â€¢ Full synergy realization
+* Process standardization and optimization
+* Performance management implementation
+* Cultural integration initiatives
+* Growth initiatives launch
+* Continuous improvement programs
+* Full synergy realization
 
 WORKSTREAM STRUCTURE:
 
 FINANCIAL INTEGRATION:
-â€¢ Systems consolidation (ERP, accounting)
-â€¢ Reporting standardization
-â€¢ Treasury and cash management
-â€¢ Tax optimization
-â€¢ Budgeting and forecasting alignment
+* Systems consolidation (ERP, accounting)
+* Reporting standardization
+* Treasury and cash management
+* Tax optimization
+* Budgeting and forecasting alignment
 
 OPERATIONAL INTEGRATION:
-â€¢ Supply chain optimization
-â€¢ Manufacturing/process harmonization
-â€¢ Quality systems integration
-â€¢ Inventory management
-â€¢ Procurement centralization
+* Supply chain optimization
+* Manufacturing/process harmonization
+* Quality systems integration
+* Inventory management
+* Procurement centralization
 
 COMMERCIAL INTEGRATION:
-â€¢ Sales force integration
-â€¢ Customer relationship management
-â€¢ Marketing strategy alignment
-â€¢ Pricing and product strategy
-â€¢ Channel management
+* Sales force integration
+* Customer relationship management
+* Marketing strategy alignment
+* Pricing and product strategy
+* Channel management
 
 TECHNOLOGY INTEGRATION:
-â€¢ IT infrastructure consolidation
-â€¢ Application portfolio rationalization
-â€¢ Data migration and integration
-â€¢ Cybersecurity framework
-â€¢ Digital transformation initiatives
+* IT infrastructure consolidation
+* Application portfolio rationalization
+* Data migration and integration
+* Cybersecurity framework
+* Digital transformation initiatives
 
 HUMAN RESOURCES INTEGRATION:
-â€¢ Organizational design
-â€¢ Compensation and benefits harmonization
-â€¢ Performance management systems
-â€¢ Training and development programs
-â€¢ Cultural integration initiatives
+* Organizational design
+* Compensation and benefits harmonization
+* Performance management systems
+* Training and development programs
+* Cultural integration initiatives
 
 CHANGE MANAGEMENT:
-â€¢ Communication strategy
-â€¢ Employee engagement programs
-â€¢ Training and support programs
-â€¢ Resistance management
-â€¢ Leadership alignment
+* Communication strategy
+* Employee engagement programs
+* Training and support programs
+* Resistance management
+* Leadership alignment
 
 SUCCESS METRICS:
-â€¢ Financial: Cost synergy achievement, revenue growth
-â€¢ Operational: Process efficiency, quality metrics
-â€¢ Customer: Satisfaction scores, retention rates
-â€¢ Employee: Engagement surveys, retention rates
-â€¢ Integration: Milestone achievement, timeline adherence
+* Financial: Cost synergy achievement, revenue growth
+* Operational: Process efficiency, quality metrics
+* Customer: Satisfaction scores, retention rates
+* Employee: Engagement surveys, retention rates
+* Integration: Milestone achievement, timeline adherence
 
 RISK MANAGEMENT:
-â€¢ Operational disruption mitigation
-â€¢ Customer retention strategies
-â€¢ Employee retention and engagement
-â€¢ Regulatory compliance
-â€¢ Financial performance protection
+* Operational disruption mitigation
+* Customer retention strategies
+* Employee retention and engagement
+* Regulatory compliance
+* Financial performance protection
 
 GOVERNANCE STRUCTURE:
-â€¢ Integration Management Office (IMO)
-â€¢ Executive Steering Committee
-â€¢ Workstream leads and teams
-â€¢ Regular progress reporting
-â€¢ Issue escalation procedures
+* Integration Management Office (IMO)
+* Executive Steering Committee
+* Workstream leads and teams
+* Regular progress reporting
+* Issue escalation procedures
 
 COMMUNICATION PLAN:
-â€¢ Employee town halls and updates
-â€¢ Customer notifications and reassurances
-â€¢ Stakeholder briefings
-â€¢ Media and public communications
-â€¢ Internal newsletter and intranet
+* Employee town halls and updates
+* Customer notifications and reassurances
+* Stakeholder briefings
+* Media and public communications
+* Internal newsletter and intranet
 
 CONCLUSION:
 Successful integration requires careful planning, strong leadership, and consistent execution. This plan provides the framework for creating a combined entity greater than the sum of its parts.
@@ -1752,37 +1752,37 @@ EXECUTIVE SUMMARY:
 This advisory provides practical guidance to prepare for entry and operations in ${targetMarket} prior to relocation or travel. It outlines regulatory steps, key contacts, cultural considerations, and 30/60/90-day priorities to reduce friction and accelerate readiness.
 
 REGULATORY PATHWAY:
-â€¢ Entity Setup: Confirm legal form (LLC/JV); engage local counsel
-â€¢ Licenses & Permits: Identify sector-specific approvals; prepare documentation
-â€¢ Banking & Tax: Open local accounts; register for tax IDs; set invoicing rules
-â€¢ Data & Compliance: Map data flows; align with privacy and sector regulations
+* Entity Setup: Confirm legal form (LLC/JV); engage local counsel
+* Licenses & Permits: Identify sector-specific approvals; prepare documentation
+* Banking & Tax: Open local accounts; register for tax IDs; set invoicing rules
+* Data & Compliance: Map data flows; align with privacy and sector regulations
 
 KEY TOUCHPOINTS & CONTACTS:
-â€¢ Government Relations: Appoint liaison; schedule introductory briefings
-â€¢ Industry Bodies: Join relevant associations to access policy updates
-â€¢ Local Counsel & Auditor: Retainers for filings, payroll, and compliance
-â€¢ Anchor Customers: Pre-schedule solution demos and pilot scoping sessions
+* Government Relations: Appoint liaison; schedule introductory briefings
+* Industry Bodies: Join relevant associations to access policy updates
+* Local Counsel & Auditor: Retainers for filings, payroll, and compliance
+* Anchor Customers: Pre-schedule solution demos and pilot scoping sessions
 
 OPERATIONAL READINESS CHECKLIST:
-â€¢ Office & Infrastructure: Shortlist locations; confirm internet/power reliability
-â€¢ Talent & Hiring: Define local roles; engage recruiting partners; plan onboarding
-â€¢ Vendor Network: Validate logistics, IT, and facility vendors; negotiate SLAs
-â€¢ Security & Continuity: Draft incident response; verify insurance coverage
+* Office & Infrastructure: Shortlist locations; confirm internet/power reliability
+* Talent & Hiring: Define local roles; engage recruiting partners; plan onboarding
+* Vendor Network: Validate logistics, IT, and facility vendors; negotiate SLAs
+* Security & Continuity: Draft incident response; verify insurance coverage
 
 CULTURAL & NEGOTIATION NOTES:
-â€¢ Meetings: Confirm agenda in advance; allow buffer for relationship building
-â€¢ Negotiation: Expect iterative discussions; write clear follow-ups and summaries
-â€¢ Decision Cycles: Anticipate committee reviews; provide concise briefing packs
+* Meetings: Confirm agenda in advance; allow buffer for relationship building
+* Negotiation: Expect iterative discussions; write clear follow-ups and summaries
+* Decision Cycles: Anticipate committee reviews; provide concise briefing packs
 
 30/60/90-DAY PLAN:
-â€¢ 30 Days: Legal kick-off, GR introductions, pilot customer shortlist, vendor RFPs
-â€¢ 60 Days: License filings submitted, first pilot SOWs, local hiring underway
-â€¢ 90 Days: Office ready, pilots live, compliance audit checklist complete
+* 30 Days: Legal kick-off, GR introductions, pilot customer shortlist, vendor RFPs
+* 60 Days: License filings submitted, first pilot SOWs, local hiring underway
+* 90 Days: Office ready, pilots live, compliance audit checklist complete
 
 RISKS & MITIGATIONS:
-â€¢ Regulatory Delays â†’ Parallel filings, GR follow-ups, buffer timelines
-â€¢ Talent Shortages â†’ Early sourcing, competitive offers, training plans
-â€¢ Vendor Reliability â†’ Multi-sourcing, performance clauses, weekly tracking
+* Regulatory Delays a' Parallel filings, GR follow-ups, buffer timelines
+* Talent Shortages a' Early sourcing, competitive offers, training plans
+* Vendor Reliability a' Multi-sourcing, performance clauses, weekly tracking
 
 RECOMMENDATION:
 Proceed with Phase 1 setup and pilots. Decision checkpoint by ${decisionDeadline}.
@@ -1799,33 +1799,33 @@ EXECUTIVE OVERVIEW:
 This brief highlights core norms, communication styles, meeting etiquette, and regulatory culture to support effective engagement and trust-building in ${targetMarket}.
 
 COMMUNICATION & MEETINGS:
-â€¢ Style: Be clear and respectful; avoid ambiguity in commitments
-â€¢ Scheduling: Share agendas early; confirm attendees and decisions required
-â€¢ Follow-ups: Summarize outcomes and next steps in writing promptly
+* Style: Be clear and respectful; avoid ambiguity in commitments
+* Scheduling: Share agendas early; confirm attendees and decisions required
+* Follow-ups: Summarize outcomes and next steps in writing promptly
 
 NEGOTIATION APPROACH:
-â€¢ Tempo: Expect phased agreements; maintain patience and flexibility
-â€¢ Decision-Making: Committee or multi-stakeholder reviews are common
-â€¢ Documentation: Provide concise term outlines and risk considerations
+* Tempo: Expect phased agreements; maintain patience and flexibility
+* Decision-Making: Committee or multi-stakeholder reviews are common
+* Documentation: Provide concise term outlines and risk considerations
 
 BUSINESS NORMS:
-â€¢ Relationship Orientation: Invest time in continuity and reliability
-â€¢ Professional Conduct: Punctuality, preparedness, and precision are valued
-â€¢ Governance: Align on KPIs, reporting cadence, and escalation paths
+* Relationship Orientation: Invest time in continuity and reliability
+* Professional Conduct: Punctuality, preparedness, and precision are valued
+* Governance: Align on KPIs, reporting cadence, and escalation paths
 
 REGULATORY CULTURE:
-â€¢ Compliance: Respect formal processes; maintain complete records and audit trails
-â€¢ Engagement: Build constructive relationships with relevant authorities
-â€¢ Transparency: Provide clear disclosures and timely filings
+* Compliance: Respect formal processes; maintain complete records and audit trails
+* Engagement: Build constructive relationships with relevant authorities
+* Transparency: Provide clear disclosures and timely filings
 
 DO / DON'T:
-â€¢ Do: Bring bilingual materials where helpful; verify assumptions in writing
-â€¢ Don't: Overpromise timelines; neglect stakeholder sensitivities or protocols
+* Do: Bring bilingual materials where helpful; verify assumptions in writing
+* Don't: Overpromise timelines; neglect stakeholder sensitivities or protocols
 
 READINESS REMINDERS:
-â€¢ Briefing Packs: Prepare concise decks tailored to each audience
-â€¢ Local Contacts: Curate a contact map across government, industry, and customers
-â€¢ Continuity: Plan for holidays and local events that affect scheduling
+* Briefing Packs: Prepare concise decks tailored to each audience
+* Local Contacts: Curate a contact map across government, industry, and customers
+* Continuity: Plan for holidays and local events that affect scheduling
 
 RECOMMENDATION:
 Adopt the above practices to strengthen trust, accelerate approvals, and improve negotiation outcomes.
@@ -1997,7 +1997,7 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
             {/* INFO BOX */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-900">
-                <strong>ðŸ’¡ Pro Tip:</strong> Select any document to generate it instantly. All documents are pre-filled with data from your entity and partnership analysis.
+                <strong>💡 Pro Tip:</strong> Select any document to generate it instantly. All documents are pre-filled with data from your entity and partnership analysis.
               </p>
             </div>
           </>
@@ -2026,7 +2026,7 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                   onClick={() => setSelectedDocument(null)}
                   className="text-stone-500 hover:text-stone-700 font-bold"
                 >
-                  âœ•
+                  ✗
                 </button>
               </div>
               {generatedBatch.length === 0 ? (

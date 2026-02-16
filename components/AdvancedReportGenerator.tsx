@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FileText, Download, Share2, RefreshCw, BarChart3, TrendingUp, AlertTriangle,
   CheckCircle, Zap, Globe, Target, ShieldCheck, Layers, Settings, Eye,
@@ -449,7 +449,7 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <h6 className="font-semibold text-stone-900">{partner.entityName}</h6>
-                            <div className="text-sm text-stone-600">{partner.entityType} â€¢ {partner.location}</div>
+                            <div className="text-sm text-stone-600">{partner.entityType} * {partner.location}</div>
                           </div>
                           <div className="text-right">
                             <div className="text-lg font-bold text-blue-600">{partner.symbiosisScore}%</div>

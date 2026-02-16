@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import type { ReportParameters, OpportunityScore, ModuleScore, ComplexityScore } from '../types';
 
 interface IntelligenceDashboardProps {
@@ -30,7 +30,7 @@ export const IntelligenceDashboard: React.FC<IntelligenceDashboardProps> = ({
     <div className="bg-white border border-stone-200 rounded-xl p-6 shadow-sm text-stone-900">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-white shadow-sm">
-          <span className="text-lg">ðŸ“Š</span>
+          <span className="text-lg">📊</span>
         </div>
         <div>
           <h3 className="text-lg font-bold text-stone-900">Intelligence Dashboard</h3>
@@ -151,14 +151,14 @@ export const IntelligenceDashboard: React.FC<IntelligenceDashboardProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2 bg-white rounded border border-stone-100">
-              <span className="text-blue-600 font-bold">ðŸŽ¯</span>
+              <span className="text-blue-600 font-bold">⭐</span>
               <span className="text-xs text-stone-600 font-medium">
                 <span className="text-stone-400 uppercase text-[10px] block">Focus Area</span>
                 {params.region} - {params.industry.join(', ')}
               </span>
             </div>
             <div className="flex items-center gap-2 p-2 bg-white rounded border border-stone-100">
-              <span className="text-blue-600 font-bold">ðŸ‘¥</span>
+              <span className="text-blue-600 font-bold">💰</span>
               <span className="text-xs text-stone-600 font-medium">
                 <span className="text-stone-400 uppercase text-[10px] block">Analyst Team</span>
                 {params.aiPersona?.length || 0} AI analysts engaged
@@ -167,14 +167,14 @@ export const IntelligenceDashboard: React.FC<IntelligenceDashboardProps> = ({
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2 bg-white rounded border border-stone-100">
-              <span className="text-blue-600 font-bold">ðŸ“ˆ</span>
+              <span className="text-blue-600 font-bold">📈</span>
               <span className="text-xs text-stone-600 font-medium">
                 <span className="text-stone-400 uppercase text-[10px] block">Service Level</span>
                 {params.userTier} access level
               </span>
             </div>
             <div className="flex items-center gap-2 p-2 bg-white rounded border border-stone-100">
-              <span className="text-green-600 font-bold">âš¡</span>
+              <span className="text-green-600 font-bold">as!</span>
               <span className="text-xs text-stone-600 font-medium">
                 <span className="text-stone-400 uppercase text-[10px] block">System Status</span>
                 Real-time intelligence active

@@ -26,7 +26,7 @@ export const GlobalChatbot: React.FC<GlobalChatbotProps> = ({ context = 'standal
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Welcome to Strategic Analysis. I can help you analyze any global business challenge — locations, markets, investments, policies, infrastructure, or regional development issues.\n\nDescribe your challenge or question, and I'll provide comprehensive analysis with strategic recommendations.',
+      content: 'Welcome to Strategic Analysis. I can help you analyze any global business challenge - locations, markets, investments, policies, infrastructure, or regional development issues.\\n\\nDescribe your challenge or question, and I\'ll provide comprehensive analysis with strategic recommendations.',
       timestamp: new Date()
     }
   ]);
@@ -175,7 +175,7 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
                       <div>
                         <p className="font-semibold text-green-300 mb-1">Strategic Recommendations:</p>
                         {message.analysis.strategicRecommendations.slice(0, 2).map((rec, i) => (
-                          <p key={i} className="text-slate-300">• {rec}</p>
+                          <p key={i} className="text-slate-300">* {rec}</p>
                         ))}
                       </div>
                       <div>
@@ -189,7 +189,7 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
                           console.log('Open full analysis:', message.analysis);
                         }}
                       >
-                        View Complete Analysis →
+                        View Complete Analysis 
                       </button>
                     </div>
                   )}

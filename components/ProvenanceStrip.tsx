@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProvenanceEntry } from '../types';
 import { GovernanceService } from '../services/GovernanceService';
 import { EventBus } from '../services/EventBus';
@@ -106,9 +106,9 @@ const ProvenanceStrip: React.FC<ProvenanceStripProps> = ({ reportId }) => {
           {entries.slice().reverse().map((e) => (
             <li key={e.id} className="flex justify-between gap-3">
               <div>
-                <span className="font-semibold">{e.action}</span> Â· {e.artifact}
+                <span className="font-semibold">{e.action}</span> * {e.artifact}
                 {e.tags && e.tags.length > 0 && (
-                  <span className="text-stone-500"> Â· {e.tags.join(', ')}</span>
+                  <span className="text-stone-500"> * {e.tags.join(', ')}</span>
                 )}
                 <div className="text-stone-500">{e.actor}</div>
               </div>

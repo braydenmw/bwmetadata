@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ReportParameters } from '../types';
 import { Activity, Zap, Server, Database } from 'lucide-react';
 

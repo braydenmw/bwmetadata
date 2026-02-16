@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Database, Filter, Scale, FileText } from 'lucide-react';
 
 const steps = [
@@ -12,13 +12,13 @@ const steps = [
       id: '02',
       icon: <Filter className="w-6 h-6" />,
       title: 'Adversarial Stress-Testing', 
-      desc: 'NSIL activates the Adversarial Input Shield and the Multiâ€‘Perspective Reasoner (skeptic, advocate, regulator, operator). We simulate realâ€‘world friction and arguments to expose hidden failure points before capital moves.' 
+      desc: 'NSIL activates the Adversarial Input Shield and the Multia'Perspective Reasoner (skeptic, advocate, regulator, operator). We simulate reala'world friction and arguments to expose hidden failure points before capital moves.' 
   },
   { 
       id: '03',
       icon: <Scale className="w-6 h-6" />,
       title: 'Arbitrage Quantification', 
-      desc: 'Composite Score Engine v2 + IVASâ„¢ + SPIâ„¢ + SCF compute readiness, velocity, and impact. We find "Asymmetry"â€”high value, low visibilityâ€”and quantify the gap between market perception and actual potential.' 
+      desc: 'Composite Score Engine v2 + IVAS(TM) + SPI(TM) + SCF compute readiness, velocity, and impact. We find "Asymmetry"a"high value, low visibility - and quantify the gap between market perception and actual potential.' 
   },
   { 
       id: '04',
@@ -38,17 +38,17 @@ export const Insights: React.FC = () => {
                 <h2 className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">Methodology</h2>
                 <h3 className="text-4xl font-serif font-bold text-bw-navy mb-6">How the System Thinks.</h3>
                 <p className="text-gray-600 mb-6 leading-[1.85]">
-                    Most firms sell opinions. This system produces mathematical proofâ€”turning strategic foresight into a repeatable, machine-backed loop instead of a one-off workshop.
+                    Most firms sell opinions. This system produces mathematical proof - turning strategic foresight into a repeatable, machine-backed loop instead of a one-off workshop.
                 </p>
                 <p className="text-gray-600 mb-6 leading-[1.85]">
-                    It is not a static database; it is an active simulation environment. Autonomous agents model how your strategy collides with realâ€‘world friction before capital moves, then feed those learnings back into the Core.
+                    It is not a static database; it is an active simulation environment. Autonomous agents model how your strategy collides with reala'world friction before capital moves, then feed those learnings back into the Core.
                 </p>
                 <p className="text-gray-600 mb-6 leading-[1.85]">
-                    The result: <strong>evidenceâ€‘anchored reasoning</strong>, real-time <strong>governance guardrails</strong>, <strong>counterfactuals</strong>, and <strong>early-warning alerts</strong> mapped directly to your mission.
+                    The result: <strong>evidencea'anchored reasoning</strong>, real-time <strong>governance guardrails</strong>, <strong>counterfactuals</strong>, and <strong>early-warning alerts</strong> mapped directly to your mission.
                 </p>
                 <div className="p-7 bg-bw-navy text-white rounded-2xl border border-white/10">
                     <div className="text-xl font-serif italic mb-4">"We don't find the safe bet. We calculate the mispriced one."</div>
-                    <div className="text-xs font-bold text-bw-gold uppercase tracking-widest">â€” The Nexus Mandate</div>
+                    <div className="text-xs font-bold text-bw-gold uppercase tracking-widest">- The Nexus Mandate</div>
                 </div>
             </div>
 

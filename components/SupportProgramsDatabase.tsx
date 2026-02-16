@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Database, Search, Filter, DollarSign, Clock, CheckCircle, AlertCircle, Globe, TrendingUp, Link2 } from 'lucide-react';
 
 interface Program {
@@ -62,10 +62,10 @@ const SupportProgramsDatabase: React.FC = () => {
     { id: 'nist-sbdc', name: 'NIST Small Business Development Centers', provider: 'NIST/SBA', country: 'United States', type: 'Incubator', industry: ['All'], stage: 'Early-Stage', fundingAmount: 0, fundingType: 'Free consulting + resources', requirements: ['US-based small business', 'Growth intention'], timeline: 'Ongoing', successRate: 88, complexity: 'Low', description: 'Free business advisory services and network access across all 50 states', contactEmail: 'sbdc@nist.gov', applicationUrl: 'www.sba.gov/sbdc' },
 
     // EU Programs
-    { id: 'horizon-europe', name: 'Horizon Europe', provider: 'EU Commission', country: 'Germany', type: 'Grant', industry: ['Technology', 'Healthcare', 'Energy', 'Agriculture'], stage: 'Growth', fundingAmount: 2500000, fundingType: 'Grant + matching', requirements: ['EU-based', 'Innovation focus'], timeline: '18-24 months', successRate: 15, complexity: 'High', description: 'EU\'s â‚¬95 billion research and innovation program for ambitious projects', contactEmail: 'horizon@ec.europa.eu', applicationUrl: 'www.research.ec.europa.eu' },
+    { id: 'horizon-europe', name: 'Horizon Europe', provider: 'EU Commission', country: 'Germany', type: 'Grant', industry: ['Technology', 'Healthcare', 'Energy', 'Agriculture'], stage: 'Growth', fundingAmount: 2500000, fundingType: 'Grant + matching', requirements: ['EU-based', 'Innovation focus'], timeline: '18-24 months', successRate: 15, complexity: 'High', description: 'EU\'s a'95 billion research and innovation program for ambitious projects', contactEmail: 'horizon@ec.europa.eu', applicationUrl: 'www.research.ec.europa.eu' },
     { id: 'kfw-startup', name: 'KfW StartUp Loan', provider: 'KfW Development Bank', country: 'Germany', type: 'Loan', industry: ['All'], stage: 'Pre-Launch', fundingAmount: 500000, fundingType: '90% loan guarantee', requirements: ['Germany-based', 'Sound business plan'], timeline: '4 weeks', successRate: 85, complexity: 'Medium', description: 'Favorable loans for new business startups with government guarantee', contactEmail: 'startup@kfw.de', applicationUrl: 'www.kfw.de' },
-    { id: 'eic-accelerator', name: 'EIC Accelerator', provider: 'EU Innovation Council', country: 'Poland', type: 'Accelerator', industry: ['Deep Tech', 'Climate'], stage: 'Early-Stage', fundingAmount: 3000000, fundingType: 'Equity investment + grant', requirements: ['EU-based', 'Deep tech focus'], timeline: '12 months', successRate: 8, complexity: 'High', description: 'Support for breakthrough innovations and deep-tech scaling with up to â‚¬3M equity and grants', contactEmail: 'eic@ec.europa.eu', applicationUrl: 'www.eic.ec.europa.eu' },
-    { id: 'startup-france', name: 'French Tech Visa', provider: 'Bpifrance', country: 'Poland', type: 'Accelerator', industry: ['Technology', 'Digital'], stage: 'Pre-Launch', fundingAmount: 250000, fundingType: 'Equity-free funding', requirements: ['French startup', 'Innovation focus'], timeline: '2 months', successRate: 60, complexity: 'Medium', description: 'Accelerated visa process and â‚¬250k grant for promising French tech startups', contactEmail: 'visa@bpifrance.fr', applicationUrl: 'www.bpifrance.fr' },
+    { id: 'eic-accelerator', name: 'EIC Accelerator', provider: 'EU Innovation Council', country: 'Poland', type: 'Accelerator', industry: ['Deep Tech', 'Climate'], stage: 'Early-Stage', fundingAmount: 3000000, fundingType: 'Equity investment + grant', requirements: ['EU-based', 'Deep tech focus'], timeline: '12 months', successRate: 8, complexity: 'High', description: 'Support for breakthrough innovations and deep-tech scaling with up to a'3M equity and grants', contactEmail: 'eic@ec.europa.eu', applicationUrl: 'www.eic.ec.europa.eu' },
+    { id: 'startup-france', name: 'French Tech Visa', provider: 'Bpifrance', country: 'Poland', type: 'Accelerator', industry: ['Technology', 'Digital'], stage: 'Pre-Launch', fundingAmount: 250000, fundingType: 'Equity-free funding', requirements: ['French startup', 'Innovation focus'], timeline: '2 months', successRate: 60, complexity: 'Medium', description: 'Accelerated visa process and a'250k grant for promising French tech startups', contactEmail: 'visa@bpifrance.fr', applicationUrl: 'www.bpifrance.fr' },
     { id: 'innovate-uk', name: 'Innovate UK EDGE', provider: 'Innovate UK', country: 'Poland', type: 'Grant', industry: ['All'], stage: 'Growth', fundingAmount: 500000, fundingType: '100% grant', requirements: ['UK-based', 'Innovation project'], timeline: '6 months', successRate: 45, complexity: 'High', description: 'Non-dilutive funding for UK businesses scaling innovative technology products', contactEmail: 'edge@innovateuk.gov.uk', applicationUrl: 'www.innovateuk.gov.uk' },
 
     // Asia Programs
@@ -150,7 +150,7 @@ const SupportProgramsDatabase: React.FC = () => {
               <Globe className="w-5 h-5 text-teal-600" />
               Your Organization Profile (for program matching)
             </h3>
-            <div className="text-2xl">{expandedSections.entityProfile ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.entityProfile ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.entityProfile && (
@@ -214,7 +214,7 @@ const SupportProgramsDatabase: React.FC = () => {
                 onClick={() => setSearchTerm('')}
                 className="text-stone-600 hover:text-stone-900"
               >
-                âœ•
+                ✗
               </button>
             )}
           </div>
@@ -290,7 +290,7 @@ const SupportProgramsDatabase: React.FC = () => {
         >
           <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-stone-200 flex items-center justify-between">
             <h3 className="text-lg font-bold text-stone-900">Available Programs ({filteredPrograms.length})</h3>
-            <div className="text-2xl">{expandedSections.programs ? 'â–¼' : 'â–¶'}</div>
+            <div className="text-2xl">{expandedSections.programs ? 'a-1/4' : 'a-'}</div>
           </div>
 
           {expandedSections.programs && (
@@ -346,7 +346,7 @@ const SupportProgramsDatabase: React.FC = () => {
           >
             <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-stone-200 flex items-center justify-between">
               <h3 className="text-lg font-bold text-stone-900">Program Details & Application Roadmap</h3>
-              <div className="text-2xl">{expandedSections.detail ? 'â–¼' : 'â–¶'}</div>
+              <div className="text-2xl">{expandedSections.detail ? 'a-1/4' : 'a-'}</div>
             </div>
 
             {expandedSections.detail && (

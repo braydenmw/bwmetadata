@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleGenAI, Schema, Type } from "@google/genai";
 import { ReportParameters } from '../types';
 import { RadialBarChart, RadialBar, Legend, ResponsiveContainer, Tooltip } from 'recharts';
@@ -186,7 +186,7 @@ const QualityAnalysis: React.FC<QualityAnalysisProps> = ({ params }) => {
                                 <ul className="space-y-2">
                                     {audit.missingDataPoints.map((gap, i) => (
                                         <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                                            <span className="text-red-500 mt-0.5">â€¢</span>
+                                            <span className="text-red-500 mt-0.5">*</span>
                                             {gap}
                                         </li>
                                     ))}
@@ -200,7 +200,7 @@ const QualityAnalysis: React.FC<QualityAnalysisProps> = ({ params }) => {
                                 <ul className="space-y-2">
                                     {audit.recommendedSources.map((source, i) => (
                                         <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                                            <span className="text-blue-600 mt-0.5">âœ“</span>
+                                            <span className="text-blue-600 mt-0.5">✓</span>
                                             {source}
                                         </li>
                                     ))}

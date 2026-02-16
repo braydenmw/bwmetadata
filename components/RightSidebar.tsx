@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { CopilotInsight } from '../types';
 import { Lightbulb, AlertTriangle, Zap, CheckCircle2, Send, MessageSquare, ListTodo } from 'lucide-react';
 

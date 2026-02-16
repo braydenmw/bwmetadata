@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Users } from 'lucide-react';
 
 export const SymbioticMatchmaking = ({ onPartnerSelect }: { onPartnerSelect: (p: any) => void }) => (

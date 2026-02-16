@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState } from 'react';
 import { NeuroSymbolicState, DynamicFormula } from '../types';
 import { NeuroSymbolicEngine } from '../services/ruleEngine';

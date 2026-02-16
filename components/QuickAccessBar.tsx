@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, Database, Brain, Map, FileText, TrendingUp, 
   AlertTriangle, Zap, HelpCircle
