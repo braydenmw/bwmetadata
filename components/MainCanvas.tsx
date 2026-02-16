@@ -15,6 +15,9 @@ import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnaly
 import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
 import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
 import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
+import { bwConsultantAI, type ConsultantInsight } from '../services/BWConsultantAgenticAI';
+import { GlobalIssueResolver } from '../services/GlobalIssueResolver';
+import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
 import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS } from '../constants';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, IngestedDocumentMeta } from '../types';
@@ -144,6 +147,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   }, [reportData, selectedIntelligenceEnhancements, roiResult, params.country, params.organizationName]);
 
 
+  const globalResolverRef = useRef(new GlobalIssueResolver());
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
     { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
@@ -188,7 +192,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
       setChatInput('');
 
       // Add thinking indicator
-      setChatMessages(prev => [...prev, { text: '\u23f3 Analysing with NSIL Intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
+      setChatMessages(prev => [...prev, { text: '\u23f3 Researching with live intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
 
       try {
         const input = userText.toLowerCase();
@@ -200,8 +204,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             msgs.pop();
             return [...msgs, {
               text: input.includes('thank')
-                ? "You're welcome! I'm here to support your partnership analysis with full NSIL intelligence. What else can I help with?"
-                : `Hello! I'm your BW Consultant, powered by the NSIL Intelligence Hub with 46 formulas, 8 autonomous engines, and 60 years of methodology knowledge. I can analyse your situation from perspectives you haven't considered. How can I help ${params.organizationName || 'you'} today?`,
+                ? "You're welcome! I'm here to support your analysis with full NSIL intelligence and live research. What else can I help with?"
+                : `Hello! I'm your BW Consultant, powered by live intelligence, NSIL formulas, and real-time research. How can I help ${params.organizationName || 'you'} today?`,
               sender: 'bw' as const,
               timestamp: new Date()
             }];
@@ -209,72 +213,85 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
           return;
         }
 
-        // Run NSIL Quick Assessment
+        // Extract context hints from the query
+        const qLower = userText.toLowerCase();
+        const consultParams: Record<string, unknown> = { query: userText };
+        const countries = ['philippines', 'vietnam', 'thailand', 'indonesia', 'malaysia', 'singapore', 'japan', 'china', 'india', 'korea', 'cambodia', 'myanmar', 'laos', 'bangladesh', 'pakistan', 'sri lanka', 'nepal', 'australia', 'new zealand', 'mexico', 'brazil', 'nigeria', 'kenya', 'south africa', 'poland', 'romania'];
+        for (const c of countries) {
+          if (qLower.includes(c)) { consultParams.country = c.charAt(0).toUpperCase() + c.slice(1); break; }
+        }
+        // Also use session params as context
+        if (!consultParams.country && params.country) consultParams.country = params.country;
+        if (params.industry?.length) consultParams.industry = params.industry;
+        const matchedInds: string[] = [];
+        const industries = ['technology', 'manufacturing', 'healthcare', 'agriculture', 'finance', 'energy', 'mining', 'tourism', 'logistics'];
+        for (const ind of industries) { if (qLower.includes(ind)) matchedInds.push(ind); }
+        if (matchedInds.length) consultParams.industry = matchedInds;
+
+        // Run all three real intelligence systems in parallel + NSIL local assessment
+        const [consultInsights, issueAnalysis, liveEvidence] = await Promise.all([
+          bwConsultantAI.consult(consultParams, 'report_chat').catch(() => [] as ConsultantInsight[]),
+          globalResolverRef.current.resolveIssue(userText).catch(() => null),
+          ReactiveIntelligenceEngine.liveSearch(userText, consultParams).catch(() => [] as Array<{ title: string; snippet?: string }>)
+        ]);
+
+        // Also get NSIL local context for enrichment
         const quickAssess = NSILIntelligenceHub.quickAssess(params);
         const situation = SituationAnalysisEngine.quickSummary(params);
         const historical = HistoricalParallelMatcher.quickMatch(params);
 
-        let responseText = '';
-        responseText += `**NSIL Intelligence Assessment** (Trust Score: ${quickAssess.trustScore}/100 \u2014 ${quickAssess.status.toUpperCase()})\n\n`;
+        // Build comprehensive response
+        let responseText = '**BW Consultant AI \u2014 Live Analysis**\n\n';
 
-        if (input.includes('risk')) {
-          responseText += `**Risk Analysis for ${params.organizationName || 'Your Organisation'}:**\n`;
-          responseText += `\u2022 Current risk tolerance: ${params.riskTolerance || 'not set'}\n`;
-          responseText += `\u2022 Ethical gate: ${quickAssess.ethicalPass ? '\u2705 PASS' : '\u26a0 CONCERNS DETECTED'}\n`;
-          responseText += `\u2022 Emotional climate: ${quickAssess.emotionalClimateNotes}\n`;
-          if (quickAssess.topConcerns.length > 0) {
-            responseText += `\n**Top Concerns:**\n`;
-            quickAssess.topConcerns.forEach((c: string) => { responseText += `\u2022 ${c}\n`; });
+        // Live intelligence from BWConsultantAgenticAI
+        if (consultInsights && consultInsights.length > 0) {
+          responseText += '**Live Intelligence:**\n';
+          for (const insight of consultInsights.slice(0, 4)) {
+            responseText += `\u2022 **${insight.title}** (${(insight.confidence * 100).toFixed(0)}% confidence): ${insight.content}\n`;
           }
-        } else if (input.includes('partner') || input.includes('match')) {
-          responseText += `**Partnership Intelligence for ${params.organizationName || 'Your Organisation'}:**\n`;
-          responseText += `\u2022 Strategic intent: ${params.strategicIntent?.[0] || 'partnership development'}\n`;
-          responseText += `\u2022 Ideal partner profile: ${params.idealPartnerProfile || 'Not yet defined \u2014 complete Step 4 for AI matching'}\n`;
-          if (quickAssess.topOpportunities.length > 0) {
-            responseText += `\n**Opportunities Identified:**\n`;
-            quickAssess.topOpportunities.forEach((o: string) => { responseText += `\u2022 ${o}\n`; });
-          }
-        } else if (input.includes('strateg') || input.includes('objective') || input.includes('goal')) {
-          responseText += `**Strategic Analysis:**\n`;
-          const objectives = params.strategicObjectives?.length > 0 ? params.strategicObjectives.join(', ') : 'Not yet defined';
-          responseText += `\u2022 Objectives: ${objectives}\n`;
-          responseText += `\u2022 Readiness score: ${situation.readiness}/100\n`;
-          responseText += `\u2022 Blind spots detected: ${situation.blindSpotCount}\n`;
-          responseText += `\u2022 Critical unconsidered needs: ${situation.criticalUnconsideredCount}\n`;
-        } else if (input.includes('countr') || input.includes('region') || input.includes('location') || input.includes('market')) {
-          responseText += `**Market Intelligence \u2014 ${params.country || 'Target Market'}:**\n`;
-          responseText += `\u2022 Region: ${params.region || 'Not specified'}\n`;
-          responseText += `\u2022 Industry: ${params.industry?.join(', ') || 'Not specified'}\n`;
-          if (historical.found) {
-            responseText += `\n**Historical Precedent:** ${historical.case_title} (${historical.outcome})\n`;
-            responseText += `\u2022 Key lesson: ${historical.topLesson}\n`;
-          }
-        } else if (input.includes('ready') || input.includes('status') || input.includes('progress') || input.includes('what next')) {
-          responseText += `**Current Session Readiness:**\n`;
-          responseText += `\u2022 Overall readiness: ${situation.readiness}/100\n`;
-          responseText += `\u2022 Trust score: ${quickAssess.trustScore}/100\n`;
-          responseText += `\u2022 Status: ${quickAssess.headline}\n`;
-          responseText += `\u2022 Next step: ${quickAssess.nextStep}\n`;
-          responseText += `\u2022 Top blind spot: ${situation.topBlindSpot}\n`;
-          responseText += `\u2022 Top unconsidered need: ${situation.topUnconsideredNeed}\n`;
-        } else {
-          responseText += `**Analysis of "${userText}":**\n`;
-          responseText += `\u2022 Status: ${quickAssess.headline}\n`;
-          responseText += `\u2022 Next step: ${quickAssess.nextStep}\n`;
-          if (quickAssess.topConcerns.length > 0) {
-            responseText += `\u2022 Top concern: ${quickAssess.topConcerns[0]}\n`;
-          }
-          if (quickAssess.topOpportunities.length > 0) {
-            responseText += `\u2022 Opportunity: ${quickAssess.topOpportunities[0]}\n`;
-          }
+          responseText += '\n';
         }
 
-        responseText += `\n**What You Haven't Considered:**\n`;
-        responseText += `\u2022 ${situation.topUnconsideredNeed}\n`;
-        responseText += `\n**Recommended Question:** ${situation.topQuestion}\n`;
+        // Live evidence from ReactiveIntelligenceEngine
+        if (liveEvidence && liveEvidence.length > 0) {
+          responseText += '**Real-Time Sources:**\n';
+          for (const ev of liveEvidence.slice(0, 3)) {
+            responseText += `\u2022 ${ev.title}${ev.snippet ? `: ${ev.snippet.slice(0, 150)}` : ''}\n`;
+          }
+          responseText += '\n';
+        }
 
-        if (historical.found) {
-          responseText += `\n**Historical Parallel:** ${historical.case_title} \u2014 ${historical.topLesson}\n`;
+        // Issue analysis from GlobalIssueResolver
+        if (issueAnalysis) {
+          responseText += `**Issue Category:** ${issueAnalysis.issueCategory.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}\n\n`;
+          if (issueAnalysis.strategicRecommendations?.length > 0) {
+            responseText += '**Strategic Recommendations:**\n';
+            issueAnalysis.strategicRecommendations.slice(0, 3).forEach((rec: string, i: number) => {
+              responseText += `${i + 1}. ${rec}\n`;
+            });
+            responseText += '\n';
+          }
+          if (issueAnalysis.riskMitigation?.length > 0) {
+            responseText += '**Risk Factors:**\n';
+            issueAnalysis.riskMitigation.slice(0, 2).forEach((r: any) => {
+              responseText += `\u2022 ${r.risk}: ${r.mitigation}\n`;
+            });
+            responseText += '\n';
+          }
+          responseText += `**Timeline:** ${issueAnalysis.timeline}\n`;
+          responseText += `**Confidence:** ${(issueAnalysis.overallConfidence * 100).toFixed(0)}%\n\n`;
+        }
+
+        // NSIL session context enrichment
+        if (quickAssess.trustScore > 0) {
+          responseText += `**Session Context** (Trust Score: ${quickAssess.trustScore.toFixed(0)}/100):\n`;
+          responseText += `\u2022 ${quickAssess.headline}\n`;
+          if (situation.topUnconsideredNeed) {
+            responseText += `\u2022 Unconsidered: ${situation.topUnconsideredNeed}\n`;
+          }
+          if (historical.found) {
+            responseText += `\u2022 Historical Parallel: ${historical.case_title} \u2014 ${historical.topLesson}\n`;
+          }
         }
 
         setChatMessages(prev => {
@@ -293,7 +310,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
           const msgs = [...prev];
           msgs.pop();
           return [...msgs, {
-            text: `I encountered an issue running the full intelligence analysis. Here's what I can tell you about ${params.organizationName || 'your project'}: Your strategic intent is "${params.strategicIntent?.[0] || 'partnership development'}" in ${params.country || 'your target market'}. Please try your question again or complete more intake steps for deeper analysis.`,
+            text: `I encountered an issue running the live intelligence analysis. Please try your question again.`,
             sender: 'bw' as const,
             timestamp: new Date()
           }];
