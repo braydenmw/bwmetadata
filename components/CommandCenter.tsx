@@ -393,10 +393,44 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
             {/* Photo Banner  -  Document Intelligence */}
 
-            {/* WHO THIS IS FOR */}
+            {/* DESIGNED FOR EVERYONE */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHO THIS IS FOR</p>
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">DESIGNED FOR EVERYONE</p>
+                    <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-1">You Don't Need to Be an Expert.</h2>
+                    <h2 className="text-2xl md:text-3xl font-light text-blue-600 mb-6">You Just Need to Try.</h2>
+                    <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-3xl">
+                        Most strategic tools assume you already have a team, a budget, and a plan. This one doesn't. It was built for the person staring at a blank page, wondering where to even start&mdash;and for the experienced operator who's tired of reinventing the wheel every time a new opportunity lands on their desk.
+                    </p>
+
+                    {/* PREFERRED GUIDANCE LEVEL */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 mb-12">
+                        <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">PREFERRED GUIDANCE LEVEL</p>
+                        <p className="text-base text-slate-600 leading-relaxed mb-6 max-w-3xl">
+                            Before you begin, you choose how much guidance you want. This isn't a one-size-fits-all system&mdash;it's built to meet you where you are.
+                        </p>
+                        <div className="grid md:grid-cols-3 gap-4 mb-6">
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                                <p className="text-lg mb-2">&#x1F9ED;</p>
+                                <p className="font-semibold text-sm text-slate-900 mb-2">Orientation Mode</p>
+                                <p className="text-xs text-slate-600 leading-relaxed">Full explanations, step-by-step walkthroughs, and contextual help at every turn. Ideal for first-time users, community groups, or anyone new to strategic planning.</p>
+                            </div>
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                                <p className="text-lg mb-2">&#x1F91D;</p>
+                                <p className="font-semibold text-sm text-slate-900 mb-2">Collaborative Mode</p>
+                                <p className="text-xs text-slate-600 leading-relaxed">Balanced guidance with smart suggestions. You drive the process while the system surfaces insights. Built for teams, regional councils, and growing businesses.</p>
+                            </div>
+                            <div className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                                <p className="text-lg mb-2">&#x26A1;</p>
+                                <p className="font-semibold text-sm text-slate-900 mb-2">Expert Mode</p>
+                                <p className="text-xs text-slate-600 leading-relaxed">Streamlined interface, minimal hand-holding, full access to advanced controls. Designed for experienced operators, government analysts, and corporate development teams.</p>
+                            </div>
+                        </div>
+                        <p className="text-sm text-slate-500 italic">Your guidance level can be changed at any time from the sidebar. The system adapts its explanations, prompts, and recommendations accordingly&mdash;so you're never overwhelmed, and never slowed down.</p>
+                    </div>
+
+                    {/* WHO THIS IS BUILT FOR */}
+                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHO THIS IS BUILT FOR</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">You Don't Need to Be an Expert. <span className="text-blue-600 font-normal">The System Already Is.</span></h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-3xl">
                         The people who need this most are the ones who've never had access to it. That's the point.

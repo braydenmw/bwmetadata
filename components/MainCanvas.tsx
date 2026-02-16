@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Building2, Target, ShieldCheck, Shield,
   Download, Printer, Globe,
@@ -7,9 +7,14 @@ import {
   Users, GitBranch,
   FileText, BarChart3, Handshake, TrendingUp,
   Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, MessageCircle, Send,
+  X, Plus, MessageCircle, Send, User, Compass, Zap,
   DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
+import { DocumentUploadModal } from './DocumentUploadModal';
+import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
+import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
+import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
+import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS } from '../constants';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight } from '../types';
 
@@ -99,6 +104,17 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [showDocGenSuite, setShowDocGenSuite] = useState(false);
   const [_partnerPersonas, _setPartnerPersonas] = useState<string[]>([]);
   const [generatedDocs, setGeneratedDocs] = useState<{id: string, title: string, desc: string, timestamp: Date}[]>([]);
+  const [showDocumentUpload, setShowDocumentUpload] = useState(false);
+  const chatMessagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleDocumentProcessed = (doc: { filename: string; content: string }) => {
+    setChatMessages(prev => [...prev, { text: `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`, sender: 'bw', timestamp: new Date() }]);
+    setParams({ ...params, ingestedDocuments: [...(params.ingestedDocuments || []), doc] });
+  };
+
+  useEffect(() => {
+    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   // Apply intelligence enhancements to report data
@@ -137,7 +153,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
 
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-    { text: "Hello! I'm your BW Consultant. How can I help you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
+    { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
 
@@ -158,36 +174,199 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     setExpandedSubsections(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (chatInput.trim()) {
-      const newMessage = { text: chatInput, sender: 'user' as const, timestamp: new Date() };
+      const userText = chatInput.trim();
+      const newMessage = { text: userText, sender: 'user' as const, timestamp: new Date() };
       setChatMessages(prev => [...prev, newMessage]);
       setChatInput('');
 
-      // Simulate context-aware BW response
-      setTimeout(() => {
-        let responseText = "Thank you for your input. Let me help you refine that aspect of your partnership strategy.";
-        if (chatInput.toLowerCase().includes('risk')) {
-          responseText = `Regarding risk for ${params.organizationName}, your current tolerance is set to '${params.riskTolerance}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0]}'.`;
-        } else if (chatInput.toLowerCase().includes('partner')) {
-          responseText = `For your partnership objectives, finding a partner that complements your goal of '${params.strategicIntent[0]}' is key. Let's ensure the 'Ideal Partner Profile' section is detailed.`
+      // Add thinking indicator
+      setChatMessages(prev => [...prev, { text: '\u23f3 Analysing with NSIL Intelligence...', sender: 'bw' as const, timestamp: new Date() }]);
+
+      try {
+        const input = userText.toLowerCase();
+
+        // Simple greeting/thanks handling
+        if (/^(hello|hi|hey|thanks?|thank you)$/i.test(input)) {
+          setChatMessages(prev => {
+            const msgs = [...prev];
+            msgs.pop();
+            return [...msgs, {
+              text: input.includes('thank')
+                ? "You're welcome! I'm here to support your partnership analysis with full NSIL intelligence. What else can I help with?"
+                : `Hello! I'm your BW Consultant, powered by the NSIL Intelligence Hub with 46 formulas, 8 autonomous engines, and 60 years of methodology knowledge. I can analyse your situation from perspectives you haven't considered. How can I help ${params.organizationName || 'you'} today?`,
+              sender: 'bw' as const,
+              timestamp: new Date()
+            }];
+          });
+          return;
         }
-        const bwResponse = { text: responseText, sender: 'bw' as const, timestamp: new Date() };
-        setChatMessages(prev => [...prev, bwResponse]);
-      }, 1000);
+
+        // Run NSIL Quick Assessment
+        const quickAssess = NSILIntelligenceHub.quickAssess(params);
+        const situation = SituationAnalysisEngine.quickSummary(params);
+        const historical = HistoricalParallelMatcher.quickMatch(params);
+
+        let responseText = '';
+        responseText += `**NSIL Intelligence Assessment** (Trust Score: ${quickAssess.trustScore}/100 \u2014 ${quickAssess.status.toUpperCase()})\n\n`;
+
+        if (input.includes('risk')) {
+          responseText += `**Risk Analysis for ${params.organizationName || 'Your Organisation'}:**\n`;
+          responseText += `\u2022 Current risk tolerance: ${params.riskTolerance || 'not set'}\n`;
+          responseText += `\u2022 Ethical gate: ${quickAssess.ethicalPass ? '\u2705 PASS' : '\u26a0 CONCERNS DETECTED'}\n`;
+          responseText += `\u2022 Emotional climate: ${quickAssess.emotionalClimateNotes}\n`;
+          if (quickAssess.topConcerns.length > 0) {
+            responseText += `\n**Top Concerns:**\n`;
+            quickAssess.topConcerns.forEach((c: string) => { responseText += `\u2022 ${c}\n`; });
+          }
+        } else if (input.includes('partner') || input.includes('match')) {
+          responseText += `**Partnership Intelligence for ${params.organizationName || 'Your Organisation'}:**\n`;
+          responseText += `\u2022 Strategic intent: ${params.strategicIntent?.[0] || 'partnership development'}\n`;
+          responseText += `\u2022 Ideal partner profile: ${params.idealPartnerProfile || 'Not yet defined \u2014 complete Step 4 for AI matching'}\n`;
+          if (quickAssess.topOpportunities.length > 0) {
+            responseText += `\n**Opportunities Identified:**\n`;
+            quickAssess.topOpportunities.forEach((o: string) => { responseText += `\u2022 ${o}\n`; });
+          }
+        } else if (input.includes('strateg') || input.includes('objective') || input.includes('goal')) {
+          responseText += `**Strategic Analysis:**\n`;
+          const objectives = params.strategicObjectives?.length > 0 ? params.strategicObjectives.join(', ') : 'Not yet defined';
+          responseText += `\u2022 Objectives: ${objectives}\n`;
+          responseText += `\u2022 Readiness score: ${situation.readiness}/100\n`;
+          responseText += `\u2022 Blind spots detected: ${situation.blindSpotCount}\n`;
+          responseText += `\u2022 Critical unconsidered needs: ${situation.criticalUnconsideredCount}\n`;
+        } else if (input.includes('countr') || input.includes('region') || input.includes('location') || input.includes('market')) {
+          responseText += `**Market Intelligence \u2014 ${params.country || 'Target Market'}:**\n`;
+          responseText += `\u2022 Region: ${params.region || 'Not specified'}\n`;
+          responseText += `\u2022 Industry: ${params.industry?.join(', ') || 'Not specified'}\n`;
+          if (historical.found) {
+            responseText += `\n**Historical Precedent:** ${historical.case_title} (${historical.outcome})\n`;
+            responseText += `\u2022 Key lesson: ${historical.topLesson}\n`;
+          }
+        } else if (input.includes('ready') || input.includes('status') || input.includes('progress') || input.includes('what next')) {
+          responseText += `**Current Session Readiness:**\n`;
+          responseText += `\u2022 Overall readiness: ${situation.readiness}/100\n`;
+          responseText += `\u2022 Trust score: ${quickAssess.trustScore}/100\n`;
+          responseText += `\u2022 Status: ${quickAssess.headline}\n`;
+          responseText += `\u2022 Next step: ${quickAssess.nextStep}\n`;
+          responseText += `\u2022 Top blind spot: ${situation.topBlindSpot}\n`;
+          responseText += `\u2022 Top unconsidered need: ${situation.topUnconsideredNeed}\n`;
+        } else {
+          responseText += `**Analysis of "${userText}":**\n`;
+          responseText += `\u2022 Status: ${quickAssess.headline}\n`;
+          responseText += `\u2022 Next step: ${quickAssess.nextStep}\n`;
+          if (quickAssess.topConcerns.length > 0) {
+            responseText += `\u2022 Top concern: ${quickAssess.topConcerns[0]}\n`;
+          }
+          if (quickAssess.topOpportunities.length > 0) {
+            responseText += `\u2022 Opportunity: ${quickAssess.topOpportunities[0]}\n`;
+          }
+        }
+
+        responseText += `\n**What You Haven't Considered:**\n`;
+        responseText += `\u2022 ${situation.topUnconsideredNeed}\n`;
+        responseText += `\n**Recommended Question:** ${situation.topQuestion}\n`;
+
+        if (historical.found) {
+          responseText += `\n**Historical Parallel:** ${historical.case_title} \u2014 ${historical.topLesson}\n`;
+        }
+
+        setChatMessages(prev => {
+          const msgs = [...prev];
+          msgs.pop();
+          return [...msgs, {
+            text: responseText,
+            sender: 'bw' as const,
+            timestamp: new Date()
+          }];
+        });
+
+      } catch (error) {
+        console.error('BW Consultant error:', error);
+        setChatMessages(prev => {
+          const msgs = [...prev];
+          msgs.pop();
+          return [...msgs, {
+            text: `I encountered an issue running the full intelligence analysis. Here's what I can tell you about ${params.organizationName || 'your project'}: Your strategic intent is "${params.strategicIntent?.[0] || 'partnership development'}" in ${params.country || 'your target market'}. Please try your question again or complete more intake steps for deeper analysis.`,
+            sender: 'bw' as const,
+            timestamp: new Date()
+          }];
+        });
+      }
     }
   };
 
   const openModal = (id: string) => {
     if (id === 'generation') {
       setIsDraftFinalized(true);
-      setChatMessages(prev => [...prev, {
-        text: "The draft has been compiled based on your inputs. Please review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.",
-        sender: 'bw',
-        timestamp: new Date()
-      }]);
+
+      // Run full situation analysis before generating
+      try {
+        const situation = SituationAnalysisEngine.quickSummary(params);
+        const historical = HistoricalParallelMatcher.quickMatch(params);
+
+        let genText = `**Draft Compiled \u2014 Pre-Generation Intelligence Briefing:**\n\n`;
+        genText += `\u2022 Readiness Score: ${situation.readiness}/100\n`;
+        genText += `\u2022 Blind Spots: ${situation.blindSpotCount} detected\n`;
+        genText += `\u2022 Critical Unconsidered Needs: ${situation.criticalUnconsideredCount}\n`;
+        if (historical.found) {
+          genText += `\u2022 Historical Parallel: ${historical.case_title} (${historical.outcome}) \u2014 ${historical.topLesson}\n`;
+        }
+        genText += `\nPlease review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.`;
+
+        setChatMessages(prev => [...prev, {
+          text: genText,
+          sender: 'bw',
+          timestamp: new Date()
+        }]);
+      } catch {
+        setChatMessages(prev => [...prev, {
+          text: "The draft has been compiled based on your inputs. Please review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.",
+          sender: 'bw',
+          timestamp: new Date()
+        }]);
+      }
       return;
     }
+
+    // Reactive intelligence: proactively brief user when they open a step
+    try {
+      const situation = SituationAnalysisEngine.quickSummary(params);
+      const stepNames: Record<string, string> = {
+        'identity': 'Organisation Identity',
+        'mandate': 'Strategic Mandate',
+        'market': 'Market Analysis',
+        'partner-personas': 'Partner Personas',
+        'financial-model': 'Financial Model',
+        'risk': 'Risk Assessment',
+        'resources': 'Resources & Capability',
+        'execution': 'Execution Plan',
+        'governance': 'Governance & Monitoring',
+        'scoring': 'Scoring & Readiness',
+      };
+      const stepName = stepNames[id] || id;
+
+      const fields = requiredFields[id] || [];
+      const missing = fields.filter(f => {
+        const val = params[f as keyof ReportParameters];
+        return Array.isArray(val) ? val.length === 0 : !val;
+      });
+
+      if (missing.length > 0) {
+        setChatMessages(prev => [...prev, {
+          text: `\ud83d\udcca **Opening ${stepName}** \u2014 ${missing.length} field(s) still needed. Readiness: ${situation.readiness}/100.\n\n\ud83d\udca1 **Tip:** ${situation.topQuestion}`,
+          sender: 'bw',
+          timestamp: new Date()
+        }]);
+      } else if (isStepComplete(id)) {
+        setChatMessages(prev => [...prev, {
+          text: `\u2705 **${stepName} is complete.** The NSIL brain will incorporate this data into all 46 scoring formulas. Current readiness: ${situation.readiness}/100.`,
+          sender: 'bw',
+          timestamp: new Date()
+        }]);
+      }
+    } catch { /* non-blocking */ }
+
     setActiveModal(id);
     setValidationErrors([]); // Clear previous errors
     setGenerationConfig({}); // Clear previous generation config
@@ -438,10 +617,107 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
   return (
     <div className="flex-1 w-full flex h-full bg-stone-100 font-sans text-stone-900 overflow-hidden">
+        <DocumentUploadModal isOpen={showDocumentUpload} onClose={() => setShowDocumentUpload(false)} onDocumentProcessed={handleDocumentProcessed} />
         {/* --- LEFT PANEL: CONTROLS & FORMS (v6.0 Design) --- */}
         <div className="flex flex-col bg-white border-r border-stone-200 overflow-hidden" style={{ flexBasis: '30%' }}>
             <div className="flex-1 overflow-y-auto custom-scrollbar">
                 <div className="p-5 space-y-4">
+                    {/* SUPPORTING DOCUMENTS + BW CONSULTANT CHAT */}
+                    <div>
+                      <div className="mb-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                          <div className="text-xs font-bold text-indigo-900 mb-1 flex items-center gap-2">
+                              <FileText size={14} className="text-indigo-600" />
+                              Supporting Documents
+                          </div>
+                          <p className="text-xs text-indigo-800 leading-relaxed mb-2">Upload RFPs, mandates, briefing decks, or clearance letters. The BW Consultant will analyze these documents to provide deeper, more contextual recommendations tailored to your specific situation.</p>
+                          <div className="flex gap-2">
+                              <button
+                                  onClick={() => setShowDocumentUpload(true)}
+                                  className="px-3 py-2 rounded bg-indigo-600 text-white text-sm"
+                              >
+                                  Upload Documents
+                              </button>
+                              <div className="text-xs text-indigo-700 mt-2">{params.ingestedDocuments?.length || 0} document{(params.ingestedDocuments?.length || 0) !== 1 ? 's' : ''} uploaded</div>
+                          </div>
+                      </div>
+
+                      <div className="bg-stone-50 border border-stone-200 rounded-lg flex flex-col">
+                          <div className="h-10 bg-blue-900 text-white flex items-center justify-between px-4 rounded-t-lg">
+                              <div className="flex items-center gap-2">
+                                  <User size={14} />
+                                  <span className="text-xs font-bold">BW Consultant</span>
+                              </div>
+                              <div className="text-[10px] opacity-75">Live Assistant</div>
+                          </div>
+
+                          <div className="flex-1 overflow-y-auto p-3 space-y-2 h-48 custom-scrollbar">
+                              {chatMessages.map((msg, index) => (
+                                  <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                      <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
+                                          msg.sender === 'user'
+                                              ? 'bg-blue-600 text-white'
+                                              : 'bg-white border border-stone-200 text-stone-900'
+                                      }`}>
+                                          {msg.text}
+                                      </div>
+                                  </div>
+                              ))}
+                              <div ref={chatMessagesEndRef} />
+                          </div>
+
+                          <div className="border-t border-stone-200 flex items-center gap-1 px-3 py-2">
+                              <input
+                                  type="text"
+                                  value={chatInput}
+                                  onChange={(e) => setChatInput(e.target.value)}
+                                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                  placeholder="Ask your BW Consultant..."
+                                  className="flex-1 text-xs border border-stone-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-300 focus:border-transparent"
+                              />
+                              <button
+                                  onClick={handleSendMessage}
+                                  className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
+                              >
+                                  <Send size={12} />
+                              </button>
+                          </div>
+
+                          <div className="p-2 bg-indigo-50 border-t border-indigo-200 text-[10px] text-indigo-800">
+                              <strong>NSIL:</strong> Nexus Strategic Intelligence Layer — The Ten-Step Protocol guides you through every critical dimension of your strategic plan.
+                          </div>
+                      </div>
+                    </div>
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
+                    {/* PREFERRED GUIDANCE LEVEL */}
+                    <div>
+                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Preferred Guidance Level</h3>
+                        <p className="text-[10px] text-stone-500 mb-2">Choose how much guidance you want. The system adapts its explanations, prompts, and recommendations accordingly.</p>
+                        <div className="space-y-1">
+                            {[
+                                { id: 'orientation', label: '🧭 Orientation', desc: 'Full walkthroughs & contextual help', icon: Compass },
+                                { id: 'collaborative', label: '🤝 Collaborative', desc: 'Balanced guidance with smart suggestions', icon: Users },
+                                { id: 'expert', label: '⚡ Expert', desc: 'Streamlined, minimal hand-holding', icon: Zap },
+                            ].map(mode => (
+                                <button
+                                    key={mode.id}
+                                    onClick={() => setParams({ ...params, intakeGuidanceMode: mode.id as 'orientation' | 'collaborative' | 'expert' })}
+                                    className={`w-full p-2 rounded-lg border text-left transition-all text-xs flex items-center gap-2 ${
+                                        params.intakeGuidanceMode === mode.id
+                                            ? 'bg-blue-50 border-blue-300 ring-1 ring-blue-200'
+                                            : 'bg-white border-stone-200 hover:border-stone-300'
+                                    }`}
+                                >
+                                    <span className="font-bold text-stone-900">{mode.label}</span>
+                                    <span className="text-stone-500">{mode.desc}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="w-full h-px bg-stone-200"></div>
+
                     {/* 10-STEP INTAKE PROTOCOL */}
                     <div>
                         <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">10-Step Intake Protocol</h3>
@@ -554,44 +830,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                             </div>
                         </div>
                     </details>
-
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* CONSULTANT CHAT */}
-                    <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Ask a Question</h3>
-                        <div className="bg-white border border-stone-200 rounded-lg overflow-hidden flex flex-col h-48">
-                            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar text-xs">
-                                {chatMessages.map((msg, index) => (
-                                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
-                                            msg.sender === 'user'
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-stone-100 text-stone-900'
-                                        }`}>
-                                            {msg.text}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="border-t border-stone-200 flex items-center gap-1 px-2 py-2 bg-white">
-                                <input
-                                    type="text"
-                                    value={chatInput}
-                                    onChange={(e) => setChatInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    placeholder="Ask..."
-                                    className="flex-1 text-xs border border-stone-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-300 focus:border-transparent bg-white"
-                                />
-                                <button
-                                    onClick={handleSendMessage}
-                                    className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
-                                >
-                                    <Send size={12} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
                     {generatedDocs.length > 0 && (
                         <>
@@ -2442,10 +2680,6 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                     <History className="w-4 h-4" /> Live Document Preview
                 </div>
                 <div className="flex gap-2 flex-wrap items-center">
-                    <button className="px-4 py-2 bg-bw-navy text-white text-xs font-bold rounded shadow-lg hover:bg-stone-800 transition-all flex items-center gap-2">
-                        <MessageCircle size={14} />
-                        BW Consultant
-                    </button>
                     <button className="px-4 py-2 hover:bg-stone-100 rounded text-stone-600 text-xs font-bold flex items-center gap-2 border border-transparent hover:border-stone-200 transition-all" title="Print">
                         <Printer size={14}/> Print
                     </button>
