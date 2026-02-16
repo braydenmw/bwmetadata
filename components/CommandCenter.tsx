@@ -37,6 +37,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [unifiedActiveTab, setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
     const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
     const [_activeLayer, _setActiveLayer] = useState<number | null>(null);
+    const [expandedPersona, setExpandedPersona] = useState<string | null>(null);
 
     // Global Location Intelligence state - LIVE SEARCH
     const [_locationQuery, _setLocationQuery] = useState('');
@@ -337,11 +338,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Reflexive Intelligence — Full Width Callout */}
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 md:p-10">
                         <h3 className="text-2xl font-bold text-slate-900 mb-4">Reflexive Intelligence: Analyzing You</h3>
-                        <p className="text-base text-slate-700 leading-relaxed mb-6">
+                        <p className="text-base text-slate-700 leading-relaxed mb-4">
                             Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
                         </p>
+                        <p className="text-base text-slate-700 leading-relaxed mb-6">
+                            <strong>Case Study Intelligence:</strong> Upload any case study, report, proposal, or mandate &mdash; the system reads the full text, breaks it into structured sections, scores governance quality, financial viability, evidence strength, risk management, and replication potential. Five adversarial personas debate the findings. Historical parallel matching surfaces precedents from 10+ countries. You receive a strength/weakness diagnostic with severity levels, specific recommendations, and a list of documents and letters ready to generate from the analysis.
+                        </p>
                         <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
-                            <Info size={16} /> View Complete System: Protocol, 232 Documents &amp; 156 Letters &rarr;
+                            <Info size={16} /> View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
                         </button>
                     </div>
                 </div>
@@ -478,7 +482,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
                                     You know your region has potential. You&rsquo;ve seen it your entire career. But when the investment board asks for a risk-adjusted ROI model or a stakeholder alignment matrix, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; scored, stress-tested, and formatted &mdash; without the consulting invoice.
                                 </p>
-                                <p className="text-xs text-blue-600 font-medium">What you get: prospectuses, structural twin analysis, lifecycle mapping, advantage mining, scenario stress-testing</p>
+                                <button onClick={() => setExpandedPersona(expandedPersona === 'council' ? null : 'council')} className="text-xs text-blue-600 font-medium hover:text-blue-800 cursor-pointer transition-colors">
+                                    What you get: prospectuses, structural twin analysis, lifecycle mapping, advantage mining, scenario stress-testing {expandedPersona === 'council' ? '▲' : '▼'}
+                                </button>
+                                {expandedPersona === 'council' && (
+                                    <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                                        <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
+                                        <p>&bull; Investment Prospectus (1–100 pages, scored and stress-tested)</p>
+                                        <p>&bull; Structural Twin Analysis &mdash; matched to historical parallels from 10+ countries</p>
+                                        <p>&bull; Project Lifecycle Map with phased milestones and decision gates</p>
+                                        <p>&bull; Latent Advantage Mining &mdash; surfaces hidden regional assets</p>
+                                        <p>&bull; Monte Carlo Scenario Stress-Testing (5,000 simulations)</p>
+                                        <p>&bull; Case Study Upload &amp; Analysis &mdash; upload existing reports for NSIL scoring</p>
+                                        <p>&bull; Stakeholder Alignment Matrix with engagement strategy</p>
+                                        <p>&bull; Risk-Adjusted ROI Model with sensitivity analysis</p>
+                                        <p>&bull; Regional Profile &amp; SWOT Analysis</p>
+                                        <p>&bull; Government Submission Pack (policy brief, incentive application, MOU draft)</p>
+                                        <p>&bull; Community Impact Assessment</p>
+                                        <p>&bull; Full audit trail &mdash; every score traceable to formula + data input</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -494,7 +517,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
                                     You&rsquo;re screening proposals, evaluating bids, or deciding which initiatives get funded. Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces a documented rationale you can stand behind in scrutiny.
                                 </p>
-                                <p className="text-xs text-blue-600 font-medium">What you get: scored viability assessments, ethical gates, friction analysis, traceable decision rationale</p>
+                                <button onClick={() => setExpandedPersona(expandedPersona === 'government' ? null : 'government')} className="text-xs text-blue-600 font-medium hover:text-blue-800 cursor-pointer transition-colors">
+                                    What you get: scored viability assessments, ethical gates, friction analysis, traceable decision rationale {expandedPersona === 'government' ? '▲' : '▼'}
+                                </button>
+                                {expandedPersona === 'government' && (
+                                    <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                                        <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
+                                        <p>&bull; Scored Viability Assessment with overall viability rating (0–100)</p>
+                                        <p>&bull; Ethical &amp; Governance Gate Report &mdash; flags compliance gaps before approval</p>
+                                        <p>&bull; Friction Analysis &mdash; identifies execution blockers and stakeholder misalignment</p>
+                                        <p>&bull; Case Study Upload &amp; Analysis &mdash; upload proposals or mandates for instant NSIL scoring</p>
+                                        <p>&bull; 5-Persona Adversarial Debate Transcript (Skeptic, Advocate, Regulator, Accountant, Operator)</p>
+                                        <p>&bull; Due Diligence Summary with SAT contradiction detection</p>
+                                        <p>&bull; Financial Feasibility Analysis with cost-per-beneficiary modelling</p>
+                                        <p>&bull; Risk Register with severity scoring and mitigation hierarchy</p>
+                                        <p>&bull; Policy Brief &amp; Regulatory Filing pack</p>
+                                        <p>&bull; Documented Decision Rationale &mdash; court-defensible audit trail</p>
+                                        <p>&bull; Historical Parallel Matching &mdash; shows what happened when similar programmes ran elsewhere</p>
+                                        <p>&bull; Replication Viability Assessment for scaling successful pilots</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -510,7 +552,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
                                     You&rsquo;ve outgrown your home market. You&rsquo;re looking at Southeast Asia, the Pacific, Latin America &mdash; but you don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds, scores your entry strategy against historical patterns, and flags what will go wrong before you commit capital.
                                 </p>
-                                <p className="text-xs text-blue-600 font-medium">What you get: BW AI Search briefs, risk assessment, partner ecosystem mapping, activation timeline forecasts</p>
+                                <button onClick={() => setExpandedPersona(expandedPersona === 'business' ? null : 'business')} className="text-xs text-blue-600 font-medium hover:text-blue-800 cursor-pointer transition-colors">
+                                    What you get: BW AI Search briefs, risk assessment, partner ecosystem mapping, activation timeline forecasts {expandedPersona === 'business' ? '▲' : '▼'}
+                                </button>
+                                {expandedPersona === 'business' && (
+                                    <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                                        <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
+                                        <p>&bull; BW AI Location Research Brief &mdash; real-time intelligence on any city/region</p>
+                                        <p>&bull; Market Entry Risk Assessment with regulatory landscape analysis</p>
+                                        <p>&bull; Partner Ecosystem Map &mdash; scored compatibility with local counterparts</p>
+                                        <p>&bull; Activation Timeline with phased milestones and resource requirements</p>
+                                        <p>&bull; Case Study Upload &amp; Analysis &mdash; upload competitor reports or market studies for instant analysis</p>
+                                        <p>&bull; Competitive Landscape Scanner with positioning strategy</p>
+                                        <p>&bull; Financial Model (CAPEX, OPEX, revenue, currency exposure, IRR)</p>
+                                        <p>&bull; Structural Twin Matching &mdash; identifies cities/regions with similar growth patterns</p>
+                                        <p>&bull; Supply Chain &amp; Procurement Assessment</p>
+                                        <p>&bull; Compliance &amp; Permit Roadmap for target jurisdiction</p>
+                                        <p>&bull; Investment Prospectus ready for board presentation</p>
+                                        <p>&bull; 156 letter templates &mdash; partnership, government, trade, compliance</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -526,7 +587,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
                                     You&rsquo;ve never written an investment prospectus. You don&rsquo;t know what a due diligence pack looks like. You&rsquo;ve never seen a Monte Carlo simulation. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors. The BW Consultant AI sits alongside you at every step.
                                 </p>
-                                <p className="text-xs text-blue-600 font-medium">Guided intake, built-in consultant, and step-by-step preparation &mdash; without needing a consulting team</p>
+                                <button onClick={() => setExpandedPersona(expandedPersona === 'entrepreneur' ? null : 'entrepreneur')} className="text-xs text-blue-600 font-medium hover:text-blue-800 cursor-pointer transition-colors">
+                                    Guided intake, built-in consultant, and step-by-step preparation &mdash; without needing a consulting team {expandedPersona === 'entrepreneur' ? '▲' : '▼'}
+                                </button>
+                                {expandedPersona === 'entrepreneur' && (
+                                    <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                                        <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
+                                        <p>&bull; Guided 10-Step Protocol &mdash; plain-language intake, no jargon required</p>
+                                        <p>&bull; BW AI Consultant &mdash; answers questions at every step in real time</p>
+                                        <p>&bull; Case Study Upload &amp; Analysis &mdash; upload what you have, the system tells you what&rsquo;s strong and what&rsquo;s missing</p>
+                                        <p>&bull; Investment Prospectus generated from your answers (no financial background needed)</p>
+                                        <p>&bull; Executive Brief &mdash; 1-page summary for quick conversations</p>
+                                        <p>&bull; Risk Assessment explained in plain terms with recommended actions</p>
+                                        <p>&bull; Partner Matching &mdash; find who&rsquo;s right for your stage and sector</p>
+                                        <p>&bull; Monte Carlo Simulation &mdash; see the range of realistic outcomes, not just best-case</p>
+                                        <p>&bull; Document Factory &mdash; 247 document types, generated from your exact data</p>
+                                        <p>&bull; Letter Templates &mdash; 156 ready-to-send letters for every stage</p>
+                                        <p>&bull; Full audit trail so you understand exactly how each score was calculated</p>
+                                        <p>&bull; Export everything as PDF, ready for banks, boards, and investors</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -766,13 +846,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             <h3 className="text-lg font-semibold text-blue-600 mb-2">The Document Factory Catalog</h3>
                             <p className="text-sm text-slate-600 mb-4">
-                                <strong>232 Document Types</strong> across <strong>14 Categories</strong>, plus <strong>156 Letter Templates</strong> &mdash; covering the entire lifecycle of global development projects.
+                                <strong>247 Document Types</strong> across <strong>15 Categories</strong>, plus <strong>156 Letter Templates</strong> &mdash; covering the entire lifecycle of global development projects, including case study analysis and intelligence extraction.
                             </p>
 
-                            {/* 14 CATEGORY STRUCTURE */}
+                            {/* 15 CATEGORY STRUCTURE */}
                             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">THE 14-CATEGORY LIFECYCLE STRUCTURE</p>
-                                <div className="grid grid-cols-4 gap-3 text-center text-xs">
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">THE 15-CATEGORY LIFECYCLE STRUCTURE</p>
+                                <div className="grid grid-cols-5 gap-3 text-center text-xs">
                                     <div className="bg-emerald-50 border border-emerald-200 rounded p-2">
                                         <p className="font-bold text-emerald-700">ENTRY PHASE</p>
                                         <p className="text-slate-600">Strategy, Market, Government</p>
@@ -788,6 +868,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div className="bg-rose-50 border border-rose-200 rounded p-2">
                                         <p className="font-bold text-rose-700">SAFETY PHASE</p>
                                         <p className="text-slate-600">Risk, Governance, Regulatory, ESG</p>
+                                    </div>
+                                    <div className="bg-violet-50 border border-violet-200 rounded p-2">
+                                        <p className="font-bold text-violet-700">INTELLIGENCE PHASE</p>
+                                        <p className="text-slate-600">Case Study Analysis &amp; Extraction</p>
                                     </div>
                                 </div>
                             </div>
@@ -1112,6 +1196,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <li>&bull; Equipment Specification</li>
                                     </ul>
                                 </div>
+
+                                {/* Category 15: Case Study Intelligence */}
+                                <div className="bg-white border border-violet-200 rounded-lg p-4">
+                                    <h5 className="text-xs font-bold text-violet-600 uppercase tracking-wider mb-2">15. Case Study Intelligence (15 types)</h5>
+                                    <ul className="space-y-0.5 text-xs text-slate-600">
+                                        <li>&bull; Case Study Analysis Report</li>
+                                        <li>&bull; Strength/Weakness Diagnostic</li>
+                                        <li>&bull; NSIL Section Scoring Report</li>
+                                        <li>&bull; Adversarial Debate Transcript</li>
+                                        <li>&bull; Historical Parallel Matching Report</li>
+                                        <li>&bull; Replication Viability Assessment</li>
+                                        <li>&bull; Financial Gap Analysis</li>
+                                        <li>&bull; Governance Framework Assessment</li>
+                                        <li>&bull; Stakeholder Engagement Plan</li>
+                                        <li>&bull; Implementation Roadmap</li>
+                                        <li>&bull; Partner Proposal Template</li>
+                                        <li>&bull; Executive Brief (from uploaded case)</li>
+                                        <li>&bull; Case Study Rewrite (institutional format)</li>
+                                        <li>&bull; Community Impact Assessment</li>
+                                        <li>&bull; Due Diligence Summary (from uploaded evidence)</li>
+                                    </ul>
+                                </div>
                             </div>
 
                             {/* LETTER TEMPLATES SECTION */}
@@ -1261,7 +1367,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             <span className="text-xs text-emerald-600 uppercase tracking-wider font-bold">STAGE THREE</span>
                                         </div>
                                         <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-emerald-700">Institutional Output</h4>
-                                        <p className="text-xs text-slate-600">Compile evidence into 232 document types and 156 letter templates</p>
+                                        <p className="text-xs text-slate-600">Compile evidence into 247 document types and 156 letter templates</p>
                                         <p className="text-xs text-emerald-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
                                     </button>
                                 </div>
@@ -1521,8 +1627,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                                     <div className="grid md:grid-cols-2 gap-4">
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5">
-                                            <h4 className="text-lg font-bold text-emerald-700 mb-2">232 Document Types</h4>
-                                            <p className="text-xs text-slate-600 mb-3">Across 14 categories:</p>
+                                            <h4 className="text-lg font-bold text-emerald-700 mb-2">247 Document Types</h4>
+                                            <p className="text-xs text-slate-600 mb-3">Across 15 categories:</p>
                                             <ul className="space-y-1.5 text-xs text-slate-600">
                                                 <li>&bull; Foundation &amp; Strategic Planning</li>
                                                 <li>&bull; Financial Analysis &amp; Modeling</li>
@@ -1531,6 +1637,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                 <li>&bull; Partnership &amp; Stakeholder Management</li>
                                                 <li>&bull; Governance &amp; Monitoring</li>
                                                 <li>&bull; ESG &amp; Sustainability Reporting</li>
+                                                <li className="text-violet-700 font-medium">&bull; Case Study Intelligence &amp; Analysis</li>
                                                 <li>&bull; And 7 more categories...</li>
                                             </ul>
                                         </div>
@@ -1806,7 +1913,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     onClick={() => setUnifiedActiveTab('documents')}
                                     className={`px-4 py-3 text-sm font-semibold transition-all border-b-2 ${unifiedActiveTab === 'documents' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
                                 >
-                                    232 Document Types
+                                    247 Document Types
                                 </button>
                                 <button 
                                     onClick={() => setUnifiedActiveTab('letters')}
@@ -1827,7 +1934,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="p-6 md:p-8 space-y-6 text-sm text-slate-700 leading-relaxed">
 
                             {/* Introduction - always visible */}
-                            <p>This page explains exactly how the system works &mdash; from the moment you start entering data to the final board-ready documents it produces. Three stages: <strong>Structured Intake</strong> (the Ten-Step Protocol that captures your opportunity in measurable terms), <strong>Adversarial Analysis</strong> (38+ formulas, 5 personas debating every angle, Monte Carlo simulation), and <strong>Institutional Output</strong> (232 document types and 156 letter templates, all populated with your actual scores and reasoning).</p>
+                            <p>This page explains exactly how the system works &mdash; from the moment you start entering data to the final board-ready documents it produces. Three stages: <strong>Structured Intake</strong> (the Ten-Step Protocol that captures your opportunity in measurable terms), <strong>Adversarial Analysis</strong> (38+ formulas, 5 personas debating every angle, Monte Carlo simulation), and <strong>Institutional Output</strong> (247 document types across 15 categories and 156 letter templates, all populated with your actual scores and reasoning). Plus <strong>Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.</p>
 
                             {/* TAB CONTENT: Protocol */}
                             {unifiedActiveTab === 'protocol' && (
@@ -1882,14 +1989,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <p>Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 38+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show you the real distribution of outcomes, not just the optimistic case.</p>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Stage 3 &mdash; Institutional Output</h4>
-                                    <p>Every score, every debate conclusion, every simulation result flows into document generation. 232 document types across 14 categories. 156 letter templates for every stage of deal-making. All populated with your actual data, exact scores, and traceable reasoning &mdash; not AI-generated placeholder text.</p>
+                                    <p>Every score, every debate conclusion, every simulation result flows into document generation. 247 document types across 15 categories. 156 letter templates for every stage of deal-making. All populated with your actual data, exact scores, and traceable reasoning &mdash; not AI-generated placeholder text. The 15th category &mdash; Case Study Intelligence &mdash; lets you upload existing reports, proposals, or case studies and receive full NSIL analysis with scored sections, adversarial debate, historical parallels, and recommended documents.</p>
                                 </>
                             )}
 
                             {/* TAB CONTENT: Documents */}
                             {unifiedActiveTab === 'documents' && (
                                 <>
-                                    <h4 className="text-lg font-bold text-slate-900 pt-2">232 Document Types Across 14 Categories</h4>
+                                    <h4 className="text-lg font-bold text-slate-900 pt-2">247 Document Types Across 15 Categories</h4>
                                     <p>Every document is populated with real data, exact scores, and traceable reasoning. Flexible page lengths from 1-page brief to 100-page full package.</p>
 
                                     <div className="grid md:grid-cols-3 gap-4 mt-4">
@@ -2031,6 +2138,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                                 <li>&bull; MOU</li>
                                                 <li>&bull; Term Sheet</li>
                                                 <li>&bull; Shareholder Agreement</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h5 className="text-sm font-semibold text-violet-700 mb-1">15. Case Study Intelligence (15)</h5>
+                                            <ul className="space-y-0.5 text-sm text-slate-600">
+                                                <li>&bull; Case Study Analysis Report</li>
+                                                <li>&bull; Strength/Weakness Diagnostic</li>
+                                                <li>&bull; Adversarial Debate Transcript</li>
+                                                <li>&bull; Historical Parallel Report</li>
+                                                <li>&bull; Replication Assessment</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -2950,7 +3067,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layers 7&ndash;9 &mdash; Proactive, Output &amp; Reflexive</h4>
                             <p><strong>Layer 7 (Proactive):</strong> Seven engines for backtesting, drift detection, continuous learning, meta-cognition, and proactive signal mining.</p>
-                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 232 document types &mdash; all populated with exact data and confidence scores.</p>
+                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 247 document types across 15 categories &mdash; all populated with exact data and confidence scores. Includes Case Study Intelligence: upload any document and receive scored NSIL analysis.</p>
                             <p><strong>Layer 9 (Reflexive Intelligence):</strong> Seven engines that analyse the user:</p>
                             <ul className="list-disc list-inside space-y-1 pl-2">
                                 <li><strong>User Signal Decoder</strong> &mdash; Shannon&rsquo;s information-theoretic redundancy. Detects repetition, avoidance, and emotional emphasis.</li>
