@@ -7,6 +7,18 @@ export interface IngestedDocumentMeta {
     wordCount?: number;
     uploadedAt: string;
     notes?: string;
+    content?: string;
+    extractedInsights?: {
+        entities?: string[];
+        financials?: string[];
+        risks?: string[];
+        opportunities?: string[];
+        strengths?: string[];
+        weaknesses?: string[];
+        recommendations?: string[];
+        categories?: string[];
+        confidence?: number;
+    };
 }
 export type ChecklistStatus = 'pending' | 'satisfied' | 'failed' | 'skipped';
 export interface ChecklistItem {

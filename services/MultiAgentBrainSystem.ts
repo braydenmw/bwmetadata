@@ -915,7 +915,14 @@ export class LiveReportBuilder {
       intelligence: {
         complete: false,
         data: {
-          documentedSources: (params.ingestedDocuments || []).map(doc => doc.filename)
+          documentedSources: (params.ingestedDocuments || []).map(doc => doc.filename),
+          documentContent: (params.ingestedDocuments || [])
+            .filter(doc => doc.content)
+            .map(doc => ({
+              filename: doc.filename,
+              content: doc.content?.substring(0, 5000),
+              insights: doc.extractedInsights,
+            })),
         }
       }
     };

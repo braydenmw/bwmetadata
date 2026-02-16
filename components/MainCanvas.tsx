@@ -11,12 +11,13 @@ import {
   DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
 import { DocumentUploadModal } from './DocumentUploadModal';
+import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnalyzer';
 import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
 import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
 import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
 import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS } from '../constants';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { ReportParameters, ReportData, GenerationPhase, CopilotInsight } from '../types';
+import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, IngestedDocumentMeta } from '../types';
 
 const toolCategories = {
     analysis: [
@@ -148,8 +149,13 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   ]);
   const [chatInput, setChatInput] = useState('');
 
-  const handleDocumentProcessed = (doc: { filename: string; content: string }) => {
-    setChatMessages(prev => [...prev, { text: `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`, sender: 'bw', timestamp: new Date() }]);
+  const handleDocumentProcessed = (doc: IngestedDocumentMeta, analysis?: CaseStudyAnalysis) => {
+    // Generate consultant summary if we have a full analysis
+    const summaryMsg = analysis
+      ? CaseStudyAnalyzer.toConsultantSummary(analysis)
+      : `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`;
+
+    setChatMessages(prev => [...prev, { text: summaryMsg, sender: 'bw', timestamp: new Date() }]);
     setParams({ ...params, ingestedDocuments: [...(params.ingestedDocuments || []), doc] });
   };
 

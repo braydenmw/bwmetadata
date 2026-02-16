@@ -17,6 +17,18 @@ export interface IngestedDocumentMeta {
   wordCount?: number;
   uploadedAt: string;
   notes?: string;
+  content?: string;
+  extractedInsights?: {
+    entities?: string[];
+    financials?: string[];
+    risks?: string[];
+    opportunities?: string[];
+    strengths?: string[];
+    weaknesses?: string[];
+    recommendations?: string[];
+    categories?: string[];
+    confidence?: number;
+  };
 }
 
 // --- GOVERNANCE & PROVENANCE TYPES ---

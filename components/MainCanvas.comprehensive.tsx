@@ -350,11 +350,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
 
   // Handle documents processed by the upload modal
-    const handleDocumentProcessed = (doc: import('../types').IngestedDocumentMeta) => {
+    const handleDocumentProcessed = (doc: import('../types').IngestedDocumentMeta, analysis?: import('../services/CaseStudyAnalyzer').CaseStudyAnalysis) => {
     const existing = params.ingestedDocuments || [];
     setParams({ ...params, ingestedDocuments: [...existing, doc] });
-    // Notify chat that a document was added
-    setChatMessages(prev => [...prev, { text: `Document uploaded: ${doc.filename}`, sender: 'bw', timestamp: new Date() }]);
+    // Notify chat with full analysis summary if available
+    const msg = analysis
+      ? `📋 **Case Study Analysis Complete: "${analysis.title}"**\n📍 ${analysis.country} | ${analysis.sector} | Viability: ${analysis.scores.overallViability}/100\n\n${analysis.adversarialDebate.consensus}`
+      : `Document uploaded: ${doc.filename}`;
+    setChatMessages(prev => [...prev, { text: msg, sender: 'bw', timestamp: new Date() }]);
   };
 
   const applyIntelligenceEnhancements = (baseReport: ReportData): ReportData => {
