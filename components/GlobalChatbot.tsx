@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader, MessageCircle, ChevronDown } from 'lucide-react';
 import { GlobalIssueResolver, type IssueAnalysis } from '../services/GlobalIssueResolver';
+import { bwConsultantAI, type ConsultantInsight } from '../services/BWConsultantAgenticAI';
+import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
 
 interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
   analysis?: IssueAnalysis;
+  insights?: ConsultantInsight[];
   timestamp: Date;
 }
 
@@ -20,13 +23,13 @@ export const GlobalChatbot: React.FC<GlobalChatbotProps> = ({ context = 'standal
     {
       id: 'init',
       role: 'system',
-      content: 'Strategic Analysis System',
+      content: 'BW Consultant AI — Unified Intelligence',
       timestamp: new Date()
     },
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Welcome to Strategic Analysis. I can help you analyze any global business challenge - locations, markets, investments, policies, infrastructure, or regional development issues.\\n\\nDescribe your challenge or question, and I\'ll provide comprehensive analysis with strategic recommendations.',
+      content: 'Welcome to BW Consultant AI. I combine NSIL analysis, live intelligence, and strategic consulting to help you navigate any global business challenge — locations, markets, investments, policies, infrastructure, or regional development.\n\nDescribe your challenge and I\'ll provide real-time analysis with actionable recommendations.',
       timestamp: new Date()
     }
   ]);
@@ -37,24 +40,36 @@ export const GlobalChatbot: React.FC<GlobalChatbotProps> = ({ context = 'standal
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const resolverRef = useRef(new GlobalIssueResolver());
 
-  const formatAnalysisResponse = (analysis: IssueAnalysis): string => {
-    return `
-**Analysis Complete**
+  const formatUnifiedResponse = (analysis: IssueAnalysis, insights: ConsultantInsight[], liveEvidence: Array<{ title: string; snippet?: string }>): string => {
+    let response = '**BW Consultant AI — Analysis Complete**\n\n';
 
-**Issue Category:** ${analysis.issueCategory}
+    // Add consultant insights first (most dynamic)
+    if (insights.length > 0) {
+      response += '**Live Intelligence:**\n';
+      for (const insight of insights.slice(0, 3)) {
+        response += `• **${insight.title}** (${(insight.confidence * 100).toFixed(0)}% confidence): ${insight.content}\n`;
+      }
+      response += '\n';
+    }
 
-**Root Causes:**
-${analysis.rootCauses.map((cause, i) => `${i + 1}. ${cause}`).join('\n')}
+    // Add live evidence
+    if (liveEvidence.length > 0) {
+      response += '**Real-Time Sources:**\n';
+      for (const ev of liveEvidence.slice(0, 3)) {
+        response += `• ${ev.title}${ev.snippet ? `: ${ev.snippet.slice(0, 120)}...` : ''}\n`;
+      }
+      response += '\n';
+    }
 
-**Strategic Recommendations:**
-${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
+    // Core analysis
+    response += `**Issue Category:** ${analysis.issueCategory.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n\n`;
+    response += '**Strategic Recommendations:**\n';
+    response += analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n');
+    response += `\n\n**Timeline:** ${analysis.timeline}`;
+    response += `\n**Overall Confidence:** ${(analysis.overallConfidence * 100).toFixed(0)}%`;
+    response += '\n\n*Expand below for NSIL layers, implementation roadmap, risk mitigation, and stakeholder analysis.*';
 
-**Timeline:** ${analysis.timeline}
-
-**Overall Confidence:** ${(analysis.overallConfidence * 100).toFixed(0)}%
-
-*Expand below to see detailed analysis, NSIL layers, implementation roadmap, risk mitigation, stakeholder analysis, and document recommendations.*
-    `.trim();
+    return response;
   };
 
   const scrollToBottom = () => {
@@ -71,7 +86,6 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
 
     const userQuery = input.trim();
 
-    // Add user message
     const userMessage: Message = {
       id: `user-${Date.now()}`,
       role: 'user',
@@ -84,24 +98,41 @@ ${analysis.strategicRecommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n
     setIsThinking(true);
 
     try {
-      // Resolve the issue
-      const analysis = await resolverRef.current.resolveIssue(userQuery);
+      // Extract context hints from query
+      const qLower = userQuery.toLowerCase();
+      const consultParams: Record<string, unknown> = { query: userQuery };
+      const countries = ['philippines', 'vietnam', 'thailand', 'indonesia', 'malaysia', 'singapore', 'japan', 'china', 'india', 'korea', 'cambodia'];
+      for (const c of countries) {
+        if (qLower.includes(c)) { consultParams.country = c.charAt(0).toUpperCase() + c.slice(1); break; }
+      }
+      const industries = ['technology', 'manufacturing', 'healthcare', 'agriculture', 'finance', 'energy', 'mining', 'tourism', 'logistics'];
+      const matchedInds: string[] = [];
+      for (const ind of industries) { if (qLower.includes(ind)) matchedInds.push(ind); }
+      if (matchedInds.length) consultParams.industry = matchedInds;
 
-      // Format the response
+      // Run all three intelligence systems in parallel
+      const [consultInsights, issueAnalysis, liveEvidence] = await Promise.all([
+        bwConsultantAI.consult(consultParams, 'chatbot_query').catch(() => [] as ConsultantInsight[]),
+        resolverRef.current.resolveIssue(userQuery).catch(() => null as IssueAnalysis | null),
+        ReactiveIntelligenceEngine.liveSearch(userQuery, consultParams).catch(() => [] as Array<{ title: string; snippet?: string }>)
+      ]);
 
-      // Create assistant response with analysis
+      // Build unified response
+      const analysis = issueAnalysis || await resolverRef.current.resolveIssue(userQuery);
+      const responseContent = formatUnifiedResponse(analysis, consultInsights, liveEvidence);
+
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
-        content: formatAnalysisResponse(analysis),
+        content: responseContent,
         analysis: analysis,
+        insights: consultInsights,
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Callback for parent component
-      if (onAnalysis) {
+      if (onAnalysis && analysis) {
         onAnalysis(analysis);
       }
     } catch (_error) {

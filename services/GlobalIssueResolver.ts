@@ -1,6 +1,8 @@
 // Global Issue Resolver - Universal Problem-Solver Service
 // Accepts ANY query and determines issue type, gathers data, analyzes with NSIL, returns actionable answer
 
+import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
+
 export interface IssueAnalysis {
   issueType: string;
   issueCategory: string;
@@ -95,131 +97,46 @@ export class GlobalIssueResolver {
   }
 
   private async gatherData(query: string, category: string): Promise<string[]> {
-    // Simulate AWS data gathering
-    const dataPoints: Record<string, string[]> = {
-      location_development: [
-        'GDP and economic indicators',
-        'Population demographics',
-        'Infrastructure inventory',
-        'Investment climate data',
-        'Government policy framework',
-        'Diaspora networks and remittances'
-      ],
-      company_strategy: [
-        'Competitive landscape',
-        'Market positioning',
-        'Financial performance',
-        'Strategic partnerships',
-        'Regulatory environment',
-        'Technology stack'
-      ],
-      market_analysis: [
-        'Market size and growth',
-        'Segment breakdown',
-        'Competitive intensity',
-        'Regulatory factors',
-        'Consumer behavior trends',
-        'Price sensitivity analysis'
-      ],
-      investment_opportunity: [
-        'Return projections',
-        'Risk factors',
-        'Comparable transactions',
-        'Market conditions',
-        'Stakeholder dynamics',
-        'Exit scenarios'
-      ],
-      policy_impact: [
-        'Current policy framework',
-        'Proposed changes',
-        'Historical precedents',
-        'Stakeholder positions',
-        'Economic impact models',
-        'Timeline for implementation'
-      ],
-      risk_assessment: [
-        'Threat identification',
-        'Probability assessment',
-        'Impact quantification',
-        'Mitigation options',
-        'Historical patterns',
-        'Leading indicators'
-      ],
-      infrastructure: [
-        'Capacity and utilization',
-        'Maintenance requirements',
-        'Upgrade needs',
-        'Regulatory compliance',
-        'Cost-benefit analysis',
-        'Growth projections'
-      ],
-      talent_acquisition: [
-        'Labor market data',
-        'Skills availability',
-        'Wage benchmarks',
-        'Training programs',
-        'Retention metrics',
-        'Migration patterns'
-      ],
-      supply_chain: [
-        'Supplier landscape',
-        'Transportation networks',
-        'Logistics costs',
-        'Inventory levels',
-        'Risk concentration',
-        'Redundancy options'
-      ],
-      environmental: [
-        'Baseline environmental conditions',
-        'Regulatory requirements',
-        'Carbon accounting',
-        'Resource consumption',
-        'Emission scenarios',
-        'Mitigation costs'
-      ],
-      geopolitical: [
-        'Trade relationships',
-        'Political stability',
-        'Diplomatic trends',
-        'Sanctions regimes',
-        'Historical conflicts',
-        'Alliance patterns'
-      ],
-      pandemic_crisis: [
-        'Health system capacity',
-        'Economic impact models',
-        'Recovery timelines',
-        'Business continuity',
-        'Supply chain resilience',
-        'Vaccination rates'
-      ],
-      innovation_gap: [
-        'Technology trends',
-        'Adoption rates',
-        'Investment levels',
-        'Skill requirements',
-        'Market readiness',
-        'Competitive advantage'
-      ],
-      cultural_integration: [
-        'Demographic composition',
-        'Language proficiency',
-        'Social cohesion metrics',
-        'Community institutions',
-        'Economic integration',
-        'Policy integration'
-      ],
-      financial_crisis: [
-        'Liquidity positions',
-        'Debt profiles',
-        'Asset quality',
-        'Historical defaults',
-        'Contagion risk',
-        'Recovery scenarios'
-      ]
-    };
+    // Gather real data using ReactiveIntelligenceEngine live search
+    const dataPoints: string[] = [];
     
-    return dataPoints[category] || dataPoints.location_development;
+    try {
+      const liveResults = await ReactiveIntelligenceEngine.liveSearch(query, { category });
+      for (const result of liveResults.slice(0, 6)) {
+        dataPoints.push(result.title || result.snippet || 'Live intelligence data point');
+      }
+    } catch {
+      // Fallback to category-based data descriptors if live search unavailable
+    }
+
+    // Supplement with category-specific data context labels
+    const categoryContext: Record<string, string[]> = {
+      location_development: ['GDP and economic indicators', 'Population demographics', 'Infrastructure inventory', 'Investment climate data', 'Government policy framework', 'Diaspora networks and remittances'],
+      company_strategy: ['Competitive landscape', 'Market positioning', 'Financial performance', 'Strategic partnerships', 'Regulatory environment', 'Technology stack'],
+      market_analysis: ['Market size and growth', 'Segment breakdown', 'Competitive intensity', 'Regulatory factors', 'Consumer behavior trends', 'Price sensitivity analysis'],
+      investment_opportunity: ['Return projections', 'Risk factors', 'Comparable transactions', 'Market conditions', 'Stakeholder dynamics', 'Exit scenarios'],
+      policy_impact: ['Current policy framework', 'Proposed changes', 'Historical precedents', 'Stakeholder positions', 'Economic impact models', 'Timeline for implementation'],
+      risk_assessment: ['Threat identification', 'Probability assessment', 'Impact quantification', 'Mitigation options', 'Historical patterns', 'Leading indicators'],
+      infrastructure: ['Capacity and utilization', 'Maintenance requirements', 'Upgrade needs', 'Regulatory compliance', 'Cost-benefit analysis', 'Growth projections'],
+      talent_acquisition: ['Labor market data', 'Skills availability', 'Wage benchmarks', 'Training programs', 'Retention metrics', 'Migration patterns'],
+      supply_chain: ['Supplier landscape', 'Transportation networks', 'Logistics costs', 'Inventory levels', 'Risk concentration', 'Redundancy options'],
+      environmental: ['Baseline environmental conditions', 'Regulatory requirements', 'Carbon accounting', 'Resource consumption', 'Emission scenarios', 'Mitigation costs'],
+      geopolitical: ['Trade relationships', 'Political stability', 'Diplomatic trends', 'Sanctions regimes', 'Historical conflicts', 'Alliance patterns'],
+      pandemic_crisis: ['Health system capacity', 'Economic impact models', 'Recovery timelines', 'Business continuity', 'Supply chain resilience', 'Vaccination rates'],
+      innovation_gap: ['Technology trends', 'Adoption rates', 'Investment levels', 'Skill requirements', 'Market readiness', 'Competitive advantage'],
+      cultural_integration: ['Demographic composition', 'Language proficiency', 'Social cohesion metrics', 'Community institutions', 'Economic integration', 'Policy integration'],
+      financial_crisis: ['Liquidity positions', 'Debt profiles', 'Asset quality', 'Historical defaults', 'Contagion risk', 'Recovery scenarios']
+    };
+
+    // Add category context items not already covered by live data
+    const contextItems = categoryContext[category] || categoryContext.location_development;
+    for (const item of contextItems) {
+      if (!dataPoints.some(dp => dp.toLowerCase().includes(item.toLowerCase().split(' ')[0]))) {
+        dataPoints.push(item);
+      }
+    }
+
+    return dataPoints.slice(0, 8);
   }
 
   private runNSILAnalysis(query: string, category: string, dataGathered: string[]): IssueAnalysis['nsisLayers'] {

@@ -93,27 +93,29 @@ export async function fetchNumbeoCityData(cityName: string): Promise<NumbeoCityD
 
   try {
     // Requires API key (VITE_NUMBEO_API_KEY or NUMBEO_API_KEY)
-    // If not present, return null to avoid RC issues
-    // We include a mock example for local dev
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const meta = (import.meta as any);
-      const key = meta?.env?.VITE_NUMBEO_API_KEY || process.env?.NUMBEO_API_KEY;
-      if (!key) {
-        // Fallback mock response for local development
-        return {
-          crimeIndex: 44.5,
-          safetyIndex: 55.5,
-          avgRentOneBed: 450,
-          costOfLivingIndex: 72.3
-        };
-      }
-
-      // TODO: Implement actual Numbeo API call when key available
-      // Example: https://www.numbeo.com/api/city_prices?api_key=KEY&city=CITY
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = (import.meta as any);
+    const key = meta?.env?.VITE_NUMBEO_API_KEY || process.env?.NUMBEO_API_KEY;
+    if (!key) {
+      // No API key available — return null (no mock data)
+      console.log(`[External] Numbeo: No API key configured for ${cityName}. Skipping.`);
       return null;
+    }
+
+    // Numbeo API call
+    try {
+      const url = `https://www.numbeo.com/api/city_prices?api_key=${key}&city=${encodeURIComponent(cityName)}`;
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const data = await res.json();
+      return {
+        crimeIndex: data.crime_index ?? null,
+        safetyIndex: data.safety_index ?? null,
+        avgRentOneBed: data.avg_rent_one_bed ?? null,
+        costOfLivingIndex: data.cost_of_living_index ?? null,
+      };
     } catch (err) {
-      console.warn('[External] Numbeo helper failed:', err);
+      console.warn('[External] Numbeo API call failed:', err);
       return null;
     }
   } catch (err) {
