@@ -105,7 +105,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/50 to-slate-900/80" />
                 <div className="relative z-10 max-w-5xl mx-auto text-center">
-                    <p className="text-blue-400 uppercase tracking-[0.3em] text-sm mb-6 font-bold">OUR MISSION</p>
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-white">
                         Strong nations are built<br />on strong regions.
                     </h1>
@@ -121,7 +120,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* OUR ORIGIN */}
             <section className="py-10 px-4 bg-white">
                 <div className="max-w-5xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">OUR ORIGIN</p>
                     <h2 className="text-2xl md:text-3xl font-light mb-6 text-slate-900">The Story of BWGA</h2>
                     <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed mb-8">
                         <div className="space-y-3">
@@ -195,6 +193,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 {/* Subtle background texture */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-4xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">
+                        A Neuro-Symbolic Economic Intelligence Engine
+                    </h2>
+                    <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
+                        Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
+                    </p>
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
                         The Trust Gap in Artificial Intelligence
                     </h2>
@@ -454,7 +458,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* WHO THIS IS FOR */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHO THIS IS FOR</p>
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">You Don't Need to Be an Expert. <span className="text-blue-600 font-normal">The System Already Is.</span></h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-3xl">
                         The people who need this most are the ones who've never had access to it. That's the point.
@@ -540,7 +543,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* NEXT STEPS - Partnership & Pilot Programs */}
             <section id="pilots" className="py-12 px-4 bg-white">
                 <div className="max-w-5xl mx-auto">
-                    <p className="text-blue-600 uppercase tracking-[0.3em] text-sm font-bold text-center mb-6">NEXT STEPS</p>
                     <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">Work With Us</h2>
                     <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
                         We&rsquo;re looking for forward-thinking organisations who want to pilot a new standard for how investment decisions get made &mdash; and help shape the platform before it goes to market.
