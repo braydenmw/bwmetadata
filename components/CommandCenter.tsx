@@ -381,7 +381,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6 md:p-8">
                                 <p className="text-base text-slate-700 leading-relaxed">
-                                    BW Ai outputs are tangible, defensible, and execution-ready: <strong>232 custom documents</strong> tailored to your context and objectives, <strong>156 strategic letters</strong> for outreach and negotiation, investor-grade dossiers with risk and pathway logic, defense packs for committee questions, implementation roadmaps aligned to ownership and dependency, and audience-specific versions for capital, policy, partner, and community stakeholders.
+                                    You leave with a <strong>complete operating position</strong>—not a pitch deck requiring interpretation, but a defensible strategy with pre-mapped objection responses, stakeholder-specific messaging, and sequenced next steps. BW Ai compresses what typically requires <strong>six months of advisory engagement</strong> into outputs ready for board presentations, investor conversations, regulator submissions, and partnership negotiations on day one.
                                 </p>
                             </div>
                         </div>
