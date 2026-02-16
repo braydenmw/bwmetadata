@@ -335,19 +335,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Reflexive Intelligence — Full Width Callout */}
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 md:p-10">
-                        <h3 className="text-2xl font-bold text-slate-900 mb-4">Reflexive Intelligence: Analyzing You</h3>
-                        <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
-                        </p>
-                        <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            <strong>Case Study Intelligence:</strong> Upload any case study, report, proposal, or mandate &mdash; the system reads the full text, breaks it into structured sections, scores governance quality, financial viability, evidence strength, risk management, and replication potential. Five adversarial personas debate the findings. Historical parallel matching surfaces precedents from 10+ countries. You receive a strength/weakness diagnostic with severity levels, specific recommendations, and a list of documents and letters ready to generate from the analysis.
-                        </p>
-                        <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
-                            <Info size={16} /> View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
-                        </button>
-                    </div>
                 </div>
             </section>
 
@@ -384,9 +371,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6 md:p-8">
-                                <p className="text-base text-slate-700 leading-relaxed">
+                                <p className="text-base text-slate-700 leading-relaxed mb-6">
                                     You leave with a <strong>complete operating position</strong>—not a pitch deck requiring interpretation, but a defensible strategy with pre-mapped objection responses, stakeholder-specific messaging, and sequenced next steps. BW Ai compresses what typically requires <strong>six months of advisory engagement</strong> into outputs ready for board presentations, investor conversations, regulator submissions, and partnership negotiations on day one.
                                 </p>
+
+                                {/* Reflexive Intelligence */}
+                                <div className="border-t border-slate-200 pt-6 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-3">Reflexive Intelligence: Analyzing You</h3>
+                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                        Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
+                                    </p>
+                                    <p className="text-sm text-slate-700 leading-relaxed">
+                                        <strong>Case Study Intelligence:</strong> Upload any case study, report, proposal, or mandate &mdash; the full text is read, broken into structured sections, and scored on governance quality, financial viability, evidence strength, risk management, and replication potential. Five adversarial personas debate the findings. Historical parallel matching surfaces precedents from 10+ countries. You receive a strength/weakness diagnostic with severity levels, specific recommendations, and a list of documents and letters ready to generate from the analysis.
+                                    </p>
+                                </div>
+
+                                <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
+                                    <Info size={16} /> View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
+                                </button>
                             </div>
                         </div>
                     </div>
