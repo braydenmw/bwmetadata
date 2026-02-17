@@ -30,46 +30,113 @@ const SYSTEM_INSTRUCTION = `You are "BWGA Ai" (NEXUS_OS_v4.1), the world's premi
 let sessionId: string | null = null;
 
 export const getChatSession = (): { sendMessage: (msg: { message: string }) => Promise<{ text: string }>, sendMessageStream: (msg: { message: string }) => Promise<AsyncIterable<{ text: string }>> } => {
-    // Return a chat-like interface that calls the backend
     return {
         sendMessage: async (msg: { message: string }) => {
-            const response = await fetch(`${API_BASE}/ai/chat`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: msg.message, sessionId, systemInstruction: SYSTEM_INSTRUCTION })
-            });
-            const data = await response.json();
-            sessionId = data.sessionId;
-            return { text: data.text || '' };
+            // Try backend first
+            try {
+                const response = await fetch(`${API_BASE}/ai/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg.message, sessionId, systemInstruction: SYSTEM_INSTRUCTION })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    sessionId = data.sessionId;
+                    return { text: data.text || '' };
+                }
+            } catch (error) {
+                console.warn('Backend chat failed, trying direct Gemini:', error);
+            }
+
+            // Direct Gemini fallback
+            const apiKey = getGeminiApiKey();
+            if (apiKey) {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({
+                    model: 'gemini-2.0-flash',
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
+                    systemInstruction: SYSTEM_INSTRUCTION,
+                    safetySettings: [
+                        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    ]
+                });
+                const result = await model.generateContent(msg.message);
+                return { text: result.response.text() };
+            }
+            return { text: 'Chat service unavailable. Please check your API key.' };
         },
         sendMessageStream: async (msg: { message: string }) => {
-            // Returns an async iterable that reads from SSE
-            const response = await fetch(`${API_BASE}/ai/generate-stream`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: msg.message, sessionId, systemInstruction: SYSTEM_INSTRUCTION })
-            });
-            
-            const reader = response.body?.getReader();
-            const decoder = new TextDecoder();
-            
+            // Try backend SSE first
+            try {
+                const response = await fetch(`${API_BASE}/ai/generate-stream`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: msg.message, sessionId, systemInstruction: SYSTEM_INSTRUCTION })
+                });
+                
+                if (response.ok && response.body) {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    
+                    return {
+                        [Symbol.asyncIterator]: () => ({
+                            async next() {
+                                if (!reader) return { done: true, value: undefined };
+                                const { done, value } = await reader.read();
+                                if (done) return { done: true, value: undefined };
+                                const text = decoder.decode(value);
+                                const lines = text.split('\n').filter(line => line.startsWith('data: '));
+                                const combinedText = lines.map(line => {
+                                    try {
+                                        const json = JSON.parse(line.slice(6));
+                                        return json.text || '';
+                                    } catch { return ''; }
+                                }).join('');
+                                return { done: false, value: { text: combinedText } };
+                            }
+                        })
+                    };
+                }
+            } catch (error) {
+                console.warn('Backend stream failed, using direct Gemini:', error);
+            }
+
+            // Direct Gemini fallback (non-streaming wrapped as async iterable)
+            const apiKey = getGeminiApiKey();
+            if (apiKey) {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({
+                    model: 'gemini-2.0-flash',
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
+                    systemInstruction: SYSTEM_INSTRUCTION,
+                    safetySettings: [
+                        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    ]
+                });
+                const result = await model.generateContent(msg.message);
+                const fullText = result.response.text();
+                let yielded = false;
+                return {
+                    [Symbol.asyncIterator]: () => ({
+                        async next() {
+                            if (yielded) return { done: true, value: undefined };
+                            yielded = true;
+                            return { done: false, value: { text: fullText } };
+                        }
+                    })
+                };
+            }
+
+            // Final fallback — empty iterable
             return {
                 [Symbol.asyncIterator]: () => ({
-                    async next() {
-                        if (!reader) return { done: true, value: undefined };
-                        const { done, value } = await reader.read();
-                        if (done) return { done: true, value: undefined };
-                        const text = decoder.decode(value);
-                        // Parse SSE format
-                        const lines = text.split('\n').filter(line => line.startsWith('data: '));
-                        const combinedText = lines.map(line => {
-                            try {
-                                const json = JSON.parse(line.slice(6));
-                                return json.text || '';
-                            } catch { return ''; }
-                        }).join('');
-                        return { done: false, value: { text: combinedText } };
-                    }
+                    async next() { return { done: true, value: undefined }; }
                 })
             };
         }
@@ -573,31 +640,95 @@ export const generateAnalysisStream = async (item: LiveOpportunityItem, region: 
 };
 
 export const generateDeepReasoning = async (userOrg: string, targetEntity: string, context: string): Promise<DeepReasoningAnalysis> => {
-    const response = await fetch(`${API_BASE}/ai/deep-reasoning`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userOrg, targetEntity, context })
-    });
-    
-    if (!response.ok) {
-        throw new Error('Failed to generate reasoning');
+    // Try backend first
+    try {
+        const response = await fetch(`${API_BASE}/ai/deep-reasoning`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userOrg, targetEntity, context })
+        });
+        
+        if (response.ok) {
+            return await response.json() as DeepReasoningAnalysis;
+        }
+    } catch (error) {
+        console.warn('Backend deep reasoning failed, trying direct Gemini:', error);
     }
-    
-    return await response.json() as DeepReasoningAnalysis;
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `Perform a deep strategic reasoning analysis for a partnership between "${userOrg}" and "${targetEntity}".\nContext: ${context}\n\nProvide a comprehensive JSON analysis with these fields:\n- overallAssessment: string (2-3 sentences)\n- strengthsOfPartnership: array of 3-5 strings\n- weaknessesAndRisks: array of 3-5 strings\n- strategicRecommendations: array of 3-5 actionable strings\n- confidenceLevel: number 0-100\n- timelineEstimate: string\n- criticalSuccessFactors: array of 3 strings\n\nReturn ONLY valid JSON.`;
+
+            const result = await model.generateContent(prompt);
+            const text = result.response.text().trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+            return JSON.parse(text) as DeepReasoningAnalysis;
+        } catch (geminiError) {
+            console.warn('Direct Gemini deep reasoning failed:', geminiError);
+        }
+    }
+
+    throw new Error('Deep reasoning unavailable - no AI service available');
 };
 
 export const generateSearchGroundedContent = async (query: string): Promise<{text: string, sources: any[]}> => {
-    const response = await fetch(`${API_BASE}/ai/search-grounded`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
-    });
-    
-    if (!response.ok) {
-        return { text: "Search unavailable.", sources: [] };
+    // Try backend first
+    try {
+        const response = await fetch(`${API_BASE}/ai/search-grounded`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+        
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (error) {
+        console.warn('Backend search-grounded failed, trying direct Gemini:', error);
     }
-    
-    return await response.json();
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.5, maxOutputTokens: 4096 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `Research the following query thoroughly and provide a detailed, factual response with specific data points, statistics, and actionable information. Include source references where possible.\n\nQuery: ${query}\n\nProvide a comprehensive response:`;
+            const result = await model.generateContent(prompt);
+            const text = result.response.text();
+            return {
+                text,
+                sources: [{ title: 'BW Intelligence Analysis', url: 'https://bwga.ai', type: 'ai-generated' }]
+            };
+        } catch (geminiError) {
+            console.warn('Direct Gemini search-grounded failed:', geminiError);
+        }
+    }
+
+    return { text: "Search unavailable.", sources: [] };
 };
 
 // --- NEW AGENTIC CAPABILITY ---
@@ -614,6 +745,7 @@ export const runAI_Agent = async (
     roleDefinition: string, 
     context: any
 ): Promise<AgentResult> => {
+    // Try backend first
     try {
         const response = await fetch(`${API_BASE}/ai/agent`, {
             method: 'POST',
@@ -624,14 +756,47 @@ export const runAI_Agent = async (
         if (response.ok) {
             return await response.json() as AgentResult;
         }
-        return { findings: ["Agent unavailable."], recommendations: [], confidence: 0 };
     } catch (error) {
-        console.error(`Agent ${agentName} failed:`, error);
-        return { findings: ["Agent offline."], recommendations: [], confidence: 0, gaps: ["Connection error"] };
+        console.warn(`Backend agent ${agentName} failed, trying direct Gemini:`, error);
     }
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.7, maxOutputTokens: 3072 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `You are an AI agent named "${agentName}".\nRole: ${roleDefinition}\n\nContext: ${JSON.stringify(context)}\n\nProvide your analysis as a JSON object with these fields:\n- findings: array of 3-5 key findings (strings)\n- recommendations: array of 2-4 actionable recommendations (strings)\n- confidence: number 0-1\n- gaps: array of information gaps identified (strings)\n\nReturn ONLY valid JSON.`;
+
+            const result = await model.generateContent(prompt);
+            const text = result.response.text().trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+            const parsed = JSON.parse(text);
+            return {
+                findings: parsed.findings || ['Analysis complete.'],
+                recommendations: parsed.recommendations || [],
+                confidence: parsed.confidence || 0.75,
+                gaps: parsed.gaps || []
+            };
+        } catch (geminiError) {
+            console.warn(`Direct Gemini agent ${agentName} failed:`, geminiError);
+        }
+    }
+
+    return { findings: ["Agent unavailable."], recommendations: [], confidence: 0 };
 };
 
 export const runGeopoliticalAnalysis = async (params: ReportParameters): Promise<GeopoliticalAnalysisResult> => {
+    // Try backend first
     try {
         const response = await fetch(`${API_BASE}/ai/geopolitical`, {
             method: 'POST',
@@ -643,7 +808,41 @@ export const runGeopoliticalAnalysis = async (params: ReportParameters): Promise
             return await response.json() as GeopoliticalAnalysisResult;
         }
     } catch (error) {
-        console.warn('Geopolitical analysis failed:', error);
+        console.warn('Backend geopolitical analysis failed, trying direct Gemini:', error);
+    }
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.5, maxOutputTokens: 2048 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `Analyze the geopolitical landscape for business operations in ${params.country || 'the target region'}, sector: ${params.industry?.[0] || 'general'}.\n\nReturn ONLY a valid JSON object with these exact fields:\n- stabilityScore: number 0-100\n- currencyRisk: "Low" | "Moderate" | "High"\n- inflationTrend: string describing trend\n- forecast: 2-3 sentence forecast\n- regionalConflictRisk: number 0-100\n- tradeBarriers: array of specific trade barrier strings\n\nReturn ONLY valid JSON.`;
+
+            const result = await model.generateContent(prompt);
+            const text = result.response.text().trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+            const parsed = JSON.parse(text);
+            return {
+                stabilityScore: parsed.stabilityScore ?? 65,
+                currencyRisk: parsed.currencyRisk || 'Moderate',
+                inflationTrend: parsed.inflationTrend || 'Stable',
+                forecast: parsed.forecast || 'Analysis complete.',
+                regionalConflictRisk: parsed.regionalConflictRisk ?? 30,
+                tradeBarriers: parsed.tradeBarriers || []
+            };
+        } catch (geminiError) {
+            console.warn('Direct Gemini geopolitical analysis failed:', geminiError);
+        }
     }
 
     // Fallback with computed values
@@ -651,13 +850,14 @@ export const runGeopoliticalAnalysis = async (params: ReportParameters): Promise
         stabilityScore: 65,
         currencyRisk: 'Moderate',
         inflationTrend: 'Stable (Projected)',
-        forecast: "Stability assessment requires backend AI configuration.",
+        forecast: "Stability assessment requires AI configuration.",
         regionalConflictRisk: 35,
         tradeBarriers: ['Standard tariffs']
     };
 };
 
 export const runGovernanceAudit = async (params: ReportParameters): Promise<GovernanceAuditResult> => {
+    // Try backend first
     try {
         const response = await fetch(`${API_BASE}/ai/governance`, {
             method: 'POST',
@@ -669,7 +869,41 @@ export const runGovernanceAudit = async (params: ReportParameters): Promise<Gove
             return await response.json() as GovernanceAuditResult;
         }
     } catch (error) {
-        console.warn('Governance audit failed:', error);
+        console.warn('Backend governance audit failed, trying direct Gemini:', error);
+    }
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.5, maxOutputTokens: 2048 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `Perform a governance and regulatory audit for business operations in ${params.country || 'the target region'}, sector: ${params.industry?.[0] || 'general'}, organization type: ${params.organizationType || 'private'}.\n\nReturn ONLY a valid JSON object with these exact fields:\n- governanceScore: number 0-100\n- corruptionRisk: "Low" | "Moderate" | "High"\n- regulatoryFriction: number 0-100\n- transparencyIndex: number 0-100\n- redFlags: array of specific red flag strings (empty if none)\n- complianceRoadmap: array of 3-5 actionable compliance steps\n\nReturn ONLY valid JSON.`;
+
+            const result = await model.generateContent(prompt);
+            const text = result.response.text().trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+            const parsed = JSON.parse(text);
+            return {
+                governanceScore: parsed.governanceScore ?? 70,
+                corruptionRisk: parsed.corruptionRisk || 'Moderate',
+                regulatoryFriction: parsed.regulatoryFriction ?? 30,
+                transparencyIndex: parsed.transparencyIndex ?? 70,
+                redFlags: parsed.redFlags || [],
+                complianceRoadmap: parsed.complianceRoadmap || ['Conduct initial compliance assessment']
+            };
+        } catch (geminiError) {
+            console.warn('Direct Gemini governance audit failed:', geminiError);
+        }
     }
 
     // Fallback
@@ -679,11 +913,12 @@ export const runGovernanceAudit = async (params: ReportParameters): Promise<Gove
         regulatoryFriction: 30,
         transparencyIndex: 70,
         redFlags: [],
-        complianceRoadmap: ['Configure backend for detailed compliance roadmap']
+        complianceRoadmap: ['Configure AI services for detailed compliance roadmap']
     };
 };
 
 export const runCopilotAnalysis = async (query: string, context: string): Promise<{summary: string, options: any[], followUp: string}> => {
+    // Try backend first
     try {
         const response = await fetch(`${API_BASE}/ai/copilot-analysis`, {
             method: 'POST',
@@ -695,7 +930,38 @@ export const runCopilotAnalysis = async (query: string, context: string): Promis
             return await response.json();
         }
     } catch (error) {
-        console.warn('Copilot analysis failed:', error);
+        console.warn('Backend copilot analysis failed, trying direct Gemini:', error);
+    }
+
+    // Direct Gemini fallback
+    const apiKey = getGeminiApiKey();
+    if (apiKey) {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.0-flash',
+                generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+                ]
+            });
+
+            const prompt = `You are a strategic business copilot. Analyze this query in the given context and provide recommendations.\n\nQuery: ${query}\nContext: ${context}\n\nReturn ONLY a valid JSON object with:\n- summary: 2-3 sentence analysis summary\n- options: array of 2-4 objects each with {id: string, title: string, rationale: string}\n- followUp: a suggested follow-up question\n\nReturn ONLY valid JSON.`;
+
+            const result = await model.generateContent(prompt);
+            const text = result.response.text().trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+            const parsed = JSON.parse(text);
+            return {
+                summary: parsed.summary || 'Analysis complete.',
+                options: parsed.options || [],
+                followUp: parsed.followUp || 'Would you like to explore further?'
+            };
+        } catch (geminiError) {
+            console.warn('Direct Gemini copilot analysis failed:', geminiError);
+        }
     }
 
     // Fallback

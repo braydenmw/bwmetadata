@@ -301,6 +301,24 @@ export class MultiAgentOrchestrator {
         reasoning: data.reasoning || ['GPT-4 synthesis complete']
       };
     } catch {
+      // Fallback to direct Gemini API as GPT-4 alternative
+      try {
+        const { GoogleGenerativeAI } = await import('@google/generative-ai');
+        const { getGeminiApiKey } = await import('./awsBedrockService');
+        const apiKey = getGeminiApiKey();
+        if (apiKey) {
+          const genAI = new GoogleGenerativeAI(apiKey);
+          const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+          const result = await model.generateContent(`Act as a strategic analyst (GPT-4 perspective). ${prompt}`);
+          return {
+            text: result.response.text(),
+            confidence: 0.84,
+            reasoning: ['Gemini-powered GPT-4 alternative analysis complete']
+          };
+        }
+      } catch (e) {
+        console.warn('[MultiAgent] GPT-4 alternative fallback failed:', e);
+      }
       return { text: '', confidence: 0, reasoning: ['OpenAI unavailable'] };
     }
   }
@@ -322,6 +340,24 @@ export class MultiAgentOrchestrator {
         reasoning: data.reasoning || ['Claude ethical analysis complete']
       };
     } catch {
+      // Fallback to direct Gemini API as Claude alternative
+      try {
+        const { GoogleGenerativeAI } = await import('@google/generative-ai');
+        const { getGeminiApiKey } = await import('./awsBedrockService');
+        const apiKey = getGeminiApiKey();
+        if (apiKey) {
+          const genAI = new GoogleGenerativeAI(apiKey);
+          const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+          const result = await model.generateContent(`Act as an ethical and governance-focused analyst (Claude perspective). ${prompt}`);
+          return {
+            text: result.response.text(),
+            confidence: 0.86,
+            reasoning: ['Gemini-powered Claude alternative ethical analysis complete']
+          };
+        }
+      } catch (e) {
+        console.warn('[MultiAgent] Claude alternative fallback failed:', e);
+      }
       return { text: '', confidence: 0, reasoning: ['Claude unavailable'] };
     }
   }
