@@ -32,7 +32,42 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-import { GlobalComplianceFramework } from './GlobalComplianceFramework';
+import { GlobalComplianceFramework, CountryComplianceProfile } from './GlobalComplianceFramework';
+
+// ============================================================================
+// PROJECT ASSESSMENT PARAMS TYPE
+// ============================================================================
+
+interface IFCProjectParams {
+  country: string;
+  sector: string;
+  projectType: string;
+  investmentSizeM: number;
+  hasESMS?: boolean;
+  hasESIA?: boolean;
+  hasStakeholderPlan?: boolean;
+  hasGrievanceMechanism?: boolean;
+  hasLaborPolicies?: boolean;
+  prohibitsChildLabor?: boolean;
+  prohibitsForcedLabor?: boolean;
+  hasOHSProgram?: boolean;
+  hasResourceTargets?: boolean;
+  hasWasteManagement?: boolean;
+  hasPollutionPrevention?: boolean;
+  hasCommunityHealthAssessment?: boolean;
+  hasEmergencyPreparedness?: boolean;
+  requiresLandAcquisition?: boolean;
+  displacesCommunities?: boolean;
+  hasResettlementPlan?: boolean;
+  hasLivelihoodPlan?: boolean;
+  nearCriticalHabitat?: boolean;
+  hasBiodiversityPlan?: boolean;
+  indigenousPresent?: boolean;
+  hasFPIC?: boolean;
+  hasIndigenousPlan?: boolean;
+  culturalHeritagePresent?: boolean;
+  hasChanceFindsProcedure?: boolean;
+}
 
 // ============================================================================
 // IFC PERFORMANCE STANDARDS (PS1-PS8)
@@ -502,44 +537,7 @@ export class IFCGlobalStandardsEngine {
    * Run comprehensive global standards assessment
    * This is the "World Law Translator" - applies universal standards, finds gaps, bridges to local law
    */
-  static assessProject(params: {
-    country: string;
-    sector: string;
-    projectType: string;
-    investmentSizeM: number;
-    // PS1 - ESMS
-    hasESMS?: boolean;
-    hasESIA?: boolean;
-    hasStakeholderPlan?: boolean;
-    hasGrievanceMechanism?: boolean;
-    // PS2 - Labor
-    hasLaborPolicies?: boolean;
-    prohibitsChildLabor?: boolean;
-    prohibitsForcedLabor?: boolean;
-    hasOHSProgram?: boolean;
-    // PS3 - Resource/Pollution
-    hasResourceTargets?: boolean;
-    hasWasteManagement?: boolean;
-    hasPollutionPrevention?: boolean;
-    // PS4 - Community
-    hasCommunityHealthAssessment?: boolean;
-    hasEmergencyPreparedness?: boolean;
-    // PS5 - Land
-    requiresLandAcquisition?: boolean;
-    displacesCommunities?: boolean;
-    hasResettlementPlan?: boolean;
-    hasLivelihoodPlan?: boolean;
-    // PS6 - Biodiversity
-    nearCriticalHabitat?: boolean;
-    hasBiodiversityPlan?: boolean;
-    // PS7 - Indigenous
-    indigenousPresent?: boolean;
-    hasFPIC?: boolean;
-    hasIndigenousPlan?: boolean;
-    // PS8 - Cultural Heritage
-    culturalHeritagePresent?: boolean;
-    hasChanceFindsProcedure?: boolean;
-  }): GlobalStandardsAssessment {
+  static assessProject(params: IFCProjectParams): GlobalStandardsAssessment {
     const startTime = Date.now();
     
     const ifcAssessments: StandardAssessment[] = [];
@@ -673,7 +671,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS1: Environmental and Social Management System Assessment
    */
-  private static assessPS1(params: any): StandardAssessment {
+  private static assessPS1(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -769,7 +767,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS2: Labor and Working Conditions Assessment
    */
-  private static assessPS2(params: any): StandardAssessment {
+  private static assessPS2(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -849,7 +847,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS3: Resource Efficiency and Pollution Prevention
    */
-  private static assessPS3(params: any): StandardAssessment {
+  private static assessPS3(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -911,7 +909,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS4: Community Health, Safety, and Security
    */
-  private static assessPS4(params: any): StandardAssessment {
+  private static assessPS4(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -971,7 +969,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS5: Land Acquisition and Involuntary Resettlement
    */
-  private static assessPS5(params: any): StandardAssessment {
+  private static assessPS5(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -1048,7 +1046,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS6: Biodiversity Conservation
    */
-  private static assessPS6(params: any): StandardAssessment {
+  private static assessPS6(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 50; // Baseline
@@ -1104,7 +1102,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS7: Indigenous Peoples
    */
-  private static assessPS7(params: any): StandardAssessment {
+  private static assessPS7(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 0;
@@ -1176,7 +1174,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * PS8: Cultural Heritage
    */
-  private static assessPS8(params: any): StandardAssessment {
+  private static assessPS8(params: IFCProjectParams): StandardAssessment {
     const gaps: ComplianceGap[] = [];
     const strengths: string[] = [];
     let score = 50; // Baseline
@@ -1243,7 +1241,7 @@ export class IFCGlobalStandardsEngine {
   /**
    * Assess SDG alignment
    */
-  private static assessSDGAlignment(sdgNumber: number, params: any, ifcAssessments: StandardAssessment[]): SDGAlignment {
+  private static assessSDGAlignment(sdgNumber: number, params: IFCProjectParams, ifcAssessments: StandardAssessment[]): SDGAlignment {
     const sdg = UN_SDGS.find(s => s.number === sdgNumber)!;
     const contributions: string[] = [];
     const risks: string[] = [];
@@ -1327,7 +1325,7 @@ export class IFCGlobalStandardsEngine {
    */
   static getGlobalComplianceSummary(country: string): {
     ifcCoverage: boolean;
-    countryProfile: any;
+    countryProfile: CountryComplianceProfile | undefined;
     regionalBlocs: string[];
     applicableDFIs: string[];
   } {

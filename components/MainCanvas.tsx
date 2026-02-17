@@ -7,16 +7,15 @@ import {
   Users, GitBranch,
   FileText, BarChart3, Handshake, TrendingUp,
   Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, MessageCircle, Send, User, Compass, Zap,
+  X, Plus, Send, User, Compass, Zap,
   DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
 import { DocumentUploadModal } from './DocumentUploadModal';
 import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnalyzer';
-import { NSILIntelligenceHub } from '../services/NSILIntelligenceHub';
+// NSILIntelligenceHub used by ReportOrchestrator (not directly here)
 import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
 import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
 import { invokeAI } from '../services/awsBedrockService';
-import { GLOBAL_STRATEGIC_INTENTS, INTENT_SCOPE_OPTIONS, DEVELOPMENT_OUTCOME_OPTIONS, GLOBAL_COUNTERPART_TYPES, TIME_HORIZON_OPTIONS, MACRO_FACTOR_OPTIONS, REGULATORY_FACTOR_OPTIONS, ECONOMIC_FACTOR_OPTIONS, CURRENCY_OPTIONS } from '../constants';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, IngestedDocumentMeta } from '../types';
 

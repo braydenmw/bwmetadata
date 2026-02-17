@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Loader, ArrowRight, AlertCircle, TrendingUp, X, ExternalLink } from 'lucide-react';
+import { Search, Loader, AlertCircle, TrendingUp, X, ExternalLink } from 'lucide-react';
 import { invokeAI } from '../services/awsBedrockService';
 
 export interface SearchResult {
@@ -69,11 +69,11 @@ User query: ${query.trim()}`;
         const cleaned = aiResponse.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
         const parsed = JSON.parse(cleaned);
         if (Array.isArray(parsed)) {
-          realResults = parsed.map((item: any) => ({
-            title: item.title || 'Analysis',
-            description: item.description || item.content || '',
+          realResults = parsed.map((item: Record<string, unknown>) => ({
+            title: String(item.title || 'Analysis'),
+            description: String(item.description || item.content || ''),
             confidence: typeof item.confidence === 'number' ? item.confidence : 0.8,
-            category: item.category || 'Analysis'
+            category: String(item.category || 'Analysis')
           }));
         }
       } catch {

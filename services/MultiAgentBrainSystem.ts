@@ -19,22 +19,7 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/ge
 import { ReportParameters, ReportData, CopilotInsight, RefinedIntake } from '../types';
 import CompositeScoreService from './CompositeScoreService';
 import { computeFrontierIntelligence } from './algorithms';
-
-// Get Gemini API key - works in both Vite and Node environments
-const getGeminiApiKey = (): string => {
-  try {
-    const meta = import.meta as { env?: { VITE_GEMINI_API_KEY?: string } };
-    if (meta?.env?.VITE_GEMINI_API_KEY) {
-      return meta.env.VITE_GEMINI_API_KEY;
-    }
-  } catch (e) {
-    // Vite env not available
-  }
-  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
-    return process.env.GEMINI_API_KEY;
-  }
-  return '';
-};
+import { getGeminiApiKey } from './awsBedrockService';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TYPES & INTERFACES
@@ -304,7 +289,6 @@ export class MultiAgentOrchestrator {
       // Fallback to direct Gemini API as GPT-4 alternative
       try {
         const { GoogleGenerativeAI } = await import('@google/generative-ai');
-        const { getGeminiApiKey } = await import('./awsBedrockService');
         const apiKey = getGeminiApiKey();
         if (apiKey) {
           const genAI = new GoogleGenerativeAI(apiKey);
@@ -343,7 +327,6 @@ export class MultiAgentOrchestrator {
       // Fallback to direct Gemini API as Claude alternative
       try {
         const { GoogleGenerativeAI } = await import('@google/generative-ai');
-        const { getGeminiApiKey } = await import('./awsBedrockService');
         const apiKey = getGeminiApiKey();
         if (apiKey) {
           const genAI = new GoogleGenerativeAI(apiKey);

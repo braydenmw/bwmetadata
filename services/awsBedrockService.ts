@@ -61,9 +61,10 @@ export const isAWSEnvironment = (): boolean => {
   return false;
 };
 
-// ==================== GET GEMINI API KEY (LOCAL DEV ONLY) ====================
+// ==================== GET GEMINI API KEY ====================
 
-const getGeminiApiKey = (): string => {
+export const getGeminiApiKey = (): string => {
+  // 1. Vite build-time: import.meta.env.VITE_GEMINI_API_KEY (baked at build)
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const meta = import.meta as any;
@@ -71,11 +72,32 @@ const getGeminiApiKey = (): string => {
       return meta.env.VITE_GEMINI_API_KEY;
     }
   } catch {
-    // Ignore
+    // Not in Vite context
   }
-  if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
-    return process.env.GEMINI_API_KEY;
+
+  // 2. Vite define'd process.env.GEMINI_API_KEY (replaced at build time by vite.config.ts)
+  try {
+    if (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) {
+      return process.env.GEMINI_API_KEY;
+    }
+  } catch {
+    // process not available in browser
   }
+
+  // 3. Runtime window injection (for AWS ECS/Docker: server can inject into index.html)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const win = window as any;
+    if (win?.__ENV__?.GEMINI_API_KEY) {
+      return win.__ENV__.GEMINI_API_KEY;
+    }
+    if (win?.__ENV__?.VITE_GEMINI_API_KEY) {
+      return win.__ENV__.VITE_GEMINI_API_KEY;
+    }
+  } catch {
+    // Not in browser or window.__ENV__ not set
+  }
+
   return '';
 };
 

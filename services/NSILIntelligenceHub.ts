@@ -245,15 +245,10 @@ export class NSILIntelligenceHub {
         Promise.resolve(UnbiasedAnalysisEngine.analyze(params)),
         Promise.resolve(this.runAutonomousLayer(params)),
         Promise.resolve(IFCGlobalStandardsEngine.assessProject({
-          projectName: (params as Record<string, string>).projectName || 'Investment Project',
           country: (params as Record<string, string>).country || 'Unknown',
           sector: ((params as Record<string, string[]>).industry || ['general'])[0] || 'general',
-          investmentAmount: 10000000,
-          projectType: 'greenfield',
-          description: (params as Record<string, string>).description || 'Investment project under analysis',
-          environmentalFootprint: { landUseHa: 10, waterUsageM3PerDay: 100, emissions: 'moderate' },
-          socialContext: { workforceSize: 100, communityProximity: 'adjacent', indigenousLandRisk: false },
-          governanceStructure: { localOwnershipPercent: 50, transparencyLevel: 'moderate' }
+          investmentSizeM: 10,
+          projectType: 'greenfield'
         }))
       ]);
       
