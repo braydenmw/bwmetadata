@@ -122,7 +122,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-10 px-4 bg-white">
                 <div className="max-w-5xl mx-auto">
                     <h2 className="text-2xl md:text-3xl font-light mb-6 text-slate-900">The Story of BWGA</h2>
-                    <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed mb-8">
+                    <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed text-justify mb-8">
                         <div className="space-y-3">
                             <p>
                                 BWGA wasn&rsquo;t founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear.
@@ -146,8 +146,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
                     </div>
-                    <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        That&rsquo;s not a criticism &mdash; it&rsquo;s the insight that made this system possible. If the answers already exist, scattered across decades and continents, then the real problem isn&rsquo;t knowledge. It&rsquo;s access. It&rsquo;s synthesis. It&rsquo;s the ability to take what worked in Shenzhen in 1980, in Penang in 1995, in Medell&iacute;n in 2004, and translate it into a strategic roadmap for a regional council staring at a blank page today.
+                    <p className="text-base text-slate-700 leading-relaxed text-justify mb-8">
+                        So we built the bridge. BWGA Ai takes what already worked &mdash; in Shenzhen&rsquo;s special economic zones, in Penang&rsquo;s electronics corridor, in Medell&iacute;n&rsquo;s urban reinvention, in Rwanda&rsquo;s governance transformation, in Estonia&rsquo;s digital-first state &mdash; and distils it into a system that any regional council, any investment agency, any government body can use today. Not by copying those places, but by extracting the transferable principles: the sequencing, the stakeholder architecture, the policy triggers, the conditions that let a place transform. The knowledge has always existed. The problem was that it sat locked inside decades of reports, across continents, in languages and frameworks most practitioners never see. This system makes it accessible, synthesised, and actionable &mdash; from first question to boardroom-ready output.
                     </p>
 
                     {/* Personal Story  -  Brayden Walls */}
@@ -161,18 +161,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="relative z-10 p-8 md:p-10">
                             <h3 className="text-2xl font-semibold text-white mb-6">Who I am &mdash; the founder and sole developer</h3>
                             
-                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                            <p className="text-base text-slate-200 leading-relaxed text-justify mb-4">
                                 Hey everyone, I&rsquo;m Brayden Walls, the developer behind <strong className="text-white">BWGA Ai</strong>, and I&rsquo;m thrilled to finally share this with the world. For the first time, I&rsquo;m lifting the curtain on what we&rsquo;ve built&mdash;a groundbreaking neuro-symbolic intelligence system that&rsquo;s not just another AI tool, but a complete rethinking of how machines can reason like humans.
                             </p>
-                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                            <p className="text-base text-slate-200 leading-relaxed text-justify mb-4">
                                 For more than 16 months, I&rsquo;ve been living, researching, and building in a place that inspired everything you see here &mdash; the Philippines. Not in a lab. Not in a corporate office. On the ground, in the communities where economic potential is enormous but the tools to unlock it simply don&rsquo;t exist.
                             </p>
 
-                            <p className="text-base text-slate-200 leading-relaxed mb-4">
+                            <p className="text-base text-slate-200 leading-relaxed text-justify mb-4">
                                 I watched the same pattern repeat everywhere: ambitious businesses exploring new frontiers with incomplete information, regional governments eager for partnerships but unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific &mdash; they all wanted the same thing: to be seen, to be understood, to have a fair shot.
                             </p>
 
-                            <p className="text-base text-slate-200 leading-relaxed mb-6">
+                            <p className="text-base text-slate-200 leading-relaxed text-justify mb-6">
                                 So I stopped waiting for someone else to build it. I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into software. What came out the other side isn&rsquo;t a chatbot or a dashboard &mdash; it&rsquo;s a complete reasoning system. One that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone. What you&rsquo;re about to see below is what I built, how it works, and why nothing else like it exists.
                             </p>
 
@@ -204,13 +204,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         The Trust Gap in Artificial Intelligence
                     </h2>
                     <div className="space-y-4 mb-10">
-                        <p className="text-lg text-slate-700 leading-relaxed">
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
                             Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;operates probabilistically. It predicts the next likely token from patterns in training data. That is useful for drafting ideas and summarizing text. It is not sufficient for high-stakes strategic decisions.
                         </p>
-                        <p className="text-lg text-slate-700 leading-relaxed">
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
                             In decision environments involving public money, sovereign priorities, infrastructure, employment, or institutional capital, leaders are judged on defensibility. They must explain how conclusions were reached, what assumptions were used, which data was trusted, what uncertainty was modeled, and whether the same process yields the same answer tomorrow.
                         </p>
-                        <p className="text-lg text-slate-700 leading-relaxed">
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
                             Standard AI tools can hallucinate under ambiguity, produce inconsistent responses to equivalent prompts, and hide reasoning inside opaque model behavior. They cannot reliably provide deterministic scoring, end-to-end traceability, or committee-ready audit evidence. <strong className="text-slate-900">BW Ai was built to close that trust gap.</strong>
                         </p>
                     </div>
@@ -228,7 +228,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     Standard AI tools hallucinate facts and fabricated references under uncertainty. They offer limited explainability for internal reasoning behavior, produce non-deterministic outputs on repeated prompts, leave weak audit trails for high-stakes governance review, and are difficult to defend under board, ministry, or committee scrutiny.
                                 </p>
                             </div>
@@ -245,7 +245,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     BW Ai validates inputs before scoring and recommendation generation. It provides a full audit trail from intake to final conclusion, deterministic scoring&mdash;same data, same outcome&mdash;with every conclusion traceable to formulas, assumptions, and evidence. The result: board-ready, audit-committee-defensible outputs.
                                 </p>
                             </div>
@@ -263,7 +263,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
                 <div className="relative max-w-4xl mx-auto">
                     <p className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-6">&ldquo;12 Months That Changed Everything&rdquo;</p>
-                    <p className="text-lg text-slate-300 leading-relaxed mb-6">
+                    <p className="text-lg text-slate-300 leading-relaxed text-justify mb-6">
                         BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong className="text-white">38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
                     </p>
                     <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors">
@@ -294,7 +294,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     The Nexus Strategic Intelligence Layer is a <strong>10&ndash;layer deterministic pipeline</strong> invented from scratch. It is the central nervous system of BW Ai &mdash; every input you provide is validated, debated, scored by 46 proprietary formulas, stress-tested across 5,000 scenarios, processed through neuroscience models, and synthesised into provenance-tracked outputs. Nothing is skipped. Nothing is approximate. Every layer must pass before the next one fires.
                                 </p>
                             </div>
@@ -311,7 +311,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     <strong>1,307 lines of code</strong> implementing 7 mathematical models from published neuroscience research &mdash; Wilson-Cowan neural fields, Rao &amp; Ballard predictive processing, Friston&rsquo;s free energy principle, Itti &amp; Koch attention allocation, prospect theory emotional valence, global workspace theory, and Baddeley&rsquo;s working memory. These aren&rsquo;t simplified approximations. They are faithful implementations of how the human brain allocates attention, weighs risk, and makes decisions under pressure &mdash; running live inside the pipeline on your data.
                                 </p>
                             </div>
@@ -328,7 +328,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     Before any recommendation reaches you, <strong>five adversarial personas</strong> debate it. The Skeptic hunts for deal-killers. The Advocate finds upside. The Regulator checks legality. The Accountant validates cash flow. The Operator tests execution. Beliefs update through Bayesian inference &mdash; not majority vote. Disagreements are preserved, not smoothed over. The Skeptic carries 1.2x weight because bad news matters more than good news.
                                 </p>
                             </div>
@@ -345,7 +345,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     BW Ai doesn&rsquo;t wait for your next question. <strong>8 autonomous engines</strong> run continuously &mdash; finding opportunities you haven&rsquo;t asked about, applying lessons from unrelated industries, generating follow-up research, stress-testing assumptions across thousands of scenarios, and flagging ethical risks before any output is released. Every engine passes through IFC and UN SDG governance gates. Nothing reaches you without adversarial stress-testing first.
                                 </p>
                             </div>
@@ -362,7 +362,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     Most systems only analyse external conditions. BW Ai also analyses <strong>you</strong> &mdash; the person making the decision. <strong>7 reflexive engines</strong> detect your recurring priorities, surface assets hidden in your own narrative, identify unspoken barriers and risk assumptions you haven&rsquo;t articulated, map where you are in the investment lifecycle, and reframe conclusions for every audience &mdash; investors, governments, communities, partners, and executive teams.
                                 </p>
                             </div>
@@ -379,7 +379,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     Every score you see is calculated by <strong>proprietary mathematical formulas</strong> &mdash; not LLM-generated estimates. DAG-scheduled execution ensures formulas run in the correct dependency order. Confidence calibration adjusts for data completeness. Monte Carlo simulation stress-tests every result across 5,000 scenarios so you see the realistic range of outcomes, not just the optimistic projection. Every score is traceable back to the exact formula, exact inputs, and exact weights that produced it.
                                 </p>
                             </div>
@@ -388,7 +388,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* Final caption */}
                     <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-xl p-6 md:p-8 text-center">
-                        <p className="text-base md:text-lg text-white/90 leading-relaxed max-w-4xl mx-auto">
+                        <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify max-w-4xl mx-auto">
                             A 10-layer intelligence pipeline. 7 neuroscience models from published research. 5 adversarial personas debating every recommendation. 46 proprietary formulas. 8 autonomous engines. 7 reflexive engines that analyse the decision-maker, not just the decision. <strong className="text-white">No other operating system in the world combines all of these for regional development and cross-border investment.</strong> This is what makes BW Ai a sovereign-grade national strategic asset &mdash; not a dashboard, not a chatbot, not a consulting deck with a login screen.
                         </p>
                     </div>
@@ -406,7 +406,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
                 <div className="relative max-w-4xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">&ldquo;You don&rsquo;t need to be a data scientist.&rdquo;</h2>
-                    <p className="text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
+                    <p className="text-lg text-slate-300 leading-relaxed text-justify max-w-3xl mx-auto">
                         The interface is simple by design. Under the hood, BW Ai runs as a <strong className="text-white">digital strategy boardroom</strong>: specialized engines, formula evaluators, and agentic routines process your case continuously, pressure-test assumptions, and return decisions in actionable form. You are not receiving generic advice; you are receiving structured intelligence built to survive scrutiny and move to execution.
                     </p>
                 </div>
@@ -429,17 +429,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6 md:p-8">
-                                <p className="text-base text-slate-700 leading-relaxed mb-6">
+                                <p className="text-base text-slate-700 leading-relaxed text-justify mb-6">
                                     You leave with a <strong>complete operating position</strong>—not a pitch deck requiring interpretation, but a defensible strategy with pre-mapped objection responses, stakeholder-specific messaging, and sequenced next steps. BW Ai compresses what typically requires <strong>six months of advisory engagement</strong> into outputs ready for board presentations, investor conversations, regulator submissions, and partnership negotiations on day one.
                                 </p>
 
                                 {/* Reflexive Intelligence */}
                                 <div className="border-t border-slate-200 pt-6 mb-6">
                                     <h3 className="text-lg font-bold text-slate-900 mb-3">Reflexive Intelligence: Analyzing You</h3>
-                                    <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                                    <p className="text-sm text-slate-700 leading-relaxed text-justify mb-3">
                                         Most systems only analyze external conditions. BW Ai also analyzes decision posture. <strong>Signal Decoder:</strong> Detects recurring priorities and strategic fixation points. <strong>Latent Advantage Miner:</strong> Surfaces underused assets hidden in narrative context. <strong>Constraint Mapper:</strong> Identifies unspoken barriers, risk assumptions, and execution friction. <strong>Universal Translator:</strong> Reframes conclusions for investors, governments, communities, partners, and executive teams.
                                     </p>
-                                    <p className="text-sm text-slate-700 leading-relaxed">
+                                    <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                         <strong>Case Study Intelligence:</strong> Upload any case study, report, proposal, or mandate &mdash; the full text is read, broken into structured sections, and scored on governance quality, financial viability, evidence strength, risk management, and replication potential. Five adversarial personas debate the findings. Historical parallel matching surfaces precedents from 10+ countries. You receive a strength/weakness diagnostic with severity levels, specific recommendations, and a list of documents and letters ready to generate from the analysis.
                                     </p>
                                 </div>
@@ -463,7 +463,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     Trust in BW Ai is structural, not promotional: deterministic scoring for reproducible outcomes, formula-level traceability for every recommendation, end-to-end audit logging from intake to output, continuous recalibration using live macro and market feeds, and human sign-off requirements for high-impact decisions.
                                 </p>
                             </div>
@@ -479,7 +479,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
                                     BW Ai does not end at analysis. It generates execution artifacts teams can use immediately: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), Term Sheets and strategic briefs, stakeholder narratives, and partnership negotiation frameworks. This compresses weeks of advisory and drafting cycles into a decision-ready operating flow.
                                 </p>
                             </div>
@@ -494,7 +494,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-16 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-3xl font-bold text-white mb-4">A Paradigm Shift</h2>
-                    <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                    <p className="text-lg text-slate-300 leading-relaxed text-justify mb-4">
                         The core problem I&rsquo;m solving is <strong className="text-white">Trust</strong>. This isn&rsquo;t just technology. It is a system built to restore confidence in artificial intelligence. It empowers the &ldquo;underdogs&rdquo; of the global economy&mdash;regional councils, developing nations, and ambitious entrepreneurs&mdash;to make decisions they can legally and strategically defend in boardrooms, government briefings, and investment committees.
                     </p>
                     <p className="text-lg text-white leading-relaxed font-semibold">
