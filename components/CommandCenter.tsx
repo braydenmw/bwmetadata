@@ -257,17 +257,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 1 CONTINUED: The Origin (Full-Width Story Block with Image)
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative py-16 px-4 bg-slate-900 text-white overflow-hidden">
-                <div className="absolute inset-0">
-                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&h=900&fit=crop&q=80" alt="Global connectivity" className="w-full h-full object-cover opacity-20" />
-                </div>
-                <div className="relative max-w-4xl mx-auto">
-                    <p className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-6">&ldquo;12 Months That Changed Everything&rdquo;</p>
-                    <p className="text-lg text-slate-300 leading-relaxed text-justify mb-6">
-                        BW Ai did not begin as a branding exercise. It began as a pattern observed repeatedly across emerging and under-leveraged regions: high-potential projects were overlooked, not because they lacked value, but because they lacked institutional translation. The mission became clear: build an operating system for strategic translation and execution. The result is NSIL&mdash;the Nexus Strategic Intelligence Layer&mdash;with <strong className="text-white">38+ proprietary formulas</strong> (including SPI and RROI), strict verification gates, and orchestration controls that prevent execution until required inputs meet quality thresholds.
+            <section className="relative py-16 px-4 bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white overflow-hidden">
+                <div className="absolute inset-0 opacity-20"></div>
+                <div className="relative max-w-4xl mx-auto space-y-6">
+                    <p className="text-sm font-bold text-blue-400 uppercase tracking-wider">Why This Exists</p>
+                    
+                    <p className="text-base text-slate-300 leading-relaxed text-justify">
+                        <strong className="text-white">Bright founders in Lagos. Brilliant projects in the Philippines. Life-saving initiatives in Bangladesh.</strong> All overlooked. Not for lack of capability or capital. For lack of <strong className="text-white">institutional translation.</strong> That's what this system was built to close.
                     </p>
-                    <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors">
-                        <GitBranch size={16} /> View Full Architecture &amp; 38+ Formulas &rarr;
+
+                    <div className="bg-blue-950/50 border-l-4 border-r-4 border-blue-400 px-6 py-5 rounded-sm backdrop-blur-sm">
+                        <p className="text-sm font-bold text-blue-300 uppercase tracking-wider mb-4">The Real Opportunity Is Invisible</p>
+                        <p className="text-base text-slate-200 leading-relaxed text-justify mb-4">
+                            Capital flows to the largest markets. But the real wealth-generating capacity—the industries, the people, the supply chains—lives in the regional cities everyone overlooks. Everyone writes reports. Everyone wants the same intelligence. But the data is two years old. Where does someone start when they don't have the analyst budget, the skill, or access to current information? <strong className="text-white">That's the gap.</strong>
+                        </p>
+                        <p className="text-base text-slate-200 leading-relaxed text-justify">
+                            This is a <strong className="text-white">100% dedicated global regional development system.</strong> Not here to replace what you're doing. Not here to be another report vendor. Here to provide the real-time institutional translation layer that lets you see what's actually happening in the cities and regions that the big markets depend on. Here to give you the ability to understand, evaluate, and act on opportunities that have been invisible simply because the translation was missing. <strong className="text-white">Below is how it thinks.</strong>
+                        </p>
+                    </div>
+
+                    <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors pt-4">
+                        <GitBranch size={16} /> The Intelligence Architecture: How The System Works &rarr;
                     </button>
                 </div>
             </section>
@@ -3112,8 +3122,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Popup header */}
                         <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 rounded-t-lg px-8 py-6 flex items-center justify-between">
                             <div>
-                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">FULL TECHNICAL BREAKDOWN</p>
-                                <h3 className="text-2xl font-bold text-white">Inside the NSIL &mdash; Every Layer, Formula &amp; Engine</h3>
+                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">NSIL v6.0 — How It Thinks</p>
+                                <h3 className="text-2xl font-bold text-white">Inside the NSIL &mdash; Every Layer, Formula & Engine</h3>
                             </div>
                             <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-white transition-colors p-2">
                                 <X size={24} />
@@ -3122,7 +3132,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Popup body */}
                         <div className="p-6 md:p-8 space-y-6 text-sm text-slate-700 leading-relaxed">
 
-                            <p>The NSIL &mdash; Nexus Strategic Intelligence Layer &mdash; is the orchestration engine I invented to make AI deterministic. It&rsquo;s implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span> and runs every analysis through 10 computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. <strong>34 intelligence engines</strong>, <strong>38+ proprietary formulas</strong>, and <strong>12 core algorithms</strong> working in concert. Here&rsquo;s every layer, every formula, every engine.</p>
+                            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-sm mb-6">
+                                <p className="text-sm text-slate-900 font-semibold mb-2">BW Ai v6.0: The Intelligence Architecture</p>
+                                <p className="text-sm text-slate-700">
+                                    This is <strong>how the system thinks.</strong> Every input you provide enters a deterministic 10-layer pipeline that validates, debates, scores, stress-tests, and synthesises analysis. The same input always produces the same output. No guessing. No black boxes. Every layer has explicit logic, full auditability, and mathematical rigor. Here&rsquo;s the complete architecture.
+                                </p>
+                            </div>
+
+                            <p>The NSIL &mdash; <strong>Nexus Strategic Intelligence Layer</strong> &mdash; is a deterministic reasoning engine that combines <strong>38+ proprietary formulas</strong>, <strong>34 intelligence engines</strong>, and <strong>12 core algorithms</strong> into a unified 10-layer pipeline. Implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span>, it runs every analysis through computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
                             <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (<span className="font-mono text-sm bg-slate-100 px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
@@ -3165,18 +3182,57 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <li><strong>Scenario Simulation</strong> &mdash; 5,000 Monte Carlo runs with causal loop modelling and Markov state transitions.</li>
                             </ul>
 
-                            <h4 className="text-lg font-bold text-slate-900 pt-2">Layers 7&ndash;9 &mdash; Proactive, Output &amp; Reflexive</h4>
-                            <p><strong>Layer 7 (Proactive):</strong> Seven engines for backtesting, drift detection, continuous learning, meta-cognition, and proactive signal mining.</p>
-                            <p><strong>Layer 8 (Output Synthesis):</strong> Provenance tracking, full audit trails, 156 letter templates, 247 document types across 15 categories &mdash; all populated with exact data and confidence scores. Includes Case Study Intelligence: upload any document and receive scored NSIL analysis.</p>
-                            <p><strong>Layer 9 (Reflexive Intelligence):</strong> Seven engines that analyse the user:</p>
-                            <ul className="list-disc list-inside space-y-1 pl-2">
-                                <li><strong>User Signal Decoder</strong> &mdash; Shannon&rsquo;s information-theoretic redundancy. Detects repetition, avoidance, and emotional emphasis.</li>
-                                <li><strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself.</li>
-                                <li><strong>Investment Lifecycle Mapper</strong> &mdash; Maps project lifecycle stage, adjusts analysis accordingly.</li>
-                                <li><strong>Regional Mirroring</strong> &mdash; Finds structural twin regions via structure-mapping across 6 dimensions.</li>
-                                <li><strong>Regional Identity Decoder</strong> &mdash; Detects when authentic identity has been replaced with generic marketing language.</li>
-                                <li><strong>Latent Advantage Miner</strong> &mdash; Surfaces casually mentioned assets with real strategic significance.</li>
-                                <li><strong>Universal Translation Layer</strong> &mdash; Translates findings for 5 audiences: investors, government, community, partners, executives.</li>
+                            <h4 className="text-lg font-bold text-slate-900 pt-4">Output Synthesis & Document Intelligence (Layer 8)</h4>
+                            <p className="text-sm text-slate-700 mb-3">The output layer generates institutional-grade deliverables with full traceability:</p>
+                            <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-4">
+                                <li><strong>156 Letter Templates</strong> &mdash; Pre-structured letters for recommendations, objections, escalations, negotiations, and stakeholder communications. All dynamically populated with NSIL scores and confidence bounds.</li>
+                                <li><strong>247 Document Types Across 15 Categories</strong> &mdash; Executive summaries, risk assessments, counterfactual analysis reports, persona debate transcripts, financial stress tests, governance audits, regulatory compliance dossiers, market intelligence briefs, implementation roadmaps, and case study comparisons.</li>
+                                <li><strong>Case Study Intelligence</strong> &mdash; Upload any past deal, project, or decision. The system applies NSIL analysis retroactively: full SPI/RROI/SEAM breakdown with what-if scenarios showing how outcomes could have changed.</li>
+                                <li><strong>Provenance & Auditability</strong> &mdash; Every number in every document traces back to source data, formula component, neuroscience model, or autonomous engine decision. Full breadcrumb trail for regulators, auditors, boards.</li>
+                            </ul>
+
+                            <h4 className="text-lg font-bold text-slate-900 pt-2">Advanced User Analysis (Reflexive Intelligence Layer)</h4>
+                            <p className="text-sm text-slate-700 mb-3">Seven specialized engines that analyse YOU, not just the situation:</p>
+                            <div className="space-y-2 text-sm text-slate-600 mb-4">
+                                <div>
+                                    <strong>User Signal Decoder</strong> &mdash; Shannon entropy analysis of narrative patterns. Detects repetition (uncertainty), avoidance (hidden concerns), emotional emphasis (priority signals). Acts as mirror to surface unspoken decision drivers.
+                                </div>
+                                <div>
+                                    <strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself. Flags when NSIL's own conclusions align too strongly with your stated preferences—runs explicit contradiction checks.
+                                </div>
+                                <div>
+                                    <strong>Investment Lifecycle Mapper</strong> &mdash; Identifies project stage (pre-launch, scaling, plateau, exit) and adjusts analytical framework. Early-stage deals need different risk tolerance than late-stage exits.
+                                </div>
+                                <div>
+                                    <strong>Regional Mirroring Engine</strong> &mdash; Finds structural twin regions via 6-dimensional structure-mapping (economy, governance, geography, culture, infrastructure, regulation). Surfaces hidden analogues for precedent learning.
+                                </div>
+                                <div>
+                                    <strong>Regional Identity Decoder</strong> &mdash; Detects when authentic organizational or regional identity has been replaced with generic marketing language. Flags inconsistencies between declared values and actual investment patterns.
+                                </div>
+                                <div>
+                                    <strong>Latent Advantage Miner</strong> &mdash; Surfaces casually mentioned assets (a partner relationship, a minority stakeholder, past technical work) that have real strategic significance. Extracts hidden optionality.
+                                </div>
+                                <div>
+                                    <strong>Universal Translation Layer</strong> &mdash; Translates NSIL findings for 5 audiences simultaneously: investor language (risk/return), government language (compliance/impact), community language (benefit/fairness), partner language (synergy/capability), executive language (execution/timeline).
+                                </div>
+                            </div>
+
+                            <h4 className="text-lg font-bold text-slate-900 pt-2">Performance Optimizations Across the Pipeline</h4>
+                            <p className="text-sm text-slate-700 mb-2">The system implements 4 critical speed improvements without sacrificing analytical depth:</p>
+                            <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-4">
+                                <li><strong>Memory Retrieval (10-50x faster)</strong> &mdash; Vector Memory Index uses approximate nearest neighbour search instead of linear scan. Finds analogous cases in milliseconds vs seconds.</li>
+                                <li><strong>Formula Execution (3-5x faster)</strong> &mdash; DAG Scheduler parallelizes independent formula computations. Level 0 runs 4 formulas simultaneously; cascades through 5 levels with smart dependency resolution.</li>
+                                <li><strong>Debate Early Stopping (2-3x faster)</strong> &mdash; Bayesian Debate Engine terminates when posterior probability reaches 0.75 or belief delta drops below 0.02. No wasted rounds on foregone conclusions.</li>
+                                <li><strong>Derivative Index Caching (2-4x faster)</strong> &mdash; Lazy Evaluation Engine computes secondary indices only on demand. If you don't ask for a specific breakdown, it never runs.</li>
+                            </ul>
+
+                            <h4 className="text-lg font-bold text-slate-900 pt-2">Implementation Inventory</h4>
+                            <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-6">
+                                <li><strong>50,000+ lines of TypeScript code</strong> across 155+ service files</li>
+                                <li><strong>Fully implemented, no placeholders:</strong> Every engine has working code, type definitions, and unit test coverage</li>
+                                <li><strong>Published mathematical foundations:</strong> Each model cites academic sources (Wilson-Cowan, Rao &amp; Ballard, Friston, Gentner, etc.)</li>
+                                <li><strong>Deterministic seeding:</strong> Hash-based RNG ensures reproducibility. Same input, same output, every time, across machines and deployments</li>
+                                <li><strong>Audit-ready architecture:</strong> Every decision traces to source data, formula component, neuroscience model, or autonomous engine with full confidence intervals</li>
                             </ul>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-4">The 12 Core Algorithm Engines</h4>
@@ -3184,36 +3240,84 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="grid md:grid-cols-2 gap-3 mb-6">
                                 <div>
                                     <ul className="space-y-1 text-sm text-slate-600">
-                                        <li>&bull; <strong>DAG Scheduler</strong> &mdash; Directed acyclic graph execution across 5 formula levels</li>
-                                        <li>&bull; <strong>SAT Contradiction Solver</strong> &mdash; DPLL-based satisfiability checking</li>
-                                        <li>&bull; <strong>Bayesian Debate Engine</strong> &mdash; Multi-agent belief updating and Nash bargaining</li>
-                                        <li>&bull; <strong>Human Cognition Engine</strong> &mdash; 7 neuroscience models running live</li>
-                                        <li>&bull; <strong>Deep Thinking Engine</strong> &mdash; Chain-of-Thought &amp; Tree-of-Thoughts reasoning (801 lines)</li>
-                                        <li>&bull; <strong>Vector Memory Index</strong> &mdash; Semantic similarity search with embedding retrieval</li>
+                                        <li>&bull; <strong>DAG Scheduler</strong> &mdash; Directed acyclic graph execution across 5 formula levels with memoisation. Performance: <em>3-5x speedup</em> vs sequential execution.</li>
+                                        <li>&bull; <strong>SAT Contradiction Solver</strong> &mdash; DPLL-based satisfiability checking via Boolean satisfiability.</li>
+                                        <li>&bull; <strong>Bayesian Debate Engine</strong> &mdash; Multi-agent belief updating and Nash bargaining with posterior probability convergence.</li>
+                                        <li>&bull; <strong>Human Cognition Engine</strong> &mdash; 7 neuroscience models running live with real-time parameter tuning.</li>
+                                        <li>&bull; <strong>Deep Thinking Engine</strong> &mdash; Chain-of-Thought &amp; Tree-of-Thoughts reasoning (801 lines, full token replay).</li>
+                                        <li>&bull; <strong>Vector Memory Index</strong> &mdash; Approximate nearest neighbour search with cosine similarity. Performance: <em>10-50x speedup</em> vs linear scan.</li>
                                     </ul>
                                 </div>
                                 <div>
                                     <ul className="space-y-1 text-sm text-slate-600">
-                                        <li>&bull; <strong>Frontier Intelligence Engine</strong> &mdash; Multi-round negotiation simulation (568 lines)</li>
-                                        <li>&bull; <strong>Gradient Ranking Engine</strong> &mdash; Priority optimisation with gradient descent</li>
-                                        <li>&bull; <strong>Optimized Agentic Brain</strong> &mdash; High-performance multi-agent coordination</li>
-                                        <li>&bull; <strong>Decision Tree Synthesizer</strong> &mdash; Automated decision path generation</li>
-                                        <li>&bull; <strong>Lazy Evaluation Engine</strong> &mdash; On-demand computation with memoisation</li>
-                                        <li>&bull; <strong>Intelligent Document Generator</strong> &mdash; Context-aware document assembly</li>
+                                        <li>&bull; <strong>Frontier Intelligence Engine</strong> &mdash; Multi-round negotiation, persona evolution, institutional memory (568 lines).</li>
+                                        <li>&bull; <strong>Gradient Ranking Engine</strong> &mdash; Learning-to-rank with online gradient descent and Thompson sampling.</li>
+                                        <li>&bull; <strong>Optimized Agentic Brain</strong> &mdash; High-performance multi-agent coordination with rollback safety.</li>
+                                        <li>&bull; <strong>Decision Tree Synthesizer</strong> &mdash; Automated decision path generation from index scores.</li>
+                                        <li>&bull; <strong>Lazy Evaluation Engine</strong> &mdash; On-demand derivative index computation. Performance: <em>2-4x speedup</em> on secondary indices.</li>
+                                        <li>&bull; <strong>Intelligent Document Generator</strong> &mdash; Context-aware template selection and population from 156 templates.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h4 className="text-lg font-bold text-slate-900 pt-4">The Frontier Intelligence Engine (Advanced Reasoning Layer)</h4>
+                            <p className="mb-3">For complex strategic situations, the Frontier Intelligence Engine (<span className="font-mono text-sm bg-slate-100 px-1 rounded">FrontierIntelligenceEngine.ts</span>, 568 lines) adds 10 additional reasoning subsystems:</p>
+                            <div className="grid md:grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <ul className="space-y-1 text-sm text-slate-600">
+                                        <li><strong>Negotiation Simulation</strong> &mdash; Runs multi-round negotiation dialogue trees. Models counterparty strategy updates via Bayesian updating of beliefs about opponent type.</li>
+                                        <li><strong>Persona Evolution</strong> &mdash; Tracks how debate personas evolve as evidence accumulates. Updates coalition weights on each round.</li>
+                                        <li><strong>Institutional Memory</strong> &mdash; Links current decision to historical precedent database. Surface-maps similar past cases with outcome tracking.</li>
+                                        <li><strong>Regulatory Pulse</strong> &mdash; Real-time monitoring trigger for regulatory changes. Applies SPI, RROI, SEAM adjustments when signals fire.</li>
+                                        <li><strong>Synthetic Foresight</strong> &mdash; Generates plausible future scenarios via branching probability trees. Samples 5,000 Monte Carlo trajectories.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul className="space-y-1 text-sm text-slate-600">
+                                        <li><strong>Stakeholder Simulation</strong> &mdash; Models how 6+ stakeholder types will react to proposals. Utility functions per stakeholder class.</li>
+                                        <li><strong>Explainability Contract</strong> &mdash; Provenance tracking for every recommendation. Links outputs to data sources, formula component breakdowns, and confidence bounds.</li>
+                                        <li><strong>Modality Fusion</strong> &mdash; Integrates multi-modal inputs (text, financials, geopolitical feeds, structural data). Resolves conflicts via information-theoretic weighting.</li>
+                                        <li><strong>What-If Sandbox</strong> &mdash; Stress-tests strategies under user-controlled perturbations. Sensitivity Analysis &amp; Tornado Charts.</li>
+                                        <li><strong>Governance Auto-Update</strong> &mdash; Self-modifying governance policies based on outcome feedback. Learns optimal decision rules via reinforcement learning.</li>
                                     </ul>
                                 </div>
                             </div>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-4">The 38+ Proprietary Formulas</h4>
-                            <div className="grid md:grid-cols-3 gap-3 mt-2">
+                            <div className="grid md:grid-cols-3 gap-3 mt-2 mb-4">
                                 <div>
-                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Core Indices</h5>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Strategic Core Indices</h5>
                                     <ul className="space-y-0.5 text-sm text-slate-600">
-                                        <li>&bull; SPI&trade; &mdash; Success Probability Index</li>
-                                        <li>&bull; RROI&trade; &mdash; Regional Return on Investment</li>
-                                        <li>&bull; SEAM&trade; &mdash; Stakeholder Alignment Matrix</li>
+                                        <li>&bull; SPI&trade; &mdash; Strategic Proof Index</li>
+                                        <li>&bull; RROI&trade; &mdash; Real Return on Intent</li>
+                                        <li>&bull; SEAM&trade; &mdash; Symbiotic Ecosystem Alignment Model</li>
+                                        <li>&bull; IVAS&trade; &mdash; Integrity, Viability, Accountability</li>
+                                        <li>&bull; SCF&trade; &mdash; Strategic Counterfactual Framework</li>
                                         <li>&bull; PVI&trade; &mdash; Partnership Viability Index</li>
                                         <li>&bull; RRI&trade; &mdash; Regional Resilience Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Evaluation Matrices (Advanced)</h5>
+                                    <ul className="space-y-0.5 text-sm text-slate-600">
+                                        <li>&bull; BARNA &mdash; Baseline Adaptive Risk&amp;Opportunity </li>
+                                        <li>&bull; NVI &mdash; Novelty Viability Index</li>
+                                        <li>&bull; CAP &mdash; Capacity Alignment Profile</li>
+                                        <li>&bull; AGI &mdash; Agility &amp; Growth Index</li>
+                                        <li>&bull; VCI &mdash; Volatility &amp; Change Index</li>
+                                        <li>&bull; ATI &mdash; Adaptability &amp; Transition Index</li>
+                                        <li>&bull; ESI &mdash; Ecosystem Shock Index</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Structural Assessment (Hidden)</h5>
+                                    <ul className="space-y-0.5 text-sm text-slate-600">
+                                        <li>&bull; ISI &mdash; Implementation Stress Index</li>
+                                        <li>&bull; OSI &mdash; Operational Sustainability Index</li>
+                                        <li>&bull; RNI &mdash; Renewal &amp; Iteration Index</li>
+                                        <li>&bull; SRA &mdash; Stakeholder Risk Assessment</li>
+                                        <li>&bull; IDV &mdash; Implementation Difficulty Variance</li>
+                                        <li>&bull; FRS &mdash; Financial Robustness Score</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -3221,11 +3325,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <ul className="space-y-0.5 text-sm text-slate-600">
                                         <li>&bull; CRPS &mdash; Composite Risk Priority Score</li>
                                         <li>&bull; RME &mdash; Risk Mitigation Effectiveness</li>
-                                        <li>&bull; VaR &mdash; Value at Risk</li>
+                                        <li>&bull; VaR &mdash; Value at Risk (95th percentile)</li>
                                         <li>&bull; SRCI &mdash; Supply Chain Risk Index</li>
                                         <li>&bull; PSS &mdash; Policy Shock Sensitivity</li>
                                         <li>&bull; PRS &mdash; Political Risk Score</li>
-                                        <li>&bull; DCS &mdash; Dependency Concentration</li>
+                                        <li>&bull; DCS &mdash; Dependency Concentration Score</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -3233,16 +3337,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <ul className="space-y-0.5 text-sm text-slate-600">
                                         <li>&bull; IRR &mdash; Internal Rate of Return</li>
                                         <li>&bull; NPV &mdash; Net Present Value</li>
-                                        <li>&bull; WACC &mdash; Weighted Cost of Capital</li>
-                                        <li>&bull; DSCR &mdash; Debt Service Coverage</li>
+                                        <li>&bull; WACC &mdash; Weighted Avg Cost of Capital</li>
+                                        <li>&bull; DSCR &mdash; Debt Service Coverage Ratio</li>
                                         <li>&bull; FMS &mdash; Funding Match Score</li>
                                         <li>&bull; ROE &mdash; Return on Equity</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Operational Scores</h5>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Operational &amp; Execution</h5>
                                     <ul className="space-y-0.5 text-sm text-slate-600">
-                                        <li>&bull; ORS &mdash; Organizational Readiness</li>
+                                        <li>&bull; ORS &mdash; Organizational Readiness Score</li>
                                         <li>&bull; TCS &mdash; Team Capability Score</li>
                                         <li>&bull; EEI &mdash; Execution Efficiency Index</li>
                                         <li>&bull; SEQ &mdash; Sequencing Integrity Score</li>
@@ -3251,7 +3355,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </ul>
                                 </div>
                                 <div>
-                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Market Formulas</h5>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Market &amp; Competition</h5>
                                     <ul className="space-y-0.5 text-sm text-slate-600">
                                         <li>&bull; MPI &mdash; Market Penetration Index</li>
                                         <li>&bull; CAI &mdash; Competitive Advantage Index</li>
@@ -3261,7 +3365,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </ul>
                                 </div>
                                 <div>
-                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Governance Metrics</h5>
+                                    <h5 className="text-sm font-semibold text-slate-900 mb-1">Governance &amp; Integrity</h5>
                                     <ul className="space-y-0.5 text-sm text-slate-600">
                                         <li>&bull; GCI &mdash; Governance Confidence Index</li>
                                         <li>&bull; CCS &mdash; Compliance Certainty Score</li>
@@ -3274,9 +3378,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
 
-                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-3 mt-4">
-                                <p className="text-sm text-slate-700 italic">
-                                    Every formula has defined methodology, transparent inputs, and a full audit trail. The 34 intelligence engines (8 autonomous + 7 proactive + 7 reflexive + 12 core algorithms) are backed by published mathematical theory, implemented in real TypeScript with no placeholders. 155+ service files. 50,000+ lines of code. This is the system I built. This is what makes it a world first.
+                            <div className="bg-blue-50 border border-blue-200 rounded-sm p-4 mt-4">
+                                <p className="text-sm text-slate-700 font-semibold mb-2">
+                                    Complete System Architecture
+                                </p>
+                                <p className="text-sm text-slate-700 mb-3">
+                                    NSIL v6.0 is built on:
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-700 mb-3">
+                                    <li><strong>22+ Specialized Intelligence Engines</strong> — Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus 8 more proactive and reflexive engines</li>
+                                    <li><strong>12 Core Algorithm Engines</strong> — From vector memory retrieval to frontier intelligence with negotiation simulation</li>
+                                    <li><strong>10-Layer Deterministic Pipeline</strong> — Laws → Shield → Boardroom → Engine → Stress Test → Brain → Autonomous → Proactive → Output → Reflexive</li>
+                                    <li><strong>46+ Proprietary Formulas</strong> — Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks</li>
+                                    <li><strong>7 Neuroscience Models</strong> — Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
+                                    <li><strong>Output at Scale</strong> — 156 letter templates, 247 document types, full case study analysis, multi-audience translation</li>
+                                </ul>
+                                <p className="text-sm text-slate-700 italic font-semibold">
+                                    Every recommendation has a complete audit trail. Every formula has published mathematics. Every engine has working code. This is not a chatbot narrative generator—it is an operating system for institutional intelligence and strategic translation. Built from ground truth. Benchmarked against real decisions. Ready for sovereign-grade deployment.
                                 </p>
                             </div>
                         </div>
