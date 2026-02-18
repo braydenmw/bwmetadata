@@ -187,6 +187,73 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 1: HERO HOOK — The Trust Gap (Full-Width Narrative)
+            ═══════════════════════════════════════════════════════════════ */}
+            <section id="technology" className="relative py-12 px-4 bg-white overflow-hidden">
+                {/* Subtle background texture */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
+                <div className="relative max-w-4xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">
+                        A Neuro-Symbolic Economic Intelligence Engine
+                    </h2>
+                    <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
+                        Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
+                        The Trust Gap in Artificial Intelligence
+                    </h2>
+                    <div className="space-y-4 mb-10">
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
+                            Every major language model&mdash;ChatGPT, Claude, Gemini&mdash;operates probabilistically. It predicts the next likely token from patterns in training data. That is useful for drafting ideas and summarizing text. It is not sufficient for high-stakes strategic decisions.
+                        </p>
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
+                            In decision environments involving public money, sovereign priorities, infrastructure, employment, or institutional capital, leaders are judged on defensibility. They must explain how conclusions were reached, what assumptions were used, which data was trusted, what uncertainty was modeled, and whether the same process yields the same answer tomorrow.
+                        </p>
+                        <p className="text-lg text-slate-700 leading-relaxed text-justify">
+                            Standard AI tools can hallucinate under ambiguity, produce inconsistent responses to equivalent prompts, and hide reasoning inside opaque model behavior. They cannot reliably provide deterministic scoring, end-to-end traceability, or committee-ready audit evidence. <strong className="text-slate-900">BW Ai was built to close that trust gap.</strong>
+                        </p>
+                    </div>
+
+                    {/* Comparison — Photo + Script Cards (matches How It Thinks pattern) */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* Standard AI Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80" alt="Standard AI limitations" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/20" />
+                                <div className="absolute bottom-4 left-5 right-5">
+                                    <h3 className="text-lg font-bold text-white">Standard AI</h3>
+                                    <p className="text-[11px] text-slate-300">Probabilistic &bull; Opaque &bull; Inconsistent</p>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
+                                    Standard AI tools hallucinate facts and fabricated references under uncertainty. They offer limited explainability for internal reasoning behavior, produce non-deterministic outputs on repeated prompts, leave weak audit trails for high-stakes governance review, and are difficult to defend under board, ministry, or committee scrutiny.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* BW Ai Card */}
+                        <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                            <div className="h-48 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&h=400&fit=crop&q=80" alt="BW Ai intelligence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-blue-900/20" />
+                                <div className="absolute bottom-4 left-5 right-5">
+                                    <h3 className="text-lg font-bold text-white">BW Ai</h3>
+                                    <p className="text-[11px] text-blue-200">Deterministic &bull; Auditable &bull; Defensible</p>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
+                                    BW Ai validates inputs before scoring and recommendation generation. It provides a full audit trail from intake to final conclusion, deterministic scoring&mdash;same data, same outcome&mdash;with every conclusion traceable to formulas, assumptions, and evidence. The result: board-ready, audit-committee-defensible outputs.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             // ...existing code...
 
             {/* ═══════════════════════════════════════════════════════════════
