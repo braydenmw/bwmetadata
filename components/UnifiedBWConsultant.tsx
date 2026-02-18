@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Loader, Brain, X } from 'lucide-react';
+import { Send, Loader, Brain, X, ExternalLink } from 'lucide-react';
 import ContextAwareBWConsultant, { 
   ConsultantResponse, 
   FactSheetResponse
@@ -16,6 +16,7 @@ interface UnifiedBWConsultantProps {
   context?: 'landing' | 'live-report';
   reportData?: Record<string, unknown> | object;
   onQueryProcessed?: (response: ConsultantResponse) => void;
+  onEnterPlatform?: (payload?: { query?: string; results?: Record<string, unknown>[] }) => void;
   className?: string;
   minHeight?: string;
 }
@@ -23,7 +24,12 @@ interface UnifiedBWConsultantProps {
 /**
  * Landing Page: A4 Fact Sheet Drawer
  */
-const FactSheetDrawer: React.FC<{ response: FactSheetResponse; onClose: () => void }> = ({ response, onClose }) => (
+const FactSheetDrawer: React.FC<{ 
+  response: FactSheetResponse; 
+  query: string;
+  onClose: () => void;
+  onEnterPlatform?: (payload?: { query?: string }) => void;
+}> = ({ response, query, onClose, onEnterPlatform }) => (
   <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end sm:justify-center p-4">
     {/* Backdrop */}
     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
@@ -39,7 +45,7 @@ const FactSheetDrawer: React.FC<{ response: FactSheetResponse; onClose: () => vo
       </button>
 
       {/* A4 Content */}
-      <div className="p-8 space-y-4">
+      <div className="p-8 space-y-4 flex-1 overflow-y-auto">
         {/* Header */}
         <div className="border-b pb-4">
           <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-1">Fact Sheet</p>
@@ -65,7 +71,7 @@ const FactSheetDrawer: React.FC<{ response: FactSheetResponse; onClose: () => vo
               {Object.entries(response.keyMetrics).map(([key, value]) => (
                 <div key={key}>
                   <p className="text-xs text-stone-600">{key}</p>
-                  <p className="font-semibold text-stone-900">{value}</p>
+                  <p className="font-semibold text-stone-900">{String(value)}</p>
                 </div>
               ))}
             </div>
@@ -87,6 +93,26 @@ const FactSheetDrawer: React.FC<{ response: FactSheetResponse; onClose: () => vo
         {/* Confidence */}
         <p className="text-xs text-stone-500">Confidence: {Math.round(response.confidence * 100)}%</p>
       </div>
+
+      {/* Footer Actions */}
+      <div className="border-t bg-stone-50 p-4 flex gap-2">
+        <button
+          onClick={() => {
+            onClose();
+            onEnterPlatform?.({ query });
+          }}
+          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition flex items-center justify-center gap-2"
+        >
+          <ExternalLink size={14} />
+          Enter Live Report Builder
+        </button>
+        <button
+          onClick={onClose}
+          className="px-4 py-2 bg-stone-200 text-stone-900 rounded-lg font-semibold text-sm hover:bg-stone-300 transition"
+        >
+          Back
+        </button>
+      </div>
     </div>
   </div>
 );
@@ -98,6 +124,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
   context,
   reportData,
   onQueryProcessed,
+  onEnterPlatform,
   className = '',
   minHeight = 'h-96'
 }) => {
@@ -107,6 +134,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
   
   // For landing page: store fact sheet response for drawer
   const [factSheetResponse, setFactSheetResponse] = useState<FactSheetResponse | null>(null);
+  const [currentQuery, setCurrentQuery] = useState('');
   
   // For live report: store chat messages
   const [chatMessages, setChatMessages] = useState<Array<{ type: 'user' | 'bw'; text: string }>>([]);
@@ -140,6 +168,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
       if (detectedContext === 'landing') {
         // Landing page: show fact sheet in drawer
         if (result.format === 'fact-sheet') {
+          setCurrentQuery(input);
           setFactSheetResponse(result);
         }
       } else {
@@ -205,8 +234,10 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
         {/* Fact Sheet Drawer */}
         {factSheetResponse && (
           <FactSheetDrawer 
-            response={factSheetResponse} 
-            onClose={() => setFactSheetResponse(null)} 
+            response={factSheetResponse}
+            query={currentQuery}
+            onClose={() => setFactSheetResponse(null)}
+            onEnterPlatform={onEnterPlatform}
           />
         )}
       </>
