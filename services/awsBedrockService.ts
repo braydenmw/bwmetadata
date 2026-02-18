@@ -134,13 +134,112 @@ async function invokeBedrockModel(prompt: string, model: string = 'anthropic.cla
   }
 }
 
+// ==================== MOCK FALLBACK (NO API KEY) ====================
+
+async function invokeMockAI(prompt: string): Promise<AIResponse> {
+  console.log('[AI Service] Using mock AI for development (no API key configured)');
+  
+  // Generate contextual mock responses based on the prompt
+  let mockResponse = '';
+  
+  const lowerPrompt = prompt.toLowerCase();
+  
+  if (lowerPrompt.includes('manila') || lowerPrompt.includes('philippines')) {
+    mockResponse = `**Manila, Philippines: Strategic Market Intelligence**
+
+**Economic Profile:**
+- Metro Manila is the financial capital of the Philippines with a population of ~14 million
+- Strong presence in BPO, IT, and financial services sectors
+- Highly developed infrastructure with international airports and modern business districts
+- Growing startup ecosystem and tech talent pool
+
+**Key Opportunities:**
+1. **Tech & Innovation Hub**: Strong growing sector with government support
+2. **Nearshore Services**: English-proficient workforce for business process outsourcing
+3. **Real Estate & Construction**: Rapid urban development and infrastructure projects
+4. **Financial Services**: Expanding regional banking and fintech hubs
+
+**Strategic Considerations:**
+- Regulatory environment: Stable with business-friendly policies
+- Market Entry: Well-established for multinational corporations
+- Local Partnerships: Essential for navigating regulatory framework
+- Timeline: 6-12 months typical for market entry preparation
+
+**Risk Assessment:**
+- Natural disaster exposure (typhoons, earthquakes) - LOW to MODERATE
+- Political stability: STABLE
+- Currency volatility: MODERATE
+
+Would you like deeper analysis on a specific sector or strategic approach for Manila?`;
+  } else if (lowerPrompt.includes('partnership') || lowerPrompt.includes('partner')) {
+    mockResponse = `**Partnership Analysis Framework**
+
+Based on the NSIL strategic intelligence methodology, here's the partnership evaluation framework:
+
+**Key Assessment Dimensions:**
+1. **Strategic Alignment (Weight: 25%)**
+   - Complementary capabilities and market positioning
+   - Shared objectives and vision alignment
+
+2. **Financial Health (Weight: 20%)**
+   - Balance sheet strength and cash flow stability
+   - Investment capacity for joint initiatives
+
+3. **Operational Fit (Weight: 20%)**
+   - Systems integration capability
+   - Team compatibility and cultural alignment
+
+4. **Market Position (Weight: 15%)**
+   - Geographic coverage and market access
+   - Brand reputation and customer relationships
+
+5. **Governance & Risk (Weight: 20%)**
+   - Regulatory compliance and track record
+   - Risk management maturity
+
+**Next Steps:**
+Upload company profiles or provide more specific partnership details for targeted analysis. The system can then generate:
+- Partnership compatibility scoring
+- Due diligence findings
+- Risk mitigation strategies
+- Deal structure recommendations`;
+  } else {
+    mockResponse = `**BW Consultant AI Analysis**
+
+Thank you for your query. I'm your strategic intelligence partner powered by the NSIL system.
+
+To provide more targeted insights, I'd like to understand your context better:
+
+1. **Geographic Focus**: What region or country are you analyzing?
+2. **Sector/Industry**: What industry or sector are you interested in?
+3. **Strategic Objective**: Are you exploring partnerships, market entry, or risk assessment?
+4. **Organization Type**: Are you a technology company, financial services, or other sector?
+
+**What I Can Help With:**
+- **Market Intelligence**: Deep analysis of 190+ countries and sectors
+- **Partnership Analysis**: Compatibility scoring using SEAM™ methodology
+- **Risk Assessment**: Multi-perspective adversarial analysis
+- **Document Generation**: Strategic reports and recommendations
+- **Financial Modeling**: ROI analysis and scenario planning
+
+Please provide more details, or complete the intake form on the left to unlock full analysis capabilities.`;
+  }
+  
+  return {
+    text: mockResponse,
+    model: 'mock-development',
+    provider: 'fallback'
+  };
+}
+
 // ==================== GEMINI FALLBACK (LOCAL DEV) ====================
 
 async function invokeGemini(prompt: string): Promise<AIResponse> {
   const apiKey = getGeminiApiKey();
   
   if (!apiKey) {
-    throw new Error('No Gemini API key available for local development');
+    // Fallback to mock when no API key available
+    return invokeMockAI(prompt);
   }
 
   console.log('[AI Service] Using Gemini for local development');
