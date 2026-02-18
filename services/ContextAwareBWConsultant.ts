@@ -38,10 +38,6 @@ export interface ChatResponse {
   context: ConsultantContext;
   timestamp: string;
   message: string;
-  guidance?: string;
-  suggestions?: string[];
-  contextualHelp?: string;
-  nextStep?: string;
 }
 
 export type ConsultantResponse = FactSheetResponse | ChatResponse;
@@ -88,21 +84,11 @@ Return VALID JSON only.`
 };
 
 const LIVE_REPORT_PROMPTS = {
-  proactiveChat: (query: string, reportContext?: Record<string, unknown>) => `You are BW Consultant - a PROACTIVE GUIDE helping someone build a strategic report.
+  proactiveChat: (query: string) => `You are BW Consultant - a helpful business intelligence advisor.
 
-User Input: "${query}"
+User Question: "${query}"
 
-${reportContext ? `Current Report Context: ${JSON.stringify(reportContext).substring(0, 300)}` : ''}
-
-Your role:
-- Guide the user through report building step-by-step
-- Ask clarifying questions when needed
-- Suggest next actions based on what they're working on
-- Provide contextual help without overwhelming
-- Be conversational but purposeful
-
-Keep response concise (2-3 sentences max) and actionable.
-End with a clear suggestion or question if relevant.`
+Respond naturally and conversationally. Answer their question directly. If helpful, briefly suggest what they should consider next. Keep it conversational, not structured.`
 };
 
 export class ContextAwareBWConsultant {
@@ -201,28 +187,17 @@ export class ContextAwareBWConsultant {
    */
   private static async generateProactiveChatResponse(
     query: string,
-    reportData?: Record<string, unknown>
+    _reportData?: Record<string, unknown>
   ): Promise<ChatResponse> {
-    const prompt = LIVE_REPORT_PROMPTS.proactiveChat(query, reportData);
+    const prompt = LIVE_REPORT_PROMPTS.proactiveChat(query);
     const aiResponse = await invokeAI(prompt);
 
-    // Extract guidance and suggestions from response
-    const lines = aiResponse.text.split('\n').filter(l => l.trim());
-    const message = lines.slice(0, 3).join(' ');
-    
-    // Parse suggestions if they exist
-    const suggestions = lines
-      .filter(l => l.startsWith('-') || l.startsWith('•'))
-      .map(l => l.replace(/^[-•]\s*/, '').trim());
-
+    // Return natural conversational response
     return {
       format: 'chat-response',
       context: 'live-report',
       timestamp: new Date().toISOString(),
-      message,
-      suggestions: suggestions.length > 0 ? suggestions : undefined,
-      guidance: this.getContextualGuidance(query),
-      nextStep: this.suggestNextStep(query, reportData)
+      message: aiResponse.text.trim()
     };
   }
 
@@ -308,29 +283,7 @@ export class ContextAwareBWConsultant {
    * Format chat response for UI display (live report sidebar)
    */
   static renderChatResponse(response: ChatResponse): string {
-    let html = `<div class="chat-response">
-      <p>${response.message}</p>`;
-
-    if (response.guidance) {
-      html += `<p class="guidance">💡 ${response.guidance}</p>`;
-    }
-
-    if (response.suggestions && response.suggestions.length > 0) {
-      html += `<div class="suggestions">
-        <p>Consider:</p>
-        <ul>`;
-      response.suggestions.forEach(suggestion => {
-        html += `<li>${suggestion}</li>`;
-      });
-      html += `</ul></div>`;
-    }
-
-    if (response.nextStep) {
-      html += `<p class="next-step">→ ${response.nextStep}</p>`;
-    }
-
-    html += `</div>`;
-    return html;
+    return `<div class="chat-response"><p>${response.message}</p></div>`;
   }
 }
 
