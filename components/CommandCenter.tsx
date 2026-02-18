@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
-import { BWConsultantSearchWidget } from './BWConsultantSearchWidget';
+import { BWConsultantSearchWidget, type SearchResult } from './BWConsultantSearchWidget';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
 
 interface CommandCenterProps {
-    onEnterPlatform?: (payload?: { query?: string; results?: any[] }) => void;
+    onEnterPlatform?: (payload?: { query?: string; results?: SearchResult[] }) => void;
     onOpenGlobalLocationIntel?: () => void;
     onLocationResearched?: (data: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

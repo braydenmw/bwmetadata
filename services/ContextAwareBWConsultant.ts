@@ -266,7 +266,7 @@ export class ContextAwareBWConsultant {
     if (lowerQuery.includes('partnership') && !reportData?.risk) {
       return 'Next: Run comprehensive risk assessment';
     }
-    if (reportData?.completeness < 50) {
+    if (typeof reportData?.completeness === 'number' && reportData.completeness < 50) {
       return 'Next: Complete the identity & mandate sections first';
     }
 

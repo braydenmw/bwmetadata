@@ -7,10 +7,11 @@ import {
   Users, GitBranch,
   FileText, BarChart3, Handshake, TrendingUp,
   Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, Send, User, Compass, Zap,
+  X, Plus, Compass, Zap,
   DollarSign, Briefcase, Settings, Award, ClipboardList
 } from 'lucide-react';
 import { DocumentUploadModal } from './DocumentUploadModal';
+import { UnifiedBWConsultant } from './UnifiedBWConsultant';
 import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnalyzer';
 // NSILIntelligenceHub used by ReportOrchestrator (not directly here)
 import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
@@ -587,55 +588,17 @@ User question: ${userText}`;
         <div className="flex flex-col bg-white border-r border-stone-200 overflow-hidden" style={{ flexBasis: '30%' }}>
             <div className="flex-1 overflow-y-auto custom-scrollbar">
                 <div className="p-5 space-y-4">
-                    {/* BW CONSULTANT CHAT */}
-                    <div>
-
-                      <div className="bg-stone-50 border border-stone-200 rounded-lg flex flex-col">
-                          <div className="h-10 bg-blue-900 text-white flex items-center justify-between px-4 rounded-t-lg">
-                              <div className="flex items-center gap-2">
-                                  <User size={14} />
-                                  <span className="text-xs font-bold">BW Consultant</span>
-                              </div>
-                              <div className="text-[10px] opacity-75">Live Assistant</div>
-                          </div>
-
-                          <div className="flex-1 overflow-y-auto p-3 space-y-2 h-48 custom-scrollbar">
-                              {chatMessages.map((msg, index) => (
-                                  <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                      <div className={`max-w-xs px-3 py-2 rounded-lg text-xs ${
-                                          msg.sender === 'user'
-                                              ? 'bg-blue-600 text-white'
-                                              : 'bg-white border border-stone-200 text-stone-900'
-                                      }`}>
-                                          {msg.text}
-                                      </div>
-                                  </div>
-                              ))}
-                              <div ref={chatMessagesEndRef} />
-                          </div>
-
-                          <div className="border-t border-stone-200 flex items-center gap-1 px-3 py-2">
-                              <input
-                                  type="text"
-                                  value={chatInput}
-                                  onChange={(e) => setChatInput(e.target.value)}
-                                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                  placeholder="Ask your BW Consultant..."
-                                  className="flex-1 text-xs border border-stone-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-300 focus:border-transparent"
-                              />
-                              <button
-                                  onClick={() => handleSendMessage()}
-                                  className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
-                              >
-                                  <Send size={12} />
-                              </button>
-                          </div>
-
-                          <div className="p-2 bg-indigo-50 border-t border-indigo-200 text-[10px] text-indigo-800">
-                              <strong>NSIL:</strong> Nexus Strategic Intelligence Layer — The Ten-Step Protocol guides you through every critical dimension of your strategic plan.
-                          </div>
-                      </div>
-                    </div>
+                    {/* BW CONSULTANT CHAT - Context-Aware Unified System */}
+                    <UnifiedBWConsultant
+                      context="live-report"
+                      reportData={params}
+                      onQueryProcessed={(response) => {
+                        console.log('BW Consultant response:', response);
+                        // Response is handled and displayed within UnifiedBWConsultant component
+                      }}
+                      minHeight="h-48"
+                      className="rounded-lg border border-stone-200"
+                    />
 
                     <div className="w-full h-px bg-stone-200"></div>
 

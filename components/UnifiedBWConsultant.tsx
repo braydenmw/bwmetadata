@@ -18,7 +18,7 @@ import ContextAwareBWConsultant, {
 
 interface UnifiedBWConsultantProps {
   context?: 'landing' | 'live-report';
-  reportData?: Record<string, unknown>;
+  reportData?: Record<string, unknown> | object;
   onQueryProcessed?: (response: ConsultantResponse) => void;
   className?: string;
   minHeight?: string;
@@ -60,7 +60,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
       const result = await ContextAwareBWConsultant.processQuery(
         input,
         detectedContext,
-        reportData
+        reportData as Record<string, unknown>
       );
       
       setResponse(result);
