@@ -52,6 +52,8 @@ interface MainCanvasProps {
   autonomousMode?: boolean;
   autonomousSuggestions?: string[];
   isAutonomousThinking?: boolean;
+    initialConsultantQuery?: string;
+    onInitialConsultantQueryHandled?: () => void;
 }
 
 const CollapsibleSection: React.FC<{
@@ -107,6 +109,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [generatedDocs, setGeneratedDocs] = useState<{id: string, title: string, desc: string, timestamp: Date}[]>([]);
   const [showDocumentUpload, setShowDocumentUpload] = useState(false);
   const chatMessagesEndRef = useRef<HTMLDivElement>(null);
+    const initialQueryConsumed = useRef(false);
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   // Apply intelligence enhancements to report data
@@ -180,15 +183,16 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     setExpandedSubsections(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSendMessage = async () => {
-    if (chatInput.trim()) {
-      const userText = chatInput.trim();
-      const newMessage = { text: userText, sender: 'user' as const, timestamp: new Date() };
-      setChatMessages(prev => [...prev, newMessage]);
-      setChatInput('');
+    const handleSendMessage = async (overrideText?: string) => {
+        const text = (overrideText ?? chatInput).trim();
+        if (!text) return;
+        const userText = text;
+        const newMessage = { text: userText, sender: 'user' as const, timestamp: new Date() };
+        setChatMessages(prev => [...prev, newMessage]);
+        if (!overrideText) setChatInput('');
 
-      // Add thinking indicator
-      setChatMessages(prev => [...prev, { text: '\u23f3 Thinking...', sender: 'bw' as const, timestamp: new Date() }]);
+        // Add thinking indicator
+        setChatMessages(prev => [...prev, { text: '\u23f3 Thinking...', sender: 'bw' as const, timestamp: new Date() }]);
 
       try {
         // Build conversation history for context
@@ -207,18 +211,18 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
 
         const prompt = `You are BW Consultant AI, a knowledgeable strategic business advisor. You answer questions directly and conversationally, like a human expert would. You have deep knowledge of global markets, politics, business leaders, cities, investment climates, regulatory frameworks, and regional development.
 
-IMPORTANT RULES:
-- Answer the user's actual question directly and naturally, like ChatGPT or a human advisor would
-- If they ask about a person, tell them about that person
-- If they ask about a city, tell them about that city
-- If they ask about a market, explain the market
-- Do NOT return structured assessment data, trust scores, NSIL layers, or framework outputs
-- Be conversational, helpful, and informative
-- Use your knowledge to provide real, useful information
-- If you don't know something specific, say so honestly
-- Keep responses focused and readable (2-4 paragraphs typical)${sessionContext ? `\n\nCurrent session context: ${sessionContext}` : ''}${recentMessages ? `\n\nRecent conversation:\n${recentMessages}` : ''}
+    IMPORTANT RULES:
+    - Answer the user's actual question directly and naturally, like ChatGPT or a human advisor would
+    - If they ask about a person, tell them about that person
+    - If they ask about a city, tell them about that city
+    - If they ask about a market, explain the market
+    - When explicitly requested by the user, you MAY return structured NSIL/framework outputs, trust scores, and evidence (JSON acceptable). Include source citations and confidence for each finding.
+    - Be conversational, helpful, and informative
+    - Use your knowledge to provide real, useful information
+    - If you don't know something specific, say so honestly
+    - Keep responses focused and readable (2-4 paragraphs typical)${sessionContext ? `\n\nCurrent session context: ${sessionContext}` : ''}${recentMessages ? `\n\nRecent conversation:\n${recentMessages}` : ''}
 
-User question: ${userText}`;
+    User question: ${userText}`;
 
         const aiResponse = await invokeAI(prompt);
 
@@ -246,6 +250,16 @@ User question: ${userText}`;
       }
     }
   };
+
+    // If the landing page forwarded an initial query, consume it once
+    useEffect(() => {
+        if ((props as any).initialConsultantQuery && !initialQueryConsumed.current) {
+            initialQueryConsumed.current = true;
+            handleSendMessage((props as any).initialConsultantQuery);
+            (props as any).onInitialConsultantQueryHandled?.();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [(props as any).initialConsultantQuery]);
 
   const openModal = (id: string) => {
     if (id === 'generation') {

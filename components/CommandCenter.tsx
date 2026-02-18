@@ -7,7 +7,7 @@ import { BWConsultantSearchWidget } from './BWConsultantSearchWidget';
 // Command Center - Complete BWGA Landing Page
 
 interface CommandCenterProps {
-    onEnterPlatform?: () => void;
+    onEnterPlatform?: (payload?: { query?: string; results?: any[] }) => void;
     onOpenGlobalLocationIntel?: () => void;
     onLocationResearched?: (data: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -516,13 +516,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* BW CONSULTANT AI SEARCH - Gateway Widget */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <BWConsultantSearchWidget 
-                        context="landing"
-                        onSearch={(query) => {
-                            console.log('Landing page search:', query);
-                        }}
-                        onEnterPlatform={onEnterPlatform}
-                    />
+                            <BWConsultantSearchWidget 
+                                context="landing"
+                                onSearch={(query) => { console.log('Landing page search:', query); }}
+                                onEnterPlatform={onEnterPlatform}
+                            />
                 </div>
             </section>
 

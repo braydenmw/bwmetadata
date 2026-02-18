@@ -97,6 +97,7 @@ const App: React.FC = () => {
     const [consultantInsights, setConsultantInsights] = useState<ConsultantInsight[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isConsultantActive, setIsConsultantActive] = useState(true);
+    const [pendingConsultantQuery, setPendingConsultantQuery] = useState<string | null>(null);
     // ECOSYSTEM STATE (from EventBus "meadow" signals)
     const [, setEcosystemPulse] = useState<EcosystemPulse | null>(null);
 
@@ -592,7 +593,10 @@ const App: React.FC = () => {
             return (
                 <div className="w-full h-full overflow-y-auto">
                     <CommandCenter
-                        onEnterPlatform={() => setViewMode('main')}
+                        onEnterPlatform={(payload) => {
+                          if (payload?.query) setPendingConsultantQuery(payload.query);
+                          setViewMode('main');
+                        }}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
                     />
@@ -621,6 +625,8 @@ const App: React.FC = () => {
                         autonomousMode={autonomousMode}
                         autonomousSuggestions={autonomousSuggestions}
                         isAutonomousThinking={isAutonomousThinking}
+                        initialConsultantQuery={pendingConsultantQuery || undefined}
+                        onInitialConsultantQueryHandled={() => setPendingConsultantQuery(null)}
                     />
                 </div>
             );
@@ -662,6 +668,8 @@ const App: React.FC = () => {
                     autonomousMode={autonomousMode}
                     autonomousSuggestions={autonomousSuggestions}
                     isAutonomousThinking={isAutonomousThinking}
+                    initialConsultantQuery={pendingConsultantQuery || undefined}
+                    onInitialConsultantQueryHandled={() => setPendingConsultantQuery(null)}
                 />
             </div>
         );

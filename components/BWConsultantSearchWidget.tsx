@@ -11,7 +11,7 @@ export interface SearchResult {
 
 export interface BWConsultantSearchWidgetProps {
   onSearch?: (query: string) => void;
-  onEnterPlatform?: () => void;
+  onEnterPlatform?: (payload?: { query?: string; results?: SearchResult[] }) => void;
   placeholder?: string;
   context?: 'landing' | 'report';
 }
@@ -285,7 +285,7 @@ User query: ${query.trim()}`;
               <button
                 onClick={() => {
                   setShowResults(false);
-                  if (onEnterPlatform) onEnterPlatform();
+                  onEnterPlatform?.({ query, results });
                 }}
                 className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-500 transition flex items-center justify-center gap-2"
               >
