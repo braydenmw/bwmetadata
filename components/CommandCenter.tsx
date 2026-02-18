@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
-import { BWConsultantSearchWidget, type SearchResult } from './BWConsultantSearchWidget';
+import { UnifiedBWConsultant } from './UnifiedBWConsultant';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete BWGA Landing Page
 
 interface CommandCenterProps {
-    onEnterPlatform?: (payload?: { query?: string; results?: SearchResult[] }) => void;
+    onEnterPlatform?: (payload?: { query?: string; results?: Record<string, unknown>[] }) => void;
     onOpenGlobalLocationIntel?: () => void;
     onLocationResearched?: (data: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -513,14 +513,49 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
 
-            {/* BW CONSULTANT AI SEARCH - Gateway Widget */}
+            {/* BW CONSULTANT AI SEARCH - ChatGPT-Style Window */}
             <section className="py-20 px-4 bg-white">
-                <div className="max-w-4xl mx-auto">
-                            <BWConsultantSearchWidget 
-                                context="landing"
-                                onSearch={(query) => { console.log('Landing page search:', query); }}
-                                onEnterPlatform={onEnterPlatform}
+                <div className="max-w-2xl mx-auto">
+                    {/* Header */}
+                    <div className="mb-12 text-center">
+                        <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">Meet Your AI Partner</p>
+                        <h1 className="text-4xl font-bold text-slate-900 mb-2">BW Consultant AI</h1>
+                        <h2 className="text-xl text-slate-600 mb-4">Your Strategic Intelligence Partner</h2>
+                        <p className="text-base text-slate-700 leading-relaxed">
+                            I'm not a chatbot — I'm a sovereign-grade intelligence system built to help you navigate global business, investment, and regional development challenges.
+                        </p>
+                    </div>
+
+                    {/* ChatGPT-Style Window */}
+                    <div className="rounded-2xl shadow-2xl overflow-hidden bg-gradient-to-b from-slate-50 to-white border border-slate-200">
+                        {/* Window Header with AI Image */}
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 flex flex-col items-center justify-center">
+                            <img 
+                                src="https://images.unsplash.com/photo-1677442d019cecf8f8e0e4b0f3e7f7f7?w=120&h=120&fit=crop&q=80" 
+                                alt="AI Partner" 
+                                className="w-24 h-24 rounded-full border-4 border-white shadow-lg mb-4"
                             />
+                            <h3 className="text-2xl font-bold text-white">BW Consultant</h3>
+                            <p className="text-blue-100 text-sm mt-1">Powered by NSIL v3.2</p>
+                        </div>
+
+                        {/* Search Component Inside Window */}
+                        <div className="p-6 md:p-8">
+                            <UnifiedBWConsultant
+                                context="landing"
+                                onQueryProcessed={(response) => {
+                                    console.log('Landing page consultant response:', response);
+                                }}
+                            />
+                        </div>
+
+                        {/* Window Footer */}
+                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 text-center">
+                            <p className="text-xs text-slate-500">
+                                Sovereign-grade intelligence • Real-time analysis • Professional insights
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
