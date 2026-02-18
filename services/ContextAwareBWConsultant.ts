@@ -14,6 +14,8 @@ export type ResponseFormat = 'fact-sheet' | 'chat-response';
 
 export interface FactSheetResponse {
   format: 'fact-sheet';
+  context: ConsultantContext;
+  timestamp: string;
   title: string;
   topic: string;
   sections: Array<{
@@ -33,6 +35,8 @@ export interface FactSheetResponse {
 
 export interface ChatResponse {
   format: 'chat-response';
+  context: ConsultantContext;
+  timestamp: string;
   message: string;
   guidance?: string;
   suggestions?: string[];
@@ -40,13 +44,10 @@ export interface ChatResponse {
   nextStep?: string;
 }
 
-export interface ConsultantResponse extends FactSheetResponse | ChatResponse {
-  context: ConsultantContext;
-  timestamp: string;
-}
+export type ConsultantResponse = FactSheetResponse | ChatResponse;
 
 const LANDING_PAGE_PROMPTS = {
-  factSheet: (query: string, liveData?: any) => `You are BW Consultant AI - an expert analyst providing FACTUAL information.
+  factSheet: (query: string, liveData?: Record<string, unknown>) => `You are BW Consultant AI - an expert analyst providing FACTUAL information.
 
 User Query: "${query}"
 
@@ -87,7 +88,7 @@ Return VALID JSON only.`
 };
 
 const LIVE_REPORT_PROMPTS = {
-  proactiveChat: (query: string, reportContext?: any) => `You are BW Consultant - a PROACTIVE GUIDE helping someone build a strategic report.
+  proactiveChat: (query: string, reportContext?: Record<string, unknown>) => `You are BW Consultant - a PROACTIVE GUIDE helping someone build a strategic report.
 
 User Input: "${query}"
 
@@ -124,7 +125,7 @@ export class ContextAwareBWConsultant {
   static async processQuery(
     query: string,
     context?: ConsultantContext,
-    reportData?: any
+    reportData?: Record<string, unknown>
   ): Promise<ConsultantResponse> {
     const detectedContext = context || this.detectContext();
     
@@ -200,7 +201,7 @@ export class ContextAwareBWConsultant {
    */
   private static async generateProactiveChatResponse(
     query: string,
-    reportData?: any
+    reportData?: Record<string, unknown>
   ): Promise<ChatResponse> {
     const prompt = LIVE_REPORT_PROMPTS.proactiveChat(query, reportData);
     const aiResponse = await invokeAI(prompt);
@@ -253,7 +254,7 @@ export class ContextAwareBWConsultant {
   /**
    * Suggest next step based on context
    */
-  private static suggestNextStep(query: string, reportData?: any): string {
+  private static suggestNextStep(query: string, reportData?: Record<string, unknown>): string {
     const lowerQuery = query.toLowerCase();
 
     if (lowerQuery.includes('identity') && !reportData?.mandate) {

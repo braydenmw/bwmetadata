@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Loader, Brain, FileText, MessageCircle, AlertCircle } from 'lucide-react';
+import { Send, Loader, Brain, AlertCircle } from 'lucide-react';
 import ContextAwareBWConsultant, { 
   ConsultantResponse, 
   FactSheetResponse, 
@@ -18,7 +18,7 @@ import ContextAwareBWConsultant, {
 
 interface UnifiedBWConsultantProps {
   context?: 'landing' | 'live-report';
-  reportData?: any;
+  reportData?: Record<string, unknown>;
   onQueryProcessed?: (response: ConsultantResponse) => void;
   className?: string;
   minHeight?: string;
@@ -73,7 +73,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
         context: detectedContext,
         timestamp: new Date().toISOString(),
         message: 'I encountered an error processing your query. Please try again.'
-      } as ChatResponse);
+      } as ConsultantResponse);
     } finally {
       setIsLoading(false);
     }
@@ -104,10 +104,11 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
         ) : response.format === 'fact-sheet' ? (
           // FACT SHEET MODE (Landing Page)
           <FactSheetDisplay response={response as FactSheetResponse} />
-        ) : (
+        ) : response.format === 'chat-response' ? (
           // CHAT MODE (Live Report)
           <ChatDisplay response={response as ChatResponse} />
-        )}
+        ) : null
+        }
         <div ref={messagesEndRef} />
       </div>
 
