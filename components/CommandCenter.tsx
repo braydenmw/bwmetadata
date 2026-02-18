@@ -259,30 +259,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 1 CONTINUED: The Origin (Full-Width Story Block with Image)
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative py-16 px-4 bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white overflow-hidden">
-                <div className="absolute inset-0 opacity-20"></div>
-                <div className="relative max-w-4xl mx-auto space-y-6">
-                    <p className="text-sm font-bold text-blue-400 uppercase tracking-wider">Why This Exists</p>
-                    
-                    <p className="text-base text-slate-300 leading-relaxed text-justify">
-                        <strong className="text-white">Bright founders in Lagos. Brilliant projects in the Philippines. Life-saving initiatives in Bangladesh.</strong> All overlooked. Not for lack of capability or capital. For lack of <strong className="text-white">institutional translation.</strong> That's what this system was built to close.
-                    </p>
-
-                    <div className="bg-blue-950/50 border-l-4 border-r-4 border-blue-400 px-6 py-5 rounded-sm backdrop-blur-sm">
-                        <p className="text-sm font-bold text-blue-300 uppercase tracking-wider mb-4">The Real Opportunity Is Invisible</p>
-                        <p className="text-base text-slate-200 leading-relaxed text-justify mb-4">
-                            Capital flows to the largest markets. But the real wealth-generating capacity—the industries, the people, the supply chains—lives in the regional cities everyone overlooks. Everyone writes reports. Everyone wants the same intelligence. But the data is two years old. Where does someone start when they don't have the analyst budget, the skill, or access to current information? <strong className="text-white">That's the gap.</strong>
-                        </p>
-                        <p className="text-base text-slate-200 leading-relaxed text-justify">
-                            This is a <strong className="text-white">100% dedicated global regional development system.</strong> Not here to replace what you're doing. Not here to be another report vendor. Here to provide the real-time institutional translation layer that lets you see what's actually happening in the cities and regions that the big markets depend on. Here to give you the ability to understand, evaluate, and act on opportunities that have been invisible simply because the translation was missing. <strong className="text-white">Below is how it thinks.</strong>
-                        </p>
-                    </div>
-
-                    <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors pt-4">
-                        <GitBranch size={16} /> The Intelligence Architecture: How The System Works &rarr;
-                    </button>
-                </div>
-            </section>
+            // ...existing code...
 
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 2: THREE FEATURE CARDS — How It Thinks (Marketing Speak)
