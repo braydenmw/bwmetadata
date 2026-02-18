@@ -8,6 +8,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import LiveDataService from './LiveDataService';
 
 const API_BASE = (import.meta as { env?: Record<string, string> })?.env?.VITE_API_BASE_URL || '';
 
@@ -101,15 +102,130 @@ export const getGeminiApiKey = (): string => {
   return '';
 };
 
+// ==================== LIVE DATA ENRICHMENT ====================
+
+/**
+ * Extract geographic location from user query
+ * Looks for country/city names in the prompt
+ */
+function extractLocationFromQuery(query: string): string | null {
+  const locationKeywords = [
+    'manila', 'philippines', 'beijing', 'china', 'tokyo', 'japan',
+    'mumbai', 'india', 'jakarta', 'indonesia', 'bangkok', 'thailand',
+    'vietnam', 'singapore', 'south korea', 'malaysia', 'thailand',
+    'hong kong', 'taiwan', 'australia', 'new zealand', 'sri lanka',
+    'pakistan', 'bangladesh', 'myanmar', 'cambodia', 'laos',
+    'new york', 'london', 'paris', 'berlin', 'toronto', 'vancouver',
+    'sydney', 'melbourne', 'dubai', 'singapore', 'hong kong'
+  ];
+
+  const lowerQuery = query.toLowerCase();
+  for (const location of locationKeywords) {
+    if (lowerQuery.includes(location)) {
+      // Extract the region name (e.g., "Manila" from "manila region" or just return the word)
+      return location
+        .split(/\s+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Fetch live market data for a location and format it
+ */
+async function fetchAndFormatLiveData(location: string): Promise<string> {
+  try {
+    console.log(`[AI Service] Fetching live data for: ${location}`);
+    
+    const intelligence = await LiveDataService.getCountryIntelligence(location);
+    
+    if (!intelligence.dataQuality.hasRealData) {
+      console.log(`[AI Service] No real-time data available for ${location}`);
+      return '';
+    }
+
+    let dataSection = `\n\n--- LIVE MARKET DATA (Real-time) ---\n`;
+    dataSection += `Location: ${intelligence.profile?.name || location}\n`;
+    dataSection += `Data Sources: ${intelligence.dataQuality.sources.join(', ')}\n`;
+    dataSection += `Last Updated: ${intelligence.dataQuality.lastUpdated}\n\n`;
+
+    if (intelligence.profile) {
+      dataSection += `**Geographic Profile:**\n`;
+      dataSection += `- Capital: ${intelligence.profile.capital}\n`;
+      dataSection += `- Region: ${intelligence.profile.region}\n`;
+      dataSection += `- Population: ${intelligence.profile.population?.toLocaleString()}\n`;
+      dataSection += `- Languages: ${intelligence.profile.languages?.join(', ')}\n`;
+      dataSection += `- Currencies: ${intelligence.profile.currencies?.join(', ')}\n\n`;
+    }
+
+    if (intelligence.economics) {
+      dataSection += `**Economic Indicators (World Bank Data):**\n`;
+      if (intelligence.economics.gdpCurrent) {
+        dataSection += `- GDP: $${(intelligence.economics.gdpCurrent / 1e12).toFixed(2)}T\n`;
+      }
+      if (intelligence.economics.gdpGrowth) {
+        dataSection += `- GDP Growth: ${intelligence.economics.gdpGrowth.toFixed(2)}%\n`;
+      }
+      if (intelligence.economics.population) {
+        dataSection += `- Population: ${(intelligence.economics.population / 1e6).toFixed(1)}M\n`;
+      }
+      if (intelligence.economics.unemployment) {
+        dataSection += `- Unemployment: ${intelligence.economics.unemployment.toFixed(2)}%\n`;
+      }
+      if (intelligence.economics.inflation) {
+        dataSection += `- Inflation Rate: ${intelligence.economics.inflation.toFixed(2)}%\n`;
+      }
+      if (intelligence.economics.fdiInflows) {
+        dataSection += `- FDI Inflows: $${(intelligence.economics.fdiInflows / 1e9).toFixed(2)}B\n`;
+      }
+      dataSection += '\n';
+    }
+
+    if (intelligence.currency) {
+      dataSection += `**Currency Exchange Rate:**\n`;
+      dataSection += `- 1 USD = ${intelligence.currency.rate} local currency\n\n`;
+    }
+
+    return dataSection;
+  } catch (error) {
+    console.error('[AI Service] Error fetching live data:', error);
+    return '';
+  }
+}
+
+/**
+ * Enhance AI prompt with live market data
+ */
+async function enhancePromptWithLiveData(originalPrompt: string): Promise<string> {
+  // Try to identify location in the query
+  const location = extractLocationFromQuery(originalPrompt);
+  
+  if (!location) {
+    // No location identified, use original prompt
+    return originalPrompt;
+  }
+
+  // Fetch live data for the identified location
+  const liveData = await fetchAndFormatLiveData(location);
+  
+  return originalPrompt + liveData;
+}
+
 // ==================== AWS BEDROCK CLIENT ====================
 
 async function invokeBedrockModel(prompt: string, model: string = 'anthropic.claude-3-sonnet-20240229-v1:0'): Promise<AIResponse> {
   try {
+    // Enhance prompt with live market data if location is mentioned
+    const enhancedPrompt = await enhancePromptWithLiveData(prompt);
+
     const response = await fetch(`${API_BASE}/api/bedrock/invoke`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt,
+        prompt: enhancedPrompt,
         model,
         maxTokens: 4096,
         temperature: 0.3
@@ -244,6 +360,9 @@ async function invokeGemini(prompt: string): Promise<AIResponse> {
 
   console.log('[AI Service] Using Gemini for local development');
 
+  // Enhance prompt with live market data if location is mentioned
+  const enhancedPrompt = await enhancePromptWithLiveData(prompt);
+
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ 
     model: 'gemini-2.0-flash',
@@ -253,7 +372,7 @@ async function invokeGemini(prompt: string): Promise<AIResponse> {
     }
   });
 
-  const result = await model.generateContent(prompt);
+  const result = await model.generateContent(enhancedPrompt);
   const responseText = result.response.text();
 
   return {
