@@ -175,15 +175,19 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
             firstSection.includes('temporarily unavailable') ||
             firstSection.includes('api key expired') ||
             firstSection.includes('error fetching');
+          const looksLikeGenericFallback =
+            firstSection.includes('bw consultant ai analysis') ||
+            firstSection.includes('to provide more targeted insights') ||
+            firstSection.includes('what i can help with');
 
-          if (looksLikeError) {
+          if (looksLikeError || looksLikeGenericFallback) {
             setChatMessages(prev => [
               ...prev,
               {
                 type: 'bw',
                 text:
-                  'I could not complete live AI research right now. The AI provider returned a service/configuration error. ' +
-                  'Please refresh API credentials and retry. I can still guide a manual analysis if you share your priority angle.'
+                  'I could not generate a valid live Fact Sheet for that query. The AI provider returned a fallback/service response. ' +
+                  'Please refresh API credentials and retry. I can still guide a manual analysis right now if you share your priority angle.'
               }
             ]);
             setFactSheetResponse(null);
@@ -329,7 +333,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                 </div>
               </form>
               <div className="px-4 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700">
-                <strong>NSIL v3.2</strong> — Proactive intelligence activates when you provide details
+                <strong>NSIL v6.0</strong> — Proactive intelligence activates when you provide details
               </div>
             </div>
           </div>

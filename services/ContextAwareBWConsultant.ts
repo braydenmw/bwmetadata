@@ -163,15 +163,15 @@ export class ContextAwareBWConsultant {
     const prompt = LANDING_PAGE_PROMPTS.factSheet(query, liveData);
     const aiResponse = await invokeAI(prompt);
 
-    if (isAIFailureText(aiResponse.text)) {
+    if (aiResponse.provider === 'fallback' || isAIFailureText(aiResponse.text)) {
       return {
         format: 'chat-response',
         context: 'landing',
         timestamp: new Date().toISOString(),
         message:
-          'I could not complete live AI research right now because the AI service is unavailable or misconfigured. ' +
+          'I could not generate a live Fact Sheet right now because the AI service is unavailable or not configured. ' +
           'Please refresh API credentials (Gemini key), then try again. ' +
-          'If you want, I can still guide you manually: share the city/company and I will give you a structured checklist while the AI service is being fixed.'
+          'I can still help manually right now: share a location/company and I will provide a structured risk, opportunity, and next-step checklist.'
       };
     }
 
@@ -190,6 +190,23 @@ export class ContextAwareBWConsultant {
       };
     } catch {
       // Fallback if JSON parsing fails
+      const lowerText = aiResponse.text.toLowerCase();
+      const looksLikeGenericNonFactSheet =
+        lowerText.includes('bw consultant ai analysis') ||
+        lowerText.includes('to provide more targeted insights') ||
+        lowerText.includes('what i can help with');
+
+      if (looksLikeGenericNonFactSheet) {
+        return {
+          format: 'chat-response',
+          context: 'landing',
+          timestamp: new Date().toISOString(),
+          message:
+            'I received a generic fallback response instead of a structured Fact Sheet. ' +
+            'Please retry after API configuration is fixed. If useful, I can continue with a manual brief right now.'
+        };
+      }
+
       return {
         format: 'fact-sheet',
         context: 'landing',
