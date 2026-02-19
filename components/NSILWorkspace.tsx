@@ -771,6 +771,73 @@ const NSILWorkspace: React.FC<NSILWorkspaceProps> = ({
     if (target) setTemplateStatus(`Deleted template "${target.name}".`);
   };
 
+  const getQuickActionOutputSuggestions = (actionId: string) => {
+    const catalogByAction: Record<string, { reportKeywords: string[]; letterKeywords: string[] }> = {
+      market: {
+        reportKeywords: ['market', 'regional', 'sector', 'opportunity', 'feasibility', 'investment'],
+        letterKeywords: ['investment', 'interest', 'partnership', 'proposal']
+      },
+      company: {
+        reportKeywords: ['due diligence', 'company', 'partner', 'risk', 'governance', 'profile'],
+        letterKeywords: ['due diligence', 'partnership', 'intent', 'engagement']
+      },
+      regional: {
+        reportKeywords: ['regional', 'infrastructure', 'location', 'development', 'roadmap'],
+        letterKeywords: ['development', 'coordination', 'support', 'engagement']
+      },
+      investment: {
+        reportKeywords: ['investment', 'viability', 'committee', 'readiness', 'risk'],
+        letterKeywords: ['investment', 'approval', 'decision', 'commitment']
+      },
+      proposal: {
+        reportKeywords: ['proposal', 'funding', 'project', 'business case', 'implementation'],
+        letterKeywords: ['proposal', 'request', 'partnership', 'funding', 'intent']
+      },
+      risk: {
+        reportKeywords: ['risk', 'mitigation', 'controls', 'compliance', 'governance'],
+        letterKeywords: ['risk', 'compliance', 'advisory', 'notice']
+      },
+      stakeholder: {
+        reportKeywords: ['stakeholder', 'engagement', 'governance', 'alignment', 'coordination'],
+        letterKeywords: ['stakeholder', 'engagement', 'coordination', 'invitation', 'alignment']
+      },
+      compliance: {
+        reportKeywords: ['compliance', 'regulatory', 'policy', 'audit', 'governance'],
+        letterKeywords: ['compliance', 'regulatory', 'certification', 'notice', 'attestation']
+      }
+    };
+
+    const keywordSet = catalogByAction[actionId] ?? {
+      reportKeywords: ['strategy', 'analysis', 'report'],
+      letterKeywords: ['letter', 'proposal', 'advisory']
+    };
+
+    const matchByKeywords = (text: string, keywords: string[]) =>
+      keywords.some((keyword) => text.includes(keyword));
+
+    const suggestedReports = reportOptions
+      .filter((option) =>
+        matchByKeywords(
+          `${option.label} ${option.description} ${option.category}`.toLowerCase(),
+          keywordSet.reportKeywords
+        )
+      )
+      .slice(0, 8)
+      .map((option) => option.id);
+
+    const suggestedLetters = letterOptions
+      .filter((option) =>
+        matchByKeywords(
+          `${option.label} ${option.description} ${option.category}`.toLowerCase(),
+          keywordSet.letterKeywords
+        )
+      )
+      .slice(0, 6)
+      .map((option) => option.id);
+
+    return { suggestedReports, suggestedLetters };
+  };
+
   const applyQuickAction = (action: QuickAction) => {
     setActiveQuickAction(action.id);
     setMainMode('objective');
@@ -792,12 +859,19 @@ const NSILWorkspace: React.FC<NSILWorkspaceProps> = ({
       return next;
     });
 
+    const { suggestedReports, suggestedLetters } = getQuickActionOutputSuggestions(action.id);
+    setSelectedReports((prev) => Array.from(new Set([...prev, ...suggestedReports])));
+    setSelectedLetters((prev) => Array.from(new Set([...prev, ...suggestedLetters])));
+
     setChatInput(action.hint);
     setChatMessages((prev) => [
       ...prev,
       {
         sender: 'bw',
-        text: `Quick action "${action.label}" applied. Updated steps: ${action.steps.join(', ')}. Output impact: ${action.outputImpact}`
+        text:
+          `Quick action "${action.label}" applied. Updated steps: ${action.steps.join(', ')}. ` +
+          `Auto-activated outputs: ${suggestedReports.length} reports, ${suggestedLetters.length} letters. ` +
+          `Output impact: ${action.outputImpact}`
       }
     ]);
   };
@@ -1093,24 +1167,95 @@ const NSILWorkspace: React.FC<NSILWorkspaceProps> = ({
     if (!chatInput.trim() || isProcessing) return;
 
     const prompt = chatInput.trim();
+    const promptLower = prompt.toLowerCase();
     setChatMessages((prev) => [...prev, { sender: 'user', text: prompt }]);
     setChatInput('');
     setIsProcessing(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 650));
+    await new Promise((resolve) => setTimeout(resolve, 350));
 
-    const response = [
-      `Objective: ${params.problemStatement || 'Not set yet'}`,
-      `Mode: ${mainMode === 'objective' ? 'Objective Intake' : 'Live Report'}`,
-      `Intake progress: ${completedStepCount}/10 steps complete`,
-      `Schema readiness: ${schemaCompletedCount}/13 required fields`,
-      `Evidence gates: ${allGatesPass ? 'Passed' : 'Pending'}`,
-      `Weighted score: ${weightedScore.toFixed(1)}/100 (${confidenceLevel} confidence)`,
-      `Decision: ${decisionOutcome}`,
-      `Outputs active: ${selectedReports.length} reports, ${selectedLetters.length} letters`,
-      `Evidence files: ${uploadedDocs.length}`,
-      'Next best action: complete missing intake fields, then use Live Report to generate coherent outputs.'
-    ].join('\n');
+    const missingIntakeFields: string[] = [];
+    if (!params.organizationName?.trim()) missingIntakeFields.push('Organization Name');
+    if (!params.country?.trim()) missingIntakeFields.push('Country / Region');
+    if (!params.reportName?.trim()) missingIntakeFields.push('Live Report Title');
+    if (!params.problemStatement?.trim()) missingIntakeFields.push('Objective');
+
+    const stepsRemaining = Math.max(0, 4 - completedStepCount);
+    const activeOutputsCount = selectedReports.length + selectedLetters.length;
+    const missingSchema = Math.max(0, 13 - schemaCompletedCount);
+
+    let suggestedTab: SidebarTab | null = null;
+    if (/(intake|objective|title|organization|country|region)/.test(promptLower)) suggestedTab = 'intake';
+    else if (/(step|10 step|wizard|workflow)/.test(promptLower)) suggestedTab = 'steps';
+    else if (/(output|letter|document|generate)/.test(promptLower)) suggestedTab = 'outputs';
+    else if (/(upload|evidence|file|document proof)/.test(promptLower)) suggestedTab = 'uploads';
+    else if (/(how|guide|help|start|what next|stuck)/.test(promptLower)) suggestedTab = 'howto';
+
+    if (suggestedTab) {
+      setSidebarOpen(true);
+      setActiveTab(suggestedTab);
+    }
+
+    const confused = /(not make sense|doesn.?t make sense|confus|no logic|not logical|throwing answer)/.test(promptLower);
+    const askedWhyNotReady = /(why.*not ready|not ready|blocked|can't generate|cannot generate)/.test(promptLower);
+
+    const blockers: string[] = [];
+    if (missingIntakeFields.length > 0) blockers.push(`Missing intake fields: ${missingIntakeFields.join(', ')}`);
+    if (stepsRemaining > 0) blockers.push(`10-step intake still needs ${stepsRemaining} more configured step(s) to unlock outputs`);
+    if (activeOutputsCount === 0) blockers.push('No reports/letters are active yet');
+    if (!allGatesPass) blockers.push('Evidence gates are still pending');
+
+    let immediateAction = '';
+    if (missingIntakeFields.length > 0) {
+      immediateAction = `Open Intake and complete: ${missingIntakeFields.join(', ')}.`;
+      setSidebarOpen(true);
+      setActiveTab('intake');
+    } else if (stepsRemaining > 0) {
+      immediateAction = `Open 10 Steps and configure ${stepsRemaining} more step(s).`;
+      setSidebarOpen(true);
+      setActiveTab('steps');
+    } else if (activeOutputsCount === 0) {
+      immediateAction = 'Open Outputs and activate at least 1 report or letter.';
+      setSidebarOpen(true);
+      setActiveTab('outputs');
+    } else if (mainMode !== 'live-report') {
+      immediateAction = 'Click Open Live Report to move from setup to analysis mode.';
+    } else {
+      immediateAction = 'You are ready. Ask for analysis, then generate active outputs.';
+    }
+
+    const responseSections: string[] = [];
+
+    if (confused) {
+      responseSections.push('You are right — the previous reply was too mechanical. Here is the logic in plain language.');
+    } else {
+      responseSections.push('Understood. Here is your current status and the exact next move.');
+    }
+
+    responseSections.push(
+      [
+        'Status snapshot',
+        `• Mode: ${mainMode === 'objective' ? 'Objective Intake' : 'Live Report'}`,
+        `• Intake core fields: ${4 - missingIntakeFields.length}/4`,
+        `• Steps configured: ${completedStepCount}/10`,
+        `• Schema readiness: ${schemaCompletedCount}/13 (${missingSchema} missing)`,
+        `• Evidence gates: ${allGatesPass ? 'Passed' : 'Pending'}`,
+        `• Decision: ${decisionOutcome}`,
+        `• Active outputs: ${selectedReports.length} reports, ${selectedLetters.length} letters`,
+        `• Evidence files: ${uploadedDocs.length}`
+      ].join('\n')
+    );
+
+    if (askedWhyNotReady || decisionOutcome === 'NOT_READY') {
+      responseSections.push(
+        `Why it is not ready:\n${blockers.length > 0 ? blockers.map((b) => `• ${b}`).join('\n') : '• No blocker detected.'}`
+      );
+    }
+
+    responseSections.push(`Next action now:\n• ${immediateAction}`);
+    responseSections.push('If you want, send one sentence with your objective and I will tell you exactly which 10-step selections and outputs to activate.');
+
+    const response = responseSections.join('\n\n');
 
     setChatMessages((prev) => [...prev, { sender: 'bw', text: response }]);
     setIsProcessing(false);
