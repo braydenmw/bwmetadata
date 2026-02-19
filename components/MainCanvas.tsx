@@ -1,35 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Building2, Target, ShieldCheck, Shield,
-  Download, Printer, Globe,
-  Check, CheckCircle,
-  Network, History,
-  Users, GitBranch,
-  FileText, BarChart3, Handshake, TrendingUp,
-  Database, Calculator, Search, BarChart, PieChart, Activity, Cpu,
-  X, Plus, Compass, Zap,
-  DollarSign, Briefcase, Settings, Award, ClipboardList
+  Download, Sparkles, Printer, Globe, ArrowRight, Wallet,
+  Info, Check, CheckCircle,
+  Network, History, Briefcase,
+  Zap, MapPin, Users, Scale, GitBranch,
+  FileText, BarChart3, DollarSign, Settings, Presentation, Handshake, TrendingUp,
+  Layers, Database, Calculator, Search, BarChart, PieChart, Activity, Cpu, AlertCircle,
+  X, Plus, MessageCircle, Send, User
 } from 'lucide-react';
-import { DocumentUploadModal } from './DocumentUploadModal';
-import { UnifiedBWConsultant } from './UnifiedBWConsultant';
-import { CaseStudyAnalyzer, CaseStudyAnalysis } from '../services/CaseStudyAnalyzer';
-// NSILIntelligenceHub used by ReportOrchestrator (not directly here)
-import { SituationAnalysisEngine } from '../services/SituationAnalysisEngine';
-import { HistoricalParallelMatcher } from '../services/HistoricalParallelMatcher';
-import { invokeAI } from '../services/awsBedrockService';
-import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { ReportParameters, ReportData, GenerationPhase, CopilotInsight, IngestedDocumentMeta } from '../types';
+import { PieChart as RechartsPieChart, Pie, Cell, BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ReportParameters, ReportData, GenerationPhase, CopilotInsight } from '../types';
 
 const toolCategories = {
     analysis: [
         { id: 'roi-diagnostic', label: 'ROI Diagnostic', icon: Calculator, description: 'Calculate ROI, IRR, and payback period for your investment.' },
-        { id: 'due-diligence', label: 'Due Diligence', icon: Search, description: 'Run an AI-powered due diligence check on a target company.' },
+        { id: 'due-diligence', label: 'Due Diligence', icon: Search, description: 'Run a simulated due diligence check on a target company.' },
         { id: 'scenario-planning', label: 'Scenario Planning', icon: BarChart, description: 'Model best, base, and worst-case scenarios for your strategy.' },
     ],
     marketplace: [
-        { id: 'compatibility-engine', label: 'Compatibility Engine', icon: Handshake, description: 'Evaluate partner compatibility across key dimensions.' },
-        { id: 'market-scanner', label: 'Market Scanner', icon: Globe, description: 'Scan target markets for opportunities and threats.' },
-        { id: 'network-mapper', label: 'Network Mapper', icon: Network, description: 'Map strategic network connections and influence paths.' },
+        { id: 'compatibility-engine', label: 'Partner Compatibility Engine', icon: Handshake, description: 'Evaluate strategic and operational fit with a potential partner.' },
     ],
 };
 import DocumentGenerationSuite from './DocumentGenerationSuite';
@@ -49,12 +39,12 @@ interface MainCanvasProps {
   params: ReportParameters;
   setParams: (params: ReportParameters) => void;
   onChangeViewMode?: (mode: string) => void;
-  insights?: CopilotInsight[];
-  autonomousMode?: boolean;
-  autonomousSuggestions?: string[];
-  isAutonomousThinking?: boolean;
-  initialConsultantQuery?: string;
-  onInitialConsultantQueryHandled?: () => void;
+    insights?: CopilotInsight[];
+    autonomousMode?: boolean;
+    autonomousSuggestions?: string[];
+    isAutonomousThinking?: boolean;
+    initialConsultantQuery?: string;
+    onInitialConsultantQueryHandled?: () => void;
 }
 
 const CollapsibleSection: React.FC<{
@@ -76,22 +66,20 @@ const CollapsibleSection: React.FC<{
           <p className="text-xs text-stone-600">{description}</p>
         </div>
       </div>
-      <div className="text-lg text-stone-400">{isExpanded ? '' : ''}</div>
+      <div className="text-lg text-stone-400">{isExpanded ? '▼' : '▶'}</div>
     </div>
     {isExpanded && <div className="p-4 bg-white border-t border-stone-200">{children}</div>}
   </div>
 );
 
 const MainCanvas: React.FC<MainCanvasProps> = ({
-    params, setParams, onGenerate, onChangeViewMode: _onChangeViewMode, reports, onOpenReport: _onOpenReport, onDeleteReport: _onDeleteReport, onNewAnalysis: _onNewAnalysis, reportData, isGenerating: _isGenerating, generationPhase: _generationPhase, generationProgress: _generationProgress, onCopilotMessage: _onCopilotMessage,
-    insights: _insights, autonomousMode: _autonomousMode, autonomousSuggestions: _autonomousSuggestions, isAutonomousThinking: _isAutonomousThinking,
-    initialConsultantQuery, onInitialConsultantQueryHandled
+    params, setParams, onGenerate, onChangeViewMode, reports, onOpenReport, onDeleteReport, onNewAnalysis, reportData, isGenerating, generationPhase, generationProgress, onCopilotMessage
 }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalView, setModalView] = useState('main'); // 'main' or a specific tool id
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [expandedSubsections, setExpandedSubsections] = useState<Record<string, boolean>>({});
-  const [_injectedComponents, setInjectedComponents] = useState<Record<string, unknown>[]>([]);
+  const [injectedComponents, setInjectedComponents] = useState<any[]>([]);
   const [chartConfig, setChartConfig] = useState({
     title: '',
     dataSource: '',
@@ -102,237 +90,69 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     revenue: '200000',
     costs: '75000'
   });
-  const [generationConfig, setGenerationConfig] = useState<Record<string, unknown>>({});
+  const [generationConfig, setGenerationConfig] = useState<any>({});
   const [isDraftFinalized, setIsDraftFinalized] = useState(false);
   const [showFinalizationModal, setShowFinalizationModal] = useState(false);
   const [selectedFinalReports, setSelectedFinalReports] = useState<string[]>([]);
   const [showDocGenSuite, setShowDocGenSuite] = useState(false);
-  const [_partnerPersonas, _setPartnerPersonas] = useState<string[]>([]);
+  const [partnerPersonas, setPartnerPersonas] = useState<string[]>([]);
   const [generatedDocs, setGeneratedDocs] = useState<{id: string, title: string, desc: string, timestamp: Date}[]>([]);
-  const [showDocumentUpload, setShowDocumentUpload] = useState(false);
-  const chatMessagesEndRef = useRef<HTMLDivElement>(null);
-  const initialQueryConsumed = useRef(false);
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   // Apply intelligence enhancements to report data
-  const enhancedReportData = React.useMemo(() => {
-    if (selectedIntelligenceEnhancements.length === 0) return reportData;
-    let enhancedReport = { ...reportData };
-    selectedIntelligenceEnhancements.forEach(enhancement => {
-      const appendContent = (section: keyof ReportData, content: string) => {
-        const sectionData = enhancedReport[section] as Record<string, unknown>;
-        if (sectionData && typeof sectionData === 'object' && 'content' in sectionData) {
-          sectionData.content = (sectionData.content || '') + `\n\n${content}`;
-        }
-      };
-      switch (enhancement) {
-        case 'roi-diagnostic': if (roiResult) { appendContent('financials', `**ROI Diagnostic Analysis:**\n- ROI: ${roiResult.roi.toFixed(1)}%\n- IRR: ${roiResult.irr.toFixed(1)}%\n- Payback: ${roiResult.payback.toFixed(2)} years`); } break;
-        case 'scenario-planning': appendContent('marketAnalysis', '**Scenario Planning:** Best/Base/Worst case modeled.'); break;
-        case 'due-diligence': appendContent('risks', `**Due Diligence Findings (NSIL Analysis):** AI-powered assessment for ${params.organizationName || 'target entity'} in ${params.country || 'target market'}. Financial health, legal compliance, operational capacity, and market reputation analyzed using NSIL Layer 5 stress testing.`); break;
-        case 'partner-compatibility': appendContent('marketAnalysis', '**Partner Compatibility:** High alignment detected.'); break;
-        case 'diversification-analysis': appendContent('marketAnalysis', '**Diversification Analysis:** Portfolio diversification recommended.'); break;
-        case 'ethical-compliance': appendContent('risks', '**Ethical Compliance:** ESG Score 78/100.'); break;
-        case 'historical-precedents': appendContent('marketAnalysis', '**Historical Precedents:** 67% success rate in similar deals.'); break;
-        case 'growth-modeling': appendContent('financials', '**Growth Modeling:** Projected 45% CAGR over 5 years.'); break;
-        case 'stakeholder-analysis': appendContent('marketAnalysis', '**Stakeholder Analysis:** Key stakeholders mapped.'); break;
-        case 'geopolitical-risk': appendContent('risks', `**Geopolitical Risk for ${params.country}:** Stability score 82/100.`); break;
-        case 'valuation-engine': appendContent('financials', '**Valuation:** $7.8M recommended enterprise value.'); break;
-        case 'performance-metrics': appendContent('financials', '**Performance Metrics:** Target 25% YoY growth.'); break;
-        case 'supply-chain-analysis': appendContent('risks', '**Supply Chain:** Diversification needed.'); break;
-        case 'charts': appendContent('financials', '**Charts Integration:** Visual charts added.'); break;
-        case 'data': appendContent('marketAnalysis', '**Data Visualization:** Key metrics integrated.'); break;
-        case 'ai-analysis': appendContent('marketAnalysis', '**AI Analysis:** Advanced insights applied.'); break;
-        case 'content': appendContent('executiveSummary', '**Content Enhancement:** Narrative enhanced.'); break;
-      }
-    });
-    return enhancedReport;
-  }, [reportData, selectedIntelligenceEnhancements, roiResult, params.country, params.organizationName]);
+  const enhancedReportData = React.useMemo(() =>
+    selectedIntelligenceEnhancements.length > 0 ? applyIntelligenceEnhancements(reportData) : reportData,
+    [reportData, selectedIntelligenceEnhancements]
+  );
 
 
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-    { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
+    { text: "Hello! I'm your BW Consultant. How can I help you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
-
-  const handleDocumentProcessed = (doc: IngestedDocumentMeta, analysis?: CaseStudyAnalysis) => {
-    // Generate consultant summary if we have a full analysis
-    const summaryMsg = analysis
-      ? CaseStudyAnalyzer.toConsultantSummary(analysis)
-      : `Document uploaded: ${doc.filename}. I'll analyze this to provide deeper, more contextual recommendations.`;
-
-    setChatMessages(prev => [...prev, { text: summaryMsg, sender: 'bw', timestamp: new Date() }]);
-    setParams({ ...params, ingestedDocuments: [...(params.ingestedDocuments || []), doc] });
-  };
-
-  useEffect(() => {
-    chatMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
 
   const requiredFields: Record<string, string[]> = {
     identity: ['organizationName', 'organizationType', 'country'],
     mandate: ['strategicIntent', 'problemStatement'],
     market: ['userCity'],
     'partner-personas': ['partnerPersonas'],
-    'financial-model': ['totalInvestment'],
     risk: ['riskTolerance'],
-    resources: ['executiveLead'],
-    execution: ['milestonePlan'],
-    governance: ['riskReportingCadence'],
-    scoring: [],
   };
 
   const toggleSubsection = (key: string) => {
     setExpandedSubsections(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSendMessage = async (overrideText?: string) => {
-    const text = (overrideText ?? chatInput).trim();
-    if (!text) return;
-    const userText = text;
-    const newMessage = { text: userText, sender: 'user' as const, timestamp: new Date() };
-    setChatMessages(prev => [...prev, newMessage]);
-    if (!overrideText) setChatInput('');
+  const handleSendMessage = () => {
+    if (chatInput.trim()) {
+      const newMessage = { text: chatInput, sender: 'user' as const, timestamp: new Date() };
+      setChatMessages(prev => [...prev, newMessage]);
+      setChatInput('');
 
-      // Add thinking indicator
-      setChatMessages(prev => [...prev, { text: '\u23f3 Thinking...', sender: 'bw' as const, timestamp: new Date() }]);
-
-      try {
-        // Build conversation history for context
-        const recentMessages = chatMessages.slice(-10).map(m => 
-          `${m.sender === 'user' ? 'User' : 'BW Consultant'}: ${m.text}`
-        ).join('\n');
-
-        // Build session context from form params
-        let sessionContext = '';
-        if (params.organizationName) sessionContext += `Organization: ${params.organizationName}. `;
-        if (params.country) sessionContext += `Target Country: ${params.country}. `;
-        if (params.region) sessionContext += `Region: ${params.region}. `;
-        if (params.industry?.length) sessionContext += `Industry: ${params.industry.join(', ')}. `;
-        if (params.problemStatement) sessionContext += `Objective: ${params.problemStatement}. `;
-        if (params.strategicIntent?.length) sessionContext += `Strategic Intent: ${params.strategicIntent.join(', ')}. `;
-
-        const prompt = `You are BW Consultant AI, a knowledgeable strategic business advisor. You answer questions directly and conversationally, like a human expert would. You have deep knowledge of global markets, politics, business leaders, cities, investment climates, regulatory frameworks, and regional development.
-
-IMPORTANT RULES:
-- Answer the user's actual question directly and naturally, like ChatGPT or a human advisor would
-- If they ask about a person, tell them about that person
-- If they ask about a city, tell them about that city
-- If they ask about a market, explain the market
-- Do NOT return structured assessment data, trust scores, NSIL layers, or framework outputs
-- Be conversational, helpful, and informative
-- Use your knowledge to provide real, useful information
-- If you don't know something specific, say so honestly
-- Keep responses focused and readable (2-4 paragraphs typical)${sessionContext ? `\n\nCurrent session context: ${sessionContext}` : ''}${recentMessages ? `\n\nRecent conversation:\n${recentMessages}` : ''}
-
-User question: ${userText}`;
-
-        const aiResponse = await invokeAI(prompt);
-
-        setChatMessages(prev => {
-          const msgs = [...prev];
-          msgs.pop(); // Remove thinking indicator
-          return [...msgs, {
-            text: aiResponse.text,
-            sender: 'bw' as const,
-            timestamp: new Date()
-          }];
-        });
-
-      } catch (error) {
-        console.error('BW Consultant error:', error);
-        setChatMessages(prev => {
-          const msgs = [...prev];
-          msgs.pop();
-          return [...msgs, {
-            text: 'I encountered an issue processing your request. Please try again.',
-            sender: 'bw' as const,
-            timestamp: new Date()
-          }];
-        });
-      }
-  };
-
-  // If the landing page forwarded an initial query, consume it once
-  useEffect(() => {
-    if (initialConsultantQuery && !initialQueryConsumed.current) {
-      initialQueryConsumed.current = true;
-      handleSendMessage(initialConsultantQuery);
-      onInitialConsultantQueryHandled?.();
+      // Simulate context-aware BW response
+      setTimeout(() => {
+        let responseText = "Thank you for your input. Let me help you refine that aspect of your partnership strategy.";
+        if (chatInput.toLowerCase().includes('risk')) {
+          responseText = `Regarding risk for ${params.organizationName}, your current tolerance is set to '${params.riskTolerance}'. We should focus on mitigating financial and operational risks for your goal of '${params.strategicIntent[0]}'.`;
+        } else if (chatInput.toLowerCase().includes('partner')) {
+          responseText = `For your partnership objectives, finding a partner that complements your goal of '${params.strategicIntent[0]}' is key. Let's ensure the 'Ideal Partner Profile' section is detailed.`
+        }
+        const bwResponse = { text: responseText, sender: 'bw' as const, timestamp: new Date() };
+        setChatMessages(prev => [...prev, bwResponse]);
+      }, 1000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialConsultantQuery]);
+  };
 
   const openModal = (id: string) => {
     if (id === 'generation') {
       setIsDraftFinalized(true);
-
-      // Run full situation analysis before generating
-      try {
-        const situation = SituationAnalysisEngine.quickSummary(params);
-        const historical = HistoricalParallelMatcher.quickMatch(params);
-
-        let genText = `**Draft Compiled \u2014 Pre-Generation Intelligence Briefing:**\n\n`;
-        genText += `\u2022 Readiness Score: ${situation.readiness}/100\n`;
-        genText += `\u2022 Blind Spots: ${situation.blindSpotCount} detected\n`;
-        genText += `\u2022 Critical Unconsidered Needs: ${situation.criticalUnconsideredCount}\n`;
-        if (historical.found) {
-          genText += `\u2022 Historical Parallel: ${historical.case_title} (${historical.outcome}) \u2014 ${historical.topLesson}\n`;
-        }
-        genText += `\nPlease review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.`;
-
-        setChatMessages(prev => [...prev, {
-          text: genText,
-          sender: 'bw',
-          timestamp: new Date()
-        }]);
-      } catch {
-        setChatMessages(prev => [...prev, {
-          text: "The draft has been compiled based on your inputs. Please review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.",
-          sender: 'bw',
-          timestamp: new Date()
-        }]);
-      }
+      setChatMessages(prev => [...prev, {
+        text: "The draft has been compiled based on your inputs. Please review the Strategic Roadmap on the right. When you are ready, accept the draft to proceed to the official report selection.",
+        sender: 'bw',
+        timestamp: new Date()
+      }]);
       return;
     }
-
-    // Reactive intelligence: proactively brief user when they open a step
-    try {
-      const situation = SituationAnalysisEngine.quickSummary(params);
-      const stepNames: Record<string, string> = {
-        'identity': 'Organisation Identity',
-        'mandate': 'Strategic Mandate',
-        'market': 'Market Analysis',
-        'partner-personas': 'Partner Personas',
-        'financial-model': 'Financial Model',
-        'risk': 'Risk Assessment',
-        'resources': 'Resources & Capability',
-        'execution': 'Execution Plan',
-        'governance': 'Governance & Monitoring',
-        'scoring': 'Scoring & Readiness',
-      };
-      const stepName = stepNames[id] || id;
-
-      const fields = requiredFields[id] || [];
-      const missing = fields.filter(f => {
-        const val = params[f as keyof ReportParameters];
-        return Array.isArray(val) ? val.length === 0 : !val;
-      });
-
-      if (missing.length > 0) {
-        setChatMessages(prev => [...prev, {
-          text: `\ud83d\udcca **Opening ${stepName}** \u2014 ${missing.length} field(s) still needed. Readiness: ${situation.readiness}/100.\n\n\ud83d\udca1 **Tip:** ${situation.topQuestion}`,
-          sender: 'bw',
-          timestamp: new Date()
-        }]);
-      } else if (isStepComplete(id)) {
-        setChatMessages(prev => [...prev, {
-          text: `\u2705 **${stepName} is complete.** The NSIL brain will incorporate this data into all 46 scoring formulas. Current readiness: ${situation.readiness}/100.`,
-          sender: 'bw',
-          timestamp: new Date()
-        }]);
-      }
-    } catch { /* non-blocking */ }
-
     setActiveModal(id);
     setValidationErrors([]); // Clear previous errors
     setGenerationConfig({}); // Clear previous generation config
@@ -366,15 +186,15 @@ User question: ${userText}`;
     );
   };
 
-  // applyIntelligenceEnhancements logic is now inlined in the useMemo above
-  const _applyIntelligenceEnhancementsLegacy = (baseReport: ReportData): ReportData => {
+  const applyIntelligenceEnhancements = (baseReport: ReportData): ReportData => {
     let enhancedReport = { ...baseReport };
+        type WritableSectionKey = 'executiveSummary' | 'marketAnalysis' | 'recommendations' | 'implementation' | 'financials' | 'risks';
 
     selectedIntelligenceEnhancements.forEach(enhancement => {
-      const appendContent = (section: keyof ReportData, content: string) => {
-        const sectionData = enhancedReport[section] as Record<string, unknown>;
-        if (sectionData && typeof sectionData === 'object' && 'content' in sectionData) {
-          sectionData.content = (sectionData.content || '') + `\n\n${content}`;
+      // Helper function to safely append content
+            const appendContent = (section: WritableSectionKey, content: string) => {
+        if (enhancedReport[section]) {
+          enhancedReport[section].content = (enhancedReport[section].content || '') + `\n\n${content}`;
         }
       };
 
@@ -390,7 +210,7 @@ User question: ${userText}`;
           break;
 
         case 'due-diligence':
-          appendContent('risks', `**Due Diligence Findings (NSIL Analysis):**\n- Financial Health: AI assessment of ${params.organizationName || 'target entity'} financial indicators in ${params.country || 'target market'}.\n- Legal Compliance: Cross-referenced against regulatory frameworks for ${params.country || 'operating jurisdiction'}.\n- Operational Capacity: Evaluated against ${params.industry?.[0] || 'sector'} benchmarks using NSIL Layer 5.\n- Market Reputation: Analyzed via live intelligence and stakeholder signal analysis.`);
+          appendContent('risks', `**Due Diligence Findings (Simulated):**\n- Financial Health: Strong balance sheet, consistent profitability.\n- Legal Compliance: All major certifications appear current.\n- Operational Capacity: Scalable infrastructure seems to be in place.\n- Market Reputation: Initial feedback from the market is positive.`);
           break;
 
         case 'partner-compatibility':
@@ -402,7 +222,7 @@ User question: ${userText}`;
           break;
 
         case 'ethical-compliance':
-          appendContent('risks', `**Ethical Compliance Assessment (NSIL Analysis):**\n- ESG Score: Calculated via NSIL ethical gate analysis for ${params.country || 'target market'}.\n- Labor Practices: Assessed against ILO standards and local regulatory requirements in ${params.country || 'operating jurisdiction'}.\n- Governance: Board oversight evaluation using adversarial debate engine (Layer 4).\n- Recommendation: ESG monitoring protocols calibrated to ${params.industry?.[0] || 'sector'} risk profile.`);
+          appendContent('risks', `**Ethical Compliance Assessment:**\n- ESG Score (Simulated): 78/100\n- Labor Practices: Assumed compliant with standards in ${params.country}.\n- Governance: Strong board oversight is recommended.\n- Recommendation: Proceed with standard ESG monitoring protocols.`);
           break;
 
         case 'historical-precedents':
@@ -418,11 +238,11 @@ User question: ${userText}`;
           break;
 
         case 'geopolitical-risk':
-          appendContent('risks', `**Geopolitical Risk Assessment for ${params.country || 'Target Market'}:**\n- Country Stability: Assessed via NSIL Layer 3 pattern recognition and live intelligence feeds.\n- Trade Relations: Bilateral agreement analysis using historical precedent matching.\n- Currency Risk: Monte Carlo simulation (5,000 scenarios) via NSIL Layer 5 formula execution.\n- Regulatory Environment: Real-time policy tracking for ${params.country || 'target jurisdiction'}.`);
+          appendContent('risks', `**Geopolitical Risk Assessment for ${params.country}:**\n- Country Stability (Simulated): High (Score: 82/100)\n- Trade Relations: Favorable bilateral agreements are in place.\n- Currency Risk: Moderate volatility is expected and should be hedged.\n- Regulatory Environment: Business-friendly policies noted.`);
           break;
 
         case 'valuation-engine':
-          appendContent('financials', `**Valuation Engine Results (NSIL Analysis):**\n- DCF Valuation: Computed using NSIL Layer 5 with ${params.dealSize || 'stated deal parameters'} and market conditions in ${params.country || 'target market'}.\n- Comparable Transactions: Matched against historical deals in the '${params.industry?.[0] || 'target'}' sector via Layer 3 pattern recognition.\n- Recommended Valuation: Synthesized from multi-agent consensus (Layer 4 adversarial debate).\n- Key Value Drivers: Analyzed for ${params.organizationName || 'target entity'} in ${params.userCity || 'target location'}.`);
+          appendContent('financials', `**Valuation Engine Results (Simulated):**\n- DCF Valuation: $8.5M enterprise value.\n- Comparable Transactions: $7.2M average for deals in the '${params.industry?.[0]}' sector.\n- Recommended Valuation: $7.8M.\n- Key Value Drivers: Technology IP, market position in ${params.userCity}.`);
           break;
 
         case 'performance-metrics':
@@ -430,7 +250,7 @@ User question: ${userText}`;
           break;
 
         case 'supply-chain-analysis':
-          appendContent('risks', `**Supply Chain Analysis:**\n- Dependency Concentration: Analysis indicates a need to diversify suppliers beyond the primary ones in ${params.region || 'target markets'}.\n- Risk Mitigation: Backup suppliers in adjacent regions should be identified.\n- Cost Optimization: 12% potential savings through localizing supply chains in ${params.userCity}.`);
+          appendContent('risks', `**Supply Chain Analysis:**\n- Dependency Concentration: Analysis indicates a need to diversify suppliers beyond the primary ones in ${params.region}.\n- Risk Mitigation: Backup suppliers in adjacent regions should be identified.\n- Cost Optimization: 12% potential savings through localizing supply chains in ${params.userCity}.`);
           break;
 
         case 'charts':
@@ -516,24 +336,23 @@ User question: ${userText}`;
     setValidationErrors([]);
   };
 
-  const _renderActiveModalContent = () => {
+  const renderActiveModalContent = () => {
     // This function will return the form content based on the activeModal state.
     // We will define its content within the modal structure itself for better readability.
     // This is a placeholder for the concept.
     return null;
   }
 
-  const _renderInjectedComponent = (component: Record<string, unknown>, index: number) => {
-    const config = (component.config || {}) as Record<string, unknown>;
-    if (component.type === 'chart' && config.dataSource) {
+  const renderInjectedComponent = (component: any, index: number) => {
+    if (component.type === 'chart' && component.config.dataSource) {
       const COLORS = ['#003f5c', '#58508d', '#bc5090', '#ff6361', '#ffa600'];
       let data: {name: string, value: number}[] = [];
 
-      if (config.dataSource === 'industry' && params.industry.length > 0) {
+      if (component.config.dataSource === 'industry' && params.industry.length > 0) {
         data = params.industry.map(ind => ({ name: ind, value: Math.floor(Math.random() * 100) + 10 }));
-      } else if (config.dataSource === 'funding' && params.fundingSource) {
+      } else if (component.config.dataSource === 'funding' && params.fundingSource) {
         data = [{name: params.fundingSource, value: 100}];
-      } else if (config.dataSource === 'competitor') {
+      } else if (component.config.dataSource === 'competitor') {
         data = [{name: 'Competitor A', value: 40}, {name: 'Competitor B', value: 25}, {name: 'You', value: 20}, {name: 'Other', value: 15}];
       }
 
@@ -541,7 +360,7 @@ User question: ${userText}`;
 
       return (
         <div key={index} className="my-8 p-4 border border-stone-200 rounded-lg bg-stone-50">
-          <h3 className="text-center font-bold text-sm mb-2">{config.title as string}</h3>
+          <h3 className="text-center font-bold text-sm mb-2">{component.config.title}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <RechartsPieChart>
               <Pie
@@ -561,7 +380,7 @@ User question: ${userText}`;
               <Tooltip />
             </RechartsPieChart>
           </ResponsiveContainer>
-        </div>
+                </div>
         );
     }
     return null;
@@ -583,189 +402,408 @@ User question: ${userText}`;
 
   return (
     <div className="flex-1 w-full flex h-full bg-stone-100 font-sans text-stone-900 overflow-hidden">
-        <DocumentUploadModal isOpen={showDocumentUpload} onClose={() => setShowDocumentUpload(false)} onDocumentProcessed={handleDocumentProcessed} />
-        {/* --- LEFT PANEL: CONTROLS & FORMS (v6.0 Design) --- */}
-        <div className="flex flex-col bg-white border-r border-stone-200 overflow-hidden" style={{ flexBasis: '30%' }}>
-            <div className="flex-1 overflow-y-auto custom-scrollbar">
-                <div className="p-5 space-y-4">
-                    {/* BW CONSULTANT CHAT - Context-Aware Unified System */}
-                    <UnifiedBWConsultant
-                      context="live-report"
-                      reportData={params}
-                      onQueryProcessed={(response) => {
-                        console.log('BW Consultant response:', response);
-                        // Response is handled and displayed within UnifiedBWConsultant component
-                      }}
-                      minHeight="h-48"
-                      className="rounded-lg border border-stone-200"
-                    />
-
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* PREFERRED GUIDANCE LEVEL */}
-                    <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Preferred Guidance Level</h3>
-                        <p className="text-[10px] text-stone-500 mb-2">Choose how much guidance you want. The system adapts its explanations, prompts, and recommendations accordingly.</p>
-                        <div className="space-y-1">
-                            {[
-                                { id: 'orientation', label: '🧭 Orientation', desc: 'Full walkthroughs & contextual help', icon: Compass },
-                                { id: 'collaborative', label: '🤝 Collaborative', desc: 'Balanced guidance with smart suggestions', icon: Users },
-                                { id: 'expert', label: '⚡ Expert', desc: 'Streamlined, minimal hand-holding', icon: Zap },
-                            ].map(mode => (
-                                <button
-                                    key={mode.id}
-                                    onClick={() => setParams({ ...params, intakeGuidanceMode: mode.id as 'orientation' | 'collaborative' | 'expert' })}
-                                    className={`w-full p-2 rounded-lg border text-left transition-all text-xs flex items-center gap-2 ${
-                                        params.intakeGuidanceMode === mode.id
-                                            ? 'bg-blue-50 border-blue-300 ring-1 ring-blue-200'
-                                            : 'bg-white border-stone-200 hover:border-stone-300'
-                                    }`}
-                                >
-                                    <span className="font-bold text-stone-900">{mode.label}</span>
-                                    <span className="text-stone-500">{mode.desc}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* 10-STEP INTAKE PROTOCOL */}
-                    <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">10-Step Intake Protocol</h3>
-                        <div className="space-y-2">
-                            {[
-                                {id: 'identity', label: 'Identity & Foundation', description: 'Organization credibility & legal structure', icon: Building2},
-                                {id: 'mandate', label: 'Mandate & Strategy', description: 'Strategic vision & objectives', icon: Target},
-                                {id: 'market', label: 'Market & Context', description: 'Market dynamics & regulatory environment', icon: Globe},
-                                {id: 'partner-personas', label: 'Partners & Ecosystem', description: 'Stakeholder landscape & alignment', icon: Users},
-                                {id: 'financial-model', label: 'Financial Model', description: 'Investment requirements & ROI scenarios', icon: DollarSign},
-                                {id: 'risk', label: 'Risk & Mitigation', description: 'Risk identification & mitigation plans', icon: Shield},
-                                {id: 'resources', label: 'Resources & Capability', description: 'Readiness, team strength & gaps', icon: Briefcase},
-                                {id: 'execution', label: 'Execution Plan', description: 'Implementation roadmap & milestones', icon: ClipboardList},
-                                {id: 'governance', label: 'Governance & Monitoring', description: 'Oversight & performance tracking', icon: Settings},
-                                {id: 'scoring', label: 'Scoring & Readiness', description: 'Final validation & go/no-go', icon: Award},
-                            ].map((step, idx) => (
-                                <button
-                                    key={step.id}
-                                    onClick={() => openModal(step.id)}
-                                    className={`w-full p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
-                                        activeModal === step.id
-                                            ? 'bg-blue-50 border-blue-200'
-                                            : 'bg-white border-stone-200 hover:border-stone-300'
-                                    }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-7 h-7 rounded flex items-center justify-center shrink-0 text-xs font-bold ${activeModal === step.id ? 'bg-blue-600 text-white' : isStepComplete(step.id) ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-600'}`}>
-                                            {isStepComplete(step.id) ? <Check size={14} /> : <step.icon size={14} />}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-[10px] font-bold text-stone-400">{String(idx + 1).padStart(2, '0')}</span>
-                                                <span className="text-sm font-semibold text-stone-900">{step.label}</span>
-                                                {isStepComplete(step.id) && <Check size={14} className="text-emerald-600 shrink-0" />}
-                                            </div>
-                                            <div className="text-xs text-stone-500 truncate">{step.description}</div>
-                                        </div>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* ACTION CENTER */}
-                    <div>
-                        <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">Actions</h3>
-                        <div className="space-y-2">
+        {/* --- LEFT PANEL: CONTROLS & FORMS --- */}
+        <div className="flex flex-col bg-white border-r border-stone-200 overflow-y-auto custom-scrollbar" style={{ flexBasis: '30%' }}>
+            <div className="p-6 space-y-6">
+                {/* Section Navigation */}
+                <div>
+                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Primary Steps</h3>
+                    <p className="text-xs text-stone-500 mb-4">Follow these steps sequentially to build the data foundation for your strategic analysis. Each completed step enriches the live document preview on the right.</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        {[
+                            {id: 'identity', label: '01. Identity', description: "Define your organization's profile", icon: Building2, color: 'text-blue-600'},
+                            {id: 'mandate', label: '02. Mandate', description: 'Outline partnership objectives', icon: Target, color: 'text-green-600'},
+                            {id: 'market', label: '03. Market', description: 'Analyze the target market', icon: Globe, color: 'text-purple-600'},
+                            {id: 'partner-personas', label: '04. Personas', description: 'Define partner personas', icon: Users, color: 'text-yellow-600'},
+                            {id: 'risk', label: '05. Risk', description: 'Assess risks & mitigation', icon: Shield, color: 'text-red-600'},
+                            {id: 'generation', label: '06. Generation', description: 'Generate the final report', icon: FileText, color: 'text-orange-600'},
+                        ].map(section => (
                             <button
-                                onClick={onGenerate}
-                                className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+                                key={section.id}
+                                onClick={() => openModal(section.id)}
+                                className={`p-3 bg-white border rounded-lg hover:shadow-md transition-all text-left group ${
+                                    activeModal === section.id
+                                        ? 'border-bw-navy shadow-md'
+                                        : 'border-stone-200 hover:border-blue-300'
+                                }`}
                             >
-                                <FileText size={14} />
-                                Generate Draft
+                                <div className="flex items-center gap-2 mb-1">
+                                    <section.icon size={16} className={section.color} />
+                                    <span className="text-sm font-bold text-stone-900 flex items-center gap-1">
+                                      {section.label}
+                                      {isStepComplete(section.id) && <Check size={14} className="text-green-500" />}
+                                    </span>
+                                </div>
+                                <p className="text-[10px] text-stone-600 pl-6">{section.description}</p>
                             </button>
-                            <button
-                                onClick={() => setShowDocGenSuite(true)}
-                                className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 border border-blue-300 text-blue-600 hover:bg-blue-50"
-                            >
-                                <Download size={14} />
-                                Generate Documents
-                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="w-full h-px bg-stone-200"></div>
+
+                {/* Optional Intelligence Enhancements */}
+                <div>
+                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Optional Intelligence Enhancements</h3>
+                    <p className="text-xs text-stone-500 mb-4">Enhance your Strategic Roadmap draft with specialized analysis. Select any combination to add depth and insights that will improve your final reports and letters.</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        <label className="flex items-start gap-2 p-4 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group min-h-[60px]">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('roi-diagnostic')}
+                                onChange={() => handleIntelligenceEnhancementToggle('roi-diagnostic')}
+                                className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <BarChart3 className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+                                    <span className="text-xs font-bold text-stone-900 leading-tight">ROI Diagnostic</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600 leading-tight">Financial viability assessment</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('scenario-planning')}
+                                onChange={() => handleIntelligenceEnhancementToggle('scenario-planning')}
+                                className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Network className="w-4 h-4 text-blue-600" />
+                                    <span className="text-xs font-bold text-stone-900">Scenario Planning</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Multi-outcome modeling</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('due-diligence')}
+                                onChange={() => handleIntelligenceEnhancementToggle('due-diligence')}
+                                className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <ShieldCheck className="w-4 h-4 text-green-600" />
+                                    <span className="text-xs font-bold text-stone-900">Due Diligence</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Background verification</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-pink-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('partner-compatibility')}
+                                onChange={() => handleIntelligenceEnhancementToggle('partner-compatibility')}
+                                className="mt-1 h-4 w-4 text-pink-600 focus:ring-pink-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Handshake className="w-4 h-4 text-pink-600" />
+                                    <span className="text-xs font-bold text-stone-900">Partner Compatibility</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Strategic matching</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('diversification-analysis')}
+                                onChange={() => handleIntelligenceEnhancementToggle('diversification-analysis')}
+                                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <PieChart className="w-4 h-4 text-purple-600" />
+                                    <span className="text-xs font-bold text-stone-900">Diversification Analysis</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Portfolio optimization</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-red-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('ethical-compliance')}
+                                onChange={() => handleIntelligenceEnhancementToggle('ethical-compliance')}
+                                className="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Shield className="w-4 h-4 text-red-600" />
+                                    <span className="text-xs font-bold text-stone-900">Ethical Compliance</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Sustainability assessment</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-amber-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('historical-precedents')}
+                                onChange={() => handleIntelligenceEnhancementToggle('historical-precedents')}
+                                className="mt-1 h-4 w-4 text-amber-600 focus:ring-amber-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <History className="w-4 h-4 text-amber-600" />
+                                    <span className="text-xs font-bold text-stone-900">Historical Precedents</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Data-driven insights</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-teal-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('growth-modeling')}
+                                onChange={() => handleIntelligenceEnhancementToggle('growth-modeling')}
+                                className="mt-1 h-4 w-4 text-teal-600 focus:ring-teal-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <TrendingUp className="w-4 h-4 text-teal-600" />
+                                    <span className="text-xs font-bold text-stone-900">Growth Modeling</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Revenue projections</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-orange-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('stakeholder-analysis')}
+                                onChange={() => handleIntelligenceEnhancementToggle('stakeholder-analysis')}
+                                className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Users className="w-4 h-4 text-orange-600" />
+                                    <span className="text-xs font-bold text-stone-900">Stakeholder Analysis</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Interest mapping</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-cyan-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('geopolitical-risk')}
+                                onChange={() => handleIntelligenceEnhancementToggle('geopolitical-risk')}
+                                className="mt-1 h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Globe className="w-4 h-4 text-cyan-600" />
+                                    <span className="text-xs font-bold text-stone-900">Geopolitical Risk</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Regional stability analysis</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-lime-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('valuation-engine')}
+                                onChange={() => handleIntelligenceEnhancementToggle('valuation-engine')}
+                                className="mt-1 h-4 w-4 text-lime-600 focus:ring-lime-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Calculator className="w-4 h-4 text-lime-600" />
+                                    <span className="text-xs font-bold text-stone-900">Valuation Engine</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Asset valuation models</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('performance-metrics')}
+                                onChange={() => handleIntelligenceEnhancementToggle('performance-metrics')}
+                                className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Activity className="w-4 h-4 text-indigo-600" />
+                                    <span className="text-xs font-bold text-stone-900">Performance Metrics</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">KPI benchmarking</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-rose-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('supply-chain-analysis')}
+                                onChange={() => handleIntelligenceEnhancementToggle('supply-chain-analysis')}
+                                className="mt-1 h-4 w-4 text-rose-600 focus:ring-rose-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <GitBranch className="w-4 h-4 text-rose-600" />
+                                    <span className="text-xs font-bold text-stone-900">Supply Chain Analysis</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Dependency mapping</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('charts')}
+                                onChange={() => handleIntelligenceEnhancementToggle('charts')}
+                                className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <BarChart3 className="w-4 h-4 text-blue-600" />
+                                    <span className="text-xs font-bold text-stone-900">Charts</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Visual data representation</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('data')}
+                                onChange={() => handleIntelligenceEnhancementToggle('data')}
+                                className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Database className="w-4 h-4 text-green-600" />
+                                    <span className="text-xs font-bold text-stone-900">Data</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Data tables and metrics</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('ai-analysis')}
+                                onChange={() => handleIntelligenceEnhancementToggle('ai-analysis')}
+                                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <Cpu className="w-4 h-4 text-purple-600" />
+                                    <span className="text-xs font-bold text-stone-900">AI Analysis</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">AI-driven insights</p>
+                            </div>
+                        </label>
+
+                        <label className="flex items-start gap-2 p-3 bg-white border border-stone-200 rounded-lg hover:shadow-md hover:border-orange-300 transition-all cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedIntelligenceEnhancements.includes('content')}
+                                onChange={() => handleIntelligenceEnhancementToggle('content')}
+                                className="mt-1 h-4 w-4 text-orange-600 focus:ring-orange-500 border-stone-300 rounded"
+                            />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <FileText className="w-4 h-4 text-orange-600" />
+                                    <span className="text-xs font-bold text-stone-900">Content</span>
+                                </div>
+                                <p className="text-[10px] text-stone-600">Enhanced content blocks</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="w-full h-px bg-stone-200"></div>
+
+                {/* BW Consultant Chat */}
+                <div className="bg-stone-50 border border-stone-200 rounded-lg flex flex-col">
+                    <div className="h-12 bg-bw-navy text-white flex items-center justify-between px-4 rounded-t-lg">
+                        <div className="flex items-center gap-2">
+                            <User size={16} />
+                            <span className="text-sm font-bold">AI Consultant</span>
                         </div>
+                        <div className="text-xs opacity-75">Live Assistant</div>
                     </div>
 
-                    <div className="w-full h-px bg-stone-200"></div>
-
-                    {/* INTELLIGENCE ENHANCEMENTS - Collapsible */}
-                    <details className="bg-white border border-stone-200 rounded-lg overflow-hidden">
-                        <summary className="cursor-pointer select-none px-4 py-3 bg-stone-50 flex items-center justify-between hover:bg-stone-100">
-                            <div>
-                                <div className="text-sm font-semibold text-stone-900">Intelligence Enhancements</div>
-                                <div className="text-xs text-stone-600">Add analytical depth (optional)</div>
-                            </div>
-                            <span className="text-xs text-stone-500 font-semibold">{selectedIntelligenceEnhancements.length} selected</span>
-                        </summary>
-                        <div className="p-3 bg-white border-t border-stone-200 max-h-60 overflow-y-auto custom-scrollbar">
-                            <div className="grid grid-cols-1 gap-1">
-                                {[
-                                    { id: 'roi-diagnostic', label: 'ROI Diagnostic', icon: BarChart3 },
-                                    { id: 'scenario-planning', label: 'Scenario Planning', icon: Network },
-                                    { id: 'due-diligence', label: 'Due Diligence', icon: ShieldCheck },
-                                    { id: 'partner-compatibility', label: 'Partner Fit', icon: Handshake },
-                                    { id: 'diversification-analysis', label: 'Diversification', icon: PieChart },
-                                    { id: 'ethical-compliance', label: 'ESG Compliance', icon: Shield },
-                                    { id: 'historical-precedents', label: 'Precedents', icon: History },
-                                    { id: 'growth-modeling', label: 'Growth Model', icon: TrendingUp },
-                                    { id: 'stakeholder-analysis', label: 'Stakeholders', icon: Users },
-                                    { id: 'geopolitical-risk', label: 'Geopolitical Risk', icon: Globe },
-                                    { id: 'valuation-engine', label: 'Valuation', icon: Calculator },
-                                    { id: 'performance-metrics', label: 'KPI Targets', icon: Activity },
-                                    { id: 'supply-chain-analysis', label: 'Supply Chain', icon: GitBranch },
-                                    { id: 'charts', label: 'Charts', icon: BarChart3 },
-                                    { id: 'data', label: 'Data Tables', icon: Database },
-                                    { id: 'ai-analysis', label: 'AI Insights', icon: Cpu },
-                                    { id: 'content', label: 'Content Enhance', icon: FileText },
-                                ].map(option => (
-                                    <label key={option.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-xs transition-all ${selectedIntelligenceEnhancements.includes(option.id) ? 'bg-blue-50 border border-blue-200' : 'hover:bg-stone-50'}`}>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedIntelligenceEnhancements.includes(option.id)}
-                                            onChange={() => handleIntelligenceEnhancementToggle(option.id)}
-                                            className="h-3 w-3 text-blue-600"
-                                        />
-                                        <option.icon size={12} className="text-stone-600" />
-                                        <span className="font-semibold text-stone-900">{option.label}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    </details>
-
-                    {generatedDocs.length > 0 && (
-                        <>
-                            <div className="w-full h-px bg-stone-200"></div>
-                            <div>
-                                <h3 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Generated Documents</h3>
-                                <div className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar">
-                                    {generatedDocs.map(doc => (
-                                        <div key={doc.id} className="p-2 bg-green-50 border border-green-200 rounded-lg group">
-                                            <div className="flex items-center justify-between gap-2">
-                                                <div className="flex items-center gap-2 min-w-0">
-                                                    <FileText size={12} className="text-green-600 shrink-0" />
-                                                    <span className="text-xs font-bold text-stone-800 truncate">{doc.title}</span>
-                                                </div>
-                                                <button className="px-2 py-0.5 text-[10px] font-bold bg-stone-200 text-stone-700 rounded hover:bg-stone-300 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">View</button>
-                                            </div>
-                                        </div>
-                                    ))}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-3 h-48 custom-scrollbar">
+                        {chatMessages.map((msg, index) => (
+                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
+                                    msg.sender === 'user'
+                                        ? 'bg-bw-navy text-white'
+                                        : 'bg-white border border-stone-200 text-stone-900'
+                                }`}>
+                                    {msg.text}
                                 </div>
                             </div>
-                        </>
-                    )}
+                        ))}
+                    </div>
+
+                    <div className="h-12 border-t border-stone-200 flex items-center gap-2 px-4">
+                        <input
+                            type="text"
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                            placeholder="Ask your AI Consultant..."
+                            className="flex-1 text-sm border border-stone-200 rounded px-3 py-1 focus:ring-1 focus:ring-bw-gold focus:border-transparent"
+                        />
+                        <button
+                            onClick={handleSendMessage}
+                            className="p-2 bg-bw-navy text-white rounded hover:bg-bw-gold hover:text-bw-navy transition-all"
+                        >
+                            <Send size={14} />
+                        </button>
+                    </div>
                 </div>
+
+                <div className="w-full h-px bg-stone-200"></div>
+
+                <div>
+                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Document Generation</h3>
+                    <div className="p-4">
+                        <button
+                            onClick={() => setShowDocGenSuite(true)}
+                            className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700 flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl"
+                        >
+                            <FileText className="w-5 h-5" />
+                            Launch Document Generation Suite
+                        </button>
+                        <p className="text-xs text-stone-500 mt-2 text-center">Generate official documents from your finalized Strategic Roadmap.</p>
+                    </div>
+
+                {generatedDocs.length > 0 && (
+                  <>
+                    <div className="w-full h-px bg-stone-200"></div>
+                    <div>
+                      <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-3">Generated Documents</h3>
+                      <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                        {generatedDocs.map(doc => (
+                          <div key={doc.id} className="p-3 bg-white border border-stone-200 rounded-lg group">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <FileText size={14} className="text-green-600" />
+                                <span className="text-xs font-bold text-stone-800">{doc.title}</span>
+                              </div>
+                              <button className="px-2 py-1 text-[10px] font-bold bg-stone-100 text-stone-600 rounded hover:bg-stone-200 opacity-0 group-hover:opacity-100 transition-opacity">View</button>
+                            </div>
+                            <p className="text-[10px] text-stone-500 mt-1">{doc.timestamp.toLocaleTimeString()}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
             </div>
+        </div> {/* This closes the left panel's inner padding div */}
         </div>
 
         {/* --- MODAL FOR FORMS --- */}
@@ -1314,94 +1352,6 @@ User question: ${userText}`;
                                     </CollapsibleSection>
                                 </div>
                             )}
-                            {activeModal === 'financial-model' && (
-                                <div className="space-y-4">
-                                    <CollapsibleSection
-                                        title="5.1 Investment Requirements"
-                                        description="Define capital needs, funding sources, and allocation"
-                                        isExpanded={!!expandedSubsections['fin-investment']}
-                                        onToggle={() => toggleSubsection('fin-investment')}
-                                        color="from-emerald-50 to-emerald-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Total Investment Required <span className="text-red-500">*</span></label>
-                                                <input type="text" className={`w-full p-2 border rounded text-sm ${isFieldInvalid('totalInvestment') ? 'border-red-500' : 'border-stone-200'}`} placeholder="e.g., $2.5M" value={params.totalInvestment || ''} onChange={e => setParams({...params, totalInvestment: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Capital Allocation Breakdown</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="How capital is allocated: infrastructure, operations, marketing, reserves..." value={params.capitalAllocation || ''} onChange={e => setParams({...params, capitalAllocation: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Funding Source</label>
-                                                <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., Equity, Debt, DFI, Mixed" value={params.fundingSource || ''} onChange={e => setParams({...params, fundingSource: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection
-                                        title="5.2 Revenue Model & Projections"
-                                        description="Revenue streams, growth trajectory, and financial scenarios"
-                                        isExpanded={!!expandedSubsections['fin-revenue']}
-                                        onToggle={() => toggleSubsection('fin-revenue')}
-                                        color="from-emerald-50 to-emerald-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Streams</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Primary and secondary revenue sources" value={params.revenueStreams || ''} onChange={e => setParams({...params, revenueStreams: e.target.value})} />
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-3">
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 1</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear1 || ''} onChange={e => setParams({...params, revenueYear1: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 3</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear3 || ''} onChange={e => setParams({...params, revenueYear3: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Revenue Year 5</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="$" value={params.revenueYear5 || ''} onChange={e => setParams({...params, revenueYear5: e.target.value})} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection
-                                        title="5.3 ROI & Financial Scenarios"
-                                        description="Return projections and scenario modeling"
-                                        isExpanded={!!expandedSubsections['fin-roi']}
-                                        onToggle={() => toggleSubsection('fin-roi')}
-                                        color="from-emerald-50 to-emerald-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Expected IRR</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 18%" value={params.expectedIrr || ''} onChange={e => setParams({...params, expectedIrr: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Payback Period</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., 3.5 years" value={params.paybackPeriod || ''} onChange={e => setParams({...params, paybackPeriod: e.target.value})} />
-                                                </div>
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-3">
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Downside Case</label>
-                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Worst scenario" value={params.downsideCase || ''} onChange={e => setParams({...params, downsideCase: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Base Case</label>
-                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Expected scenario" value={params.baseCase || ''} onChange={e => setParams({...params, baseCase: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Upside Case</label>
-                                                    <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-16" placeholder="Best scenario" value={params.upsideCase || ''} onChange={e => setParams({...params, upsideCase: e.target.value})} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                </div>
-                            )}
                             {activeModal === 'risk' && (
                                 <div className="space-y-4">
                                     <CollapsibleSection
@@ -1482,185 +1432,6 @@ User question: ${userText}`;
                                             </div>
                                         </div>
                                     </CollapsibleSection>
-                                </div>
-                            )}
-                            {activeModal === 'resources' && (
-                                <div className="space-y-4">
-                                    <CollapsibleSection
-                                        title="7.1 Team & Leadership"
-                                        description="Assess team strength, leadership, and organizational readiness"
-                                        isExpanded={!!expandedSubsections['res-team']}
-                                        onToggle={() => toggleSubsection('res-team')}
-                                        color="from-cyan-50 to-cyan-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Executive Lead <span className="text-red-500">*</span></label>
-                                                <input type="text" className={`w-full p-2 border rounded text-sm ${isFieldInvalid('executiveLead') ? 'border-red-500' : 'border-stone-200'}`} placeholder="Name and role of project sponsor" value={params.executiveLead || ''} onChange={e => setParams({...params, executiveLead: e.target.value})} />
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">CFO / Finance Lead</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Finance lead" value={params.cfoLead || ''} onChange={e => setParams({...params, cfoLead: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Operations Lead</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="Operations lead" value={params.opsLead || ''} onChange={e => setParams({...params, opsLead: e.target.value})} />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Team Bench Assessment</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Depth of team, key person dependencies, succession readiness" value={params.teamBenchAssessment || ''} onChange={e => setParams({...params, teamBenchAssessment: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection
-                                        title="7.2 Capability Gaps & Technology"
-                                        description="Identify gaps and technology stack requirements"
-                                        isExpanded={!!expandedSubsections['res-capability']}
-                                        onToggle={() => toggleSubsection('res-capability')}
-                                        color="from-cyan-50 to-cyan-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Capability Gaps</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Where are the skill or resource gaps?" value={params.capabilityGaps || ''} onChange={e => setParams({...params, capabilityGaps: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Technology Stack</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Current technology, systems, and integration requirements" value={params.technologyStack || ''} onChange={e => setParams({...params, technologyStack: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Build / Buy / Partner Plan</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How will gaps be filled? Build in-house, acquire, or partner?" value={params.buildBuyPartnerPlan || ''} onChange={e => setParams({...params, buildBuyPartnerPlan: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                </div>
-                            )}
-                            {activeModal === 'execution' && (
-                                <div className="space-y-4">
-                                    <CollapsibleSection
-                                        title="8.1 Implementation Roadmap"
-                                        description="Define phases, milestones, and dependencies"
-                                        isExpanded={!!expandedSubsections['exec-roadmap']}
-                                        onToggle={() => toggleSubsection('exec-roadmap')}
-                                        color="from-indigo-50 to-indigo-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Milestone Plan <span className="text-red-500">*</span></label>
-                                                <textarea className={`w-full p-2 border rounded text-sm h-28 ${isFieldInvalid('milestonePlan') ? 'border-red-500' : 'border-stone-200'}`} placeholder={"Phase 1: Due Diligence (Month 1-3)\nPhase 2: Setup & Registration (Month 3-6)\nPhase 3: Operations Launch (Month 6-9)\nPhase 4: Scale & Optimize (Month 9-12)"} value={params.milestonePlan || ''} onChange={e => setParams({...params, milestonePlan: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Critical Path & Dependencies</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="What must happen before other things can start? Key bottlenecks?" value={params.criticalPath || ''} onChange={e => setParams({...params, criticalPath: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection
-                                        title="8.2 Go/No-Go Decision Gates"
-                                        description="Define checkpoints and decision criteria"
-                                        isExpanded={!!expandedSubsections['exec-gates']}
-                                        onToggle={() => toggleSubsection('exec-gates')}
-                                        color="from-indigo-50 to-indigo-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Go/No-Go Criteria</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="What conditions must be met at each gate to proceed? What triggers a stop?" value={params.goNoGoCriteria || ''} onChange={e => setParams({...params, goNoGoCriteria: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Resource Allocation Per Phase</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="Budget and team allocation for each implementation phase" value={params.resourceAllocationPerPhase || ''} onChange={e => setParams({...params, resourceAllocationPerPhase: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                </div>
-                            )}
-                            {activeModal === 'governance' && (
-                                <div className="space-y-4">
-                                    <CollapsibleSection
-                                        title="9.1 Governance Structure"
-                                        description="Decision-making authority and oversight"
-                                        isExpanded={!!expandedSubsections['gov-structure']}
-                                        onToggle={() => toggleSubsection('gov-structure')}
-                                        color="from-slate-50 to-slate-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Decision-Making Authority Matrix</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-24" placeholder="Who approves what? Spending limits, strategic decisions, operational changes..." value={params.authorityMatrix || ''} onChange={e => setParams({...params, authorityMatrix: e.target.value})} />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Escalation Procedures</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How are issues elevated? What triggers board-level review?" value={params.escalationProcedures || ''} onChange={e => setParams({...params, escalationProcedures: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection
-                                        title="9.2 Performance Tracking"
-                                        description="KPIs, reporting cadence, and compliance"
-                                        isExpanded={!!expandedSubsections['gov-tracking']}
-                                        onToggle={() => toggleSubsection('gov-tracking')}
-                                        color="from-slate-50 to-slate-100"
-                                    >
-                                        <div className="space-y-4">
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Reporting Cadence <span className="text-red-500">*</span></label>
-                                                    <select className={`w-full p-2 border rounded text-sm ${isFieldInvalid('riskReportingCadence') ? 'border-red-500' : 'border-stone-200'}`} value={params.riskReportingCadence || ''} onChange={e => setParams({...params, riskReportingCadence: e.target.value})}>
-                                                        <option value="">Select...</option>
-                                                        <option>Weekly</option>
-                                                        <option>Bi-Weekly</option>
-                                                        <option>Monthly</option>
-                                                        <option>Quarterly</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs font-bold text-stone-700 mb-1">Audit Framework</label>
-                                                    <input type="text" className="w-full p-2 border border-stone-200 rounded text-sm" placeholder="e.g., Internal + External quarterly" value={params.auditFramework || ''} onChange={e => setParams({...params, auditFramework: e.target.value})} />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-stone-700 mb-1">Compliance Evidence</label>
-                                                <textarea className="w-full p-2 border border-stone-200 rounded text-sm h-20" placeholder="How will compliance be documented and verified?" value={params.complianceEvidence || ''} onChange={e => setParams({...params, complianceEvidence: e.target.value})} />
-                                            </div>
-                                        </div>
-                                    </CollapsibleSection>
-                                </div>
-                            )}
-                            {activeModal === 'scoring' && (
-                                <div className="space-y-4">
-                                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg p-6">
-                                        <h4 className="font-bold text-stone-900 text-sm mb-3">10. Final Readiness Assessment</h4>
-                                        <p className="text-sm text-stone-600 mb-4">This step automatically calculates your composite readiness score based on all previous inputs. The system will assess strengths, weaknesses, and provide a Go/No-Go recommendation.</p>
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle size={16} className="text-green-500" />
-                                                <span className="text-sm text-stone-700">Composite Readiness Score (auto-calculated)</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle size={16} className="text-green-500" />
-                                                <span className="text-sm text-stone-700">Strength / Weakness Summary</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle size={16} className="text-green-500" />
-                                                <span className="text-sm text-stone-700">Final Risk Assessment</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle size={16} className="text-green-500" />
-                                                <span className="text-sm text-stone-700">Go / No-Go Recommendation</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle size={16} className="text-green-500" />
-                                                <span className="text-sm text-stone-700">Success Probability Index (SPI)</span>
-                                            </div>
-                                        </div>
-                                        <button onClick={onGenerate} className="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-bold text-sm hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md">
-                                            Calculate Readiness Score & Generate Report
-                                        </button>
-                                    </div>
                                 </div>
                             )}
                              {activeModal === 'analysis' && modalView === 'main' && (
@@ -1794,7 +1565,7 @@ User question: ${userText}`;
                                         <div className="grid grid-cols-2 gap-2">
                                             {["Market Opportunity", "Financial Projections", "Risk Mitigation", "Team Strength"].map(sec => (
                                                 <label key={sec} className="flex items-center gap-2 p-2 border rounded-md hover:bg-stone-50 cursor-pointer">
-                                                    <input type="checkbox" onChange={e => setGenerationConfig(p => ({...p, emphasized: {...(p.emphasized as Record<string, unknown> || {}), [sec]: e.target.checked}}))} className="h-4 w-4 text-bw-navy focus:ring-bw-gold"/>
+                                                    <input type="checkbox" onChange={e => setGenerationConfig(p => ({...p, emphasized: {...p.emphasized, [sec]: e.target.checked}}))} className="h-4 w-4 text-bw-navy focus:ring-bw-gold"/>
                                                     <span className="text-sm">{sec}</span>
                                                 </label>
                                             ))}
@@ -2592,6 +2363,10 @@ User question: ${userText}`;
                     <History className="w-4 h-4" /> Live Document Preview
                 </div>
                 <div className="flex gap-2 flex-wrap items-center">
+                    <button className="px-4 py-2 bg-bw-navy text-white text-xs font-bold rounded shadow-lg hover:bg-stone-800 transition-all flex items-center gap-2">
+                        <MessageCircle size={14} />
+                        BW Consultant
+                    </button>
                     <button className="px-4 py-2 hover:bg-stone-100 rounded text-stone-600 text-xs font-bold flex items-center gap-2 border border-transparent hover:border-stone-200 transition-all" title="Print">
                         <Printer size={14}/> Print
                     </button>
@@ -2641,7 +2416,7 @@ User question: ${userText}`;
                                 <>
                                     <div className="text-3xl font-bold text-stone-900 mb-2">{params.organizationName}</div>
                                     <div className="text-lg text-stone-600 italic mb-4">
-                                        {params.organizationType} * {params.country}
+                                        {params.organizationType} • {params.country}
                                     </div>
                                 </>
                             ) : (
@@ -2713,7 +2488,7 @@ User question: ${userText}`;
                                         <span className="font-semibold text-xs">Top Symbiotic Partners:</span>
                                         <ul className="text-xs mt-1">
                                             {params.reportPayload.computedIntelligence.symbioticPartners.slice(0, 2).map((partner, idx) => (
-                                                <li key={idx} className="text-stone-700">* {partner.entityName} (Score: {partner.symbiosisScore})</li>
+                                                <li key={idx} className="text-stone-700">• {partner.entityName} (Score: {partner.symbiosisScore})</li>
                                             ))}
                                         </ul>
                                     </div>
@@ -2747,7 +2522,7 @@ User question: ${userText}`;
 
                     {/* Doc Footer */}
                     <div className="h-16 bg-white border-t border-stone-100 flex items-center justify-between px-12 text-[9px] text-stone-400 font-sans uppercase tracking-widest shrink-0">
-                        <span>Generated by BW Ai Core v4.2</span>
+                        <span>Generated by Nexus Core v4.2</span>
                         <span>Page 1 of 1</span>
                     </div>
                 </motion.div>

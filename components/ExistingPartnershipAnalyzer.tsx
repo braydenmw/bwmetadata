@@ -260,7 +260,7 @@ const ExistingPartnershipAnalyzer: React.FC<ExistingPartnershipAnalyzerProps> = 
               onClick={() => setSelectedPartnership(null)}
               className="px-4 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-700 hover:bg-stone-50"
             >
-              <- Back to Portfolio
+              ← Back to Portfolio
             </button>
 
             {/* PARTNERSHIP DEEP DIVE */}

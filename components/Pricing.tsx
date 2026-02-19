@@ -18,7 +18,7 @@ const plans: PricingPlan[] = [
       'Core Trinity Engines (IVAS(TM), SPI(TM), SCF(TM))',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPIa'Driven Matchmaking',
+      'Partner Discovery & SPI-Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -34,7 +34,7 @@ const plans: PricingPlan[] = [
       'Core Trinity Engines (IVAS(TM), SPI(TM), SCF(TM))',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPIa'Driven Matchmaking',
+      'Partner Discovery & SPI-Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -50,7 +50,7 @@ const plans: PricingPlan[] = [
       'Core Trinity Engines (IVAS(TM), SPI(TM), SCF(TM))',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPIa'Driven Matchmaking',
+      'Partner Discovery & SPI-Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'
@@ -67,7 +67,7 @@ const plans: PricingPlan[] = [
       'Core Trinity Engines (IVAS(TM), SPI(TM), SCF(TM))',
       '18+ Specialized Engines (RROI, SEAM, risk & ops layers)',
       'Unlimited Report & Dossier Generation',
-      'Partner Discovery & SPIa'Driven Matchmaking',
+      'Partner Discovery & SPI-Driven Matchmaking',
       'Document Suite (LoI, MoU, Proposal)',
       'Live Data Spine (World Bank, sanctions, exchange rates)',
       'NSIL / API Export for downstream workflows'

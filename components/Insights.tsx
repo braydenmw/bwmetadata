@@ -12,7 +12,7 @@ const steps = [
       id: '02',
       icon: <Filter className="w-6 h-6" />,
       title: 'Adversarial Stress-Testing', 
-      desc: 'NSIL activates the Adversarial Input Shield and the Multia'Perspective Reasoner (skeptic, advocate, regulator, operator). We simulate reala'world friction and arguments to expose hidden failure points before capital moves.' 
+      desc: 'NSIL activates the Adversarial Input Shield and the Multi-Perspective Reasoner (skeptic, advocate, regulator, operator). We simulate real-world friction and arguments to expose hidden failure points before capital moves.' 
   },
   { 
       id: '03',

@@ -513,47 +513,47 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
 
-            {/* BW CONSULTANT AI SEARCH - ChatGPT-Style Window */}
-            <section className="py-20 px-4 bg-white">
-                <div className="max-w-2xl mx-auto">
-                    {/* Header */}
-                    <div className="mb-12 text-center">
-                        <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">Meet Your AI Partner</p>
-                        <h1 className="text-4xl font-bold text-slate-900 mb-2">BW Consultant AI</h1>
-                        <h2 className="text-xl text-slate-600 mb-4">Your Strategic Intelligence Partner</h2>
-                        <p className="text-base text-slate-700 leading-relaxed">
-                            I'm not a chatbot — I'm a sovereign-grade intelligence system built to help you navigate global business, investment, and regional development challenges.
+            {/* BW CONSULTANT AI SEARCH - Landscape ChatGPT-Style Window */}
+            <section className="py-10 px-4 bg-white">
+                <div className="max-w-7xl mx-auto">
+                    {/* Compact Header Row */}
+                    <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+                        <div>
+                            <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Meet Your AI Partner</p>
+                            <h1 className="text-3xl font-bold text-slate-900">BW Consultant AI</h1>
+                        </div>
+                        <p className="text-sm text-slate-600 max-w-xl leading-relaxed">
+                            Sovereign-grade intelligence — give me a location, company, or topic and I'll deliver strategic insights before you have to ask twice.
                         </p>
                     </div>
 
-                    {/* ChatGPT-Style Window */}
-                    <div className="rounded-2xl shadow-2xl overflow-hidden bg-gradient-to-b from-slate-50 to-white border border-slate-200">
-                        {/* Window Header with AI Image */}
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 flex flex-col items-center justify-center">
-                            <img 
-                                src="https://images.unsplash.com/photo-1677442d019cecf8f8e0e4b0f3e7f7f7?w=120&h=120&fit=crop&q=80" 
-                                alt="AI Partner" 
-                                className="w-24 h-24 rounded-full border-4 border-white shadow-lg mb-4"
-                            />
-                            <h3 className="text-2xl font-bold text-white">BW Consultant</h3>
-                            <p className="text-blue-100 text-sm mt-1">Powered by NSIL v3.2</p>
+                    {/* Landscape Window */}
+                    <div className="shadow-2xl overflow-hidden border border-slate-200 flex flex-col" style={{ fontFamily: "'Söhne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
+                        {/* Slim AI Banner */}
+                        <div 
+                            className="px-6 py-4 flex items-center justify-between relative overflow-hidden"
+                            style={{
+                                backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/70 to-blue-900/50" />
+                            <div className="relative z-10 flex items-center gap-3">
+                                <h3 className="text-xl font-bold text-white">BW Consultant</h3>
+                                <span className="text-blue-200 text-xs">Powered by NSIL v6.0</span>
+                            </div>
+                            <p className="relative z-10 text-xs text-blue-200 hidden md:block">Sovereign-grade intelligence • Real-time analysis • Professional insights</p>
                         </div>
 
-                        {/* Search Component Inside Window */}
-                        <div className="p-6 md:p-8">
+                        {/* Search Component — landscape mode */}
+                        <div className="p-0">
                             <UnifiedBWConsultant
                                 context="landing"
                                 onQueryProcessed={(response) => {
                                     console.log('Landing page consultant response:', response);
                                 }}
                             />
-                        </div>
-
-                        {/* Window Footer */}
-                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 text-center">
-                            <p className="text-xs text-slate-500">
-                                Sovereign-grade intelligence • Real-time analysis • Professional insights
-                            </p>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ import {
   ReportPayload
 } from './types';
 import { INITIAL_PARAMETERS } from './constants';
-import MainCanvas from './components/MainCanvas';
+import NSILWorkspace from './components/NSILWorkspace';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
 import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
@@ -607,7 +607,7 @@ const App: React.FC = () => {
         if (viewMode === 'main') {
             return (
                 <div className="flex flex-1 w-full h-full overflow-hidden">
-                    <MainCanvas 
+                    <NSILWorkspace 
                         params={params}
                         setParams={setParams}
                         reportData={reportData}
@@ -650,7 +650,7 @@ const App: React.FC = () => {
         // Fallback or default view
         return (
             <div className="flex flex-1 w-full h-full overflow-hidden">
-                <MainCanvas 
+                <NSILWorkspace 
                     params={params}
                     setParams={setParams}
                     reportData={reportData}

@@ -452,7 +452,7 @@ export const DOCUMENT_TEMPLATES = [
     description: 'Confidential business overview for qualified partners/investors',
     category: 'Confidential',
     sections: ['Foundation', 'Market', 'Operations', 'Financial', 'Risks', 'Compliance'],
-    icon: '📄'',
+    icon: '📄',
   },
   {
     id: 'capability-statement',

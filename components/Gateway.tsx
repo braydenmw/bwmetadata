@@ -772,7 +772,7 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
                                 </div>
                                 <div>
                                     <label className={labelStyles}>Headquarters City</label>
-                                    <input type="text" value={params.userCity || ''} onChange={e => update('userCity', e.target.value)} className={inputStyles} placeholder="e.g. Genev- />
+                                    <input type="text" value={params.userCity || ''} onChange={e => update('userCity', e.target.value)} className={inputStyles} placeholder="e.g. Geneva" />
                                     <button onClick={() => openManualModal('Enter City', 'City Name', 'userCity')} className="text-xs text-blue-600 hover:text-blue-800 mt-1 underline">Enter manually</button>
                                 </div>
                             </div>

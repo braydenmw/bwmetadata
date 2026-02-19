@@ -312,7 +312,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Calendar className="w-5 h-5 text-blue-600" />
               5-Phase Relationship Development Timeline
             </h3>
-            <div className="text-2xl">{expandedSections.phases ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.phases ? '▾' : '▸'}</div>
           </div>
 
           {expandedSections.phases && (
@@ -377,7 +377,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   <ul className="space-y-2">
                     {relationshipPhases[selectedPhase - 1]?.successMetrics.map((metric, idx) => (
                       <li key={idx} className="text-sm text-stone-700 pl-4 relative">
-                        <span className="absolute left-0 text-blue-600 font-bold">a'</span>
+                        <span className="absolute left-0 text-blue-600 font-bold">•</span>
                         {metric}
                       </li>
                     ))}
@@ -413,7 +413,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Handshake className="w-5 h-5 text-purple-600" />
               Negotiation Playbook
             </h3>
-            <div className="text-2xl">{expandedSections.playbook ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.playbook ? '▾' : '▸'}</div>
           </div>
 
           {expandedSections.playbook && (
@@ -443,7 +443,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                       <ul className="space-y-1">
                         {play.redFlags.map((flag, i) => (
                           <li key={i} className="text-xs text-red-700 pl-3 relative">
-                            <span className="absolute left-0">as </span> {flag}
+                            <span className="absolute left-0">⚠ </span> {flag}
                           </li>
                         ))}
                       </ul>
@@ -474,7 +474,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <MessageCircle className="w-5 h-5 text-orange-600" />
               Decision-Making Styles & Approach
             </h3>
-            <div className="text-2xl">{expandedSections.decisionMaking ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.decisionMaking ? '▾' : '▸'}</div>
           </div>
 
           {expandedSections.decisionMaking && (
@@ -486,7 +486,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
                   <div className="text-xs text-orange-800 space-y-1">
                     {profile.approach.map((tip, i) => (
                       <div key={i} className="pl-3 relative">
-                        <span className="absolute left-0">a'</span> {tip}
+                        <span className="absolute left-0">•</span> {tip}
                       </div>
                     ))}
                   </div>
@@ -506,7 +506,7 @@ const RelationshipDevelopmentPlanner: React.FC<RelationshipDevelopmentPlannerPro
               <Clock className="w-5 h-5 text-teal-600" />
               Communication & Engagement Timeline
             </h3>
-            <div className="text-2xl">{expandedSections.timeline ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.timeline ? '▾' : '▸'}</div>
           </div>
 
           {expandedSections.timeline && (

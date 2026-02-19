@@ -129,7 +129,7 @@ export const Services: React.FC = () => {
                             This system is <strong>100% dedicated to regional development</strong>. It provides the same level of analytical rigor found in global financial centers, but is purpose-built to navigate the complexities of regional economic growth.
                         </p>
                         <p>
-                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPIa'driven Matchmaking</strong>, <strong>Document Suite</strong> generation, <strong>Scenario Simulation</strong>, <strong>Earlya'Warning Risk Alerts</strong>, <strong>Due Diligence Intelligence</strong>, <strong>Relocation & TCO Comparison</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
+                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPI-driven Matchmaking</strong>, <strong>Document Suite</strong> generation, <strong>Scenario Simulation</strong>, <strong>Early-Warning Risk Alerts</strong>, <strong>Due Diligence Intelligence</strong>, <strong>Relocation & TCO Comparison</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
                         </p>
                     </div>
 

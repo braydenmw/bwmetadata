@@ -543,8 +543,8 @@ The purpose of this partnership is to establish a profitable and sustainable bus
 
 2. GOVERNANCE STRUCTURE
 * Joint Steering Committee: Quarterly meetings, monthly calls
-* Decision Authority: Decisions aJPY$500K require both parties' approval
-* Dispute Resolution: Negotiation a' Mediation a' Arbitration
+* Decision Authority: Decisions above $500K require both parties' approval
+* Dispute Resolution: Negotiation → Mediation → Arbitration
 
 3. FINANCIAL TERMS
 * Total Investment: $${(dealValue / 1000000).toFixed(1)}M
@@ -643,10 +643,10 @@ STRATEGIC FIT:
 ✓ Complementary operational strengths
 
 RISKS & MITIGATION:
-1. Regulatory Changes a' Government relations team + scenario planning
-2. Market Adoption a' Pilot program + customer contracts pre-signed
-3. Operational Complexity a' Experienced management team + board oversight
-4. Currency Exposure a' Hedging program + local financing
+1. Regulatory Changes → Government relations team + scenario planning
+2. Market Adoption → Pilot program + customer contracts pre-signed
+3. Operational Complexity → Experienced management team + board oversight
+4. Currency Exposure → Hedging program + local financing
 
 RECOMMENDATION:
 PROCEED with partnership formation. Market timing is favorable, competitive positioning is strong, and financial returns justify the investment.
@@ -799,11 +799,11 @@ EXECUTIVE SUMMARY:
 This audit surfaces hidden failure modes, sequencing gaps, verification risks, and timing drift that most reports ignore. It uses unbiased formulas grounded in real-world execution patterns across global industries.
 
 CORE FORMULAS (UNBIASED):
-* SEQ (Sequencing Integrity): dependency order + gate completeness a^' acceleration penalty
-* FMS (Funding Match Score): revenue timing A* (capex + opex burn)
-* DCS (Dependency Concentration): 100 a^' singlea'point dependency concentration
+* SEQ (Sequencing Integrity): dependency order + gate completeness - acceleration penalty
+* FMS (Funding Match Score): revenue timing / (capex + opex burn)
+* DCS (Dependency Concentration): 100 - single-point dependency concentration
 * DQS (Data Quality Score): 0.5*coverage + 0.25*freshness + 0.25*verifiability
-* GCS (Governance Clarity): (decision rights + exit clarity) A* 2
+* GCS (Governance Clarity): (decision rights + exit clarity) / 2
 
 BLIND SPOT SCORES:
 * SEQ: ${seq}/100
@@ -817,21 +817,21 @@ ${gapSummary.map(gap => `* ${gap}`).join('\n')}
 
 WHAT OTHERS MISS (AND THIS FLAGS):
 * Regulatory friction & approval timing drift
-* Misa'sequenced execution dependencies
+* Mis-sequenced execution dependencies
 * Financing mismatch between cashflow and capex/opex timing
 * Counterparty integrity and verification gaps
-* Hidden singlea'point dependencies
+* Hidden single-point dependencies
 * Operational capacity gaps
-* Marketa'entry timing windows (policy cycles, elections, budget approvals)
+* Market-entry timing windows (policy cycles, elections, budget approvals)
 * Supply chain fragility
 * Contract structure weakness (decision rights, exit clauses)
 * Data confidence gaps and unverifiable inputs
 
 RECOMMENDED ACTIONS:
-1. Lock sequencing with hard dependency gates and stagea'gated approvals.
+1. Lock sequencing with hard dependency gates and stage-gated approvals.
 2. Align funding tranches to cashflow timing; maintain reserves for timing drift.
 3. Expand verification signals (KYC, adverse media, beneficial ownership checks).
-4. Diversify suppliers/approvals to remove singlea'point failures.
+4. Diversify suppliers/approvals to remove single-point failures.
 5. Document governance decision rights and exit clauses before commitment.
 6. Refresh data sources and expand evidence coverage before signing.
 
@@ -887,7 +887,7 @@ Governance Model:
 * Executive sponsor from each organization (weekly check-ins)
 * Finance subcommittee (monthly budget review)
 * Operations subcommittee (weekly operational updates)
-* Escalation path for disputes (CEO a' Board)
+* Escalation path for disputes (CEO → Board)
 
 Financial Terms:
 * Investment: $${(dealValue / 1000000).toFixed(1)}M total ($${(dealValue * 0.6 / 1000000).toFixed(1)}M from ${entityName}, $${(dealValue * 0.4 / 1000000).toFixed(1)}M from ${targetPartnerName})
@@ -923,11 +923,11 @@ Cash Flow Profile:
 SECTION 4: RISKS & MITIGATION
 
 Top 5 Risks:
-1. Regulatory changes (40% probability) a' Mitigation: Policy monitoring team
-2. Market adoption slower than expected (35%) a' Pilot program with locked-in contracts
-3. Operational integration challenges (45%) a' Integration management office
-4. Currency volatility (60%) a' 12-month forward hedge
-5. Partnership dynamics (20%) a' Clear governance structure
+1. Regulatory changes (40% probability) — Mitigation: Policy monitoring team
+2. Market adoption slower than expected (35%) — Pilot program with locked-in contracts
+3. Operational integration challenges (45%) — Integration management office
+4. Currency volatility (60%) — 12-month forward hedge
+5. Partnership dynamics (20%) — Clear governance structure
 
 Overall Risk Rating: MEDIUM (manageable with proper frameworks)
 
@@ -1780,9 +1780,9 @@ CULTURAL & NEGOTIATION NOTES:
 * 90 Days: Office ready, pilots live, compliance audit checklist complete
 
 RISKS & MITIGATIONS:
-* Regulatory Delays a' Parallel filings, GR follow-ups, buffer timelines
-* Talent Shortages a' Early sourcing, competitive offers, training plans
-* Vendor Reliability a' Multi-sourcing, performance clauses, weekly tracking
+* Regulatory Delays — Parallel filings, GR follow-ups, buffer timelines
+* Talent Shortages — Early sourcing, competitive offers, training plans
+* Vendor Reliability — Multi-sourcing, performance clauses, weekly tracking
 
 RECOMMENDATION:
 Proceed with Phase 1 setup and pilots. Decision checkpoint by ${decisionDeadline}.

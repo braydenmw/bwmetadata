@@ -135,7 +135,7 @@ export default function MatchmakingDemo() {
                     onClick={() => { setShowDocGeneration(false); setSelectedMatch(null); }}
                     className="mb-4 flex items-center gap-2 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
                 >
-                    <- Back to Matching
+                    ← Back to Matching
                 </button>
                 <DocumentGenerationSuite 
                     entityName={currentScenario.context.industry}

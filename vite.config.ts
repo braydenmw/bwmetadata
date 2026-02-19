@@ -30,6 +30,50 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        chunkSizeWarningLimit: 3000,
+        rollupOptions: {
+          onwarn(warning, warn) {
+            const message = warning?.message || '';
+            if (
+              message.includes('is dynamically imported by') &&
+              message.includes('but also statically imported by')
+            ) {
+              return;
+            }
+            warn(warning);
+          },
+          output: {
+            manualChunks(id) {
+              if (!id.includes('node_modules')) {
+                return undefined;
+              }
+
+              if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/scheduler/')) {
+                return 'vendor-react';
+              }
+
+              if (id.includes('/framer-motion/') || id.includes('/lucide-react/')) {
+                return 'vendor-ui';
+              }
+
+              if (id.includes('/recharts/') || id.includes('/d3-')) {
+                return 'vendor-charts';
+              }
+
+              if (id.includes('/@google/generative-ai/') || id.includes('/openai/')) {
+                return 'vendor-ai';
+              }
+
+              if (id.includes('/pdf-lib/') || id.includes('/jspdf/') || id.includes('/html2canvas/')) {
+                return 'vendor-docs';
+              }
+
+              return 'vendor-misc';
+            }
+          }
+        }
       }
     };
 });

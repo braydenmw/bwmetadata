@@ -7,7 +7,7 @@ export const RegionalContextIntro: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
           <div className="lg:col-span-5">
-            <div className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">The Problem a' The Bridge</div>
+            <div className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">The Problem → The Bridge</div>
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-bw-navy leading-tight">
               The Invisible Potential of Regional Cities
             </h2>

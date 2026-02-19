@@ -41,7 +41,7 @@ const DealMarketplace: React.FC = () => {
       country: 'Poland',
       type: 'Government Incentive',
       sector: 'Technology',
-      value: 'a'500k - a'2M per project',
+      value: '$500k - $2M per project',
       description: 'EU-backed research and development grants for technology companies establishing innovation hubs in Poland',
       deadline: '2025-06-30',
       terms: ['EU co-funding 50%', 'Polish team required', '2-3 year projects', 'IP rights negotiable'],

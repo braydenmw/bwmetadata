@@ -76,7 +76,7 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                         <div className="rounded-sm border border-amber-200 bg-amber-50 p-3 text-amber-900 text-xs">
                             <p className="font-bold">Rate & Liquidity Stress - Explicit Gates</p>
                             <ul className="list-disc pl-5 mt-1 space-y-1">
-                                <li>Rates: I"+30bps / I"+90bps a' DSCR/ICR thresholds gate recommendations.</li>
+                                <li>Rates: +30bps / +90bps → DSCR/ICR thresholds gate recommendations.</li>
                                 <li>Liquidity: FX/CSR/IRP lanes tested; funding staged with evidence packs.</li>
                             </ul>
                         </div>
@@ -89,7 +89,7 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                                 body: 'Mandates become machine-legible without stripping nuance; every assumption is captured, challenged, and traced.'
                             }, {
                                 title: 'Adversarial Governance',
-                                body: 'Validate a' Debate a' Counterfactuals a' Score a' Synthesize a' Deliver. False confidence is blocked by design.'
+                                body: 'Validate -> Debate -> Counterfactuals -> Score -> Synthesize -> Deliver. False confidence is blocked by design.'
                             }, {
                                 title: 'Agentic Brain',
                                 body: 'A persistent digital worker that advances the case, anticipates questions, and keeps a complete why-chain.'
@@ -147,11 +147,11 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50 space-y-2">
                                 <p className="text-xs font-bold text-stone-900 uppercase tracking-wide">From mandate to model</p>
                                 <ul className="list-disc pl-5 space-y-2">
-                                    <li>Intent Capture a' computable mandate with constraints, risk appetite, and stakeholder map.</li>
-                                    <li>Debate Engine a' five personas argue the plan; contradictions are flagged, not buried.</li>
-                                    <li>Counterfactual Lab a' shocks for rates, liquidity, partners, policy, and supply chain.</li>
-                                    <li>Scoring Layer a' 21 formulas calculate exposure, leverage, and resilience.</li>
-                                    <li>Learning Loop a' outcomes feed back; accuracy improves over time.</li>
+                                    <li>Intent Capture → computable mandate with constraints, risk appetite, and stakeholder map.</li>
+                                    <li>Debate Engine → five personas argue the plan; contradictions are flagged, not buried.</li>
+                                    <li>Counterfactual Lab → shocks for rates, liquidity, partners, policy, and supply chain.</li>
+                                    <li>Scoring Layer → 21 formulas calculate exposure, leverage, and resilience.</li>
+                                    <li>Learning Loop → outcomes feed back; accuracy improves over time.</li>
                                 </ul>
                             </div>
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50 space-y-2">
@@ -200,15 +200,15 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                     {/* Live Run Evidence */}
                     <section className="rounded-sm border border-stone-200 bg-white p-5 space-y-4">
                         <h3 className="text-lg font-bold text-stone-900">Live Run Evidence (Case: {run?.runId || 'NSIL-GEN-1228A'})</h3>
-                        <p className="text-xs text-stone-600">Generated: {generatedDate || run?.generatedAt || 'Recent'} * Location: {packet?.scenario?.location || 'Regional Hub'}</p>
+                        <p className="text-xs text-stone-600">Generated: {generatedDate || run?.generatedAt || 'Recent'} • Location: {packet?.scenario?.location || 'Regional Hub'}</p>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                                 <p className="text-xs font-bold text-stone-900 uppercase tracking-wide mb-2">Signals & Metrics</p>
                                 <div className="grid grid-cols-2 gap-2 text-sm text-stone-700">
-                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Composite</p><p>{String(packet?.scores?.overall ?? run?.overallScore ?? 'a"')}</p></div>
-                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Synergy</p><p>{String(packet?.scores?.synergy ?? run?.synergyScore ?? 'a"')}</p></div>
-                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Dependency</p><p>{String(packet?.scores?.dependency ?? run?.supplyChainDependency ?? 'a"')}</p></div>
-                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">RROI</p><p>{String(packet?.scores?.rroi ?? run?.rroiScore ?? 'a"')}</p></div>
+                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Composite</p><p>{String(packet?.scores?.overall ?? run?.overallScore ?? '--')}</p></div>
+                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Synergy</p><p>{String(packet?.scores?.synergy ?? run?.synergyScore ?? '--')}</p></div>
+                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">Dependency</p><p>{String(packet?.scores?.dependency ?? run?.supplyChainDependency ?? '--')}</p></div>
+                                    <div className="rounded-sm border border-stone-200 p-2 bg-white"><p className="font-semibold">RROI</p><p>{String(packet?.scores?.rroi ?? run?.rroiScore ?? '--')}</p></div>
                                 </div>
                             </div>
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
@@ -229,7 +229,7 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                                 <p className="text-xs font-bold text-stone-900 uppercase tracking-wide mb-2">Controls (Packet)</p>
                                 <ul className="list-disc pl-5 space-y-1 text-sm text-stone-700">
-                                    {(packet?.controls || []).slice(0,4).map((c) => (<li key={c.metric}><span className="font-semibold">{c.metric}:</span> {c.threshold} a' {c.action}</li>))}
+                                    {(packet?.controls || []).slice(0,4).map((c) => (<li key={c.metric}><span className="font-semibold">{c.metric}:</span> {c.threshold} → {c.action}</li>))}
                                 </ul>
                             </div>
                         </div>
@@ -258,9 +258,9 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                                 <div className="rounded-sm border border-amber-200 bg-amber-50 p-3 text-amber-900 text-xs mt-2">
                                     <p className="font-bold">Counterfactual Stress Examples</p>
                                     <ul className="list-disc pl-5 mt-1 space-y-1">
-                                        <li>Rate shocks: I"+30bps / I"+90bps a' DSCR/ICR thresholds gate recommendations.</li>
+                                        <li>Rate shocks: +30bps / +90bps → DSCR/ICR thresholds gate recommendations.</li>
                                         <li>Liquidity stress: FXR/CSR/IRP lanes tested; escrow releases tied to evidence packs.</li>
-                                        <li>Partner failure: remove critical node a' SEAM drops; mitigations proposed before proceed.</li>
+                                        <li>Partner failure: remove critical node → SEAM drops; mitigations proposed before proceed.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -294,7 +294,7 @@ const NSILShowcaseModal: React.FC<NSILShowcaseModalProps> = ({ isOpen, onClose, 
                             <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                                 <p className="text-xs font-bold text-stone-900 uppercase tracking-wide">Pipeline</p>
                                 <ul className="list-disc pl-5 space-y-2">
-                                    <li>Plan a' Tools a' Memory a' Verdict (MultiAgentOrchestrator).</li>
+                                    <li>Plan → Tools → Memory → Verdict (MultiAgentOrchestrator).</li>
                                     <li>Persistent context and proactive preparation (agenticWorker); anticipates questions and assembles evidence.</li>
                                     <li>Governance rails applied at each step; unsafe or incomplete logic is blocked.</li>
                                 </ul>

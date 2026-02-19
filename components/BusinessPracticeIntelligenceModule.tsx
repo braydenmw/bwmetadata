@@ -507,7 +507,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <Globe className="w-5 h-5 text-indigo-600" />
               {profile.country} - {profile.region}
             </h3>
-            <div className="text-2xl">{expandedSections.overview ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.overview ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.overview && (
@@ -548,7 +548,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <Zap className="w-5 h-5 text-blue-600" />
               Negotiation Strategy
             </h3>
-            <div className="text-2xl">{expandedSections.negotiation ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.negotiation ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.negotiation && (
@@ -580,7 +580,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
                   </div>
                   {profile.contractRisks.map((risk, idx) => (
                     <div key={idx} className="flex gap-2 items-start p-2 bg-red-50 rounded-lg border border-red-100">
-                      <div className="text-red-600 font-bold flex-shrink-0 mt-0.5">as </div>
+                      <div className="text-red-600 font-bold flex-shrink-0 mt-0.5">⚠</div>
                       <p className="text-sm text-red-800">{risk}</p>
                     </div>
                   ))}
@@ -600,7 +600,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <TrendingUp className="w-5 h-5 text-green-600" />
               Operations & Practicalities
             </h3>
-            <div className="text-2xl">{expandedSections.operations ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.operations ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.operations && (
@@ -649,7 +649,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <Users className="w-5 h-5 text-pink-600" />
               Relationship Building ({profile.relationshipImportance})
             </h3>
-            <div className="text-2xl">{expandedSections.relationships ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.relationships ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.relationships && (
@@ -685,7 +685,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <AlertCircle className="w-5 h-5 text-red-600" />
               Red Flags & Green Flags
             </h3>
-            <div className="text-2xl">{expandedSections.risks ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.risks ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.risks && (
@@ -727,7 +727,7 @@ const BusinessPracticeIntelligenceModule: React.FC<BusinessPracticeIntelligenceP
               <CheckCircle className="w-5 h-5 text-purple-600" />
               Best Practices for {profile.country}
             </h3>
-            <div className="text-2xl">{expandedSections.bestPractices ? 'a-1/4' : 'a-'}</div>
+            <div className="text-2xl">{expandedSections.bestPractices ? '▾' : '▸'}</div>
           </div>
           
           {expandedSections.bestPractices && (
