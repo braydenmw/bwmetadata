@@ -42,6 +42,19 @@ export interface ChatResponse {
 
 export type ConsultantResponse = FactSheetResponse | ChatResponse;
 
+const isAIFailureText = (text: string): boolean => {
+  const value = text.toLowerCase();
+  return (
+    value.includes('ai service error') ||
+    value.includes('temporarily unavailable') ||
+    value.includes('api key expired') ||
+    value.includes('api key invalid') ||
+    value.includes('invalid api key') ||
+    value.includes('quota') ||
+    value.includes('error fetching')
+  );
+};
+
 const LANDING_PAGE_PROMPTS = {
   factSheet: (query: string, liveData?: Record<string, unknown>) => `You are BW Consultant AI - an expert analyst providing FACTUAL information.
 
@@ -125,7 +138,7 @@ export class ContextAwareBWConsultant {
   /**
    * LANDING PAGE MODE: Generate structured fact sheet
    */
-  private static async generateFactSheet(query: string): Promise<FactSheetResponse> {
+  private static async generateFactSheet(query: string): Promise<ConsultantResponse> {
     // Fetch live data if location-based query
     let liveData = null;
     const locationMatch = query.match(/\b(manila|philippines|beijing|china|tokyo|japan|singapore|bangkok|mumbai|india|new york|london|paris|dubai)\b/i);
@@ -149,6 +162,18 @@ export class ContextAwareBWConsultant {
     // Generate fact sheet via AI
     const prompt = LANDING_PAGE_PROMPTS.factSheet(query, liveData);
     const aiResponse = await invokeAI(prompt);
+
+    if (isAIFailureText(aiResponse.text)) {
+      return {
+        format: 'chat-response',
+        context: 'landing',
+        timestamp: new Date().toISOString(),
+        message:
+          'I could not complete live AI research right now because the AI service is unavailable or misconfigured. ' +
+          'Please refresh API credentials (Gemini key), then try again. ' +
+          'If you want, I can still guide you manually: share the city/company and I will give you a structured checklist while the AI service is being fixed.'
+      };
+    }
 
     try {
       const parsed = JSON.parse(aiResponse.text);

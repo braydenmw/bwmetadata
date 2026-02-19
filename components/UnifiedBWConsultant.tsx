@@ -169,6 +169,29 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
         // Landing page: show response inline as chat + open fact sheet drawer
         setChatMessages(prev => [...prev, { type: 'user', text: input }]);
         if (result.format === 'fact-sheet') {
+          const firstSection = result.sections?.[0]?.content?.toLowerCase?.() || '';
+          const looksLikeError =
+            firstSection.includes('ai service error') ||
+            firstSection.includes('temporarily unavailable') ||
+            firstSection.includes('api key expired') ||
+            firstSection.includes('error fetching');
+
+          if (looksLikeError) {
+            setChatMessages(prev => [
+              ...prev,
+              {
+                type: 'bw',
+                text:
+                  'I could not complete live AI research right now. The AI provider returned a service/configuration error. ' +
+                  'Please refresh API credentials and retry. I can still guide a manual analysis if you share your priority angle.'
+              }
+            ]);
+            setFactSheetResponse(null);
+            setCurrentQuery('');
+            setInput('');
+            return;
+          }
+
           // Build a concise proactive summary for the chat area
           const summaryLines = result.sections
             .slice(0, 3)
