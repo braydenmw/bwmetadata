@@ -5,7 +5,7 @@
  * Live Report: Normal chat interface showing conversational responses
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, Loader, Brain, X, ExternalLink } from 'lucide-react';
 import ContextAwareBWConsultant, { 
   ConsultantResponse, 
@@ -15,6 +15,7 @@ import ContextAwareBWConsultant, {
 interface UnifiedBWConsultantProps {
   context?: 'landing' | 'live-report';
   reportData?: Record<string, unknown> | object;
+  initialPrompt?: string;
   onQueryProcessed?: (response: ConsultantResponse) => void;
   onEnterPlatform?: (payload?: { query?: string; results?: Record<string, unknown>[] }) => void;
   className?: string;
@@ -123,6 +124,7 @@ const FactSheetDrawer: React.FC<{
 export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
   context,
   reportData,
+  initialPrompt,
   onQueryProcessed,
   onEnterPlatform,
   className = '',
@@ -139,6 +141,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
   // For live report: store chat messages
   const [chatMessages, setChatMessages] = useState<Array<{ type: 'user' | 'bw'; text: string }>>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastAutoPromptRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!context) {
@@ -153,21 +156,20 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const processQuery = useCallback(async (queryText: string) => {
+    if (!queryText.trim() || isLoading) return;
 
     setIsLoading(true);
     try {
       const result = await ContextAwareBWConsultant.processQuery(
-        input,
+        queryText,
         detectedContext,
         reportData as Record<string, unknown>
       );
 
       if (detectedContext === 'landing') {
         // Landing page: show response inline as chat + open fact sheet drawer
-        setChatMessages(prev => [...prev, { type: 'user', text: input }]);
+        setChatMessages(prev => [...prev, { type: 'user', text: queryText }]);
         if (result.format === 'fact-sheet') {
           const firstSection = result.sections?.[0]?.content?.toLowerCase?.() || '';
           const looksLikeError =
@@ -200,35 +202,51 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
           const summaryLines = result.sections
             .slice(0, 3)
             .map((s: { heading: string; content: string }) => `**${s.heading}:** ${s.content.slice(0, 180)}...`);
-          const proactiveNote = `Here's what I found for "${input}":\n\n${summaryLines.join('\n\n')}\n\nI've prepared a full Fact Sheet with deeper analysis — it's open now. Need me to dig into a specific angle? Just tell me what detail matters most.`;
+          const proactiveNote = `Here's what I found for "${queryText}":\n\n${summaryLines.join('\n\n')}\n\nI've prepared a full Fact Sheet with deeper analysis — it's open now. Need me to dig into a specific angle? Just tell me what detail matters most.`;
           setChatMessages(prev => [...prev, { type: 'bw', text: proactiveNote }]);
-          setCurrentQuery(input);
+          setCurrentQuery(queryText);
           setFactSheetResponse(result);
         } else if (result.format === 'chat-response') {
           setChatMessages(prev => [...prev, { type: 'bw', text: (result as unknown as { message: string }).message }]);
         }
       } else {
         // Live report: show as natural chat
-        setChatMessages(prev => [...prev, { type: 'user', text: input }]);
+        setChatMessages(prev => [...prev, { type: 'user', text: queryText }]);
         if (result.format === 'chat-response') {
           setChatMessages(prev => [...prev, { type: 'bw', text: result.message }]);
         }
       }
 
       onQueryProcessed?.(result);
-      setInput('');
     } catch (error) {
       console.error('BW Consultant error:', error);
       if (detectedContext === 'live-report') {
         setChatMessages(prev => [...prev, 
-          { type: 'user', text: input },
+          { type: 'user', text: queryText },
           { type: 'bw', text: 'I encountered an error. Please try again.' }
         ]);
       }
     } finally {
       setIsLoading(false);
     }
+  }, [detectedContext, isLoading, onQueryProcessed, reportData]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const message = input.trim();
+    if (!message) return;
+    setInput('');
+    await processQuery(message);
   };
+
+  useEffect(() => {
+    const prompt = initialPrompt?.trim();
+    if (!prompt || detectedContext !== 'landing') return;
+    if (lastAutoPromptRef.current === prompt) return;
+
+    lastAutoPromptRef.current = prompt;
+    void processQuery(prompt);
+  }, [initialPrompt, detectedContext, processQuery]);
 
   // Landing page UI — Landscape ChatGPT-style: wide, compact, no vertical scroll
   if (detectedContext === 'landing') {
@@ -333,7 +351,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                 </div>
               </form>
               <div className="px-4 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700">
-                <strong>NSIL v6.0</strong> — Proactive intelligence activates when you provide details
+                <strong>NSIL v6.0</strong> — Proactive intelligence activates when you provide
               </div>
             </div>
           </div>

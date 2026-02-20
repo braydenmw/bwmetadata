@@ -11,6 +11,7 @@ import { INITIAL_PARAMETERS } from './constants';
 import NSILWorkspace from './components/NSILWorkspace';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
+import BWConsultantOS from './components/BWConsultantOS';
 import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
@@ -45,7 +46,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'report-generator' | 'global-location-intel';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -595,10 +596,23 @@ const App: React.FC = () => {
                     <CommandCenter
                         onEnterPlatform={(payload) => {
                           if (payload?.query) setPendingConsultantQuery(payload.query);
-                          setViewMode('main');
+                          setViewMode('consultant-os');
                         }}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
+                    />
+                </div>
+            );
+        }
+
+        if (viewMode === 'consultant-os') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <BWConsultantOS
+                        onOpenWorkspace={(payload) => {
+                            if (payload?.query) setPendingConsultantQuery(payload.query);
+                            setViewMode('main');
+                        }}
                     />
                 </div>
             );
