@@ -1269,6 +1269,22 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     });
   }, [extractedEntitySuggestions]);
 
+  const handleRejectAllSuggestions = useCallback(() => {
+    if (extractedEntitySuggestions.length === 0) return;
+
+    setEntityDecisions((prev) => {
+      const next = { ...prev };
+      extractedEntitySuggestions.forEach((item) => {
+        next[item.key] = 'rejected';
+      });
+      return next;
+    });
+  }, [extractedEntitySuggestions]);
+
+  const handleResetSuggestionDecisions = useCallback(() => {
+    setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
+  }, []);
+
   const handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
     if (!response) return;
@@ -2003,18 +2019,44 @@ Each selected output must include:
                           <div className="mt-1 space-y-1 border border-stone-200 bg-white p-1.5">
                             <div className="flex items-center justify-between gap-2">
                               <p className="text-[10px] text-slate-600">Detected entities (confirm/reject before auto-fill):</p>
-                              <button
-                                type="button"
-                                onClick={handleApplyHighConfidence}
-                                disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'high')}
-                                className={`text-[10px] px-1 py-0.5 border ${
-                                  !extractedEntitySuggestions.some((item) => item.confidence === 'high')
-                                    ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                                    : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
-                                }`}
-                              >
-                                Apply High Confidence
-                              </button>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={handleApplyHighConfidence}
+                                  disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'high')}
+                                  className={`text-[10px] px-1 py-0.5 border ${
+                                    !extractedEntitySuggestions.some((item) => item.confidence === 'high')
+                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                                      : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                                  }`}
+                                >
+                                  Apply High Confidence
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={handleRejectAllSuggestions}
+                                  disabled={extractedEntitySuggestions.length === 0}
+                                  className={`text-[10px] px-1 py-0.5 border ${
+                                    extractedEntitySuggestions.length === 0
+                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  Reject All
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={handleResetSuggestionDecisions}
+                                  disabled={Object.keys(entityDecisions).length === 0}
+                                  className={`text-[10px] px-1 py-0.5 border ${
+                                    Object.keys(entityDecisions).length === 0
+                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  Reset Decisions
+                                </button>
+                              </div>
                             </div>
                             {extractedEntitySuggestions.map((item) => {
                               const decision = entityDecisions[item.key];
