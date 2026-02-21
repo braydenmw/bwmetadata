@@ -1111,6 +1111,24 @@ Each selected output must include:
     ? recommendedDocs.filter((doc) => doc.id !== primaryRecommendation.id).slice(0, 2)
     : [];
 
+  const learningSummary = Object.entries(recommendationBoostMap)
+    .filter(([, boost]) => boost !== 0)
+    .map(([docId, boost]) => ({
+      docId,
+      boost,
+      title: recommendedDocs.find((doc) => doc.id === docId)?.title || docId
+    }));
+
+  const boostedDocuments = learningSummary
+    .filter((item) => item.boost > 0)
+    .sort((a, b) => b.boost - a.boost)
+    .slice(0, 2);
+
+  const penalizedDocuments = learningSummary
+    .filter((item) => item.boost < 0)
+    .sort((a, b) => a.boost - b.boost)
+    .slice(0, 2);
+
   const getRankGapKeys = useCallback((alternativeId: string) => {
     if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
 
@@ -1549,6 +1567,23 @@ Each selected output must include:
             {(currentPhase === 'recommendations' || currentPhase === 'generation' || recommendedDocs.length > 0) && (
               <div className="flex-1 overflow-y-auto p-4">
                 <h3 className="text-sm font-bold text-slate-900 mb-3">Recommended Documents</h3>
+
+                {learningSummary.length > 0 && (
+                  <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
+                    <p className="text-[11px] font-semibold text-slate-700">Learning Summary</p>
+                    {boostedDocuments.length > 0 && (
+                      <p className="mt-1 text-[10px] text-green-700">
+                        Boosted: {boostedDocuments.map((item) => `${item.title} (+${item.boost})`).join(' • ')}
+                      </p>
+                    )}
+                    {penalizedDocuments.length > 0 && (
+                      <p className="mt-1 text-[10px] text-amber-700">
+                        Penalized: {penalizedDocuments.map((item) => `${item.title} (${item.boost})`).join(' • ')}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <div className="space-y-2">
                   {recommendedDocs.map((doc) => (
                     <button
