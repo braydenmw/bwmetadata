@@ -1285,9 +1285,30 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
   }, []);
 
+  const decidedSuggestionCount = extractedEntitySuggestions.filter((item) => entityDecisions[item.key]).length;
+  const acceptedSuggestionCount = extractedEntitySuggestions.filter((item) => entityDecisions[item.key] === 'accepted').length;
+  const pendingSuggestionCount = extractedEntitySuggestions.length - decidedSuggestionCount;
+  const decisionCompletenessPct = extractedEntitySuggestions.length === 0
+    ? 100
+    : Math.round((decidedSuggestionCount / extractedEntitySuggestions.length) * 100);
+
   const handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
     if (!response) return;
+
+    if (extractedEntitySuggestions.length > 0 && pendingSuggestionCount > 0) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: `Please confirm or reject all detected entities before resolving the top gap. Completeness is currently ${decisionCompletenessPct}%.`,
+          timestamp: new Date(),
+          phase: 'discovery'
+        }
+      ]);
+      return;
+    }
 
     const gaps = getCriticalCaseGaps();
     if (gaps.length === 0) return;
@@ -1373,7 +1394,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       }
     ]);
     setTopGapQuickInput('');
-  }, [topGapQuickInput, getCriticalCaseGaps, extractedEntitySuggestions, entityDecisions]);
+  }, [topGapQuickInput, pendingSuggestionCount, decisionCompletenessPct, getCriticalCaseGaps, extractedEntitySuggestions, entityDecisions]);
 
   // Copy generated content
   const copyContent = useCallback(() => {
@@ -2058,6 +2079,17 @@ Each selected output must include:
                                 </button>
                               </div>
                             </div>
+                            <div>
+                              <div className="h-1.5 bg-slate-100 border border-slate-200 overflow-hidden">
+                                <div
+                                  className="h-full bg-blue-500"
+                                  style={{ width: `${decisionCompletenessPct}%` }}
+                                />
+                              </div>
+                              <p className="mt-1 text-[10px] text-slate-600">
+                                Decision completeness: {decisionCompletenessPct}% • Accepted {acceptedSuggestionCount} • Pending {pendingSuggestionCount}
+                              </p>
+                            </div>
                             {extractedEntitySuggestions.map((item) => {
                               const decision = entityDecisions[item.key];
                               return (
@@ -2107,9 +2139,9 @@ Each selected output must include:
                         <button
                           type="button"
                           onClick={handleResolveTopGap}
-                          disabled={!topGapQuickInput.trim()}
+                          disabled={!topGapQuickInput.trim() || (extractedEntitySuggestions.length > 0 && pendingSuggestionCount > 0)}
                           className={`mt-1 text-[10px] px-1.5 py-1 border ${
-                            !topGapQuickInput.trim()
+                            !topGapQuickInput.trim() || (extractedEntitySuggestions.length > 0 && pendingSuggestionCount > 0)
                               ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
                               : 'bg-white border-blue-300 text-blue-700 hover:bg-blue-50'
                           }`}
