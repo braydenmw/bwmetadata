@@ -1143,6 +1143,51 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setInputValue(nextGap.question);
   }, [getCriticalCaseGaps]);
 
+  const extractQuickGapEntities = useCallback((input: string) => {
+    const normalized = input.trim();
+    const lower = normalized.toLowerCase();
+
+    const audienceMap: Array<{ pattern: RegExp; value: string }> = [
+      { pattern: /\bboard\b/i, value: 'Board' },
+      { pattern: /\bregulator|agency|ministry\b/i, value: 'Regulator / Ministry' },
+      { pattern: /\binvestor|investment committee|fund\b/i, value: 'Investor Committee' },
+      { pattern: /\bcourt|tribunal|legal counsel\b/i, value: 'Court / Legal Counsel' },
+      { pattern: /\bexecutive|leadership|c-suite\b/i, value: 'Executive Team' }
+    ];
+
+    const matchedAudience = audienceMap.find((item) => item.pattern.test(normalized))?.value;
+
+    const parts = normalized.split(/[,/|-]/).map((part) => part.trim()).filter(Boolean);
+    const jurisdictionByParts = parts.length > 1
+      ? { country: parts[0], jurisdiction: parts.slice(1).join(' / ') }
+      : null;
+
+    const triggerToRegion: Array<{ trigger: string; country: string; jurisdiction: string }> = [
+      { trigger: 'australia', country: 'Australia', jurisdiction: 'National / State' },
+      { trigger: 'philippines', country: 'Philippines', jurisdiction: 'National / LGU' },
+      { trigger: 'european union', country: 'European Union', jurisdiction: 'EU Governance' },
+      { trigger: 'eu', country: 'European Union', jurisdiction: 'EU Governance' },
+      { trigger: 'saudi', country: 'Saudi Arabia', jurisdiction: 'MENA Regulatory' },
+      { trigger: 'uae', country: 'UAE', jurisdiction: 'MENA Regulatory' }
+    ];
+
+    const matchedJurisdiction = triggerToRegion.find((item) => lower.includes(item.trigger));
+
+    const deadlineByPhrase = normalized.match(/\b(?:by|before|due|deadline)\s*[:-]?\s*([^.\n]{4,80})/i)?.[1]?.trim();
+    const deadlineByPattern = normalized.match(/\b(?:Q[1-4]\s?\d{4}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|[A-Za-z]+\s+\d{4})\b/)?.[0];
+    const detectedDeadline = deadlineByPhrase || deadlineByPattern || null;
+
+    const hasEvidenceSignal = /\b(evidence|annex|attachment|dataset|source|report|metric|kpi|%|\$|http)\b/i.test(normalized) || /\d{2,}/.test(normalized);
+
+    return {
+      audience: matchedAudience || null,
+      country: jurisdictionByParts?.country || matchedJurisdiction?.country || null,
+      jurisdiction: jurisdictionByParts?.jurisdiction || matchedJurisdiction?.jurisdiction || null,
+      deadline: detectedDeadline,
+      evidenceNote: hasEvidenceSignal ? normalized : null
+    };
+  }, []);
+
   const handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
     if (!response) return;
@@ -1151,37 +1196,67 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     if (gaps.length === 0) return;
 
     const topGap = gaps[0];
+    const extracted = extractQuickGapEntities(response);
+    const applied: string[] = [];
+
     setCaseStudy((prev) => {
+      let next = { ...prev };
+
       if (topGap.label === 'Problem statement depth') {
-        return { ...prev, currentMatter: response };
+        next.currentMatter = response;
+        applied.push('problem statement');
       }
       if (topGap.label === 'Clear objective') {
-        return { ...prev, objectives: response };
+        next.objectives = response;
+        applied.push('objective');
       }
       if (topGap.label === 'Decision audience') {
-        return { ...prev, targetAudience: response };
+        next.targetAudience = response;
+        applied.push('audience');
       }
       if (topGap.label === 'Jurisdiction clarity') {
         const parts = response.split(/[,/|-]/).map((part) => part.trim()).filter(Boolean);
-        return {
-          ...prev,
-          country: parts[0] || prev.country,
-          jurisdiction: parts.slice(1).join(' / ') || response
-        };
+        next.country = parts[0] || prev.country;
+        next.jurisdiction = parts.slice(1).join(' / ') || response;
+        applied.push('jurisdiction');
       }
       if (topGap.label === 'Timeline and urgency') {
-        return { ...prev, decisionDeadline: response };
+        next.decisionDeadline = response;
+        applied.push('deadline');
       }
       if (topGap.label === 'Constraints and limits') {
-        return { ...prev, constraints: response };
+        next.constraints = response;
+        applied.push('constraints');
       }
       if (topGap.label === 'Supporting evidence') {
-        return {
-          ...prev,
-          additionalContext: [...prev.additionalContext, `Evidence Note: ${response}`]
-        };
+        if (!prev.additionalContext.some((item) => item === `Evidence Note: ${response}`)) {
+          next.additionalContext = [...next.additionalContext, `Evidence Note: ${response}`];
+        }
+        applied.push('evidence note');
       }
-      return prev;
+
+      if (extracted.audience && (!next.targetAudience || topGap.label === 'Decision audience')) {
+        next.targetAudience = extracted.audience;
+        if (!applied.includes('audience')) applied.push('audience(auto)');
+      }
+      if (extracted.country && (!next.country || topGap.label === 'Jurisdiction clarity')) {
+        next.country = extracted.country;
+        if (!applied.includes('country')) applied.push('country(auto)');
+      }
+      if (extracted.jurisdiction && (!next.jurisdiction || topGap.label === 'Jurisdiction clarity')) {
+        next.jurisdiction = extracted.jurisdiction;
+        if (!applied.includes('jurisdiction')) applied.push('jurisdiction(auto)');
+      }
+      if (extracted.deadline && (!next.decisionDeadline || topGap.label === 'Timeline and urgency')) {
+        next.decisionDeadline = extracted.deadline;
+        if (!applied.includes('deadline')) applied.push('deadline(auto)');
+      }
+      if (extracted.evidenceNote && !next.additionalContext.some((item) => item === `Evidence Note: ${extracted.evidenceNote}`)) {
+        next.additionalContext = [...next.additionalContext, `Evidence Note: ${extracted.evidenceNote}`];
+        if (!applied.includes('evidence note')) applied.push('evidence note(auto)');
+      }
+
+      return next;
     });
 
     setMessages((prev) => [
@@ -1189,13 +1264,13 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Captured top-gap input for ${topGap.label}. I have updated your case file and will reprioritize remaining gaps.`,
+        content: `Captured top-gap input for ${topGap.label}. Updated fields: ${applied.join(', ') || 'case context'} and reprioritized remaining gaps.`,
         timestamp: new Date(),
         phase: 'discovery'
       }
     ]);
     setTopGapQuickInput('');
-  }, [topGapQuickInput, getCriticalCaseGaps]);
+  }, [topGapQuickInput, getCriticalCaseGaps, extractQuickGapEntities]);
 
   // Copy generated content
   const copyContent = useCallback(() => {
