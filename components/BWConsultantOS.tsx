@@ -1103,6 +1103,46 @@ Each selected output must include:
     ? recommendedDocs.filter((doc) => doc.id !== primaryRecommendation.id).slice(0, 2)
     : [];
 
+  const getRankUpgradeHint = useCallback((alternativeId: string) => {
+    if (!primaryRecommendation) return null;
+
+    const primaryScore = recommendationScoreMap[primaryRecommendation.id];
+    const altScore = recommendationScoreMap[alternativeId];
+    if (!primaryScore || !altScore) return null;
+
+    const gaps = [
+      { key: 'fit', delta: primaryScore.fitScore - altScore.fitScore },
+      { key: 'evidence', delta: primaryScore.evidenceScore - altScore.evidenceScore },
+      { key: 'urgency', delta: primaryScore.urgencyScore - altScore.urgencyScore },
+      { key: 'compliance', delta: primaryScore.complianceScore - altScore.complianceScore }
+    ]
+      .filter((item) => item.delta > 0)
+      .sort((a, b) => b.delta - a.delta)
+      .slice(0, 2)
+      .map((item) => item.key);
+
+    const suggestions: string[] = [];
+
+    if (gaps.includes('fit')) {
+      suggestions.push('tighten objective/audience alignment in your case description');
+    }
+    if (gaps.includes('evidence')) {
+      suggestions.push('add stronger supporting documents or quantified evidence');
+    }
+    if (gaps.includes('urgency')) {
+      suggestions.push('clarify deadline urgency and decision timeline');
+    }
+    if (gaps.includes('compliance')) {
+      suggestions.push('add jurisdiction-specific compliance details and required annexes');
+    }
+
+    if (suggestions.length === 0) {
+      return 'This option is already close; add more case detail to improve ranking confidence.';
+    }
+
+    return `To rank this #1: ${suggestions.join('; ')}.`;
+  }, [primaryRecommendation, recommendationScoreMap]);
+
   return (
     <div 
       className={`${embedded ? '' : 'min-h-screen bg-white'}`}
@@ -1484,9 +1524,15 @@ Each selected output must include:
                             const primaryScore = recommendationScoreMap[primaryRecommendation.id]?.total ?? primaryRecommendation.relevance;
                             const altScore = recommendationScoreMap[alt.id]?.total ?? alt.relevance;
                             const delta = Math.max(0, Math.round(primaryScore - altScore));
+                            const upgradeHint = getRankUpgradeHint(alt.id);
                             return (
                               <li key={alt.id} className="text-[11px] text-slate-600">
                                 <strong>{alt.title}</strong> scored {delta} points lower due to weaker fit/evidence for current objective, audience, or jurisdiction.
+                                {upgradeHint && (
+                                  <div className="mt-1 text-[10px] text-blue-700 bg-blue-100 border border-blue-200 p-1.5">
+                                    {upgradeHint}
+                                  </div>
+                                )}
                               </li>
                             );
                           })}
