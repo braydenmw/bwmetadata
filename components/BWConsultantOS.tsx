@@ -80,6 +80,16 @@ interface JurisdictionPolicyPack {
   complianceFocus: string[];
 }
 
+type CriticalGapSeverity = 'critical' | 'high' | 'medium';
+
+interface CriticalCaseGap {
+  missing: boolean;
+  label: string;
+  question: string;
+  severity: CriticalGapSeverity;
+  weight: number;
+}
+
 const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
   {
     id: 'australia',
@@ -1057,45 +1067,61 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   }, []);
 
   const getCriticalCaseGaps = useCallback(() => {
-    const checks = [
+    const checks: CriticalCaseGap[] = [
       {
         missing: caseStudy.currentMatter.trim().length < 80,
         label: 'Problem statement depth',
-        question: 'What exactly is happening, who is involved, and what decision must be made?'
+        question: 'What exactly is happening, who is involved, and what decision must be made?',
+        severity: 'critical',
+        weight: 100
       },
       {
         missing: caseStudy.objectives.trim().length < 30,
         label: 'Clear objective',
-        question: 'What measurable outcome are you targeting and what does success look like?'
+        question: 'What measurable outcome are you targeting and what does success look like?',
+        severity: 'critical',
+        weight: 95
       },
       {
         missing: caseStudy.targetAudience.trim().length < 3,
         label: 'Decision audience',
-        question: 'Who is the primary decision audience (board, regulator, investor, ministry, etc.)?'
+        question: 'Who is the primary decision audience (board, regulator, investor, ministry, etc.)?',
+        severity: 'high',
+        weight: 80
       },
       {
         missing: caseStudy.country.trim().length < 2 || caseStudy.jurisdiction.trim().length < 2,
         label: 'Jurisdiction clarity',
-        question: 'Which country and legal/regulatory jurisdiction must the outputs follow?'
+        question: 'Which country and legal/regulatory jurisdiction must the outputs follow?',
+        severity: 'critical',
+        weight: 90
       },
       {
         missing: caseStudy.decisionDeadline.trim().length < 3,
         label: 'Timeline and urgency',
-        question: 'What is the hard decision deadline and what happens if this slips?'
+        question: 'What is the hard decision deadline and what happens if this slips?',
+        severity: 'high',
+        weight: 75
       },
       {
         missing: caseStudy.constraints.trim().length < 15,
         label: 'Constraints and limits',
-        question: 'What constraints (budget, politics, legal, resources) cannot be violated?'
+        question: 'What constraints (budget, politics, legal, resources) cannot be violated?',
+        severity: 'high',
+        weight: 70
       },
       {
         missing: caseStudy.uploadedDocuments.length === 0,
         label: 'Supporting evidence',
-        question: 'Please upload at least one supporting document or provide verifiable evidence details.'
+        question: 'Please upload at least one supporting document or provide verifiable evidence details.',
+        severity: 'medium',
+        weight: 50
       }
     ];
 
-    return checks.filter((item) => item.missing);
+    return checks
+      .filter((item) => item.missing)
+      .sort((a, b) => b.weight - a.weight);
   }, [caseStudy]);
 
   const handleAskNextCriticalQuestion = useCallback(() => {
@@ -1107,7 +1133,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setMessages(prev => [...prev, {
       id: crypto.randomUUID(),
       role: 'assistant',
-      content: `Critical gap to resolve: ${nextGap.label}\n${nextGap.question}`,
+      content: `Highest-priority gap (${nextGap.severity.toUpperCase()}): ${nextGap.label}\n${nextGap.question}`,
       timestamp: new Date(),
       phase: 'discovery'
     }]);
@@ -1146,7 +1172,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Before generation, resolve these critical gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => gap.label).join('\n- ')}\n\nUse "Ask Next Critical Question" to close them quickly.`,
+        content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" to close the highest-impact gap first.`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
@@ -1248,6 +1274,13 @@ Each selected output must include:
     .slice(0, 2);
 
   const criticalCaseGaps = getCriticalCaseGaps();
+  const gapSeverityCounts = criticalCaseGaps.reduce<Record<CriticalGapSeverity, number>>(
+    (acc, gap) => {
+      acc[gap.severity] += 1;
+      return acc;
+    },
+    { critical: 0, high: 0, medium: 0 }
+  );
 
   const getRankGapKeys = useCallback((alternativeId: string) => {
     if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
@@ -1730,10 +1763,14 @@ Each selected output must include:
                   )}
                 </div>
                 {criticalCaseGaps.length > 0 && (
-                  <p className="mt-1 text-[10px] text-slate-600">
-                    Missing: {criticalCaseGaps.slice(0, 2).map((gap) => gap.label).join(' • ')}
-                    {criticalCaseGaps.length > 2 ? ` • +${criticalCaseGaps.length - 2} more` : ''}
-                  </p>
+                  <>
+                    <p className="mt-1 text-[10px] text-slate-600">
+                      Severity: C {gapSeverityCounts.critical} • H {gapSeverityCounts.high} • M {gapSeverityCounts.medium}
+                    </p>
+                    <p className="mt-1 text-[10px] text-slate-600">
+                      Next: {criticalCaseGaps[0].severity.toUpperCase()} — {criticalCaseGaps[0].label}
+                    </p>
+                  </>
                 )}
               </div>
               {caseGraph && (
