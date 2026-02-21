@@ -21,7 +21,7 @@ import AdaptiveQuestionnaire from '../services/AdaptiveQuestionnaire';
 import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
 import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
 import CaseGraphBuilder, { type CaseGraph } from '../services/CaseGraphBuilder';
-import RecommendationScorer from '../services/RecommendationScorer';
+import RecommendationScorer, { type RecommendationScore } from '../services/RecommendationScorer';
 
 // ============================================================================
 // TYPES
@@ -174,6 +174,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [readinessScore, setReadinessScore] = useState(0);
   const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
   const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
+  const [recommendationScoreMap, setRecommendationScoreMap] = useState<Record<string, RecommendationScore>>({});
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -741,6 +742,13 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       }, {})
     );
 
+    setRecommendationScoreMap(
+      scored.reduce<Record<string, RecommendationScore>>((acc, item) => {
+        acc[item.id] = item;
+        return acc;
+      }, {})
+    );
+
     setRecommendedDocs(enrichedDocs);
   }, [caseStudy, resolvePolicyPack]);
 
@@ -1085,6 +1093,15 @@ Each selected output must include:
     recommendations: { label: 'Recommendations', description: 'Selecting documents' },
     generation: { label: 'Generation', description: 'Creating your documents' }
   };
+
+  const primaryRecommendation =
+    recommendedDocs.find((doc) => selectedDocs.includes(doc.id)) ||
+    recommendedDocs[0] ||
+    null;
+
+  const alternativeRecommendations = primaryRecommendation
+    ? recommendedDocs.filter((doc) => doc.id !== primaryRecommendation.id).slice(0, 2)
+    : [];
 
   return (
     <div 
@@ -1448,6 +1465,36 @@ Each selected output must include:
                     </button>
                   ))}
                 </div>
+
+                {primaryRecommendation && (
+                  <div className="mt-4 border border-blue-200 bg-blue-50 p-3">
+                    <p className="text-[11px] font-semibold text-blue-800">Why Selected</p>
+                    <p className="text-xs text-slate-700 mt-1">
+                      <strong>{primaryRecommendation.title}</strong> ranks highest for this case based on fit, evidence strength, urgency, and compliance alignment.
+                    </p>
+                    {recommendationRationaleMap[primaryRecommendation.id] && (
+                      <p className="text-[11px] text-slate-600 mt-1">{recommendationRationaleMap[primaryRecommendation.id]}</p>
+                    )}
+
+                    {alternativeRecommendations.length > 0 && (
+                      <div className="mt-3">
+                        <p className="text-[11px] font-semibold text-slate-700">Why Not Selected (Top Alternatives)</p>
+                        <ul className="mt-1 space-y-1">
+                          {alternativeRecommendations.map((alt) => {
+                            const primaryScore = recommendationScoreMap[primaryRecommendation.id]?.total ?? primaryRecommendation.relevance;
+                            const altScore = recommendationScoreMap[alt.id]?.total ?? alt.relevance;
+                            const delta = Math.max(0, Math.round(primaryScore - altScore));
+                            return (
+                              <li key={alt.id} className="text-[11px] text-slate-600">
+                                <strong>{alt.title}</strong> scored {delta} points lower due to weaker fit/evidence for current objective, audience, or jurisdiction.
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {selectedDocs.length > 0 && currentPhase !== 'generation' && (
                   <>
