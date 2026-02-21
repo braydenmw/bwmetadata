@@ -175,6 +175,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
   const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
   const [recommendationScoreMap, setRecommendationScoreMap] = useState<Record<string, RecommendationScore>>({});
+  const [recommendationBoostMap, setRecommendationBoostMap] = useState<Record<string, number>>({});
+  const [feedbackSignal, setFeedbackSignal] = useState<'positive' | 'partial' | 'negative' | null>(null);
+  const [feedbackNote, setFeedbackNote] = useState('');
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -726,10 +730,11 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     const enrichedDocs = docs
       .map((doc) => {
         const score = scoreMap.get(doc.id);
+        const learnedBoost = recommendationBoostMap[doc.id] ?? 0;
         if (!score) return doc;
         return {
           ...doc,
-          relevance: Math.round(score.total),
+          relevance: Math.max(0, Math.min(100, Math.round(score.total + learnedBoost))),
           rationale: `${doc.rationale} ${score.rationale}`
         };
       })
@@ -750,7 +755,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     );
 
     setRecommendedDocs(enrichedDocs);
-  }, [caseStudy, resolvePolicyPack]);
+  }, [caseStudy, resolvePolicyPack, recommendationBoostMap]);
 
   // Handle send message
   const handleSend = useCallback(async () => {
@@ -1053,6 +1058,9 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     
     setCurrentPhase('generation');
     setIsLoading(true);
+    setFeedbackSignal(null);
+    setFeedbackNote('');
+    setFeedbackSubmitted(false);
     
     const docNames = selectedDocs.map(id => recommendedDocs.find(d => d.id === id)?.title).filter(Boolean).join(', ');
     
@@ -1188,6 +1196,51 @@ Each selected output must include:
     }]);
     setInputValue(questions[0] ?? '');
   }, [getImprovementQuestions]);
+
+  const handleSubmitOutcomeFeedback = useCallback(() => {
+    if (!feedbackSignal) return;
+
+    const deltaBySignal: Record<'positive' | 'partial' | 'negative', number> = {
+      positive: 4,
+      partial: 1,
+      negative: -4
+    };
+
+    const docTargets = selectedDocs.length > 0
+      ? selectedDocs
+      : (primaryRecommendation ? [primaryRecommendation.id] : []);
+
+    if (docTargets.length === 0) return;
+
+    const delta = deltaBySignal[feedbackSignal];
+    setRecommendationBoostMap(prev => {
+      const next = { ...prev };
+      docTargets.forEach((docId) => {
+        const current = next[docId] ?? 0;
+        next[docId] = Math.max(-12, Math.min(12, current + delta));
+      });
+      return next;
+    });
+
+    if (feedbackNote.trim()) {
+      setCaseStudy(prev => ({
+        ...prev,
+        aiInsights: [...prev.aiInsights, `Outcome feedback (${feedbackSignal}): ${feedbackNote.trim()}`],
+        additionalContext: [...prev.additionalContext, `Outcome feedback captured: ${feedbackSignal}`]
+      }));
+    }
+
+    setMessages(prev => [...prev, {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: `Thanks for the feedback. I will adjust future recommendation ranking using this outcome signal (${feedbackSignal}).`,
+      timestamp: new Date(),
+      phase: 'recommendations'
+    }]);
+
+    setFeedbackSubmitted(true);
+    generateRecommendations();
+  }, [feedbackSignal, feedbackNote, selectedDocs, primaryRecommendation, generateRecommendations]);
 
   return (
     <div 
@@ -1659,6 +1712,64 @@ Each selected output must include:
                   </div>
                 </div>
                 <p className="text-xs text-slate-600">Copy or download your generated documents.</p>
+
+                <div className="mt-3 bg-white border border-stone-200 p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Was this recommendation outcome useful?</p>
+                  <div className="mt-2 flex gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setFeedbackSignal('positive')}
+                      className={`px-2 py-1 text-[10px] border transition-all ${
+                        feedbackSignal === 'positive'
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                      }`}
+                    >
+                      Useful
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFeedbackSignal('partial')}
+                      className={`px-2 py-1 text-[10px] border transition-all ${
+                        feedbackSignal === 'partial'
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                      }`}
+                    >
+                      Partially Useful
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFeedbackSignal('negative')}
+                      className={`px-2 py-1 text-[10px] border transition-all ${
+                        feedbackSignal === 'negative'
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                      }`}
+                    >
+                      Not Useful
+                    </button>
+                  </div>
+                  <textarea
+                    value={feedbackNote}
+                    onChange={(e) => setFeedbackNote(e.target.value)}
+                    placeholder="Optional: what should be improved next time?"
+                    className="mt-2 w-full resize-none border border-stone-300 px-2 py-1 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    rows={2}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSubmitOutcomeFeedback}
+                    disabled={!feedbackSignal || feedbackSubmitted}
+                    className={`mt-2 w-full py-1.5 text-[11px] font-medium transition-all ${
+                      !feedbackSignal || feedbackSubmitted
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
+                    {feedbackSubmitted ? 'Feedback Captured' : 'Save Feedback to Improve Ranking'}
+                  </button>
+                </div>
               </div>
             )}
 
