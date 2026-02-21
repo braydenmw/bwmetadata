@@ -20,6 +20,8 @@ import { getChatSession } from '../services/geminiService';
 import AdaptiveQuestionnaire from '../services/AdaptiveQuestionnaire';
 import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
 import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
+import CaseGraphBuilder, { type CaseGraph } from '../services/CaseGraphBuilder';
+import RecommendationScorer from '../services/RecommendationScorer';
 
 // ============================================================================
 // TYPES
@@ -170,6 +172,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
   const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
   const [readinessScore, setReadinessScore] = useState(0);
+  const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
+  const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -695,9 +699,49 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       }
     });
 
-    // Sort by relevance
-    docs.sort((a, b) => b.relevance - a.relevance);
-    setRecommendedDocs(docs);
+    const graph = CaseGraphBuilder.build(caseStudy);
+    setCaseGraph(graph);
+
+    const scored = RecommendationScorer.rank({
+      candidates: docs.map((doc) => ({
+        id: doc.id,
+        title: doc.title,
+        category: doc.category,
+        relevance: doc.relevance,
+        rationale: doc.rationale,
+        supportingDocuments: doc.supportingDocuments
+      })),
+      graph,
+      context: {
+        targetAudience: caseStudy.targetAudience,
+        jurisdiction: `${caseStudy.country} ${caseStudy.jurisdiction}`,
+        decisionDeadline: caseStudy.decisionDeadline,
+        situationType: caseStudy.situationType,
+        constraints: caseStudy.constraints
+      }
+    });
+
+    const scoreMap = new Map(scored.map((item) => [item.id, item]));
+    const enrichedDocs = docs
+      .map((doc) => {
+        const score = scoreMap.get(doc.id);
+        if (!score) return doc;
+        return {
+          ...doc,
+          relevance: Math.round(score.total),
+          rationale: `${doc.rationale} ${score.rationale}`
+        };
+      })
+      .sort((a, b) => b.relevance - a.relevance);
+
+    setRecommendationRationaleMap(
+      scored.reduce<Record<string, string>>((acc, item) => {
+        acc[item.id] = item.rationale;
+        return acc;
+      }, {})
+    );
+
+    setRecommendedDocs(enrichedDocs);
   }, [caseStudy, resolvePolicyPack]);
 
   // Handle send message
@@ -1282,6 +1326,11 @@ Each selected output must include:
                   {skillLevel}
                 </span>
               </div>
+              {caseGraph && (
+                <div className="mt-2 text-[11px] text-slate-600 bg-white border border-stone-200 px-2 py-1">
+                  Case Graph: confidence {Math.round(caseGraph.summary.confidence)}% • evidence {Math.round(caseGraph.summary.evidenceStrength)}%
+                </div>
+              )}
               <div className="mt-3 space-y-2 text-xs">
                 {caseStudy.userName && (
                   <div className="flex items-start gap-2">
@@ -1373,6 +1422,11 @@ Each selected output must include:
                           <p className={`text-[11px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-600'}`}>
                             {doc.rationale}
                           </p>
+                          {recommendationRationaleMap[doc.id] && (
+                            <p className={`text-[10px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-500'}`}>
+                              {recommendationRationaleMap[doc.id]}
+                            </p>
+                          )}
                           <p className={`text-[11px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-600'}`}>
                             Length: {doc.pageRange}
                           </p>
