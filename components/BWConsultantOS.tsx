@@ -757,6 +757,12 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setRecommendedDocs(enrichedDocs);
   }, [caseStudy, resolvePolicyPack, recommendationBoostMap]);
 
+  useEffect(() => {
+    if (recommendedDocs.length > 0) {
+      generateRecommendations();
+    }
+  }, [recommendationBoostMap, recommendedDocs.length, generateRecommendations]);
+
   // Handle send message
   const handleSend = useCallback(async () => {
     if (!inputValue.trim() && uploadedFiles.length === 0) return;
@@ -1260,6 +1266,20 @@ Each selected output must include:
     generateRecommendations();
   }, [feedbackSignal, feedbackNote, selectedDocs, primaryRecommendation, generateRecommendations]);
 
+  const handleResetLearningSignals = useCallback(() => {
+    setRecommendationBoostMap({});
+    setFeedbackSignal(null);
+    setFeedbackNote('');
+    setFeedbackSubmitted(false);
+    setMessages(prev => [...prev, {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: 'Learning signals reset. Recommendations are now back to baseline scoring.',
+      timestamp: new Date(),
+      phase: 'recommendations'
+    }]);
+  }, []);
+
   return (
     <div 
       className={`${embedded ? '' : 'min-h-screen bg-white'}`}
@@ -1570,7 +1590,16 @@ Each selected output must include:
 
                 {learningSummary.length > 0 && (
                   <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
-                    <p className="text-[11px] font-semibold text-slate-700">Learning Summary</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[11px] font-semibold text-slate-700">Learning Summary</p>
+                      <button
+                        type="button"
+                        onClick={handleResetLearningSignals}
+                        className="text-[10px] px-1.5 py-1 bg-white border border-stone-300 text-slate-700 hover:bg-stone-100"
+                      >
+                        Reset
+                      </button>
+                    </div>
                     {boostedDocuments.length > 0 && (
                       <p className="mt-1 text-[10px] text-green-700">
                         Boosted: {boostedDocuments.map((item) => `${item.title} (+${item.boost})`).join(' • ')}
