@@ -515,9 +515,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
               <h1 className="text-2xl font-bold text-slate-900">{params.companyName || 'Strategic Report'}</h1>
               <div className="flex justify-between items-start mt-2">
                 <div className="text-xs text-slate-700">
-                  <p><strong>Entity Type:</strong> {params.entityType || 'a"'}</p>
-                  <p><strong>Location:</strong> {params.country || 'a"'}</p>
-                  <p><strong>Owner:</strong> {params.primaryOwner || 'a"'}</p>
+                  <p><strong>Entity Type:</strong> {params.entityType || 'Entity type not provided'}</p>
+                  <p><strong>Location:</strong> {params.country || 'Location not provided'}</p>
+                  <p><strong>Owner:</strong> {params.primaryOwner || 'Owner not provided'}</p>
                 </div>
                 <div className="text-xs text-slate-600 text-right">
                   <p>Generated: {new Date().toLocaleDateString()}</p>
@@ -531,7 +531,7 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
               <h2 className="text-lg font-bold text-slate-900 mb-2">Executive Summary</h2>
               <p className="text-xs text-slate-700 leading-relaxed">
                 {params.companyName} is a {params.entityType?.toLowerCase() || 'strategic'} organization operating in a market with significant growth potential. 
-                The organization targets a TAM of {params.tam || '[to be defined]'} with annual growth of {params.growthRate || '[TBD]'}%. 
+                The organization targets a TAM of {params.tam || 'market size data required'} with annual growth of {params.growthRate || 'growth rate data required'}%. 
                 With core competencies in {params.competencies || 'key strategic areas'}, the organization is positioned for sustainable growth.
               </p>
             </div>
@@ -540,9 +540,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Market Overview</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>TAM:</strong> {params.tam || 'a"'}</p>
-                <p><strong>Growth Rate:</strong> {params.growthRate ? `${params.growthRate}% p.a.` : 'a"'}</p>
-                <p><strong>Target Segments:</strong> {params.segments || 'a"'}</p>
+                <p><strong>TAM:</strong> {params.tam || 'Market size data required'}</p>
+                <p><strong>Growth Rate:</strong> {params.growthRate ? `${params.growthRate}% p.a.` : 'Growth rate data required'}</p>
+                <p><strong>Target Segments:</strong> {params.segments || 'Target segment data required'}</p>
                 {params.competitors && <p><strong>Competitive Position:</strong> {params.competitors.substring(0, 100)}...</p>}
               </div>
             </div>
@@ -551,8 +551,8 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Operations</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>Team:</strong> {params.teamSize || 'a"'} employees</p>
-                <p><strong>Technology:</strong> {params.technology || 'a"'}</p>
+                <p><strong>Team:</strong> {params.teamSize || 'Team size not provided'} employees</p>
+                <p><strong>Technology:</strong> {params.technology || 'Technology stack not provided'}</p>
                 {params.competencies && <p><strong>Competencies:</strong> {params.competencies.substring(0, 80)}...</p>}
               </div>
             </div>
@@ -561,9 +561,9 @@ const MainCanvas: React.FC<MainCanvasProps> = (props) => {
             <div className="mb-6">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Financial Projections</h2>
               <div className="text-xs text-slate-700 space-y-1">
-                <p><strong>Year 1 Revenue:</strong> {params.revenue1 || 'a"'}</p>
-                <p><strong>Year 3 Target:</strong> {params.revenue3 || 'a"'}</p>
-                <p><strong>Margin Target:</strong> {params.marginTarget ? `${params.marginTarget}%` : 'a"'}</p>
+                <p><strong>Year 1 Revenue:</strong> {params.revenue1 || 'Revenue baseline not provided'}</p>
+                <p><strong>Year 3 Target:</strong> {params.revenue3 || 'Revenue target not provided'}</p>
+                <p><strong>Margin Target:</strong> {params.marginTarget ? `${params.marginTarget}%` : 'Margin target not provided'}</p>
               </div>
             </div>
 

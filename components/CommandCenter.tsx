@@ -198,7 +198,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         A Neuro-Symbolic Economic Intelligence Engine
                     </h2>
                     <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
-                        Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
+                        Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> purpose-built for high-stakes strategic decision-making. 46+ proprietary formulas, a <span className="text-blue-600 font-normal">Regional Development Kernel</span>, partner intelligence scoring, causal problem-to-solution graphs, and adaptive case-method gating &mdash; applied to every region, government, company, and institution on Earth.
                     </p>
                     <div id="brain" className="relative -top-28" />
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
@@ -247,7 +247,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    BW Ai validates inputs before scoring and recommendation generation. It provides a full audit trail from intake to final conclusion, deterministic scoring&mdash;same data, same outcome&mdash;with every conclusion traceable to formulas, assumptions, and evidence. The result: board-ready, audit-committee-defensible outputs.
+                                    BW Ai validates every input before scoring, runs it through a Regional Development Kernel with partner intelligence and causal graphs, gates it against a five-point Case Study Method Layer, and produces a full audit trail from intake to final conclusion. Deterministic scoring &mdash; same data, same outcome &mdash; with every conclusion traceable to formulas, assumptions, evidence, partner rankings, and governance readiness. Board-ready, audit-committee-defensible outputs for any region, any sector, any jurisdiction.
                                 </p>
                             </div>
                         </div>
@@ -277,9 +277,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             This is a <strong className="text-white">100% dedicated global regional development system.</strong> Not here to replace what you're doing. Not here to be another report vendor. Here to provide the real-time institutional translation layer that lets you see what's actually happening in the cities and regions that the big markets depend on. Here to give you the ability to understand, evaluate, and act on opportunities that have been invisible simply because the translation was missing. <strong className="text-white">Below is how it thinks.</strong>
                         </p>
                     </div>
-                    <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors pt-4">
-                        <GitBranch size={16} /> The Intelligence Architecture: How The System Works &rarr;
-                    </button>
                 </div>
             </section>
             {/* ═══════════════════════════════════════════════════════════════
@@ -305,7 +302,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    The Nexus Strategic Intelligence Layer is a <strong>10&ndash;layer deterministic pipeline</strong> invented from scratch. It is the central nervous system of BW Ai &mdash; every input you provide is validated, debated, scored by 46 proprietary formulas, stress-tested across 5,000 scenarios, processed through neuroscience models, and synthesised into provenance-tracked outputs. Nothing is skipped. Nothing is approximate. Every layer must pass before the next one fires.
+                                    A <strong>10&ndash;layer deterministic pipeline</strong> with adaptive multi-phase intake and case-method gating. Every input is validated, debated by five adversarial personas, scored by 46+ proprietary formulas, stress-tested across 5,000 scenarios, processed through 7 neuroscience models, filtered through a Global Data Fabric, and matched against ranked partners &mdash; all before a single word of output is generated. Nothing is skipped. Nothing is approximate. Every layer must pass before the next one fires.
                                 </p>
                             </div>
                         </div>
@@ -322,7 +319,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    <strong>1,307 lines of code</strong> implementing 7 mathematical models from published neuroscience research &mdash; Wilson-Cowan neural fields, Rao &amp; Ballard predictive processing, Friston&rsquo;s free energy principle, Itti &amp; Koch attention allocation, prospect theory emotional valence, global workspace theory, and Baddeley&rsquo;s working memory. These aren&rsquo;t simplified approximations. They are faithful implementations of how the human brain allocates attention, weighs risk, and makes decisions under pressure &mdash; running live inside the pipeline on your data.
+                                    <strong>1,307 lines of code</strong> implementing 7 mathematical models from published neuroscience research &mdash; Wilson-Cowan neural fields, Rao &amp; Ballard predictive processing, Friston&rsquo;s free energy principle, Itti &amp; Koch attention allocation, prospect theory emotional valence, global workspace theory, and Baddeley&rsquo;s working memory. These aren&rsquo;t simplified approximations. They model how the human brain allocates attention, weighs risk, and makes decisions under pressure &mdash; running live on your data, contextualised with governance signals, partner dynamics, and regional development indicators.
                                 </p>
                             </div>
                         </div>
@@ -339,7 +336,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    Before any recommendation reaches you, <strong>five adversarial personas</strong> debate it. The Skeptic hunts for deal-killers. The Advocate finds upside. The Regulator checks legality. The Accountant validates cash flow. The Operator tests execution. Beliefs update through Bayesian inference &mdash; not majority vote. Disagreements are preserved, not smoothed over. The Skeptic carries 1.2x weight because bad news matters more than good news.
+                                    Before any recommendation reaches you, <strong>five adversarial personas</strong> debate it &mdash; each informed by governance readiness scores, partner intelligence rankings, and Global Data Fabric signals. The Skeptic hunts for deal-killers. The Advocate finds upside. The Regulator checks legality. The Accountant validates cash flow. The Operator tests execution. Beliefs update through Bayesian inference &mdash; not majority vote. Disagreements are preserved, not smoothed over. The Skeptic carries 1.2x weight because bad news matters more than good news.
                                 </p>
                             </div>
                         </div>
@@ -356,7 +353,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    BW Ai doesn&rsquo;t wait for your next question. <strong>8 autonomous engines</strong> run continuously &mdash; finding opportunities you haven&rsquo;t asked about, applying lessons from unrelated industries, generating follow-up research, stress-testing assumptions across thousands of scenarios, and flagging ethical risks before any output is released. Every engine passes through IFC and UN SDG governance gates. Nothing reaches you without adversarial stress-testing first.
+                                    BW Ai doesn&rsquo;t wait for your next question. <strong>8 autonomous engines</strong> and a <strong>Regional Development Kernel</strong> run continuously &mdash; finding opportunities you haven&rsquo;t asked about, ranking ideal partners, mapping root causes to interventions through causal graphs, ingesting live policy, macro, and trade signals, and flagging ethical risks before any output is released. Every engine passes through IFC and UN SDG governance gates. <strong>8 Global Issue Packs</strong> (water, energy, logistics, housing, health, digital infrastructure, workforce, climate) provide domain-specific intelligence scaffolds for any region on Earth.
                                 </p>
                             </div>
                         </div>
@@ -373,7 +370,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    Most systems only analyse external conditions. BW Ai also analyses <strong>you</strong> &mdash; the person making the decision. <strong>7 reflexive engines</strong> detect your recurring priorities, surface assets hidden in your own narrative, identify unspoken barriers and risk assumptions you haven&rsquo;t articulated, map where you are in the investment lifecycle, and reframe conclusions for every audience &mdash; investors, governments, communities, partners, and executive teams.
+                                    Most systems only analyse external conditions. BW Ai also analyses <strong>you</strong> &mdash; the person making the decision. <strong>7 reflexive engines</strong> detect your recurring priorities, surface hidden assets, identify unspoken barriers, map your investment lifecycle position, and reframe conclusions for every audience. A <strong>Case Study Method Layer</strong> enforces five gates &mdash; boundary clarity, objective quality, evidence sufficiency, rival explanations, and implementation feasibility &mdash; before any output generates. Nothing gets through until the method is satisfied.
                                 </p>
                             </div>
                         </div>
@@ -390,7 +387,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6">
                                 <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    Every score you see is calculated by <strong>proprietary mathematical formulas</strong> &mdash; not LLM-generated estimates. DAG-scheduled execution ensures formulas run in the correct dependency order. Confidence calibration adjusts for data completeness. Monte Carlo simulation stress-tests every result across 5,000 scenarios so you see the realistic range of outcomes, not just the optimistic projection. Every score is traceable back to the exact formula, exact inputs, and exact weights that produced it.
+                                    Every score is calculated by <strong>46+ proprietary mathematical formulas</strong> &mdash; not LLM-generated estimates. DAG-scheduled execution ensures correct dependency order. Monte Carlo simulation stress-tests every result across 5,000 scenarios. Partner Fit, Delivery Reliability, Policy Alignment, and Local Legitimacy indices blend with PVI/CIS/CCS/RFI/SRA/FRS to rank ideal partners. Governance readiness gates outputs at 75%+. Every score traces back to the exact formula, exact inputs, and exact weights that produced it.
                                 </p>
                             </div>
                         </div>
@@ -399,8 +396,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Final caption */}
                     <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-xl p-6 md:p-8 text-center">
                         <p className="text-base md:text-lg text-white/90 leading-relaxed text-justify max-w-4xl mx-auto">
-                            A 10-layer intelligence pipeline. 7 neuroscience models from published research. 5 adversarial personas debating every recommendation. 46 proprietary formulas. 8 autonomous engines. 7 reflexive engines that analyse the decision-maker, not just the decision. <strong className="text-white">No other operating system in the world combines all of these for regional development and cross-border investment.</strong> This is what makes BW Ai a sovereign-grade national strategic asset &mdash; not a dashboard, not a chatbot, not a consulting deck with a login screen.
+                            A 10-layer intelligence pipeline. 7 neuroscience models from published research. 5 adversarial personas debating every recommendation. 46+ proprietary formulas. 8 autonomous engines. 7 reflexive engines. A Regional Development Kernel with partner scoring, causal graphs, and adaptive case-method gating. A Global Data Fabric with real-time signal ingestion. <strong className="text-white">No other operating system in the world combines all of these for global regional development and cross-border investment.</strong> This is what makes BW Ai a sovereign-grade national strategic asset &mdash; not a dashboard, not a chatbot, not a consulting deck with a login screen.
                         </p>
+                        <button onClick={() => setShowFormulas(true)} className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-semibold transition-colors mt-4">
+                            <GitBranch size={16} /> The Intelligence Architecture: How The System Works &rarr;
+                        </button>
                     </div>
 
                 </div>
@@ -542,7 +542,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/70 to-blue-900/50" />
                             <div className="relative z-10 flex items-center gap-3">
                                 <h3 className="text-xl font-bold text-white">BW Consultant</h3>
-                                <span className="text-blue-200 text-xs">Powered by NSIL v6.0</span>
+                                <span className="text-blue-200 text-xs">Powered by NSIL v7.0</span>
                             </div>
                             <p className="relative z-10 text-xs text-blue-200 hidden md:block">Sovereign-grade intelligence • Real-time analysis • Professional insights</p>
                         </div>
@@ -809,11 +809,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="p-6">
                                 <p className="text-sm font-semibold text-slate-800 mb-2">Your challenge</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    You screen hundreds of investment leads a year. Most don&rsquo;t go anywhere. The ones that do take months of manual due diligence before they&rsquo;re board-ready. By the time you&rsquo;ve vetted ten, thirty more have arrived.
+                                    You screen hundreds of investment leads a year. Most don&rsquo;t survive first contact. The ones that do take months of manual due diligence &mdash; financial modelling, compliance mapping, risk profiling, stakeholder alignment &mdash; before they&rsquo;re anywhere near board-ready. By the time you&rsquo;ve vetted ten, thirty more have landed.
                                 </p>
                                 <p className="text-sm font-semibold text-slate-800 mb-2">What changes</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    Screen proposals in hours instead of weeks. Every lead gets a scored viability assessment, risk profile, and compliance check &mdash; with a defensible evidence trail your board can review immediately.
+                                    Every proposal runs through 46+ scored formulas, a Regional Development Kernel that maps governance readiness, and a Partner Intelligence Engine that ranks ideal co-investors and delivery partners. Five adversarial personas stress-test each lead. The Case Study Method Layer blocks anything that hasn&rsquo;t passed boundary, evidence, and feasibility checks. Your board gets a defensible evidence trail &mdash; not a summary slide.
                                 </p>
                                 <p className="text-xs text-blue-600 font-medium">Pilot on your next intake cycle &rarr;</p>
                             </div>
@@ -830,11 +830,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="p-6">
                                 <p className="text-sm font-semibold text-slate-800 mb-2">Your challenge</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    Your region has real assets &mdash; a port, a university, agricultural land, a diaspora network. But when investors ask what makes you different, the prospectus is either outdated or reads like every other region in the country.
+                                    Your region has real assets &mdash; a port, a university, agricultural land, a diaspora network, emerging industries. But when investors or development banks ask what makes you different, the prospectus is outdated, the data is stale, and the story reads like every other region in the country. You can&rsquo;t show them what they can&rsquo;t see.
                                 </p>
                                 <p className="text-sm font-semibold text-slate-800 mb-2">What changes</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    Your hidden advantages are identified and scored. Structural twins globally are matched. You get the investment-grade documents that get you into the room with the right investors &mdash; not a generic pitch deck.
+                                    A Global Data Fabric ingests live policy, macro, and trade signals for your jurisdiction. The Regional Development Kernel scores your hidden advantages, maps structural twin regions worldwide, builds a causal Problem-to-Solution Graph linking root causes to interventions, and ranks the partners best positioned to co-deliver. Eight Global Issue Packs &mdash; water, energy, logistics, housing, health, digital infrastructure, workforce, climate &mdash; give you domain-specific intelligence scaffolds. You walk away with 247+ investment-grade documents ready for institutional audiences.
                                 </p>
                                 <p className="text-xs text-blue-600 font-medium">Partner on a regional intelligence project &rarr;</p>
                             </div>
@@ -851,11 +851,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="p-6">
                                 <p className="text-sm font-semibold text-slate-800 mb-2">Your challenge</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    PPP proposals fail most often because stakeholder alignment was assumed, not modelled. The economics looked solid on paper but nobody stress-tested the assumptions &mdash; and the deal-killers surfaced too late.
+                                    PPP proposals fail because stakeholder alignment was assumed, not modelled. The economics pass on paper but nobody stress-tested the assumptions under real-world variance &mdash; demand shocks, currency fluctuation, political cycles, regulatory friction. Deal-killers surface at the minister&rsquo;s desk, not at the design table.
                                 </p>
                                 <p className="text-sm font-semibold text-slate-800 mb-2">What changes</p>
                                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                    Financials are stress-tested across 5,000 scenarios. Every stakeholder&rsquo;s incentives are modelled. The risks that would derail the deal are surfaced and scored before they reach the minister&rsquo;s desk.
+                                    Financials run through Monte Carlo simulation across 5,000 scenarios. Every stakeholder&rsquo;s incentives are modelled by five adversarial personas. The Partner Intelligence Engine ranks co-delivery partners by fit, reliability, policy alignment, and local legitimacy. Governance readiness must clear 75% before any output reaches decision-makers. You get execution-ready LOIs, MOUs, term sheets, and stakeholder briefs &mdash; all traceable to formulas, evidence, and risk scores.
                                 </p>
                                 <p className="text-xs text-blue-600 font-medium">Run your next PPP through a pilot &rarr;</p>
                             </div>
@@ -2077,7 +2077,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="p-6 md:p-8 space-y-6 text-sm text-slate-700 leading-relaxed">
 
                             {/* Introduction - always visible */}
-                            <p>This page explains exactly how the system works &mdash; from the moment you start entering data to the final board-ready documents it produces. Three stages: <strong>Structured Intake</strong> (the Ten-Step Protocol that captures your opportunity in measurable terms), <strong>Adversarial Analysis</strong> (38+ formulas, 5 personas debating every angle, Monte Carlo simulation), and <strong>Institutional Output</strong> (247 document types across 15 categories and 156 letter templates, all populated with your actual scores and reasoning). Plus <strong>Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.</p>
+                            <p>This page explains exactly how the system works &mdash; from the moment you start entering data to the final board-ready documents it produces. Three stages: <strong>Adaptive Multi-Phase Intake</strong> (the structured protocol that captures your opportunity in measurable terms with case-method gating), <strong>Adversarial Analysis</strong> (46+ formulas, 5 personas debating every angle, Monte Carlo simulation, Regional Development Kernel with partner intelligence and causal graphs), and <strong>Institutional Output</strong> (247+ document types across 15 categories and 156+ letter templates, all populated with your actual scores and reasoning). Plus <strong>Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.</p>
 
                             {/* TAB CONTENT: Protocol */}
                             {unifiedActiveTab === 'protocol' && (
@@ -3155,7 +3155,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Popup header */}
                         <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 rounded-t-lg px-8 py-6 flex items-center justify-between">
                             <div>
-                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">NSIL v6.0 — How It Thinks</p>
+                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">NSIL v7.0 — How It Thinks</p>
                                 <h3 className="text-2xl font-bold text-white">Inside the NSIL &mdash; Every Layer, Formula & Engine</h3>
                             </div>
                             <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-white transition-colors p-2">
@@ -3166,13 +3166,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="p-6 md:p-8 space-y-6 text-sm text-slate-700 leading-relaxed">
 
                             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-sm mb-6">
-                                <p className="text-sm text-slate-900 font-semibold mb-2">BW Ai v6.0: The Intelligence Architecture</p>
+                                <p className="text-sm text-slate-900 font-semibold mb-2">BW Ai v7.0: The Intelligence Architecture</p>
                                 <p className="text-sm text-slate-700">
-                                    This is <strong>how the system thinks.</strong> Every input you provide enters a deterministic 10-layer pipeline that validates, debates, scores, stress-tests, and synthesises analysis. The same input always produces the same output. No guessing. No black boxes. Every layer has explicit logic, full auditability, and mathematical rigor. Here&rsquo;s the complete architecture.
+                                    This is <strong>how the system thinks.</strong> Every input you provide enters a deterministic 10-layer pipeline with adaptive multi-phase intake, a Regional Development Kernel, partner intelligence scoring, causal problem-to-solution graphs, and case-method gating. It validates, debates, scores, stress-tests, and synthesises analysis. The same input always produces the same output class. No guessing. No black boxes. Every layer has explicit logic, full auditability, and mathematical rigor. Here&rsquo;s the complete architecture.
                                 </p>
                             </div>
 
-                            <p>The NSIL &mdash; <strong>Nexus Strategic Intelligence Layer</strong> &mdash; is a deterministic reasoning engine that combines <strong>38+ proprietary formulas</strong>, <strong>34 intelligence engines</strong>, and <strong>12 core algorithms</strong> into a unified 10-layer pipeline. Implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span>, it runs every analysis through computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
+                            <p>The NSIL &mdash; <strong>Nexus Strategic Intelligence Layer</strong> &mdash; is a deterministic reasoning engine that combines <strong>46+ proprietary formulas</strong>, <strong>34+ intelligence engines</strong>, and <strong>12 core algorithms</strong> into a unified 10-layer pipeline, now extended with a <strong>Regional Development Kernel</strong>, <strong>Partner Intelligence Engine</strong>, <strong>Problem-to-Solution Graph</strong>, <strong>Global Data Fabric</strong>, <strong>Case Study Method Layer</strong>, and <strong>Outcome Learning Service</strong>. Implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span>, it runs every analysis through computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
                             <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (<span className="font-mono text-sm bg-slate-100 px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
@@ -3218,8 +3218,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h4 className="text-lg font-bold text-slate-900 pt-4">Output Synthesis & Document Intelligence (Layer 8)</h4>
                             <p className="text-sm text-slate-700 mb-3">The output layer generates institutional-grade deliverables with full traceability:</p>
                             <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-4">
-                                <li><strong>156 Letter Templates</strong> &mdash; Pre-structured letters for recommendations, objections, escalations, negotiations, and stakeholder communications. All dynamically populated with NSIL scores and confidence bounds.</li>
-                                <li><strong>247 Document Types Across 15 Categories</strong> &mdash; Executive summaries, risk assessments, counterfactual analysis reports, persona debate transcripts, financial stress tests, governance audits, regulatory compliance dossiers, market intelligence briefs, implementation roadmaps, and case study comparisons.</li>
+                                <li><strong>156+ Letter Templates</strong> &mdash; Pre-structured letters for recommendations, objections, escalations, negotiations, and stakeholder communications, now selectable with letters-only generation paths.</li>
+                                <li><strong>247+ Document Outputs Across 15 Categories</strong> &mdash; Executive summaries, risk assessments, counterfactual analysis reports, persona debate transcripts, financial stress tests, governance audits, regulatory compliance dossiers, market intelligence briefs, implementation roadmaps, and case study comparisons, with adaptive length control.</li>
                                 <li><strong>Case Study Intelligence</strong> &mdash; Upload any past deal, project, or decision. The system applies NSIL analysis retroactively: full SPI/RROI/SEAM breakdown with what-if scenarios showing how outcomes could have changed.</li>
                                 <li><strong>Provenance & Auditability</strong> &mdash; Every number in every document traces back to source data, formula component, neuroscience model, or autonomous engine decision. Full breadcrumb trail for regulators, auditors, boards.</li>
                             </ul>
@@ -3258,6 +3258,46 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <li><strong>Debate Early Stopping (2-3x faster)</strong> &mdash; Bayesian Debate Engine terminates when posterior probability reaches 0.75 or belief delta drops below 0.02. No wasted rounds on foregone conclusions.</li>
                                 <li><strong>Derivative Index Caching (2-4x faster)</strong> &mdash; Lazy Evaluation Engine computes secondary indices only on demand. If you don't ask for a specific breakdown, it never runs.</li>
                             </ul>
+
+                            <h4 className="text-lg font-bold text-blue-800 pt-4 border-t-2 border-blue-200 mt-6">v7.0 &mdash; Regional Development Kernel</h4>
+                            <p className="text-sm text-slate-700 mb-3">The central orchestrator for global regional problem-solving. Every entry path in the system &mdash; UI, ReportOrchestrator, DecisionPipeline, AutonomousOrchestrator, MultiAgentOrchestrator &mdash; now runs through the Regional Development Kernel before generating output.</p>
+                            <div className="bg-blue-50/60 border border-blue-200 rounded-sm p-4 mb-4">
+                                <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600">
+                                    <li><strong>RegionalDevelopmentOrchestrator</strong> &mdash; Takes region profile, sector, constraints, funding envelope, governance context, country/jurisdiction, objective, current matter, evidence, and partner candidates. Returns interventions, partners, execution plan, causal graph, data fabric snapshot, governance readiness score, and analyst notes.</li>
+                                    <li><strong>Partner Intelligence Engine</strong> &mdash; Ranks ideal partners using Partner Fit, Delivery Reliability, Policy Alignment, and Local Legitimacy indices blended with PVI/CIS/CCS/RFI/SRA/FRS. Each partner gets a full score breakdown and rationale. Governance, banking, private sector, NGO, and multilateral partners scored equally.</li>
+                                    <li><strong>Problem-to-Solution Graph</strong> &mdash; Builds a causal graph from case evidence. Maps root causes, bottlenecks, and leverage points to interventions and required documents/letters. Surfaces hidden structural dependencies that narrative analysis misses.</li>
+                                    <li><strong>Global Data Fabric</strong> &mdash; Signal ingestion scaffold with country/jurisdiction normalization. Policy, macro, and trade signals each scored for confidence (0-100) and freshness (hours since update). Regional kernel blocks output when data confidence drops below threshold.</li>
+                                    <li><strong>Outcome Learning Service</strong> &mdash; Tracks recommended vs actual outcomes across cases. Adjusts governance thresholds and ranking bias over time. Feeds back into Partner Intelligence rankings and intervention prioritization.</li>
+                                </ul>
+                            </div>
+
+                            <h4 className="text-lg font-bold text-blue-800 pt-2">v7.0 &mdash; Case Study Method Layer</h4>
+                            <p className="text-sm text-slate-700 mb-3">Before any report generates, five methodological gates must be satisfied:</p>
+                            <ol className="list-decimal list-inside space-y-1 pl-2 text-sm text-slate-600 mb-4">
+                                <li><strong>Boundary Clarity</strong> &mdash; Problem statement must exceed 60 characters of meaningful scope definition.</li>
+                                <li><strong>Objective Quality</strong> &mdash; Strategic intent must exceed 20 characters with measurable outcomes.</li>
+                                <li><strong>Evidence Sufficiency</strong> &mdash; Quantitative data, precedent, or structured analysis must be present.</li>
+                                <li><strong>Rival Explanations</strong> &mdash; At least one alternative hypothesis or counter-argument must be documented.</li>
+                                <li><strong>Implementation Feasibility</strong> &mdash; Timeline, resource allocation, and execution pathway must be defined.</li>
+                            </ol>
+                            <p className="text-sm text-slate-700 mb-4">If any gate fails, the system blocks generation and provides specific remediation steps. This is enforced across all entry paths: UI generation, ReportOrchestrator, DecisionPipeline, and autonomous loops.</p>
+
+                            <h4 className="text-lg font-bold text-blue-800 pt-2">v7.0 &mdash; 8 Global Issue Packs</h4>
+                            <p className="text-sm text-slate-700 mb-3">Domain-specific intelligence scaffolds that activate contextual knowledge, policy frameworks, typical interventions, and partner profiles for the world&rsquo;s most critical development challenges:</p>
+                            <div className="grid md:grid-cols-2 gap-2 mb-4">
+                                <ul className="space-y-1 text-sm text-slate-600">
+                                    <li>&bull; <strong>Water Security</strong> &mdash; Infrastructure, governance, cross-border water rights, desalination, conservation</li>
+                                    <li>&bull; <strong>Energy Transition</strong> &mdash; Renewable integration, grid modernization, storage, carbon markets</li>
+                                    <li>&bull; <strong>Logistics Corridors</strong> &mdash; Trade route optimization, port development, supply chain resilience</li>
+                                    <li>&bull; <strong>Housing Systems</strong> &mdash; Affordable housing policy, construction technology, urban planning</li>
+                                </ul>
+                                <ul className="space-y-1 text-sm text-slate-600">
+                                    <li>&bull; <strong>Health Systems</strong> &mdash; Healthcare infrastructure, pharmaceutical access, pandemic resilience</li>
+                                    <li>&bull; <strong>Digital Infrastructure</strong> &mdash; Connectivity, data sovereignty, digital identity, fintech</li>
+                                    <li>&bull; <strong>Workforce Transition</strong> &mdash; Skills development, automation readiness, migration economics</li>
+                                    <li>&bull; <strong>Climate Resilience</strong> &mdash; Adaptation infrastructure, disaster response, insurance, carbon capture</li>
+                                </ul>
+                            </div>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Implementation Inventory</h4>
                             <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-6">
@@ -3413,21 +3453,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             <div className="bg-blue-50 border border-blue-200 rounded-sm p-4 mt-4">
                                 <p className="text-sm text-slate-700 font-semibold mb-2">
-                                    Complete System Architecture
+                                    Complete System Architecture &mdash; v7.0
                                 </p>
                                 <p className="text-sm text-slate-700 mb-3">
-                                    NSIL v6.0 is built on:
+                                    NSIL v7.0 is built on:
                                 </p>
                                 <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-700 mb-3">
                                     <li><strong>22+ Specialized Intelligence Engines</strong> — Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus 8 more proactive and reflexive engines</li>
                                     <li><strong>12 Core Algorithm Engines</strong> — From vector memory retrieval to frontier intelligence with negotiation simulation</li>
-                                    <li><strong>10-Layer Deterministic Pipeline</strong> — Laws → Shield → Boardroom → Engine → Stress Test → Brain → Autonomous → Proactive → Output → Reflexive</li>
-                                    <li><strong>46+ Proprietary Formulas</strong> — Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks</li>
+                                    <li><strong>10-Layer Deterministic Pipeline</strong> — Laws &rarr; Shield &rarr; Boardroom &rarr; Engine &rarr; Stress Test &rarr; Brain &rarr; Autonomous &rarr; Proactive &rarr; Output &rarr; Reflexive</li>
+                                    <li><strong>46+ Proprietary Formulas</strong> — Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring</li>
                                     <li><strong>7 Neuroscience Models</strong> — Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
-                                    <li><strong>Output at Scale</strong> — 156 letter templates, 247 document types, full case study analysis, multi-audience translation</li>
+                                    <li><strong>Regional Development Kernel</strong> — RegionalDevelopmentOrchestrator, Partner Intelligence Engine, Problem-to-Solution Graph, Global Data Fabric, Outcome Learning Service</li>
+                                    <li><strong>Case Study Method Layer</strong> — 5-gate methodological validation enforced across all entry paths before any output generates</li>
+                                    <li><strong>8 Global Issue Packs</strong> — Water Security, Energy Transition, Logistics Corridors, Housing Systems, Health Systems, Digital Infrastructure, Workforce Transition, Climate Resilience</li>
+                                    <li><strong>Output at Scale</strong> — 156+ letter templates, 247+ document outputs, adaptive intake-to-generation flow, full case study analysis, multi-audience translation, partner-aware institutional drafting</li>
                                 </ul>
                                 <p className="text-sm text-slate-700 italic font-semibold">
-                                    Every recommendation has a complete audit trail. Every formula has published mathematics. Every engine has working code. This is not a chatbot narrative generator—it is an operating system for institutional intelligence and strategic translation. Built from ground truth. Benchmarked against real decisions. Ready for sovereign-grade deployment.
+                                    Every recommendation has a complete audit trail. Every formula has published mathematics. Every engine has working code. This is not a chatbot narrative generator &mdash; it is an operating system for institutional intelligence, regional development, and strategic translation across government, banking, and private-sector contexts. Built from ground truth. Benchmarked against real decisions. Ready for sovereign-grade deployment.
                                 </p>
                             </div>
                         </div>
@@ -3461,7 +3504,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Nexus Intelligence OS v7.0
                             </span>
                             <span>*</span>
-                            <span>NSIL Engine v5.0</span>
+                            <span>NSIL Engine v7.0</span>
                             <span>*</span>
                             <span className="text-blue-400">Knowledge Layer Active</span>
                             <span>*</span>

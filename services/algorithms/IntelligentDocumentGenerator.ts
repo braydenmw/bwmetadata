@@ -487,11 +487,11 @@ Based on available data and AI analysis, the market demonstrates:
 ### Projected Returns
 | Metric | Year 1 | Year 3 | Year 5 |
 |--------|--------|--------|--------|
-| Revenue | TBD | TBD | TBD |
-| EBITDA | TBD | TBD | TBD |
-| ROI | TBD | TBD | TBD |
+| Revenue | Data required | Data required | Data required |
+| EBITDA | Data required | Data required | Data required |
+| ROI | Data required | Data required | Data required |
 
-*Note: Detailed projections pending financial data input*
+*Note: Detailed projections require financial input package (baseline, assumptions, and cost model).*
 
 ### Key Assumptions
 1. Market growth rate: Industry average + premium for strategic positioning

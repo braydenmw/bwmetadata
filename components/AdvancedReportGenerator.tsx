@@ -323,7 +323,7 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                   )}
                   {renderMetricCard(
                     'Timeline',
-                    reportPayload.problemDefinition.urgency || 'TBD',
+                    reportPayload.problemDefinition.urgency || 'Urgency not specified',
                     <Clock size={20} />,
                     'neutral'
                   )}

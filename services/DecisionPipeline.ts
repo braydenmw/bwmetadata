@@ -1,6 +1,9 @@
 ﻿import { ReportOrchestrator } from './ReportOrchestrator';
 import { GovernanceService } from './GovernanceService';
 import { ReportParameters, ReportPayload } from '../types';
+import { ConsultantGateService } from './ConsultantGateService';
+import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrator';
+import type { PartnerCandidate } from './PartnerIntelligenceEngine';
 
 export type PhaseStatus = 'pending' | 'passed' | 'failed' | 'blocked';
 
@@ -51,6 +54,13 @@ export interface DecisionPacket {
 }
 
 export class DecisionPipeline {
+  private static readonly regionalPartners: PartnerCandidate[] = [
+    { id: 'gov-dev-agency', name: 'Development Agency', type: 'government', countries: ['philippines', 'australia', 'new zealand', 'united kingdom', 'united states'], sectors: ['regional development', 'policy', 'infrastructure'] },
+    { id: 'multilateral-bank', name: 'Multilateral Bank', type: 'multilateral', countries: ['philippines', 'australia', 'new zealand', 'united kingdom', 'united states'], sectors: ['energy', 'housing', 'digital', 'health', 'infrastructure'] },
+    { id: 'banking-consortium', name: 'Banking Consortium', type: 'bank', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['banking', 'trade', 'housing', 'energy'] },
+    { id: 'delivery-partner', name: 'Delivery Partner', type: 'corporate', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['logistics', 'infrastructure', 'digital'] }
+  ];
+
   static async run(params: ReportParameters): Promise<{ packet: DecisionPacket; payload?: ReportPayload }> {
     const now = new Date().toISOString();
     const phases: PhaseResult[] = [];
@@ -106,6 +116,99 @@ export class DecisionPipeline {
     }
 
     phases.push({ name: 'model-bundle-selected', status: 'passed' });
+
+    const consultantGate = ConsultantGateService.evaluate(params);
+    if (!consultantGate.isReady) {
+      phases.push({
+        name: 'consultant-gate',
+        status: 'blocked',
+        reason: 'Consultant-grade intake is incomplete',
+        remediation: consultantGate.missing
+      });
+
+      return {
+        packet: {
+          runId: params.id,
+          generatedAt: now,
+          mode,
+          scenario: this.buildScenario(params, requiredFeeds, []),
+          phases,
+          controls: [],
+          actions: [],
+          evidence: [],
+          exports: { loiReady: false, reportReady: false, blockers: consultantGate.missing }
+        }
+      };
+    }
+
+    const caseMethodGaps = this.evaluateCaseMethodGaps(params);
+    if (caseMethodGaps.length > 0) {
+      phases.push({
+        name: 'case-method-layer',
+        status: 'blocked',
+        reason: 'Case Study Method Layer incomplete',
+        remediation: caseMethodGaps
+      });
+
+      return {
+        packet: {
+          runId: params.id,
+          generatedAt: now,
+          mode,
+          scenario: this.buildScenario(params, requiredFeeds, []),
+          phases,
+          controls: [],
+          actions: [],
+          evidence: [],
+          exports: { loiReady: false, reportReady: false, blockers: caseMethodGaps }
+        }
+      };
+    }
+
+    const regionalKernel = RegionalDevelopmentOrchestrator.run({
+      regionProfile: params.region || params.organizationType || params.problemStatement || '',
+      sector: params.industry && params.industry.length > 0 ? params.industry[0] : 'regional development',
+      constraints: params.riskTolerance ? String(params.riskTolerance) : 'Not specified',
+      fundingEnvelope: params.dealSize || 'Not specified',
+      governanceContext: [params.organizationType, params.entityClassification, params.userDepartment].filter(Boolean).join(' '),
+      country: params.country || params.userCountry || 'unspecified',
+      jurisdiction: params.region || params.country || 'unspecified',
+      objective: params.problemStatement || params.reportName,
+      currentMatter: params.problemStatement || params.reportName,
+      evidenceNotes: [
+        ...(params.strategicIntent || []),
+        ...(params.additionalContext ? [params.additionalContext] : [])
+      ].slice(0, 10),
+      partnerCandidates: this.regionalPartners
+    });
+
+    if (regionalKernel.governanceReadiness < 75) {
+      const blockers = [
+        `Regional kernel readiness ${regionalKernel.governanceReadiness}% is below threshold`,
+        ...(regionalKernel.notes.length > 0 ? regionalKernel.notes : [])
+      ];
+
+      phases.push({
+        name: 'regional-kernel-gate',
+        status: 'blocked',
+        reason: 'Regional Development Kernel threshold not met',
+        remediation: blockers
+      });
+
+      return {
+        packet: {
+          runId: params.id,
+          generatedAt: now,
+          mode,
+          scenario: this.buildScenario(params, requiredFeeds, []),
+          phases,
+          controls: [],
+          actions: [],
+          evidence: [],
+          exports: { loiReady: false, reportReady: false, blockers }
+        }
+      };
+    }
 
     let payload: ReportPayload | undefined;
     try {
@@ -286,6 +389,28 @@ export class DecisionPipeline {
       evidence.push(...payload.metadata.dataSources);
     }
     return Array.from(new Set(evidence));
+  }
+
+  private static evaluateCaseMethodGaps(params: ReportParameters): string[] {
+    const gaps: string[] = [];
+
+    if (!params.problemStatement || params.problemStatement.trim().length < 60) gaps.push('Boundary clarity');
+
+    const objectiveStrength = (params.strategicIntent || []).join(' ').trim().length;
+    if (objectiveStrength < 20) gaps.push('Objective quality');
+
+    const hasEvidence = Boolean(params.additionalContext?.trim()) || (params.ingestedDocuments?.length || 0) > 0;
+    if (!hasEvidence) gaps.push('Evidence sufficiency');
+
+    const hasRival = /counterfactual|alternative|rival|other option/i.test(`${params.additionalContext || ''} ${(params.collaborativeNotes || '')}`);
+    if (!hasRival) gaps.push('Rival explanations');
+
+    const hasImplementation = Boolean(params.expansionTimeline?.trim()) && /owner|go-no-go|critical path|authority|escalation/i.test(
+      `${params.criticalPath || ''} ${params.goNoGoCriteria || ''} ${params.authorityMatrix || ''} ${params.escalationProcedures || ''}`
+    );
+    if (!hasImplementation) gaps.push('Implementation feasibility');
+
+    return gaps;
   }
 }
 

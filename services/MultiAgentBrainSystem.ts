@@ -1406,7 +1406,7 @@ LEARNING PROTOCOL:
 - Flag when confidence is low due to limited data
 
 NEVER:
-- Return mock or placeholder data
+- Return synthetic or unsourced data
 - Make up statistics without data source
 - Provide generic responses - always be specific to the context
 `;

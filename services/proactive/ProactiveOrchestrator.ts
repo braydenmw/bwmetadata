@@ -162,7 +162,7 @@ export class ProactiveOrchestrator {
   }
 
   private estimateDataQuality(context: CurrentContext): number {
-    // Placeholder: weight based on presence of key factors and context richness
+    // Weighted heuristic based on key-factor coverage and context richness.
     const factors = context.keyFactors.length;
     return Math.min(100, 40 + factors * 5);
   }

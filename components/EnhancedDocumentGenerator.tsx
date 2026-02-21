@@ -353,7 +353,7 @@ FINANCIAL RISK: ${getRiskLevel('financial', params)}
       return `Financial projections based on stated parameters:
 
 INVESTMENT SUMMARY
-- Initial Capital: ${params.calibration?.constraints?.budgetCap || 'TBD'}
+- Initial Capital: ${params.calibration?.constraints?.budgetCap || 'Capital input required'}
 - Expected Timeline: 5 years
 - Target IRR: 15-25%
 - NPV (10% discount): Positive

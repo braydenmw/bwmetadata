@@ -25,7 +25,7 @@ From that observation came the question: what if you could build a system that i
 
 ![Digital Boardroom Concept](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop)
 
-**A full-stack intelligence operating system.** 120+ React components. 100+ backend services. 22 intelligence engines. 46 proprietary formulas. 232 document types. 156 letter templates across 21 categories. All integrated into a single platform purpose-built for regional economic development, investment attraction, and international partnership.
+**A full-stack intelligence operating system.** 120+ React components. 100+ backend services. 22 intelligence engines. 46 proprietary formulas. 247+ document outputs. 156+ letter templates across 21 categories. All integrated into a single platform purpose-built for regional economic development, investment attraction, and international partnership.
 
 ### The Numbers
 
@@ -34,8 +34,8 @@ From that observation came the question: what if you could build a system that i
 - **5 adversarial AI personas** â€” Skeptic, Advocate, Regulator, Accountant, and Operator â€” debating every claim in parallel
 - **7 human cognition models** â€” university-level neuroscience mathematics simulating how decision-makers actually think
 - **22 embedded methodology patterns** across 18 categories â€” from SEZ development to anti-corruption â€” with 25â€“63 years of documented history
-- **232 document types** and **156 letter templates** across 21 categories â€” institutional-grade deliverables with full audit trails
-- **10-step intake protocol** â€” a structured process capturing every dimension of a project: identity, strategy, market, partners, financials, risk, resources, execution, governance, and scoring
+- **247+ document outputs** and **156+ letter templates** across 21 categories â€” institutional-grade deliverables with full audit trails
+- **Adaptive multi-phase intake protocol** â€” startup foundational intake, mid-case evidence/recovery, and late-case implementation/governance refinement
 - **Live data integration** â€” World Bank, Open Exchange Rates, REST Countries APIs providing real-time economic indicators
 
 ### What the System Does â€” Step by Step
@@ -252,7 +252,7 @@ Type a city, company, or government body. In seconds, the system pulls verified 
 
 ### Live Report
 
-The core analytical product. Submit a project through the Ten-Step Intake Protocol and hit generate. The `ReportOrchestrator.ts` (555 lines) fires all intelligence engines in parallel â€” `calculateSPI`, `generateRROI`, `generateSEAM`, `runEthicalSafeguards`, `NSILIntelligenceHub.runFullAnalysis`, `SituationAnalysisEngine`, `HistoricalParallelMatcher`, `DerivedIndexService`, `AdvancedIndexService`, `AdversarialReasoningService`, the full agentic brain, and the proactive orchestrator. The report builds in real time â€” the knowledge layer sets confidence levels, NSIL scores across 46 formulas, five adversarial personas debate, the Human Cognition Engine pressure-tests how decision-makers will respond, autonomous engines fire, reflexive engines analyse. The report populates section by section: success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations. Every number traces to a specific formula, a specific engine, and a specific line of code.
+The core analytical product. Submit a project through the Adaptive Intake Protocol and hit generate. The `ReportOrchestrator.ts` (555 lines) fires all intelligence engines in parallel â€” `calculateSPI`, `generateRROI`, `generateSEAM`, `runEthicalSafeguards`, `NSILIntelligenceHub.runFullAnalysis`, `SituationAnalysisEngine`, `HistoricalParallelMatcher`, `DerivedIndexService`, `AdvancedIndexService`, `AdversarialReasoningService`, the full agentic brain, and the proactive orchestrator. The report builds in real time â€” the knowledge layer sets confidence levels, NSIL scores across 46 formulas, five adversarial personas debate, the Human Cognition Engine pressure-tests how decision-makers will respond, autonomous engines fire, reflexive engines analyse. The report populates section by section: success probability scores, risk assessments, stakeholder alignment maps, financial projections, and specific recommendations. Every number traces to a specific formula, a specific engine, and a specific line of code.
 
 ### BW Consultant
 
@@ -262,8 +262,8 @@ An AI advisor that sits alongside you during intake. It answers questions about 
 
 Once analysis is complete, the Document Factory (`services/algorithms/IntelligentDocumentGenerator.ts` â€” 1,244 lines) compiles everything into institutional-grade deliverables:
 
-- **232 report and document types** â€” Investment Prospectuses, Risk Matrices, Letters of Intent, Grant Applications, Due-Diligence Packs, Compliance Checklists, Board Presentations, Stakeholder Update Letters, Executive Briefs, Investor Decks, Partner Proposals, and Risk Assessments
-- **156 letter templates** across 21 categories
+- **247+ report and document outputs** â€” Investment Prospectuses, Risk Matrices, Letters of Intent, Grant Applications, Due-Diligence Packs, Compliance Checklists, Board Presentations, Stakeholder Update Letters, Executive Briefs, Investor Decks, Partner Proposals, and Risk Assessments
+- **156+ letter templates** across 21 categories with letters-only generation paths
 - **AI-powered enhancement** â€” Multi-pass content refinement, automatic quality scoring, context-aware content generation, readability assessment
 - **5 audience modes** â€” Executive, Investor, Partner, Technical, General â€” each with tailored tone, depth, and focus areas
 
@@ -277,7 +277,7 @@ The system is designed around five stages:
 
 2. **Research** â€” BW AI Search delivers a structured intelligence brief with real numbers â€” population, GDP, key industries, government structure, infrastructure quality.
 
-3. **Define** â€” Complete the Ten-Step Intake Protocol. Steps 1, 2, 4, and 7 capture what only you know. Steps 3, 5, 6, 8, and 9 are pre-populated with system knowledge where available. The BW Consultant sits alongside to answer questions.
+3. **Define** â€” Complete the Adaptive Intake Protocol. Startup captures foundational case facts, mid-case resolves missing evidence and case-method gaps, and late-case finalises implementation and governance signals.
 
 4. **Analyse** â€” Hit generate. Watch the Live Report build in real time. Section by section â€” scores, debates, projections, recommendations.
 
@@ -575,7 +575,7 @@ You need to assess proposals quickly and consistently. The system provides a rep
 
 **Pattern count:** 22 embedded patterns across 18 categories (25-63 years documented, 40-150 countries)
 
-**Document factory:** 232 report & document types, 156 letter templates across 21 categories
+**Document factory:** 247+ report/document outputs, 156+ letter templates across 21 categories
 
 **User-facing products:** BW AI Search, Live Report, BW Consultant, Document Factory
 

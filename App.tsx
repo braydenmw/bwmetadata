@@ -17,6 +17,7 @@ import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';
 import { config } from './services/config';
 import { ReportOrchestrator } from './services/ReportOrchestrator';
+import { ConsultantGateService } from './services/ConsultantGateService';
 // ETHICAL GATE & DOCUMENT INTEGRITY
 import { DocumentIntegrityService } from './services/DocumentIntegrityService';
 // AUTONOMOUS CAPABILITIES IMPORTS
@@ -402,6 +403,19 @@ const App: React.FC = () => {
     };
 
     const handleGenerateReport = useCallback(async () => {
+        const consultantGate = ConsultantGateService.evaluate(params);
+        if (!consultantGate.isReady) {
+            setReportData(prev => ({
+                ...prev,
+                executiveSummary: {
+                    ...prev.executiveSummary,
+                    content: `# Consultant Gate Blocked\n\nThe system requires complete consultant-grade intake before report generation.\n\n**Missing required inputs:**\n${consultantGate.missing.map((item) => `- ${item}`).join('\n')}\n\n**Current capture summary:**\n- Who: ${consultantGate.summary.who}\n- Where: ${consultantGate.summary.where}\n- Objective: ${consultantGate.summary.objective}\n- Audience: ${consultantGate.summary.audience}\n- Deadline: ${consultantGate.summary.deadline}`,
+                    status: 'completed'
+                }
+            }));
+            return;
+        }
+
         setIsGeneratingReport(true);
         setGenPhase('intake');
         setGenProgress(5);

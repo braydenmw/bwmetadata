@@ -22,6 +22,10 @@ import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
 import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
 import CaseGraphBuilder, { type CaseGraph } from '../services/CaseGraphBuilder';
 import RecommendationScorer, { type RecommendationScore } from '../services/RecommendationScorer';
+import MissionGraphService from '../services/autonomy/MissionGraphService';
+import type { MissionSnapshot } from '../types/autonomy';
+import { RegionalDevelopmentOrchestrator } from '../services/RegionalDevelopmentOrchestrator';
+import type { PartnerCandidate } from '../services/PartnerIntelligenceEngine';
 
 // ============================================================================
 // TYPES
@@ -100,6 +104,34 @@ interface ExtractedEntitySuggestion {
   confidence: EntityConfidence;
 }
 
+type PilotModeFocus = 'new-markets' | 'government-entry' | 'partnerships' | 'risk-compliance';
+
+interface PilotIssueArea {
+  id: string;
+  focus: PilotModeFocus;
+  title: string;
+  description: string;
+  whyItMatters: string;
+  recommendedMoves: string[];
+}
+
+interface PilotOption {
+  id: string;
+  label: string;
+  prompt: string;
+  stage: CasePhase;
+  focus?: PilotModeFocus;
+}
+
+interface GlobalIssuePack {
+  id: string;
+  label: string;
+  personas: string[];
+  archetypes: string[];
+  formulas: string[];
+  requiredOutputs: string[];
+}
+
 const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
   {
     id: 'australia',
@@ -141,6 +173,235 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
 
 const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
 const LEARNING_PROFILE_VERSION = 1;
+
+const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
+  {
+    id: 'market-access-barriers',
+    focus: 'new-markets',
+    title: 'Market Access Barriers',
+    description: 'Licensing, market-entry restrictions, and foreign ownership constraints.',
+    whyItMatters: 'Entry assumptions fail when market access controls are not mapped early.',
+    recommendedMoves: [
+      'Map ownership restrictions and mandatory local-partner requirements.',
+      'Create a country-by-country entry sequence based on approval complexity.',
+      'Build regulator-facing evidence pack before investor outreach.'
+    ]
+  },
+  {
+    id: 'government-procurement-fit',
+    focus: 'government-entry',
+    title: 'Government Procurement Fit',
+    description: 'Public-sector buying rules, policy alignment, and tender readiness.',
+    whyItMatters: 'Government partnerships fail without procurement and policy fit.',
+    recommendedMoves: [
+      'Align value proposition to ministry mandate and policy KPIs.',
+      'Prepare compliance matrix matching tender criteria and annex requirements.',
+      'Draft agency briefing note and submission letter path.'
+    ]
+  },
+  {
+    id: 'partner-selection-risk',
+    focus: 'partnerships',
+    title: 'Partner Selection Risk',
+    description: 'Counterparty strength, governance reliability, and execution capability.',
+    whyItMatters: 'Weak partner-fit causes delays, governance conflict, and value leakage.',
+    recommendedMoves: [
+      'Define partner due-diligence scorecard (financial, legal, operational).',
+      'Set governance rights, escalation model, and performance checkpoints.',
+      'Create phased partnership model with stage-gate approvals.'
+    ]
+  },
+  {
+    id: 'cross-border-compliance',
+    focus: 'risk-compliance',
+    title: 'Cross-Border Compliance',
+    description: 'Data, legal, anti-corruption, sanctions, and reporting obligations.',
+    whyItMatters: 'Cross-border expansion is blocked by unresolved legal/compliance exposure.',
+    recommendedMoves: [
+      'Build jurisdiction obligations register and control owner assignments.',
+      'Add anti-bribery and third-party screening requirements into partner onboarding.',
+      'Track compliance evidence artifacts for every major decision milestone.'
+    ]
+  },
+  {
+    id: 'capital-readiness',
+    focus: 'new-markets',
+    title: 'Capital and Funding Readiness',
+    description: 'Funding structure, capital timing, and downside resilience.',
+    whyItMatters: 'Expansion stalls when capital assumptions are not staged against risk.',
+    recommendedMoves: [
+      'Create base/upside/downside model tied to market-entry milestones.',
+      'Set funding triggers and contingency capital reserve.',
+      'Prepare investor memo and board decision package in parallel.'
+    ]
+  },
+  {
+    id: 'stakeholder-legitimacy',
+    focus: 'government-entry',
+    title: 'Stakeholder Legitimacy and Social License',
+    description: 'Community acceptance, public trust, and institutional legitimacy.',
+    whyItMatters: 'Government and regional programs fail without stakeholder legitimacy.',
+    recommendedMoves: [
+      'Map high-influence stakeholders and likely objections.',
+      'Develop communication brief for public value and local impact.',
+      'Attach measurable social/economic outcomes to the implementation plan.'
+    ]
+  }
+];
+
+const PILOT_ADAPTIVE_OPTION_CATALOG: PilotOption[] = [
+  {
+    id: 'startup-case-skeleton',
+    label: 'Start Case Skeleton',
+    prompt: 'Create a startup case skeleton with person, organization, jurisdiction, objective, decision audience, and deadline fields.',
+    stage: 'intake'
+  },
+  {
+    id: 'startup-proof-pack',
+    label: 'Start Evidence Pack',
+    prompt: 'Create an initial evidence pack checklist (source documents, baseline metrics, and mandatory annexes) needed to open this case correctly.',
+    stage: 'intake'
+  },
+  {
+    id: 'startup-risk-baseline',
+    label: 'Start Risk Baseline',
+    prompt: 'Create a startup risk baseline with top regulatory, funding, timeline, and stakeholder risks for this matter.',
+    stage: 'intake'
+  },
+  {
+    id: 'discovery-market-scan',
+    label: 'Add Market Scan',
+    prompt: 'Add a comparative regional market scan with top 3 expansion candidates and entry barriers.',
+    stage: 'discovery',
+    focus: 'new-markets'
+  },
+  {
+    id: 'discovery-gov-pack',
+    label: 'Add Government Entry Pack',
+    prompt: 'Add a government engagement pack including ministry brief, submission path, and compliance annex list.',
+    stage: 'discovery',
+    focus: 'government-entry'
+  },
+  {
+    id: 'discovery-partner-map',
+    label: 'Add Partner Map',
+    prompt: 'Add partner landscape map with shortlist criteria and due-diligence checkpoints.',
+    stage: 'discovery',
+    focus: 'partnerships'
+  },
+  {
+    id: 'discovery-risk-stress',
+    label: 'Add Risk Stress Test',
+    prompt: 'Add risk stress test covering regulatory, funding, and execution downside scenarios.',
+    stage: 'discovery',
+    focus: 'risk-compliance'
+  },
+  {
+    id: 'analysis-gap-map',
+    label: 'Add Missing-Data Gap Map',
+    prompt: 'Map missing data points, why each is required, and assign owner/deadline for closure before recommendations.',
+    stage: 'analysis'
+  },
+  {
+    id: 'analysis-scenario-pack',
+    label: 'Add Scenario Pack',
+    prompt: 'Add base/upside/downside scenarios with implications for market entry, government pathway, and partnership structure.',
+    stage: 'analysis'
+  },
+  {
+    id: 'recommendations-letter-plan',
+    label: 'Add Letter Plan',
+    prompt: 'Add a stakeholder contact-letter plan with counterparts, purpose, and required support annexes for each letter.',
+    stage: 'recommendations'
+  },
+  {
+    id: 'recommendations-report-plan',
+    label: 'Add Report Plan',
+    prompt: 'Add a report package plan covering decision brief, memo, and full report with audience-specific structure.',
+    stage: 'recommendations'
+  },
+  {
+    id: 'generation-quality-check',
+    label: 'Add Output Quality Check',
+    prompt: 'Add final output quality checks for audience fit, jurisdiction compliance, evidence traceability, and implementation readiness.',
+    stage: 'generation'
+  }
+];
+
+const GLOBAL_ISSUE_PACKS: GlobalIssuePack[] = [
+  {
+    id: 'water-security',
+    label: 'Water Security',
+    personas: ['Regional Water Authority', 'Infrastructure Bank', 'Community Utility Partner'],
+    archetypes: ['Utility operator', 'Development financier', 'Local engineering consortium'],
+    formulas: ['SPI', 'RROI', 'RRI', 'CCS', 'RFI', 'SRA'],
+    requiredOutputs: ['Water Security Strategy', 'Funding Structure Brief', 'Regulatory Compliance Letter']
+  },
+  {
+    id: 'logistics-corridor',
+    label: 'Logistics and Trade Corridor',
+    personas: ['Trade Ministry', 'Port Authority', 'Commercial Operator'],
+    archetypes: ['Port/logistics operator', 'Trade finance bank', 'Government corridor unit'],
+    formulas: ['MPI', 'CAI', 'TAM', 'SAM', 'SRCI', 'DCS'],
+    requiredOutputs: ['Corridor Investment Case', 'Partner Due-Diligence Report', 'Government Submission Letter']
+  },
+  {
+    id: 'energy-transition',
+    label: 'Energy Transition',
+    personas: ['Energy Regulator', 'Sovereign/Development Fund', 'Independent Power Partner'],
+    archetypes: ['IPP developer', 'Grid operator', 'Climate finance partner'],
+    formulas: ['SPI', 'RROI', 'ESG', 'PSS', 'FRS', 'CCS'],
+    requiredOutputs: ['Transition Roadmap', 'Risk Stress-Test Report', 'Stakeholder Alignment Letters']
+  },
+  {
+    id: 'housing-systems',
+    label: 'Housing Systems',
+    personas: ['Urban Development Authority', 'Mortgage/Banking Partner', 'Delivery Consortium'],
+    archetypes: ['Housing developer', 'Municipal authority', 'Banking/credit partner'],
+    formulas: ['ORS', 'TCS', 'EEI', 'DSCR', 'FMS', 'GCI'],
+    requiredOutputs: ['Housing Delivery Blueprint', 'Financing Readiness Pack', 'Implementation Governance Letter']
+  },
+  {
+    id: 'health-systems',
+    label: 'Health Systems',
+    personas: ['Health Ministry', 'Hospital Network', 'Public Finance Partner'],
+    archetypes: ['Hospital operator', 'Public health agency', 'Development bank'],
+    formulas: ['SPI', 'IVAS', 'CCS', 'ARI', 'SRA', 'FRS'],
+    requiredOutputs: ['Health System Modernization Report', 'Procurement and Compliance Pack', 'Institutional Coordination Letters']
+  },
+  {
+    id: 'digital-infrastructure',
+    label: 'Digital Infrastructure',
+    personas: ['Digital Transformation Unit', 'Telecom/Tech Partner', 'Regulatory Authority'],
+    archetypes: ['Digital infra provider', 'Tech platform partner', 'Regulatory counterpart'],
+    formulas: ['AGI', 'VCI', 'ATI', 'RFI', 'CIS', 'CCS'],
+    requiredOutputs: ['Digital Infrastructure Case', 'Partner Technical Evaluation', 'Regulatory Engagement Letter']
+  },
+  {
+    id: 'workforce-transition',
+    label: 'Workforce Transition',
+    personas: ['Labor/Education Authority', 'Industry Alliance', 'Training Partner'],
+    archetypes: ['Skills provider', 'Industry coalition', 'Regional employment agency'],
+    formulas: ['LCI', 'TCS', 'CGI', 'RRI', 'SEQ', 'ORS'],
+    requiredOutputs: ['Workforce Transition Strategy', 'Capability Gap Analysis', 'Partnership Activation Letters']
+  },
+  {
+    id: 'climate-resilience',
+    label: 'Climate Resilience',
+    personas: ['Resilience Office', 'Infrastructure/Insurance Partner', 'Community Institutions'],
+    archetypes: ['Resilience planner', 'Risk financing partner', 'Local implementation coalition'],
+    formulas: ['ESI', 'CRPS', 'RME', 'PSS', 'RRI', 'GCI'],
+    requiredOutputs: ['Resilience Investment Portfolio', 'Scenario Risk Annex', 'Government and Partner Letters']
+  }
+];
+
+const REGIONAL_PARTNER_CANDIDATES: PartnerCandidate[] = [
+  { id: 'gov-development-agency', name: 'National/Regional Development Agency', type: 'government', countries: ['philippines', 'australia', 'united kingdom', 'new zealand'], sectors: ['infrastructure', 'policy', 'regional development'] },
+  { id: 'multilateral-bank', name: 'Multilateral Development Bank', type: 'multilateral', countries: ['philippines', 'australia', 'united kingdom', 'new zealand', 'united states'], sectors: ['infrastructure', 'energy', 'housing', 'health', 'digital'] },
+  { id: 'commercial-bank', name: 'Commercial Banking Consortium', type: 'bank', countries: ['philippines', 'australia', 'united kingdom', 'new zealand'], sectors: ['banking', 'trade', 'housing', 'energy'] },
+  { id: 'delivery-corporate', name: 'Delivery and Operations Corporate Partner', type: 'corporate', countries: ['philippines', 'australia', 'united kingdom', 'new zealand'], sectors: ['logistics', 'energy', 'digital', 'housing', 'health'] },
+  { id: 'community-anchor', name: 'Community Anchor Institution', type: 'community', countries: ['philippines', 'australia', 'united kingdom', 'new zealand'], sectors: ['regional development', 'workforce', 'social license'] }
+];
 
 // ============================================================================
 // COMPONENT
@@ -186,13 +447,24 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   
   // Workspace modal
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
+  const [pilotModeEnabled, setPilotModeEnabled] = useState(true);
+  const [showPilotWindow, setShowPilotWindow] = useState(false);
+  const [showPilotHowTo, setShowPilotHowTo] = useState(false);
+  const [pilotFocus, setPilotFocus] = useState<PilotModeFocus>('new-markets');
+  const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
+  const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
+  const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);
+  const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
+  const [activeGlobalIssuePack, setActiveGlobalIssuePack] = useState<string>('energy-transition');
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+  const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only'>('selected');
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
+  const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
   const [adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
   const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
   const [readinessScore, setReadinessScore] = useState(0);
@@ -206,9 +478,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [strictLearningImport, setStrictLearningImport] = useState(false);
   const [topGapQuickInput, setTopGapQuickInput] = useState('');
   const [entityDecisions, setEntityDecisions] = useState<Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>>({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
+  const [missionSnapshot, setMissionSnapshot] = useState<MissionSnapshot | null>(null);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const lastKernelSignalRef = useRef<string>('');
   const chatSession = useRef(getChatSession());
   const intakeQuestionIndex = useRef(0);
   const agenticAIRef = useRef(new BWConsultantAgenticAI());
@@ -279,7 +554,10 @@ Let's start properly:
 
   // Scroll to bottom on new messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
   }, [messages]);
 
   // Intake questions (static)
@@ -338,6 +616,425 @@ Let's start properly:
       complianceFocus: ['Cross-jurisdiction consistency', 'Traceable assumptions']
     };
   }, []);
+
+  const consultantCaseProfile = useMemo(() => {
+    const hasIdentity = Boolean(caseStudy.userName.trim() || caseStudy.contactRole.trim() || caseStudy.organizationName.trim());
+    const personSummary = [
+      caseStudy.userName || 'Client identity missing',
+      caseStudy.contactRole ? `(${caseStudy.contactRole})` : '',
+      caseStudy.organizationName ? `at ${caseStudy.organizationName}` : '',
+      caseStudy.organizationType ? `[${caseStudy.organizationType}]` : ''
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim() || 'Client identity missing';
+
+    const originSummary = [caseStudy.country, caseStudy.jurisdiction].filter(Boolean).join(' / ') || 'Jurisdiction data missing';
+    const achievementSummary = caseStudy.objectives.trim() || 'Objective data missing';
+    const decisionContext = caseStudy.currentMatter.trim() || 'Decision context missing';
+    const keyConstraints = caseStudy.constraints.trim() || 'Constraint data missing';
+
+    const missingPriorities = [
+      !caseStudy.userName.trim() || !caseStudy.contactRole.trim() ? 'Clarify decision owner and authority' : null,
+      !caseStudy.country.trim() || !caseStudy.jurisdiction.trim() ? 'Confirm country and legal/regulatory jurisdiction' : null,
+      caseStudy.objectives.trim().length < 20 ? 'Define measurable outcome and success criteria' : null,
+      caseStudy.currentMatter.trim().length < 60 ? 'Expand the problem statement with actors, stakes, and decision point' : null,
+      caseStudy.targetAudience.trim().length < 3 ? 'Specify final decision audience (board, ministry, regulator, investor, etc.)' : null,
+      caseStudy.decisionDeadline.trim().length < 3 ? 'Confirm decision deadline and urgency consequences' : null
+    ].filter(Boolean) as string[];
+
+    const nextConsultantActions = missingPriorities.length > 0
+      ? missingPriorities.slice(0, 3)
+      : [
+          'Convert objectives into KPI-backed decision criteria',
+          'Align recommended documents to audience expectations and mandate',
+          'Translate evidence into an execution-ready narrative and annex plan'
+        ];
+
+    return {
+      personSummary,
+      hasIdentity,
+      originSummary,
+      achievementSummary,
+      decisionContext,
+      keyConstraints,
+      evidenceSummary: `${caseStudy.uploadedDocuments.length} files • ${caseStudy.additionalContext.length} context notes • ${caseStudy.aiInsights.length} AI insights`,
+      nextConsultantActions,
+      missingPriorities
+    };
+  }, [caseStudy]);
+
+  const consultantCaseBrief = useMemo(() => {
+    return [
+      `Client: ${consultantCaseProfile.personSummary}`,
+      `Origin/Jurisdiction: ${consultantCaseProfile.originSummary}`,
+      `Wants to achieve: ${consultantCaseProfile.achievementSummary}`,
+      `Decision context: ${consultantCaseProfile.decisionContext}`,
+      `Constraints: ${consultantCaseProfile.keyConstraints}`,
+      `Evidence footprint: ${consultantCaseProfile.evidenceSummary}`,
+      `Top consultant actions: ${consultantCaseProfile.nextConsultantActions.join(' | ')}`
+    ].join('\n');
+  }, [consultantCaseProfile]);
+
+  const extractConsultantSignals = useCallback((input: string) => {
+    const normalized = input.trim();
+    if (!normalized) {
+      return {
+        userName: null as string | null,
+        country: null as string | null,
+        jurisdiction: null as string | null,
+        objectives: null as string | null,
+        targetAudience: null as string | null,
+        decisionDeadline: null as string | null,
+        evidenceNote: null as string | null
+      };
+    }
+
+    const userName = normalized.match(/\b(?:i am|i'm|my name is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b/i)?.[1] || null;
+    const country = normalized.match(/\b(?:in|from|operating in|country)\s+([A-Z][A-Za-z\s]{2,40})\b/i)?.[1]?.trim() || null;
+    const jurisdiction = normalized.match(/\b(?:jurisdiction|regulatory regime|legal framework)\s*(?:is|:)?\s*([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
+    const objectives = normalized.match(/\b(?:objective is|goal is|we aim to|we want to|wish to achieve)\s+([^\n.]{12,220})/i)?.[1]?.trim() || null;
+    const targetAudience = normalized.match(/\b(?:for|to|audience|decision makers?)\s+(board|investors?|regulator[s]?|ministry|government|court|executive team|partners?)\b/i)?.[1] || null;
+    const decisionDeadline = normalized.match(/\b(?:deadline|due|by|before)\s*[:-]?\s*([^\n.]{3,60})/i)?.[1]?.trim() || null;
+    const evidenceNote = /\b(evidence|annex|dataset|source|kpi|metric|report|attachment)\b/i.test(normalized)
+      ? normalized
+      : null;
+
+    return {
+      userName,
+      country,
+      jurisdiction,
+      objectives,
+      targetAudience,
+      decisionDeadline,
+      evidenceNote
+    };
+  }, []);
+
+  const consultantGateMissing = useMemo(() => {
+    const missing: string[] = [];
+
+    if (!caseStudy.userName.trim() || !caseStudy.contactRole.trim()) {
+      missing.push('Decision owner identity and role');
+    }
+    if (!caseStudy.country.trim() || !caseStudy.jurisdiction.trim()) {
+      missing.push('Country and jurisdiction');
+    }
+    if (caseStudy.objectives.trim().length < 20) {
+      missing.push('Measurable objective');
+    }
+    if (caseStudy.currentMatter.trim().length < 60) {
+      missing.push('Decision context and stakes');
+    }
+    if (caseStudy.targetAudience.trim().length < 3) {
+      missing.push('Decision audience');
+    }
+    if (caseStudy.decisionDeadline.trim().length < 3) {
+      missing.push('Decision deadline');
+    }
+
+    return missing;
+  }, [caseStudy]);
+
+  const consultantGateReady = consultantGateMissing.length === 0;
+
+  const caseMethodGaps = useMemo(() => {
+    const gaps: string[] = [];
+
+    if (caseStudy.currentMatter.trim().length < 60) gaps.push('Boundary clarity');
+    if (caseStudy.objectives.trim().length < 20) gaps.push('Objective quality');
+    if (caseStudy.uploadedDocuments.length === 0 && !caseStudy.additionalContext.some((item) => item.toLowerCase().includes('evidence'))) {
+      gaps.push('Evidence sufficiency');
+    }
+    if (!caseStudy.additionalContext.some((item) => /counterfactual|alternative|rival|other option/i.test(item))) {
+      gaps.push('Rival explanations');
+    }
+    if (!caseStudy.additionalContext.some((item) => /owner|timeline|implementation|delivery/i.test(item)) && caseStudy.constraints.trim().length < 20) {
+      gaps.push('Implementation feasibility');
+    }
+
+    return gaps;
+  }, [caseStudy]);
+
+  const activeIssuePack = useMemo(
+    () => GLOBAL_ISSUE_PACKS.find((pack) => pack.id === activeGlobalIssuePack) || GLOBAL_ISSUE_PACKS[0],
+    [activeGlobalIssuePack]
+  );
+
+  const regionalKernel = useMemo(() => {
+    return RegionalDevelopmentOrchestrator.run({
+      regionProfile: caseStudy.organizationMandate || caseStudy.currentMatter,
+      sector: caseStudy.situationType || activeIssuePack.label,
+      constraints: caseStudy.constraints,
+      fundingEnvelope: caseStudy.additionalContext.find((item) => /fund|budget|capex|financ/i.test(item)) || 'Not yet defined',
+      governanceContext: `${caseStudy.jurisdiction} ${caseStudy.organizationType} ${caseStudy.targetAudience}`,
+      country: caseStudy.country || 'unspecified',
+      jurisdiction: caseStudy.jurisdiction || 'unspecified',
+      objective: caseStudy.objectives,
+      currentMatter: caseStudy.currentMatter,
+      evidenceNotes: caseStudy.additionalContext.slice(0, 10),
+      partnerCandidates: REGIONAL_PARTNER_CANDIDATES
+    });
+  }, [caseStudy, activeIssuePack]);
+
+  const pilotFocusIssues = useMemo(
+    () => PILOT_GLOBAL_ISSUE_AREAS.filter((issue) => issue.focus === pilotFocus),
+    [pilotFocus]
+  );
+
+  const pilotAdaptiveOptions = useMemo(() => {
+    return PILOT_ADAPTIVE_OPTION_CATALOG.filter((option) => {
+      if (option.stage !== currentPhase) return false;
+      if (option.focus && option.focus !== pilotFocus) return false;
+      return true;
+    }).map((option) => ({ id: option.id, label: option.label, prompt: option.prompt }));
+  }, [currentPhase, pilotFocus]);
+
+  const pilotMissingRecommendationOptions = useMemo(() => {
+    const options: Array<{ id: string; label: string; prompt: string }> = [];
+
+    if (currentPhase !== 'intake') {
+      const hasLetter = recommendedDocs.some((doc) => doc.category === 'letter');
+      const hasReport = recommendedDocs.some((doc) => doc.category === 'report');
+
+      if (!hasLetter) {
+        options.push({
+          id: 'recovery-letter-missing',
+          label: 'Recover Missing Letter Recommendation',
+          prompt: 'The current recommendation set is missing letters. Add the most relevant counterpart/stakeholder letters required for this case and explain why each is needed.'
+        });
+      }
+
+      if (!hasReport) {
+        options.push({
+          id: 'recovery-report-missing',
+          label: 'Recover Missing Report Recommendation',
+          prompt: 'The current recommendation set is missing reports. Add decision-grade reports needed for this case and justify each selection.'
+        });
+      }
+    }
+
+    if (!consultantGateReady) {
+      options.push({
+        id: 'recovery-consultant-gate',
+        label: 'Recover Missing Case Essentials',
+        prompt: `Consultant gate is blocked. Collect and structure missing essentials: ${consultantGateMissing.slice(0, 4).join(', ')}.`
+      });
+    }
+
+    if (caseStudy.uploadedDocuments.length === 0) {
+      options.push({
+        id: 'recovery-evidence-seed',
+        label: 'Recover Missing Evidence Inputs',
+        prompt: 'No source documents are uploaded. Add an evidence seed list with required files, expected data fields, and owner assignments.'
+      });
+    }
+
+    return options;
+  }, [currentPhase, recommendedDocs, consultantGateReady, consultantGateMissing, caseStudy.uploadedDocuments.length]);
+
+  const pilotAllOptions = useMemo(() => {
+    const map = new Map<string, { id: string; label: string; prompt: string }>();
+
+    [...pilotAdaptiveOptions, ...pilotMissingRecommendationOptions, ...customPilotOptions].forEach((option) => {
+      map.set(option.id, option);
+    });
+
+    Object.entries(pilotOptionMemory).forEach(([id, payload]) => {
+      if (!map.has(id)) {
+        map.set(id, { id, label: payload.label, prompt: payload.prompt });
+      }
+    });
+
+    return map;
+  }, [pilotAdaptiveOptions, pilotMissingRecommendationOptions, customPilotOptions, pilotOptionMemory]);
+
+  const pilotFailureAlerts = useMemo(() => {
+    if (!pilotModeEnabled) return [] as string[];
+
+    const alerts: string[] = [];
+
+    if (!caseStudy.country.trim() || !caseStudy.jurisdiction.trim()) {
+      alerts.push('Global comparison risk: country/jurisdiction is incomplete.');
+    }
+    if (!caseStudy.objectives.trim() || caseStudy.objectives.trim().length < 20) {
+      alerts.push('Strategy risk: objective is too weak for market and partnership scoring.');
+    }
+    if (caseStudy.uploadedDocuments.length === 0 && !caseStudy.additionalContext.some((item) => item.toLowerCase().includes('evidence'))) {
+      alerts.push('Evidence risk: no uploaded source material or evidence note detected.');
+    }
+    if (!consultantGateReady) {
+      alerts.push(`Consultant gate blocked: ${consultantGateMissing.slice(0, 2).join('; ')}.`);
+    }
+    if (caseMethodGaps.length > 0) {
+      alerts.push(`Case study method gaps: ${caseMethodGaps.slice(0, 2).join('; ')}.`);
+    }
+    if (regionalKernel.governanceReadiness < 75) {
+      alerts.push(`Regional kernel readiness ${regionalKernel.governanceReadiness}% is below deployment threshold.`);
+    }
+    if (regionalKernel.dataFabric.overallFreshnessHours > 14) {
+      alerts.push('Global data fabric signals are aging and should be refreshed before final commitments.');
+    }
+
+    return alerts;
+  }, [pilotModeEnabled, caseStudy, consultantGateReady, consultantGateMissing, caseMethodGaps, regionalKernel]);
+
+  const pilotReadiness = useMemo(() => {
+    if (!pilotModeEnabled) return 0;
+    const base = consultantGateReady ? 70 : 35;
+    const evidence = Math.min(20, caseStudy.uploadedDocuments.length * 5 + caseStudy.additionalContext.length * 2);
+    const mission = missionSnapshot ? 10 : 0;
+    const methodPenalty = caseMethodGaps.length > 0 ? Math.min(20, caseMethodGaps.length * 4) : 0;
+    return Math.min(100, Math.max(0, base + evidence + mission - methodPenalty));
+  }, [pilotModeEnabled, consultantGateReady, caseStudy.uploadedDocuments.length, caseStudy.additionalContext.length, missionSnapshot, caseMethodGaps.length]);
+
+  useEffect(() => {
+    const signalKey = `${Math.round(regionalKernel.dataFabric.overallConfidence * 100)}-${regionalKernel.dataFabric.overallFreshnessHours}-${regionalKernel.governanceReadiness}`;
+    if (lastKernelSignalRef.current === signalKey) return;
+
+    if (regionalKernel.dataFabric.overallFreshnessHours > 14 || regionalKernel.governanceReadiness < 75) {
+      lastKernelSignalRef.current = signalKey;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: 'system',
+          content: `Autonomous cycle trigger fired: Sense → Analyze → Replan. Data freshness is ${regionalKernel.dataFabric.overallFreshnessHours}h and governance readiness is ${regionalKernel.governanceReadiness}%.`,
+          timestamp: new Date(),
+          phase: currentPhase
+        }
+      ]);
+    }
+  }, [regionalKernel, currentPhase]);
+
+  const realLifeMatterPack = useMemo(() => {
+    const lines = [
+      `Person: ${caseStudy.userName || 'Not provided'} (${caseStudy.contactRole || 'Role not provided'})`,
+      `Organization: ${caseStudy.organizationName || 'Not provided'} (${caseStudy.organizationType || 'Type not provided'})`,
+      `Where: ${caseStudy.country || 'Country missing'} / ${caseStudy.jurisdiction || 'Jurisdiction missing'}`,
+      `Mandate: ${caseStudy.organizationMandate || 'Mandate not provided'}`,
+      `Situation: ${caseStudy.currentMatter || 'Situation missing'}`,
+      `Objective: ${caseStudy.objectives || 'Objective missing'}`,
+      `Audience: ${caseStudy.targetAudience || 'Audience missing'}`,
+      `Deadline: ${caseStudy.decisionDeadline || 'Deadline missing'}`,
+      `Constraints: ${caseStudy.constraints || 'Constraints missing'}`,
+      `Evidence assets: ${caseStudy.uploadedDocuments.length} uploaded file(s), ${caseStudy.additionalContext.length} context note(s), ${caseStudy.aiInsights.length} AI insight(s)`,
+      `Pilot add-ons: ${pilotSelectedAddOns.length > 0 ? pilotSelectedAddOns.map((id) => pilotAllOptions.get(id)?.label || id).join(', ') : 'none selected'}`,
+      `Global issue pack: ${activeIssuePack.label}`,
+      `Case method gaps: ${caseMethodGaps.length > 0 ? caseMethodGaps.join(', ') : 'none'}`,
+      `Regional kernel readiness: ${regionalKernel.governanceReadiness}%`
+    ];
+    return lines.join('\n');
+  }, [caseStudy, pilotSelectedAddOns, pilotAllOptions, activeIssuePack.label, caseMethodGaps, regionalKernel.governanceReadiness]);
+
+  const pilotSelectedAddOnPrompts = useMemo(() => {
+    return pilotSelectedAddOns
+      .map((id) => pilotAllOptions.get(id))
+      .filter((option): option is { id: string; label: string; prompt: string } => Boolean(option))
+      .map((option) => `- ${option.prompt}`)
+      .join('\n');
+  }, [pilotSelectedAddOns, pilotAllOptions]);
+
+  const outputDepthSpec = useMemo(() => {
+    if (outputDepth === 'brief-1') {
+      return {
+        label: '1-Page Brief',
+        instruction: 'Generate a concise one-page executive brief (approximately 450-700 words) with only critical decision facts and immediate next actions.'
+      };
+    }
+
+    if (outputDepth === 'report-20') {
+      return {
+        label: '20-Page Report',
+        instruction: 'Generate a deep strategic report equivalent of up to 20 pages (approximately 7000-10000 words) with full analysis, scenarios, implementation roadmap, risks, and annex-ready structure.'
+      };
+    }
+
+    return {
+      label: '5-Page Memo',
+      instruction: 'Generate a mid-depth strategic memo of about 5 pages (approximately 1800-2800 words) balancing decision clarity and actionable detail.'
+    };
+  }, [outputDepth]);
+
+  const handlePilotApplyMove = useCallback((move: string) => {
+    setCurrentPhase('discovery');
+    setInputValue(move);
+    setCaseStudy((prev) => ({
+      ...prev,
+      additionalContext: [...prev.additionalContext, `Pilot recommendation: ${move}`]
+    }));
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Pilot Mode applied: ${move}`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+  }, []);
+
+  const handleApplyPilotOption = useCallback((optionId: string) => {
+    const option = pilotAllOptions.get(optionId);
+    if (!option) return;
+
+    setCurrentPhase('discovery');
+    setInputValue(option.prompt);
+
+    setPilotSelectedAddOns((prev) => (prev.includes(optionId) ? prev : [...prev, optionId]));
+    setPilotOptionMemory((prev) => ({
+      ...prev,
+      [optionId]: {
+        label: option.label,
+        prompt: option.prompt
+      }
+    }));
+
+    setCaseStudy((prev) => ({
+      ...prev,
+      additionalContext: prev.additionalContext.includes(`Pilot add-on: ${option.label}`)
+        ? prev.additionalContext
+        : [...prev.additionalContext, `Pilot add-on: ${option.label}`]
+    }));
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Pilot option added to case build: ${option.label}`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+  }, [pilotAllOptions]);
+
+  const handleAddCustomPilotOption = useCallback(() => {
+    const text = customPilotOptionInput.trim();
+    if (!text) return;
+
+    const optionId = `custom-${Date.now()}`;
+    const option = {
+      id: optionId,
+      label: text.length > 48 ? `${text.slice(0, 45)}...` : text,
+      prompt: text
+    };
+
+    setCustomPilotOptions((prev) => [option, ...prev].slice(0, 10));
+    setCustomPilotOptionInput('');
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Custom Pilot option added: ${option.label}`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+  }, [customPilotOptionInput]);
 
   useEffect(() => {
     setReadinessScore(computeReadiness(caseStudy));
@@ -411,7 +1108,7 @@ Let's start properly:
       ['.txt', '.md', '.csv', '.json', '.html', '.xml', '.ts', '.tsx', '.js', '.jsx', '.pdf'].some(ext => lowerName.endsWith(ext));
     
     if (!isText || lowerName.endsWith('.pdf')) {
-      return `[${file.name}] — Document uploaded (content extraction requires processing)`;
+      return `[${file.name}] — Binary document uploaded and indexed by filename for evidence tracking`;
     }
     
     try {
@@ -434,6 +1131,12 @@ ${JSON.stringify(caseStudy, null, 2)}
 Applicable policy pack:
 ${JSON.stringify(policyPack, null, 2)}
 
+Consultant intelligence profile:
+${consultantCaseBrief}
+
+Consultant gate status:
+${consultantGateReady ? 'READY' : `BLOCKED: ${consultantGateMissing.join('; ')}`}
+
 User's latest input: "${userInput}"
 Phase context: ${context}
 
@@ -450,6 +1153,12 @@ Policy pack execution rules:
 - Ensure required letters are reflected: ${policyPack.requiredLetters.join(', ')}
 - Emphasize compliance focus: ${policyPack.complianceFocus.join(', ')}
 
+Consultant operating rules:
+- Always anchor advice on WHO the client is, WHERE they operate, and WHAT they want to achieve.
+- Build the case file like a consultant: facts, assumptions, risks, options, recommendation.
+- If data is incomplete, ask the single highest-value question that improves decision quality.
+- Convert provided information into action-oriented outputs, not generic commentary.
+
 Respond naturally and helpfully. If in intake/discovery, end with a clarifying question. Keep responses focused and actionable.`;
 
       const response = await chatSession.current.sendMessage({ 
@@ -461,7 +1170,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       console.error('AI processing error:', error);
       return "I'm having trouble connecting to my analysis engine. Let me continue with what I understand so far.";
     }
-  }, [currentPhase, caseStudy, resolvePolicyPack]);
+  }, [currentPhase, caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
 
   // Handle intake progression
   const progressIntake = useCallback((userResponse: string) => {
@@ -830,6 +1539,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     if (!inputValue.trim() && uploadedFiles.length === 0) return;
 
     let userContent = inputValue.trim();
+    const extractedSignals = extractConsultantSignals(userContent);
     
     const discoveredDocs: DocumentOption[] = [];
 
@@ -907,6 +1617,34 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       }
     }
 
+    const hasSignalUpdate = Boolean(
+      extractedSignals.userName ||
+      extractedSignals.country ||
+      extractedSignals.jurisdiction ||
+      extractedSignals.objectives ||
+      extractedSignals.targetAudience ||
+      extractedSignals.decisionDeadline ||
+      extractedSignals.evidenceNote
+    );
+
+    if (hasSignalUpdate) {
+      setCaseStudy(prev => {
+        const next = { ...prev };
+
+        if (extractedSignals.userName && !next.userName.trim()) next.userName = extractedSignals.userName;
+        if (extractedSignals.country && !next.country.trim()) next.country = extractedSignals.country;
+        if (extractedSignals.jurisdiction && !next.jurisdiction.trim()) next.jurisdiction = extractedSignals.jurisdiction;
+        if (extractedSignals.targetAudience && !next.targetAudience.trim()) next.targetAudience = extractedSignals.targetAudience;
+        if (extractedSignals.decisionDeadline && !next.decisionDeadline.trim()) next.decisionDeadline = extractedSignals.decisionDeadline;
+        if (extractedSignals.objectives && next.objectives.trim().length < 20) next.objectives = extractedSignals.objectives;
+        if (extractedSignals.evidenceNote && !next.additionalContext.some((entry) => entry === `Evidence Note: ${extractedSignals.evidenceNote}`)) {
+          next.additionalContext = [...next.additionalContext, `Evidence Note: ${extractedSignals.evidenceNote}`];
+        }
+
+        return next;
+      });
+    }
+
     // Add user message
     const userMessage: Message = {
       id: crypto.randomUUID(),
@@ -973,7 +1711,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         // AI-driven discovery
         responseContent = await processWithAI(
           userContent,
-          `Continue gathering information. If you have enough context (organization, situation, objectives, constraints, key details), transition to analysis by summarizing what you understand and asking if anything is missing. Otherwise, ask another clarifying question.`
+          `Continue gathering information with consultant precision. Prioritize decision-owner identity, operating geography/jurisdiction, and measurable objective. If enough context exists, transition to analysis with a concise case synthesis and ask what is still missing.`
         );
         
         setCaseStudy(prev => ({
@@ -998,9 +1736,11 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
 
         // Check if ready to move to recommendations
         const discoveryCount = messages.filter(m => m.phase === 'discovery' && m.role === 'user').length;
-        if (liveReadiness >= 80 || discoveryCount >= 5) {
+        if (consultantGateReady && (liveReadiness >= 80 || discoveryCount >= 5)) {
           setCurrentPhase('analysis');
           generateRecommendations();
+        } else if (!consultantGateReady) {
+          responseContent += `\n\nConsultant gate is still blocked. Provide these missing essentials:\n- ${consultantGateMissing.slice(0, 4).join('\n- ')}`;
         } else if (adaptiveFollowUp && adaptiveQuestionsAsked < 4) {
           responseContent += `\n\nTo improve your case precision, I need one more detail:\n${adaptiveFollowUp}`;
           setAdaptiveQuestionsAsked(prev => prev + 1);
@@ -1008,12 +1748,15 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       } else if (currentPhase === 'analysis') {
         responseContent = await processWithAI(
           userContent,
-          `You are now analyzing the case. Provide a brief synthesis of what you understand, identify key insights, and transition to recommending specific documents that would help this situation.`
+          `You are now analyzing the case. Provide a consultant-grade synthesis covering: (1) client profile and origin, (2) objective to achieve, (3) constraints/risks, (4) decision options, and then transition to the most relevant documents.`
         );
         setCurrentPhase('recommendations');
         generateRecommendations();
       } else if (currentPhase === 'recommendations') {
-        if (readinessScore < 80) {
+        if (!consultantGateReady) {
+          setCurrentPhase('discovery');
+          responseContent = `Before recommendations, consultant gate requirements are missing:\n- ${consultantGateMissing.join('\n- ')}\n\nPlease provide these so I can produce decision-grade outputs.`;
+        } else if (readinessScore < 80) {
           setCurrentPhase('discovery');
           responseContent = `Your case file readiness is currently ${readinessScore}%. I need a little more information before recommending final outputs. Please provide more detail on stakeholders, evidence, and decision constraints.`;
         } else {
@@ -1070,6 +1813,9 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     readinessScore,
     skillLevel,
     toAgenticParams
+    ,extractConsultantSignals
+    ,consultantGateReady
+    ,consultantGateMissing
   ]);
 
   // Handle file selection
@@ -1396,12 +2142,15 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       return next;
     });
 
+    const nextGap = gaps[1];
+
+    setCurrentPhase('discovery');
     setMessages((prev) => [
       ...prev,
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Captured top-gap input for ${topGap.label}. Updated fields: ${applied.join(', ') || 'case context'} and reprioritized remaining gaps.`,
+        content: `Captured top-gap input for ${topGap.label}. Updated fields: ${applied.join(', ') || 'case context'} and reprioritized remaining gaps.${nextGap ? `\n\nNext critical gap: ${nextGap.label}\n${nextGap.question}` : '\n\nNo immediate critical gap remains. Continue with discovery or proceed to recommendations.'}`,
         timestamp: new Date(),
         phase: 'discovery'
       }
@@ -1433,7 +2182,38 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
 
   // Generate selected documents
   const handleGenerateDocuments = useCallback(async () => {
-    if (selectedDocs.length === 0) return;
+    const effectiveDocIds = generationScope === 'selected'
+      ? selectedDocs
+      : recommendedDocs
+          .filter((doc) => generationScope === 'letters-only' ? doc.category === 'letter' : doc.category === 'report')
+          .map((doc) => doc.id);
+
+    if (effectiveDocIds.length === 0) {
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: generationScope === 'letters-only'
+          ? 'No letter outputs are currently available. Add or select letter-type outputs first.'
+          : generationScope === 'reports-only'
+            ? 'No report outputs are currently available. Add or select report-type outputs first.'
+            : 'Select at least one output before generation.',
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
+
+    if (!consultantGateReady) {
+      setCurrentPhase('discovery');
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Generation blocked by consultant gate. Complete these required inputs first:\n- ${consultantGateMissing.join('\n- ')}`,
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
 
     const criticalCaseGaps = getCriticalCaseGaps();
     if (criticalCaseGaps.length > 0) {
@@ -1442,6 +2222,18 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         id: crypto.randomUUID(),
         role: 'assistant',
         content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" or "Resolve Top Gap" to close the highest-impact gap first.`,
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
+
+    if (caseMethodGaps.length > 0) {
+      setCurrentPhase('discovery');
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Generation blocked by Case Study Method Layer. Resolve these first:\n- ${caseMethodGaps.join('\n- ')}`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
@@ -1475,18 +2267,47 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setFeedbackNote('');
     setFeedbackSubmitted(false);
     
-    const docNames = selectedDocs.map(id => recommendedDocs.find(d => d.id === id)?.title).filter(Boolean).join(', ');
+    const docNames = effectiveDocIds.map(id => recommendedDocs.find(d => d.id === id)?.title).filter(Boolean).join(', ');
     
     try {
       const response = await processWithAI(
         `Generate the following documents: ${docNames}`,
         `Based on the complete case study, generate professional document content for: ${docNames}. Format with proper markdown headings, sections, and professional language. Include all relevant details from the case study.
 
+      Consultant profile to anchor outputs:
+      ${consultantCaseBrief}
+
+    Real-life matter pack (must be reflected in writing):
+    ${realLifeMatterPack}
+
+    Pilot expansion requirements:
+    ${pilotSelectedAddOnPrompts || '- None selected'}
+
+    Regional development kernel (apply directly):
+    - Active issue pack: ${activeIssuePack.label}
+    - Governance readiness: ${regionalKernel.governanceReadiness}%
+    - Top interventions: ${regionalKernel.interventions.slice(0, 3).map((item) => `${item.title} (${item.score}%)`).join('; ')}
+    - Top partners: ${regionalKernel.partners.slice(0, 3).map((item) => `${item.partner.name} (${item.score.total}%)`).join('; ')}
+    - Problem graph roots: ${regionalKernel.graph.rootCauses.map((node) => node.label).join(' | ')}
+    - Data fabric confidence/freshness: ${Math.round(regionalKernel.dataFabric.overallConfidence * 100)}% / ${regionalKernel.dataFabric.overallFreshnessHours}h
+
+    Output depth requirement:
+    ${outputDepthSpec.label} — ${outputDepthSpec.instruction}
+
 Each selected output must include:
 - Why this output is appropriate for ${caseStudy.targetAudience || 'the target audience'}
 - Estimated page length
 - Required support documents/annexures
-- Contact letter guidance where relevant`
+      - Contact letter guidance where relevant
+
+    Write as an exacting consultant: concise, evidence-aware, and decision-oriented.
+
+    Letter/report quality rules:
+    - Do not produce generic template language.
+    - Explicitly identify the real-world matter, counterparts, and decision stakes.
+    - Use concrete facts from the matter pack; where facts are missing, state "Data required" and ask for the exact missing evidence.
+    - Tailor tone and structure to the stated audience and jurisdiction.
+    - Ensure outputs are implementation-capable with actions, owners, and timeline markers.`
       );
       
       setGeneratedContent(response);
@@ -1504,7 +2325,7 @@ Each selected output must include:
     } finally {
       setIsLoading(false);
     }
-  }, [selectedDocs, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience, getCriticalCaseGaps]);
+  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, pilotSelectedAddOnPrompts, outputDepthSpec, caseMethodGaps, activeIssuePack.label, regionalKernel]);
 
   // Phase indicator
   const phaseLabels: Record<CasePhase, { label: string; description: string }> = {
@@ -1542,6 +2363,306 @@ Each selected output must include:
     .sort((a, b) => a.boost - b.boost)
     .slice(0, 2);
 
+  const missionAuditEvents = useMemo(() => {
+    if (!missionSnapshot) return [] as Array<{ timestamp: string; type: 'governance' | 'execution' | 'outcome'; summary: string }>;
+
+    const governanceEvents = missionSnapshot.governanceDecisions.map((decision) => ({
+      timestamp: decision.timestamp,
+      type: 'governance' as const,
+      summary: `${decision.taskId}: ${decision.decision.toUpperCase()} (${decision.reasons[0] || 'No reason recorded'})`
+    }));
+
+    const executionEvents = missionSnapshot.executionRecords.map((record) => ({
+      timestamp: record.finishedAt,
+      type: 'execution' as const,
+      summary: `${record.taskId}: ${record.status.toUpperCase()} (retries ${record.retries})`
+    }));
+
+    const outcomeEvents = missionSnapshot.latestOutcomes.map((outcome) => ({
+      timestamp: missionSnapshot.executionRecords.find((record) => record.taskId === outcome.taskId)?.finishedAt || missionSnapshot.mission.updatedAt,
+      type: 'outcome' as const,
+      summary: `${outcome.taskId}: ${outcome.verdict.toUpperCase()} (variance ${outcome.variance})`
+    }));
+
+    return [...governanceEvents, ...executionEvents, ...outcomeEvents]
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, 12);
+  }, [missionSnapshot]);
+
+  const missionAuditExportPayload = useMemo(() => {
+    if (!missionSnapshot) return null;
+
+    return {
+      exportedAt: new Date().toISOString(),
+      mission: {
+        missionId: missionSnapshot.mission.missionId,
+        objective: missionSnapshot.mission.objective,
+        status: missionSnapshot.mission.status,
+        createdAt: missionSnapshot.mission.createdAt,
+        updatedAt: missionSnapshot.mission.updatedAt,
+        autonomyPaused: missionSnapshot.autonomyPaused
+      },
+      summary: {
+        adaptationScore: Math.round(missionSnapshot.verificationSummary?.adaptationScore ?? 0),
+        governanceDecisions: missionSnapshot.governanceDecisions.length,
+        executionRecords: missionSnapshot.executionRecords.length,
+        outcomes: missionSnapshot.latestOutcomes.length,
+        eventsExported: missionAuditEvents.length
+      },
+      verification: missionSnapshot.verificationSummary ?? null,
+      events: missionAuditEvents
+    };
+  }, [missionSnapshot, missionAuditEvents]);
+
+  const missionAuditCsvContent = useMemo(() => {
+    if (!missionSnapshot || missionAuditEvents.length === 0) return '';
+
+    const escapeCsvValue = (value: string | number | null | undefined) => {
+      const normalized = String(value ?? '').replace(/"/g, '""');
+      return `"${normalized}"`;
+    };
+
+    const rows = missionAuditEvents.map((event) => [
+      event.timestamp,
+      event.type,
+      event.summary,
+      missionSnapshot.mission.missionId,
+      missionSnapshot.mission.status,
+      Math.round(missionSnapshot.verificationSummary?.adaptationScore ?? 0)
+    ]);
+
+    const header = ['timestamp', 'type', 'summary', 'missionId', 'missionStatus', 'adaptationScore'];
+
+    return [header, ...rows]
+      .map((row) => row.map((value) => escapeCsvValue(value)).join(','))
+      .join('\n');
+  }, [missionSnapshot, missionAuditEvents]);
+
+  const triggerFileDownload = useCallback((content: string, filename: string, mimeType: string) => {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, []);
+
+  const handleExportMissionAuditJson = useCallback(() => {
+    if (!missionAuditExportPayload) return;
+
+    triggerFileDownload(
+      JSON.stringify(missionAuditExportPayload, null, 2),
+      `bw-autonomy-audit-${Date.now()}.json`,
+      'application/json'
+    );
+  }, [missionAuditExportPayload, triggerFileDownload]);
+
+  const handleExportMissionAuditCsv = useCallback(() => {
+    if (!missionAuditCsvContent) return;
+
+    triggerFileDownload(
+      missionAuditCsvContent,
+      `bw-autonomy-audit-${Date.now()}.csv`,
+      'text/csv;charset=utf-8'
+    );
+  }, [missionAuditCsvContent, triggerFileDownload]);
+
+  const missionAuditComplianceSummary = useMemo(() => {
+    if (!missionSnapshot || !missionAuditExportPayload) return '';
+
+    const adaptationScore = Math.round(missionSnapshot.verificationSummary?.adaptationScore ?? 0);
+    const strategyAdjustments = missionSnapshot.verificationSummary?.strategyAdjustments ?? [];
+    const replanSignals = missionSnapshot.verificationSummary?.replanSignals ?? [];
+
+    const sections: string[] = [
+      '# BW Nexus Autonomous Audit Compliance Summary',
+      '',
+      `Generated: ${new Date().toISOString()}`,
+      '',
+      '## Mission Profile',
+      `- Mission ID: ${missionSnapshot.mission.missionId}`,
+      `- Objective: ${missionSnapshot.mission.objective}`,
+      `- Status: ${missionSnapshot.mission.status}`,
+      `- Created At: ${missionSnapshot.mission.createdAt}`,
+      `- Updated At: ${missionSnapshot.mission.updatedAt}`,
+      `- Autonomy Paused: ${missionSnapshot.autonomyPaused ? 'Yes' : 'No'}`,
+      '',
+      '## Governance & Execution Overview',
+      `- Adaptation Score: ${adaptationScore}%`,
+      `- Governance Decisions: ${missionAuditExportPayload.summary.governanceDecisions}`,
+      `- Execution Records: ${missionAuditExportPayload.summary.executionRecords}`,
+      `- Outcomes: ${missionAuditExportPayload.summary.outcomes}`,
+      `- Timeline Events Included: ${missionAuditExportPayload.summary.eventsExported}`,
+      '',
+      '## Strategy Adjustments',
+      ...(strategyAdjustments.length > 0
+        ? strategyAdjustments.map((adjustment) => `- ${adjustment}`)
+        : ['- No strategy adjustments recorded.']),
+      '',
+      '## Replan Signals',
+      ...(replanSignals.length > 0
+        ? replanSignals.map((signal) => `- ${signal}`)
+        : ['- No replan signals recorded.']),
+      '',
+      '## Event Timeline'
+    ];
+
+    if (missionAuditEvents.length === 0) {
+      sections.push('- No timeline events available.');
+    } else {
+      missionAuditEvents.forEach((event, index) => {
+        sections.push(
+          `${index + 1}. [${event.type.toUpperCase()}] ${event.timestamp} — ${event.summary}`
+        );
+      });
+    }
+
+    return sections.join('\n');
+  }, [missionSnapshot, missionAuditExportPayload, missionAuditEvents]);
+
+  const handleExportMissionComplianceSummary = useCallback(() => {
+    if (!missionAuditComplianceSummary) return;
+
+    triggerFileDownload(
+      missionAuditComplianceSummary,
+      `bw-autonomy-audit-compliance-${Date.now()}.md`,
+      'text/markdown;charset=utf-8'
+    );
+  }, [missionAuditComplianceSummary, triggerFileDownload]);
+
+  const escapeReportHtml = useCallback((value: string) => {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }, []);
+
+  const handlePrintMissionCompliancePdf = useCallback(() => {
+    if (!missionSnapshot || !missionAuditExportPayload) return;
+
+    const adaptationScore = Math.round(missionSnapshot.verificationSummary?.adaptationScore ?? 0);
+    const strategyAdjustments = missionSnapshot.verificationSummary?.strategyAdjustments ?? [];
+    const replanSignals = missionSnapshot.verificationSummary?.replanSignals ?? [];
+    const openedWindow = window.open('', '_blank', 'noopener,noreferrer,width=1024,height=768');
+    if (!openedWindow) return;
+
+    const timelineRows = missionAuditEvents.length > 0
+      ? missionAuditEvents
+          .map((event) => {
+            return `<tr>
+              <td>${escapeReportHtml(new Date(event.timestamp).toLocaleString())}</td>
+              <td>${escapeReportHtml(event.type.toUpperCase())}</td>
+              <td>${escapeReportHtml(event.summary)}</td>
+            </tr>`;
+          })
+          .join('')
+      : '<tr><td colspan="3">No timeline events available.</td></tr>';
+
+    const strategyList = strategyAdjustments.length > 0
+      ? strategyAdjustments.map((item) => `<li>${escapeReportHtml(item)}</li>`).join('')
+      : '<li>No strategy adjustments recorded.</li>';
+
+    const replanList = replanSignals.length > 0
+      ? replanSignals.map((item) => `<li>${escapeReportHtml(item)}</li>`).join('')
+      : '<li>No replan signals recorded.</li>';
+
+    const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BW Autonomy Audit Compliance Report</title>
+    <style>
+      @page { margin: 0.75in; }
+      body { font-family: Arial, Helvetica, sans-serif; color: #0f172a; font-size: 12px; line-height: 1.4; }
+      h1 { font-size: 20px; margin: 0 0 8px 0; }
+      h2 { font-size: 14px; margin: 18px 0 6px 0; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
+      p { margin: 0 0 8px 0; }
+      ul { margin: 0; padding-left: 18px; }
+      li { margin: 0 0 4px 0; }
+      .meta { color: #475569; margin-bottom: 12px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+      .card { border: 1px solid #cbd5e1; padding: 8px 10px; background: #f8fafc; }
+      table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+      th, td { border: 1px solid #cbd5e1; text-align: left; vertical-align: top; padding: 6px; }
+      th { background: #e2e8f0; }
+      .footer { margin-top: 16px; color: #64748b; font-size: 11px; }
+    </style>
+  </head>
+  <body>
+    <h1>BW Nexus Autonomous Audit Compliance Summary</h1>
+    <p class="meta">Generated: ${escapeReportHtml(new Date().toISOString())}</p>
+
+    <h2>Mission Profile</h2>
+    <div class="grid">
+      <div class="card"><strong>Mission ID:</strong> ${escapeReportHtml(missionSnapshot.mission.missionId)}</div>
+      <div class="card"><strong>Status:</strong> ${escapeReportHtml(missionSnapshot.mission.status)}</div>
+      <div class="card"><strong>Created At:</strong> ${escapeReportHtml(missionSnapshot.mission.createdAt)}</div>
+      <div class="card"><strong>Updated At:</strong> ${escapeReportHtml(missionSnapshot.mission.updatedAt)}</div>
+      <div class="card"><strong>Autonomy Paused:</strong> ${missionSnapshot.autonomyPaused ? 'Yes' : 'No'}</div>
+      <div class="card"><strong>Objective:</strong> ${escapeReportHtml(missionSnapshot.mission.objective)}</div>
+    </div>
+
+    <h2>Governance & Execution Overview</h2>
+    <div class="grid">
+      <div class="card"><strong>Adaptation Score:</strong> ${adaptationScore}%</div>
+      <div class="card"><strong>Governance Decisions:</strong> ${missionAuditExportPayload.summary.governanceDecisions}</div>
+      <div class="card"><strong>Execution Records:</strong> ${missionAuditExportPayload.summary.executionRecords}</div>
+      <div class="card"><strong>Outcomes:</strong> ${missionAuditExportPayload.summary.outcomes}</div>
+      <div class="card"><strong>Timeline Events Included:</strong> ${missionAuditExportPayload.summary.eventsExported}</div>
+    </div>
+
+    <h2>Strategy Adjustments</h2>
+    <ul>${strategyList}</ul>
+
+    <h2>Replan Signals</h2>
+    <ul>${replanList}</ul>
+
+    <h2>Event Timeline</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Type</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${timelineRows}
+      </tbody>
+    </table>
+
+    <p class="footer">Exported from BW Consultant OS autonomous mission audit timeline.</p>
+  </body>
+</html>`;
+
+    openedWindow.document.open();
+    openedWindow.document.write(html);
+    openedWindow.document.close();
+
+    const fallbackCloseTimer = openedWindow.setTimeout(() => {
+      try {
+        openedWindow.close();
+      } catch {
+        return;
+      }
+    }, 45000);
+
+    openedWindow.onafterprint = () => {
+      openedWindow.clearTimeout(fallbackCloseTimer);
+      try {
+        openedWindow.close();
+      } catch {
+        return;
+      }
+    };
+
+    openedWindow.focus();
+    openedWindow.print();
+  }, [missionSnapshot, missionAuditExportPayload, missionAuditEvents, escapeReportHtml]);
+
   const criticalCaseGaps = getCriticalCaseGaps();
   const topCriticalGap = criticalCaseGaps[0] || null;
   const gapSeverityCounts = criticalCaseGaps.reduce<Record<CriticalGapSeverity, number>>(
@@ -1551,6 +2672,71 @@ Each selected output must include:
     },
     { critical: 0, high: 0, medium: 0 }
   );
+
+  const missionCaseInput = useMemo(() => ({
+    organizationName: caseStudy.organizationName,
+    currentMatter: caseStudy.currentMatter,
+    objectives: caseStudy.objectives,
+    constraints: caseStudy.constraints,
+    targetAudience: caseStudy.targetAudience,
+    decisionDeadline: caseStudy.decisionDeadline,
+    readinessScore,
+    criticalGapCount: criticalCaseGaps.length,
+    topCriticalGap: topCriticalGap?.label,
+    recommendedTitles: recommendedDocs.map((doc) => doc.title)
+  }), [
+    caseStudy.organizationName,
+    caseStudy.currentMatter,
+    caseStudy.objectives,
+    caseStudy.constraints,
+    caseStudy.targetAudience,
+    caseStudy.decisionDeadline,
+    readinessScore,
+    criticalCaseGaps.length,
+    topCriticalGap?.label,
+    recommendedDocs
+  ]);
+
+  useEffect(() => {
+    const hasMissionSignal = Boolean(
+      caseStudy.organizationName.trim() ||
+      caseStudy.currentMatter.trim() ||
+      caseStudy.objectives.trim()
+    );
+
+    if (!hasMissionSignal) {
+      setMissionSnapshot(null);
+      return;
+    }
+
+    const snapshot = MissionGraphService.upsertFromCaseInput(missionCaseInput);
+
+    setMissionSnapshot(snapshot);
+  }, [
+    caseStudy.organizationName,
+    caseStudy.currentMatter,
+    caseStudy.objectives,
+    missionCaseInput
+  ]);
+
+  const handleRunAutonomyCycle = useCallback(() => {
+    const snapshot = MissionGraphService.runCycleFromCaseInput(missionCaseInput);
+    setMissionSnapshot(snapshot);
+  }, [missionCaseInput]);
+
+  const handleToggleAutonomyPause = useCallback(() => {
+    const snapshot = MissionGraphService.setAutonomyPaused(!(missionSnapshot?.autonomyPaused ?? false));
+    if (snapshot) {
+      setMissionSnapshot(snapshot);
+    }
+  }, [missionSnapshot?.autonomyPaused]);
+
+  const handleApproveManualMissionTasks = useCallback(() => {
+    const snapshot = MissionGraphService.approveManualTasks();
+    if (snapshot) {
+      setMissionSnapshot(snapshot);
+    }
+  }, []);
 
   const getRankGapKeys = useCallback((alternativeId: string) => {
     if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
@@ -1828,6 +3014,13 @@ Each selected output must include:
             <Maximize2 size={16} />
             Full Analysis
           </button>
+          <button
+            onClick={() => setShowPilotWindow((prev) => !prev)}
+            className="relative z-10 ml-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium flex items-center gap-2 border border-white/20 transition-all"
+          >
+            <Globe size={16} />
+            {showPilotWindow ? 'Close Pilot Mode' : 'Pilot Mode'}
+          </button>
         </div>
 
         {/* Main Content */}
@@ -1835,7 +3028,7 @@ Each selected output must include:
           {/* Chat Panel */}
           <div className="flex-1 flex flex-col bg-stone-50">
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <Bot size={40} className="text-blue-200 mb-4" />
@@ -2016,6 +3209,64 @@ Each selected output must include:
                 <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200 capitalize">
                   {skillLevel}
                 </span>
+                <span className={`px-2 py-1 border font-semibold ${
+                  pilotModeEnabled
+                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                    : 'bg-slate-100 text-slate-500 border-slate-200'
+                }`}>
+                  Pilot: {pilotModeEnabled ? `${pilotReadiness}%` : 'Off'}
+                </span>
+              </div>
+              <div className="mt-2 border border-stone-200 bg-white px-2 py-1 text-[11px]">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-semibold text-slate-700">Pilot Advisor</span>
+                  <button
+                    type="button"
+                    onClick={() => setPilotModeEnabled((prev) => !prev)}
+                    className={`px-1.5 py-0.5 border text-[10px] ${
+                      pilotModeEnabled
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                    }`}
+                  >
+                    {pilotModeEnabled ? 'Enabled' : 'Disabled'}
+                  </button>
+                </div>
+                {pilotModeEnabled && (
+                  <>
+                    <p className="mt-1 text-[10px] text-slate-600">
+                      Focus: {pilotFocus.replace('-', ' ')} • Add-ons: {pilotSelectedAddOns.length}
+                    </p>
+                    {pilotFailureAlerts.length > 0 && (
+                      <ul className="mt-1 space-y-1">
+                        {pilotFailureAlerts.slice(0, 2).map((alert, index) => (
+                          <li key={`${alert}-${index}`} className="text-[10px] text-amber-700">• {alert}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="mt-2 border border-stone-200 bg-white px-2 py-1 text-[11px]">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-semibold text-slate-700">Consultant Gate</span>
+                  <span className={`px-1.5 py-0.5 border ${
+                    consultantGateReady
+                      ? 'bg-green-50 text-green-700 border-green-200'
+                      : 'bg-amber-50 text-amber-700 border-amber-200'
+                  }`}>
+                    {consultantGateReady ? 'READY' : 'BLOCKED'}
+                  </span>
+                </div>
+                {!consultantGateReady && (
+                  <ul className="mt-1 space-y-1">
+                    {consultantGateMissing.slice(0, 4).map((missingItem, index) => (
+                      <li key={`${missingItem}-${index}`} className="text-[10px] text-slate-600">
+                        • {missingItem}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="mt-2 text-[11px] bg-white border border-stone-200 px-2 py-1">
                 <div className="flex items-center justify-between gap-2">
@@ -2239,7 +3490,176 @@ Each selected output must include:
                   </div>
                 )}
               </div>
+
+              <div className="mt-3 border border-stone-200 bg-white p-2 text-[11px]">
+                <p className="font-semibold text-slate-800">Consultant Intelligence</p>
+                <p className="mt-1 text-slate-700"><span className="font-semibold">Client:</span> {consultantCaseProfile.personSummary}</p>
+                <p className="mt-1 text-slate-700"><span className="font-semibold">From:</span> {consultantCaseProfile.originSummary}</p>
+                <p className="mt-1 text-slate-700"><span className="font-semibold">Wants to achieve:</span> {consultantCaseProfile.achievementSummary}</p>
+                <p className="mt-1 text-slate-600"><span className="font-semibold">Evidence:</span> {consultantCaseProfile.evidenceSummary}</p>
+                <div className="mt-1">
+                  <p className="font-semibold text-slate-700">Next Consultant Moves</p>
+                  <ul className="mt-1 space-y-1">
+                    {consultantCaseProfile.nextConsultantActions.map((action, index) => (
+                      <li key={`${action}-${index}`} className="text-slate-600">• {action}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
+
+            {missionSnapshot && (
+              <div className="p-4 border-b border-stone-200 bg-white">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="text-sm font-bold text-slate-900">Mission Panel</h3>
+                  {missionSnapshot.autonomyPaused && (
+                    <span className="text-[10px] px-1.5 py-0.5 border bg-amber-50 text-amber-700 border-amber-200">
+                      PAUSED
+                    </span>
+                  )}
+                </div>
+                <div className="mb-2 flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={handleRunAutonomyCycle}
+                    className="text-[10px] px-2 py-1 border border-blue-300 bg-white text-blue-700 hover:bg-blue-50"
+                  >
+                    Run Cycle
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleToggleAutonomyPause}
+                    className="text-[10px] px-2 py-1 border border-stone-300 bg-white text-slate-700 hover:bg-stone-50"
+                  >
+                    {missionSnapshot.autonomyPaused ? 'Resume' : 'Pause'} Autonomy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleApproveManualMissionTasks}
+                    disabled={!missionSnapshot.governanceDecisions.some((decision) => decision.decision === 'review-required')}
+                    className={`text-[10px] px-2 py-1 border ${
+                      !missionSnapshot.governanceDecisions.some((decision) => decision.decision === 'review-required')
+                        ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                        : 'bg-white text-amber-700 border-amber-300 hover:bg-amber-50'
+                    }`}
+                  >
+                    Approve Manual Tasks
+                  </button>
+                </div>
+                <div className="text-[11px] space-y-1">
+                  <p className="text-slate-600">
+                    <span className="font-semibold text-slate-700">Status:</span>{' '}
+                    <span
+                      className={`px-1.5 py-0.5 border ${
+                        missionSnapshot.governanceStatus === 'green'
+                          ? 'bg-green-50 text-green-700 border-green-200'
+                          : missionSnapshot.governanceStatus === 'amber'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : 'bg-red-50 text-red-700 border-red-200'
+                      }`}
+                    >
+                      {missionSnapshot.mission.status.toUpperCase()} • GOV {missionSnapshot.governanceStatus.toUpperCase()}
+                    </span>
+                  </p>
+                  <p className="text-slate-700">
+                    <span className="font-semibold">Objective:</span> {missionSnapshot.mission.objective}
+                  </p>
+                  <p className="text-slate-600">
+                    <span className="font-semibold">Horizon:</span> {missionSnapshot.mission.horizon || 'Current planning cycle'}
+                  </p>
+                  <p className="text-slate-600">
+                    <span className="font-semibold">Next review:</span>{' '}
+                    {new Date(missionSnapshot.nextReviewAt).toLocaleString()}
+                  </p>
+                  <p className="text-slate-600">
+                    <span className="font-semibold">Governance:</span>{' '}
+                    Approved {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'approved').length} •
+                    Review {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'review-required').length} •
+                    Rejected {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'rejected').length}
+                  </p>
+                  <p className="text-slate-600">
+                    <span className="font-semibold">Executed:</span> {missionSnapshot.executionRecords.length} task run{missionSnapshot.executionRecords.length === 1 ? '' : 's'}
+                  </p>
+                  {missionSnapshot.verificationSummary && (
+                    <>
+                      <p className="text-slate-600">
+                        <span className="font-semibold">Adaptation score:</span>{' '}
+                        {Math.round(missionSnapshot.verificationSummary.adaptationScore)}%
+                      </p>
+                      <p className="text-slate-600">
+                        <span className="font-semibold">Replan:</span>{' '}
+                        {missionSnapshot.verificationSummary.requiresReplan ? 'Required' : 'Stable'}
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {missionSnapshot.verificationSummary && missionSnapshot.verificationSummary.replanSignals.length > 0 && (
+                  <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1.5">
+                    <p className="text-[11px] font-semibold text-amber-800">Replan Signals</p>
+                    <ul className="mt-1 space-y-1">
+                      {missionSnapshot.verificationSummary.replanSignals.slice(0, 3).map((signal, index) => (
+                        <li key={`${signal}-${index}`} className="text-[10px] text-amber-700">
+                          • {signal}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="mt-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Top Goals</p>
+                  <ul className="mt-1 space-y-1">
+                    {missionSnapshot.goals.slice(0, 5).map((goal) => (
+                      <li key={goal.goalId} className="text-[10px] text-slate-600 border border-stone-200 bg-slate-50 px-2 py-1">
+                        {goal.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Next Tasks</p>
+                  <ul className="mt-1 space-y-1">
+                    {missionSnapshot.activePlan.slice(0, 3).map((task) => (
+                      <li key={task.taskId} className="text-[10px] text-slate-600 border border-stone-200 bg-white px-2 py-1">
+                        <div>
+                          <span className="font-semibold text-slate-700">{task.type}</span> — {task.expectedOutcome}
+                        </div>
+                        <div className="mt-1 flex items-center gap-1.5">
+                          <span className={`text-[10px] px-1 py-0.5 border ${
+                            task.status === 'completed'
+                              ? 'bg-green-50 text-green-700 border-green-200'
+                              : task.status === 'failed'
+                                ? 'bg-red-50 text-red-700 border-red-200'
+                                : task.status === 'ready'
+                                  ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                  : 'bg-slate-100 text-slate-600 border-slate-200'
+                          }`}>
+                            {task.status.toUpperCase()}
+                          </span>
+                          <span className="text-[10px] text-slate-500">Risk {task.riskScore}</span>
+                          {task.simulation && (
+                            <>
+                              <span className="text-[10px] text-slate-500">• Base {task.simulation.baseCase}%</span>
+                              <span
+                                className={`text-[10px] px-1 py-0.5 border ${
+                                  task.simulation.recommendedProceed
+                                    ? 'bg-green-50 text-green-700 border-green-200'
+                                    : 'bg-amber-50 text-amber-700 border-amber-200'
+                                }`}
+                              >
+                                {task.simulation.recommendedProceed ? 'Proceed Candidate' : 'Needs Review'}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
 
             {/* Document Recommendations */}
             {(currentPhase === 'recommendations' || currentPhase === 'generation' || recommendedDocs.length > 0) && (
@@ -2414,8 +3834,57 @@ Each selected output must include:
                   </div>
                 )}
 
-                {selectedDocs.length > 0 && currentPhase !== 'generation' && (
+                {recommendedDocs.length > 0 && currentPhase !== 'generation' && (
                   <>
+                    <div className="mt-3 border border-stone-200 bg-white p-2">
+                      <p className="text-[11px] font-semibold text-slate-700">Create Outputs</p>
+                      <div className="mt-1 grid grid-cols-3 gap-1.5">
+                        {([
+                          { id: 'selected', label: 'Selected' },
+                          { id: 'letters-only', label: 'Letters Only' },
+                          { id: 'reports-only', label: 'Reports Only' }
+                        ] as Array<{ id: 'selected' | 'letters-only' | 'reports-only'; label: string }>).map((option) => (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() => setGenerationScope(option.id)}
+                            className={`text-[10px] px-1.5 py-1 border ${
+                              generationScope === option.id
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-3 border border-stone-200 bg-white p-2">
+                      <p className="text-[11px] font-semibold text-slate-700">Document Length</p>
+                      <div className="mt-1 grid grid-cols-3 gap-1.5">
+                        {([
+                          { id: 'brief-1', label: '1-Page Brief' },
+                          { id: 'memo-5', label: '5-Page Memo' },
+                          { id: 'report-20', label: '20-Page Report' }
+                        ] as Array<{ id: 'brief-1' | 'memo-5' | 'report-20'; label: string }>).map((option) => (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() => setOutputDepth(option.id)}
+                            className={`text-[10px] px-1.5 py-1 border ${
+                              outputDepth === option.id
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="mt-1 text-[10px] text-slate-500">Selected: {outputDepthSpec.label}</p>
+                    </div>
+
                     <label className="mt-4 flex items-start gap-2 text-xs text-slate-600">
                       <input
                         type="checkbox"
@@ -2441,7 +3910,7 @@ Each selected output must include:
                         </>
                       ) : (
                         <>
-                          Generate {selectedDocs.length} Document{selectedDocs.length > 1 ? 's' : ''}
+                          Generate {generationScope === 'selected' ? `${selectedDocs.length} Selected` : generationScope === 'letters-only' ? 'Letters' : 'Reports'}
                         </>
                       )}
                     </button>
@@ -2553,6 +4022,282 @@ Each selected output must include:
         </div>
       </div>
 
+        {showPilotWindow && (
+          <div className="fixed top-0 right-0 z-40 h-full w-[380px] border-l border-stone-200 bg-white shadow-2xl">
+            <div className="h-full flex flex-col">
+              <div className="px-4 py-3 border-b border-stone-200 bg-slate-50">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-sm font-bold text-slate-900">Pilot Mode Advisor</h3>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setShowPilotHowTo(true)}
+                      className="px-2 py-1 text-[10px] border border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                    >
+                      How to Use
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowPilotWindow(false)}
+                      className="p-1 border border-stone-300 text-slate-600 hover:bg-stone-100"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-1 text-[11px] text-slate-600">
+                  Global issues + market/government expansion intelligence while constructing the case.
+                </p>
+              </div>
+
+              <div className="p-3 border-b border-stone-200 bg-white">
+                <p className="text-[11px] font-semibold text-slate-700 mb-2">Focus</p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {(['new-markets', 'government-entry', 'partnerships', 'risk-compliance'] as PilotModeFocus[]).map((focus) => (
+                    <button
+                      key={focus}
+                      type="button"
+                      onClick={() => setPilotFocus(focus)}
+                      className={`text-[10px] px-2 py-1 border text-left ${
+                        pilotFocus === focus
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                      }`}
+                    >
+                      {focus.replace('-', ' ')}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-2 border border-stone-200 bg-slate-50 p-2">
+                  <p className="text-[11px] font-semibold text-slate-700 mb-1">Global Issue Packs</p>
+                  <div className="grid grid-cols-2 gap-1">
+                    {GLOBAL_ISSUE_PACKS.map((pack) => (
+                      <button
+                        key={pack.id}
+                        type="button"
+                        onClick={() => setActiveGlobalIssuePack(pack.id)}
+                        className={`text-[10px] px-1.5 py-1 border text-left ${
+                          activeGlobalIssuePack === pack.id
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                        }`}
+                      >
+                        {pack.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-3 space-y-3">
+                <div className="border border-blue-200 bg-blue-50 p-2">
+                  <p className="text-[11px] font-semibold text-blue-800">Regional Development Kernel</p>
+                  <p className="mt-1 text-[10px] text-blue-700">Readiness {regionalKernel.governanceReadiness}% • Data confidence {Math.round(regionalKernel.dataFabric.overallConfidence * 100)}%</p>
+                  <p className="mt-1 text-[10px] text-blue-700">Top partner: {regionalKernel.partners[0]?.partner.name || 'No ranked partner yet'}</p>
+                </div>
+
+                <div className="border border-stone-200 bg-slate-50 p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Failure Detection</p>
+                  {pilotFailureAlerts.length === 0 ? (
+                    <p className="mt-1 text-[10px] text-green-700">No critical pilot risks detected.</p>
+                  ) : (
+                    <ul className="mt-1 space-y-1">
+                      {pilotFailureAlerts.map((alert, index) => (
+                        <li key={`${alert}-${index}`} className="text-[10px] text-amber-700">• {alert}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Case Builder Options (Adaptive)</p>
+                  <p className="mt-1 text-[10px] text-slate-600">
+                    {currentPhase === 'intake'
+                      ? 'Startup mode: options below focus on opening the case correctly.'
+                      : `Current phase: ${currentPhase}. Options shift automatically as the case develops.`}
+                  </p>
+                  <div className="mt-1 space-y-1.5">
+                    {pilotAdaptiveOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => handleApplyPilotOption(option.id)}
+                        className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
+                          pilotSelectedAddOns.includes(option.id)
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                        }`}
+                      >
+                        <span>{option.label}</span>
+                        {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
+                      </button>
+                    ))}
+                    {pilotAdaptiveOptions.length === 0 && (
+                      <p className="text-[10px] text-slate-500">No adaptive options in this phase yet.</p>
+                    )}
+                  </div>
+                </div>
+
+                {pilotMissingRecommendationOptions.length > 0 && (
+                  <div className="border border-amber-200 bg-amber-50 p-2">
+                    <p className="text-[11px] font-semibold text-amber-800">Missing Recommendation Recovery</p>
+                    <p className="mt-1 text-[10px] text-amber-700">System-detected gaps can be added with one click.</p>
+                    <div className="mt-1 space-y-1.5">
+                      {pilotMissingRecommendationOptions.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => handleApplyPilotOption(option.id)}
+                          className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
+                            pilotSelectedAddOns.includes(option.id)
+                              ? 'bg-amber-600 text-white border-amber-600'
+                              : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-100'
+                          }`}
+                        >
+                          <span>{option.label}</span>
+                          {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Add Your Own Option</p>
+                  <p className="mt-1 text-[10px] text-slate-600">If something is missing, add a custom option and apply it.</p>
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      value={customPilotOptionInput}
+                      onChange={(e) => setCustomPilotOptionInput(e.target.value)}
+                      placeholder="Type custom case builder option..."
+                      className="flex-1 border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCustomPilotOption}
+                      disabled={!customPilotOptionInput.trim()}
+                      className={`text-[10px] px-2 py-1 border ${
+                        !customPilotOptionInput.trim()
+                          ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                          : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                      }`}
+                    >
+                      Add
+                    </button>
+                  </div>
+                  {customPilotOptions.length > 0 && (
+                    <div className="mt-1 space-y-1.5">
+                      {customPilotOptions.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => handleApplyPilotOption(option.id)}
+                          className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
+                            pilotSelectedAddOns.includes(option.id)
+                              ? 'bg-blue-600 text-white border-blue-600'
+                              : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                          }`}
+                        >
+                          <span>{option.label}</span>
+                          {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {pilotFocusIssues.map((issue) => (
+                  <div key={issue.id} className="border border-stone-200 bg-white p-2">
+                    <p className="text-[11px] font-semibold text-slate-800">{issue.title}</p>
+                    <p className="mt-1 text-[10px] text-slate-600">{issue.description}</p>
+                    <p className="mt-1 text-[10px] text-blue-700">{issue.whyItMatters}</p>
+                    <div className="mt-1 space-y-1">
+                      {issue.recommendedMoves.slice(0, 2).map((move, index) => (
+                        <button
+                          key={`${issue.id}-${index}`}
+                          type="button"
+                          onClick={() => handlePilotApplyMove(move)}
+                          className="w-full text-left text-[10px] px-2 py-1 border border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                        >
+                          Apply: {move}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Real-Life Matter Pack</p>
+                  <pre className="mt-1 whitespace-pre-wrap text-[10px] text-slate-600">{realLifeMatterPack}</pre>
+                </div>
+
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Kernel Intervention Stack</p>
+                  <ul className="mt-1 space-y-1">
+                    {regionalKernel.interventions.slice(0, 3).map((item) => (
+                      <li key={item.title} className="text-[10px] text-slate-700 border border-stone-200 bg-slate-50 px-2 py-1">
+                        {item.title} ({item.score}%)
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Case Study Method Layer</p>
+                  {caseMethodGaps.length === 0 ? (
+                    <p className="mt-1 text-[10px] text-green-700">All method gates currently satisfied.</p>
+                  ) : (
+                    <ul className="mt-1 space-y-1">
+                      {caseMethodGaps.map((gap) => (
+                        <li key={gap} className="text-[10px] text-amber-700">• {gap}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showPilotHowTo && (
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-2xl bg-white border border-stone-200 shadow-2xl">
+              <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
+                <h3 className="text-sm font-bold text-slate-900">Pilot Mode - How to Use</h3>
+                <button
+                  type="button"
+                  onClick={() => setShowPilotHowTo(false)}
+                  className="p-1 border border-stone-300 text-slate-600 hover:bg-stone-100"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] font-semibold text-slate-800">1) Set Focus</p>
+                  <p className="mt-1 text-[10px] text-slate-600">Choose new markets, government entry, partnerships, or risk compliance to filter relevant global intelligence.</p>
+                </div>
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] font-semibold text-slate-800">2) Click Case Builder Options</p>
+                  <p className="mt-1 text-[10px] text-slate-600">Pilot starts with startup options, then automatically shifts options as the case moves from intake to discovery, analysis, recommendations, and generation.</p>
+                </div>
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] font-semibold text-slate-800">3) Recover Missing Recommendations</p>
+                  <p className="mt-1 text-[10px] text-slate-600">If the system misses letters/reports or key case essentials, use the recovery options to add them back instantly.</p>
+                </div>
+                <div className="border border-stone-200 bg-white p-3">
+                  <p className="text-[11px] font-semibold text-slate-800">4) Add Your Own Option</p>
+                  <p className="mt-1 text-[10px] text-slate-600">When you need something not listed, add a custom option and apply it to the active case build.</p>
+                </div>
+                <div className="border border-stone-200 bg-slate-50 p-3">
+                  <p className="text-[10px] text-slate-700">Pilot Mode is designed to improve case completeness before generation so letters and reports are specific, non-template, and implementation-ready.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
       {/* Workspace Modal */}
       {showWorkspaceModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
@@ -2657,6 +4402,78 @@ Each selected output must include:
                   )}
                 </div>
               </div>
+
+              {missionSnapshot && (
+                <div className="mt-6 bg-white border border-stone-200 shadow-sm p-4">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                      <h3 className="font-bold text-slate-900">Autonomous Audit Timeline</h3>
+                      <div className="text-[11px] text-slate-600">
+                        Events: {missionAuditEvents.length} • Adaptation: {Math.round(missionSnapshot.verificationSummary?.adaptationScore ?? 0)}%
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={handleExportMissionAuditJson}
+                        disabled={!missionAuditExportPayload}
+                        className="inline-flex items-center gap-1 border border-stone-300 bg-stone-50 px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Download size={12} />
+                        JSON
+                      </button>
+                      <button
+                        onClick={handleExportMissionAuditCsv}
+                        disabled={!missionAuditCsvContent}
+                        className="inline-flex items-center gap-1 border border-stone-300 bg-stone-50 px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Download size={12} />
+                        CSV
+                      </button>
+                      <button
+                        onClick={handleExportMissionComplianceSummary}
+                        disabled={!missionAuditComplianceSummary}
+                        className="inline-flex items-center gap-1 border border-stone-300 bg-stone-50 px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Download size={12} />
+                        REPORT
+                      </button>
+                      <button
+                        onClick={handlePrintMissionCompliancePdf}
+                        disabled={!missionAuditExportPayload}
+                        className="inline-flex items-center gap-1 border border-stone-300 bg-stone-50 px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Download size={12} />
+                        PDF
+                      </button>
+                    </div>
+                  </div>
+
+                  {missionAuditEvents.length === 0 ? (
+                    <p className="text-sm text-slate-500">No autonomy events captured yet. Run an autonomy cycle from the Mission Panel to populate this timeline.</p>
+                  ) : (
+                    <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                      {missionAuditEvents.map((event, index) => (
+                        <div key={`${event.timestamp}-${event.type}-${index}`} className="border border-stone-200 bg-stone-50 px-3 py-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className={`text-[10px] px-1.5 py-0.5 border ${
+                              event.type === 'governance'
+                                ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                : event.type === 'execution'
+                                  ? 'bg-purple-50 text-purple-700 border-purple-200'
+                                  : 'bg-green-50 text-green-700 border-green-200'
+                            }`}>
+                              {event.type.toUpperCase()}
+                            </span>
+                            <span className="text-[10px] text-slate-500">{new Date(event.timestamp).toLocaleString()}</span>
+                          </div>
+                          <p className="mt-1 text-xs text-slate-700">{event.summary}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Open Full Platform Button */}
               <div className="mt-6 text-center">

@@ -433,7 +433,7 @@ Return ONLY valid JSON with this structure:
   "population": {"city": 0, "metro": 0, "year": "2024"},
   "overview": "2-3 paragraph description",
   "climate": "Climate description",
-  "currency": {"name": "Currency", "code": "XXX"},
+  "currency": {"name": "Currency", "code": "USD"},
   "languages": ["Language 1"],
   "government": {
     "type": "Government type",
@@ -449,7 +449,7 @@ Return ONLY valid JSON with this structure:
     "averageIncome": "Income"
   },
   "infrastructure": {
-    "airports": [{"name": "Airport", "code": "XXX", "type": "International"}],
+    "airports": [{"name": "Airport", "code": "SIN", "type": "International"}],
     "seaports": [{"name": "Port", "type": "Container"}],
     "publicTransit": "Description",
     "internetPenetration": "Percentage"

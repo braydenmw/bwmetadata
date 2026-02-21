@@ -10,6 +10,9 @@ import { autonomousScheduler } from './AutonomousScheduler';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
 import { EventBus } from './EventBus';
 import { GovernanceService } from './GovernanceService';
+import { ConsultantGateService } from './ConsultantGateService';
+import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrator';
+import type { PartnerCandidate } from './PartnerIntelligenceEngine';
 
 export interface AutonomousSystemStatus {
   thinkingEngine: 'active' | 'idle' | 'error';
@@ -42,6 +45,12 @@ export class MasterAutonomousOrchestrator {
   private static instance: MasterAutonomousOrchestrator;
   private isRunning: boolean = false;
   private backgroundProcesses: Map<string, ReturnType<typeof setInterval>> = new Map();
+  private static readonly regionalPartnerCandidates: PartnerCandidate[] = [
+    { id: 'gov-dev-agency', name: 'Development Agency', type: 'government', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['regional development', 'policy', 'infrastructure'] },
+    { id: 'multilateral-bank', name: 'Multilateral Bank', type: 'multilateral', countries: ['philippines', 'australia', 'new zealand', 'united kingdom', 'united states'], sectors: ['energy', 'housing', 'digital', 'health', 'infrastructure'] },
+    { id: 'banking-consortium', name: 'Banking Consortium', type: 'bank', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['banking', 'trade', 'housing', 'energy'] },
+    { id: 'delivery-partner', name: 'Delivery Partner', type: 'corporate', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['logistics', 'infrastructure', 'digital'] }
+  ];
 
   static getInstance(): MasterAutonomousOrchestrator {
     if (!MasterAutonomousOrchestrator.instance) {
@@ -102,6 +111,11 @@ export class MasterAutonomousOrchestrator {
    */
   async orchestrateCompleteAnalysis(params: ReportParameters): Promise<MasterOrchestrationResult> {
     console.log('ðŸŽ¯ Starting Master Autonomous Orchestration for 100% Performance');
+
+    const consultantGate = ConsultantGateService.evaluate(params);
+    if (!consultantGate.isReady) {
+      throw new Error(`Consultant gate blocked autonomous orchestration: ${consultantGate.missing.join('; ')}`);
+    }
 
     const startTime = Date.now();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -233,12 +247,35 @@ export class MasterAutonomousOrchestrator {
     console.log('ðŸ§  Running deep thinking analysis...');
     // DeepThinkingEngine.think() requires ReportData and CopilotInsight[]
     // which are assembled later in the pipeline. Return planning context.
+    const regionalKernel = RegionalDevelopmentOrchestrator.run({
+      regionProfile: params.region || params.organizationType || params.problemStatement || '',
+      sector: params.industry && params.industry.length > 0 ? params.industry[0] : 'regional development',
+      constraints: params.riskTolerance ? String(params.riskTolerance) : 'Not specified',
+      fundingEnvelope: params.dealSize || 'Not specified',
+      governanceContext: [params.organizationType, params.entityClassification, params.userDepartment].filter(Boolean).join(' '),
+      country: params.country || params.userCountry || 'unspecified',
+      jurisdiction: params.region || params.country || 'unspecified',
+      objective: params.problemStatement || params.reportName,
+      currentMatter: params.problemStatement || params.reportName,
+      evidenceNotes: (params.strategicIntent || []).slice(0, 8),
+      partnerCandidates: MasterAutonomousOrchestrator.regionalPartnerCandidates
+    });
+
     return {
       problem: params.problemStatement,
       constraints: params.calibration?.constraints,
       industry: params.industry,
       country: params.country,
       riskTolerance: params.riskTolerance,
+      regionalKernel: {
+        readiness: regionalKernel.governanceReadiness,
+        topInterventions: regionalKernel.interventions.slice(0, 3),
+        topPartners: regionalKernel.partners.slice(0, 3),
+        dataSignals: {
+          confidence: regionalKernel.dataFabric.overallConfidence,
+          freshnessHours: regionalKernel.dataFabric.overallFreshnessHours
+        }
+      },
       confidence: 0.8,
       analyzed: true
     };

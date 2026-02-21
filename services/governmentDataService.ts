@@ -448,7 +448,7 @@ function getCountryWikidataId(country: string): string {
     'China': 'Q148',
     'Brazil': 'Q155'
   };
-  return countryMap[country] || 'Q0'; // Q0 is a placeholder for unknown
+  return countryMap[country] || 'Q0'; // Q0 is used when country has no explicit mapping
 }
 
 /**

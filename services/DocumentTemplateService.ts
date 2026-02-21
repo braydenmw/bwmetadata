@@ -46,7 +46,7 @@ export const DocumentTemplateService = {
         {
           heading: 'Opportunity Overview',
           bullets: [
-            `Location: ${packet.scenario.location || 'TBD'}`,
+            `Location: ${packet.scenario.location || 'Location data required'}`,
             packet.scenario.intent?.join('; ') || 'Scenario summary provided separately.'
           ]
         },
@@ -61,7 +61,7 @@ export const DocumentTemplateService = {
         {
           heading: 'Capital & Roles (Non-binding)',
           table: [
-            { label: 'Indicative capital', value: 'TBD following diligence' },
+            { label: 'Indicative capital', value: 'Pending diligence-calibrated capital allocation' },
             { label: 'Lead responsibilities', value: 'Lead investor to coordinate diligence and IC materials' },
             { label: 'Co-investor role', value: 'Review, challenge, and co-author memo; prepare side letters if needed' }
           ]
@@ -69,7 +69,7 @@ export const DocumentTemplateService = {
         {
           heading: 'Diligence & Workplan',
           bullets: packet.actions.length
-            ? packet.actions.map(a => `${a.title} â€” ${a.due || 'Due TBD'} (${a.owner || 'Owner TBD'})`)
+            ? packet.actions.map(a => `${a.title} — ${a.due || 'Due date required'} (${a.owner || 'Owner assignment required'})`)
             : ['Agree week-by-week plan; identify data room contents; schedule site review.']
         },
         {
@@ -115,7 +115,7 @@ export const DocumentTemplateService = {
         { heading: 'Purpose', paragraphs: ['Establish cooperation framework and governance for the joint workstream.'] },
         { heading: 'Scope', bullets: packet.scenario.intent },
         { heading: 'Governance', bullets: packet.controls.map(c => `${c.metric}: ${c.threshold} -> ${c.action}`) },
-        { heading: 'Responsibilities', table: packet.actions.map(a => ({ label: a.title, value: a.owner || 'Owner TBD' })) },
+        { heading: 'Responsibilities', table: packet.actions.map(a => ({ label: a.title, value: a.owner || 'Owner assignment required' })) },
         { heading: 'Term & Exit', bullets: ['Initial term 12 months; renewable upon performance.', 'Exit triggers: breach of controls or failure to meet evidence gates.'] },
         { heading: 'Confidentiality', bullets: ['Mutual confidentiality; data used solely for agreed evaluation and execution.'] }
       ]
@@ -142,10 +142,10 @@ export const DocumentTemplateService = {
       type: 'term-sheet',
       title: 'Term Sheet',
       sections: [
-        { heading: 'Overview', bullets: [`Run ID: ${packet.runId}`, `Location: ${packet.scenario.location || 'TBD'}`] },
+        { heading: 'Overview', bullets: [`Run ID: ${packet.runId}`, `Location: ${packet.scenario.location || 'Location data required'}`] },
         { heading: 'Economics', bullets: ['Capital plan tied to evidence gates; escrow releases upon milestone acceptance.'] },
         { heading: 'Governance', bullets: packet.controls.map(c => `${c.metric}: ${c.threshold} -> ${c.action}`) },
-        { heading: 'Milestones', table: packet.actions.map(a => ({ label: a.title, value: `${a.due || 'Due TBD'} | Gate: ${a.criteria || 'Evidence required'}` })) },
+        { heading: 'Milestones', table: packet.actions.map(a => ({ label: a.title, value: `${a.due || 'Due date required'} | Gate: ${a.criteria || 'Evidence required'}` })) },
         { heading: 'Conditions Precedent', bullets: ['Signed governance mandate', 'Operational telemetry active', 'Trustee appointed'] },
         { heading: 'Closing Conditions', bullets: ['Evidence pack accepted', 'Controls satisfied', 'Approvals recorded'] }
       ]
@@ -162,7 +162,7 @@ export const DocumentTemplateService = {
         { heading: 'Signals', bullets: packet.controls.map(c => `${c.metric}: ${c.threshold}`) },
         { heading: 'Recommendations', bullets: packet.actions.map(a => a.title) },
         { heading: 'Evidence & Oversight', bullets: packet.evidence },
-        { heading: 'Next Steps', bullets: packet.actions.map(a => `${a.title} (${a.due || 'Due TBD'})`) }
+        { heading: 'Next Steps', bullets: packet.actions.map(a => `${a.title} (${a.due || 'Due date required'})`) }
       ]
     };
   }

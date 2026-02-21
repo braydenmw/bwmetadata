@@ -62,7 +62,7 @@ That initiative achieved:
 We believe ${orgName} is positioned to replicate and exceed these metrics.
 
 PROPOSED ENGAGEMENT:
-We are prepared to deploy an initial capital investment (est. ${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}) focused on:
+We are prepared to deploy an initial capital investment (est. ${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}) focused on:
 1. ${reportParameters.strategicIntent || 'Market Expansion'}
 2. Technology Transfer & Skills Development
 3. Supply Chain Integration
@@ -100,7 +100,7 @@ We are seeking to establish operations in ${country} with the strategic intent t
 
 KEY CONSIDERATIONS:
 * Target Region: ${country}
-* Investment Scale: ${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}
+* Investment Scale: ${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}
 * Target Partners: ${reportParameters.targetCounterpartType || 'Strategic partners'}
 * Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to positive ROI
 
@@ -140,7 +140,7 @@ Dear [Minister/Secretary/Director],
 ${orgName} is pleased to present a strategic investment proposal that aligns with ${country}'s economic development objectives and creates substantial value for all stakeholders.
 
 INVESTMENT OVERVIEW:
-* Total Investment: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Total Investment: $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M
 * Job Creation: ${reportParameters.expansionTimeline ? Math.floor(parseInt(reportParameters.expansionTimeline) * 50) : '500+'} direct and indirect positions
 * Technology Transfer: Advanced capabilities in ${reportParameters.strategicIntent || 'key industries'}
 * Economic Impact: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 3).toFixed(1)}M in economic multiplier effects
@@ -176,7 +176,7 @@ Re: APPROVAL REQUEST - ${country} Market Entry Investment
 
 Dear Committee Members,
 
-We recommend approval of a $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment in ${country} through partnership with ${reportParameters.targetCounterpartType || 'local partner'}.
+We recommend approval of a $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M investment in ${country} through partnership with ${reportParameters.targetCounterpartType || 'local partner'}.
 
 INVESTMENT RATIONALE:
 * Market Opportunity: $${(parseFloat(reportParameters.calibration?.constraints?.budgetCap || '100') * 80).toFixed(0)}B addressable market
@@ -212,10 +212,10 @@ Re: TERM SHEET - ${orgName} Strategic Partnership
 
 Dear Counsel,
 
-Enclosed is the proposed term sheet for our strategic partnership. This document outlines the key economic and governance terms for the $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment.
+Enclosed is the proposed term sheet for our strategic partnership. This document outlines the key economic and governance terms for the $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M investment.
 
 KEY TERMS SUMMARY:
-* Investment Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Investment Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M
 * Equity Structure: 60/40 ownership split
 * Governance: Joint steering committee
 * Timeline: 90 days to definitive agreements
@@ -247,7 +247,7 @@ Dear [Contact Name],
 Following our initial discussions, ${orgName} is pleased to submit this formal proposal for strategic partnership in ${country}.
 
 PROPOSAL OVERVIEW:
-* Partnership Structure: Joint venture with $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M investment
+* Partnership Structure: Joint venture with $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M investment
 * Strategic Objectives: Market expansion and technology transfer
 * Value Creation: Revenue synergies and shared growth opportunities
 * Timeline: ${reportParameters.expansionTimeline || '18-24 months'} to profitability
@@ -286,7 +286,7 @@ MARKET ANALYSIS:
 * Competitive Position: First-mover advantage available
 
 INVESTMENT PROPOSAL:
-* Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M
+* Amount: $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M
 * Structure: Partnership with local entity
 * Timeline: ${reportParameters.expansionTimeline || '24 months'} to positive cash flow
 * Risk Rating: Medium
@@ -356,7 +356,7 @@ We are pleased to propose the formation of a joint venture between ${orgName} an
 
 JV STRUCTURE:
 * Legal Entity: New company with 60/40 ownership split
-* Capital Contribution: $${reportParameters.calibration?.constraints?.budgetCap || 'TBD'}M total investment
+* Capital Contribution: $${reportParameters.calibration?.constraints?.budgetCap || 'capital estimate required'}M total investment
 * Management: Joint board with equal representation
 * Profit Distribution: Pro-rata based on ownership
 

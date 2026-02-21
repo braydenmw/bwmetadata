@@ -1217,6 +1217,7 @@ export interface ReportData {
     nsilIntelligence?: Record<string, unknown>;
     situationAnalysis?: Record<string, unknown>;
     historicalParallels?: Record<string, unknown>;
+    regionalKernel?: Record<string, unknown>;
   };
 }
 
@@ -1346,6 +1347,7 @@ export interface ReportPayload {
     nsilIntelligence?: Record<string, unknown>;
     situationAnalysis?: Record<string, unknown>;
     historicalParallels?: Record<string, unknown>;
+    regionalKernel?: Record<string, unknown>;
   };
 }
 

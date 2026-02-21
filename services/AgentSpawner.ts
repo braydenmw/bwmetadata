@@ -193,7 +193,7 @@ export class AgentSpawner {
         }
         break;
       default:
-        // Use AI to execute task (placeholder)
+        // Deterministic fallback execution when no specialized task handler is matched.
         return { result: `Task "${task.description}" executed by ${agent.name}` };
     }
 

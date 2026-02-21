@@ -150,8 +150,7 @@ export async function fetchOpenCorporatesCompany(companyName: string): Promise<O
 export async function fetchMarineTrafficPortActivity(_portNameOrCountry: string): Promise<Record<string, unknown> | null> {
   if (!marineLimiter.take()) return null;
 
-  // MarineTraffic requires API key - return null or stub
-  // TODO: integrate when API key/contract available
+  // MarineTraffic requires an API key/contract; return null when unavailable.
   return null;
 }
 

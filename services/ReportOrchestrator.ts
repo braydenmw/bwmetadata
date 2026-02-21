@@ -15,13 +15,50 @@ import { proactiveOrchestrator } from './proactive/ProactiveOrchestrator';
 import { NSILIntelligenceHub } from './NSILIntelligenceHub';
 import { SituationAnalysisEngine } from './SituationAnalysisEngine';
 import { HistoricalParallelMatcher } from './HistoricalParallelMatcher';
+import { ConsultantGateService } from './ConsultantGateService';
+import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrator';
+import type { PartnerCandidate } from './PartnerIntelligenceEngine';
 import type { CurrentContext } from './proactive/ProactiveSignalMiner';
 
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
+const REGIONAL_KERNEL_PARTNERS: PartnerCandidate[] = [
+  { id: 'gov-dev-agency', name: 'Development Agency', type: 'government', countries: ['philippines', 'australia', 'new zealand', 'united kingdom', 'united states'], sectors: ['regional development', 'policy', 'infrastructure'] },
+  { id: 'multilateral-bank', name: 'Multilateral Bank', type: 'multilateral', countries: ['philippines', 'australia', 'new zealand', 'united kingdom', 'united states'], sectors: ['energy', 'housing', 'digital', 'health', 'infrastructure'] },
+  { id: 'banking-consortium', name: 'Banking Consortium', type: 'bank', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['banking', 'trade', 'housing', 'energy'] },
+  { id: 'delivery-partner', name: 'Delivery Partner', type: 'corporate', countries: ['philippines', 'australia', 'new zealand', 'united kingdom'], sectors: ['logistics', 'infrastructure', 'digital'] }
+];
+
 export class ReportOrchestrator {
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
     console.log('DEBUG: Starting ReportOrchestrator assembly for', params.organizationName);
+
+    const consultantGate = ConsultantGateService.evaluate(params);
+    if (!consultantGate.isReady) {
+      throw new Error(`Consultant gate blocked payload assembly: ${consultantGate.missing.join('; ')}`);
+    }
+
+    const caseMethodGaps = this.evaluateCaseMethodGaps(params);
+    if (caseMethodGaps.length > 0) {
+      throw new Error(`Case Method Layer blocked payload assembly: ${caseMethodGaps.join('; ')}`);
+    }
+
+    const regionalKernel = RegionalDevelopmentOrchestrator.run({
+      regionProfile: params.region || params.organizationType || params.problemStatement || '',
+      sector: params.industry && params.industry.length > 0 ? params.industry[0] : 'regional development',
+      constraints: params.riskTolerance ? String(params.riskTolerance) : 'Not specified',
+      fundingEnvelope: params.dealSize || 'Not specified',
+      governanceContext: [params.organizationType, params.entityClassification, params.userDepartment].filter(Boolean).join(' '),
+      country: params.country || params.userCountry || 'unspecified',
+      jurisdiction: params.region || params.country || 'unspecified',
+      objective: params.problemStatement || params.reportName,
+      currentMatter: params.problemStatement || params.reportName,
+      evidenceNotes: [
+        ...(params.strategicIntent || []),
+        ...(params.additionalContext ? [params.additionalContext] : [])
+      ].slice(0, 12),
+      partnerCandidates: REGIONAL_KERNEL_PARTNERS
+    });
 
     // All reports run at full autonomous performance â€” no separate mode needed
     const refinedIntake = this.toRefinedIntake(params);
@@ -170,7 +207,20 @@ export class ReportOrchestrator {
           commonSuccessFactors: historicalParallels.commonSuccessFactors,
           commonFailureFactors: historicalParallels.commonFailureFactors,
           recommendedActions: historicalParallels.recommendedActions
-        } : undefined
+        } : undefined,
+        regionalKernel: {
+          governanceReadiness: regionalKernel.governanceReadiness,
+          interventions: regionalKernel.interventions,
+          topPartners: regionalKernel.partners.slice(0, 5),
+          executionPlan: regionalKernel.executionPlan,
+          dataFabric: {
+            confidence: regionalKernel.dataFabric.overallConfidence,
+            freshnessHours: regionalKernel.dataFabric.overallFreshnessHours,
+            country: regionalKernel.dataFabric.country,
+            jurisdiction: regionalKernel.dataFabric.jurisdiction
+          },
+          notes: regionalKernel.notes
+        }
       }
     };
 
@@ -216,6 +266,28 @@ export class ReportOrchestrator {
       console.warn('Error processing report ecosystem pulse:', error);
     }
     return payload;
+  }
+
+  private static evaluateCaseMethodGaps(params: ReportParameters): string[] {
+    const gaps: string[] = [];
+
+    if (!params.problemStatement || params.problemStatement.trim().length < 60) gaps.push('Boundary clarity');
+
+    const objectiveStrength = (params.strategicIntent || []).join(' ').trim().length;
+    if (objectiveStrength < 20) gaps.push('Objective quality');
+
+    const hasEvidence = Boolean(params.additionalContext?.trim()) || (params.ingestedDocuments?.length || 0) > 0;
+    if (!hasEvidence) gaps.push('Evidence sufficiency');
+
+    const hasRival = /counterfactual|alternative|rival|other option/i.test(`${params.additionalContext || ''} ${(params.collaborativeNotes || '')}`);
+    if (!hasRival) gaps.push('Rival explanations');
+
+    const hasImplementation = Boolean(params.expansionTimeline?.trim()) && /owner|go-no-go|critical path|authority|escalation/i.test(
+      `${params.criticalPath || ''} ${params.goNoGoCriteria || ''} ${params.authorityMatrix || ''} ${params.escalationProcedures || ''}`
+    );
+    if (!hasImplementation) gaps.push('Implementation feasibility');
+
+    return gaps;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

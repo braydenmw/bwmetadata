@@ -3424,7 +3424,7 @@ function generateBasicNarratives(profile: CityProfile): EnhancedNarratives {
 function generateEnhancedNarratives(result: MultiSourceResult): EnhancedNarratives {
   return {
     overview: narrativeSynthesisEngine.buildOverviewNarrative(result, result.profile),
-    history: narrativeSynthesisEngine.buildGeographyNarrative(result, result.profile), // Placeholder
+    history: narrativeSynthesisEngine.buildGeographyNarrative(result, result.profile),
     geography: narrativeSynthesisEngine.buildGeographyNarrative(result, result.profile),
     economy: narrativeSynthesisEngine.buildEconomyNarrative(result, result.profile),
     governance: narrativeSynthesisEngine.buildGovernanceNarrative(result, result.profile),

@@ -394,10 +394,10 @@ class LocationIntelligenceDocumentGenerator {
       dataTable: {
         headers: ['Infrastructure Type', 'Status', 'Capacity/Quality'],
         rows: [
-          ['Airports', profile.infrastructure?.airports?.[0]?.name || 'TBD', 'Regional'],
-          ['Seaports', profile.infrastructure?.seaports?.[0]?.name || 'TBD', 'Regional'],
-          ['Power', profile.infrastructure?.powerCapacity || 'TBD', 'To be assessed'],
-          ['Internet', profile.infrastructure?.internetPenetration || 'TBD', 'Growing'],
+          ['Airports', profile.infrastructure?.airports?.[0]?.name || 'Data unavailable', 'Regional'],
+          ['Seaports', profile.infrastructure?.seaports?.[0]?.name || 'Data unavailable', 'Regional'],
+          ['Power', profile.infrastructure?.powerCapacity || 'Data unavailable', 'Assessment required'],
+          ['Internet', profile.infrastructure?.internetPenetration || 'Data unavailable', 'Coverage expanding'],
           ['Roads/Transit', 'City network', 'Varies by area']
         ]
       }

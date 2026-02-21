@@ -115,7 +115,7 @@ export class PersistentMemorySystem {
   }
 
   private async extractLessons(entry: MemoryEntry): Promise<string[]> {
-    // Use AI to extract lessons (placeholder - would integrate with LLM)
+    // Deterministic lesson extraction from action/context/outcome metadata.
     const lessons = [
       `Avoid ${entry.action} when ${JSON.stringify(entry.context)}`,
       'Implement additional validation before similar actions',

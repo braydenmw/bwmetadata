@@ -162,14 +162,14 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
         } else if (input.includes('partner') || input.includes('match')) {
           responseText += `**Partnership Intelligence for ${params.organizationName || 'Your Organisation'}:**\n`;
           responseText += `* Strategic intent: ${params.strategicIntent?.[0] || 'partnership development'}\n`;
-          responseText += `* Ideal partner profile: ${params.idealPartnerProfile || 'Not yet defined  -  complete Step 4 for AI matching'}\n`;
+                    responseText += `* Ideal partner profile: ${params.idealPartnerProfile || 'Profile not provided - complete Step 4 for AI matching'}\n`;
           if (quickAssess.topOpportunities.length > 0) {
             responseText += `\n**Opportunities Identified:**\n`;
             quickAssess.topOpportunities.forEach(o => { responseText += `* ${o}\n`; });
           }
         } else if (input.includes('strateg') || input.includes('objective') || input.includes('goal')) {
           responseText += `**Strategic Analysis:**\n`;
-          const objectives = params.strategicObjectives?.length > 0 ? params.strategicObjectives.join(', ') : 'Not yet defined';
+                    const objectives = params.strategicObjectives?.length > 0 ? params.strategicObjectives.join(', ') : 'Objectives not provided';
           responseText += `* Objectives: ${objectives}\n`;
           responseText += `* Readiness score: ${situation.readiness}/100\n`;
           responseText += `* Blind spots detected: ${situation.blindSpotCount}\n`;
