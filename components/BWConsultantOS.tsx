@@ -1103,23 +1103,27 @@ Each selected output must include:
     ? recommendedDocs.filter((doc) => doc.id !== primaryRecommendation.id).slice(0, 2)
     : [];
 
-  const getRankUpgradeHint = useCallback((alternativeId: string) => {
-    if (!primaryRecommendation) return null;
+  const getRankGapKeys = useCallback((alternativeId: string) => {
+    if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
 
     const primaryScore = recommendationScoreMap[primaryRecommendation.id];
     const altScore = recommendationScoreMap[alternativeId];
-    if (!primaryScore || !altScore) return null;
+    if (!primaryScore || !altScore) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
 
-    const gaps = [
-      { key: 'fit', delta: primaryScore.fitScore - altScore.fitScore },
-      { key: 'evidence', delta: primaryScore.evidenceScore - altScore.evidenceScore },
-      { key: 'urgency', delta: primaryScore.urgencyScore - altScore.urgencyScore },
-      { key: 'compliance', delta: primaryScore.complianceScore - altScore.complianceScore }
+    return [
+      { key: 'fit' as const, delta: primaryScore.fitScore - altScore.fitScore },
+      { key: 'evidence' as const, delta: primaryScore.evidenceScore - altScore.evidenceScore },
+      { key: 'urgency' as const, delta: primaryScore.urgencyScore - altScore.urgencyScore },
+      { key: 'compliance' as const, delta: primaryScore.complianceScore - altScore.complianceScore }
     ]
       .filter((item) => item.delta > 0)
       .sort((a, b) => b.delta - a.delta)
       .slice(0, 2)
       .map((item) => item.key);
+  }, [primaryRecommendation, recommendationScoreMap]);
+
+  const getRankUpgradeHint = useCallback((alternativeId: string) => {
+    const gaps = getRankGapKeys(alternativeId);
 
     const suggestions: string[] = [];
 
@@ -1141,7 +1145,49 @@ Each selected output must include:
     }
 
     return `To rank this #1: ${suggestions.join('; ')}.`;
-  }, [primaryRecommendation, recommendationScoreMap]);
+  }, [getRankGapKeys]);
+
+  const getImprovementQuestions = useCallback((alternativeId: string) => {
+    const gaps = getRankGapKeys(alternativeId);
+    const questions: string[] = [];
+
+    if (gaps.includes('fit')) {
+      questions.push('What exact decision do you want this document to influence, and who is the final approver?');
+    }
+    if (gaps.includes('evidence')) {
+      questions.push('What concrete evidence can you provide now (metrics, attachments, precedents, or verifiable data)?');
+    }
+    if (gaps.includes('urgency')) {
+      questions.push('What is the hard deadline, what happens if delayed, and what timeline milestone is non-negotiable?');
+    }
+    if (gaps.includes('compliance')) {
+      questions.push('Which jurisdiction-specific requirements, approvals, or annexes must be explicitly included?');
+    }
+
+    if (questions.length === 0) {
+      questions.push('What additional context would most strengthen this option for your current objective?');
+    }
+
+    return questions.slice(0, 3);
+  }, [getRankGapKeys]);
+
+  const handleImproveAlternative = useCallback((alternative: DocumentOption) => {
+    const questions = getImprovementQuestions(alternative.id);
+    const prompt = [
+      `To improve ${alternative.title} ranking, answer these now:`,
+      ...questions.map((question, index) => `${index + 1}. ${question}`)
+    ].join('\n');
+
+    setCurrentPhase('discovery');
+    setMessages(prev => [...prev, {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: prompt,
+      timestamp: new Date(),
+      phase: 'discovery'
+    }]);
+    setInputValue(questions[0] ?? '');
+  }, [getImprovementQuestions]);
 
   return (
     <div 
@@ -1533,6 +1579,13 @@ Each selected output must include:
                                     {upgradeHint}
                                   </div>
                                 )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleImproveAlternative(alt)}
+                                  className="mt-1 text-[10px] px-2 py-1 bg-white border border-blue-300 text-blue-700 hover:bg-blue-50"
+                                >
+                                  Improve this option
+                                </button>
                               </li>
                             );
                           })}
