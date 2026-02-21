@@ -17,6 +17,9 @@ import {
   User, HelpCircle, Target, ChevronRight
 } from 'lucide-react';
 import { getChatSession } from '../services/geminiService';
+import AdaptiveQuestionnaire from '../services/AdaptiveQuestionnaire';
+import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
+import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
 
 // ============================================================================
 // TYPES
@@ -31,9 +34,15 @@ interface Message {
 }
 
 interface CaseStudy {
+  userName: string;
   organizationName: string;
   organizationType: string;
   contactRole: string;
+  country: string;
+  jurisdiction: string;
+  organizationMandate: string;
+  targetAudience: string;
+  decisionDeadline: string;
   situationType: string;
   currentMatter: string;
   objectives: string;
@@ -53,7 +62,60 @@ interface DocumentOption {
   icon: React.ReactNode;
   category: 'report' | 'letter';
   relevance: number; // 0-100 based on case
+  rationale: string;
+  pageRange: string;
+  supportingDocuments: string[];
+  contactLetterFor?: string;
 }
+
+interface JurisdictionPolicyPack {
+  id: string;
+  label: string;
+  triggers: string[];
+  regulatoryTone: 'government-formal' | 'investor-formal' | 'legal-defensive' | 'executive-brief';
+  requiredSupportDocuments: string[];
+  requiredLetters: string[];
+  complianceFocus: string[];
+}
+
+const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
+  {
+    id: 'australia',
+    label: 'Australia Regulatory Pack',
+    triggers: ['australia', 'au', 'queensland', 'nsw', 'victoria', 'wa'],
+    regulatoryTone: 'government-formal',
+    requiredSupportDocuments: ['Regulatory obligations matrix', 'Risk register', 'Financial model'],
+    requiredLetters: ['Agency submission letter', 'Stakeholder engagement letter'],
+    complianceFocus: ['Environmental compliance', 'Procurement governance', 'State/federal approvals']
+  },
+  {
+    id: 'philippines',
+    label: 'Philippines Compliance Pack',
+    triggers: ['philippines', 'ph', 'manila', 'cebu', 'mindanao'],
+    regulatoryTone: 'government-formal',
+    requiredSupportDocuments: ['LGU alignment note', 'Implementation roadmap', 'Socioeconomic impact annex'],
+    requiredLetters: ['LGU coordination letter', 'National agency submission letter'],
+    complianceFocus: ['National/local permitting', 'PPP alignment', 'Community impact']
+  },
+  {
+    id: 'eu',
+    label: 'EU Governance Pack',
+    triggers: ['european union', 'eu', 'germany', 'france', 'italy', 'spain', 'netherlands'],
+    regulatoryTone: 'legal-defensive',
+    requiredSupportDocuments: ['Data protection note', 'Compliance control matrix', 'Assurance checklist'],
+    requiredLetters: ['Regulatory notice letter', 'Partner compliance undertaking letter'],
+    complianceFocus: ['Cross-border compliance', 'Transparency controls', 'Data/privacy obligations']
+  },
+  {
+    id: 'mena',
+    label: 'MENA Investment Pack',
+    triggers: ['saudi', 'uae', 'qatar', 'oman', 'bahrain', 'kuwait', 'middle east'],
+    regulatoryTone: 'investor-formal',
+    requiredSupportDocuments: ['Investment structure brief', 'Sovereign risk profile', 'Execution governance plan'],
+    requiredLetters: ['Investor submission letter', 'Government liaison letter'],
+    complianceFocus: ['Investment approvals', 'Institutional counterpart alignment', 'Execution governance']
+  }
+];
 
 // ============================================================================
 // COMPONENT
@@ -73,9 +135,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   
   // Case study state
   const [caseStudy, setCaseStudy] = useState<CaseStudy>({
+    userName: '',
     organizationName: '',
     organizationType: '',
     contactRole: '',
+    country: '',
+    jurisdiction: '',
+    organizationMandate: '',
+    targetAudience: '',
+    decisionDeadline: '',
     situationType: '',
     currentMatter: '',
     objectives: '',
@@ -98,67 +166,78 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
+  const [adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
+  const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
+  const [readinessScore, setReadinessScore] = useState(0);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatSession = useRef(getChatSession());
   const intakeQuestionIndex = useRef(0);
+  const agenticAIRef = useRef(new BWConsultantAgenticAI());
 
   // Intake questions progression
   const intakeQuestions = [
     {
-      key: 'greeting',
-      question: `Hello, I'm your BW Consultant AI. I'm here to help you build a comprehensive case study and generate the professional documents you need.
+      key: 'userName',
+      question: `Hello, I'm your BW Consultant AI. I will build your case file, diagnose your situation, and recommend the right reports, documents, and letters.
 
-Let's start with the basics:
+Let's start properly:
 
-**What is your name and organization?**`
+**What is your full name?**`
     },
     {
-      key: 'role',
-      question: `Thank you. To better understand your perspective:
-
-**What is your role within the organization?** (e.g., CEO, Project Manager, Legal Counsel, Business Development)`
+      key: 'organizationName',
+      question: `Great. **What organization do you represent?**`
+    },
+    {
+      key: 'organizationType',
+      question: `**What type of organization is it?** (government agency, private company, NGO, investor, legal advisory, regional council, etc.)`
+    },
+    {
+      key: 'contactRole',
+      question: `**What is your role and decision authority?** (e.g., CEO, legal counsel, policy director, project lead)`
+    },
+    {
+      key: 'country',
+      question: `**Which country and region are you operating in?**`
+    },
+    {
+      key: 'jurisdiction',
+      question: `**What legal/regulatory jurisdiction should this follow?** (national, state/provincial, international standard, mixed)`
+    },
+    {
+      key: 'organizationMandate',
+      question: `**What mandate are you accountable for?** (investment attraction, compliance, procurement, partnerships, litigation, policy delivery, etc.)`
     },
     {
       key: 'situationType',
-      question: `Now, help me understand what brought you here today:
-
-**What type of situation are you dealing with?**
-- Investment or funding opportunity
-- Partnership or joint venture
-- Market entry or expansion
-- Regulatory or compliance matter
-- Dispute or litigation
-- Strategic decision
-- Due diligence requirement
-- Something else
-
-Just describe it in your own words.`
+      question: `**What type of matter is this?** (investment, partnership, market entry, compliance, dispute, strategic decision, due diligence)`
     },
     {
       key: 'currentMatter',
-      question: `I understand. Now let's get into the specifics:
+      question: `Now detail the case:
 
-**Tell me about your current matter in detail.** 
-
-What's happening? Who are the key parties involved? What decisions need to be made? Share as much context as you can — I'll ask clarifying questions as needed.`
+**What exactly is happening, who is involved, and what decision must be made?**`
     },
     {
       key: 'objectives',
-      question: `That helps me understand the situation. Now:
-
-**What are you hoping to achieve?**
-
-What would a successful outcome look like for you? What are your primary goals and any secondary objectives?`
+      question: `**What is your objective and desired outcome?** Include measurable targets if possible.`
+    },
+    {
+      key: 'targetAudience',
+      question: `**Who is the primary audience for final outputs?** (board, regulator, ministry, investor, partner, court, internal executive team)`
+    },
+    {
+      key: 'decisionDeadline',
+      question: `**What is your decision deadline / timeline?**`
     },
     {
       key: 'constraints',
-      question: `Almost there. Let me understand your constraints:
+      question: `Final intake question:
 
-**What limitations or constraints should I be aware of?**
-
-Consider: budget, timeline, regulatory requirements, stakeholder concerns, resource availability, or any other factors that may impact what's possible.`
+**What constraints must be respected?** (budget, timeline, politics, compliance, resources, stakeholder sensitivity)`
     }
   ];
 
@@ -169,6 +248,75 @@ Consider: budget, timeline, regulatory requirements, stakeholder concerns, resou
 
   // Intake questions (static)
   const intakeQuestionsRef = useRef(intakeQuestions);
+
+  const computeReadiness = useCallback((draft: CaseStudy) => {
+    const weightedChecks = [
+      { ok: draft.userName.length > 1, weight: 8 },
+      { ok: draft.organizationName.length > 1, weight: 8 },
+      { ok: draft.organizationType.length > 2, weight: 8 },
+      { ok: draft.contactRole.length > 2, weight: 8 },
+      { ok: draft.country.length > 1, weight: 8 },
+      { ok: draft.jurisdiction.length > 1, weight: 8 },
+      { ok: draft.organizationMandate.length > 2, weight: 8 },
+      { ok: draft.currentMatter.length > 40, weight: 14 },
+      { ok: draft.objectives.length > 20, weight: 10 },
+      { ok: draft.constraints.length > 10, weight: 8 },
+      { ok: draft.targetAudience.length > 2, weight: 8 },
+      { ok: draft.decisionDeadline.length > 2, weight: 4 }
+    ];
+
+    const baseScore = weightedChecks.reduce((sum, item) => sum + (item.ok ? item.weight : 0), 0);
+    const evidenceBoost = Math.min(10, draft.uploadedDocuments.length * 5);
+    const contextBoost = Math.min(10, draft.additionalContext.length * 2);
+    return Math.min(100, baseScore + evidenceBoost + contextBoost);
+  }, []);
+
+  const toAgenticParams = useCallback((draft: CaseStudy) => ({
+    organizationName: draft.organizationName,
+    organizationType: draft.organizationType,
+    role: draft.contactRole,
+    country: draft.country,
+    region: draft.jurisdiction,
+    problemStatement: draft.currentMatter,
+    strategicObjective: draft.objectives,
+    audience: draft.targetAudience,
+    constraints: draft.constraints,
+    mandate: draft.organizationMandate,
+    timeline: draft.decisionDeadline,
+    context: draft.additionalContext
+  }), []);
+
+  const resolvePolicyPack = useCallback((draft: CaseStudy): JurisdictionPolicyPack => {
+    const context = `${draft.country} ${draft.jurisdiction}`.toLowerCase();
+    const matched = JURISDICTION_POLICY_PACKS.find((pack) =>
+      pack.triggers.some((trigger) => context.includes(trigger))
+    );
+
+    return matched || {
+      id: 'global-default',
+      label: 'Global Advisory Pack',
+      triggers: [],
+      regulatoryTone: 'executive-brief',
+      requiredSupportDocuments: ['Decision brief', 'Risk register', 'Stakeholder map'],
+      requiredLetters: ['Primary counterpart letter'],
+      complianceFocus: ['Cross-jurisdiction consistency', 'Traceable assumptions']
+    };
+  }, []);
+
+  useEffect(() => {
+    setReadinessScore(computeReadiness(caseStudy));
+    const detected = AdaptiveQuestionnaire.detectSkillLevel({
+      organizationName: caseStudy.organizationName,
+      strategicIntent: caseStudy.objectives,
+      customData: {
+        mandate: caseStudy.organizationMandate,
+        audience: caseStudy.targetAudience,
+        jurisdiction: caseStudy.jurisdiction,
+        constraints: caseStudy.constraints
+      }
+    });
+    setSkillLevel(detected);
+  }, [caseStudy, computeReadiness]);
 
   // Start with first intake question
   useEffect(() => {
@@ -206,10 +354,14 @@ Consider: budget, timeline, regulatory requirements, stakeholder concerns, resou
   // Process user input through real AI
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
     try {
+      const policyPack = resolvePolicyPack(caseStudy);
       const systemPrompt = `You are BW Consultant AI, an expert business intelligence consultant. You are currently in the "${currentPhase}" phase of building a case study.
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
+
+Applicable policy pack:
+${JSON.stringify(policyPack, null, 2)}
 
 User's latest input: "${userInput}"
 Phase context: ${context}
@@ -220,6 +372,12 @@ Instructions based on phase:
 - ANALYSIS: Synthesize what you've learned. Identify patterns, risks, and opportunities.
 - RECOMMENDATIONS: Based on the case, recommend specific documents and letters that would help.
 - GENERATION: Generate professional document content.
+
+Policy pack execution rules:
+- Respect regulatory tone: ${policyPack.regulatoryTone}
+- Ensure required support docs are reflected: ${policyPack.requiredSupportDocuments.join(', ')}
+- Ensure required letters are reflected: ${policyPack.requiredLetters.join(', ')}
+- Emphasize compliance focus: ${policyPack.complianceFocus.join(', ')}
 
 Respond naturally and helpfully. If in intake/discovery, end with a clarifying question. Keep responses focused and actionable.`;
 
@@ -232,7 +390,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       console.error('AI processing error:', error);
       return "I'm having trouble connecting to my analysis engine. Let me continue with what I understand so far.";
     }
-  }, [currentPhase, caseStudy]);
+  }, [currentPhase, caseStudy, resolvePolicyPack]);
 
   // Handle intake progression
   const progressIntake = useCallback((userResponse: string) => {
@@ -240,11 +398,26 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     
     // Update case study based on which question was answered
     switch (currentQ.key) {
-      case 'greeting':
+      case 'userName':
+        setCaseStudy(prev => ({ ...prev, userName: userResponse }));
+        break;
+      case 'organizationName':
         setCaseStudy(prev => ({ ...prev, organizationName: userResponse }));
         break;
-      case 'role':
+      case 'organizationType':
+        setCaseStudy(prev => ({ ...prev, organizationType: userResponse }));
+        break;
+      case 'contactRole':
         setCaseStudy(prev => ({ ...prev, contactRole: userResponse }));
+        break;
+      case 'country':
+        setCaseStudy(prev => ({ ...prev, country: userResponse }));
+        break;
+      case 'jurisdiction':
+        setCaseStudy(prev => ({ ...prev, jurisdiction: userResponse }));
+        break;
+      case 'organizationMandate':
+        setCaseStudy(prev => ({ ...prev, organizationMandate: userResponse }));
         break;
       case 'situationType':
         setCaseStudy(prev => ({ ...prev, situationType: userResponse }));
@@ -254,6 +427,12 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         break;
       case 'objectives':
         setCaseStudy(prev => ({ ...prev, objectives: userResponse }));
+        break;
+      case 'targetAudience':
+        setCaseStudy(prev => ({ ...prev, targetAudience: userResponse }));
+        break;
+      case 'decisionDeadline':
+        setCaseStudy(prev => ({ ...prev, decisionDeadline: userResponse }));
         break;
       case 'constraints':
         setCaseStudy(prev => ({ ...prev, constraints: userResponse }));
@@ -275,51 +454,251 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   const generateRecommendations = useCallback(() => {
     const docs: DocumentOption[] = [];
     const caseType = caseStudy.situationType.toLowerCase();
+    const audience = caseStudy.targetAudience.toLowerCase();
+    const policyPack = resolvePolicyPack(caseStudy);
+    const hasRegulatoryAudience = /regulator|ministry|government|court|compliance/.test(audience);
+    const hasInvestorAudience = /investor|board|fund|vc|capital/.test(audience);
     
     // Investment/funding situations
     if (caseType.includes('invest') || caseType.includes('fund')) {
       docs.push(
-        { id: 'investment-memo', title: 'Investment Memorandum', description: 'Structured funding proposal', icon: <BarChart3 size={18} />, category: 'report', relevance: 95 },
-        { id: 'due-diligence', title: 'Due Diligence Report', description: 'Comprehensive analysis', icon: <Shield size={18} />, category: 'report', relevance: 90 },
-        { id: 'investor-update', title: 'Investor Update Letter', description: 'Progress communication', icon: <FileText size={18} />, category: 'letter', relevance: 70 }
+        {
+          id: 'investment-memo',
+          title: 'Investment Memorandum',
+          description: 'Structured funding proposal for decision makers',
+          icon: <BarChart3 size={18} />,
+          category: 'report',
+          relevance: 95,
+          rationale: 'Best fit for capital allocation decisions and investor due diligence.',
+          pageRange: '12-25 pages',
+          supportingDocuments: ['Financial model', 'Market assumptions', 'Risk register'],
+          contactLetterFor: 'Investor committee'
+        },
+        {
+          id: 'due-diligence',
+          title: 'Due Diligence Report',
+          description: 'Comprehensive risk, compliance, and viability analysis',
+          icon: <Shield size={18} />,
+          category: 'report',
+          relevance: 90,
+          rationale: 'Required to validate claims, risks, and assumptions before commitment.',
+          pageRange: '15-30 pages',
+          supportingDocuments: ['Corporate filings', 'Ownership records', 'Contracts'],
+          contactLetterFor: 'External reviewer'
+        },
+        {
+          id: 'investor-update',
+          title: 'Investor Update Letter',
+          description: 'Formal communication for investor/stakeholder updates',
+          icon: <FileText size={18} />,
+          category: 'letter',
+          relevance: 70,
+          rationale: 'Keeps decision stakeholders aligned with current case status and asks.',
+          pageRange: '1-2 pages',
+          supportingDocuments: ['Executive summary'],
+          contactLetterFor: 'Investors and board'
+        }
       );
     }
     
     // Partnership situations
     if (caseType.includes('partner') || caseType.includes('joint') || caseType.includes('jv')) {
       docs.push(
-        { id: 'partnership-letter', title: 'Partnership Proposal', description: 'Formal proposal letter', icon: <Mail size={18} />, category: 'letter', relevance: 95 },
-        { id: 'stakeholder-report', title: 'Stakeholder Analysis', description: 'Relationship mapping', icon: <Users size={18} />, category: 'report', relevance: 85 },
-        { id: 'due-diligence', title: 'Partner Due Diligence', description: 'Partner vetting', icon: <Shield size={18} />, category: 'report', relevance: 80 }
+        {
+          id: 'partnership-letter',
+          title: 'Partnership Proposal Letter',
+          description: 'Formal outreach letter for counterpart engagement',
+          icon: <Mail size={18} />,
+          category: 'letter',
+          relevance: 95,
+          rationale: 'Creates structured first contact with clear terms and value proposition.',
+          pageRange: '1-3 pages',
+          supportingDocuments: ['One-page project brief', 'Counterparty profile'],
+          contactLetterFor: 'Target partner leadership'
+        },
+        {
+          id: 'stakeholder-report',
+          title: 'Stakeholder Analysis Report',
+          description: 'Relationship map, influence matrix, and alignment plan',
+          icon: <Users size={18} />,
+          category: 'report',
+          relevance: 85,
+          rationale: 'Reduces partnership execution risk by clarifying influence and incentives.',
+          pageRange: '8-14 pages',
+          supportingDocuments: ['Stakeholder list', 'Engagement history'],
+          contactLetterFor: 'Stakeholder outreach'
+        },
+        {
+          id: 'due-diligence',
+          title: 'Partner Due Diligence',
+          description: 'Counterparty vetting and risk profile',
+          icon: <Shield size={18} />,
+          category: 'report',
+          relevance: 80,
+          rationale: 'Validates partner credibility, track record, and legal exposure.',
+          pageRange: '10-20 pages',
+          supportingDocuments: ['Legal records', 'Financial statements'],
+          contactLetterFor: 'Compliance / legal counterpart'
+        }
       );
     }
     
     // Market entry
     if (caseType.includes('market') || caseType.includes('entry') || caseType.includes('expan')) {
       docs.push(
-        { id: 'country-brief', title: 'Market Intelligence Brief', description: 'Location analysis', icon: <Globe size={18} />, category: 'report', relevance: 95 },
-        { id: 'executive-report', title: 'Executive Summary', description: 'Leadership overview', icon: <Briefcase size={18} />, category: 'report', relevance: 85 }
+        {
+          id: 'country-brief',
+          title: 'Market Intelligence Brief',
+          description: 'Country/region analysis for entry decisions',
+          icon: <Globe size={18} />,
+          category: 'report',
+          relevance: 95,
+          rationale: 'Assesses jurisdiction, market dynamics, and entry barriers by location.',
+          pageRange: '10-18 pages',
+          supportingDocuments: ['Regulatory profile', 'Competitor map', 'Demand indicators'],
+          contactLetterFor: 'Trade/investment authority'
+        },
+        {
+          id: 'executive-report',
+          title: 'Executive Summary',
+          description: 'Decision-ready summary for leadership',
+          icon: <Briefcase size={18} />,
+          category: 'report',
+          relevance: 85,
+          rationale: 'Provides concise direction for go/no-go or phase-gate decisions.',
+          pageRange: '3-6 pages',
+          supportingDocuments: ['Core case facts', 'Risk summary'],
+          contactLetterFor: 'Board or executive team'
+        }
       );
     }
     
     // Regulatory/compliance
     if (caseType.includes('regul') || caseType.includes('compli') || caseType.includes('legal')) {
       docs.push(
-        { id: 'compliance-report', title: 'Compliance Assessment', description: 'Regulatory review', icon: <Scale size={18} />, category: 'report', relevance: 95 },
-        { id: 'govt-submission', title: 'Government Submission', description: 'Official correspondence', icon: <FileCheck size={18} />, category: 'letter', relevance: 90 }
+        {
+          id: 'compliance-report',
+          title: 'Compliance Assessment',
+          description: 'Regulatory obligations, gaps, and mitigation plan',
+          icon: <Scale size={18} />,
+          category: 'report',
+          relevance: 95,
+          rationale: 'Essential when regulatory exposure influences approval or viability.',
+          pageRange: '12-24 pages',
+          supportingDocuments: ['Applicable laws', 'Licensing checklist', 'Control matrix'],
+          contactLetterFor: 'Regulator / legal counsel'
+        },
+        {
+          id: 'govt-submission',
+          title: 'Government Submission Letter',
+          description: 'Official submission letter for agencies and regulators',
+          icon: <FileCheck size={18} />,
+          category: 'letter',
+          relevance: 90,
+          rationale: 'Required formal communication to initiate or support official review.',
+          pageRange: '1-3 pages',
+          supportingDocuments: ['Compliance report', 'Annexures'],
+          contactLetterFor: 'Agency focal point'
+        }
       );
+    }
+
+    if (hasRegulatoryAudience && !docs.find(d => d.id === 'govt-submission')) {
+      docs.push({
+        id: 'govt-submission',
+        title: 'Government Submission Letter',
+        description: 'Formal agency/regulator communication',
+        icon: <FileCheck size={18} />,
+        category: 'letter',
+        relevance: 86,
+        rationale: 'Audience includes regulator/ministry, so formal submission letter is advised.',
+        pageRange: '1-2 pages',
+        supportingDocuments: ['Executive summary', 'Compliance annex'],
+        contactLetterFor: 'Regulatory authority'
+      });
+    }
+
+    if (hasInvestorAudience && !docs.find(d => d.id === 'investment-memo')) {
+      docs.push({
+        id: 'investment-memo',
+        title: 'Investment Memorandum',
+        description: 'Investor decision package',
+        icon: <BarChart3 size={18} />,
+        category: 'report',
+        relevance: 88,
+        rationale: 'Audience includes investment decision makers requiring structured rationale.',
+        pageRange: '10-20 pages',
+        supportingDocuments: ['Financial model', 'Risk appendix'],
+        contactLetterFor: 'Investment committee'
+      });
     }
     
     // Always offer executive summary and custom
     if (!docs.find(d => d.id === 'executive-report')) {
-      docs.push({ id: 'executive-report', title: 'Executive Summary', description: 'Leadership overview', icon: <Briefcase size={18} />, category: 'report', relevance: 60 });
+      docs.push({
+        id: 'executive-report',
+        title: 'Executive Summary',
+        description: 'Leadership overview',
+        icon: <Briefcase size={18} />,
+        category: 'report',
+        relevance: 60,
+        rationale: 'Universal output to summarize findings and recommended action.',
+        pageRange: '2-5 pages',
+        supportingDocuments: ['Key findings', 'Decision options']
+      });
     }
-    docs.push({ id: 'custom', title: 'Custom Document', description: 'Specify your needs', icon: <PenTool size={18} />, category: 'report', relevance: 50 });
+    docs.push({
+      id: 'custom',
+      title: 'Custom Document',
+      description: 'Specify your needs',
+      icon: <PenTool size={18} />,
+      category: 'report',
+      relevance: 50,
+      rationale: 'Use when specialized format or policy template is required.',
+      pageRange: '1-40 pages (user defined)',
+      supportingDocuments: ['User-provided outline']
+    });
     
+    // Policy-pack required outputs (documents)
+    policyPack.requiredSupportDocuments.forEach((requiredDoc, index) => {
+      if (!docs.find(d => d.title.toLowerCase() === requiredDoc.toLowerCase())) {
+        docs.push({
+          id: `policy-doc-${index}`,
+          title: requiredDoc,
+          description: `${policyPack.label} required support document`,
+          icon: <FileText size={18} />,
+          category: 'report',
+          relevance: 84 - index,
+          rationale: `Required by ${policyPack.label} for jurisdictional completeness.`,
+          pageRange: '2-8 pages',
+          supportingDocuments: ['Jurisdiction notes', 'Case facts'],
+          contactLetterFor: 'Review authority'
+        });
+      }
+    });
+
+    // Policy-pack required outputs (letters)
+    policyPack.requiredLetters.forEach((requiredLetter, index) => {
+      if (!docs.find(d => d.title.toLowerCase() === requiredLetter.toLowerCase())) {
+        docs.push({
+          id: `policy-letter-${index}`,
+          title: requiredLetter,
+          description: `${policyPack.label} required letter`,
+          icon: <Mail size={18} />,
+          category: 'letter',
+          relevance: 82 - index,
+          rationale: `Required by ${policyPack.label} to support formal communication.`,
+          pageRange: '1-2 pages',
+          supportingDocuments: policyPack.requiredSupportDocuments,
+          contactLetterFor: requiredLetter.replace(/letter/i, '').trim() || 'Primary counterpart'
+        });
+      }
+    });
+
     // Sort by relevance
     docs.sort((a, b) => b.relevance - a.relevance);
     setRecommendedDocs(docs);
-  }, [caseStudy.situationType]);
+  }, [caseStudy, resolvePolicyPack]);
 
   // Handle send message
   const handleSend = useCallback(async () => {
@@ -327,14 +706,80 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
 
     let userContent = inputValue.trim();
     
+    const discoveredDocs: DocumentOption[] = [];
+
     // Process uploaded files
     if (uploadedFiles.length > 0) {
       const fileContents = await Promise.all(uploadedFiles.map(readFileContent));
       userContent += `\n\n**Uploaded Documents:**\n${fileContents.join('\n\n')}`;
+
+      for (let index = 0; index < uploadedFiles.length; index += 1) {
+        const file = uploadedFiles[index];
+        const fileContent = fileContents[index] || '';
+        if (fileContent.length < 400 || file.name.toLowerCase().endsWith('.pdf')) {
+          continue;
+        }
+
+        try {
+          const analysis = CaseStudyAnalyzer.analyze(file.name, fileContent);
+          const summary = CaseStudyAnalyzer.toConsultantSummary(analysis);
+          setCaseStudy(prev => ({
+            ...prev,
+            aiInsights: [...prev.aiInsights, summary],
+            additionalContext: [...prev.additionalContext, `Uploaded analysis: ${analysis.title}`]
+          }));
+
+          analysis.suggestedDocuments.slice(0, 3).forEach((docName, suggestionIndex) => {
+            discoveredDocs.push({
+              id: `case-doc-${index}-${suggestionIndex}`,
+              title: docName,
+              description: `Suggested from uploaded case study (${analysis.country} / ${analysis.sector})`,
+              icon: <FileText size={18} />,
+              category: 'report',
+              relevance: Math.max(65, analysis.scores.overallViability - suggestionIndex * 5),
+              rationale: 'Derived from uploaded case-study analysis and NSIL-style scoring diagnostics.',
+              pageRange: '8-20 pages',
+              supportingDocuments: ['Uploaded case evidence', 'Historical parallels'],
+              contactLetterFor: analysis.stakeholders[0]
+            });
+          });
+
+          analysis.suggestedLetters.slice(0, 2).forEach((letterName, suggestionIndex) => {
+            discoveredDocs.push({
+              id: `case-letter-${index}-${suggestionIndex}`,
+              title: letterName,
+              description: `Stakeholder letter generated from case analysis`,
+              icon: <Mail size={18} />,
+              category: 'letter',
+              relevance: 72 - suggestionIndex * 4,
+              rationale: 'Recommended to support contact and alignment with key counterparties.',
+              pageRange: '1-2 pages',
+              supportingDocuments: ['Executive summary', 'Case-specific annexures'],
+              contactLetterFor: analysis.stakeholders[suggestionIndex] || 'Primary stakeholder'
+            });
+          });
+        } catch (analysisError) {
+          console.warn('CaseStudyAnalyzer skipped file:', file.name, analysisError);
+        }
+      }
+
       setCaseStudy(prev => ({
         ...prev,
         uploadedDocuments: [...prev.uploadedDocuments, ...uploadedFiles.map(f => f.name)]
       }));
+
+      if (discoveredDocs.length > 0) {
+        setRecommendedDocs(prev => {
+          const existing = new Set(prev.map(item => item.title.toLowerCase()));
+          const merged = [...prev];
+          discoveredDocs.forEach(item => {
+            if (!existing.has(item.title.toLowerCase())) {
+              merged.push(item);
+            }
+          });
+          return merged.sort((a, b) => b.relevance - a.relevance);
+        });
+      }
     }
 
     // Add user message
@@ -360,6 +805,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
           responseContent = nextQuestion;
         } else {
           // Intake complete, transition to discovery with AI
+          setAdaptiveQuestionsAsked(0);
           responseContent = await processWithAI(
             userContent, 
             `User has completed baseline intake. Now entering discovery phase. Based on what you know, ask deeper questions about their specific situation, stakeholders involved, risks, timeline, and any other relevant details. Build understanding to recommend appropriate documents.`
@@ -372,6 +818,33 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
           }));
         }
       } else if (currentPhase === 'discovery') {
+        const liveReadiness = computeReadiness(caseStudy);
+
+        try {
+          const agenticInsights = await agenticAIRef.current.consult(toAgenticParams(caseStudy), 'case_discovery');
+          if (agenticInsights.length > 0) {
+            const insightSummary = agenticInsights
+              .slice(0, 2)
+              .map((insight) => `• ${insight.title}: ${insight.content}`)
+              .join('\n');
+
+            setCaseStudy(prev => ({
+              ...prev,
+              aiInsights: [...prev.aiInsights, ...agenticInsights.slice(0, 2).map(i => `${i.title}: ${i.content}`)]
+            }));
+
+            setMessages(prev => [...prev, {
+              id: crypto.randomUUID(),
+              role: 'system',
+              content: `NSIL Agentic Insight\n${insightSummary}`,
+              timestamp: new Date(),
+              phase: 'discovery'
+            }]);
+          }
+        } catch (agenticError) {
+          console.warn('Agentic insight generation failed:', agenticError);
+        }
+
         // AI-driven discovery
         responseContent = await processWithAI(
           userContent,
@@ -383,11 +856,29 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
           additionalContext: [...prev.additionalContext, userContent]
         }));
 
+        const adaptiveFollowUp = AdaptiveQuestionnaire.getNextQuestion(
+          skillLevel,
+          {
+            organizationName: caseStudy.organizationName,
+            strategicIntent: caseStudy.objectives,
+            customData: {
+              mandate: caseStudy.organizationMandate,
+              jurisdiction: caseStudy.jurisdiction,
+              audience: caseStudy.targetAudience,
+              latestInput: userContent
+            }
+          },
+          adaptiveQuestionsAsked
+        );
+
         // Check if ready to move to recommendations
         const discoveryCount = messages.filter(m => m.phase === 'discovery' && m.role === 'user').length;
-        if (discoveryCount >= 3) {
+        if (liveReadiness >= 80 || discoveryCount >= 5) {
           setCurrentPhase('analysis');
           generateRecommendations();
+        } else if (adaptiveFollowUp && adaptiveQuestionsAsked < 4) {
+          responseContent += `\n\nTo improve your case precision, I need one more detail:\n${adaptiveFollowUp}`;
+          setAdaptiveQuestionsAsked(prev => prev + 1);
         }
       } else if (currentPhase === 'analysis') {
         responseContent = await processWithAI(
@@ -397,11 +888,16 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         setCurrentPhase('recommendations');
         generateRecommendations();
       } else if (currentPhase === 'recommendations') {
+        if (readinessScore < 80) {
+          setCurrentPhase('discovery');
+          responseContent = `Your case file readiness is currently ${readinessScore}%. I need a little more information before recommending final outputs. Please provide more detail on stakeholders, evidence, and decision constraints.`;
+        } else {
         // User is selecting documents
         responseContent = await processWithAI(
           userContent,
           `User is in document selection phase. Help them choose the right documents or proceed to generation if they've selected.`
         );
+        }
       } else {
         // Generation phase
         responseContent = await processWithAI(
@@ -434,7 +930,22 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     } finally {
       setIsLoading(false);
     }
-  }, [inputValue, uploadedFiles, currentPhase, readFileContent, progressIntake, processWithAI, generateRecommendations, messages]);
+  }, [
+    inputValue,
+    uploadedFiles,
+    currentPhase,
+    readFileContent,
+    progressIntake,
+    processWithAI,
+    generateRecommendations,
+    messages,
+    adaptiveQuestionsAsked,
+    caseStudy,
+    computeReadiness,
+    readinessScore,
+    skillLevel,
+    toAgenticParams
+  ]);
 
   // Handle file selection
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -467,6 +978,26 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   // Generate selected documents
   const handleGenerateDocuments = useCallback(async () => {
     if (selectedDocs.length === 0) return;
+    if (readinessScore < 80) {
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Your case file readiness is ${readinessScore}%. I need at least 80% before final generation. Please continue answering clarifying questions or upload supporting evidence.`,
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
+    if (!allowAllDocumentAccess) {
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: 'Please enable access to all relevant uploaded material before final generation. This improves accuracy, page estimates, and evidence traceability.',
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
     
     setCurrentPhase('generation');
     setIsLoading(true);
@@ -476,7 +1007,13 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     try {
       const response = await processWithAI(
         `Generate the following documents: ${docNames}`,
-        `Based on the complete case study, generate professional document content for: ${docNames}. Format with proper markdown headings, sections, and professional language. Include all relevant details from the case study.`
+        `Based on the complete case study, generate professional document content for: ${docNames}. Format with proper markdown headings, sections, and professional language. Include all relevant details from the case study.
+
+Each selected output must include:
+- Why this output is appropriate for ${caseStudy.targetAudience || 'the target audience'}
+- Estimated page length
+- Required support documents/annexures
+- Contact letter guidance where relevant`
       );
       
       setGeneratedContent(response);
@@ -494,7 +1031,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     } finally {
       setIsLoading(false);
     }
-  }, [selectedDocs, recommendedDocs, processWithAI]);
+  }, [selectedDocs, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience]);
 
   // Phase indicator
   const phaseLabels: Record<CasePhase, { label: string; description: string }> = {
@@ -734,7 +1271,27 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
                 <Building2 size={16} className="text-blue-600" />
                 Case Summary
               </h2>
+              <div className="mt-2 text-[11px] text-blue-700 bg-blue-50 border border-blue-200 px-2 py-1">
+                Policy Pack: {resolvePolicyPack(caseStudy).label}
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-[11px]">
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 border border-blue-200 font-semibold">
+                  Readiness: {readinessScore}%
+                </span>
+                <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200 capitalize">
+                  {skillLevel}
+                </span>
+              </div>
               <div className="mt-3 space-y-2 text-xs">
+                {caseStudy.userName && (
+                  <div className="flex items-start gap-2">
+                    <User size={12} className="text-slate-400 mt-0.5" />
+                    <div>
+                      <span className="text-slate-500">User:</span>
+                      <p className="text-slate-700">{caseStudy.userName}</p>
+                    </div>
+                  </div>
+                )}
                 {caseStudy.organizationName && (
                   <div className="flex items-start gap-2">
                     <User size={12} className="text-slate-400 mt-0.5" />
@@ -750,6 +1307,15 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
                     <div>
                       <span className="text-slate-500">Situation:</span>
                       <p className="text-slate-700">{caseStudy.situationType.slice(0, 100)}</p>
+                    </div>
+                  </div>
+                )}
+                {caseStudy.country && (
+                  <div className="flex items-start gap-2">
+                    <Globe size={12} className="text-slate-400 mt-0.5" />
+                    <div>
+                      <span className="text-slate-500">Jurisdiction:</span>
+                      <p className="text-slate-700">{caseStudy.country} / {caseStudy.jurisdiction || 'Not specified'}</p>
                     </div>
                   </div>
                 )}
@@ -804,6 +1370,22 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
                           <p className={`text-xs ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-500'}`}>
                             {doc.description}
                           </p>
+                          <p className={`text-[11px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-600'}`}>
+                            {doc.rationale}
+                          </p>
+                          <p className={`text-[11px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-600'}`}>
+                            Length: {doc.pageRange}
+                          </p>
+                          {doc.supportingDocuments.length > 0 && (
+                            <p className={`text-[10px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-500'}`}>
+                              Support docs: {doc.supportingDocuments.join(', ')}
+                            </p>
+                          )}
+                          {doc.contactLetterFor && (
+                            <p className={`text-[10px] mt-1 ${selectedDocs.includes(doc.id) ? 'text-blue-100' : 'text-slate-500'}`}>
+                              Contact letter: {doc.contactLetterFor}
+                            </p>
+                          )}
                         </div>
                         <div className={`text-xs font-medium ${selectedDocs.includes(doc.id) ? 'text-blue-200' : 'text-blue-600'}`}>
                           {doc.relevance}%
@@ -814,26 +1396,42 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
                 </div>
 
                 {selectedDocs.length > 0 && currentPhase !== 'generation' && (
-                  <button
-                    onClick={handleGenerateDocuments}
-                    disabled={isLoading}
-                    className={`mt-4 w-full py-3 font-medium text-sm flex items-center justify-center gap-2 transition-all ${
-                      isLoading
-                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 size={16} className="animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        Generate {selectedDocs.length} Document{selectedDocs.length > 1 ? 's' : ''}
-                      </>
+                  <>
+                    <label className="mt-4 flex items-start gap-2 text-xs text-slate-600">
+                      <input
+                        type="checkbox"
+                        checked={allowAllDocumentAccess}
+                        onChange={(e) => setAllowAllDocumentAccess(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      Allow BW Consultant to use all uploaded material for final generation and support-document mapping.
+                    </label>
+                    <button
+                      onClick={handleGenerateDocuments}
+                      disabled={isLoading || readinessScore < 80 || !allowAllDocumentAccess}
+                      className={`mt-3 w-full py-3 font-medium text-sm flex items-center justify-center gap-2 transition-all ${
+                        isLoading || readinessScore < 80 || !allowAllDocumentAccess
+                          ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          Generate {selectedDocs.length} Document{selectedDocs.length > 1 ? 's' : ''}
+                        </>
+                      )}
+                    </button>
+                    {(readinessScore < 80 || !allowAllDocumentAccess) && (
+                      <p className="text-[10px] mt-2 text-amber-700 bg-amber-50 border border-amber-200 p-2">
+                        Generation requires readiness ≥ 80 and access permission enabled.
+                      </p>
                     )}
-                  </button>
+                  </>
                 )}
               </div>
             )}

@@ -85,11 +85,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
                     <div className="hidden lg:flex items-center gap-6 text-sm text-slate-600 font-medium">
                         <button onClick={() => scrollToSection('mission')} className="hover:text-blue-600 transition-colors">Mission</button>
-                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Platform</button>
-                        <button onClick={() => scrollToSection('technology')} className="hover:text-blue-600 transition-colors">The Brain</button>
+                        <button onClick={() => scrollToSection('platform')} className="hover:text-blue-600 transition-colors">The Platform</button>
+                        <button onClick={() => scrollToSection('brain')} className="hover:text-blue-600 transition-colors">The Brain</button>
                         <button onClick={() => scrollToSection('protocol')} className="hover:text-blue-600 transition-colors">Protocol</button>
                         <button onClick={() => scrollToSection('proof')} className="hover:text-blue-600 transition-colors">Proof</button>
-                        <button onClick={() => scrollToSection('pilots')} className="hover:text-blue-600 transition-colors">Partnerships</button>
+                        <button onClick={() => scrollToSection('partnerships')} className="hover:text-blue-600 transition-colors">Partnerships</button>
                     </div>
                     
                 </div>
@@ -190,7 +190,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 1: HERO HOOK — The Trust Gap (Full-Width Narrative)
             ═══════════════════════════════════════════════════════════════ */}
-            <section id="technology" className="relative py-12 px-4 bg-white overflow-hidden">
+            <section id="platform" className="relative py-12 px-4 bg-white overflow-hidden">
                 {/* Subtle background texture */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-4xl mx-auto">
@@ -200,6 +200,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
                         Not a chatbot. A <span className="text-blue-600 font-normal">Neuro-Symbolic Operating System</span> designed to close the &ldquo;Confidence Gap&rdquo; in high-stakes strategic decision-making.
                     </p>
+                    <div id="brain" className="relative -top-28" />
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
                         The Trust Gap in Artificial Intelligence
                     </h2>
@@ -787,7 +788,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* WORK WITH US - Partnership & Pilot Programs */}
-            <section id="pilots" className="py-20 px-4 bg-white">
+            <section id="partnerships" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-3">Early Partners Shape What This Becomes. <span className="text-blue-600 font-normal">That&rsquo;s By Design.</span></h2>
                     <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-3xl">
@@ -1406,7 +1407,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </section>
 
                         {/* --- PROOF OF CAPABILITY --- */}
-                        <section className="py-10 px-6 md:px-8 bg-white border-t border-slate-200">
+                        <section id="proof" className="py-10 px-6 md:px-8 bg-white border-t border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">PROOF OF CAPABILITY</p>
                                 <h3 className="text-xl font-semibold text-slate-900 mb-3">See the System in Action</h3>
@@ -2573,7 +2574,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* THE TEN-STEP PROTOCOL  -  styled like landing page */}
-                        <section className="py-12 px-6 md:px-8 bg-white">
+                        <section id="protocol" className="py-12 px-6 md:px-8 bg-white">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
                                 <h2 className="text-2xl md:text-3xl font-light text-slate-900 mb-2">The Ten-Step Protocol</h2>
