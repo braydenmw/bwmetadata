@@ -194,6 +194,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [feedbackNote, setFeedbackNote] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [strictLearningImport, setStrictLearningImport] = useState(false);
+  const [topGapQuickInput, setTopGapQuickInput] = useState('');
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1067,6 +1068,8 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   }, []);
 
   const getCriticalCaseGaps = useCallback(() => {
+    const hasEvidenceNote = caseStudy.additionalContext.some((item) => item.startsWith('Evidence Note:'));
+
     const checks: CriticalCaseGap[] = [
       {
         missing: caseStudy.currentMatter.trim().length < 80,
@@ -1111,7 +1114,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         weight: 70
       },
       {
-        missing: caseStudy.uploadedDocuments.length === 0,
+        missing: caseStudy.uploadedDocuments.length === 0 && !hasEvidenceNote,
         label: 'Supporting evidence',
         question: 'Please upload at least one supporting document or provide verifiable evidence details.',
         severity: 'medium',
@@ -1139,6 +1142,60 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     }]);
     setInputValue(nextGap.question);
   }, [getCriticalCaseGaps]);
+
+  const handleResolveTopGap = useCallback(() => {
+    const response = topGapQuickInput.trim();
+    if (!response) return;
+
+    const gaps = getCriticalCaseGaps();
+    if (gaps.length === 0) return;
+
+    const topGap = gaps[0];
+    setCaseStudy((prev) => {
+      if (topGap.label === 'Problem statement depth') {
+        return { ...prev, currentMatter: response };
+      }
+      if (topGap.label === 'Clear objective') {
+        return { ...prev, objectives: response };
+      }
+      if (topGap.label === 'Decision audience') {
+        return { ...prev, targetAudience: response };
+      }
+      if (topGap.label === 'Jurisdiction clarity') {
+        const parts = response.split(/[,/|-]/).map((part) => part.trim()).filter(Boolean);
+        return {
+          ...prev,
+          country: parts[0] || prev.country,
+          jurisdiction: parts.slice(1).join(' / ') || response
+        };
+      }
+      if (topGap.label === 'Timeline and urgency') {
+        return { ...prev, decisionDeadline: response };
+      }
+      if (topGap.label === 'Constraints and limits') {
+        return { ...prev, constraints: response };
+      }
+      if (topGap.label === 'Supporting evidence') {
+        return {
+          ...prev,
+          additionalContext: [...prev.additionalContext, `Evidence Note: ${response}`]
+        };
+      }
+      return prev;
+    });
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Captured top-gap input for ${topGap.label}. I have updated your case file and will reprioritize remaining gaps.`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+    setTopGapQuickInput('');
+  }, [topGapQuickInput, getCriticalCaseGaps]);
 
   // Copy generated content
   const copyContent = useCallback(() => {
@@ -1172,7 +1229,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" to close the highest-impact gap first.`,
+        content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" or "Resolve Top Gap" to close the highest-impact gap first.`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
@@ -1274,6 +1331,7 @@ Each selected output must include:
     .slice(0, 2);
 
   const criticalCaseGaps = getCriticalCaseGaps();
+  const topCriticalGap = criticalCaseGaps[0] || null;
   const gapSeverityCounts = criticalCaseGaps.reduce<Record<CriticalGapSeverity, number>>(
     (acc, gap) => {
       acc[gap.severity] += 1;
@@ -1770,6 +1828,29 @@ Each selected output must include:
                     <p className="mt-1 text-[10px] text-slate-600">
                       Next: {criticalCaseGaps[0].severity.toUpperCase()} — {criticalCaseGaps[0].label}
                     </p>
+                    {topCriticalGap && (
+                      <>
+                        <textarea
+                          value={topGapQuickInput}
+                          onChange={(e) => setTopGapQuickInput(e.target.value)}
+                          placeholder={topCriticalGap.question}
+                          className="mt-1 w-full resize-none border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          rows={2}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleResolveTopGap}
+                          disabled={!topGapQuickInput.trim()}
+                          className={`mt-1 text-[10px] px-1.5 py-1 border ${
+                            !topGapQuickInput.trim()
+                              ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                              : 'bg-white border-blue-300 text-blue-700 hover:bg-blue-50'
+                          }`}
+                        >
+                          Resolve Top Gap
+                        </button>
+                      </>
+                    )}
                   </>
                 )}
               </div>
