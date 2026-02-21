@@ -9,7 +9,7 @@
  * 5. Document Generation - Create the recommended outputs
  */
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { 
   Bot, Send, Paperclip, Loader2, X, Maximize2,
   FileText, Mail, Briefcase, Shield, BarChart3, Users, Scale, 
@@ -88,6 +88,16 @@ interface CriticalCaseGap {
   question: string;
   severity: CriticalGapSeverity;
   weight: number;
+}
+
+type ExtractedEntityKey = 'audience' | 'country' | 'jurisdiction' | 'deadline' | 'evidenceNote';
+type EntityConfidence = 'high' | 'medium' | 'low';
+
+interface ExtractedEntitySuggestion {
+  key: ExtractedEntityKey;
+  label: string;
+  value: string;
+  confidence: EntityConfidence;
 }
 
 const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
@@ -195,6 +205,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [strictLearningImport, setStrictLearningImport] = useState(false);
   const [topGapQuickInput, setTopGapQuickInput] = useState('');
+  const [entityDecisions, setEntityDecisions] = useState<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>({});
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1143,19 +1154,30 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setInputValue(nextGap.question);
   }, [getCriticalCaseGaps]);
 
-  const extractQuickGapEntities = useCallback((input: string) => {
+  const extractQuickGapEntities = useCallback((input: string): ExtractedEntitySuggestion[] => {
     const normalized = input.trim();
-    const lower = normalized.toLowerCase();
+    if (!normalized) return [];
 
-    const audienceMap: Array<{ pattern: RegExp; value: string }> = [
-      { pattern: /\bboard\b/i, value: 'Board' },
-      { pattern: /\bregulator|agency|ministry\b/i, value: 'Regulator / Ministry' },
-      { pattern: /\binvestor|investment committee|fund\b/i, value: 'Investor Committee' },
-      { pattern: /\bcourt|tribunal|legal counsel\b/i, value: 'Court / Legal Counsel' },
-      { pattern: /\bexecutive|leadership|c-suite\b/i, value: 'Executive Team' }
+    const lower = normalized.toLowerCase();
+    const suggestions: ExtractedEntitySuggestion[] = [];
+
+    const audienceMap: Array<{ pattern: RegExp; value: string; confidence: EntityConfidence }> = [
+      { pattern: /\bboard\b/i, value: 'Board', confidence: 'high' },
+      { pattern: /\bregulator|agency|ministry\b/i, value: 'Regulator / Ministry', confidence: 'high' },
+      { pattern: /\binvestor|investment committee|fund\b/i, value: 'Investor Committee', confidence: 'high' },
+      { pattern: /\bcourt|tribunal|legal counsel\b/i, value: 'Court / Legal Counsel', confidence: 'high' },
+      { pattern: /\bexecutive|leadership|c-suite\b/i, value: 'Executive Team', confidence: 'medium' }
     ];
 
-    const matchedAudience = audienceMap.find((item) => item.pattern.test(normalized))?.value;
+    const matchedAudience = audienceMap.find((item) => item.pattern.test(normalized));
+    if (matchedAudience) {
+      suggestions.push({
+        key: 'audience',
+        label: 'Audience',
+        value: matchedAudience.value,
+        confidence: matchedAudience.confidence
+      });
+    }
 
     const parts = normalized.split(/[,/|-]/).map((part) => part.trim()).filter(Boolean);
     const jurisdictionByParts = parts.length > 1
@@ -1173,20 +1195,66 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
 
     const matchedJurisdiction = triggerToRegion.find((item) => lower.includes(item.trigger));
 
+    const detectedCountry = jurisdictionByParts?.country || matchedJurisdiction?.country || null;
+    if (detectedCountry) {
+      suggestions.push({
+        key: 'country',
+        label: 'Country',
+        value: detectedCountry,
+        confidence: jurisdictionByParts?.country ? 'high' : 'medium'
+      });
+    }
+
+    const detectedJurisdiction = jurisdictionByParts?.jurisdiction || matchedJurisdiction?.jurisdiction || null;
+    if (detectedJurisdiction) {
+      suggestions.push({
+        key: 'jurisdiction',
+        label: 'Jurisdiction',
+        value: detectedJurisdiction,
+        confidence: jurisdictionByParts?.jurisdiction ? 'high' : 'medium'
+      });
+    }
+
     const deadlineByPhrase = normalized.match(/\b(?:by|before|due|deadline)\s*[:-]?\s*([^.\n]{4,80})/i)?.[1]?.trim();
     const deadlineByPattern = normalized.match(/\b(?:Q[1-4]\s?\d{4}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|[A-Za-z]+\s+\d{4})\b/)?.[0];
     const detectedDeadline = deadlineByPhrase || deadlineByPattern || null;
+    if (detectedDeadline) {
+      suggestions.push({
+        key: 'deadline',
+        label: 'Deadline',
+        value: detectedDeadline,
+        confidence: deadlineByPhrase ? 'high' : 'medium'
+      });
+    }
 
     const hasEvidenceSignal = /\b(evidence|annex|attachment|dataset|source|report|metric|kpi|%|\$|http)\b/i.test(normalized) || /\d{2,}/.test(normalized);
+    if (hasEvidenceSignal) {
+      suggestions.push({
+        key: 'evidenceNote',
+        label: 'Evidence Note',
+        value: normalized,
+        confidence: /\b(attachment|dataset|source|http)\b/i.test(normalized) ? 'high' : 'medium'
+      });
+    }
 
-    return {
-      audience: matchedAudience || null,
-      country: jurisdictionByParts?.country || matchedJurisdiction?.country || null,
-      jurisdiction: jurisdictionByParts?.jurisdiction || matchedJurisdiction?.jurisdiction || null,
-      deadline: detectedDeadline,
-      evidenceNote: hasEvidenceSignal ? normalized : null
-    };
+    const uniqueSuggestions = suggestions.reduce<ExtractedEntitySuggestion[]>((acc, suggestion) => {
+      if (!acc.some((item) => item.key === suggestion.key)) {
+        acc.push(suggestion);
+      }
+      return acc;
+    }, []);
+
+    return uniqueSuggestions;
   }, []);
+
+  const extractedEntitySuggestions = useMemo(
+    () => extractQuickGapEntities(topGapQuickInput),
+    [topGapQuickInput, extractQuickGapEntities]
+  );
+
+  useEffect(() => {
+    setEntityDecisions({});
+  }, [topGapQuickInput]);
 
   const handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
@@ -1196,7 +1264,13 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     if (gaps.length === 0) return;
 
     const topGap = gaps[0];
-    const extracted = extractQuickGapEntities(response);
+    const acceptedSuggestions = extractedEntitySuggestions.filter(
+      (item) => entityDecisions[item.key] === 'accepted'
+    );
+    const acceptedSuggestionMap = acceptedSuggestions.reduce<Partial<Record<ExtractedEntityKey, string>>>((acc, item) => {
+      acc[item.key] = item.value;
+      return acc;
+    }, {});
     const applied: string[] = [];
 
     setCaseStudy((prev) => {
@@ -1235,24 +1309,24 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         applied.push('evidence note');
       }
 
-      if (extracted.audience && (!next.targetAudience || topGap.label === 'Decision audience')) {
-        next.targetAudience = extracted.audience;
+      if (acceptedSuggestionMap.audience && (!next.targetAudience || topGap.label === 'Decision audience')) {
+        next.targetAudience = acceptedSuggestionMap.audience;
         if (!applied.includes('audience')) applied.push('audience(auto)');
       }
-      if (extracted.country && (!next.country || topGap.label === 'Jurisdiction clarity')) {
-        next.country = extracted.country;
+      if (acceptedSuggestionMap.country && (!next.country || topGap.label === 'Jurisdiction clarity')) {
+        next.country = acceptedSuggestionMap.country;
         if (!applied.includes('country')) applied.push('country(auto)');
       }
-      if (extracted.jurisdiction && (!next.jurisdiction || topGap.label === 'Jurisdiction clarity')) {
-        next.jurisdiction = extracted.jurisdiction;
+      if (acceptedSuggestionMap.jurisdiction && (!next.jurisdiction || topGap.label === 'Jurisdiction clarity')) {
+        next.jurisdiction = acceptedSuggestionMap.jurisdiction;
         if (!applied.includes('jurisdiction')) applied.push('jurisdiction(auto)');
       }
-      if (extracted.deadline && (!next.decisionDeadline || topGap.label === 'Timeline and urgency')) {
-        next.decisionDeadline = extracted.deadline;
+      if (acceptedSuggestionMap.deadline && (!next.decisionDeadline || topGap.label === 'Timeline and urgency')) {
+        next.decisionDeadline = acceptedSuggestionMap.deadline;
         if (!applied.includes('deadline')) applied.push('deadline(auto)');
       }
-      if (extracted.evidenceNote && !next.additionalContext.some((item) => item === `Evidence Note: ${extracted.evidenceNote}`)) {
-        next.additionalContext = [...next.additionalContext, `Evidence Note: ${extracted.evidenceNote}`];
+      if (acceptedSuggestionMap.evidenceNote && !next.additionalContext.some((item) => item === `Evidence Note: ${acceptedSuggestionMap.evidenceNote}`)) {
+        next.additionalContext = [...next.additionalContext, `Evidence Note: ${acceptedSuggestionMap.evidenceNote}`];
         if (!applied.includes('evidence note')) applied.push('evidence note(auto)');
       }
 
@@ -1270,7 +1344,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       }
     ]);
     setTopGapQuickInput('');
-  }, [topGapQuickInput, getCriticalCaseGaps, extractQuickGapEntities]);
+  }, [topGapQuickInput, getCriticalCaseGaps, extractedEntitySuggestions, entityDecisions]);
 
   // Copy generated content
   const copyContent = useCallback(() => {
@@ -1912,6 +1986,55 @@ Each selected output must include:
                           className="mt-1 w-full resize-none border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           rows={2}
                         />
+                        {extractedEntitySuggestions.length > 0 && (
+                          <div className="mt-1 space-y-1 border border-stone-200 bg-white p-1.5">
+                            <p className="text-[10px] text-slate-600">Detected entities (confirm/reject before auto-fill):</p>
+                            {extractedEntitySuggestions.map((item) => {
+                              const decision = entityDecisions[item.key];
+                              return (
+                                <div key={item.key} className="flex items-center justify-between gap-2 text-[10px]">
+                                  <div className="min-w-0">
+                                    <span className="font-semibold text-slate-700">{item.label}:</span>{' '}
+                                    <span className="text-slate-700">{item.value}</span>{' '}
+                                    <span className={`ml-1 px-1 py-0.5 border ${
+                                      item.confidence === 'high'
+                                        ? 'text-green-700 border-green-200 bg-green-50'
+                                        : item.confidence === 'medium'
+                                          ? 'text-amber-700 border-amber-200 bg-amber-50'
+                                          : 'text-slate-600 border-slate-200 bg-slate-50'
+                                    }`}>
+                                      {item.confidence}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => setEntityDecisions((prev) => ({ ...prev, [item.key]: 'accepted' }))}
+                                      className={`px-1 py-0.5 border ${
+                                        decision === 'accepted'
+                                          ? 'bg-blue-600 text-white border-blue-600'
+                                          : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                                      }`}
+                                    >
+                                      Accept
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setEntityDecisions((prev) => ({ ...prev, [item.key]: 'rejected' }))}
+                                      className={`px-1 py-0.5 border ${
+                                        decision === 'rejected'
+                                          ? 'bg-slate-600 text-white border-slate-600'
+                                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                                      }`}
+                                    >
+                                      Reject
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                         <button
                           type="button"
                           onClick={handleResolveTopGap}
