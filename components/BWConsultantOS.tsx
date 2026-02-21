@@ -205,7 +205,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [strictLearningImport, setStrictLearningImport] = useState(false);
   const [topGapQuickInput, setTopGapQuickInput] = useState('');
-  const [entityDecisions, setEntityDecisions] = useState<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>({});
+  const [entityDecisions, setEntityDecisions] = useState<Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>>({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1253,8 +1253,21 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   );
 
   useEffect(() => {
-    setEntityDecisions({});
+    setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
   }, [topGapQuickInput]);
+
+  const handleApplyHighConfidence = useCallback(() => {
+    const highConfidence = extractedEntitySuggestions.filter((item) => item.confidence === 'high');
+    if (highConfidence.length === 0) return;
+
+    setEntityDecisions((prev) => {
+      const next = { ...prev };
+      highConfidence.forEach((item) => {
+        next[item.key] = 'accepted';
+      });
+      return next;
+    });
+  }, [extractedEntitySuggestions]);
 
   const handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
@@ -1988,7 +2001,21 @@ Each selected output must include:
                         />
                         {extractedEntitySuggestions.length > 0 && (
                           <div className="mt-1 space-y-1 border border-stone-200 bg-white p-1.5">
-                            <p className="text-[10px] text-slate-600">Detected entities (confirm/reject before auto-fill):</p>
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="text-[10px] text-slate-600">Detected entities (confirm/reject before auto-fill):</p>
+                              <button
+                                type="button"
+                                onClick={handleApplyHighConfidence}
+                                disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'high')}
+                                className={`text-[10px] px-1 py-0.5 border ${
+                                  !extractedEntitySuggestions.some((item) => item.confidence === 'high')
+                                    ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                                    : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                                }`}
+                              >
+                                Apply High Confidence
+                              </button>
+                            </div>
                             {extractedEntitySuggestions.map((item) => {
                               const decision = entityDecisions[item.key];
                               return (
