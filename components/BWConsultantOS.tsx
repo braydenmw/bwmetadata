@@ -1281,6 +1281,19 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     });
   }, [extractedEntitySuggestions]);
 
+  const handleRejectLowConfidence = useCallback(() => {
+    const lowConfidence = extractedEntitySuggestions.filter((item) => item.confidence === 'low');
+    if (lowConfidence.length === 0) return;
+
+    setEntityDecisions((prev) => {
+      const next = { ...prev };
+      lowConfidence.forEach((item) => {
+        next[item.key] = 'rejected';
+      });
+      return next;
+    });
+  }, [extractedEntitySuggestions]);
+
   const handleResetSuggestionDecisions = useCallback(() => {
     setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
   }, []);
@@ -2052,6 +2065,18 @@ Each selected output must include:
                                   }`}
                                 >
                                   Apply High Confidence
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={handleRejectLowConfidence}
+                                  disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'low')}
+                                  className={`text-[10px] px-1 py-0.5 border ${
+                                    !extractedEntitySuggestions.some((item) => item.confidence === 'low')
+                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                                      : 'bg-white text-amber-700 border-amber-300 hover:bg-amber-50'
+                                  }`}
+                                >
+                                  Reject Low Confidence
                                 </button>
                                 <button
                                   type="button"
