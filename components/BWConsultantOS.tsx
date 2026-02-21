@@ -1056,6 +1056,64 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setUploadedFiles(prev => [...prev, ...files]);
   }, []);
 
+  const getCriticalCaseGaps = useCallback(() => {
+    const checks = [
+      {
+        missing: caseStudy.currentMatter.trim().length < 80,
+        label: 'Problem statement depth',
+        question: 'What exactly is happening, who is involved, and what decision must be made?'
+      },
+      {
+        missing: caseStudy.objectives.trim().length < 30,
+        label: 'Clear objective',
+        question: 'What measurable outcome are you targeting and what does success look like?'
+      },
+      {
+        missing: caseStudy.targetAudience.trim().length < 3,
+        label: 'Decision audience',
+        question: 'Who is the primary decision audience (board, regulator, investor, ministry, etc.)?'
+      },
+      {
+        missing: caseStudy.country.trim().length < 2 || caseStudy.jurisdiction.trim().length < 2,
+        label: 'Jurisdiction clarity',
+        question: 'Which country and legal/regulatory jurisdiction must the outputs follow?'
+      },
+      {
+        missing: caseStudy.decisionDeadline.trim().length < 3,
+        label: 'Timeline and urgency',
+        question: 'What is the hard decision deadline and what happens if this slips?'
+      },
+      {
+        missing: caseStudy.constraints.trim().length < 15,
+        label: 'Constraints and limits',
+        question: 'What constraints (budget, politics, legal, resources) cannot be violated?'
+      },
+      {
+        missing: caseStudy.uploadedDocuments.length === 0,
+        label: 'Supporting evidence',
+        question: 'Please upload at least one supporting document or provide verifiable evidence details.'
+      }
+    ];
+
+    return checks.filter((item) => item.missing);
+  }, [caseStudy]);
+
+  const handleAskNextCriticalQuestion = useCallback(() => {
+    const gaps = getCriticalCaseGaps();
+    if (gaps.length === 0) return;
+
+    const nextGap = gaps[0];
+    setCurrentPhase('discovery');
+    setMessages(prev => [...prev, {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: `Critical gap to resolve: ${nextGap.label}\n${nextGap.question}`,
+      timestamp: new Date(),
+      phase: 'discovery'
+    }]);
+    setInputValue(nextGap.question);
+  }, [getCriticalCaseGaps]);
+
   // Copy generated content
   const copyContent = useCallback(() => {
     if (generatedContent) {
@@ -1081,6 +1139,20 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
   // Generate selected documents
   const handleGenerateDocuments = useCallback(async () => {
     if (selectedDocs.length === 0) return;
+
+    const criticalCaseGaps = getCriticalCaseGaps();
+    if (criticalCaseGaps.length > 0) {
+      setCurrentPhase('discovery');
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Before generation, resolve these critical gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => gap.label).join('\n- ')}\n\nUse "Ask Next Critical Question" to close them quickly.`,
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+      return;
+    }
+
     if (readinessScore < 80) {
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
@@ -1137,7 +1209,7 @@ Each selected output must include:
     } finally {
       setIsLoading(false);
     }
-  }, [selectedDocs, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience]);
+  }, [selectedDocs, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience, getCriticalCaseGaps]);
 
   // Phase indicator
   const phaseLabels: Record<CasePhase, { label: string; description: string }> = {
@@ -1174,6 +1246,8 @@ Each selected output must include:
     .filter((item) => item.boost < 0)
     .sort((a, b) => a.boost - b.boost)
     .slice(0, 2);
+
+  const criticalCaseGaps = getCriticalCaseGaps();
 
   const getRankGapKeys = useCallback((alternativeId: string) => {
     if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
@@ -1640,6 +1714,28 @@ Each selected output must include:
                   {skillLevel}
                 </span>
               </div>
+              <div className="mt-2 text-[11px] bg-white border border-stone-200 px-2 py-1">
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`${criticalCaseGaps.length === 0 ? 'text-green-700' : 'text-amber-700'} font-semibold`}>
+                    Critical Gaps: {criticalCaseGaps.length}
+                  </span>
+                  {criticalCaseGaps.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleAskNextCriticalQuestion}
+                      className="text-[10px] px-1.5 py-1 bg-white border border-amber-300 text-amber-700 hover:bg-amber-50"
+                    >
+                      Ask Next Critical Question
+                    </button>
+                  )}
+                </div>
+                {criticalCaseGaps.length > 0 && (
+                  <p className="mt-1 text-[10px] text-slate-600">
+                    Missing: {criticalCaseGaps.slice(0, 2).map((gap) => gap.label).join(' • ')}
+                    {criticalCaseGaps.length > 2 ? ` • +${criticalCaseGaps.length - 2} more` : ''}
+                  </p>
+                )}
+              </div>
               {caseGraph && (
                 <div className="mt-2 text-[11px] text-slate-600 bg-white border border-stone-200 px-2 py-1">
                   Case Graph: confidence {Math.round(caseGraph.summary.confidence)}% • evidence {Math.round(caseGraph.summary.evidenceStrength)}%
@@ -1889,9 +1985,9 @@ Each selected output must include:
                     </label>
                     <button
                       onClick={handleGenerateDocuments}
-                      disabled={isLoading || readinessScore < 80 || !allowAllDocumentAccess}
+                      disabled={isLoading || readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0}
                       className={`mt-3 w-full py-3 font-medium text-sm flex items-center justify-center gap-2 transition-all ${
-                        isLoading || readinessScore < 80 || !allowAllDocumentAccess
+                        isLoading || readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0
                           ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
@@ -1907,9 +2003,9 @@ Each selected output must include:
                         </>
                       )}
                     </button>
-                    {(readinessScore < 80 || !allowAllDocumentAccess) && (
+                    {(readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0) && (
                       <p className="text-[10px] mt-2 text-amber-700 bg-amber-50 border border-amber-200 p-2">
-                        Generation requires readiness ≥ 80 and access permission enabled.
+                        Generation requires readiness ≥ 80, access permission enabled, and no critical case gaps.
                       </p>
                     )}
                   </>
