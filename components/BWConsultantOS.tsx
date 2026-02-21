@@ -183,6 +183,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [feedbackSignal, setFeedbackSignal] = useState<'positive' | 'partial' | 'negative' | null>(null);
   const [feedbackNote, setFeedbackNote] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [strictLearningImport, setStrictLearningImport] = useState(false);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1349,6 +1350,14 @@ Each selected output must include:
         ? (parsed as { signals: unknown }).signals
         : parsed;
 
+      if (strictLearningImport && profileVersion !== LEARNING_PROFILE_VERSION) {
+        throw new Error(
+          profileVersion === null
+            ? `Strict import mode requires explicit profile version v${LEARNING_PROFILE_VERSION}.`
+            : `Strict import mode rejected profile v${profileVersion}; expected v${LEARNING_PROFILE_VERSION}.`
+        );
+      }
+
       if (!source || typeof source !== 'object') {
         throw new Error('Invalid learning profile format');
       }
@@ -1389,7 +1398,7 @@ Each selected output must include:
     } finally {
       event.target.value = '';
     }
-  }, []);
+  }, [strictLearningImport]);
 
   return (
     <div 
@@ -1705,6 +1714,18 @@ Each selected output must include:
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
+                        onClick={() => setStrictLearningImport(prev => !prev)}
+                        className={`text-[10px] px-1.5 py-1 border ${
+                          strictLearningImport
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white border-stone-300 text-slate-700 hover:bg-stone-100'
+                        }`}
+                        title="When enabled, only matching profile version imports are accepted"
+                      >
+                        Strict {strictLearningImport ? 'On' : 'Off'}
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => learningProfileInputRef.current?.click()}
                         className="text-[10px] px-1.5 py-1 bg-white border border-stone-300 text-slate-700 hover:bg-stone-100"
                       >
@@ -1741,6 +1762,9 @@ Each selected output must include:
                   {learningSummary.length === 0 && (
                     <p className="mt-1 text-[10px] text-slate-500">No learned signals yet. Import a profile or submit feedback after generation.</p>
                   )}
+                  <p className="mt-1 text-[10px] text-slate-500">
+                    Import mode: {strictLearningImport ? `Strict (v${LEARNING_PROFILE_VERSION} only)` : 'Compatibility (legacy and mismatched versions allowed)'}
+                  </p>
                   {boostedDocuments.length > 0 && (
                     <p className="mt-1 text-[10px] text-green-700">
                       Boosted: {boostedDocuments.map((item) => `${item.title} (+${item.boost})`).join(' • ')}
