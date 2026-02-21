@@ -120,6 +120,7 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
 ];
 
 const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
+const LEARNING_PROFILE_VERSION = 1;
 
 // ============================================================================
 // COMPONENT
@@ -1320,7 +1321,7 @@ Each selected output must include:
 
   const handleExportLearningProfile = useCallback(() => {
     const payload = {
-      version: 1,
+      version: LEARNING_PROFILE_VERSION,
       exportedAt: new Date().toISOString(),
       signals: recommendationBoostMap
     };
@@ -1341,6 +1342,9 @@ Each selected output must include:
     try {
       const text = await file.text();
       const parsed = JSON.parse(text) as unknown;
+      const profileVersion = parsed && typeof parsed === 'object' && 'version' in parsed && typeof (parsed as { version?: unknown }).version === 'number'
+        ? (parsed as { version: number }).version
+        : null;
       const source = parsed && typeof parsed === 'object' && 'signals' in parsed
         ? (parsed as { signals: unknown }).signals
         : parsed;
@@ -1359,10 +1363,17 @@ Each selected output must include:
       setFeedbackSignal(null);
       setFeedbackNote('');
       setFeedbackSubmitted(false);
+
+      const compatibilityWarning = profileVersion === null
+        ? ' Imported using legacy compatibility mode (no profile version metadata).'
+        : profileVersion !== LEARNING_PROFILE_VERSION
+          ? ` Imported with version compatibility mode (profile v${profileVersion}, current v${LEARNING_PROFILE_VERSION}).`
+          : '';
+
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Learning profile imported successfully (${Object.keys(sanitized).length} signal${Object.keys(sanitized).length === 1 ? '' : 's'}).`,
+        content: `Learning profile imported successfully (${Object.keys(sanitized).length} signal${Object.keys(sanitized).length === 1 ? '' : 's'}).${compatibilityWarning}`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
