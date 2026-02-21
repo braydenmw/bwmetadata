@@ -161,6 +161,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   // File upload
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const learningProfileInputRef = useRef<HTMLInputElement>(null);
   
   // Workspace modal
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
@@ -1317,6 +1318,68 @@ Each selected output must include:
     }]);
   }, []);
 
+  const handleExportLearningProfile = useCallback(() => {
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      signals: recommendationBoostMap
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `bw-learning-profile-${Date.now()}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, [recommendationBoostMap]);
+
+  const handleImportLearningProfile = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as unknown;
+      const source = parsed && typeof parsed === 'object' && 'signals' in parsed
+        ? (parsed as { signals: unknown }).signals
+        : parsed;
+
+      if (!source || typeof source !== 'object') {
+        throw new Error('Invalid learning profile format');
+      }
+
+      const sanitized = Object.entries(source as Record<string, unknown>).reduce<Record<string, number>>((acc, [key, value]) => {
+        if (typeof value !== 'number' || Number.isNaN(value)) return acc;
+        acc[key] = Math.max(-12, Math.min(12, value));
+        return acc;
+      }, {});
+
+      setRecommendationBoostMap(sanitized);
+      setFeedbackSignal(null);
+      setFeedbackNote('');
+      setFeedbackSubmitted(false);
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `Learning profile imported successfully (${Object.keys(sanitized).length} signal${Object.keys(sanitized).length === 1 ? '' : 's'}).`,
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+    } catch (importError) {
+      console.error('Learning profile import failed:', importError);
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: 'Unable to import learning profile. Please use a valid JSON file exported from BW Consultant.',
+        timestamp: new Date(),
+        phase: 'recommendations'
+      }]);
+    } finally {
+      event.target.value = '';
+    }
+  }, []);
+
   return (
     <div 
       className={`${embedded ? '' : 'min-h-screen bg-white'}`}
@@ -1625,30 +1688,59 @@ Each selected output must include:
               <div className="flex-1 overflow-y-auto p-4">
                 <h3 className="text-sm font-bold text-slate-900 mb-3">Recommended Documents</h3>
 
-                {learningSummary.length > 0 && (
-                  <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-[11px] font-semibold text-slate-700">Learning Summary</p>
+                <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-[11px] font-semibold text-slate-700">Learning Summary</p>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => learningProfileInputRef.current?.click()}
+                        className="text-[10px] px-1.5 py-1 bg-white border border-stone-300 text-slate-700 hover:bg-stone-100"
+                      >
+                        Import
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleExportLearningProfile}
+                        className="text-[10px] px-1.5 py-1 bg-white border border-stone-300 text-slate-700 hover:bg-stone-100"
+                      >
+                        Export
+                      </button>
                       <button
                         type="button"
                         onClick={handleResetLearningSignals}
-                        className="text-[10px] px-1.5 py-1 bg-white border border-stone-300 text-slate-700 hover:bg-stone-100"
+                        disabled={learningSummary.length === 0}
+                        className={`text-[10px] px-1.5 py-1 border ${
+                          learningSummary.length === 0
+                            ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                            : 'bg-white border-stone-300 text-slate-700 hover:bg-stone-100'
+                        }`}
                       >
                         Reset
                       </button>
                     </div>
-                    {boostedDocuments.length > 0 && (
-                      <p className="mt-1 text-[10px] text-green-700">
-                        Boosted: {boostedDocuments.map((item) => `${item.title} (+${item.boost})`).join(' • ')}
-                      </p>
-                    )}
-                    {penalizedDocuments.length > 0 && (
-                      <p className="mt-1 text-[10px] text-amber-700">
-                        Penalized: {penalizedDocuments.map((item) => `${item.title} (${item.boost})`).join(' • ')}
-                      </p>
-                    )}
                   </div>
-                )}
+                  <input
+                    ref={learningProfileInputRef}
+                    type="file"
+                    className="hidden"
+                    accept="application/json,.json"
+                    onChange={handleImportLearningProfile}
+                  />
+                  {learningSummary.length === 0 && (
+                    <p className="mt-1 text-[10px] text-slate-500">No learned signals yet. Import a profile or submit feedback after generation.</p>
+                  )}
+                  {boostedDocuments.length > 0 && (
+                    <p className="mt-1 text-[10px] text-green-700">
+                      Boosted: {boostedDocuments.map((item) => `${item.title} (+${item.boost})`).join(' • ')}
+                    </p>
+                  )}
+                  {penalizedDocuments.length > 0 && (
+                    <p className="mt-1 text-[10px] text-amber-700">
+                      Penalized: {penalizedDocuments.map((item) => `${item.title} (${item.boost})`).join(' • ')}
+                    </p>
+                  )}
+                </div>
 
                 <div className="space-y-2">
                   {recommendedDocs.map((doc) => (
