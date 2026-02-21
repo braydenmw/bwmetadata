@@ -119,6 +119,8 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
   }
 ];
 
+const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
+
 // ============================================================================
 // COMPONENT
 // ============================================================================
@@ -326,6 +328,41 @@ Let's start properly:
     });
     setSkillLevel(detected);
   }, [caseStudy, computeReadiness]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const raw = window.localStorage.getItem(LEARNING_SIGNALS_STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Record<string, unknown>;
+      const sanitized = Object.entries(parsed).reduce<Record<string, number>>((acc, [key, value]) => {
+        if (typeof value !== 'number' || Number.isNaN(value)) return acc;
+        acc[key] = Math.max(-12, Math.min(12, value));
+        return acc;
+      }, {});
+      setRecommendationBoostMap(sanitized);
+    } catch (storageError) {
+      console.warn('Unable to restore learning signals from local storage:', storageError);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      if (Object.keys(recommendationBoostMap).length === 0) {
+        window.localStorage.removeItem(LEARNING_SIGNALS_STORAGE_KEY);
+        return;
+      }
+      window.localStorage.setItem(
+        LEARNING_SIGNALS_STORAGE_KEY,
+        JSON.stringify(recommendationBoostMap)
+      );
+    } catch (storageError) {
+      console.warn('Unable to persist learning signals to local storage:', storageError);
+    }
+  }, [recommendationBoostMap]);
 
   // Start with first intake question
   useEffect(() => {
