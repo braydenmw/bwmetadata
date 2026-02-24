@@ -21,6 +21,8 @@ import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
 import { getChatSession, extractFileTextViaAI } from '../services/geminiService';
 import { AgentToolRegistry, AgentMemoryStore, registerBuiltInTools } from '../services/agent';
+import { ProfessionalDocumentExporter } from '../services/ProfessionalDocumentExporter';
+import type { ProfessionalDocument, DocumentSection } from '../services/ProfessionalDocumentExporter';
 import AdaptiveQuestionnaire from '../services/AdaptiveQuestionnaire';
 import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
 import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
@@ -500,6 +502,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
   const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only'>('selected');
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [generatedDocuments, setGeneratedDocuments] = useState<Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}>>([]);
+  const [generatingProgress, setGeneratingProgress] = useState<{current: number; total: number} | null>(null);
   const [copied, setCopied] = useState(false);
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);
   const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
@@ -2399,9 +2403,21 @@ ${agentRegistry.current.toManifest()}`;
     }
   }, [generatedContent]);
 
-  // Download generated content
+  // Download as print-quality HTML — open in browser then File > Print > Save as PDF
   const downloadContent = useCallback(() => {
-    if (generatedContent) {
+    if (generatedDocuments.length > 0) {
+      // Download each document as a standalone styled HTML file
+      generatedDocuments.forEach((doc) => {
+        const blob = new Blob([doc.htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${doc.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    } else if (generatedContent) {
+      // Fallback: raw markdown
       const blob = new Blob([generatedContent], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -2410,10 +2426,63 @@ ${agentRegistry.current.toManifest()}`;
       a.click();
       URL.revokeObjectURL(url);
     }
-  }, [generatedContent]);
+  }, [generatedContent, generatedDocuments]);
+
+  const downloadSingleDoc = useCallback((doc: {title: string; htmlContent: string; content: string}) => {
+    const blob = new Blob([doc.htmlContent || doc.content], { type: doc.htmlContent ? 'text/html' : 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${doc.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, []);
 
   // Generate selected documents
   const handleGenerateDocuments = useCallback(async () => {
+    // Helper: parse AI markdown output into DocumentSection[]
+    const parseMarkdown = (text: string): DocumentSection[] => {
+      const sections: DocumentSection[] = [];
+      const lines = text.split('\n');
+      let current: { title: string; lines: string[] } | null = null;
+      for (const line of lines) {
+        if (/^#{1,3}\s/.test(line)) {
+          if (current && current.lines.join('').trim()) {
+            sections.push({ title: current.title, content: current.lines.join('\n').trim(), type: 'paragraph' });
+          }
+          current = { title: line.replace(/^#+\s*/, '').trim(), lines: [] };
+        } else if (current) {
+          current.lines.push(line);
+        } else {
+          current = { title: 'Overview', lines: [line] };
+        }
+      }
+      if (current && current.lines.join('').trim()) {
+        sections.push({ title: current.title, content: current.lines.join('\n').trim(), type: 'paragraph' });
+      }
+      return sections.filter(s => String(s.content).trim().length > 2);
+    };
+
+    // Helper: wrap AI content + case metadata into a ProfessionalDocument
+    const buildProfDoc = (content: string, doc: DocumentOption): ProfessionalDocument => {
+      const sections = parseMarkdown(content);
+      return {
+        title: doc.title.toUpperCase(),
+        subtitle: `${caseStudy.organizationName || 'Client'} — ${caseStudy.country || 'Global'}`,
+        classification: 'CONFIDENTIAL',
+        preparedFor: caseStudy.organizationName || 'Client',
+        preparedBy: 'BW Global Advisory — NEXUS AI',
+        date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
+        reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        version: '1.0',
+        sections: sections.length > 0 ? sections : [{ title: doc.title, content, type: 'paragraph' }],
+        footer: {
+          company: 'BW Global Advisory',
+          disclaimer: `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential — do not distribute without prior written authorisation.`
+        }
+      };
+    };
+
     const effectiveDocIds = generationScope === 'selected'
       ? selectedDocs
       : recommendedDocs
@@ -2460,11 +2529,11 @@ ${agentRegistry.current.toManifest()}`;
       return;
     }
 
-    if (readinessScore < 80) {
+    if (readinessScore < 70) {
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Your case file readiness is ${readinessScore}%. I need at least 80% before final generation. Please continue answering clarifying questions or upload supporting evidence.`,
+        content: `Your case file readiness is ${readinessScore}%. I need at least 70% before generation. Complete the key case fields (organisation, jurisdiction, objective, current matter) or continue answering questions to reach 70%.`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
@@ -2486,66 +2555,97 @@ ${agentRegistry.current.toManifest()}`;
     setFeedbackSignal(null);
     setFeedbackNote('');
     setFeedbackSubmitted(false);
-    
-    const docNames = effectiveDocIds.map(id => recommendedDocs.find(d => d.id === id)?.title).filter(Boolean).join(', ');
-    
+    setGeneratedDocuments([]);
+
+    const docsToGenerate = effectiveDocIds
+      .map(id => recommendedDocs.find(d => d.id === id))
+      .filter((d): d is DocumentOption => Boolean(d));
+
+    setGeneratingProgress({ current: 0, total: docsToGenerate.length });
+
+    const allResults: Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}> = [];
+
     try {
-      const response = await processWithAI(
-        `Generate the following documents: ${docNames}`,
-        `Based on the complete case study, generate professional document content for: ${docNames}. Format with proper markdown headings, sections, and professional language. Include all relevant details from the case study.
+      for (let i = 0; i < docsToGenerate.length; i++) {
+        const doc = docsToGenerate[i];
+        setGeneratingProgress({ current: i + 1, total: docsToGenerate.length });
 
-      Consultant profile to anchor outputs:
-      ${consultantCaseBrief}
+        const isLetter = doc.category === 'letter';
+        const audienceNote = caseStudy.targetAudience ? ` for ${caseStudy.targetAudience}` : '';
 
-    Real-life matter pack (must be reflected in writing):
-    ${realLifeMatterPack}
+        const docPrompt = isLetter
+          ? `You are BW Global Advisory writing a professional institutional letter.
+Write: ${doc.title}${audienceNote}
 
-    Pilot expansion requirements:
-    ${pilotSelectedAddOnPrompts || '- None selected'}
+Case context:
+${consultantCaseBrief}
 
-    Regional development kernel (apply directly):
-    - Active issue pack: ${activeIssuePack.label}
-    - Governance readiness: ${regionalKernel.governanceReadiness}%
-    - Top interventions: ${regionalKernel.interventions.slice(0, 3).map((item) => `${item.title} (${item.score}%)`).join('; ')}
-    - Top partners: ${regionalKernel.partners.slice(0, 3).map((item) => `${item.partner.name} (${item.score.total}%)`).join('; ')}
-    - Problem graph roots: ${regionalKernel.graph.rootCauses.map((node) => node.label).join(' | ')}
-    - Data fabric confidence/freshness: ${Math.round(regionalKernel.dataFabric.overallConfidence * 100)}% / ${regionalKernel.dataFabric.overallFreshnessHours}h
+Real-life matter: ${realLifeMatterPack}
 
-    Output depth requirement:
-    ${outputDepthSpec.label} — ${outputDepthSpec.instruction}
+Letter format: formal, institutional, jurisdiction-aware (${caseStudy.jurisdiction || caseStudy.country || 'Global'}).
+Structure: ## Opening | ## Purpose and Context | ## Key Points | ## Supporting Evidence | ## Next Steps
+Address the named counterpart or their role. Use concrete facts and timelines. No template placeholders. Write the complete letter.`
+          : `You are BW Global Advisory writing a professional consulting report.
+Write: ${doc.title}${audienceNote}
 
-Each selected output must include:
-- Why this output is appropriate for ${caseStudy.targetAudience || 'the target audience'}
-- Estimated page length
-- Required support documents/annexures
-      - Contact letter guidance where relevant
+Case context:
+${consultantCaseBrief}
 
-    Write as an exacting consultant: concise, evidence-aware, and decision-oriented.
+Real-life matter: ${realLifeMatterPack}
 
-    Letter/report quality rules:
-    - Do not produce generic template language.
-    - Explicitly identify the real-world matter, counterparts, and decision stakes.
-    - Use concrete facts from the matter pack; where facts are missing, state "Data required" and ask for the exact missing evidence.
-    - Tailor tone and structure to the stated audience and jurisdiction.
-    - Ensure outputs are implementation-capable with actions, owners, and timeline markers.`
-      );
-      
-      setGeneratedContent(response);
-      
-      const genMessage: Message = {
+Regional kernel: Governance ${regionalKernel.governanceReadiness}% | Top interventions: ${regionalKernel.interventions.slice(0, 3).map(i => i.title).join(', ')}
+
+Output depth: ${outputDepthSpec.label} — ${outputDepthSpec.instruction}
+
+Report structure (use ## for each section):
+## Executive Summary
+## Context and Background
+## Key Findings
+## Analysis and Evidence
+## Risks and Mitigants
+## Recommendations
+## Next Steps
+## Annexures
+
+Use concrete facts from the case. No template language. Write the complete report now.`;
+
+        const content = await processWithAI(
+          docPrompt,
+          `Generating document ${i + 1} of ${docsToGenerate.length}: ${doc.title}. Produce the full document — do not summarise or truncate.`
+        );
+
+        const profDoc = buildProfDoc(content, doc);
+        const htmlContent = ProfessionalDocumentExporter.exportToHTML(profDoc);
+
+        const result = { id: doc.id, title: doc.title, content, category: doc.category, htmlContent };
+        allResults.push(result);
+        setGeneratedDocuments(prev => [...prev, result]);
+      }
+
+      const combined = allResults.map(r => `## ${r.title}\n\n${r.content}`).join('\n\n---\n\n');
+      setGeneratedContent(combined);
+
+      setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `I've generated your documents. You can view, copy, or download them from the panel on the right.\n\n---\n\n${response}`,
+        content: `${allResults.length} document${allResults.length !== 1 ? 's' : ''} generated:\n${allResults.map((r, i) => `${i + 1}. **${r.title}**`).join('\n')}\n\nEach document is available as a print-ready HTML file from the Document Ready panel. Open in your browser and use File → Print → Save as PDF for a professional PDF.`,
         timestamp: new Date(),
         phase: 'generation'
-      };
-      setMessages(prev => [...prev, genMessage]);
+      }]);
     } catch (error) {
       console.error('Generation error:', error);
+      setMessages(prev => [...prev, {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: 'Document generation encountered an error. Check your case information and try again.',
+        timestamp: new Date(),
+        phase: 'generation'
+      }]);
     } finally {
       setIsLoading(false);
+      setGeneratingProgress(null);
     }
-  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy.targetAudience, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, pilotSelectedAddOnPrompts, outputDepthSpec, caseMethodGaps, activeIssuePack.label, regionalKernel]);
+  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, pilotSelectedAddOnPrompts, outputDepthSpec, activeIssuePack.label, regionalKernel]);
 
   // Phase indicator
   const phaseLabels: Record<CasePhase, { label: string; description: string }> = {
@@ -4341,14 +4441,19 @@ Each selected output must include:
                     </label>
                     <button
                       onClick={handleGenerateDocuments}
-                      disabled={isLoading || readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0}
+                      disabled={isLoading || readinessScore < 70 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0}
                       className={`mt-3 w-full py-3 font-medium text-sm flex items-center justify-center gap-2 transition-all ${
-                        isLoading || readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0
+                        isLoading || readinessScore < 70 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0
                           ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
                     >
-                      {isLoading ? (
+                      {isLoading && generatingProgress ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Generating {generatingProgress.current}/{generatingProgress.total}...
+                        </>
+                      ) : isLoading ? (
                         <>
                           <Loader2 size={16} className="animate-spin" />
                           Generating...
@@ -4359,9 +4464,9 @@ Each selected output must include:
                         </>
                       )}
                     </button>
-                    {(readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0) && (
+                    {(readinessScore < 70 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0) && (
                       <p className="text-[10px] mt-2 text-amber-700 bg-amber-50 border border-amber-200 p-2">
-                        Generation requires readiness ≥ 80 and no critical or high-priority case gaps.
+                        Generation requires readiness ≥ 70% and no critical case gaps. Current: {readinessScore}%
                       </p>
                     )}
                   </>
@@ -4370,28 +4475,49 @@ Each selected output must include:
             )}
 
             {/* Generated Content Actions */}
-            {generatedContent && (
+            {(generatedContent || generatedDocuments.length > 0) && (
               <div className="p-4 border-t border-stone-200 bg-blue-50">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-semibold text-slate-900">Document Ready</p>
+                  <p className="text-sm font-semibold text-slate-900">Documents Ready ({generatedDocuments.length || 1})</p>
                   <div className="flex gap-1">
                     <button
                       onClick={copyContent}
                       className="p-2 bg-white hover:bg-stone-100 text-slate-600 border border-stone-200"
-                      title="Copy"
+                      title="Copy all"
                     >
                       {copied ? <Check size={16} className="text-green-600" /> : <Copy size={16} />}
                     </button>
                     <button
                       onClick={downloadContent}
                       className="p-2 bg-white hover:bg-stone-100 text-slate-600 border border-stone-200"
-                      title="Download"
+                      title="Download all as HTML"
                     >
                       <Download size={16} />
                     </button>
                   </div>
                 </div>
-                <p className="text-xs text-slate-600">Copy or download your generated documents.</p>
+                {generatedDocuments.length > 0 ? (
+                  <div className="space-y-1 mb-3">
+                    {generatedDocuments.map((doc) => (
+                      <div key={doc.id} className="flex items-center justify-between bg-white border border-stone-200 px-2 py-1.5">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          {doc.category === 'letter' ? <Mail size={11} className="text-blue-500 shrink-0" /> : <FileText size={11} className="text-slate-500 shrink-0" />}
+                          <span className="text-[11px] text-slate-800 truncate">{doc.title}</span>
+                        </div>
+                        <button
+                          onClick={() => downloadSingleDoc(doc)}
+                          className="shrink-0 ml-2 p-1 hover:bg-stone-100 text-slate-500 rounded"
+                          title="Download this document as HTML"
+                        >
+                          <Download size={12} />
+                        </button>
+                      </div>
+                    ))}
+                    <p className="text-[10px] text-slate-500 pt-1">Open HTML in browser → File → Print → Save as PDF</p>
+                  </div>
+                ) : (
+                  <p className="text-xs text-slate-600 mb-2">Copy or download your generated documents.</p>
+                )}
 
                 <div className="mt-3 bg-white border border-stone-200 p-2">
                   <p className="text-[11px] font-semibold text-slate-700">Was this recommendation outcome useful?</p>
