@@ -417,6 +417,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreamingResponse, setIsStreamingResponse] = useState(false);
+  const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');
+  const [reactiveDraftHint, setReactiveDraftHint] = useState('');
   const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');
   
   // Case study state
@@ -1068,17 +1071,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     }
   }, []);
 
-  // Process user input through real AI
-  const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
-    const trimmedInput = userInput.trim();
-    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmedInput);
-    if (isGreetingOnly) {
-      return `Hello — I'm ready to help. Share your situation, and I'll answer directly while building your case in the background.`;
-    }
-
-    try {
-      const policyPack = resolvePolicyPack(caseStudy);
-      const systemPrompt = `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
+  const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
+    const policyPack = resolvePolicyPack(caseStudy);
+    return `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
@@ -1115,9 +1110,20 @@ Consultant operating rules:
 - Convert provided information into action-oriented outputs, not generic commentary.
 
 Respond naturally and helpfully. Keep responses focused and actionable.`;
+  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
 
-      const response = await chatSession.current.sendMessage({ 
-        message: `${systemPrompt}\n\nUser says: ${userInput}` 
+  // Process user input through real AI
+  const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
+    const trimmedInput = userInput.trim();
+    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmedInput);
+    if (isGreetingOnly) {
+      return `Hello — I'm ready to help. Share your situation, and I'll answer directly while building your case in the background.`;
+    }
+
+    try {
+      const systemPrompt = buildConsultantPrompt(userInput, context);
+      const response = await chatSession.current.sendMessage({
+        message: `${systemPrompt}\n\nUser says: ${userInput}`
       });
 
       const responseText = response.text?.trim();
@@ -1130,7 +1136,50 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       console.error('AI processing error:', error);
       return "I can continue from current context and still move this forward. Share your decision owner, jurisdiction, and objective, and I will proceed.";
     }
-  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
+  }, [buildConsultantPrompt]);
+
+  const processWithAIStream = useCallback(async (
+    userInput: string,
+    context: string,
+    onChunk: (text: string) => void
+  ): Promise<string> => {
+    const trimmedInput = userInput.trim();
+    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmedInput);
+    if (isGreetingOnly) {
+      const greeting = `Hello — I'm ready to help. Share your situation, and I'll answer directly while building your case in the background.`;
+      onChunk(greeting);
+      return greeting;
+    }
+
+    try {
+      const systemPrompt = buildConsultantPrompt(userInput, context);
+      const stream = await chatSession.current.sendMessageStream({
+        message: `${systemPrompt}\n\nUser says: ${userInput}`
+      });
+
+      let aggregate = '';
+      for await (const part of stream) {
+        const delta = part?.text || '';
+        if (!delta) continue;
+        aggregate += delta;
+        onChunk(aggregate);
+      }
+
+      const finalText = aggregate.trim();
+      if (!finalText || /chat service unavailable/i.test(finalText)) {
+        const fallback = "I can continue from current context. Share your decision owner, jurisdiction, and objective, and I will proceed.";
+        onChunk(fallback);
+        return fallback;
+      }
+
+      return finalText;
+    } catch (error) {
+      console.warn('Streaming response failed, falling back to non-streaming:', error);
+      const fallbackText = await processWithAI(userInput, context);
+      onChunk(fallbackText);
+      return fallbackText;
+    }
+  }, [buildConsultantPrompt, processWithAI]);
 
   const getHighestValueFollowUp = useCallback((draft: CaseStudy) => {
     if (!draft.organizationName.trim()) return 'Which organization is the decision owner for this matter?';
@@ -1141,6 +1190,53 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
     if (draft.decisionDeadline.trim().length < 3) return 'What is the decision deadline and what happens if it slips?';
     return null;
   }, []);
+
+  useEffect(() => {
+    const draftInput = inputValue.trim();
+    if (!draftInput || isLoading) {
+      setReactiveDraftStatus('');
+      setReactiveDraftHint('');
+      return;
+    }
+
+    setReactiveDraftStatus('Reactive analysis: scanning your draft...');
+    const timeout = window.setTimeout(() => {
+      const extracted = extractConsultantSignals(draftInput);
+      const draft: CaseStudy = {
+        ...caseStudy,
+        userName: extracted.userName && !caseStudy.userName.trim() ? extracted.userName : caseStudy.userName,
+        organizationName: extracted.organizationName && !caseStudy.organizationName.trim() ? extracted.organizationName : caseStudy.organizationName,
+        organizationType: extracted.organizationType && !caseStudy.organizationType.trim() ? extracted.organizationType : caseStudy.organizationType,
+        contactRole: extracted.contactRole && !caseStudy.contactRole.trim() ? extracted.contactRole : caseStudy.contactRole,
+        country: extracted.country && !caseStudy.country.trim() ? extracted.country : caseStudy.country,
+        jurisdiction: extracted.jurisdiction && !caseStudy.jurisdiction.trim() ? extracted.jurisdiction : caseStudy.jurisdiction,
+        objectives: extracted.objectives && caseStudy.objectives.trim().length < 20 ? extracted.objectives : caseStudy.objectives,
+        currentMatter: extracted.currentMatter && caseStudy.currentMatter.trim().length < 60 ? extracted.currentMatter : caseStudy.currentMatter,
+        constraints: extracted.constraints && caseStudy.constraints.trim().length < 20 ? extracted.constraints : caseStudy.constraints,
+        targetAudience: extracted.targetAudience && !caseStudy.targetAudience.trim() ? extracted.targetAudience : caseStudy.targetAudience,
+        decisionDeadline: extracted.decisionDeadline && !caseStudy.decisionDeadline.trim() ? extracted.decisionDeadline : caseStudy.decisionDeadline,
+      };
+
+      const detectedSignals: string[] = [];
+      if (extracted.organizationName) detectedSignals.push(`Org detected: ${extracted.organizationName}`);
+      if (extracted.country || extracted.jurisdiction) detectedSignals.push('Jurisdiction signal detected');
+      if (extracted.objectives) detectedSignals.push('Objective signal detected');
+      if (extracted.targetAudience) detectedSignals.push(`Audience: ${extracted.targetAudience}`);
+
+      const nextFollowUp = getHighestValueFollowUp(draft);
+      const status = detectedSignals.length > 0
+        ? `Reactive analysis ready (${detectedSignals.length} signal${detectedSignals.length === 1 ? '' : 's'})`
+        : 'Reactive analysis ready';
+      const hint = nextFollowUp
+        ? `${detectedSignals.slice(0, 2).join(' • ')}${detectedSignals.length > 0 ? ' • ' : ''}Likely next question: ${nextFollowUp}`
+        : detectedSignals.slice(0, 2).join(' • ');
+
+      setReactiveDraftStatus(status);
+      setReactiveDraftHint(hint || 'Keep typing — the consultant will continue building your case context in the background.');
+    }, 450);
+
+    return () => window.clearTimeout(timeout);
+  }, [inputValue, isLoading, caseStudy, extractConsultantSignals, getHighestValueFollowUp]);
 
   // Generate document recommendations based on case
   const generateRecommendations = useCallback(() => {
@@ -1588,9 +1684,24 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
         additionalContext: [...prev.additionalContext, userContent]
       }));
 
-      let responseContent = await processWithAI(
+      const assistantMessageId = crypto.randomUUID();
+      setMessages(prev => [...prev, {
+        id: assistantMessageId,
+        role: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        phase: userMessagePhase
+      }]);
+
+      setIsStreamingResponse(true);
+      let responseContent = await processWithAIStream(
         userContent,
-        `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.`
+        `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.`,
+        (streamText) => {
+          setMessages(prev => prev.map((msg) => (
+            msg.id === assistantMessageId ? { ...msg, content: streamText } : msg
+          )));
+        }
       );
 
       const caseDraft: CaseStudy = {
@@ -1622,6 +1733,10 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
         setAdaptiveQuestionsAsked(prev => prev + 1);
       }
 
+      setMessages(prev => prev.map((msg) => (
+        msg.id === assistantMessageId ? { ...msg, content: responseContent, phase: inferredPhase } : msg
+      )));
+
       try {
         const agenticInsights = await agenticAIRef.current.consult(toAgenticParams(caseDraft), 'case_discovery');
         if (agenticInsights.length > 0) {
@@ -1651,16 +1766,6 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
         generateRecommendations();
       }
 
-      // Add AI response
-      const aiMessage: Message = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: responseContent,
-        timestamp: new Date(),
-        phase: inferredPhase
-      };
-      setMessages(prev => [...prev, aiMessage]);
-
     } catch (error) {
       console.error('Send error:', error);
       const errorMessage: Message = {
@@ -1672,6 +1777,7 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
+      setIsStreamingResponse(false);
       setIsLoading(false);
     }
   }, [
@@ -1679,7 +1785,7 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
     uploadedFiles,
     currentPhase,
     readFileContent,
-    processWithAI,
+    processWithAIStream,
     generateRecommendations,
     caseStudy,
     computeReadiness,
@@ -2963,7 +3069,7 @@ Each selected output must include:
                       <div className="px-4 py-3 bg-white border border-stone-200 shadow-sm flex items-center gap-2">
                         <Loader2 size={14} className="animate-spin text-blue-600" />
                         <span className="text-sm text-slate-500">
-                          {currentPhase === 'generation' ? 'Generating documents...' : 'Analyzing...'}
+                          {isStreamingResponse ? 'Streaming response...' : currentPhase === 'generation' ? 'Generating documents...' : 'Analyzing...'}
                         </span>
                       </div>
                     </div>
@@ -3051,6 +3157,12 @@ Each selected output must include:
                   )}
                 </button>
               </div>
+              {reactiveDraftStatus && !isLoading && (
+                <div className="max-w-4xl mx-auto mt-2 border border-blue-200 bg-blue-50 px-3 py-2">
+                  <p className="text-[11px] font-semibold text-blue-800">{reactiveDraftStatus}</p>
+                  <p className="text-[11px] text-blue-700 mt-0.5">{reactiveDraftHint}</p>
+                </div>
+              )}
               <p className="text-[10px] text-slate-400 mt-2 text-center">
                 Enter to send • Shift+Enter new line
               </p>
