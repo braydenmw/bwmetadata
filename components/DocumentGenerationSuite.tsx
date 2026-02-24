@@ -3,6 +3,7 @@ import { FileText, Download, Copy, CheckCircle, AlertCircle, DollarSign } from '
 import jsPDF from 'jspdf';
 import { RefinedIntake, ReportData, ReportParameters } from '../types';
 import { evaluateDocReadiness } from '../services/intakeMapping';
+import { applyTemplateContext, createDefaultIntake, getMissingIntakeFields, StructuredDocumentIntake } from '../services/documentTemplateEngine';
 
 type DocumentType = 'loi' | 'mou' | 'proposal' | 'executive-summary' | 'financial-model' | 'risk-assessment' | 'dossier' | 'comparison' | 'term-sheet' | 'investment-memo' | 'due-diligence-request' | 'business-intelligence-report' | 'partnership-analyzer' | 'stakeholder-analysis' | 'market-entry-strategy' | 'competitive-analysis' | 'operational-plan' | 'integration-plan' | 'entry-advisory' | 'cultural-brief' | 'blind-spot-audit';
 
@@ -41,6 +42,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
   const [lengthPreset, setLengthPreset] = useState<'brief' | 'standard' | 'extended'>('standard');
   const [selectedDocsQueue, setSelectedDocsQueue] = useState<DocumentType[]>([]);
   const [generatedBatch, setGeneratedBatch] = useState<Array<{ id: DocumentType; title: string; content: string }>>([]);
+  const [structuredIntake, setStructuredIntake] = useState<StructuredDocumentIntake>(createDefaultIntake());
 
   // Calculate decision deadline once to avoid impure function calls during render
   const [decisionDeadline] = useState(() => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString());
@@ -350,6 +352,9 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
     .flatMap(doc => getReadiness(doc).missing.map(m => `${documentTemplates.find(d => d.id === doc)?.title || doc}: ${m}`))
     .filter(Boolean);
 
+  const missingIntakeFields = useMemo(() => getMissingIntakeFields(structuredIntake), [structuredIntake]);
+  const intakeReady = missingIntakeFields.length === 0;
+
   const adjustByLength = (text: string): string => {
     if (lengthPreset === 'brief') {
       // crude summarization by truncation for now
@@ -443,9 +448,10 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
         break;
     }
 
-    setGeneratedContent(adjustByLength(content));
+    const contextApplied = applyTemplateContext(content, structuredIntake, lengthPreset);
+    setGeneratedContent(adjustByLength(contextApplied));
     setIsGenerating(false);
-    onDocumentGenerated?.(docType, content);
+    onDocumentGenerated?.(docType, contextApplied);
   };
 
   const generateSelectedBatch = async () => {
@@ -480,7 +486,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
         case 'entry-advisory': content = generateEntryAdvisory(); break;
         case 'cultural-brief': content = generateCulturalBrief(); break;
       }
-      const adjusted = adjustByLength(content);
+      const adjusted = adjustByLength(applyTemplateContext(content, structuredIntake, lengthPreset));
       batch.push({ id: docType, title: documentTemplates.find(d => d.id === docType)?.title || docType, content: adjusted });
     }
     setGeneratedBatch(batch);
@@ -1942,6 +1948,24 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
               </div>
             </div>
 
+            <div className="bg-white border border-stone-200 rounded-xl p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-stone-800 uppercase tracking-widest">Structured Intake</h3>
+                <span className={`text-[11px] px-2 py-1 rounded-full border ${intakeReady ? 'bg-green-50 text-green-800 border-green-200' : 'bg-amber-50 text-amber-800 border-amber-200'}`}>
+                  {intakeReady ? 'Ready' : `Missing: ${missingIntakeFields.join(', ')}`}
+                </span>
+              </div>
+              <div className="grid md:grid-cols-2 gap-3">
+                <input value={structuredIntake.objective} onChange={(e) => setStructuredIntake(prev => ({ ...prev, objective: e.target.value }))} placeholder="Objective (required)" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+                <input value={structuredIntake.audience} onChange={(e) => setStructuredIntake(prev => ({ ...prev, audience: e.target.value }))} placeholder="Audience (required)" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+                <input value={structuredIntake.jurisdiction} onChange={(e) => setStructuredIntake(prev => ({ ...prev, jurisdiction: e.target.value }))} placeholder="Jurisdiction (required)" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+                <input value={structuredIntake.deadline} onChange={(e) => setStructuredIntake(prev => ({ ...prev, deadline: e.target.value }))} placeholder="Deadline (optional)" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+                <input value={structuredIntake.tone} onChange={(e) => setStructuredIntake(prev => ({ ...prev, tone: e.target.value }))} placeholder="Tone" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+                <input value={structuredIntake.mustInclude} onChange={(e) => setStructuredIntake(prev => ({ ...prev, mustInclude: e.target.value }))} placeholder="Must include" className="w-full p-2.5 border border-stone-300 rounded text-sm" />
+              </div>
+              <textarea value={structuredIntake.constraints} onChange={(e) => setStructuredIntake(prev => ({ ...prev, constraints: e.target.value }))} placeholder="Constraints and non-negotiables" className="w-full p-2.5 border border-stone-300 rounded text-sm h-20" />
+            </div>
+
             {/* DOCUMENT GRID */}
             <div className="space-y-6">
               {['Foundation', 'Strategic', 'Analysis', 'Comprehensive', 'Comparative'].map(category => (
@@ -1977,7 +2001,7 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                           <div className="mt-2 text-[11px] text-amber-700 font-semibold">Missing: {getReadiness(doc.id).missing.join(', ')}</div>
                         )}
                         <div className="mt-3 flex items-center gap-2">
-                          <button onClick={(e) => { e.stopPropagation(); generateDocument(doc.id); }} className="px-3 py-1.5 text-xs bg-stone-800 text-white rounded hover:bg-black">Generate Now</button>
+                          <button disabled={!intakeReady} onClick={(e) => { e.stopPropagation(); generateDocument(doc.id); }} className={`px-3 py-1.5 text-xs rounded ${intakeReady ? 'bg-stone-800 text-white hover:bg-black' : 'bg-stone-200 text-stone-500 cursor-not-allowed'}`}>Generate Now</button>
                           <span className="text-[11px] text-stone-500">or select for batch</span>
                         </div>
                       </button>
@@ -1988,7 +2012,7 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
             </div>
 
             <div className="flex items-center gap-3">
-              <button onClick={generateSelectedBatch} disabled={selectedDocsQueue.length===0 || isGenerating} className={`px-4 py-2 rounded text-xs font-bold ${selectedDocsQueue.length===0?'bg-stone-200 text-stone-500 cursor-not-allowed':'bg-blue-600 text-white hover:bg-blue-700'}`}>
+              <button onClick={generateSelectedBatch} disabled={selectedDocsQueue.length===0 || isGenerating || !intakeReady} className={`px-4 py-2 rounded text-xs font-bold ${(selectedDocsQueue.length===0 || !intakeReady)?'bg-stone-200 text-stone-500 cursor-not-allowed':'bg-blue-600 text-white hover:bg-blue-700'}`}>
                 Generate Selected ({selectedDocsQueue.length})
               </button>
               {isGenerating && <span className="text-xs text-stone-600">Generating batch...</span>}
