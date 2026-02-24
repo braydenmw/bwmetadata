@@ -6,6 +6,7 @@ import { evaluateDocReadiness } from '../services/intakeMapping';
 import { applyTemplateContext, createDefaultIntake, getMissingIntakeFields, StructuredDocumentIntake } from '../services/documentTemplateEngine';
 
 type DocumentType = 'loi' | 'mou' | 'proposal' | 'executive-summary' | 'financial-model' | 'risk-assessment' | 'dossier' | 'comparison' | 'term-sheet' | 'investment-memo' | 'due-diligence-request' | 'business-intelligence-report' | 'partnership-analyzer' | 'stakeholder-analysis' | 'market-entry-strategy' | 'competitive-analysis' | 'operational-plan' | 'integration-plan' | 'entry-advisory' | 'cultural-brief' | 'blind-spot-audit';
+type RewriteMode = 'formalize' | 'shorten' | 'legal-safe' | 'board-ready';
 
 interface DocumentTemplate {
   id: DocumentType;
@@ -43,6 +44,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
   const [selectedDocsQueue, setSelectedDocsQueue] = useState<DocumentType[]>([]);
   const [generatedBatch, setGeneratedBatch] = useState<Array<{ id: DocumentType; title: string; content: string }>>([]);
   const [structuredIntake, setStructuredIntake] = useState<StructuredDocumentIntake>(createDefaultIntake());
+  const [lastRewriteMode, setLastRewriteMode] = useState<RewriteMode | null>(null);
 
   // Calculate decision deadline once to avoid impure function calls during render
   const [decisionDeadline] = useState(() => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString());
@@ -1886,6 +1888,63 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
     navigator.clipboard.writeText(generatedContent);
   };
 
+  const applyRewrite = (mode: RewriteMode) => {
+    if (!generatedContent.trim()) return;
+
+    const base = generatedContent;
+    let updated = base;
+
+    if (mode === 'formalize') {
+      updated = base
+        .replace(/\bcan't\b/gi, 'cannot')
+        .replace(/\bwon't\b/gi, 'will not')
+        .replace(/\bdon't\b/gi, 'do not')
+        .replace(/\bwe're\b/gi, 'we are')
+        .replace(/\bit's\b/gi, 'it is')
+        .replace(/\bok\b/gi, 'acceptable');
+    }
+
+    if (mode === 'shorten') {
+      const paragraphs = base.split(/\n\n+/).filter(Boolean);
+      updated = paragraphs.slice(0, 10).join('\n\n');
+      if (paragraphs.length > 10) {
+        updated += '\n\n[Shortened version: additional sections removed for executive brevity.]';
+      }
+    }
+
+    if (mode === 'legal-safe') {
+      const sanitized = base
+        .replace(/\bguarantee(s|d)?\b/gi, 'target')
+        .replace(/\bwill definitely\b/gi, 'is expected to')
+        .replace(/\bmust\b/gi, 'should');
+      updated = `${sanitized}\n\nLEGAL SAFETY NOTICE:\nThis document is a strategic draft for discussion purposes only and does not constitute legal, tax, investment, or regulatory advice. Obtain jurisdiction-specific counsel before execution.`;
+    }
+
+    if (mode === 'board-ready') {
+      const lines = base.split('\n').filter(l => l.trim().length > 0);
+      const highlights = lines
+        .filter(l => l.includes('Recommendation') || l.includes('ROI') || l.includes('Risk') || l.includes('Timeline'))
+        .slice(0, 6)
+        .map(l => `* ${l.replace(/^\*\s*/, '')}`);
+
+      const boardHeader = [
+        'BOARD BRIEF VERSION',
+        `Prepared for: ${structuredIntake.audience || 'Board / Executive Committee'}`,
+        `Objective: ${structuredIntake.objective || 'Strategic decision support'}`,
+        '',
+        'KEY HIGHLIGHTS:',
+        ...(highlights.length > 0 ? highlights : ['* Recommendation and risk summary included in the body below.']),
+        '',
+        'FULL DRAFT:'
+      ].join('\n');
+
+      updated = `${boardHeader}\n\n${base}`;
+    }
+
+    setGeneratedContent(updated);
+    setLastRewriteMode(mode);
+  };
+
   return (
     <div className="h-full bg-stone-50 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -2058,6 +2117,15 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                   <div className="bg-stone-50 p-6 rounded-lg border border-stone-200 h-96 overflow-y-auto whitespace-pre-wrap text-sm text-stone-700 leading-relaxed font-mono">
                     {generatedContent}
                   </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <button onClick={() => applyRewrite('formalize')} className="px-3 py-2 border border-stone-200 rounded text-xs font-semibold text-stone-700 hover:bg-stone-50">Formalize</button>
+                    <button onClick={() => applyRewrite('shorten')} className="px-3 py-2 border border-stone-200 rounded text-xs font-semibold text-stone-700 hover:bg-stone-50">Shorten</button>
+                    <button onClick={() => applyRewrite('legal-safe')} className="px-3 py-2 border border-stone-200 rounded text-xs font-semibold text-stone-700 hover:bg-stone-50">Legal-Safe</button>
+                    <button onClick={() => applyRewrite('board-ready')} className="px-3 py-2 border border-stone-200 rounded text-xs font-semibold text-stone-700 hover:bg-stone-50">Board-Ready</button>
+                  </div>
+                  {lastRewriteMode && (
+                    <div className="text-[11px] text-stone-500">Last rewrite applied: {lastRewriteMode}</div>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <button onClick={copyToClipboard} className="px-4 py-3 border border-stone-200 rounded-lg font-bold text-sm text-stone-700 hover:bg-stone-50 flex items-center justify-center gap-2">
                       <Copy className="w-4 h-4" /> Copy to Clipboard

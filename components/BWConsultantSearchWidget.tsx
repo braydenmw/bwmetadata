@@ -189,6 +189,12 @@ User query: ${query.trim()}`;
             </div>
           </form>
 
+        {showResults && query.trim() && (
+          <div className="mb-4 max-w-3xl">
+            <p className="text-xs text-slate-300">Active query: {query}</p>
+          </div>
+        )}
+
         {/* Progress Bar */}
         {searchProgress && (
           <div className="bg-slate-800/80 backdrop-blur border border-slate-600 rounded-sm p-4 mb-6 max-w-3xl">
