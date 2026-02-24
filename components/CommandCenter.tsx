@@ -553,54 +553,76 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </p>
                     </div>
 
-                    {/* Demo Window — landscape two-column layout */}
-                    <div className="rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col">
-                        {/* Banner */}
-                        <div className="px-4 py-2 bg-slate-900 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
-                                    <span className="text-white font-bold text-[8px]">BW</span>
+                    {/* Demo Window — mirrors the real system design */}
+                    <div className="overflow-hidden border border-stone-200 shadow-lg flex flex-col" style={{ fontFamily: "'Söhne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
+
+                        {/* Banner — exact match to BWConsultantOS */}
+                        <div
+                            className="px-6 py-4 flex items-center justify-between relative overflow-hidden"
+                            style={{
+                                backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-blue-900/70" />
+                            <div className="relative z-10 flex items-center gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                <div>
+                                    <h1 className="text-base font-bold text-white">BW Consultant</h1>
+                                    <span className="text-blue-200 text-[11px]">Powered by NSIL Agentic Runtime • Case Study Builder</span>
                                 </div>
-                                <span className="text-sm font-semibold text-white">BW Consultant</span>
-                                <span className="text-slate-400 text-[10px]">· NSIL Agentic Runtime</span>
-                                <span className="px-1.5 py-0.5 bg-blue-600/40 border border-blue-500/40 text-blue-300 text-[9px] font-semibold rounded-full">DEMO</span>
+                                <span className="ml-2 px-2 py-0.5 bg-white/10 border border-white/20 text-white text-[9px] font-semibold">DEMO</span>
                             </div>
-                            <span className="hidden sm:block text-[9px] text-slate-500">Intake → Discovery → Analysis → Recommendations → Generation</span>
+                            {/* Phase pills */}
+                            <div className="relative z-10 hidden md:flex items-center gap-1.5">
+                                {(['Intake', 'Discovery', 'Analysis', 'Recommendations', 'Generation'] as const).map((phase, idx) => {
+                                    const activeIdx = Math.min(4, Math.floor((demoChatStep / DEMO_MESSAGES.length) * 5));
+                                    return (
+                                        <React.Fragment key={phase}>
+                                            {idx > 0 && <span className="text-blue-300/40 text-xs">›</span>}
+                                            <span className={`px-2.5 py-1 text-[11px] font-medium ${
+                                                idx === activeIdx ? 'bg-white text-blue-800' :
+                                                idx < activeIdx ? 'bg-blue-700/50 text-blue-100' :
+                                                'bg-blue-800/30 text-blue-300/60'
+                                            }`}>{phase}</span>
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </div>
                         </div>
 
                         {/* Body: chat + sidebar */}
-                        <div className="flex flex-col md:flex-row bg-white" style={{ minHeight: '300px' }}>
+                        <div className="flex bg-stone-50" style={{ minHeight: '280px' }}>
 
                             {/* Chat column */}
-                            <div className="flex-1 overflow-y-auto p-4 space-y-3 border-r border-slate-100" style={{ maxHeight: '320px' }}>
+                            <div className="flex-1 overflow-y-auto p-5 space-y-4 border-r border-stone-200" style={{ maxHeight: '320px' }}>
                                 {/* Scenario label */}
                                 <div className="flex justify-center">
-                                    <span className="text-[9px] px-2.5 py-0.5 bg-slate-100 border border-slate-200 text-slate-400 rounded-full">Cairns Regional Development Authority — Cold-Chain Logistics Hub, North Queensland</span>
+                                    <span className="text-[10px] px-3 py-1 bg-white border border-stone-200 text-slate-400">Scenario: Cairns Regional Development Authority — Cold-Chain Logistics Hub, North Queensland</span>
                                 </div>
 
                                 {DEMO_MESSAGES.slice(0, demoChatStep).map((msg, i) => (
                                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         {msg.role === 'system' && (
-                                            <div className="max-w-[92%] px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-md">
+                                            <div className="max-w-[92%] px-3 py-2 bg-indigo-50 border border-indigo-200">
                                                 <p className="text-[10px] text-indigo-600 font-mono leading-relaxed">
                                                     <span className="font-bold text-indigo-800">NSIL</span> &bull; {msg.text}
                                                 </p>
                                             </div>
                                         )}
                                         {msg.role === 'user' && (
-                                            <div className="max-w-[68%] px-3 py-2 bg-blue-600 text-white rounded-xl rounded-br-sm shadow-sm">
-                                                <p className="text-xs leading-relaxed">{msg.text}</p>
+                                            <div className="max-w-[70%] px-4 py-3 bg-blue-600 text-white text-xs leading-relaxed">
+                                                {msg.text}
                                             </div>
                                         )}
                                         {msg.role === 'assistant' && (
-                                            <div className="max-w-[90%] flex gap-2">
-                                                <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                    <span className="text-white font-bold text-[8px]">BW</span>
+                                            <div className="max-w-[88%] px-4 py-3 bg-white border border-stone-200 text-stone-900 shadow-sm text-xs leading-relaxed">
+                                                <div className="flex items-center gap-1.5 mb-1.5">
+                                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                                    <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">BW Consultant</span>
                                                 </div>
-                                                <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl rounded-tl-sm">
-                                                    <p className="text-[10px] font-semibold text-blue-700 mb-0.5">BW Consultant</p>
-                                                    <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line">{msg.text}</p>
-                                                </div>
+                                                <p className="whitespace-pre-line text-stone-800">{msg.text}</p>
                                             </div>
                                         )}
                                     </div>
@@ -609,52 +631,52 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {/* Typing indicator */}
                                 {demoTyping && (
                                     <div className="flex justify-start">
-                                        <div className="flex gap-2">
-                                            <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center flex-shrink-0">
-                                                <span className="text-white font-bold text-[8px]">BW</span>
+                                        <div className="px-4 py-3 bg-white border border-stone-200 shadow-sm">
+                                            <div className="flex items-center gap-1.5 mb-1.5">
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                                <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">BW Consultant</span>
                                             </div>
-                                            <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl rounded-tl-sm">
-                                                <div className="flex items-center gap-1">
-                                                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                                </div>
+                                            <div className="flex items-center gap-1">
+                                                <div className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                                <div className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                                <div className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                                             </div>
                                         </div>
                                     </div>
                                 )}
 
-                                {/* Replay / CTA when done */}
+                                {/* End state */}
                                 {demoChatStep >= DEMO_MESSAGES.length && !demoTyping && (
-                                    <div className="flex items-center gap-3 pt-2">
-                                        <span className="text-[10px] text-slate-400">Session complete</span>
+                                    <div className="flex items-center gap-3 pt-1">
+                                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                            <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                                            Session complete — 5 documents queued
+                                        </div>
                                         <button
                                             onClick={() => { setDemoChatStep(0); setDemoTyping(false); }}
-                                            className="text-[10px] px-3 py-1 border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors rounded"
+                                            className="text-[10px] px-3 py-1 border border-stone-300 text-slate-600 hover:bg-stone-100 transition-colors"
                                         >
                                             Replay
                                         </button>
                                         <button
                                             onClick={() => termsAccepted && onEnterPlatform?.()}
-                                            className="text-[10px] px-3 py-1 bg-blue-600 text-white hover:bg-blue-500 transition-colors rounded font-semibold"
+                                            className="text-[10px] px-3 py-1 bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium"
                                         >
-                                            Launch BW Consultant &rarr;
+                                            Launch BW Consultant →
                                         </button>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Right status sidebar */}
-                            <div className="w-full md:w-56 flex-shrink-0 bg-slate-950 p-4 flex flex-col gap-4">
-                                {/* Readiness meter */}
+                            {/* Right status sidebar — dark panel */}
+                            <div className="w-52 flex-shrink-0 bg-slate-950 border-l border-slate-800 p-4 flex flex-col gap-4">
+                                {/* Readiness */}
                                 <div>
                                     <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Case Readiness</p>
-                                    <div className="flex items-end gap-2">
-                                        <span className="text-2xl font-bold text-white tabular-nums">{Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%</span>
-                                    </div>
-                                    <div className="mt-1.5 w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                    <span className="text-2xl font-bold text-white tabular-nums">{Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%</span>
+                                    <div className="mt-1.5 w-full h-1 bg-slate-800">
                                         <div
-                                            className="h-full bg-blue-500 rounded-full transition-all duration-700"
+                                            className="h-full bg-blue-500 transition-all duration-700"
                                             style={{ width: `${Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%` }}
                                         />
                                     </div>
@@ -663,13 +685,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {/* NSIL signals */}
                                 <div>
                                     <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-2">NSIL Signals</p>
-                                    <div className="space-y-1.5">
+                                    <div className="space-y-2">
                                         {[
                                             { label: 'Jurisdiction', value: 'AUS — QLD', active: demoChatStep >= 2 },
                                             { label: 'Sector', value: 'Cold-chain / Logistics', active: demoChatStep >= 2 },
                                             { label: 'Policy Pack', value: 'Asia-Pacific Advisory', active: demoChatStep >= 2 },
                                             { label: 'Counterparty', value: 'CIS pending', active: demoChatStep >= 3 },
-                                            { label: 'Funder', value: 'NAIF (matched)', active: demoChatStep >= 4 },
+                                            { label: 'Funder', value: 'NAIF matched', active: demoChatStep >= 4 },
                                         ].map(({ label, value, active }) => (
                                             <div key={label} className={`transition-opacity duration-500 ${active ? 'opacity-100' : 'opacity-20'}`}>
                                                 <p className="text-[9px] text-slate-500">{label}</p>
@@ -679,19 +701,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                 </div>
 
-                                {/* Documents queued */}
+                                {/* Docs queued */}
                                 <div>
                                     <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-2">Documents Queued</p>
-                                    <div className="space-y-1">
-                                        {[
-                                            'NAIF Submission Brief',
-                                            'Investment Prospectus',
-                                            'Risk Register',
-                                            'Stakeholder Plan',
-                                            'LOI Template',
-                                        ].map((doc, i) => (
-                                            <div key={doc} className={`flex items-center gap-1.5 transition-opacity duration-500 ${demoChatStep >= DEMO_MESSAGES.length - i * 0 && demoChatStep >= 4 ? 'opacity-100' : 'opacity-15'}`}>
-                                                <div className={`w-1 h-1 rounded-full flex-shrink-0 ${demoChatStep >= DEMO_MESSAGES.length ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+                                    <div className="space-y-1.5">
+                                        {['NAIF Submission Brief', 'Investment Prospectus', 'Risk Register', 'Stakeholder Plan', 'LOI Template'].map((doc) => (
+                                            <div key={doc} className={`flex items-center gap-1.5 transition-opacity duration-500 ${demoChatStep >= 5 ? 'opacity-100' : 'opacity-15'}`}>
+                                                <div className={`w-1 h-1 flex-shrink-0 ${demoChatStep >= DEMO_MESSAGES.length ? 'bg-emerald-400' : 'bg-slate-600'}`} />
                                                 <p className="text-[10px] text-slate-400">{doc}</p>
                                             </div>
                                         ))}
@@ -700,10 +716,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Footer status bar */}
-                        <div className="px-3 py-1.5 bg-slate-900 border-t border-slate-800 flex items-center justify-between">
-                            <p className="text-[9px] text-slate-500">NSIL Agentic Runtime &bull; Display mode</p>
-                            <p className="text-[9px] text-slate-500">{demoChatStep} / {DEMO_MESSAGES.length} exchanges</p>
+                        {/* Footer — input bar replica (static) */}
+                        <div className="px-4 py-2.5 border-t border-stone-200 bg-white flex items-center gap-3">
+                            <div className="flex-1 border border-stone-300 px-3 py-2 text-xs text-slate-400 bg-stone-50 select-none">Type your response...</div>
+                            <div className="px-4 py-2 bg-slate-200 text-slate-400 text-xs font-medium select-none">Send</div>
+                            <p className="text-[9px] text-slate-400 ml-2">Display mode — <button onClick={() => termsAccepted && onEnterPlatform?.()} className="text-blue-600 hover:underline">launch live session →</button></p>
                         </div>
                     </div>
                 </div>
