@@ -127,6 +127,7 @@ export class PersistentMemorySystem {
   // Storage
   private async saveToStorage(): Promise<void> {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = {
         memory: Array.from(this.memory.entries()),
         lastSaved: new Date().toISOString()
@@ -139,6 +140,7 @@ export class PersistentMemorySystem {
 
   private loadFromStorage(): void {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = localStorage.getItem('bwNexusMemory');
       if (data) {
         const parsed = JSON.parse(data);
@@ -188,11 +190,17 @@ export class PersistentMemorySystem {
   // Get system status
   getStatus() {
     const totalEntries = Array.from(this.memory.values()).reduce((sum, entries) => sum + entries.length, 0);
+    const lastSaved = typeof localStorage === 'undefined'
+      ? null
+      : localStorage.getItem('bwNexusMemory')
+        ? JSON.parse(localStorage.getItem('bwNexusMemory')!).lastSaved
+        : null;
+
     return {
       totalMemories: totalEntries,
       categories: Array.from(this.memory.keys()),
       liabilityRisks: this.liabilityRisks.length,
-      lastSaved: localStorage.getItem('bwNexusMemory') ? JSON.parse(localStorage.getItem('bwNexusMemory')!).lastSaved : null
+      lastSaved
     };
   }
 }

@@ -154,6 +154,7 @@ User query: ${query.trim()}`;
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
                 <input
+                  data-testid="bwai-search-input"
                   ref={inputRef}
                   type="text"
                   value={query}
@@ -164,6 +165,7 @@ User query: ${query.trim()}`;
                 />
               </div>
               <button
+                data-testid="bwai-search-button"
                 type="submit"
                 disabled={isSearching || !query.trim()}
                 className={`px-8 py-4 rounded-sm text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg ${

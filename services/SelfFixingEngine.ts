@@ -448,6 +448,7 @@ export class SelfFixingEngine {
 
   private saveErrorHistory(): void {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = {
         errors: Array.from(this.errors.entries()),
         patterns: Array.from(this.errorPatterns.entries()),
@@ -461,6 +462,7 @@ export class SelfFixingEngine {
 
   private loadErrorHistory(): void {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = localStorage.getItem('bwNexusErrorHistory');
       if (data) {
         const parsed = JSON.parse(data);

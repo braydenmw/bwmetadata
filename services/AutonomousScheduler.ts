@@ -328,6 +328,7 @@ export class AutonomousScheduler {
 
   private saveToStorage(): void {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = {
         tasks: Array.from(this.tasks.entries()),
         triggers: Array.from(this.triggers.entries()),
@@ -341,6 +342,7 @@ export class AutonomousScheduler {
 
   private loadFromStorage(): void {
     try {
+      if (typeof localStorage === 'undefined') return;
       const data = localStorage.getItem('bwNexusScheduler');
       if (data) {
         const parsed = JSON.parse(data);

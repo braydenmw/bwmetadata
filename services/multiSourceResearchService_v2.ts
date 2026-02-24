@@ -2855,7 +2855,6 @@ async function geocodeLocation(locationQuery: string): Promise<{
  * The multi-agent system uses GeoNames, REST Countries, Wikidata, and World Bank APIs
  * which provide reliable, structured data instead of instant answers
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function performGoogleSearch(_query: string, _numResults: number = 10): Promise<Array<{
   title: string;
   link: string;

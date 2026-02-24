@@ -11,7 +11,7 @@ import { INITIAL_PARAMETERS } from './constants';
 import NSILWorkspace from './components/NSILWorkspace';
 import UserManual from './components/UserManual';
 import CommandCenter from './components/CommandCenter';
-import BWConsultantOS from './components/BWConsultantOS';
+import BWConsultantOS from './components/BWConsultantOS.tsx';
 import GlobalLocationIntelligence from './components/GlobalLocationIntelligence.tsx';
 import useEscapeKey from './hooks/useEscapeKey';
 import { generateCopilotInsights, generateReportSectionStream } from './services/geminiService';

@@ -325,6 +325,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
               </div>
               <form onSubmit={handleSubmit} className="flex-1 flex flex-col p-4">
                 <textarea
+                  data-testid="bwai-search-input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -342,6 +343,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                     Enter to send • Shift+Enter new line
                   </p>
                   <button
+                    data-testid="bwai-search-button"
                     type="submit"
                     disabled={isLoading || !input.trim()}
                     className="px-5 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-medium flex items-center gap-2"
@@ -406,6 +408,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
       {/* INPUT AREA */}
       <form onSubmit={handleSubmit} className="border-t border-stone-200 p-3 flex gap-2 bg-white">
         <input
+          data-testid="bwai-search-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -414,6 +417,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
           className="flex-1 px-3 py-2 text-xs border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
         />
         <button
+          data-testid="bwai-search-button"
           type="submit"
           disabled={isLoading || !input.trim()}
           className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
