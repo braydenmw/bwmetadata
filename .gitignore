@@ -34,6 +34,8 @@ server/data/
 
 # Local test artifacts
 e2e-check.json
+test-results/
+test-results-simulation.json
 
 # Local content extraction artifacts
 _doc209_extracted.txt
