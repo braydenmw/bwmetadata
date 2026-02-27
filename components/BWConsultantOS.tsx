@@ -11,10 +11,10 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { 
-  Bot, Send, Paperclip, Loader2, X, Maximize2,
+  Bot, Send, Paperclip, Loader2, X,
   FileText, Mail, Briefcase, Shield, BarChart3, Users, Scale, 
-  Globe, FileCheck, PenTool, Download, Copy, Check, Building2,
-  User, HelpCircle, Target, ChevronRight,
+  Globe, FileCheck, PenTool, Download, Copy, Check,
+  HelpCircle, ChevronRight,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle
 } from 'lucide-react';
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
@@ -198,7 +198,9 @@ interface ExtractedEntitySuggestion {
   confidence: EntityConfidence;
 }
 
-type PilotModeFocus = 'new-markets' | 'government-entry' | 'partnerships' | 'risk-compliance';
+type PilotModeFocus = 'new-markets' | 'government-entry' | 'partnerships' | 'risk-compliance' | 'investment-readiness' | 'operations-delivery' | 'trade-export' | 'regional-development' | 'fundraising-capital' | 'licensing-approvals' | 'joint-ventures' | 'supply-chain';
+
+type PilotOptionPreference = 'include' | 'exclude';
 
 interface PilotIssueArea {
   id: string;
@@ -272,73 +274,89 @@ const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
   {
     id: 'market-access-barriers',
     focus: 'new-markets',
-    title: 'Market Access Barriers',
-    description: 'Licensing, market-entry restrictions, and foreign ownership constraints.',
-    whyItMatters: 'Entry assumptions fail when market access controls are not mapped early.',
+    title: 'Entering a New Market',
+    description: 'Understand what approvals, restrictions, or local requirements you may face before entering a new market.',
+    whyItMatters: 'Knowing the rules upfront saves time and avoids costly surprises.',
     recommendedMoves: [
-      'Map ownership restrictions and mandatory local-partner requirements.',
-      'Create a country-by-country entry sequence based on approval complexity.',
-      'Build regulator-facing evidence pack before investor outreach.'
+      'Show me what approvals and local requirements I need for market entry.',
+      'Help me plan the best order to enter each country based on difficulty.'
     ]
   },
   {
     id: 'government-procurement-fit',
     focus: 'government-entry',
-    title: 'Government Procurement Fit',
-    description: 'Public-sector buying rules, policy alignment, and tender readiness.',
-    whyItMatters: 'Government partnerships fail without procurement and policy fit.',
+    title: 'Working with Government',
+    description: 'Find out how to align with government priorities and what they need to see in a proposal.',
+    whyItMatters: 'Government decisions follow strict processes — knowing them early gives you an edge.',
     recommendedMoves: [
-      'Align value proposition to ministry mandate and policy KPIs.',
-      'Prepare compliance matrix matching tender criteria and annex requirements.',
-      'Draft agency briefing note and submission letter path.'
+      'Help me understand what this government department is looking for.',
+      'Prepare a briefing and proposal outline that fits their requirements.'
     ]
   },
   {
     id: 'partner-selection-risk',
     focus: 'partnerships',
-    title: 'Partner Selection Risk',
-    description: 'Counterparty strength, governance reliability, and execution capability.',
-    whyItMatters: 'Weak partner-fit causes delays, governance conflict, and value leakage.',
+    title: 'Finding the Right Partners',
+    description: 'Evaluate potential partners — their strengths, risks, and whether they can deliver what you need.',
+    whyItMatters: 'The wrong partner costs more than no partner. Get this right early.',
     recommendedMoves: [
-      'Define partner due-diligence scorecard (financial, legal, operational).',
-      'Set governance rights, escalation model, and performance checkpoints.',
-      'Create phased partnership model with stage-gate approvals.'
+      'Help me evaluate potential partners with a clear checklist.',
+      'Create a phased partnership plan with checkpoints along the way.'
     ]
   },
   {
     id: 'cross-border-compliance',
     focus: 'risk-compliance',
-    title: 'Cross-Border Compliance',
-    description: 'Data, legal, anti-corruption, sanctions, and reporting obligations.',
-    whyItMatters: 'Cross-border expansion is blocked by unresolved legal/compliance exposure.',
+    title: 'Legal & Compliance Requirements',
+    description: 'Understand the legal, data, anti-corruption, and reporting obligations for your situation.',
+    whyItMatters: 'Compliance gaps can block deals, cause fines, or damage your reputation.',
     recommendedMoves: [
-      'Build jurisdiction obligations register and control owner assignments.',
-      'Add anti-bribery and third-party screening requirements into partner onboarding.',
-      'Track compliance evidence artifacts for every major decision milestone.'
+      'Show me what legal and compliance requirements apply to my situation.',
+      'Help me track compliance evidence for each major decision.'
     ]
   },
   {
     id: 'capital-readiness',
     focus: 'new-markets',
-    title: 'Capital and Funding Readiness',
-    description: 'Funding structure, capital timing, and downside resilience.',
-    whyItMatters: 'Expansion stalls when capital assumptions are not staged against risk.',
+    title: 'Funding & Capital Planning',
+    description: 'Plan your funding approach — how much, when, and what happens if things change.',
+    whyItMatters: 'Running out of money mid-expansion is the most common reason projects fail.',
     recommendedMoves: [
-      'Create base/upside/downside model tied to market-entry milestones.',
-      'Set funding triggers and contingency capital reserve.',
-      'Prepare investor memo and board decision package in parallel.'
+      'Help me build a funding plan with best-case and worst-case scenarios.',
+      'Show me what funding triggers and backup plans I should have in place.'
     ]
   },
   {
     id: 'stakeholder-legitimacy',
     focus: 'government-entry',
-    title: 'Stakeholder Legitimacy and Social License',
-    description: 'Community acceptance, public trust, and institutional legitimacy.',
-    whyItMatters: 'Government and regional programs fail without stakeholder legitimacy.',
+    title: 'Building Trust & Support',
+    description: 'Understand who the key stakeholders are and how to earn their support.',
+    whyItMatters: 'Even good projects fail without community and stakeholder buy-in.',
     recommendedMoves: [
-      'Map high-influence stakeholders and likely objections.',
-      'Develop communication brief for public value and local impact.',
-      'Attach measurable social/economic outcomes to the implementation plan.'
+      'Help me identify the key people I need to convince and their concerns.',
+      'Create a clear message about the value and impact of what I\'m doing.'
+    ]
+  },
+  {
+    id: 'investment-readiness-structure',
+    focus: 'investment-readiness',
+    title: 'Getting Investment-Ready',
+    description: 'Prepare your case so it meets what investors and funders actually look for.',
+    whyItMatters: 'Investors say no when assumptions, numbers, and risk protections are unclear.',
+    recommendedMoves: [
+      'Help me prepare a clear investment case with realistic numbers.',
+      'Show me what investors will ask about and how to answer them.'
+    ]
+  },
+  {
+    id: 'operations-delivery-readiness',
+    focus: 'operations-delivery',
+    title: 'Planning How to Deliver',
+    description: 'Turn your strategy into an actionable plan with clear owners, timelines, and checkpoints.',
+    whyItMatters: 'A great plan is worthless without someone accountable for each part.',
+    recommendedMoves: [
+      'Help me break this into workstreams with clear owners and deadlines.',
+      'Create a progress tracker so I know when things are off track.'
     ]
   }
 ];
@@ -346,77 +364,91 @@ const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
 const PILOT_ADAPTIVE_OPTION_CATALOG: PilotOption[] = [
   {
     id: 'startup-case-skeleton',
-    label: 'Start Case Skeleton',
+    label: 'Help me get started',
     prompt: 'Create a startup case skeleton with person, organization, jurisdiction, objective, decision audience, and deadline fields.',
     stage: 'intake'
   },
   {
     id: 'startup-proof-pack',
-    label: 'Start Evidence Pack',
+    label: 'What documents do I need?',
     prompt: 'Create an initial evidence pack checklist (source documents, baseline metrics, and mandatory annexes) needed to open this case correctly.',
     stage: 'intake'
   },
   {
     id: 'startup-risk-baseline',
-    label: 'Start Risk Baseline',
+    label: 'What are my biggest risks?',
     prompt: 'Create a startup risk baseline with top regulatory, funding, timeline, and stakeholder risks for this matter.',
     stage: 'intake'
   },
   {
     id: 'discovery-market-scan',
-    label: 'Add Market Scan',
+    label: 'Compare markets for me',
     prompt: 'Add a comparative regional market scan with top 3 expansion candidates and entry barriers.',
     stage: 'discovery',
     focus: 'new-markets'
   },
   {
     id: 'discovery-gov-pack',
-    label: 'Add Government Entry Pack',
+    label: 'Help me approach government',
     prompt: 'Add a government engagement pack including ministry brief, submission path, and compliance annex list.',
     stage: 'discovery',
     focus: 'government-entry'
   },
   {
     id: 'discovery-partner-map',
-    label: 'Add Partner Map',
+    label: 'Map potential partners',
     prompt: 'Add partner landscape map with shortlist criteria and due-diligence checkpoints.',
     stage: 'discovery',
     focus: 'partnerships'
   },
   {
     id: 'discovery-risk-stress',
-    label: 'Add Risk Stress Test',
+    label: 'Test my plan against risks',
     prompt: 'Add risk stress test covering regulatory, funding, and execution downside scenarios.',
     stage: 'discovery',
     focus: 'risk-compliance'
   },
   {
     id: 'analysis-gap-map',
-    label: 'Add Missing-Data Gap Map',
+    label: 'What information am I missing?',
     prompt: 'Map missing data points, why each is required, and assign owner/deadline for closure before recommendations.',
     stage: 'analysis'
   },
   {
     id: 'analysis-scenario-pack',
-    label: 'Add Scenario Pack',
+    label: 'Show me best/worst case outcomes',
     prompt: 'Add base/upside/downside scenarios with implications for market entry, government pathway, and partnership structure.',
     stage: 'analysis'
   },
   {
+    id: 'analysis-investment-readiness',
+    label: 'Get me investor-ready',
+    prompt: 'Add investor-readiness assumptions, return guardrails, term-sheet priorities, and downside protections.',
+    stage: 'analysis',
+    focus: 'investment-readiness'
+  },
+  {
+    id: 'analysis-operations-plan',
+    label: 'Build my delivery plan',
+    prompt: 'Add execution workstreams, accountable owners, operational checkpoints, and delivery-risk mitigants.',
+    stage: 'analysis',
+    focus: 'operations-delivery'
+  },
+  {
     id: 'recommendations-letter-plan',
-    label: 'Add Letter Plan',
+    label: 'Draft letters I need to send',
     prompt: 'Add a stakeholder contact-letter plan with counterparts, purpose, and required support annexes for each letter.',
     stage: 'recommendations'
   },
   {
     id: 'recommendations-report-plan',
-    label: 'Add Report Plan',
+    label: 'Plan my reports and documents',
     prompt: 'Add a report package plan covering decision brief, memo, and full report with audience-specific structure.',
     stage: 'recommendations'
   },
   {
     id: 'generation-quality-check',
-    label: 'Add Output Quality Check',
+    label: 'Check everything before I send',
     prompt: 'Add final output quality checks for audience fit, jurisdiction compliance, evidence traceability, and implementation readiness.',
     stage: 'generation'
   }
@@ -486,6 +518,62 @@ const GLOBAL_ISSUE_PACKS: GlobalIssuePack[] = [
     archetypes: ['Resilience planner', 'Risk financing partner', 'Local implementation coalition'],
     formulas: ['ESI', 'CRPS', 'RME', 'PSS', 'RRI', 'GCI'],
     requiredOutputs: ['Resilience Investment Portfolio', 'Scenario Risk Annex', 'Government and Partner Letters']
+  },
+  {
+    id: 'agriculture-food',
+    label: 'Agriculture & Food Security',
+    personas: ['Agriculture Ministry', 'Agribusiness Operator', 'Export Council'],
+    archetypes: ['Agri processor', 'Food security agency', 'Trade facilitation partner'],
+    formulas: ['SPI', 'RRI', 'CCS', 'TAM', 'MPI', 'FRS'],
+    requiredOutputs: ['Food Security Investment Case', 'Supply Chain Risk Report', 'Market Access Letters']
+  },
+  {
+    id: 'mining-resources',
+    label: 'Mining & Natural Resources',
+    personas: ['Resources Ministry', 'Mining Operator', 'Environmental Regulator'],
+    archetypes: ['Extractives operator', 'Sovereign wealth manager', 'Community license partner'],
+    formulas: ['RROI', 'ESG', 'RME', 'PSS', 'CCS', 'SRA'],
+    requiredOutputs: ['Resource Development Strategy', 'Environmental Compliance Pack', 'Stakeholder Agreement Letters']
+  },
+  {
+    id: 'tourism-hospitality',
+    label: 'Tourism & Hospitality',
+    personas: ['Tourism Authority', 'Hotel/Resort Developer', 'Cultural Heritage Body'],
+    archetypes: ['Destination developer', 'Hospitality operator', 'Regional promotion agency'],
+    formulas: ['MPI', 'TAM', 'VCI', 'ORS', 'CGI', 'RFI'],
+    requiredOutputs: ['Tourism Development Blueprint', 'Investment Attraction Brief', 'Partnership Engagement Letters']
+  },
+  {
+    id: 'education-training',
+    label: 'Education & Training',
+    personas: ['Education Ministry', 'University/College Network', 'Industry Skills Council'],
+    archetypes: ['Education provider', 'Vocational training body', 'Skills policy authority'],
+    formulas: ['LCI', 'TCS', 'CGI', 'ORS', 'SEQ', 'RRI'],
+    requiredOutputs: ['Education Modernization Plan', 'Skills Gap Analysis', 'Institutional Partnership Letters']
+  },
+  {
+    id: 'financial-services',
+    label: 'Financial Services & Banking',
+    personas: ['Central Bank', 'Commercial Bank Network', 'Fintech Regulator'],
+    archetypes: ['Banking operator', 'Insurance/pension partner', 'Payment system provider'],
+    formulas: ['DSCR', 'FMS', 'RFI', 'CIS', 'FRS', 'CCS'],
+    requiredOutputs: ['Financial Infrastructure Report', 'Regulatory Readiness Pack', 'Banking Partnership Letters']
+  },
+  {
+    id: 'defence-security',
+    label: 'Defence & Security',
+    personas: ['Defence Ministry', 'Security Contractor', 'Intelligence/Cyber Agency'],
+    archetypes: ['Defence supplier', 'Security platform operator', 'Sovereign systems partner'],
+    formulas: ['SPI', 'PSS', 'RME', 'CCS', 'SRA', 'AGI'],
+    requiredOutputs: ['Defence Capability Strategy', 'Procurement Compliance Report', 'Government Engagement Letters']
+  },
+  {
+    id: 'manufacturing',
+    label: 'Manufacturing & Industry',
+    personas: ['Industry Ministry', 'Manufacturing Operator', 'Export Promotion Agency'],
+    archetypes: ['Factory operator', 'Industrial zone developer', 'Trade facilitation partner'],
+    formulas: ['MPI', 'ORS', 'TAM', 'SAM', 'TCS', 'RROI'],
+    requiredOutputs: ['Industrial Development Case', 'Manufacturing Feasibility Report', 'Supply Chain Partnership Letters']
   }
 ];
 
@@ -546,15 +634,20 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   
   // Workspace modal
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
-  const [pilotModeEnabled, setPilotModeEnabled] = useState(true);
+  const [pilotModeEnabled, _setPilotModeEnabled] = useState(true);
   const [showPilotWindow, setShowPilotWindow] = useState(false);
   const [showPilotHowTo, setShowPilotHowTo] = useState(false);
   const [pilotFocus, setPilotFocus] = useState<PilotModeFocus>('new-markets');
   const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
+  const [pilotOptionPreferences, setPilotOptionPreferences] = useState<Record<string, PilotOptionPreference>>({});
   const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
   const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);
   const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
   const [activeGlobalIssuePack, setActiveGlobalIssuePack] = useState<string>('energy-transition');
+  const [quickCountryFocus, setQuickCountryFocus] = useState('');
+  const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
+  const [quickCustomSector, setQuickCustomSector] = useState('');
+  const [quickCustomFocus, setQuickCustomFocus] = useState('');
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
@@ -567,9 +660,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);
   const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
   const [_adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
-  const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
+  const [_skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
   const [readinessScore, setReadinessScore] = useState(0);
-  const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
+  const [_caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
   const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
   const [recommendationScoreMap, setRecommendationScoreMap] = useState<Record<string, RecommendationScore>>({});
   const [recommendationBoostMap, setRecommendationBoostMap] = useState<Record<string, number>>({});
@@ -853,6 +946,72 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     ].join('\n');
   }, [consultantCaseProfile]);
 
+  const liveDraftReadiness = useMemo(() => computeReadiness(caseStudy), [caseStudy, computeReadiness]);
+
+  const liveDraftStatus = useMemo(() => {
+    if (liveDraftReadiness >= 75) return 'First Draft Ready';
+    if (liveDraftReadiness >= 45) return 'Draft In Progress';
+    return 'Building Initial Draft';
+  }, [liveDraftReadiness]);
+
+  const liveDraftDocumentTargets = useMemo(() => {
+    const selectedTitles = selectedDocs
+      .map((id) => recommendedDocs.find((doc) => doc.id === id)?.title)
+      .filter((title): title is string => Boolean(title));
+
+    if (selectedTitles.length > 0) {
+      return selectedTitles;
+    }
+
+    const recommendedTitles = recommendedDocs.slice(0, 6).map((doc) => doc.title);
+    if (recommendedTitles.length > 0) {
+      return recommendedTitles;
+    }
+
+    return [
+      'Executive Summary',
+      'Partnership Assessment',
+      'Risk Report',
+      'Letter of Intent'
+    ];
+  }, [selectedDocs, recommendedDocs]);
+
+  const liveDraftEvidenceSources = useMemo(() => {
+    const uploaded = caseStudy.uploadedDocuments.slice(0, 6).map((doc) => `Uploaded file: ${doc}`);
+    const contextNotes = caseStudy.additionalContext
+      .slice(-4)
+      .map((note) => `Conversation note: ${note.slice(0, 140)}${note.length > 140 ? '…' : ''}`);
+    const insightNotes = caseStudy.aiInsights
+      .slice(-2)
+      .map((insight) => `System insight: ${insight.slice(0, 140)}${insight.length > 140 ? '…' : ''}`);
+
+    const merged = [...uploaded, ...contextNotes, ...insightNotes];
+    return merged.length > 0 ? merged : ['User-provided conversation context in this session'];
+  }, [caseStudy]);
+
+  const liveDraftExecutiveSummary = useMemo(() => {
+    const organization = caseStudy.organizationName || 'the client organization';
+    const objective = caseStudy.objectives.trim() || 'define a clear strategic objective';
+    const location = [caseStudy.country, caseStudy.jurisdiction].filter(Boolean).join(' / ') || 'target jurisdiction pending';
+    const context = caseStudy.currentMatter.trim() || 'decision context is still being captured from the conversation';
+    const constraints = caseStudy.constraints.trim() || 'constraints are being collected in the background';
+
+    return `${organization} is being assessed for a strategic decision in ${location}. The current objective is to ${objective}. Based on the live conversation, the active context is: ${context}. Key constraints tracked so far: ${constraints}. This draft is updating continuously as new information is provided.`;
+  }, [caseStudy]);
+
+  const hasLiveDraftSignals = useMemo(() => {
+    return Boolean(
+      caseStudy.organizationName.trim()
+      || caseStudy.objectives.trim()
+      || caseStudy.currentMatter.trim()
+      || caseStudy.constraints.trim()
+      || caseStudy.country.trim()
+      || caseStudy.jurisdiction.trim()
+      || caseStudy.additionalContext.length > 0
+      || caseStudy.uploadedDocuments.length > 0
+    );
+  }, [caseStudy]);
+
   const extractConsultantSignals = useCallback((input: string) => {
     const normalized = input.trim();
     if (!normalized) {
@@ -994,7 +1153,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       if (!hasLetter) {
         options.push({
           id: 'recovery-letter-missing',
-          label: 'Recover Missing Letter Recommendation',
+          label: 'Help me draft the letters I need',
           prompt: 'The current recommendation set is missing letters. Add the most relevant counterpart/stakeholder letters required for this case and explain why each is needed.'
         });
       }
@@ -1002,7 +1161,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       if (!hasReport) {
         options.push({
           id: 'recovery-report-missing',
-          label: 'Recover Missing Report Recommendation',
+          label: 'Help me create the reports I need',
           prompt: 'The current recommendation set is missing reports. Add decision-grade reports needed for this case and justify each selection.'
         });
       }
@@ -1011,7 +1170,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     if (!consultantGateReady) {
       options.push({
         id: 'recovery-consultant-gate',
-        label: 'Recover Missing Case Essentials',
+        label: 'Fill in missing details for me',
         prompt: `Consultant gate is blocked. Collect and structure missing essentials: ${consultantGateMissing.slice(0, 4).join(', ')}.`
       });
     }
@@ -1019,7 +1178,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     if (caseStudy.uploadedDocuments.length === 0) {
       options.push({
         id: 'recovery-evidence-seed',
-        label: 'Recover Missing Evidence Inputs',
+        label: 'Tell me what documents to upload',
         prompt: 'No source documents are uploaded. Add an evidence seed list with required files, expected data fields, and owner assignments.'
       });
     }
@@ -1043,7 +1202,23 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return map;
   }, [pilotAdaptiveOptions, pilotMissingRecommendationOptions, customPilotOptions, pilotOptionMemory]);
 
-  const pilotFailureAlerts = useMemo(() => {
+  const _pilotIncludedOptionLabels = useMemo(() => {
+    return pilotSelectedAddOns
+      .filter((id) => pilotOptionPreferences[id] === 'include')
+      .map((id) => pilotAllOptions.get(id)?.label || id);
+  }, [pilotSelectedAddOns, pilotOptionPreferences, pilotAllOptions]);
+
+  const _pilotExcludedOptionLabels = useMemo(() => {
+    return pilotSelectedAddOns
+      .filter((id) => pilotOptionPreferences[id] === 'exclude')
+      .map((id) => pilotAllOptions.get(id)?.label || id);
+  }, [pilotSelectedAddOns, pilotOptionPreferences, pilotAllOptions]);
+
+  const customResearchTopics = useMemo(() => {
+    return customPilotOptions.map((o) => o.label);
+  }, [customPilotOptions]);
+
+  const _pilotFailureAlerts = useMemo(() => {
     if (!pilotModeEnabled) return [] as string[];
 
     const alerts: string[] = [];
@@ -1073,7 +1248,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return alerts;
   }, [pilotModeEnabled, caseStudy, consultantGateReady, consultantGateMissing, caseMethodGaps, regionalKernel]);
 
-  const pilotReadiness = useMemo(() => {
+  const _pilotReadiness = useMemo(() => {
     if (!pilotModeEnabled) return 0;
     const base = consultantGateReady ? 70 : 35;
     const evidence = Math.min(20, caseStudy.uploadedDocuments.length * 5 + caseStudy.additionalContext.length * 2);
@@ -1104,13 +1279,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       `Deadline: ${caseStudy.decisionDeadline || 'Deadline missing'}`,
       `Constraints: ${caseStudy.constraints || 'Constraints missing'}`,
       `Evidence assets: ${caseStudy.uploadedDocuments.length} uploaded file(s), ${caseStudy.additionalContext.length} context note(s), ${caseStudy.aiInsights.length} AI insight(s)`,
-      `Pilot add-ons: ${pilotSelectedAddOns.length > 0 ? pilotSelectedAddOns.map((id) => pilotAllOptions.get(id)?.label || id).join(', ') : 'none selected'}`,
+      `Custom research topics: ${customResearchTopics.length > 0 ? customResearchTopics.join(', ') : 'none'}`,
       `Global issue pack: ${activeIssuePack.label}`,
       `Case method gaps: ${caseMethodGaps.length > 0 ? caseMethodGaps.join(', ') : 'none'}`,
       `Regional kernel readiness: ${regionalKernel.governanceReadiness}%`
     ];
     return lines.join('\n');
-  }, [caseStudy, pilotSelectedAddOns, pilotAllOptions, activeIssuePack.label, caseMethodGaps, regionalKernel.governanceReadiness]);
+  }, [caseStudy, customResearchTopics, activeIssuePack.label, caseMethodGaps, regionalKernel.governanceReadiness]);
 
   const _pilotSelectedAddOnPrompts = useMemo(() => {
     return pilotSelectedAddOns
@@ -1141,7 +1316,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     };
   }, [outputDepth]);
 
-  const handlePilotApplyMove = useCallback((move: string) => {
+  const _handlePilotApplyMove = useCallback((move: string) => {
     setCurrentPhase('discovery');
     setInputValue(move);
     setCaseStudy((prev) => ({
@@ -1153,14 +1328,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Pilot Mode applied: ${move}`,
+        content: `Added to your case: ${move}`,
         timestamp: new Date(),
         phase: 'discovery'
       }
     ]);
   }, []);
 
-  const handleApplyPilotOption = useCallback((optionId: string) => {
+  const _handleSetPilotOptionPreference = useCallback((optionId: string, preference: PilotOptionPreference) => {
     const option = pilotAllOptions.get(optionId);
     if (!option) return;
 
@@ -1168,6 +1343,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     setInputValue(option.prompt);
 
     setPilotSelectedAddOns((prev) => (prev.includes(optionId) ? prev : [...prev, optionId]));
+    setPilotOptionPreferences((prev) => ({
+      ...prev,
+      [optionId]: preference
+    }));
     setPilotOptionMemory((prev) => ({
       ...prev,
       [optionId]: {
@@ -1188,7 +1367,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Pilot option added to case build: ${option.label}`,
+        content: `Pilot option set to ${preference === 'include' ? 'Include' : 'Without'}: ${option.label}`,
         timestamp: new Date(),
         phase: 'discovery'
       }
@@ -1206,14 +1385,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       prompt: text
     };
 
-    setCustomPilotOptions((prev) => [option, ...prev].slice(0, 10));
+    setCustomPilotOptions((prev) => [option, ...prev]);
     setCustomPilotOptionInput('');
     setMessages((prev) => [
       ...prev,
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Custom Pilot option added: ${option.label}`,
+        content: `Research topic noted: "${option.label}" — this will be factored into your consultation.`,
         timestamp: new Date(),
         phase: 'discovery'
       }
@@ -1359,10 +1538,23 @@ Consultant operating rules:
 - If data is incomplete, ask the single highest-value question that improves decision quality.
 - Convert provided information into action-oriented outputs, not generic commentary.
 
+Quick Consultant context (user selections):
+- Focus area: ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')}
+- Country/region of focus: ${quickCountryFocus || 'Not specified yet'}
+- Business target (who they want to work with): ${quickBusinessTarget || 'Not specified yet'}
+- Industry/sector: ${activeIssuePack.label}${quickCustomSector ? ` (custom: ${quickCustomSector})` : ''}
+${customResearchTopics.length > 0 ? `- Custom research topics the user wants investigated: ${customResearchTopics.join(', ')}` : ''}
+
+When the user has specified a country or region, proactively reference:
+- Government investment attraction programs and incentive schemes
+- Relevant development bank and multilateral finance programs
+- Regional business conditions and market access factors
+- Key stakeholders and institutional counterparts
+
 Respond naturally and helpfully. Keep responses focused and actionable.
 
 ${agentRegistry.current.toManifest()}`;
-  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness]);
+  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, pilotFocus, quickCountryFocus, quickBusinessTarget, activeIssuePack, quickCustomSector, quickCustomFocus, customResearchTopics]);
 
   const buildNaturalFallbackReply = useCallback((userInput: string) => {
     const trimmed = userInput.trim();
@@ -2259,7 +2451,7 @@ ${agentRegistry.current.toManifest()}`;
       .sort((a, b) => b.weight - a.weight);
   }, [caseStudy]);
 
-  const handleAskNextCriticalQuestion = useCallback(() => {
+  const _handleAskNextCriticalQuestion = useCallback(() => {
     const gaps = getCriticalCaseGaps();
     if (gaps.length === 0) return;
 
@@ -2377,7 +2569,7 @@ ${agentRegistry.current.toManifest()}`;
     setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
   }, [topGapQuickInput]);
 
-  const handleApplyHighConfidence = useCallback(() => {
+  const _handleApplyHighConfidence = useCallback(() => {
     const highConfidence = extractedEntitySuggestions.filter((item) => item.confidence === 'high');
     if (highConfidence.length === 0) return;
 
@@ -2390,7 +2582,7 @@ ${agentRegistry.current.toManifest()}`;
     });
   }, [extractedEntitySuggestions]);
 
-  const handleRejectAllSuggestions = useCallback(() => {
+  const _handleRejectAllSuggestions = useCallback(() => {
     if (extractedEntitySuggestions.length === 0) return;
 
     setEntityDecisions((prev) => {
@@ -2402,7 +2594,7 @@ ${agentRegistry.current.toManifest()}`;
     });
   }, [extractedEntitySuggestions]);
 
-  const handleRejectLowConfidence = useCallback(() => {
+  const _handleRejectLowConfidence = useCallback(() => {
     const lowConfidence = extractedEntitySuggestions.filter((item) => item.confidence === 'low');
     if (lowConfidence.length === 0) return;
 
@@ -2415,18 +2607,18 @@ ${agentRegistry.current.toManifest()}`;
     });
   }, [extractedEntitySuggestions]);
 
-  const handleResetSuggestionDecisions = useCallback(() => {
+  const _handleResetSuggestionDecisions = useCallback(() => {
     setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
   }, []);
 
   const decidedSuggestionCount = extractedEntitySuggestions.filter((item) => entityDecisions[item.key]).length;
-  const acceptedSuggestionCount = extractedEntitySuggestions.filter((item) => entityDecisions[item.key] === 'accepted').length;
+  const _acceptedSuggestionCount = extractedEntitySuggestions.filter((item) => entityDecisions[item.key] === 'accepted').length;
   const pendingSuggestionCount = extractedEntitySuggestions.length - decidedSuggestionCount;
   const decisionCompletenessPct = extractedEntitySuggestions.length === 0
     ? 100
     : Math.round((decidedSuggestionCount / extractedEntitySuggestions.length) * 100);
 
-  const handleResolveTopGap = useCallback(() => {
+  const _handleResolveTopGap = useCallback(() => {
     const response = topGapQuickInput.trim();
     if (!response) return;
 
@@ -2735,6 +2927,8 @@ ${consultantCaseBrief}
 
 Real-life matter: ${realLifeMatterPack}
 
+${customResearchTopics.length > 0 ? `Additional research topics to address: ${customResearchTopics.join(', ')}` : ''}
+
 Letter format: formal, institutional, jurisdiction-aware (${caseStudy.jurisdiction || caseStudy.country || 'Global'}).
 Structure: ## Opening | ## Purpose and Context | ## Key Points | ## Supporting Evidence | ## Next Steps
 Address the named counterpart or their role. Use concrete facts and timelines. No template placeholders. Write the complete letter.`
@@ -2745,6 +2939,8 @@ Case context:
 ${consultantCaseBrief}
 
 Real-life matter: ${realLifeMatterPack}
+
+${customResearchTopics.length > 0 ? `Additional research topics to address: ${customResearchTopics.join(', ')}` : ''}
 
 Regional kernel: Governance ${regionalKernel.governanceReadiness}% | Top interventions: ${regionalKernel.interventions.slice(0, 3).map(i => i.title).join(', ')}
 
@@ -2798,7 +2994,7 @@ Use concrete facts from the case. No template language. Write the complete repor
       setIsLoading(false);
       setGeneratingProgress(null);
     }
-  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, outputDepthSpec, regionalKernel]);
+  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, outputDepthSpec, regionalKernel, customResearchTopics]);
 
   // Phase indicator
   const phaseLabels: Record<CasePhase, { label: string; description: string }> = {
@@ -3578,7 +3774,7 @@ Use concrete facts from the case. No template language. Write the complete repor
 
   const criticalCaseGaps = getCriticalCaseGaps();
   const topCriticalGap = criticalCaseGaps[0] || null;
-  const gapSeverityCounts = criticalCaseGaps.reduce<Record<CriticalGapSeverity, number>>(
+  const _gapSeverityCounts = criticalCaseGaps.reduce<Record<CriticalGapSeverity, number>>(
     (acc, gap) => {
       acc[gap.severity] += 1;
       return acc;
@@ -3991,18 +4187,11 @@ Use concrete facts from the case. No template language. Write the complete repor
             </select>
           </div>
           <button
-            onClick={() => setShowWorkspaceModal(true)}
-            className="relative z-10 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium flex items-center gap-2 border border-white/20 transition-all"
-          >
-            <Maximize2 size={16} />
-            Full Analysis
-          </button>
-          <button
             onClick={() => setShowPilotWindow((prev) => !prev)}
             className="relative z-10 ml-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium flex items-center gap-2 border border-white/20 transition-all"
           >
             <Globe size={16} />
-            {showPilotWindow ? 'Close Pilot Mode' : 'Pilot Mode'}
+            {showPilotWindow ? 'Close Quick Consultant' : 'Quick Consultant'}
           </button>
         </div>
 
@@ -4363,318 +4552,80 @@ Use concrete facts from the case. No template language. Write the complete repor
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-80 border-l border-stone-200 bg-white flex flex-col">
-            {/* Case Summary */}
+          <div className="w-96 border-l border-stone-200 bg-white flex flex-col">
             <div className="p-4 border-b border-stone-200 bg-slate-50">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <Building2 size={16} className="text-blue-600" />
-                Case Summary
+                <FileText size={16} className="text-blue-600" />
+                BWGA AI — Live Draft Workspace
               </h2>
-              <div className="mt-2 text-[11px] text-blue-700 bg-blue-50 border border-blue-200 px-2 py-1">
-                Policy Pack: {resolvePolicyPack(caseStudy).label}
-              </div>
-              <div className="mt-2 flex items-center gap-2 text-[11px]">
-                <span className="px-2 py-1 bg-blue-100 text-blue-700 border border-blue-200 font-semibold">
-                  Readiness: {readinessScore}%
-                </span>
-                <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200 capitalize">
-                  {skillLevel}
-                </span>
-                <span className={`px-2 py-1 border font-semibold ${
-                  pilotModeEnabled
-                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
-                    : 'bg-slate-100 text-slate-500 border-slate-200'
-                }`}>
-                  Pilot: {pilotModeEnabled ? `${pilotReadiness}%` : 'Off'}
-                </span>
-              </div>
-              <div className="mt-2 border border-stone-200 bg-white px-2 py-1 text-[11px]">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold text-slate-700">Pilot Advisor</span>
-                  <button
-                    type="button"
-                    onClick={() => setPilotModeEnabled((prev) => !prev)}
-                    className={`px-1.5 py-0.5 border text-[10px] ${
-                      pilotModeEnabled
-                        ? 'bg-indigo-600 text-white border-indigo-600'
-                        : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
-                    }`}
-                  >
-                    {pilotModeEnabled ? 'Enabled' : 'Disabled'}
-                  </button>
-                </div>
-                {pilotModeEnabled && (
-                  <>
-                    <p className="mt-1 text-[10px] text-slate-600">
-                      Focus: {pilotFocus.replace('-', ' ')} • Add-ons: {pilotSelectedAddOns.length}
-                    </p>
-                    {pilotFailureAlerts.length > 0 && (
-                      <ul className="mt-1 space-y-1">
-                        {pilotFailureAlerts.slice(0, 2).map((alert, index) => (
-                          <li key={`${alert}-${index}`} className="text-[10px] text-amber-700">• {alert}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                )}
-              </div>
-              <div className="mt-2 border border-stone-200 bg-white px-2 py-1 text-[11px]">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold text-slate-700">Consultant Gate</span>
-                  <span className={`px-1.5 py-0.5 border ${
-                    consultantGateReady
-                      ? 'bg-green-50 text-green-700 border-green-200'
-                      : 'bg-amber-50 text-amber-700 border-amber-200'
-                  }`}>
-                    {consultantGateReady ? 'READY' : 'BLOCKED'}
+              <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-700 border border-blue-200 font-semibold">
+                    Stage: {liveDraftStatus}
+                  </span>
+                  <span className="px-2 py-1 bg-white text-slate-700 border border-stone-300">
+                    Readiness: {liveDraftReadiness}%
+                  </span>
+                  <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200">
+                    Pack: {resolvePolicyPack(caseStudy).id === 'global-default' ? 'Pending selection' : resolvePolicyPack(caseStudy).label}
                   </span>
                 </div>
-                {!consultantGateReady && (
-                  <ul className="mt-1 space-y-1">
-                    {consultantGateMissing.slice(0, 4).map((missingItem, index) => (
-                      <li key={`${missingItem}-${index}`} className="text-[10px] text-slate-600">
-                        • {missingItem}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              <div className="mt-2 text-[11px] bg-white border border-stone-200 px-2 py-1">
-                <div className="flex items-center justify-between gap-2">
-                  <span className={`${criticalCaseGaps.length === 0 ? 'text-green-700' : 'text-amber-700'} font-semibold`}>
-                    Critical Gaps: {criticalCaseGaps.length}
-                  </span>
-                  {criticalCaseGaps.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={handleAskNextCriticalQuestion}
-                      className="text-[10px] px-1.5 py-1 bg-white border border-amber-300 text-amber-700 hover:bg-amber-50"
-                    >
-                      Ask Next Critical Question
-                    </button>
-                  )}
+                <div className="h-1.5 bg-stone-200 border border-stone-300 overflow-hidden">
+                  <div
+                    className="h-full bg-blue-500"
+                    style={{ width: `${Math.max(3, liveDraftReadiness)}%` }}
+                  />
                 </div>
-                {criticalCaseGaps.length > 0 && (
-                  <>
-                    <p className="mt-1 text-[10px] text-slate-600">
-                      Severity: C {gapSeverityCounts.critical} • H {gapSeverityCounts.high} • M {gapSeverityCounts.medium}
-                    </p>
-                    <p className="mt-1 text-[10px] text-slate-600">
-                      Next: {criticalCaseGaps[0].severity.toUpperCase()} — {criticalCaseGaps[0].label}
-                    </p>
-                    {topCriticalGap && (
-                      <>
-                        <textarea
-                          value={topGapQuickInput}
-                          onChange={(e) => setTopGapQuickInput(e.target.value)}
-                          placeholder={topCriticalGap.question}
-                          className="mt-1 w-full resize-none border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          rows={2}
-                        />
-                        {extractedEntitySuggestions.length > 0 && (
-                          <div className="mt-1 space-y-1 border border-stone-200 bg-white p-1.5">
-                            <div className="flex items-center justify-between gap-2">
-                              <p className="text-[10px] text-slate-600">Detected entities (confirm/reject before auto-fill):</p>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={handleApplyHighConfidence}
-                                  disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'high')}
-                                  className={`text-[10px] px-1 py-0.5 border ${
-                                    !extractedEntitySuggestions.some((item) => item.confidence === 'high')
-                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                                      : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
-                                  }`}
-                                >
-                                  Apply High Confidence
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleRejectLowConfidence}
-                                  disabled={!extractedEntitySuggestions.some((item) => item.confidence === 'low')}
-                                  className={`text-[10px] px-1 py-0.5 border ${
-                                    !extractedEntitySuggestions.some((item) => item.confidence === 'low')
-                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                                      : 'bg-white text-amber-700 border-amber-300 hover:bg-amber-50'
-                                  }`}
-                                >
-                                  Reject Low Confidence
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleRejectAllSuggestions}
-                                  disabled={extractedEntitySuggestions.length === 0}
-                                  className={`text-[10px] px-1 py-0.5 border ${
-                                    extractedEntitySuggestions.length === 0
-                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                                  }`}
-                                >
-                                  Reject All
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleResetSuggestionDecisions}
-                                  disabled={Object.keys(entityDecisions).length === 0}
-                                  className={`text-[10px] px-1 py-0.5 border ${
-                                    Object.keys(entityDecisions).length === 0
-                                      ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                                  }`}
-                                >
-                                  Reset Decisions
-                                </button>
-                              </div>
-                            </div>
-                            <div>
-                              <div className="h-1.5 bg-slate-100 border border-slate-200 overflow-hidden">
-                                <div
-                                  className="h-full bg-blue-500"
-                                  style={{ width: `${decisionCompletenessPct}%` }}
-                                />
-                              </div>
-                              <p className="mt-1 text-[10px] text-slate-600">
-                                Decision completeness: {decisionCompletenessPct}% • Accepted {acceptedSuggestionCount} • Pending {pendingSuggestionCount}
-                              </p>
-                            </div>
-                            {extractedEntitySuggestions.map((item) => {
-                              const decision = entityDecisions[item.key];
-                              return (
-                                <div key={item.key} className="flex items-center justify-between gap-2 text-[10px]">
-                                  <div className="min-w-0">
-                                    <span className="font-semibold text-slate-700">{item.label}:</span>{' '}
-                                    <span className="text-slate-700">{item.value}</span>{' '}
-                                    <span className={`ml-1 px-1 py-0.5 border ${
-                                      item.confidence === 'high'
-                                        ? 'text-green-700 border-green-200 bg-green-50'
-                                        : item.confidence === 'medium'
-                                          ? 'text-amber-700 border-amber-200 bg-amber-50'
-                                          : 'text-slate-600 border-slate-200 bg-slate-50'
-                                    }`}>
-                                      {item.confidence}
-                                    </span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <button
-                                      type="button"
-                                      onClick={() => setEntityDecisions((prev) => ({ ...prev, [item.key]: 'accepted' }))}
-                                      className={`px-1 py-0.5 border ${
-                                        decision === 'accepted'
-                                          ? 'bg-blue-600 text-white border-blue-600'
-                                          : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
-                                      }`}
-                                    >
-                                      Accept
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => setEntityDecisions((prev) => ({ ...prev, [item.key]: 'rejected' }))}
-                                      className={`px-1 py-0.5 border ${
-                                        decision === 'rejected'
-                                          ? 'bg-slate-600 text-white border-slate-600'
-                                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-                                      }`}
-                                    >
-                                      Reject
-                                    </button>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                        <button
-                          type="button"
-                          onClick={handleResolveTopGap}
-                          disabled={!topGapQuickInput.trim() || (extractedEntitySuggestions.length > 0 && pendingSuggestionCount > 0)}
-                          className={`mt-1 text-[10px] px-1.5 py-1 border ${
-                            !topGapQuickInput.trim() || (extractedEntitySuggestions.length > 0 && pendingSuggestionCount > 0)
-                              ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                              : 'bg-white border-blue-300 text-blue-700 hover:bg-blue-50'
-                          }`}
-                        >
-                          Resolve Top Gap
-                        </button>
-                      </>
-                    )}
-                  </>
-                )}
               </div>
-              {caseGraph && (
-                <div className="mt-2 text-[11px] text-slate-600 bg-white border border-stone-200 px-2 py-1">
-                  Case Graph: confidence {Math.round(caseGraph.summary.confidence)}% • evidence {Math.round(caseGraph.summary.evidenceStrength)}%
-                </div>
-              )}
-              <div className="mt-3 space-y-2 text-xs">
-                {caseStudy.userName && (
-                  <div className="flex items-start gap-2">
-                    <User size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">User:</span>
-                      <p className="text-slate-700">{caseStudy.userName}</p>
-                    </div>
-                  </div>
-                )}
-                {caseStudy.organizationName && (
-                  <div className="flex items-start gap-2">
-                    <User size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">Organization:</span>
-                      <p className="text-slate-900 font-medium">{caseStudy.organizationName}</p>
-                    </div>
-                  </div>
-                )}
-                {caseStudy.situationType && (
-                  <div className="flex items-start gap-2">
-                    <HelpCircle size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">Situation:</span>
-                      <p className="text-slate-700">{caseStudy.situationType.slice(0, 100)}</p>
-                    </div>
-                  </div>
-                )}
-                {caseStudy.country && (
-                  <div className="flex items-start gap-2">
-                    <Globe size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">Jurisdiction:</span>
-                      <p className="text-slate-700">{caseStudy.country} / {caseStudy.jurisdiction || 'Not specified'}</p>
-                    </div>
-                  </div>
-                )}
-                {caseStudy.objectives && (
-                  <div className="flex items-start gap-2">
-                    <Target size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">Objective:</span>
-                      <p className="text-slate-700">{caseStudy.objectives.slice(0, 100)}</p>
-                    </div>
-                  </div>
-                )}
-                {caseStudy.uploadedDocuments.length > 0 && (
-                  <div className="flex items-start gap-2">
-                    <FileText size={12} className="text-slate-400 mt-0.5" />
-                    <div>
-                      <span className="text-slate-500">Documents:</span>
-                      <p className="text-slate-700">{caseStudy.uploadedDocuments.length} uploaded</p>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <p className="mt-2 text-[11px] text-slate-600">This is your working draft page. It updates continuously as you add information.</p>
 
-              <div className="mt-3 border border-stone-200 bg-white p-2 text-[11px]">
-                <p className="font-semibold text-slate-800">Consultant Intelligence</p>
-                <p className="mt-1 text-slate-700"><span className="font-semibold">Client:</span> {consultantCaseProfile.personSummary}</p>
-                <p className="mt-1 text-slate-700"><span className="font-semibold">From:</span> {consultantCaseProfile.originSummary}</p>
-                <p className="mt-1 text-slate-700"><span className="font-semibold">Wants to achieve:</span> {consultantCaseProfile.achievementSummary}</p>
-                <p className="mt-1 text-slate-600"><span className="font-semibold">Evidence:</span> {consultantCaseProfile.evidenceSummary}</p>
-                <div className="mt-1">
-                  <p className="font-semibold text-slate-700">Next Consultant Moves</p>
-                  <ul className="mt-1 space-y-1">
-                    {consultantCaseProfile.nextConsultantActions.map((action, index) => (
-                      <li key={`${action}-${index}`} className="text-slate-600">• {action}</li>
-                    ))}
-                  </ul>
+              <div className="mt-3 border border-stone-200 bg-white p-3 min-h-[760px]">
+                {!hasLiveDraftSignals ? (
+                  <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
+                    <p className="text-[11px] font-semibold text-slate-800">Draft Page 1 (Live Notes)</p>
+                    <p className="mt-1 text-[10px] text-slate-500">Start sharing details. This page builds into your first-stage draft report in real time.</p>
+                    <div className="mt-3 space-y-3">
+                      {Array.from({ length: 18 }).map((_, index) => (
+                        <div key={`a4-line-${index}`} className="border-b border-stone-200 h-5" />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border border-stone-200 bg-stone-50 px-2 py-2">
+                    <p className="text-[11px] font-semibold text-slate-800">Executive Summary (Live)</p>
+                    <p className="mt-1 text-[11px] text-slate-700 leading-relaxed">{liveDraftExecutiveSummary}</p>
+                  </div>
+                )}
+
+                <div className="mt-2 grid grid-cols-1 gap-2">
+                  <div className="border border-stone-200 bg-stone-50 px-2 py-2">
+                    <p className="text-[11px] font-semibold text-slate-800">Document Package Being Built</p>
+                    <ul className="mt-1 space-y-0.5">
+                      {liveDraftDocumentTargets.slice(0, 10).map((title, index) => (
+                        <li key={`sidebar-live-doc-${title}-${index}`} className="text-[11px] text-slate-700">• {title}</li>
+                      ))}
+                    </ul>
+                    {generatedDocuments.length > 0 && (
+                      <p className="mt-1 text-[10px] text-green-700">
+                        Generated now: {generatedDocuments.length} document{generatedDocuments.length === 1 ? '' : 's'}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="border border-stone-200 bg-stone-50 px-2 py-2">
+                    <p className="text-[11px] font-semibold text-slate-800">Source Traceability (Live)</p>
+                    <ul className="mt-1 space-y-0.5">
+                      {liveDraftEvidenceSources.slice(0, 10).map((source, index) => (
+                        <li key={`sidebar-live-source-${index}`} className="text-[11px] text-slate-700">• {source}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1.5">
+                  <p className="text-[10px] text-amber-800">
+                    Guidance only: This live draft supports decision preparation and communication with interested parties. It must not be treated as a final legal, regulatory, financial, or investment decision.
+                  </p>
                 </div>
               </div>
             </div>
@@ -5233,14 +5184,14 @@ Use concrete facts from the case. No template language. Write the complete repor
             <div className="h-full flex flex-col">
               <div className="px-4 py-3 border-b border-stone-200 bg-slate-50">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-sm font-bold text-slate-900">Pilot Mode Advisor</h3>
+                  <h3 className="text-sm font-bold text-slate-900">BW Quick Consultant</h3>
                   <div className="flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={() => setShowPilotHowTo(true)}
                       className="px-2 py-1 text-[10px] border border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
                     >
-                      How to Use
+                      Guide
                     </button>
                     <button
                       type="button"
@@ -5252,30 +5203,71 @@ Use concrete facts from the case. No template language. Write the complete repor
                   </div>
                 </div>
                 <p className="mt-1 text-[11px] text-slate-600">
-                  Global issues + market/government expansion intelligence while constructing the case.
+                  Tell us where you're focused and who you want to work with. We'll surface relevant government programs, development finance, and regional intelligence to strengthen your case.
                 </p>
               </div>
 
-              <div className="p-3 border-b border-stone-200 bg-white">
-                <p className="text-[11px] font-semibold text-slate-700 mb-2">Focus</p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {(['new-markets', 'government-entry', 'partnerships', 'risk-compliance'] as PilotModeFocus[]).map((focus) => (
-                    <button
-                      key={focus}
-                      type="button"
-                      onClick={() => setPilotFocus(focus)}
-                      className={`text-[10px] px-2 py-1 border text-left ${
-                        pilotFocus === focus
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
-                      }`}
-                    >
-                      {focus.replace('-', ' ')}
-                    </button>
-                  ))}
+              <div className="flex-1 overflow-y-auto">
+                {/* Country of Focus */}
+                <div className="p-3 border-b border-stone-200 bg-white">
+                  <p className="text-[11px] font-semibold text-slate-700 mb-1.5">Country or Region of Focus</p>
+                  <input
+                    type="text"
+                    value={quickCountryFocus}
+                    onChange={(e) => setQuickCountryFocus(e.target.value)}
+                    placeholder="e.g. Philippines, Australia, East Africa, GCC..."
+                    className="w-full border border-stone-300 px-2 py-1.5 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <p className="mt-1 text-[10px] text-slate-500">This helps us find relevant government programs, development banks, and investment opportunities.</p>
                 </div>
-                <div className="mt-2 border border-stone-200 bg-slate-50 p-2">
-                  <p className="text-[11px] font-semibold text-slate-700 mb-1">Global Issue Packs</p>
+
+                {/* Who are you looking to do business with */}
+                <div className="p-3 border-b border-stone-200 bg-white">
+                  <p className="text-[11px] font-semibold text-slate-700 mb-1.5">Who are you looking to do business with?</p>
+                  <input
+                    type="text"
+                    value={quickBusinessTarget}
+                    onChange={(e) => setQuickBusinessTarget(e.target.value)}
+                    placeholder="e.g. Government, development bank, private investors, local partners..."
+                    className="w-full border border-stone-300 px-2 py-1.5 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <p className="mt-1 text-[10px] text-slate-500">Helps us tailor recommendations to the right counterparts and stakeholders.</p>
+                </div>
+
+                {/* What are you working on — expanded */}
+                <div className="p-3 border-b border-stone-200 bg-white">
+                  <p className="text-[11px] font-semibold text-slate-700 mb-2">What are you working on?</p>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {(['new-markets', 'government-entry', 'partnerships', 'risk-compliance', 'investment-readiness', 'operations-delivery', 'trade-export', 'regional-development', 'fundraising-capital', 'licensing-approvals', 'joint-ventures', 'supply-chain'] as PilotModeFocus[]).map((focus) => (
+                      <button
+                        key={focus}
+                        type="button"
+                        onClick={() => setPilotFocus(focus)}
+                        className={`text-[10px] px-1.5 py-1.5 border text-left leading-tight ${
+                          pilotFocus === focus
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                        }`}
+                      >
+                        {focus.replace(/-/g, ' ')}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      value={quickCustomFocus}
+                      onChange={(e) => setQuickCustomFocus(e.target.value)}
+                      placeholder="Or describe what you're working on..."
+                      className="w-full border border-stone-300 px-2 py-1.5 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <p className="mt-1 text-[9px] text-slate-400">If none of the options above match, type your own and we'll tailor everything to it.</p>
+                  </div>
+                </div>
+
+                {/* Industry / Sector Focus — expanded with custom input */}
+                <div className="p-3 border-b border-stone-200 bg-slate-50">
+                  <p className="text-[11px] font-semibold text-slate-700 mb-1.5">Industry / Sector</p>
                   <div className="grid grid-cols-2 gap-1">
                     {GLOBAL_ISSUE_PACKS.map((pack) => (
                       <button
@@ -5292,91 +5284,251 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </button>
                     ))}
                   </div>
-                </div>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-3 space-y-3">
-                <div className="border border-blue-200 bg-blue-50 p-2">
-                  <p className="text-[11px] font-semibold text-blue-800">Regional Development Kernel</p>
-                  <p className="mt-1 text-[10px] text-blue-700">Readiness {regionalKernel.governanceReadiness}% • Data confidence {Math.round(regionalKernel.dataFabric.overallConfidence * 100)}%</p>
-                  <p className="mt-1 text-[10px] text-blue-700">Top partner: {regionalKernel.partners[0]?.partner.name || 'No ranked partner yet'}</p>
-                </div>
-
-                <div className="border border-stone-200 bg-slate-50 p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Failure Detection</p>
-                  {pilotFailureAlerts.length === 0 ? (
-                    <p className="mt-1 text-[10px] text-green-700">No critical pilot risks detected.</p>
-                  ) : (
-                    <ul className="mt-1 space-y-1">
-                      {pilotFailureAlerts.map((alert, index) => (
-                        <li key={`${alert}-${index}`} className="text-[10px] text-amber-700">• {alert}</li>
-                      ))}
-                    </ul>
-                  )}
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      value={quickCustomSector}
+                      onChange={(e) => setQuickCustomSector(e.target.value)}
+                      placeholder="Or type your sector..."
+                      className="flex-1 border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
                 </div>
 
-                <div className="border border-stone-200 bg-white p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Case Builder Options (Adaptive)</p>
-                  <p className="mt-1 text-[10px] text-slate-600">
-                    {currentPhase === 'intake'
-                      ? 'Startup mode: options below focus on opening the case correctly.'
-                      : `Current phase: ${currentPhase}. Options shift automatically as the case develops.`}
+                {/* Regional Intelligence — what governments offer, programs, useful info */}
+                <div className="p-3 border-b border-stone-200 bg-blue-50">
+                  <p className="text-[11px] font-semibold text-blue-800 mb-1">Regional & Government Intelligence</p>
+                  <p className="text-[10px] text-blue-700 mb-2">
+                    Based on your selections, here's what we can help surface for your case:
                   </p>
-                  <div className="mt-1 space-y-1.5">
-                    {pilotAdaptiveOptions.map((option) => (
-                      <button
-                        key={option.id}
-                        type="button"
-                        onClick={() => handleApplyPilotOption(option.id)}
-                        className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
-                          pilotSelectedAddOns.includes(option.id)
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
-                        }`}
-                      >
-                        <span>{option.label}</span>
-                        {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
-                      </button>
-                    ))}
-                    {pilotAdaptiveOptions.length === 0 && (
-                      <p className="text-[10px] text-slate-500">No adaptive options in this phase yet.</p>
+                  <div className="space-y-1.5">
+                    <div className="bg-white border border-blue-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800">Government Investment Programs</p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `Incentives, grants, tax zones, and attraction schemes in ${quickCountryFocus} relevant to ${activeIssuePack.label.toLowerCase()}.`
+                          : 'Enter a country above to see available government incentives and investment programs.'}
+                      </p>
+                    </div>
+                    <div className="bg-white border border-blue-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800">Development Bank & Multilateral Finance</p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `World Bank, ADB, AfDB, EBRD, and regional development bank programs active in ${quickCountryFocus}.`
+                          : 'Enter a country to identify active multilateral and development bank programs.'}
+                      </p>
+                    </div>
+                    <div className="bg-white border border-blue-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800">Regional Business & Market Conditions</p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `Current business environment, trade conditions, and economic signals in ${quickCountryFocus}.`
+                          : 'Enter a country to see regional business conditions and market intelligence.'}
+                      </p>
+                    </div>
+                    {quickBusinessTarget && (
+                      <div className="bg-white border border-blue-200 px-2 py-1.5">
+                        <p className="text-[10px] font-semibold text-slate-800">Stakeholder Landscape</p>
+                        <p className="text-[10px] text-slate-600">
+                          Key organizations, decision-makers, and entry points for working with {quickBusinessTarget}{quickCountryFocus ? ` in ${quickCountryFocus}` : ''}.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[9px] text-blue-600 italic">This intelligence feeds into your draft reports and letters automatically.</p>
+                </div>
+
+                {/* Live World Insights — personalized to user's focus, country, sector */}
+                <div className="p-3 border-b border-stone-200 bg-emerald-50">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </span>
+                    <p className="text-[11px] font-semibold text-emerald-800">Live World Insights</p>
+                  </div>
+                  <p className="text-[10px] text-emerald-700 mb-2">
+                    What's happening right now that's relevant to {quickCustomFocus || pilotFocus.replace(/-/g, ' ')}{quickCountryFocus ? ` in ${quickCountryFocus}` : ''}{quickCustomSector || activeIssuePack ? ` — ${quickCustomSector || activeIssuePack.label}` : ''}:
+                  </p>
+                  <div className="space-y-1.5">
+                    {/* Global trends for focus area */}
+                    <div className="bg-white border border-emerald-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800 flex items-center gap-1">
+                        <span className="text-emerald-600">●</span> Global Trends
+                      </p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `Latest policy shifts, trade agreements, and investment trends affecting ${quickCustomSector || activeIssuePack.label.toLowerCase()} in the ${quickCountryFocus} region.`
+                          : `Current global patterns in ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')} — government policy shifts, emerging opportunities, and regional competition.`}
+                      </p>
+                    </div>
+
+                    {/* Funding & finance signals */}
+                    <div className="bg-white border border-emerald-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800 flex items-center gap-1">
+                        <span className="text-emerald-600">●</span> Funding & Finance Signals
+                      </p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `Active development bank lending windows, sovereign fund allocations, and grant programs open in ${quickCountryFocus} for ${quickCustomSector || activeIssuePack.label.toLowerCase()}.`
+                          : `Global development finance windows, bilateral aid programs, and venture/PE activity in ${quickCustomSector || activeIssuePack.label.toLowerCase()}.`}
+                      </p>
+                    </div>
+
+                    {/* Regulatory & compliance signals */}
+                    <div className="bg-white border border-emerald-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800 flex items-center gap-1">
+                        <span className="text-emerald-600">●</span> Regulatory & Compliance Watch
+                      </p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus
+                          ? `Upcoming regulatory changes, licensing requirements, and compliance obligations in ${quickCountryFocus} that could affect your timeline.`
+                          : 'Select a country to see regulatory changes and compliance requirements that may affect your plans.'}
+                      </p>
+                    </div>
+
+                    {/* Competition & opportunity */}
+                    <div className="bg-white border border-emerald-200 px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-slate-800 flex items-center gap-1">
+                        <span className="text-emerald-600">●</span> Opportunity & Competition
+                      </p>
+                      <p className="text-[10px] text-slate-600">
+                        {quickCountryFocus && quickBusinessTarget
+                          ? `Who else is active in ${quickCustomSector || activeIssuePack.label.toLowerCase()} in ${quickCountryFocus}, what ${quickBusinessTarget} are prioritizing, and where the gaps are.`
+                          : quickCountryFocus
+                            ? `Market gaps, competitor activity, and partnership openings in ${quickCountryFocus} for ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')}.`
+                            : 'Add your country and business target above to see competitive landscape and opportunity gaps.'}
+                      </p>
+                    </div>
+
+                    {/* What this means for you — personalized */}
+                    {(quickCountryFocus || quickBusinessTarget || quickCustomFocus) && (
+                      <div className="bg-emerald-100 border border-emerald-300 px-2 py-1.5">
+                        <p className="text-[10px] font-semibold text-emerald-900 flex items-center gap-1">
+                          <span className="text-emerald-700">★</span> What This Means for You
+                        </p>
+                        <p className="text-[10px] text-emerald-800">
+                          Based on your focus on <strong>{quickCustomFocus || pilotFocus.replace(/-/g, ' ')}</strong>
+                          {quickCountryFocus ? <> in <strong>{quickCountryFocus}</strong></> : ''}
+                          {quickBusinessTarget ? <> targeting <strong>{quickBusinessTarget}</strong></> : ''}
+                          , we're tracking relevant government programs, development finance, regulatory changes, and competitor activity to give you a sharper case.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[9px] text-emerald-600 italic">These insights are woven into your consultant responses and draft documents.</p>
+                </div>
+
+                {/* External Findings & Considerations */}
+                <div className="p-3 space-y-3">
+
+                <div className="border border-blue-200 bg-blue-50 p-2">
+                  <p className="text-[11px] font-bold text-slate-800">Findings & Considerations</p>
+                  <p className="mt-0.5 text-[10px] text-slate-600">Based on your inputs, here's what your BW Consultant is factoring in.</p>
+                </div>
+
+                {/* Market & Regulatory Considerations */}
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-800 flex items-center gap-1">
+                    <span className="text-blue-600">◆</span> Market & Regulatory
+                  </p>
+                  <div className="mt-1 space-y-1">
+                    {quickCountryFocus ? (
+                      <>
+                        <p className="text-[10px] text-slate-600">• Local regulations and compliance requirements for {quickCustomSector || activeIssuePack.label || 'your sector'} in {quickCountryFocus}</p>
+                        <p className="text-[10px] text-slate-600">• Import/export rules, tariffs, and trade agreements that may apply</p>
+                        <p className="text-[10px] text-slate-600">• Business registration and licensing requirements in {quickCountryFocus}</p>
+                        {quickBusinessTarget && <p className="text-[10px] text-slate-600">• How {quickBusinessTarget} typically operate and what they expect from partners</p>}
+                      </>
+                    ) : (
+                      <p className="text-[10px] text-slate-500 italic">Add your country above to see specific regulatory and market considerations.</p>
                     )}
                   </div>
                 </div>
 
-                {pilotMissingRecommendationOptions.length > 0 && (
-                  <div className="border border-amber-200 bg-amber-50 p-2">
-                    <p className="text-[11px] font-semibold text-amber-800">Missing Recommendation Recovery</p>
-                    <p className="mt-1 text-[10px] text-amber-700">System-detected gaps can be added with one click.</p>
-                    <div className="mt-1 space-y-1.5">
-                      {pilotMissingRecommendationOptions.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => handleApplyPilotOption(option.id)}
-                          className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
-                            pilotSelectedAddOns.includes(option.id)
-                              ? 'bg-amber-600 text-white border-amber-600'
-                              : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-100'
-                          }`}
-                        >
-                          <span>{option.label}</span>
-                          {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
-                        </button>
+                {/* Funding & Support Programs */}
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-800 flex items-center gap-1">
+                    <span className="text-green-600">◆</span> Funding & Support Programs
+                  </p>
+                  <div className="mt-1 space-y-1">
+                    {quickCountryFocus ? (
+                      <>
+                        <p className="text-[10px] text-slate-600">• Government grants and incentives available for {quickCustomFocus || pilotFocus.replace(/-/g, ' ')} in {quickCountryFocus}</p>
+                        <p className="text-[10px] text-slate-600">• Development bank and multilateral finance programs in the region</p>
+                        <p className="text-[10px] text-slate-600">• Trade support and export assistance programs you may qualify for</p>
+                        {(quickCustomSector || activeIssuePack.label) && <p className="text-[10px] text-slate-600">• Sector-specific funding for {quickCustomSector || activeIssuePack.label}</p>}
+                      </>
+                    ) : (
+                      <p className="text-[10px] text-slate-500 italic">Add your country above to see relevant funding and support opportunities.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Strategic Considerations */}
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-800 flex items-center gap-1">
+                    <span className="text-amber-600">◆</span> Strategic Considerations
+                  </p>
+                  <div className="mt-1 space-y-1">
+                    {(quickCustomFocus || pilotFocus !== 'new-markets') ? (
+                      <>
+                        <p className="text-[10px] text-slate-600">• Key stakeholders and decision-makers you should be aware of</p>
+                        <p className="text-[10px] text-slate-600">• Timing considerations — political cycles, budget periods, seasonal factors</p>
+                        {quickBusinessTarget && <p className="text-[10px] text-slate-600">• What {quickBusinessTarget} prioritise when selecting partners or suppliers</p>}
+                        <p className="text-[10px] text-slate-600">• Common pitfalls and what others in this space have learned</p>
+                        {quickCountryFocus && <p className="text-[10px] text-slate-600">• Cultural and business practice norms in {quickCountryFocus}</p>}
+                      </>
+                    ) : (
+                      <p className="text-[10px] text-slate-500 italic">Choose a focus above to see strategic considerations for your situation.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Risks & Things to Watch */}
+                <div className="border border-amber-200 bg-amber-50 p-2">
+                  <p className="text-[11px] font-semibold text-amber-800 flex items-center gap-1">
+                    <span className="text-amber-600">⚠</span> Risks & Things to Watch
+                  </p>
+                  <div className="mt-1 space-y-1">
+                    {quickCountryFocus ? (
+                      <>
+                        <p className="text-[10px] text-amber-800">• Political and economic stability factors in {quickCountryFocus}</p>
+                        <p className="text-[10px] text-amber-800">• Currency and payment risks for cross-border transactions</p>
+                        <p className="text-[10px] text-amber-800">• Regulatory changes on the horizon that could affect your plans</p>
+                        {quickBusinessTarget && <p className="text-[10px] text-amber-800">• Reputation and due diligence considerations when working with {quickBusinessTarget}</p>}
+                      </>
+                    ) : (
+                      <p className="text-[10px] text-amber-700 italic">Add your country above to see risk factors and things to watch.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Topics being researched */}
+                {pilotFocusIssues.length > 0 && (
+                  <div className="border border-stone-200 bg-white p-2">
+                    <p className="text-[11px] font-semibold text-slate-800">Topics Being Researched</p>
+                    <p className="mt-0.5 text-[10px] text-slate-500">Based on your focus, we're looking into these areas for you.</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {pilotFocusIssues.map((issue) => (
+                        <span key={issue.id} className="inline-block text-[9px] px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-700">
+                          {issue.title}
+                        </span>
                       ))}
                     </div>
                   </div>
                 )}
 
+                {/* Ask about something specific */}
                 <div className="border border-stone-200 bg-white p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Add Your Own Option</p>
-                  <p className="mt-1 text-[10px] text-slate-600">If something is missing, add a custom option and apply it.</p>
+                  <p className="text-[11px] font-semibold text-slate-700">Ask About Something Specific</p>
+                  <p className="mt-0.5 text-[10px] text-slate-600">Want us to research something particular? Add it here and your consultant will factor it in.</p>
                   <div className="mt-1 flex items-center gap-1.5">
                     <input
                       type="text"
                       value={customPilotOptionInput}
                       onChange={(e) => setCustomPilotOptionInput(e.target.value)}
-                      placeholder="Type custom case builder option..."
+                      placeholder="e.g. What tax incentives exist for foreign investors?"
                       className="flex-1 border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                     <button
@@ -5386,80 +5538,36 @@ Use concrete facts from the case. No template language. Write the complete repor
                       className={`text-[10px] px-2 py-1 border ${
                         !customPilotOptionInput.trim()
                           ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                          : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                          : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
                       }`}
                     >
-                      Add
+                      Research
                     </button>
                   </div>
                   {customPilotOptions.length > 0 && (
-                    <div className="mt-1 space-y-1.5">
+                    <div className="mt-1.5 space-y-1">
                       {customPilotOptions.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => handleApplyPilotOption(option.id)}
-                          className={`w-full flex items-center justify-between text-left text-[10px] px-2 py-1 border ${
-                            pilotSelectedAddOns.includes(option.id)
-                              ? 'bg-blue-600 text-white border-blue-600'
-                              : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
-                          }`}
-                        >
-                          <span>{option.label}</span>
-                          {pilotSelectedAddOns.includes(option.id) && <Check size={12} />}
-                        </button>
+                        <div key={option.id} className="flex items-center gap-1.5 text-[10px] px-2 py-1 bg-slate-50 border border-stone-200 text-slate-700">
+                          <span className="text-blue-500">→</span>
+                          <span className="flex-1">{option.label}</span>
+                          <span className="text-[9px] text-green-600">Researching</span>
+                        </div>
                       ))}
                     </div>
                   )}
                 </div>
 
-                {pilotFocusIssues.map((issue) => (
-                  <div key={issue.id} className="border border-stone-200 bg-white p-2">
-                    <p className="text-[11px] font-semibold text-slate-800">{issue.title}</p>
-                    <p className="mt-1 text-[10px] text-slate-600">{issue.description}</p>
-                    <p className="mt-1 text-[10px] text-blue-700">{issue.whyItMatters}</p>
-                    <div className="mt-1 space-y-1">
-                      {issue.recommendedMoves.slice(0, 2).map((move, index) => (
-                        <button
-                          key={`${issue.id}-${index}`}
-                          type="button"
-                          onClick={() => handlePilotApplyMove(move)}
-                          className="w-full text-left text-[10px] px-2 py-1 border border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        >
-                          Apply: {move}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-
-                <div className="border border-stone-200 bg-white p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Real-Life Matter Pack</p>
-                  <pre className="mt-1 whitespace-pre-wrap text-[10px] text-slate-600">{realLifeMatterPack}</pre>
+                {/* Case summary */}
+                <div className="border border-stone-200 bg-slate-50 p-2">
+                  <p className="text-[11px] text-slate-600">
+                    Researching: <strong>{quickCustomFocus || pilotFocus.replace(/-/g, ' ')}</strong>
+                    {quickCountryFocus ? ` • ${quickCountryFocus}` : ''}
+                    {quickBusinessTarget ? ` • ${quickBusinessTarget}` : ''}
+                    {activeIssuePack.label ? ` • ${activeIssuePack.label}` : ''}
+                    {quickCustomSector ? ` • ${quickCustomSector}` : ''}
+                    {customPilotOptions.length > 0 ? ` • ${customPilotOptions.length} custom research items` : ''}
+                  </p>
                 </div>
-
-                <div className="border border-stone-200 bg-white p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Kernel Intervention Stack</p>
-                  <ul className="mt-1 space-y-1">
-                    {regionalKernel.interventions.slice(0, 3).map((item) => (
-                      <li key={item.title} className="text-[10px] text-slate-700 border border-stone-200 bg-slate-50 px-2 py-1">
-                        {item.title} ({item.score}%)
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="border border-stone-200 bg-white p-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Case Study Method Layer</p>
-                  {caseMethodGaps.length === 0 ? (
-                    <p className="mt-1 text-[10px] text-green-700">All method gates currently satisfied.</p>
-                  ) : (
-                    <ul className="mt-1 space-y-1">
-                      {caseMethodGaps.map((gap) => (
-                        <li key={gap} className="text-[10px] text-amber-700">• {gap}</li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
               </div>
             </div>
@@ -5470,7 +5578,7 @@ Use concrete facts from the case. No template language. Write the complete repor
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="w-full max-w-2xl bg-white border border-stone-200 shadow-2xl">
               <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900">Pilot Mode - How to Use</h3>
+                <h3 className="text-sm font-bold text-slate-900">BW Quick Consultant — Guide</h3>
                 <button
                   type="button"
                   onClick={() => setShowPilotHowTo(false)}
@@ -5481,23 +5589,23 @@ Use concrete facts from the case. No template language. Write the complete repor
               </div>
               <div className="p-4 space-y-3">
                 <div className="border border-stone-200 bg-white p-3">
-                  <p className="text-[11px] font-semibold text-slate-800">1) Set Focus</p>
-                  <p className="mt-1 text-[10px] text-slate-600">Choose new markets, government entry, partnerships, or risk compliance to filter relevant global intelligence.</p>
+                  <p className="text-[11px] font-semibold text-slate-800">1) Tell us about your situation</p>
+                  <p className="mt-1 text-[10px] text-slate-600">Choose your focus, enter the country or region you're targeting, who you want to work with, and your sector. The more you provide, the more relevant our findings.</p>
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
-                  <p className="text-[11px] font-semibold text-slate-800">2) Click Case Builder Options</p>
-                  <p className="mt-1 text-[10px] text-slate-600">Pilot starts with startup options, then automatically shifts options as the case moves from intake to discovery, analysis, recommendations, and generation.</p>
+                  <p className="text-[11px] font-semibold text-slate-800">2) Review findings & considerations</p>
+                  <p className="mt-1 text-[10px] text-slate-600">We surface external intelligence — market conditions, funding programs, regulatory factors, risks, and strategic considerations — tailored to your inputs.</p>
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
-                  <p className="text-[11px] font-semibold text-slate-800">3) Recover Missing Recommendations</p>
-                  <p className="mt-1 text-[10px] text-slate-600">If the system misses letters/reports or key case essentials, use the recovery options to add them back instantly.</p>
+                  <p className="text-[11px] font-semibold text-slate-800">3) Ask about something specific</p>
+                  <p className="mt-1 text-[10px] text-slate-600">If there's a particular question or topic you want researched, type it in and your consultant will factor it into their analysis.</p>
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
-                  <p className="text-[11px] font-semibold text-slate-800">4) Add Your Own Option</p>
-                  <p className="mt-1 text-[10px] text-slate-600">When you need something not listed, add a custom option and apply it to the active case build.</p>
+                  <p className="text-[11px] font-semibold text-slate-800">4) Everything feeds into your consultation</p>
+                  <p className="mt-1 text-[10px] text-slate-600">All findings and your inputs are woven into your BW Consultant conversation and any documents generated — giving you a more informed, relevant result.</p>
                 </div>
                 <div className="border border-stone-200 bg-slate-50 p-3">
-                  <p className="text-[10px] text-slate-700">Pilot Mode is designed to improve case completeness before generation so letters and reports are specific, non-template, and implementation-ready.</p>
+                  <p className="text-[10px] text-slate-700">Quick Consultant works alongside BW Consultant to surface external findings that help you make better-informed decisions.</p>
                 </div>
               </div>
             </div>
