@@ -8,6 +8,7 @@ import {
   shouldRequireOutputClarification,
   buildOutputClarificationResponse
 } from './consultantBehavior.js';
+import { deriveConsultantCapabilityProfile } from './consultantCapabilities.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -79,6 +80,12 @@ Conversation behavior (ChatGPT/Gemini-style helpfulness):
 - Do not force template intake unless the user explicitly asks for report/letter/case-pack structuring.
 - Offer help in multiple useful modes when relevant: concise answer, step-by-step plan, pros/cons, example draft, plain-language explanation, and quick summary.
 - Adapt tone to user style while staying professional.
+
+Case-study and document-development capabilities:
+- Analyze written user input to extract case signals (who, where, objective, decision, deadline, audience, constraints, evidence).
+- Develop case studies from partial inputs by clearly labeling assumptions and closing the highest-value gaps.
+- Support document development end-to-end: structure, drafting guidance, section content, and finalization checkpoints.
+- Provide gap-filling guidance that improves readiness without forcing rigid intake forms.
 
 Response quality rules:
 - Keep recommendations actionable and specific.
@@ -447,6 +454,8 @@ const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
 };
 
 const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string) => `
+${deriveConsultantCapabilityProfile(message, context).brief}
+
 INTENT: ${intent}
 INTENT DIRECTIVE: ${buildIntentDirective(intent)}
 
@@ -733,6 +742,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
     const replayHash = buildReplayHash(replayPayload);
 
     const intent = detectConsultantIntent(sanitizedMessage);
+    const capabilityProfile = deriveConsultantCapabilityProfile(sanitizedMessage, sanitizedContextResult.context);
     if (shouldRequireOutputClarification(sanitizedMessage, intent)) {
       const clarificationText = buildOutputClarificationResponse();
 
@@ -748,6 +758,9 @@ router.post('/consultant', async (req: Request, res: Response) => {
         inputChars: sanitizedMessage.length,
         outputChars: clarificationText.length,
         contextTruncated: sanitizedContextResult.truncated,
+        capabilityMode: capabilityProfile.mode,
+        capabilityTags: capabilityProfile.capabilityTags,
+        unresolvedGapCount: capabilityProfile.gaps.length,
         replayHash,
         replayStored: false
       });
@@ -761,6 +774,13 @@ router.post('/consultant', async (req: Request, res: Response) => {
         attempts: [{ provider: 'rule-engine', ok: true }],
         confidence: 0.94,
         model: 'deterministic',
+        capabilityMode: capabilityProfile.mode,
+        capabilityTags: capabilityProfile.capabilityTags,
+        unresolvedGaps: capabilityProfile.gaps.slice(0, 3).map((gap) => ({
+          key: gap.key,
+          severity: gap.severity,
+          question: gap.question
+        })),
         replayHash,
         replayAvailable: false
       });
@@ -796,6 +816,9 @@ router.post('/consultant', async (req: Request, res: Response) => {
       inputChars: sanitizedMessage.length,
       outputChars: normalizedText.length,
       contextTruncated: sanitizedContextResult.truncated,
+      capabilityMode: capabilityProfile.mode,
+      capabilityTags: capabilityProfile.capabilityTags,
+      unresolvedGapCount: capabilityProfile.gaps.length,
       replayHash,
       replayStored: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
@@ -809,6 +832,13 @@ router.post('/consultant', async (req: Request, res: Response) => {
       attempts: brokerResult.attempts,
       confidence: 0.86,
       model: brokerResult.provider === 'gemini' ? 'gemini-2.0-flash' : brokerResult.provider,
+      capabilityMode: capabilityProfile.mode,
+      capabilityTags: capabilityProfile.capabilityTags,
+      unresolvedGaps: capabilityProfile.gaps.slice(0, 3).map((gap) => ({
+        key: gap.key,
+        severity: gap.severity,
+        question: gap.question
+      })),
       replayHash,
       replayAvailable: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
