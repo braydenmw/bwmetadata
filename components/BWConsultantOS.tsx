@@ -653,7 +653,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
-  const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only'>('selected');
+  const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');
+  const [preferredOutputMode, setPreferredOutputMode] = useState<'auto' | 'letter' | 'document' | 'case-study' | 'full-pack'>('auto');
+  const [enableFullCaseTreeMatching, setEnableFullCaseTreeMatching] = useState(true);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [generatedDocuments, setGeneratedDocuments] = useState<Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}>>([]);
   const [generatingProgress, setGeneratingProgress] = useState<{current: number; total: number} | null>(null);
@@ -948,12 +950,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   }, [consultantCaseProfile]);
 
   const liveDraftReadiness = useMemo(() => computeReadiness(caseStudy), [caseStudy, computeReadiness]);
+  const CASE_COMPLETION_THRESHOLD = 100;
+  const isCaseStudyComplete = liveDraftReadiness >= CASE_COMPLETION_THRESHOLD;
 
   const liveDraftStatus = useMemo(() => {
-    if (liveDraftReadiness >= 75) return 'First Draft Ready';
-    if (liveDraftReadiness >= 45) return 'Draft In Progress';
+    if (isCaseStudyComplete) return 'Case Complete — Evaluation Active';
+    if (liveDraftReadiness >= 75) return 'Final Inputs in Progress';
+    if (liveDraftReadiness >= 45) return 'Case Build in Progress';
     return 'Building Initial Draft';
-  }, [liveDraftReadiness]);
+  }, [isCaseStudyComplete, liveDraftReadiness]);
 
   const liveDraftDocumentTargets = useMemo(() => {
     const selectedTitles = selectedDocs
@@ -989,6 +994,73 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     const merged = [...uploaded, ...contextNotes, ...insightNotes];
     return merged.length > 0 ? merged : ['User-provided conversation context in this session'];
   }, [caseStudy]);
+
+  const fullCaseTreeMatchingSignals = useMemo(() => {
+    if (!enableFullCaseTreeMatching) return [] as string[];
+
+    const focusText = [
+      caseStudy.objectives,
+      caseStudy.currentMatter,
+      caseStudy.constraints,
+      caseStudy.targetAudience,
+      caseStudy.country,
+      caseStudy.jurisdiction,
+      quickCountryFocus,
+      quickBusinessTarget,
+      quickCustomSector,
+      quickCustomFocus
+    ].join(' ').toLowerCase();
+
+    const focusTokens = Array.from(new Set(
+      focusText
+        .split(/[^a-z0-9]+/i)
+        .map((token) => token.trim())
+        .filter((token) => token.length >= 4)
+    ));
+
+    const docMatches = recommendedDocs
+      .map((doc) => {
+        const haystack = `${doc.title} ${doc.description} ${doc.rationale} ${doc.supportingDocuments.join(' ')}`.toLowerCase();
+        const overlap = focusTokens.filter((token) => haystack.includes(token));
+        return { doc, overlapCount: overlap.length, overlap: overlap.slice(0, 3) };
+      })
+      .filter((item) => item.overlapCount > 0)
+      .sort((a, b) => b.overlapCount - a.overlapCount)
+      .slice(0, 4)
+      .map((item) => `${item.doc.title} matches ${item.overlapCount} case signals (${item.overlap.join(', ')})`);
+
+    const evidenceMatches = [
+      caseStudy.uploadedDocuments.length > 0
+        ? `${caseStudy.uploadedDocuments.length} uploaded file(s) available for evidence extraction and citation mapping`
+        : null,
+      caseStudy.additionalContext.length > 0
+        ? `${caseStudy.additionalContext.length} conversation context note(s) available for scenario analysis`
+        : null,
+      caseStudy.aiInsights.length > 0
+        ? `${caseStudy.aiInsights.length} prior AI/NSIL insight signal(s) available for cross-checking`
+        : null,
+      null
+    ].filter(Boolean) as string[];
+
+    const merged = [...docMatches, ...evidenceMatches];
+    if (merged.length > 0) {
+      return merged.slice(0, 6);
+    }
+
+    return ['Case-tree scan active: waiting for more objective/context/evidence inputs to compute key matches'];
+  }, [
+    enableFullCaseTreeMatching,
+    caseStudy,
+    recommendedDocs,
+    quickCountryFocus,
+    quickBusinessTarget,
+    quickCustomSector,
+    quickCustomFocus
+  ]);
+
+  const fullCaseTreeMatchingSummary = useMemo(() => (
+    fullCaseTreeMatchingSignals.map((signal) => `- ${signal}`).join('\n')
+  ), [fullCaseTreeMatchingSignals]);
 
   const liveDraftExecutiveSummary = useMemo(() => {
     const organization = caseStudy.organizationName || 'the client organization';
@@ -1546,6 +1618,11 @@ Quick Consultant context (user selections):
 - Industry/sector: ${activeIssuePack.label}${quickCustomSector ? ` (custom: ${quickCustomSector})` : ''}
 ${customResearchTopics.length > 0 ? `- Custom research topics the user wants investigated: ${customResearchTopics.join(', ')}` : ''}
 
+Output intent and matching mode:
+- Preferred output mode: ${preferredOutputMode}
+- Full case-tree matching scan: ${enableFullCaseTreeMatching ? 'ENABLED' : 'DISABLED'}
+${enableFullCaseTreeMatching ? `- Key matching signals:\n${fullCaseTreeMatchingSummary}` : ''}
+
 When the user has specified a country or region, proactively reference:
 - Government investment attraction programs and incentive schemes
 - Relevant development bank and multilateral finance programs
@@ -1555,7 +1632,7 @@ When the user has specified a country or region, proactively reference:
 Respond naturally and helpfully. Keep responses focused and actionable.
 
 ${agentRegistry.current.toManifest()}`;
-  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, pilotFocus, quickCountryFocus, quickBusinessTarget, activeIssuePack, quickCustomSector, quickCustomFocus, customResearchTopics]);
+  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, pilotFocus, quickCountryFocus, quickBusinessTarget, activeIssuePack, quickCustomSector, quickCustomFocus, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary]);
 
   const buildNaturalFallbackReply = useCallback((userInput: string) => {
     const trimmed = userInput.trim();
@@ -1950,6 +2027,19 @@ ${agentRegistry.current.toManifest()}`;
         supportingDocuments: ['Key findings', 'Decision options']
       });
     }
+    if (!docs.find(d => d.id === 'case-study-report')) {
+      docs.push({
+        id: 'case-study-report',
+        title: 'Full Case Study Report',
+        description: 'End-to-end case study document with evidence, evaluation, and action steps',
+        icon: <FileText size={18} />,
+        category: 'report',
+        relevance: 82,
+        rationale: 'Best fit when the user needs a complete narrative from context to recommendations.',
+        pageRange: '15-30 pages',
+        supportingDocuments: ['Executive summary', 'Evidence appendix', 'Risk and action plan']
+      });
+    }
     docs.push({
       id: 'custom',
       title: 'Custom Document',
@@ -2034,6 +2124,27 @@ ${agentRegistry.current.toManifest()}`;
       })
       .sort((a, b) => b.relevance - a.relevance);
 
+    const preferenceBoost = (doc: DocumentOption): number => {
+      const title = doc.title.toLowerCase();
+      if (preferredOutputMode === 'auto') return 0;
+      if (preferredOutputMode === 'letter') return doc.category === 'letter' ? 25 : 0;
+      if (preferredOutputMode === 'document') return doc.category === 'report' ? 20 : 0;
+      if (preferredOutputMode === 'case-study') {
+        return /case study|executive summary|assessment|memorandum/.test(title) ? 24 : (doc.category === 'report' ? 8 : 0);
+      }
+      if (preferredOutputMode === 'full-pack') {
+        return doc.category === 'letter' ? 10 : 12;
+      }
+      return 0;
+    };
+
+    const preferenceAwareDocs = enrichedDocs
+      .map((doc) => ({
+        ...doc,
+        relevance: Math.max(0, Math.min(100, doc.relevance + preferenceBoost(doc)))
+      }))
+      .sort((a, b) => b.relevance - a.relevance);
+
     setRecommendationRationaleMap(
       scored.reduce<Record<string, string>>((acc, item) => {
         acc[item.id] = item.rationale;
@@ -2048,14 +2159,14 @@ ${agentRegistry.current.toManifest()}`;
       }, {})
     );
 
-    setRecommendedDocs(enrichedDocs);
-  }, [caseStudy, resolvePolicyPack, recommendationBoostMap]);
+    setRecommendedDocs(preferenceAwareDocs);
+  }, [caseStudy, resolvePolicyPack, recommendationBoostMap, preferredOutputMode]);
 
   useEffect(() => {
-    if (recommendedDocs.length > 0) {
+    if (isCaseStudyComplete && recommendedDocs.length > 0) {
       generateRecommendations();
     }
-  }, [recommendationBoostMap, recommendedDocs.length, generateRecommendations]);
+  }, [recommendationBoostMap, recommendedDocs.length, generateRecommendations, isCaseStudyComplete]);
 
   // Handle send message
   const handleSend = useCallback(async () => {
@@ -2298,10 +2409,46 @@ ${agentRegistry.current.toManifest()}`;
       // The AI may have emitted [[TOOL:name]]{...}[[/TOOL]] blocks.
       // Detect them, execute, strip from visible text, then do a follow-up pass.
       const toolCalls = AgentToolRegistry.parseToolCalls(responseContent);
-      if (!shouldPromptForOutputClarification && toolCalls.length > 0) {
+      const autoToolCalls = enableFullCaseTreeMatching && !shouldPromptForOutputClarification
+        ? [
+            caseDraft.country.trim()
+              ? { name: 'get_country_intelligence', params: { country: caseDraft.country } }
+              : null,
+            caseDraft.country.trim()
+              ? { name: 'calculate_composite_scores', params: { country: caseDraft.country, sector: caseDraft.organizationType || activeIssuePack.label } }
+              : null,
+            (caseDraft.country.trim() && caseDraft.jurisdiction.trim() && caseDraft.objectives.trim())
+              ? {
+                  name: 'run_regional_kernel',
+                  params: {
+                    country: caseDraft.country,
+                    jurisdiction: caseDraft.jurisdiction,
+                    sector: caseDraft.organizationType || activeIssuePack.label,
+                    objective: caseDraft.objectives,
+                    currentMatter: caseDraft.currentMatter,
+                    constraints: caseDraft.constraints
+                  }
+                }
+              : null,
+            (caseDraft.currentMatter.trim() || caseDraft.objectives.trim())
+              ? {
+                  name: 'recommend_document',
+                  params: {
+                    situation: caseDraft.currentMatter || caseDraft.objectives,
+                    audience: caseDraft.targetAudience || 'general decision audience',
+                    urgency: caseDraft.decisionDeadline ? 'near-term' : 'planned'
+                  }
+                }
+              : null
+          ].filter(Boolean) as Array<{ name: string; params: Record<string, unknown> }>
+        : [];
+
+      const mergedToolCalls = [...toolCalls, ...autoToolCalls];
+
+      if (!shouldPromptForOutputClarification && mergedToolCalls.length > 0) {
         responseContent = AgentToolRegistry.stripToolCalls(responseContent);
         const toolResultLines: string[] = [];
-        for (const call of toolCalls) {
+        for (const call of mergedToolCalls) {
           try {
             const result = await agentRegistry.current.execute(call.name, call.params);
             const summary = (
@@ -2318,7 +2465,7 @@ ${agentRegistry.current.toManifest()}`;
         const toolContext = toolResultLines.join('\n\n');
         const augmented = await processWithAI(
           `${userContent}\n\n[Live intelligence retrieved]:\n${toolContext}`,
-          `You have access to the tool results above. Use them to give a specific, data-grounded response. Do NOT emit any more tool calls.`
+          `You have access to the tool results above. Use them to give a specific, data-grounded response. Identify key matching parts across all available angles (market, risk, governance, audience, outputs). Do NOT emit any more tool calls.`
         );
         if (augmented && augmented.length > 20) {
           responseContent = augmented;
@@ -2392,7 +2539,7 @@ ${agentRegistry.current.toManifest()}`;
           : msg
       )));
 
-      if (liveReadiness >= 70) {
+      if (liveReadiness >= CASE_COMPLETION_THRESHOLD) {
         generateRecommendations();
       }
 
@@ -2402,7 +2549,7 @@ ${agentRegistry.current.toManifest()}`;
       }
 
       // Action execution: queue document generation action when case is ready
-      if (liveReadiness >= 75 && inferredPhase === 'recommendations') {
+      if (liveReadiness >= CASE_COMPLETION_THRESHOLD && inferredPhase === 'recommendations') {
         queueAction({
           id: `gen-docs-${Date.now()}`,
           label: 'Generate Case Documents',
@@ -2448,6 +2595,8 @@ ${agentRegistry.current.toManifest()}`;
     extractConsultantSignals,
     fetchLiveIntelForCountry,
     processWithAI,
+    enableFullCaseTreeMatching,
+    activeIssuePack.label,
     queueAction
   ]);
 
@@ -2896,6 +3045,19 @@ ${agentRegistry.current.toManifest()}`;
 
     const effectiveDocIds = generationScope === 'selected'
       ? selectedDocs
+      : generationScope === 'full-pack'
+        ? recommendedDocs.map((doc) => doc.id)
+        : generationScope === 'case-study-only'
+          ? (() => {
+              const caseStudyReports = recommendedDocs
+                .filter((doc) => doc.category === 'report' && /case study|executive summary|assessment|memorandum/i.test(doc.title))
+                .map((doc) => doc.id);
+
+              if (caseStudyReports.length > 0) return caseStudyReports;
+
+              const fallbackReport = recommendedDocs.find((doc) => doc.category === 'report');
+              return fallbackReport ? [fallbackReport.id] : [];
+            })()
       : recommendedDocs
           .filter((doc) => generationScope === 'letters-only' ? doc.category === 'letter' : doc.category === 'report')
           .map((doc) => doc.id);
@@ -2908,6 +3070,10 @@ ${agentRegistry.current.toManifest()}`;
           ? 'No letter outputs are currently available. Add or select letter-type outputs first.'
           : generationScope === 'reports-only'
             ? 'No report outputs are currently available. Add or select report-type outputs first.'
+            : generationScope === 'case-study-only'
+              ? 'No case-study report outputs are currently available. Select or add case-study style reports first.'
+              : generationScope === 'full-pack'
+                ? 'No outputs are currently available for full-pack generation. Build recommendations first.'
             : 'Select at least one output before generation.',
         timestamp: new Date(),
         phase: 'recommendations'
@@ -4632,7 +4798,7 @@ Use concrete facts from the case. No template language. Write the complete repor
             <div className="p-4 border-b border-stone-200 bg-slate-50">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <FileText size={16} className="text-blue-600" />
-                BWGA AI — Live Draft Workspace
+                BW Ai — Live Case Study Workspace
               </h2>
               <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
                 <div className="flex flex-wrap items-center gap-2">
@@ -4653,29 +4819,53 @@ Use concrete facts from the case. No template language. Write the complete repor
                   />
                 </div>
               </div>
-              <p className="mt-2 text-[11px] text-slate-600">This is your working draft page. It updates continuously as you add information.</p>
+              <p className="mt-2 text-[11px] text-slate-600">This is your live working draft. Report structure is established after baseline inputs are captured.</p>
+              <p className="mt-1 text-[10px] text-slate-500">
+                {!isCaseStudyComplete
+                  ? 'Evaluation and recommended action steps unlock only after the case study reaches 100% readiness.'
+                  : 'Case complete: evaluation and recommended action steps are now active.'}
+              </p>
 
               <div className="mt-3 border border-stone-200 bg-white p-3 min-h-[760px]">
                 {!hasLiveDraftSignals ? (
                   <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
-                    <p className="text-[11px] font-semibold text-slate-800">Draft Page 1 (Live Notes)</p>
-                    <p className="mt-1 text-[10px] text-slate-500">Start sharing details. This page builds into your first-stage draft report in real time.</p>
+                    <p className="text-[11px] font-semibold text-slate-800">Case Study Report — Live Draft (Page 1)</p>
+                    <p className="mt-1 text-[10px] text-slate-500">Start with baseline details. The system will establish report sections only after enough context is provided.</p>
+                    <div className="mt-3 border border-blue-200 bg-blue-50 px-2 py-2">
+                      <p className="text-[10px] font-semibold text-blue-800">Baseline needed first:</p>
+                      <ul className="mt-1 space-y-0.5">
+                        <li className="text-[10px] text-blue-800">• Who you are (role + organisation)</li>
+                        <li className="text-[10px] text-blue-800">• Country / jurisdiction</li>
+                        <li className="text-[10px] text-blue-800">• Decision needed and objective</li>
+                        <li className="text-[10px] text-blue-800">• Constraints and deadline</li>
+                        <li className="text-[10px] text-blue-800">• Target audience (board, regulator, investor, partner)</li>
+                      </ul>
+                    </div>
                     <div className="mt-3 space-y-3">
-                      {Array.from({ length: 18 }).map((_, index) => (
+                      {Array.from({ length: 14 }).map((_, index) => (
                         <div key={`a4-line-${index}`} className="border-b border-stone-200 h-5" />
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <div className="border border-stone-200 bg-stone-50 px-2 py-2">
-                    <p className="text-[11px] font-semibold text-slate-800">Executive Summary (Live)</p>
-                    <p className="mt-1 text-[11px] text-slate-700 leading-relaxed">{liveDraftExecutiveSummary}</p>
-                  </div>
+                  <>
+                    <div className="border border-stone-200 bg-white px-3 py-2">
+                      <p className="text-[11px] font-semibold text-slate-800">Section A — Executive Summary</p>
+                      <p className="mt-1 text-[11px] text-slate-700 leading-relaxed">{liveDraftExecutiveSummary}</p>
+                    </div>
+                    <div className="mt-2 border border-stone-200 bg-stone-50 px-3 py-2">
+                      <p className="text-[11px] font-semibold text-slate-800">Section B — Current Case Readiness</p>
+                      <p className="mt-1 text-[11px] text-slate-700 leading-relaxed">
+                        The case study is currently {liveDraftReadiness}% complete. Continue adding identity, jurisdiction, objective, context, constraints, audience, and deadline data to complete the report-grade case file.
+                      </p>
+                    </div>
+                  </>
                 )}
 
+                {hasLiveDraftSignals && (
                 <div className="mt-2 grid grid-cols-1 gap-2">
                   <div className="border border-stone-200 bg-stone-50 px-2 py-2">
-                    <p className="text-[11px] font-semibold text-slate-800">Document Package Being Built</p>
+                    <p className="text-[11px] font-semibold text-slate-800">Section C — Candidate Output Package</p>
                     <ul className="mt-1 space-y-0.5">
                       {liveDraftDocumentTargets.slice(0, 10).map((title, index) => (
                         <li key={`sidebar-live-doc-${title}-${index}`} className="text-[11px] text-slate-700">• {title}</li>
@@ -4689,13 +4879,23 @@ Use concrete facts from the case. No template language. Write the complete repor
                   </div>
 
                   <div className="border border-stone-200 bg-stone-50 px-2 py-2">
-                    <p className="text-[11px] font-semibold text-slate-800">Source Traceability (Live)</p>
+                    <p className="text-[11px] font-semibold text-slate-800">Section C.1 — Source Traceability</p>
                     <ul className="mt-1 space-y-0.5">
                       {liveDraftEvidenceSources.slice(0, 10).map((source, index) => (
                         <li key={`sidebar-live-source-${index}`} className="text-[11px] text-slate-700">• {source}</li>
                       ))}
                     </ul>
                   </div>
+                </div>
+                )}
+
+                <div className="mt-2 border border-blue-200 bg-blue-50 px-2 py-1.5">
+                  <p className="text-[10px] font-semibold text-blue-800">Section D — Evaluation & Action Path</p>
+                  <p className="mt-0.5 text-[10px] text-blue-800">
+                    {!isCaseStudyComplete
+                      ? `Locked until case completeness reaches 100% (current: ${liveDraftReadiness}%).`
+                      : 'Unlocked: NSIL evaluation and action-step recommendations are now being generated.'}
+                  </p>
                 </div>
 
                 <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1.5">
@@ -4863,6 +5063,54 @@ Use concrete facts from the case. No template language. Write the complete repor
             {(currentPhase === 'recommendations' || currentPhase === 'generation' || recommendedDocs.length > 0) && (
               <div className="flex-1 overflow-y-auto p-4">
                 <h3 className="text-sm font-bold text-slate-900 mb-3">Recommended Documents</h3>
+
+                <div className="mb-3 border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Output Type Preference</p>
+                  <div className="mt-1 grid grid-cols-5 gap-1">
+                    {([
+                      { id: 'auto', label: 'Auto' },
+                      { id: 'letter', label: 'Letter' },
+                      { id: 'document', label: 'Document' },
+                      { id: 'case-study', label: 'Case Study' },
+                      { id: 'full-pack', label: 'Full Pack' }
+                    ] as Array<{ id: 'auto' | 'letter' | 'document' | 'case-study' | 'full-pack'; label: string }>).map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setPreferredOutputMode(option.id)}
+                        className={`text-[10px] px-1.5 py-1 border ${
+                          preferredOutputMode === option.id
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-1 text-[10px] text-slate-500">Choose the output type the person needs first. Recommendations are re-ranked to match this preference.</p>
+                </div>
+
+                <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
+                  <label className="flex items-start gap-2 text-[11px] text-slate-700">
+                    <input
+                      type="checkbox"
+                      checked={enableFullCaseTreeMatching}
+                      onChange={(e) => setEnableFullCaseTreeMatching(e.target.checked)}
+                      className="mt-0.5"
+                    />
+                    <span>
+                      Run full case-tree match scan (conversation, uploaded files, NSIL insights, policy requirements, and recommendation graph)
+                    </span>
+                  </label>
+                  {enableFullCaseTreeMatching && (
+                    <ul className="mt-2 space-y-0.5">
+                      {fullCaseTreeMatchingSignals.slice(0, 6).map((signal, index) => (
+                        <li key={`full-case-match-${index}`} className="text-[10px] text-slate-600">• {signal}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
                 <div className="mb-3 border border-stone-200 bg-slate-50 p-2">
                   <div className="flex items-center justify-between gap-2">
@@ -5036,12 +5284,14 @@ Use concrete facts from the case. No template language. Write the complete repor
                   <>
                     <div className="mt-3 border border-stone-200 bg-white p-2">
                       <p className="text-[11px] font-semibold text-slate-700">Create Outputs</p>
-                      <div className="mt-1 grid grid-cols-3 gap-1.5">
+                      <div className="mt-1 grid grid-cols-5 gap-1.5">
                         {([
                           { id: 'selected', label: 'Selected' },
                           { id: 'letters-only', label: 'Letters Only' },
-                          { id: 'reports-only', label: 'Reports Only' }
-                        ] as Array<{ id: 'selected' | 'letters-only' | 'reports-only'; label: string }>).map((option) => (
+                          { id: 'reports-only', label: 'Reports Only' },
+                          { id: 'case-study-only', label: 'Case Study' },
+                          { id: 'full-pack', label: 'Full Pack' }
+                        ] as Array<{ id: 'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'; label: string }>).map((option) => (
                           <button
                             key={option.id}
                             type="button"
@@ -5113,7 +5363,15 @@ Use concrete facts from the case. No template language. Write the complete repor
                         </>
                       ) : (
                         <>
-                          Generate {generationScope === 'selected' ? `${selectedDocs.length} Selected` : generationScope === 'letters-only' ? 'Letters' : 'Reports'}
+                          Generate {generationScope === 'selected'
+                            ? `${selectedDocs.length} Selected`
+                            : generationScope === 'letters-only'
+                              ? 'Letters'
+                              : generationScope === 'reports-only'
+                                ? 'Reports'
+                                : generationScope === 'case-study-only'
+                                  ? 'Case Study'
+                                  : 'Full Pack'}
                         </>
                       )}
                     </button>
