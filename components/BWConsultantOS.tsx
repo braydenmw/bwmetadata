@@ -631,6 +631,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const learningProfileInputRef = useRef<HTMLInputElement>(null);
+  const quickSyncSignatureRef = useRef('');
   
   // Workspace modal
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
@@ -649,6 +650,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
   const [quickCustomSector, setQuickCustomSector] = useState('');
   const [quickCustomFocus, setQuickCustomFocus] = useState('');
+  const [quickDraftLines, setQuickDraftLines] = useState('');
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
@@ -1447,6 +1449,64 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     ]);
   }, [pilotAllOptions]);
 
+  const syncQuickConsultantToCaseStudy = useCallback((
+    trigger: string,
+    overrides?: {
+      country?: string;
+      businessTarget?: string;
+      focus?: string;
+      sector?: string;
+      topicLabel?: string;
+    }
+  ) => {
+    const country = (overrides?.country ?? quickCountryFocus).trim();
+    const businessTarget = (overrides?.businessTarget ?? quickBusinessTarget).trim();
+    const focus = (overrides?.focus ?? (quickCustomFocus.trim() || pilotFocus.replace(/-/g, ' '))).trim();
+    const sector = (overrides?.sector ?? (quickCustomSector.trim() || activeIssuePack.label)).trim();
+    const topicLabel = (overrides?.topicLabel ?? '').trim();
+
+    if (!country && !businessTarget && !focus && !sector && !topicLabel) return;
+
+    const signature = JSON.stringify({ country, businessTarget, focus, sector, topicLabel });
+    if (quickSyncSignatureRef.current === signature) return;
+    quickSyncSignatureRef.current = signature;
+
+    const syncLine = `Quick Consultant sync (${trigger}): Focus=${focus || 'n/a'}; Country=${country || 'n/a'}; Target=${businessTarget || 'n/a'}; Sector=${sector || 'n/a'}${topicLabel ? `; Topic=${topicLabel}` : ''}`;
+
+    setCaseStudy((prev) => {
+      const additionalContext = prev.additionalContext.includes(syncLine)
+        ? prev.additionalContext
+        : [...prev.additionalContext, syncLine];
+
+      return {
+        ...prev,
+        country: country || prev.country,
+        jurisdiction: prev.jurisdiction || country || prev.jurisdiction,
+        targetAudience: businessTarget || prev.targetAudience,
+        organizationType: prev.organizationType || sector || prev.organizationType,
+        situationType: focus || prev.situationType,
+        objectives: prev.objectives.trim().length >= 20
+          ? prev.objectives
+          : (focus ? `Advance ${focus}` : prev.objectives),
+        currentMatter: prev.currentMatter.trim().length >= 40
+          ? prev.currentMatter
+          : (focus ? `Quick Consultant context: ${focus}${country ? ` in ${country}` : ''}${businessTarget ? ` targeting ${businessTarget}` : ''}` : prev.currentMatter),
+        additionalContext
+      };
+    });
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'system',
+        content: `Quick Consultant synced to BW Consultant context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the live draft report inputs.`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+  }, [quickCountryFocus, quickBusinessTarget, quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label]);
+
   const handleAddCustomPilotOption = useCallback(() => {
     const text = customPilotOptionInput.trim();
     if (!text) return;
@@ -1470,7 +1530,72 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
         phase: 'discovery'
       }
     ]);
-  }, [customPilotOptionInput]);
+    syncQuickConsultantToCaseStudy('research-topic', { topicLabel: option.label });
+  }, [customPilotOptionInput, syncQuickConsultantToCaseStudy]);
+
+  const handleConvertQuickLinesToDraft = useCallback(() => {
+    const raw = quickDraftLines.trim();
+    if (!raw) return;
+
+    const lines = raw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const labeledValue = (patterns: RegExp[]) => {
+      const row = lines.find((line) => patterns.some((pattern) => pattern.test(line)));
+      if (!row) return '';
+      return row
+        .replace(/^\s*(who|organisation|organization|org|country|jurisdiction|decision|objective|goal|deadline|audience|sector|focus|target)\s*[:-]\s*/i, '')
+        .trim();
+    };
+
+      const inferredCountry = labeledValue([/^country\s*[:-]/i, /^location\s*[:-]/i]) || quickCountryFocus;
+      const inferredTarget = labeledValue([/^target\s*[:-]/i, /^audience\s*[:-]/i, /^who\s*[:-]/i]) || quickBusinessTarget;
+      const inferredSector = labeledValue([/^sector\s*[:-]/i, /^industry\s*[:-]/i]) || quickCustomSector;
+      const inferredFocus = labeledValue([/^focus\s*[:-]/i, /^objective\s*[:-]/i, /^goal\s*[:-]/i]) || quickCustomFocus || lines[0] || '';
+      const inferredDecision = labeledValue([/^decision\s*[:-]/i]) || lines.slice(1, 3).join(' ');
+      const inferredDeadline = labeledValue([/^deadline\s*[:-]/i, /^timeline\s*[:-]/i]);
+
+    setCaseStudy((prev) => ({
+      ...prev,
+      country: inferredCountry || prev.country,
+      jurisdiction: prev.jurisdiction || inferredCountry || prev.jurisdiction,
+      targetAudience: inferredTarget || prev.targetAudience,
+      organizationType: prev.organizationType || inferredSector || prev.organizationType,
+      situationType: inferredFocus || prev.situationType,
+      objectives: prev.objectives.trim().length >= 20
+        ? prev.objectives
+        : (inferredFocus || prev.objectives),
+      currentMatter: prev.currentMatter.trim().length >= 60
+        ? prev.currentMatter
+        : (inferredDecision || raw),
+      decisionDeadline: prev.decisionDeadline || inferredDeadline,
+      additionalContext: prev.additionalContext.includes(`Quick lines conversion: ${raw}`)
+        ? prev.additionalContext
+        : [...prev.additionalContext, `Quick lines conversion: ${raw}`]
+    }));
+
+    syncQuickConsultantToCaseStudy('quick-lines-conversion', {
+      country: inferredCountry,
+      businessTarget: inferredTarget,
+      focus: inferredFocus,
+      sector: inferredSector
+    });
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: 'Quick lines converted into BW Consultant baseline context and added to the live draft report.',
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]);
+
+    setQuickDraftLines('');
+  }, [quickDraftLines, quickCountryFocus, quickBusinessTarget, quickCustomSector, quickCustomFocus, syncQuickConsultantToCaseStudy]);
 
   useEffect(() => {
     setReadinessScore(computeReadiness(caseStudy));
@@ -1528,7 +1653,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       const initialMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: "Hello, I'm your BW Consultant AI. I can answer direct questions, run autonomous strategic analysis, and build your case file in the background from natural conversation. Tell me what you're working on, or ask anything and I'll adapt.",
+        content: "Hello, I'm your BW Consultant AI. I can answer direct questions, run autonomous strategic analysis, and build your case file in the background from natural conversation. Tell me what you're working on, or ask anything and I'll adapt. To help speed this up, please access the Quick Consultant.",
         timestamp: new Date(),
         phase: 'discovery'
       };
@@ -5522,6 +5647,13 @@ Use concrete facts from the case. No template language. Write the complete repor
                   <div className="flex items-center gap-1.5">
                     <button
                       type="button"
+                      onClick={() => syncQuickConsultantToCaseStudy('manual-sync')}
+                      className="px-2 py-1 text-[10px] border border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                    >
+                      Sync to BW Consultant
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setShowPilotHowTo(true)}
                       className="px-2 py-1 text-[10px] border border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
                     >
@@ -5549,6 +5681,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                     type="text"
                     value={quickCountryFocus}
                     onChange={(e) => setQuickCountryFocus(e.target.value)}
+                    onBlur={() => syncQuickConsultantToCaseStudy('country-input')}
                     placeholder="e.g. Philippines, Australia, East Africa, GCC..."
                     className="w-full border border-stone-300 px-2 py-1.5 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -5562,6 +5695,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                     type="text"
                     value={quickBusinessTarget}
                     onChange={(e) => setQuickBusinessTarget(e.target.value)}
+                    onBlur={() => syncQuickConsultantToCaseStudy('business-target-input')}
                     placeholder="e.g. Government, development bank, private investors, local partners..."
                     className="w-full border border-stone-300 px-2 py-1.5 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -5576,7 +5710,10 @@ Use concrete facts from the case. No template language. Write the complete repor
                       <button
                         key={focus}
                         type="button"
-                        onClick={() => setPilotFocus(focus)}
+                        onClick={() => {
+                          setPilotFocus(focus);
+                          syncQuickConsultantToCaseStudy('focus-button', { focus: focus.replace(/-/g, ' ') });
+                        }}
                         className={`text-[10px] px-1.5 py-1.5 border text-left leading-tight ${
                           pilotFocus === focus
                             ? 'bg-blue-600 text-white border-blue-600'
@@ -5592,6 +5729,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                       type="text"
                       value={quickCustomFocus}
                       onChange={(e) => setQuickCustomFocus(e.target.value)}
+                      onBlur={() => syncQuickConsultantToCaseStudy('custom-focus-input')}
                       placeholder="Or describe what you're working on..."
                       className="w-full border border-stone-300 px-2 py-1.5 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
@@ -5607,7 +5745,10 @@ Use concrete facts from the case. No template language. Write the complete repor
                       <button
                         key={pack.id}
                         type="button"
-                        onClick={() => setActiveGlobalIssuePack(pack.id)}
+                        onClick={() => {
+                          setActiveGlobalIssuePack(pack.id);
+                          syncQuickConsultantToCaseStudy('sector-pack-button', { sector: pack.label });
+                        }}
                         className={`text-[10px] px-1.5 py-1 border text-left ${
                           activeGlobalIssuePack === pack.id
                             ? 'bg-blue-600 text-white border-blue-600'
@@ -5623,56 +5764,14 @@ Use concrete facts from the case. No template language. Write the complete repor
                       type="text"
                       value={quickCustomSector}
                       onChange={(e) => setQuickCustomSector(e.target.value)}
+                      onBlur={() => syncQuickConsultantToCaseStudy('custom-sector-input')}
                       placeholder="Or type your sector..."
                       className="flex-1 border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>
 
-                {/* Regional Intelligence — what governments offer, programs, useful info */}
-                <div className="p-3 border-b border-stone-200 bg-blue-50">
-                  <p className="text-[11px] font-semibold text-blue-800 mb-1">Regional & Government Intelligence</p>
-                  <p className="text-[10px] text-blue-700 mb-2">
-                    Based on your selections, here's what we can help surface for your case:
-                  </p>
-                  <div className="space-y-1.5">
-                    <div className="bg-white border border-blue-200 px-2 py-1.5">
-                      <p className="text-[10px] font-semibold text-slate-800">Government Investment Programs</p>
-                      <p className="text-[10px] text-slate-600">
-                        {quickCountryFocus
-                          ? `Incentives, grants, tax zones, and attraction schemes in ${quickCountryFocus} relevant to ${activeIssuePack.label.toLowerCase()}.`
-                          : 'Enter a country above to see available government incentives and investment programs.'}
-                      </p>
-                    </div>
-                    <div className="bg-white border border-blue-200 px-2 py-1.5">
-                      <p className="text-[10px] font-semibold text-slate-800">Development Bank & Multilateral Finance</p>
-                      <p className="text-[10px] text-slate-600">
-                        {quickCountryFocus
-                          ? `World Bank, ADB, AfDB, EBRD, and regional development bank programs active in ${quickCountryFocus}.`
-                          : 'Enter a country to identify active multilateral and development bank programs.'}
-                      </p>
-                    </div>
-                    <div className="bg-white border border-blue-200 px-2 py-1.5">
-                      <p className="text-[10px] font-semibold text-slate-800">Regional Business & Market Conditions</p>
-                      <p className="text-[10px] text-slate-600">
-                        {quickCountryFocus
-                          ? `Current business environment, trade conditions, and economic signals in ${quickCountryFocus}.`
-                          : 'Enter a country to see regional business conditions and market intelligence.'}
-                      </p>
-                    </div>
-                    {quickBusinessTarget && (
-                      <div className="bg-white border border-blue-200 px-2 py-1.5">
-                        <p className="text-[10px] font-semibold text-slate-800">Stakeholder Landscape</p>
-                        <p className="text-[10px] text-slate-600">
-                          Key organizations, decision-makers, and entry points for working with {quickBusinessTarget}{quickCountryFocus ? ` in ${quickCountryFocus}` : ''}.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <p className="mt-2 text-[9px] text-blue-600 italic">This intelligence feeds into your draft reports and letters automatically.</p>
-                </div>
-
-                {/* Live World Insights — personalized to user's focus, country, sector */}
+                {/* Live World Insights — adaptive report-style briefing */}
                 <div className="p-3 border-b border-stone-200 bg-emerald-50">
                   <div className="flex items-center gap-1.5 mb-1.5">
                     <span className="relative flex h-2 w-2">
@@ -5682,7 +5781,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                     <p className="text-[11px] font-semibold text-emerald-800">Live World Insights</p>
                   </div>
                   <p className="text-[10px] text-emerald-700 mb-2">
-                    What's happening right now that's relevant to {quickCustomFocus || pilotFocus.replace(/-/g, ' ')}{quickCountryFocus ? ` in ${quickCountryFocus}` : ''}{quickCustomSector || activeIssuePack ? ` — ${quickCustomSector || activeIssuePack.label}` : ''}:
+                    News Desk Brief: {quickCustomFocus || pilotFocus.replace(/-/g, ' ')}{quickCountryFocus ? ` in ${quickCountryFocus}` : ''}{quickCustomSector || activeIssuePack ? ` — ${quickCustomSector || activeIssuePack.label}` : ''}.
                   </p>
                   <div className="space-y-1.5">
                     {/* Global trends for focus area */}
@@ -5692,8 +5791,8 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </p>
                       <p className="text-[10px] text-slate-600">
                         {quickCountryFocus
-                          ? `Latest policy shifts, trade agreements, and investment trends affecting ${quickCustomSector || activeIssuePack.label.toLowerCase()} in the ${quickCountryFocus} region.`
-                          : `Current global patterns in ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')} — government policy shifts, emerging opportunities, and regional competition.`}
+                          ? `Latest desk signals show policy shifts, procurement updates, and regional competition affecting ${quickCustomSector || activeIssuePack.label.toLowerCase()} activity tied to ${quickCountryFocus}.`
+                          : `Current global patterns in ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')} — policy shifts, emerging opportunities, and regional competition now shaping market entry timing.`}
                       </p>
                     </div>
 
@@ -5704,8 +5803,8 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </p>
                       <p className="text-[10px] text-slate-600">
                         {quickCountryFocus
-                          ? `Active development bank lending windows, sovereign fund allocations, and grant programs open in ${quickCountryFocus} for ${quickCustomSector || activeIssuePack.label.toLowerCase()}.`
-                          : `Global development finance windows, bilateral aid programs, and venture/PE activity in ${quickCustomSector || activeIssuePack.label.toLowerCase()}.`}
+                          ? `Current financing watch includes development bank windows, bilateral programs, and private capital movements now relevant to ${quickCountryFocus} for ${quickCustomSector || activeIssuePack.label.toLowerCase()}.`
+                          : `Global development finance windows, bilateral aid programs, and venture/PE activity in ${quickCustomSector || activeIssuePack.label.toLowerCase()} with near-term entry relevance.`}
                       </p>
                     </div>
 
@@ -5716,7 +5815,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </p>
                       <p className="text-[10px] text-slate-600">
                         {quickCountryFocus
-                          ? `Upcoming regulatory changes, licensing requirements, and compliance obligations in ${quickCountryFocus} that could affect your timeline.`
+                          ? `Regulatory watch is tracking licensing, permitting, and compliance updates in ${quickCountryFocus} that may change sequencing, approvals, and risk posture.`
                           : 'Select a country to see regulatory changes and compliance requirements that may affect your plans.'}
                       </p>
                     </div>
@@ -5728,12 +5827,29 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </p>
                       <p className="text-[10px] text-slate-600">
                         {quickCountryFocus && quickBusinessTarget
-                          ? `Who else is active in ${quickCustomSector || activeIssuePack.label.toLowerCase()} in ${quickCountryFocus}, what ${quickBusinessTarget} are prioritizing, and where the gaps are.`
+                          ? `Competitive scan tracks active players in ${quickCustomSector || activeIssuePack.label.toLowerCase()} in ${quickCountryFocus}, what ${quickBusinessTarget} currently prioritize, and where opportunity gaps remain.`
                           : quickCountryFocus
-                            ? `Market gaps, competitor activity, and partnership openings in ${quickCountryFocus} for ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')}.`
+                            ? `Market gaps, competitor movement, and partnership openings in ${quickCountryFocus} for ${quickCustomFocus || pilotFocus.replace(/-/g, ' ')} are now being monitored.`
                             : 'Add your country and business target above to see competitive landscape and opportunity gaps.'}
                       </p>
                     </div>
+
+                    {/* Case-tree adaptive signal watch */}
+                    {enableFullCaseTreeMatching && (
+                      <div className="bg-white border border-emerald-200 px-2 py-1.5">
+                        <p className="text-[10px] font-semibold text-slate-800 flex items-center gap-1">
+                          <span className="text-emerald-600">●</span> Case-Tree Match Watch
+                        </p>
+                        <p className="text-[10px] text-slate-600 mb-1">
+                          This brief auto-adapts to what you enter and what the full case-tree scan finds across conversation context, uploaded files, NSIL insights, and policy requirements.
+                        </p>
+                        <div className="space-y-0.5">
+                          {fullCaseTreeMatchingSignals.slice(0, 3).map((signal, index) => (
+                            <p key={`${signal}-${index}`} className="text-[10px] text-slate-600">• {signal}</p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* What this means for you — personalized */}
                     {(quickCountryFocus || quickBusinessTarget || quickCustomFocus) && (
@@ -5745,7 +5861,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                           Based on your focus on <strong>{quickCustomFocus || pilotFocus.replace(/-/g, ' ')}</strong>
                           {quickCountryFocus ? <> in <strong>{quickCountryFocus}</strong></> : ''}
                           {quickBusinessTarget ? <> targeting <strong>{quickBusinessTarget}</strong></> : ''}
-                          , we're tracking relevant government programs, development finance, regulatory changes, and competitor activity to give you a sharper case.
+                          , this report stream prioritizes the most decision-relevant policy, finance, compliance, and competitive shifts and feeds them into your consultant responses and draft documents.
                         </p>
                       </div>
                     )}
@@ -5854,6 +5970,32 @@ Use concrete facts from the case. No template language. Write the complete repor
                 )}
 
                 {/* Ask about something specific */}
+                <div className="border border-stone-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold text-slate-700">Quick Lines → Live Draft</p>
+                  <p className="mt-0.5 text-[10px] text-slate-600">Paste a few simple lines and we will convert them into BW Consultant case context.</p>
+                  <textarea
+                    value={quickDraftLines}
+                    onChange={(e) => setQuickDraftLines(e.target.value)}
+                    placeholder={'Example:\nCountry: Philippines\nObjective: Attract renewable energy investors\nDecision: Submit government proposal this quarter\nAudience: Ministry + investors'}
+                    rows={4}
+                    className="mt-1 w-full resize-none border border-stone-300 px-2 py-1 text-[10px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <div className="mt-1 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={handleConvertQuickLinesToDraft}
+                      disabled={!quickDraftLines.trim()}
+                      className={`text-[10px] px-2 py-1 border ${
+                        !quickDraftLines.trim()
+                          ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
+                          : 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700'
+                      }`}
+                    >
+                      Convert to Draft
+                    </button>
+                  </div>
+                </div>
+
                 <div className="border border-stone-200 bg-white p-2">
                   <p className="text-[11px] font-semibold text-slate-700">Ask About Something Specific</p>
                   <p className="mt-0.5 text-[10px] text-slate-600">Want us to research something particular? Add it here and your consultant will factor it in.</p>
