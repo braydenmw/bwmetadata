@@ -670,6 +670,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState('');
   const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');
   const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
+  const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
@@ -1218,6 +1219,21 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
 
     return parts.filter(Boolean).join(' — ');
   }, [quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label, quickCountryFocus, quickBusinessTarget]);
+
+  const currentLiveInsightInputSignature = useMemo(() => {
+    return JSON.stringify({
+      query: liveInsightQuery.trim() || liveInsightBaseQuery,
+      country: quickCountryFocus.trim(),
+      target: quickBusinessTarget.trim(),
+      focus: quickCustomFocus.trim() || pilotFocus,
+      sector: quickCustomSector.trim() || activeIssuePack.label
+    });
+  }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus, quickBusinessTarget, quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label]);
+
+  const liveInsightInputsChanged = useMemo(() => {
+    if (!liveInsightsRequested || !lastLiveInsightSearchSignature) return false;
+    return currentLiveInsightInputSignature !== lastLiveInsightSearchSignature;
+  }, [liveInsightsRequested, lastLiveInsightSearchSignature, currentLiveInsightInputSignature]);
 
   const liveInsightVisibleResults = useMemo(() => {
     if (liveInsightFilter === 'all') return liveInsightResults;
@@ -1786,6 +1802,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
 
       setLiveInsightResults(merged);
       setLiveInsightUpdatedAt(new Date().toISOString());
+      setLastLiveInsightSearchSignature(JSON.stringify({
+        query,
+        country: quickCountryFocus.trim(),
+        target: quickBusinessTarget.trim(),
+        focus: quickCustomFocus.trim() || pilotFocus,
+        sector: quickCustomSector.trim() || activeIssuePack.label
+      }));
 
       if (merged.length === 0) {
         setLiveInsightError('No live search results were returned yet. Try adding a country, company, or government target.');
@@ -1817,7 +1840,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     } finally {
       setLiveInsightLoading(false);
     }
-  }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus]);
+  }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus, quickBusinessTarget, quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label]);
 
   const handlePinLiveInsightToDraft = useCallback((item: LiveInsightResult) => {
     const evidenceLine = `Pinned live source (${item.bucket}): ${item.title} — ${item.source} | ${item.link}`;
@@ -6147,6 +6170,9 @@ Use concrete facts from the case. No template language. Write the complete repor
                     </div>
                     {liveInsightUpdatedAt && (
                       <p className="mt-1 text-[9px] text-emerald-700">Last updated: {new Date(liveInsightUpdatedAt).toLocaleString()}</p>
+                    )}
+                    {liveInsightInputsChanged && (
+                      <p className="mt-1 text-[9px] text-amber-700">New inputs since last search. Run Live Search to refresh intelligence.</p>
                     )}
                     {liveInsightError && <p className="mt-1 text-[9px] text-red-600">{liveInsightError}</p>}
                     {!liveInsightsRequested && !liveInsightLoading && (
