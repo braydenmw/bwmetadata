@@ -1238,6 +1238,36 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return pinned;
   }, [caseStudy.additionalContext]);
 
+  const liveInsightPinnedEntries = useMemo(() => {
+    const entries = caseStudy.additionalContext
+      .filter((entry) => entry.startsWith('Pinned live source ('))
+      .map((entry) => {
+        const bucketMatch = entry.match(/^Pinned live source \(([^)]+)\):\s*/i);
+        const bucketRaw = (bucketMatch?.[1] || '').toLowerCase();
+        const bucket: LiveInsightBucket = bucketRaw === 'government' || bucketRaw === 'finance' || bucketRaw === 'news' || bucketRaw === 'entities'
+          ? bucketRaw
+          : 'news';
+
+        const body = entry.replace(/^Pinned live source \([^)]+\):\s*/i, '');
+        const [titleAndSource, linkRaw] = body.split(' | ');
+        const [titleRaw, sourceRaw] = titleAndSource.split(' — ');
+
+        return {
+          bucket,
+          title: (titleRaw || '').trim(),
+          source: (sourceRaw || '').trim(),
+          link: (linkRaw || '').trim()
+        };
+      })
+      .filter((item) => item.title && item.link);
+
+    if (liveInsightFilter === 'all') {
+      return entries.slice(-6).reverse();
+    }
+
+    return entries.filter((item) => item.bucket === liveInsightFilter).slice(-6).reverse();
+  }, [caseStudy.additionalContext, liveInsightFilter]);
+
   const liveInsightLeads = useMemo(() => ({
     global: liveInsightVisibleResults.find((item) => item.bucket === 'news') || null,
     funding: liveInsightVisibleResults.find((item) => item.bucket === 'finance') || null,
@@ -6095,6 +6125,24 @@ Use concrete facts from the case. No template language. Write the complete repor
                             </button>
                           </div>
                         ))}
+                      </div>
+                    )}
+                    {liveInsightPinnedEntries.length > 0 && (
+                      <div className="mt-1.5 border-t border-emerald-200 pt-1.5">
+                        <p className="text-[9px] font-semibold text-emerald-800">Pinned Sources</p>
+                        <div className="mt-1 space-y-1">
+                          {liveInsightPinnedEntries.map((item, idx) => (
+                            <a
+                              key={`${item.link}-pinned-${idx}`}
+                              href={item.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-[9px] text-slate-700 hover:text-emerald-700"
+                            >
+                              • {item.title} <span className="text-slate-400">({item.source || item.bucket})</span>
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
