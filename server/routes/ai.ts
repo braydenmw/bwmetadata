@@ -9,6 +9,11 @@ import {
   buildOutputClarificationResponse
 } from './consultantBehavior.js';
 import { deriveConsultantCapabilityProfile } from './consultantCapabilities.js';
+import {
+  buildAugmentedAISnapshot,
+  getAugmentedAITools,
+  getRecommendedAugmentedToolsForMode
+} from './augmentedAISupport.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -743,6 +748,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
 
     const intent = detectConsultantIntent(sanitizedMessage);
     const capabilityProfile = deriveConsultantCapabilityProfile(sanitizedMessage, sanitizedContextResult.context);
+    const augmentedSnapshot = buildAugmentedAISnapshot(capabilityProfile);
+    const recommendedAugmentedTools = getRecommendedAugmentedToolsForMode(capabilityProfile.mode);
     if (shouldRequireOutputClarification(sanitizedMessage, intent)) {
       const clarificationText = buildOutputClarificationResponse();
 
@@ -761,6 +768,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         capabilityMode: capabilityProfile.mode,
         capabilityTags: capabilityProfile.capabilityTags,
         unresolvedGapCount: capabilityProfile.gaps.length,
+        augmentedModel: augmentedSnapshot.model,
         replayHash,
         replayStored: false
       });
@@ -781,6 +789,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
           severity: gap.severity,
           question: gap.question
         })),
+        augmentedAI: augmentedSnapshot,
+        recommendedTools: recommendedAugmentedTools,
         replayHash,
         replayAvailable: false
       });
@@ -819,6 +829,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       capabilityMode: capabilityProfile.mode,
       capabilityTags: capabilityProfile.capabilityTags,
       unresolvedGapCount: capabilityProfile.gaps.length,
+      augmentedModel: augmentedSnapshot.model,
       replayHash,
       replayStored: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
@@ -839,6 +850,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
         severity: gap.severity,
         question: gap.question
       })),
+      augmentedAI: augmentedSnapshot,
+      recommendedTools: recommendedAugmentedTools,
       replayHash,
       replayAvailable: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
@@ -854,6 +867,39 @@ router.post('/consultant', async (req: Request, res: Response) => {
     });
     return res.status(500).json({ error: 'Failed to process consultant request', details: errorMessage });
   }
+});
+
+router.get('/augmented-ai/tools', (req: Request, res: Response) => {
+  const category = typeof req.query.category === 'string' ? req.query.category : undefined;
+  const mode = typeof req.query.mode === 'string' ? req.query.mode : undefined;
+
+  const allTools = getAugmentedAITools(category as Parameters<typeof getAugmentedAITools>[0]);
+  const recommended = mode ? getRecommendedAugmentedToolsForMode(mode) : [];
+
+  return res.json({
+    total: allTools.length,
+    category: category || null,
+    mode: mode || null,
+    tools: allTools,
+    recommended
+  });
+});
+
+router.post('/augmented-ai/snapshot', (req: Request, res: Response) => {
+  const { message, context } = req.body ?? {};
+  if (!message || typeof message !== 'string') {
+    return res.status(400).json({ error: 'message is required' });
+  }
+
+  const profile = deriveConsultantCapabilityProfile(message, context);
+  const snapshot = buildAugmentedAISnapshot(profile);
+  const recommendedTools = getRecommendedAugmentedToolsForMode(profile.mode);
+
+  return res.json({
+    profile,
+    snapshot,
+    recommendedTools
+  });
 });
 
 router.get('/consultant/replay/:requestId', async (req: Request, res: Response) => {
