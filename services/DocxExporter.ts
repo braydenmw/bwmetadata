@@ -271,7 +271,7 @@ function buildCoverPage(meta: DocxDocumentMeta): Paragraph[] {
       spacing: { before: 600, after: 0 },
     }),
     // Force page break after cover
-    new Paragraph({ text: '', pageBreakBefore: false, run: { break: 1 } as never }),
+    new Paragraph({ text: '', pageBreakBefore: true }),
   ];
 }
 
