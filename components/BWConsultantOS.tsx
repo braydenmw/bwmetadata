@@ -3795,7 +3795,8 @@ ${agentRegistry.current.toManifest()}`;
     enableFullCaseTreeMatching,
     activeIssuePack.label,
     queueAction,
-    augmentedAISnapshot
+    augmentedAISnapshot,
+    voiceEnabled
   ]);
 
   // Handle file selection
