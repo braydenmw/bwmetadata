@@ -811,24 +811,24 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
   const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);
   const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
-  const [activeGlobalIssuePack, setActiveGlobalIssuePack] = useState<string>('energy-transition');
+  const [activeGlobalIssuePack] = useState<string>('energy-transition');
   const [quickCountryFocus, setQuickCountryFocus] = useState('');
   const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
-  const [quickCustomSector, setQuickCustomSector] = useState('');
-  const [quickCustomFocus, setQuickCustomFocus] = useState('');
+  const [quickCustomSector] = useState('');
+  const [quickCustomFocus] = useState('');
   const [quickDraftLines, setQuickDraftLines] = useState('');
-  const [strategicAutoApplyEnabled, setStrategicAutoApplyEnabled] = useState(true);
+  const [strategicAutoApplyEnabled] = useState(true);
   const [strategicApplyLoading, setStrategicApplyLoading] = useState(false);
   const [strategicApplyError, setStrategicApplyError] = useState('');
-  const [strategicApplyUpdatedAt, setStrategicApplyUpdatedAt] = useState('');
+  const [, setStrategicApplyUpdatedAt] = useState('');
   const [liveInsightQuery, setLiveInsightQuery] = useState('');
   const [liveInsightLoading, setLiveInsightLoading] = useState(false);
   const [liveInsightError, setLiveInsightError] = useState('');
   const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
-  const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState('');
-  const [liveInsightQueryUsed, setLiveInsightQueryUsed] = useState('');
-  const [liveInsightProviderStatus, setLiveInsightProviderStatus] = useState('');
-  const [liveInsightRunReason, setLiveInsightRunReason] = useState('');
+  const [, setLiveInsightUpdatedAt] = useState('');
+  const [, setLiveInsightQueryUsed] = useState('');
+  const [, setLiveInsightProviderStatus] = useState('');
+  const [, setLiveInsightRunReason] = useState('');
   const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');
   const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
   const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');
@@ -1310,7 +1310,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     fullCaseTreeMatchingSignals.map((signal) => `- ${signal}`).join('\n')
   ), [fullCaseTreeMatchingSignals]);
 
-  const liveDraftExecutiveSummary = useMemo(() => {
+  const _liveDraftExecutiveSummary = useMemo(() => {
     const organization = caseStudy.organizationName.trim();
     const objective = caseStudy.objectives.trim();
     const country = caseStudy.country.trim();
@@ -1481,7 +1481,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     });
   }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus, quickBusinessTarget, effectivePilotFocusText, quickCustomSector, activeIssuePack.label]);
 
-  const liveInsightInputsChanged = useMemo(() => {
+  const _liveInsightInputsChanged = useMemo(() => {
     if (!liveInsightsRequested || !lastLiveInsightSearchSignature) return false;
     return currentLiveInsightInputSignature !== lastLiveInsightSearchSignature;
   }, [liveInsightsRequested, lastLiveInsightSearchSignature, currentLiveInsightInputSignature]);
@@ -1506,7 +1506,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return pinned;
   }, [caseStudy.additionalContext]);
 
-  const liveInsightPinnedEntries = useMemo(() => {
+  const _liveInsightPinnedEntries = useMemo(() => {
     const entries = caseStudy.additionalContext
       .filter((entry) => entry.startsWith('Pinned live source ('))
       .map((entry) => {
@@ -1536,7 +1536,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return entries.filter((item) => item.bucket === liveInsightFilter).slice(-6).reverse();
   }, [caseStudy.additionalContext, liveInsightFilter]);
 
-  const liveInsightLeads = useMemo(() => ({
+  const _liveInsightLeads = useMemo(() => ({
     global: liveInsightVisibleResults.find((item) => item.bucket === 'news') || null,
     funding: liveInsightVisibleResults.find((item) => item.bucket === 'finance') || null,
     regulatory: liveInsightVisibleResults.find((item) => item.bucket === 'government') || null,
@@ -1559,7 +1559,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     });
   }, [caseStudy, activeIssuePack]);
 
-  const pilotFocusIssues = useMemo(
+  const _pilotFocusIssues = useMemo(
     () => PILOT_GLOBAL_ISSUE_AREAS.filter((issue) => normalizedPilotFocusSelections.includes(issue.focus)),
     [normalizedPilotFocusSelections]
   );
@@ -2034,7 +2034,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     });
   }, [pilotFocusSelections, syncQuickConsultantToCaseStudy]);
 
-  const handleAddCustomPilotOption = useCallback(() => {
+  const _handleAddCustomPilotOption = useCallback(() => {
     const text = customPilotOptionInput.trim();
     if (!text) return;
 
@@ -2315,7 +2315,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     }
   }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus, quickBusinessTarget, effectivePilotFocusText, quickCustomSector, activeIssuePack.label]);
 
-  const handleResearchTopicFromIssue = useCallback((issue: PilotIssueArea) => {
+  const _handleResearchTopicFromIssue = useCallback((issue: PilotIssueArea) => {
     const topicTitle = issue.title.trim();
     if (!topicTitle) return;
 
@@ -2393,7 +2393,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     });
   }, []);
 
-  const handleUnpinLiveInsightFromDraft = useCallback((item: { title: string; link: string; source?: string; bucket?: LiveInsightBucket }) => {
+  const _handleUnpinLiveInsightFromDraft = useCallback((item: { title: string; link: string; source?: string; bucket?: LiveInsightBucket }) => {
     setCaseStudy((prev) => {
       const nextContext = prev.additionalContext.filter((entry) => {
         if (!entry.startsWith('Pinned live source (')) return true;
@@ -2424,7 +2424,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     ]));
   }, []);
 
-  const handleClearAllPinnedLiveInsights = useCallback(() => {
+  const _handleClearAllPinnedLiveInsights = useCallback(() => {
     if (typeof window !== 'undefined') {
       const approved = window.confirm('Clear all pinned live sources from draft evidence?');
       if (!approved) return;
@@ -3700,8 +3700,7 @@ ${agentRegistry.current.toManifest()}`;
     processWithAI,
     enableFullCaseTreeMatching,
     activeIssuePack.label,
-    queueAction,
-    voiceEnabled
+    queueAction
   ]);
 
   // Handle file selection
