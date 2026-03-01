@@ -2659,10 +2659,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
         id: crypto.randomUUID(),
         role: 'assistant',
         content: [
-          'Hello, I am your BW Consultant.',
-          'May I know who I am speaking to, please?',
-          'Where are you from?',
-          'Tell me more about you and what you are needing assistance with.'
+          'Hello — I am your BW Consultant, powered by the NSIL Agentic Runtime.',
+          '',
+          'I work across strategy, market entry, government engagement, investment structuring, regulatory compliance, and cross-border advisory — producing board-ready reports, letters of intent, and decision briefs.',
+          '',
+          'Tell me what decision you are trying to make, and I will start building your case immediately.'
         ].join('\n'),
         timestamp: new Date(),
         phase: 'discovery'
@@ -3627,7 +3628,7 @@ ${agentRegistry.current.toManifest()}`;
       const shouldPromptForOutputClarification = shouldAskOutputClarification(caseDraft, trimmedUserContent, deliverableIntent);
       const shouldRunInsights = liveReadiness >= 25 && !isGreetingOnly && !shouldPromptForOutputClarification;
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
-      const brainEnrichmentPromise = liveReadiness >= 30 && !isGreetingOnly && !shouldPromptForOutputClarification
+      const brainEnrichmentPromise = liveReadiness >= 15 && !isGreetingOnly && !shouldPromptForOutputClarification
         ? BrainIntegrationService.enrich(
             { country: caseDraft.country, organizationName: caseDraft.organizationName, sector: caseDraft.organizationType || undefined },
             liveReadiness,
@@ -3682,9 +3683,27 @@ ${agentRegistry.current.toManifest()}`;
           : '';
         setIsStreamingResponse(true);
         displayedMsgIds.current.add(assistantMessageId);
+        // Build the system instruction. For greeting/low-readiness turns inject a
+        // capability-led opening so the AI demonstrates value instead of running a
+        // scripted intake questionnaire like a basic chatbot.
+        const isOpeningTurn = liveReadiness < 20 || isGreetingOnly;
+        const openingInstruction = isOpeningTurn
+          ? `You are BW Consultant — a world-class strategic advisory AI backed by the NSIL Agentic Runtime.
+
+This is an opening-turn conversation where the client has provided minimal context so far.
+
+Your job is NOT to run a scripted intake form. Do NOT list "1) Name 2) Country 3) Decision" as separate numbered questions — that is basic chatbot behaviour.
+
+Instead:
+- If the user said hello or greeted you, briefly (2-3 sentences max) showcase one or two concrete, specific things you can do RIGHT NOW (e.g. "I can draft a market-entry brief for a specific country and sector, structure a government engagement strategy, or produce an investor-ready case study").
+- Then ask ONE open-ended, intelligent question that invites them to describe their actual situation — something like "What are you working on?" or "What's the decision on the table?"
+- Do not ask for their name. Do not ask for their country separately from their context. Let those emerge naturally.
+- Be direct, confident, and concise. Sound like a senior consultant, not a form wizard.`
+          : `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.`;
+
         responseContent = await processWithAIStream(
           userContent,
-          `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.${memoryBlock}${brainBlock}`,
+          `${openingInstruction}${memoryBlock}${brainBlock}`,
           (streamText) => {
             setMessages(prev => prev.map((msg) => (
               msg.id === assistantMessageId ? { ...msg, content: streamText } : msg
