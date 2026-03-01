@@ -3699,32 +3699,6 @@ ${agentRegistry.current.toManifest()}`;
         return next;
       });
 
-      // ── BUILD LOCAL AUGMENTED SNAPSHOT ──────────────────────────────────────
-      // If no server-side augmented snapshot was captured, build one locally
-      // so the system reflects that it is actively processing intelligence
-      if (!augmentedAISnapshot) {
-        const toolNames = mergedToolCalls.map(tc => tc.name);
-        const localSteps: AugmentedLoopStep[] = [
-          { title: 'Understand', detail: `Parsed user input and extracted ${extractedFieldCount} signal${extractedFieldCount !== 1 ? 's' : ''} from conversation` },
-          { title: 'Interpret', detail: `Case readiness ${liveReadiness}% — phase: ${inferredPhase}` },
-          { title: 'Reason', detail: toolNames.length > 0 ? `Executed ${toolNames.length} intelligence tool${toolNames.length !== 1 ? 's' : ''}: ${toolNames.join(', ')}` : `Evaluated case context and generated response` },
-          { title: 'Learn', detail: learnedFields.length > 0 ? `Updated case fields: ${learnedFields.join(', ')}` : 'Conversation context stored for future turns' },
-          { title: 'Assure', detail: `Provenance tracked — confidence ${responseProvenance?.confidence ?? 0}%` }
-        ];
-        setAugmentedAISnapshot({
-          model: 'local-augmented',
-          mode: inferredPhase === 'recommendations' ? 'document_advisory' : inferredPhase === 'analysis' ? 'case_analysis' : 'case_discovery',
-          steps: localSteps,
-          humanControls: { decisionOwnerRequired: true, approvalOptions: ['accept', 'modify', 'reject'] }
-        });
-        setAugmentedCapabilityTags([
-          inferredPhase,
-          ...(caseDraft.country ? [caseDraft.country.toLowerCase()] : []),
-          ...(caseDraft.organizationType ? [caseDraft.organizationType.toLowerCase()] : []),
-          'signal-extraction', 'case-enrichment'
-        ].slice(0, 6));
-      }
-
       // ── KEEP REACTIVE STATUS ALIVE ─────────────────────────────────────────
       // Show what was just processed so Reactive stays "Online" between turns
       const reactiveSignalCount = [responseSignals.country, responseSignals.organizationName, responseSignals.objectives, responseSignals.targetAudience]
