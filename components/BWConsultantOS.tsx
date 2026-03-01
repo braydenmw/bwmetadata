@@ -1825,7 +1825,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     if (quickSyncSignatureRef.current === signature) return;
     quickSyncSignatureRef.current = signature;
 
-    const syncLine = `Quick Consultant sync (${trigger}): Focus=${focus || 'n/a'}; Country=${country || 'n/a'}; Target=${businessTarget || 'n/a'}; Sector=${sector || 'n/a'}${topicLabel ? `; Topic=${topicLabel}` : ''}`;
+    const syncLine = `Live Research sync (${trigger}): Focus=${focus || 'n/a'}; Country=${country || 'n/a'}; Target=${businessTarget || 'n/a'}; Sector=${sector || 'n/a'}${topicLabel ? `; Topic=${topicLabel}` : ''}`;
 
     setCaseStudy((prev) => {
       const additionalContext = prev.additionalContext.includes(syncLine)
@@ -1844,7 +1844,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
           : (focus ? `Advance ${focus}` : prev.objectives),
         currentMatter: prev.currentMatter.trim().length >= 40
           ? prev.currentMatter
-          : (focus ? `Quick Consultant context: ${focus}${country ? ` in ${country}` : ''}${businessTarget ? ` targeting ${businessTarget}` : ''}` : prev.currentMatter),
+          : (focus ? `Live Research context: ${focus}${country ? ` in ${country}` : ''}${businessTarget ? ` targeting ${businessTarget}` : ''}` : prev.currentMatter),
         additionalContext
       };
     });
@@ -1855,7 +1855,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
         {
           id: crypto.randomUUID(),
           role: 'system',
-          content: `Quick Consultant synced to BW Consultant context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the live draft report inputs.`,
+          content: `Live Research synced to BW Consultant context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the live draft report inputs.`,
           timestamp: new Date(),
           phase: 'discovery'
         }
@@ -1876,7 +1876,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     }
 
     const message = [
-      `Quick Consultant strategic intake: ${focus || 'General expansion objective'}`,
+      `Live Research strategic intake: ${focus || 'General expansion objective'}`,
       country ? `Country/region: ${country}` : '',
       businessTarget ? `Business target: ${businessTarget}` : '',
       `Sector: ${sector}`
@@ -1976,7 +1976,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
           {
             id: crypto.randomUUID(),
             role: 'system',
-            content: `Strategic factors applied to Quick Consultant inputs. ${strategic?.recommendedPath?.targetRegion ? `Top regional target: ${strategic.recommendedPath.targetRegion}.` : ''}`,
+            content: `Strategic factors applied to Live Research inputs. ${strategic?.recommendedPath?.targetRegion ? `Top regional target: ${strategic.recommendedPath.targetRegion}.` : ''}`,
             timestamp: new Date(),
             phase: 'analysis'
           }
@@ -2330,7 +2330,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     syncQuickConsultantToCaseStudy('issue-topic', { topicLabel: topicTitle });
 
     setCaseStudy((prev) => {
-      const line = `Quick Consultant research topic activated: ${topicTitle}`;
+      const line = `Live Research topic activated: ${topicTitle}`;
       if (prev.additionalContext.includes(line)) return prev;
       return {
         ...prev,
@@ -2598,7 +2598,7 @@ Consultant operating rules:
 - If data is incomplete, ask the single highest-value question that improves decision quality.
 - Convert provided information into action-oriented outputs, not generic commentary.
 
- Quick Consultant context (user selections):
+ Live Research context (user selections):
 - Focus area: ${effectivePilotFocusText}
 - Country/region of focus: ${quickCountryFocus || 'Not specified yet'}
 - Business target (who they want to work with): ${quickBusinessTarget || 'Not specified yet'}
@@ -5541,7 +5541,7 @@ Use concrete facts from the case. No template language. Write the complete repor
             className="relative z-10 ml-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium flex items-center gap-2 border border-white/20 transition-all"
           >
             <Globe size={16} />
-            {showPilotWindow ? 'Close Quick Consultant' : 'Quick Consultant'}
+            {showPilotWindow ? 'Close Live Research' : 'Live Research'}
           </button>
         </div>
 
@@ -6870,7 +6870,7 @@ Use concrete facts from the case. No template language. Write the complete repor
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="w-full max-w-2xl bg-white border border-stone-200 shadow-2xl">
               <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900">BW Quick Consultant — Guide</h3>
+                <h3 className="text-sm font-bold text-slate-900">Live Research — Guide</h3>
                 <button
                   type="button"
                   onClick={() => setShowPilotHowTo(false)}
@@ -6897,7 +6897,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                   <p className="mt-1 text-[10px] text-slate-600">All findings and your inputs are woven into your BW Consultant conversation and any documents generated — giving you a more informed, relevant result.</p>
                 </div>
                 <div className="border border-stone-200 bg-slate-50 p-3">
-                  <p className="text-[10px] text-slate-700">Quick Consultant works alongside BW Consultant to surface external findings that help you make better-informed decisions.</p>
+                  <p className="text-[10px] text-slate-700">Live Research works alongside BW Consultant to surface external findings that help you make better-informed decisions.</p>
                 </div>
               </div>
             </div>
