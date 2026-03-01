@@ -254,7 +254,7 @@ th{background:#f7fafc;font-weight:600}
 ${markdownToHtml(markdown)}
 </body></html>`;
         const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-        const ext = format === 'ppt' ? 'html' : 'html';
+  const ext = 'html';
         const fname = `${reportId}-${format}-${timestamp}.${ext}`;
         downloadedFilename = downloadBlob(blob, fname);
         break;
@@ -339,27 +339,106 @@ ${markdownToHtml(markdown)}
 // ── Minimal markdown → HTML (for HTML export fallback) ──────────────────────
 
 function markdownToHtml(md: string): string {
-  return md
-    .split('\n')
-    .map(line => {
-      const trimmed = line.trim();
-      if (!trimmed) return '<br>';
-      if (/^### /.test(trimmed)) return `<h3>${trimmed.slice(4)}</h3>`;
-      if (/^## /.test(trimmed)) return `<h2>${trimmed.slice(3)}</h2>`;
-      if (/^# /.test(trimmed)) return `<h1>${trimmed.slice(2)}</h1>`;
-      if (/^[-*•]\s/.test(trimmed)) return `<li>${trimmed.replace(/^[-*•]\s+/, '')}</li>`;
-      if (/^\|/.test(trimmed)) {
-        if (/^\|[-:| ]+\|$/.test(trimmed)) return '';
-        const cells = trimmed.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
-        return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+  const lines = md.split('\n');
+  const html: string[] = [];
+  let inList = false;
+  let inTable = false;
+
+  const closeList = () => {
+    if (inList) {
+      html.push('</ul>');
+      inList = false;
+    }
+  };
+
+  const closeTable = () => {
+    if (inTable) {
+      html.push('</tbody></table>');
+      inTable = false;
+    }
+  };
+
+  for (let index = 0; index < lines.length; index++) {
+    const trimmed = lines[index].trim();
+
+    if (!trimmed) {
+      closeList();
+      closeTable();
+      continue;
+    }
+
+    if (/^### /.test(trimmed)) {
+      closeList();
+      closeTable();
+      html.push(`<h3>${applyInlineFormatting(trimmed.slice(4))}</h3>`);
+      continue;
+    }
+
+    if (/^## /.test(trimmed)) {
+      closeList();
+      closeTable();
+      html.push(`<h2>${applyInlineFormatting(trimmed.slice(3))}</h2>`);
+      continue;
+    }
+
+    if (/^# /.test(trimmed)) {
+      closeList();
+      closeTable();
+      html.push(`<h1>${applyInlineFormatting(trimmed.slice(2))}</h1>`);
+      continue;
+    }
+
+    if (/^[-*•]\s/.test(trimmed)) {
+      closeTable();
+      if (!inList) {
+        html.push('<ul>');
+        inList = true;
       }
-      // Inline bold/italic
-      let html = trimmed
-        .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>');
-      return `<p>${html}</p>`;
-    })
-    .join('\n');
+      html.push(`<li>${applyInlineFormatting(trimmed.replace(/^[-*•]\s+/, ''))}</li>`);
+      continue;
+    }
+
+    if (/^\|/.test(trimmed)) {
+      closeList();
+      if (/^\|[-:| ]+\|$/.test(trimmed)) {
+        continue;
+      }
+
+      const cells = trimmed.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      if (!inTable) {
+        html.push('<table><tbody>');
+        inTable = true;
+      }
+
+      html.push(`<tr>${cells.map(cell => `<td>${applyInlineFormatting(cell)}</td>`).join('')}</tr>`);
+      continue;
+    }
+
+    closeList();
+    closeTable();
+    html.push(`<p>${applyInlineFormatting(trimmed)}</p>`);
+  }
+
+  closeList();
+  closeTable();
+
+  return html.join('\n');
+}
+
+function applyInlineFormatting(input: string): string {
+  const safe = escapeHtml(input);
+  return safe
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
