@@ -39,6 +39,8 @@ import BrainIntegrationService, { type BrainContext } from '../services/BrainInt
 import { PersistentMemorySystem } from '../services/PersistentMemorySystem';
 import { DocumentTypeRouter } from '../services/DocumentTypeRouter';
 import { IntelligentDocumentGenerator } from '../services/IntelligentDocumentGenerator';
+import LettersCatalogModal from './LettersCatalogModal';
+import { InputValidationEngine } from '../services/InputValidationEngine';
 
 // ============================================================================
 // TYPES
@@ -881,6 +883,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [showPilotWindow, setShowPilotWindow] = useState(false);
   const [showPilotHowTo, setShowPilotHowTo] = useState(false);
   const [showAboutBWGA, setShowAboutBWGA] = useState(false);
+  const [showFullCatalog, setShowFullCatalog] = useState(false);
   const [pilotFocus, setPilotFocus] = useState<PilotModeFocus>('new-markets');
   const [pilotFocusSelections, setPilotFocusSelections] = useState<PilotModeFocus[]>(['new-markets']);
   const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
@@ -3367,7 +3370,7 @@ ${agentRegistry.current.toManifest()}`;
       organizationType: caseStudy.targetAudience || '',
       strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
       readiness: readinessScore,
-      brainContext: brainContext,
+      brainContext: brainCtxRef.current,
       question: caseStudy.currentMatter || caseStudy.situationType,
     });
 
@@ -3407,7 +3410,7 @@ ${agentRegistry.current.toManifest()}`;
     );
 
     setRecommendedDocs(fullList);
-  }, [caseStudy, resolvePolicyPack, recommendationBoostMap, preferredOutputMode, readinessScore, brainContext]);
+  }, [caseStudy, resolvePolicyPack, recommendationBoostMap, preferredOutputMode, readinessScore]);
 
   useEffect(() => {
     if (isCaseStudyComplete && recommendedDocs.length > 0) {
@@ -3989,9 +3992,26 @@ ${agentRegistry.current.toManifest()}`;
       }
     ];
 
-    return checks
+    const hardcodedGaps = checks
       .filter((item) => item.missing)
       .sort((a, b) => b.weight - a.weight);
+
+    // Run InputValidationEngine — catches adversarial content, numeric contradictions, fraud patterns
+    let engineGaps: CriticalCaseGap[] = [];
+    try {
+      const report = new InputValidationEngine().validate(caseStudy as Record<string, unknown>);
+      engineGaps = report.issues
+        .filter((issue) => issue.severity === 'critical' || issue.severity === 'high')
+        .map((issue) => ({
+          missing: true,
+          label: issue.message,
+          question: issue.recommendation,
+          severity: issue.severity as CriticalGapSeverity,
+          weight: issue.severity === 'critical' ? 85 : 60,
+        }));
+    } catch (_e) { /* validation engine unavailable — skip */ }
+
+    return [...hardcodedGaps, ...engineGaps];
   }, [caseStudy]);
 
   const _handleAskNextCriticalQuestion = useCallback(() => {
@@ -4484,7 +4504,7 @@ ${agentRegistry.current.toManifest()}`;
         const audienceNote = caseStudy.targetAudience ? ` for ${caseStudy.targetAudience}` : '';
 
         // ── Try DocumentTypeRouter section-prompt-driven generation first ──────
-        const brainBlock = brainContext?.promptBlock || '';
+        const brainBlock = brainCtxRef.current?.promptBlock || '';
         const caseContextStr = [
           `Organization: ${caseStudy.organizationName || 'Not specified'}`,
           `Country / Jurisdiction: ${caseStudy.country || 'Not specified'}`,
@@ -6832,6 +6852,13 @@ Use concrete facts from the case. No template language. Write the complete repor
                         Generation requires readiness ≥ 70% and no critical case gaps. Current: {readinessScore}%
                       </p>
                     )}
+                    {/* Full Catalog Browser */}
+                    <button
+                      onClick={() => setShowFullCatalog(true)}
+                      className="mt-2 w-full py-2 text-xs font-semibold border border-stone-300 text-stone-700 hover:bg-stone-100 flex items-center justify-center gap-2 transition-colors"
+                    >
+                      📖 Browse Full Catalog — {IntelligentDocumentGenerator.getCatalogSummary().totalDocumentTypes} Documents &middot; {IntelligentDocumentGenerator.getCatalogSummary().totalLetterTypes} Letters
+                    </button>
                   </>
                 )}
               </div>
@@ -7217,6 +7244,22 @@ Use concrete facts from the case. No template language. Write the complete repor
             </div>
           </div>
         )}
+
+      {/* Full Document + Letter Catalog Modal */}
+      {showFullCatalog && (
+        <LettersCatalogModal
+          isOpen={showFullCatalog}
+          onClose={() => setShowFullCatalog(false)}
+          params={{
+            organizationName: caseStudy.organizationName,
+            country: caseStudy.country,
+            sector: caseStudy.situationType,
+            strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
+          }}
+          brainBlock={brainCtxRef.current?.promptBlock || ''}
+          generateFn={(prompt) => processWithAI(prompt, 'Generating from full catalog')}
+        />
+      )}
 
       {/* About BWGA Modal */}
       {showAboutBWGA && (

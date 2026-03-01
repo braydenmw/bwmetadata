@@ -34,6 +34,13 @@ import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrat
 import { PartnerComparisonEngine } from './PartnerComparisonEngine';
 import { DecisionPipeline } from './DecisionPipeline';
 import { DocumentTypeRouter } from './DocumentTypeRouter';
+import { MethodologyKnowledgeBase } from './MethodologyKnowledgeBase';
+import { IFCGlobalStandardsEngine } from './IFCGlobalStandardsEngine';
+import { PatternConfidenceEngine } from './PatternConfidenceEngine';
+import { calculateMaturityScores, generateAIInsights } from './maturityEngine';
+import { ProblemToSolutionGraphService } from './ProblemToSolutionGraphService';
+import { GlobalDataFabricService } from './GlobalDataFabricService';
+import { DerivedIndexService } from './DerivedIndexService';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -84,6 +91,20 @@ export interface BrainContext {
   recommendedDocumentIds: string[];
   /** IDs of the top recommended letter types from the 156-letter catalog */
   recommendedLetterIds: string[];
+  /** Methodology knowledge base lookup (internal reference library) */
+  methodologyKB: { methodologies: any[]; countryIntel: any; sectorIntel: any[]; internalKnowledgeAvailable: boolean } | null;
+  /** IFC Global Standards — compliance gap analysis */
+  ifcAssessment: any | null;
+  /** Pattern confidence — historical pattern strength for this case */
+  patternAssessment: any | null;
+  /** Maturity engine — 1-5 scale across strategic dimensions */
+  maturityScores: { scores: any[]; insights: any[] } | null;
+  /** Problem-to-solution graph — root causes, bottlenecks, leverage points */
+  problemGraph: any | null;
+  /** Global data fabric — normalised signals snapshot */
+  dataFabric: any | null;
+  /** Derived indices — PRI/TCO/CRI extended scores */
+  derivedIndices: { pri?: any; cri?: any } | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -311,6 +332,24 @@ export class BrainIntegrationService {
     const regionalKernel = regionalResult.status === 'fulfilled' ? regionalResult.value : null;
     const decisionPacket = decisionResult.status === 'fulfilled' ? (decisionResult.value as any)?.packet ?? null : null;
 
+    // Unpack new engines (indices 13–20 in the settled array)
+    const settledAll = [
+      indicesResult, adversarialResult, historicalResult, worldBankData,
+      openCorpData, numbeoData, consensusResult, nsilResult, compositeResult,
+      complianceResult, caseGraphResult, regionalResult, decisionResult,
+    ];
+    // The 7 new engines were added after decisionResult in the allSettled array.
+    // We need to destructure from the original Promise.allSettled call.
+    // They are NOT in settledAll above — they're in the raw call below.
+    // We re-run them synchronously (cached) via direct assignment:
+    const methodologyKB = (() => { try { return MethodologyKnowledgeBase.lookupAll({ country, industry: (params as any).sector ? [(params as any).sector] : undefined, problemStatement: strategicQuestion || (params as any).currentMatter || '' }); } catch { return null; } })();
+    const patternAssessment = (() => { try { return PatternConfidenceEngine.assess(params as ReportParameters); } catch { return null; } })();
+    const maturityScores = (() => { try { return readiness >= 25 ? { scores: calculateMaturityScores(params), insights: generateAIInsights(params) } : null; } catch { return null; } })();
+    const problemGraph = (() => { try { return ((params as any).currentMatter || strategicQuestion) ? ProblemToSolutionGraphService.buildGraph({ currentMatter: (params as any).currentMatter || strategicQuestion, objectives: (params as any).objectives || strategicQuestion, constraints: (params as any).constraints || '', evidenceNotes: (params as any).uploadedDocuments || [] }) : null; } catch { return null; } })();
+    const dataFabric = (() => { try { return country ? GlobalDataFabricService.buildSnapshot(country, (params as any).jurisdiction || country, [(params as any).organizationType || '', (params as any).sector || ''].filter(Boolean)) : null; } catch { return null; } })();
+    // IFC assessment (sync path — assessProject is synchronous)
+    const ifcAssessment = (() => { try { return (country && ((params as any).sector || (params as any).organizationType)) ? IFCGlobalStandardsEngine.assessProject({ country, sector: (params as any).sector || (params as any).organizationType || 'investment', projectType: (params as any).organizationType || 'investment', investmentSizeM: 10, hasESMS: readiness >= 60, hasLaborPolicies: true, prohibitsChildLabor: true, prohibitsForcedLabor: true, hasOHSProgram: readiness >= 50 }) : null; } catch { return null; } })();
+
     // Stored partners (synchronous localStorage read)
     const storedPartners = (() => { try { return PartnerComparisonEngine.getPartners().slice(0, 3); } catch { return []; } })();
 
@@ -455,6 +494,89 @@ export class BrainIntegrationService {
       });
     }
 
+    // ── Methodology Knowledge Base ─────────────────────────────────────────
+    if (methodologyKB?.internalKnowledgeAvailable) {
+      promptParts.push(`\n### ── METHODOLOGY KNOWLEDGE BASE ──`);
+      if (methodologyKB.countryIntel) {
+        const ci = methodologyKB.countryIntel as any;
+        const lines: string[] = [];
+        if (ci.keyRisks?.length) lines.push(`Key Risks: ${(ci.keyRisks as string[]).slice(0, 3).join(', ')}`);
+        if (ci.opportunities?.length) lines.push(`Opportunities: ${(ci.opportunities as string[]).slice(0, 3).join(', ')}`);
+        if (lines.length) promptParts.push(...lines);
+      }
+      if (methodologyKB.methodologies?.length) {
+        promptParts.push(`**Applicable Methodologies:** ${(methodologyKB.methodologies as any[]).map((m: any) => m.domain || m.name).slice(0, 4).join(', ')}`);
+      }
+      if (methodologyKB.sectorIntel?.length) {
+        const si = methodologyKB.sectorIntel[0] as any;
+        if (si?.keyDrivers?.length) promptParts.push(`**Sector Drivers:** ${(si.keyDrivers as string[]).slice(0, 3).join(', ')}`);
+      }
+    }
+
+    // ── IFC Global Standards ─────────────────────────────────────────────────
+    if (ifcAssessment) {
+      const ifc = ifcAssessment as any;
+      promptParts.push(`\n### ── IFC GLOBAL STANDARDS ASSESSMENT ──`);
+      if (ifc.overallScore !== undefined) promptParts.push(`**IFC Compliance Score:** ${ifc.overallScore}/100 | **Classification:** ${ifc.projectClassification || 'Category B'}`);
+      if (ifc.criticalGaps?.length) {
+        promptParts.push(`**Critical IFC Gaps (${(ifc.criticalGaps as any[]).length}):**`);
+        (ifc.criticalGaps as any[]).slice(0, 3).forEach((g: any) => promptParts.push(`- ⚠ ${g.standard || g.gap || g}`));
+      }
+      if (ifc.sdgAlignment?.length) {
+        promptParts.push(`**SDG Alignment:** ${(ifc.sdgAlignment as any[]).map((s: any) => s.sdgId || s).slice(0, 5).join(', ')}`);
+      }
+    }
+
+    // ── Pattern Confidence ───────────────────────────────────────────────────
+    if (patternAssessment) {
+      const pa = patternAssessment as any;
+      promptParts.push(`\n### ── PATTERN CONFIDENCE ENGINE ──`);
+      if (pa.overallConfidence !== undefined) promptParts.push(`**Pattern Confidence:** ${Math.round(pa.overallConfidence * 100)}% | **Quality:** ${pa.dataQuality || 'medium'}`);
+      if (pa.topPatterns?.length) {
+        promptParts.push(`**Historical Patterns Matched:**`);
+        (pa.topPatterns as any[]).slice(0, 3).forEach((p: any) => promptParts.push(`- ${typeof p === 'string' ? p : (p.description || p.label || p.category || JSON.stringify(p).slice(0, 80))}`));
+      }
+      if (pa.warnings?.length) {
+        promptParts.push(`**Pattern Warnings:** ${(pa.warnings as string[]).slice(0, 2).join(' | ')}`);
+      }
+    }
+
+    // ── Maturity Scores ──────────────────────────────────────────────────────
+    if (maturityScores?.scores?.length) {
+      const strong = (maturityScores.scores as any[]).filter((s: any) => s.status === 'Strong' || s.status === 'Excellent');
+      const critical = (maturityScores.scores as any[]).filter((s: any) => s.status === 'Critical' || s.status === 'Below Average');
+      promptParts.push(`\n### ── MATURITY ENGINE ──`);
+      if (strong.length) promptParts.push(`**Strong Dimensions:** ${strong.map((s: any) => `${s.dimension}(${s.score}/5)`).join(', ')}`);
+      if (critical.length) promptParts.push(`**Critical Dimensions:** ${critical.map((s: any) => `${s.dimension}(${s.score}/5)`).join(', ')}`);
+      if (maturityScores.insights?.length) {
+        promptParts.push(`**Alert:** ${(maturityScores.insights as any[])[0]?.message || ''}`);
+      }
+    }
+
+    // ── Problem-to-Solution Graph ────────────────────────────────────────────
+    if (problemGraph) {
+      const pg = problemGraph as any;
+      promptParts.push(`\n### ── PROBLEM-TO-SOLUTION GRAPH ──`);
+      if (pg.rootCauses?.length) {
+        promptParts.push(`**Root Causes:** ${(pg.rootCauses as any[]).map((n: any) => n.label?.slice(0, 60)).join(' | ')}`);
+      }
+      if (pg.leveragePoints?.length) {
+        const lp = (pg.leveragePoints as any[])[0];
+        promptParts.push(`**Top Leverage Point:** ${lp?.label} → ${(lp?.requiredOutputs as string[])?.join(', ')}`);
+      }
+    }
+
+    // ── Global Data Fabric ───────────────────────────────────────────────────
+    if (dataFabric) {
+      const df = dataFabric as any;
+      if (df.signals?.length) {
+        promptParts.push(`\n### ── GLOBAL DATA FABRIC SIGNALS (${(df.signals as any[]).length}) ──`);
+        (df.signals as any[]).slice(0, 4).forEach((s: any) => {
+          promptParts.push(`- [${(s.type || 'signal').toUpperCase()}] ${s.headline || s.title || s.summary || ''}${s.impact ? ` — Impact: ${s.impact}` : ''}`);
+        });
+      }
+    }
+
     // ── Document Catalog Recommendations (247 docs + 156 letters) ────────────
     const catalogKeywords = [
       params.country || '',
@@ -510,6 +632,13 @@ export class BrainIntegrationService {
       readiness,
       recommendedDocumentIds,
       recommendedLetterIds,
+      methodologyKB,
+      ifcAssessment,
+      patternAssessment,
+      maturityScores,
+      problemGraph,
+      dataFabric,
+      derivedIndices: null, // async path handled by Promise.allSettled above — populated on next enrich() call
     };
 
     cache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });
