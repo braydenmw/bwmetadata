@@ -2237,6 +2237,52 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     }
   }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus, quickBusinessTarget, effectivePilotFocusText, quickCustomSector, activeIssuePack.label]);
 
+  const handleResearchTopicFromIssue = useCallback((issue: PilotIssueArea) => {
+    const topicTitle = issue.title.trim();
+    if (!topicTitle) return;
+
+    const query = [
+      topicTitle,
+      effectivePilotFocusText,
+      quickCountryFocus.trim(),
+      quickBusinessTarget.trim(),
+      quickCustomSector.trim() || activeIssuePack.label
+    ].filter(Boolean).join(' ').trim();
+
+    syncQuickConsultantToCaseStudy('issue-topic', { topicLabel: topicTitle });
+
+    setCaseStudy((prev) => {
+      const line = `Quick Consultant research topic activated: ${topicTitle}`;
+      if (prev.additionalContext.includes(line)) return prev;
+      return {
+        ...prev,
+        additionalContext: [...prev.additionalContext, line]
+      };
+    });
+
+    setMessages((prev) => ([
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'system',
+        content: `Research topic activated: ${topicTitle}. Live search and case draft context were updated.`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]));
+
+    setLiveInsightsRequested(true);
+    void fetchLiveWorldInsights(query, true);
+  }, [
+    effectivePilotFocusText,
+    quickCountryFocus,
+    quickBusinessTarget,
+    quickCustomSector,
+    activeIssuePack.label,
+    syncQuickConsultantToCaseStudy,
+    fetchLiveWorldInsights
+  ]);
+
   const handlePinLiveInsightToDraft = useCallback((item: LiveInsightResult) => {
     const evidenceLine = `Pinned live source (${item.bucket}): ${item.title} — ${item.source} | ${item.link}`;
 
@@ -6976,13 +7022,45 @@ Use concrete facts from the case. No template language. Write the complete repor
                     <p className="mt-0.5 text-[10px] text-slate-500">Based on your focus, we're looking into these areas for you.</p>
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {pilotFocusIssues.map((issue) => (
-                        <span key={issue.id} className="inline-block text-[9px] px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-700">
+                        <button
+                          key={issue.id}
+                          type="button"
+                          onClick={() => handleResearchTopicFromIssue(issue)}
+                          className="inline-block text-[9px] px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100"
+                          title="Add this topic to draft context and run live research"
+                        >
                           {issue.title}
-                        </span>
+                        </button>
                       ))}
                     </div>
+                    <p className="mt-1 text-[9px] text-slate-500">Click any topic to push it into the case draft and trigger live research.</p>
                   </div>
                 )}
+
+                {/* Live Draft Build Visibility */}
+                <div className="border border-blue-200 bg-blue-50 p-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-[11px] font-semibold text-blue-800">Live Draft Build Status</p>
+                    <button
+                      type="button"
+                      onClick={() => setShowPilotWindow(false)}
+                      className="text-[9px] px-1.5 py-0.5 border border-blue-300 bg-white text-blue-700 hover:bg-blue-100"
+                    >
+                      View Live Draft Workspace
+                    </button>
+                  </div>
+                  <p className="mt-0.5 text-[10px] text-blue-800">
+                    Stage: {liveDraftStatus} • Readiness: {liveDraftReadiness}%
+                  </p>
+                  <p className="mt-0.5 text-[10px] text-slate-700">
+                    {liveDraftExecutiveSummary.slice(0, 220)}{liveDraftExecutiveSummary.length > 220 ? '…' : ''}
+                  </p>
+                  {caseStudy.additionalContext.length > 0 && (
+                    <p className="mt-0.5 text-[9px] text-slate-600">
+                      Latest draft signal: {caseStudy.additionalContext[caseStudy.additionalContext.length - 1]}
+                    </p>
+                  )}
+                </div>
 
                 {/* Ask about something specific */}
                 <div className="border border-stone-200 bg-white p-2">
