@@ -25,6 +25,7 @@
 import AdversarialReasoningService from './AdversarialReasoningService';
 import { calculateAllIndices, type AllIndicesResult } from './ComprehensiveIndicesEngine';
 import { MultiAgentOrchestrator, HistoricalLearningEngine, type ConsensusResult, type HistoricalPattern } from './MultiAgentBrainSystem';
+import { MultiAgentOrchestrator as DomainAgentOrchestrator, type SynthesizedAnalysis } from './MultiAgentOrchestrator';
 import { fetchWorldBankCountryIndicators, fetchOpenCorporatesCompany, fetchNumbeoCityData } from './externalDataIntegrations';
 import { NSILIntelligenceHub } from './NSILIntelligenceHub';
 import { CompositeScoreService } from './CompositeScoreService';
@@ -110,6 +111,8 @@ export interface BrainContext {
   motivationAnalysis: any | null;
   /** Counterfactual engine — what-if scenario analysis */
   counterfactualAnalysis: any | null;
+  /** Domain agent synthesis (Gov, Banking, Corporate, Market, Risk, Historical) */
+  domainAnalysis: SynthesizedAnalysis | null;
   /** Derived indices — PRI/TCO/CRI extended scores */
   derivedIndices: { pri?: any; cri?: any } | null;
 }
@@ -265,6 +268,7 @@ export class BrainIntegrationService {
       caseGraphResult,
       regionalResult,
       decisionResult,
+      domainAnalysisResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -322,6 +326,15 @@ export class BrainIntegrationService {
       readiness >= 40 && params.country
         ? DecisionPipeline.run(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
+      // Domain agent synthesis (Gov Policy, Banking, Corporate, Market, Risk, Historical)
+      readiness >= 55 && strategicQuestion.length > 15
+        ? DomainAgentOrchestrator.synthesizeAnalysis({
+            organizationProfile: params as ReportParameters,
+            query: strategicQuestion.substring(0, 400),
+            dataScope: readiness >= 75 ? 'comprehensive' : 'recent',
+            includeCustomData: false,
+          }).catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -338,6 +351,7 @@ export class BrainIntegrationService {
     const caseGraph = caseGraphResult.status === 'fulfilled' ? caseGraphResult.value : null;
     const regionalKernel = regionalResult.status === 'fulfilled' ? regionalResult.value : null;
     const decisionPacket = decisionResult.status === 'fulfilled' ? (decisionResult.value as any)?.packet ?? null : null;
+    const domainAnalysis = domainAnalysisResult.status === 'fulfilled' ? domainAnalysisResult.value as SynthesizedAnalysis | null : null;
 
     // Unpack new engines (indices 13–20 in the settled array)
     const settledAll = [
@@ -657,6 +671,7 @@ export class BrainIntegrationService {
       dataFabric,
       motivationAnalysis,
       counterfactualAnalysis,
+      domainAnalysis,
       derivedIndices: null, // async path handled by Promise.allSettled above — populated on next enrich() call
     };
 

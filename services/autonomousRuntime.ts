@@ -33,6 +33,10 @@ import InputShieldService from './InputShieldService';
 import { enforceBounds, safeDivide } from './FormulaBoundsEngine';
 import { validateField, validateStep } from './validationEngine';
 import { MissingFormulasEngine } from './MissingFormulasEngine';
+import { stressTestFramework } from './ExtremeStressTestFramework';
+import { stressTestVerification } from './StressTestVerification';
+import { generateBenchmarkData } from './mockDataGenerator';
+import { BACKEND_ARCHITECTURE } from './backendArchitecture';
 
 let _initialized = false;
 
@@ -79,6 +83,11 @@ export function initAutonomousRuntime(): void {
     validateComprehensiveIntake,
     enforceBounds, safeDivide,
     validateField, validateStep,
+    // dev / stress-test / architecture utilities (registered, not polled at runtime)
+    stressTestFramework,
+    stressTestVerification,
+    generateBenchmarkData,
+    BACKEND_ARCHITECTURE,
   };
 
   console.log(

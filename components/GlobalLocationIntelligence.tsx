@@ -19,6 +19,7 @@ import { documentGenerator } from '../services/locationIntelligenceDocumentGener
 import { osintSearch, type OsintResult } from '../services/osintSearchService';
 import { comprehensiveLiveSearch } from '../services/liveLocationSearchService';
 import { locationResearchManager } from '../services/agenticLocationIntelligence';
+import { multiSourceResearch as multiSourceResearchV1 } from '../services/multiSourceResearchService';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
@@ -251,6 +252,21 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
           await bwConsultantAI.consult({ locationQuery: trimmedQuery, searchResult: externalResult }, 'location_search_complete');
           return;
         }
+      }
+
+      // v1 multiSourceResearch fallback — additional source before live search
+      if (!result) {
+        try {
+          setResearchProgress({ stage: 'Multi-Source V1', progress: 20, message: `Trying multi-source research for ${trimmedQuery}...` });
+          const v1Result = await multiSourceResearchV1(trimmedQuery, (p) => setResearchProgress(p));
+          if (v1Result) {
+            setLiveProfile(v1Result.profile);
+            setResearchResult(v1Result as unknown as MultiSourceResult);
+            setResearchProgress({ stage: 'Complete', progress: 100, message: 'Multi-source research V1 complete' });
+            setIsResearching(false);
+            return;
+          }
+        } catch (_v1e) { /* v1 unavailable */ }
       }
 
       // comprehensiveLiveSearch fallback — if Gemini returned nothing
