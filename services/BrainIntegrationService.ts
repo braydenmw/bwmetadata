@@ -55,6 +55,8 @@ import { DerivedIndexService } from './DerivedIndexService';
 import { findRelevantEngagements, buildAdvisorSnapshot } from './GlobalIntelligenceEngine';
 import { buildAdvisorInputFromParams } from './buildAdvisorInputModel';
 import { osintSearch } from './osintSearchService';
+import { ConsultantGateService } from './ConsultantGateService';
+import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -143,6 +145,12 @@ export interface BrainContext {
   osintResults: Array<{ title: string; url: string; snippet: string }> | null;
   /** Derived indices — PRI / TCO / CRI computed scores */
   derivedIndices: { pri?: any; cri?: any; tco?: any } | null;
+  /** ConsultantGate — who/where/what/audience/deadline completeness check */
+  gateStatus: { isReady: boolean; missing: string[]; summary: Record<string, string> } | null;
+  /** Reactive intelligence — live opportunity signals */
+  reactiveOpportunities: Array<{ id: string; type: string; description?: string; signal?: string }> | null;
+  /** Reactive intelligence — live risk signals */
+  reactiveRisks: Array<{ id: string; type: string; description?: string; signal?: string }> | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -300,6 +308,8 @@ export class BrainIntegrationService {
       personaResult,
       derivedIndicesResult,
       osintResult,
+      reactiveOpportunitiesResult,
+      reactiveRisksResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -382,6 +392,14 @@ export class BrainIntegrationService {
       (country || orgName) && readiness >= 25
         ? osintSearch(`${country} ${orgName} strategic investment opportunities`.trim(), ['government', 'news', 'business'], 6).catch(() => null)
         : Promise.resolve(null),
+      // ReactiveIntelligenceEngine — opportunity detection
+      country && readiness >= 40
+        ? ReactiveIntelligenceEngine.detectOpportunities(params as ReportParameters).catch(() => null)
+        : Promise.resolve(null),
+      // ReactiveIntelligenceEngine — live risk monitoring
+      country && readiness >= 40
+        ? ReactiveIntelligenceEngine.monitorRisks(params as ReportParameters).catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -422,6 +440,25 @@ export class BrainIntegrationService {
     const osintResults = Array.isArray(osintRaw)
       ? osintRaw.slice(0, 5).map(r => ({ title: r.title || '', url: r.url || '', snippet: r.snippet || r.body || '' }))
       : null;
+
+    // ReactiveIntelligenceEngine — opportunity + risk signals
+    const reactiveOpportunitiesRaw = reactiveOpportunitiesResult.status === 'fulfilled' ? reactiveOpportunitiesResult.value as any[] | null : null;
+    const reactiveOpportunities = Array.isArray(reactiveOpportunitiesRaw)
+      ? reactiveOpportunitiesRaw.slice(0, 5).map(o => ({ id: o.id || '', type: o.type || 'opportunity', description: o.description || o.signal || '', signal: o.signal || '' }))
+      : null;
+
+    const reactiveRisksRaw = reactiveRisksResult.status === 'fulfilled' ? reactiveRisksResult.value as any[] | null : null;
+    const reactiveRisks = Array.isArray(reactiveRisksRaw)
+      ? reactiveRisksRaw.slice(0, 5).map(r => ({ id: r.id || '', type: r.type || 'risk', description: r.description || r.signal || '', signal: r.signal || '' }))
+      : null;
+
+    // ConsultantGate — sync evaluation of case completeness
+    const gateStatus = (() => {
+      try {
+        const result = ConsultantGateService.evaluate(params as ReportParameters);
+        return { isReady: result.isReady, missing: result.missing, summary: result.summary as Record<string, string> };
+      } catch { return null; }
+    })();
 
     // GlobalIntelligenceEngine — sync reference engagement matching
     const referenceEngagements = (() => {
@@ -940,6 +977,29 @@ export class BrainIntegrationService {
       if (derivedIndices.cri) promptParts.push(`**CRI (Country Risk):** ${derivedIndices.cri.score ?? derivedIndices.cri.value ?? JSON.stringify(derivedIndices.cri).substring(0, 80)}`);
     }
 
+    // ── Reactive Intelligence Signals ─────────────────────────────────────────
+    if ((reactiveOpportunities && reactiveOpportunities.length) || (reactiveRisks && reactiveRisks.length)) {
+      promptParts.push(`\n### ── REACTIVE INTELLIGENCE ENGINE ──`);
+      if (reactiveOpportunities?.length) {
+        promptParts.push(`**Live Opportunities:**`);
+        reactiveOpportunities.slice(0, 3).forEach(o => promptParts.push(`- [${o.type}] ${o.description || o.signal}`));
+      }
+      if (reactiveRisks?.length) {
+        promptParts.push(`**Live Risks:**`);
+        reactiveRisks.slice(0, 3).forEach(r => promptParts.push(`- [${r.type}] ${r.description || r.signal}`));
+      }
+    }
+
+    // ── Consultant Gate Status ────────────────────────────────────────────────
+    if (gateStatus) {
+      promptParts.push(`\n### ── CONSULTANT GATE ──`);
+      promptParts.push(`**Readiness:** ${gateStatus.isReady ? '✅ READY' : '⚠️ INCOMPLETE'}`);
+      if (!gateStatus.isReady && gateStatus.missing.length) {
+        promptParts.push(`**Missing inputs:** ${gateStatus.missing.join('; ')}`);
+      }
+      promptParts.push(`**Who:** ${gateStatus.summary.who}  |  **Where:** ${gateStatus.summary.where}  |  **Deadline:** ${gateStatus.summary.deadline}`);
+    }
+
     promptParts.push(`${'═'.repeat(70)}\n`);
 
     const result: BrainContext = {
@@ -977,6 +1037,9 @@ export class BrainIntegrationService {
       personaAnalysis,
       referenceEngagements,
       osintResults,
+      gateStatus,
+      reactiveOpportunities,
+      reactiveRisks,
     };
 
     cache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });

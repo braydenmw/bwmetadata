@@ -44,6 +44,8 @@ import { InputValidationEngine } from '../services/InputValidationEngine';
 import ReportOptionsPanel from './ReportOptionsPanel';
 import { ReportLengthRouter, type ReportOptionsMenu, type ReportTierKey } from '../services/ReportLengthRouter';
 import { PDFAnnotationService } from '../services/PDFAnnotationService';
+import { automaticSearchService } from '../services/AutomaticSearchService';
+import { ReportOrchestrator } from '../services/ReportOrchestrator';
 
 // ============================================================================
 // TYPES
@@ -797,6 +799,19 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     setInputValue(initialConsultantQuery);
     onInitialConsultantQueryHandled?.();
   }, [initialConsultantQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── AutomaticSearchService — trigger on country / org change ───────────────
+  useEffect(() => {
+    const country = caseStudy.country.trim();
+    const org = caseStudy.organizationName.trim();
+    if (!country && !org) return;
+    const query = [country, org].filter(Boolean).join(' ');
+    automaticSearchService.triggerSearch(
+      query,
+      `BWConsultantOS case build: ${query}`,
+      'medium'
+    ).catch(() => { /* non-critical */ });
+  }, [caseStudy.country, caseStudy.organizationName]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Auto-inject location context pushed from Live Research ──────────────────
   useEffect(() => {
@@ -4774,6 +4789,37 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
     setGeneratingProgress({ current: 0, total: docsToGenerate.length });
 
+    // ── ReportOrchestrator pre-assembly (best-effort enrichment) ─────────────
+    let orchestratorSummary = '';
+    try {
+      const orchestratorParams = {
+        organizationName: caseStudy.organizationName,
+        userName: caseStudy.userName,
+        country: caseStudy.country,
+        region: caseStudy.jurisdiction,
+        organizationType: caseStudy.organizationType,
+        userDepartment: caseStudy.contactRole,
+        problemStatement: caseStudy.currentMatter,
+        strategicObjectives: [caseStudy.objectives].filter(Boolean),
+        constraints: caseStudy.constraints,
+        targetAudience: caseStudy.targetAudience,
+        expansionTimeline: caseStudy.decisionDeadline,
+        additionalContext: caseStudy.additionalContext,
+        uploadedDocuments: caseStudy.uploadedDocuments,
+      } as Parameters<typeof ReportOrchestrator.assembleReportPayload>[0];
+      const payload = await ReportOrchestrator.assembleReportPayload(orchestratorParams);
+      const spi = (payload as any).spi;
+      const rroi = (payload as any).rroi;
+      const ethical = (payload as any).ethicalCheck;
+      orchestratorSummary = [
+        spi ? `SPI Score: ${spi.overallScore ?? ''}  |  ${spi.verdict ?? ''}` : '',
+        rroi ? `RROI Projection: ${rroi.projectedROI ?? ''}  |  Breakeven: ${rroi.paybackPeriod ?? ''}` : '',
+        ethical?.passed === false ? `⚠ Ethical flags: ${(ethical.flags ?? []).join(', ')}` : '',
+      ].filter(Boolean).join('\n');
+    } catch {
+      // Non-critical — orchestrator may block on gate; continue without it
+    }
+
     const allResults: Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}> = [];
 
     try {
@@ -4793,7 +4839,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           `Objective: ${caseStudy.currentMatter || 'Not specified'}`,
           `Target Audience: ${caseStudy.targetAudience || 'Not specified'}`,
           `Constraints: ${caseStudy.constraints || 'Standard commercial terms'}`,
-        ].join('\n');
+          orchestratorSummary ? `\n── Report Orchestrator ──\n${orchestratorSummary}` : '',
+        ].filter(Boolean).join('\n');
 
         let content = '';
 
