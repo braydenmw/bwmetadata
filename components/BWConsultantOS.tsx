@@ -47,6 +47,7 @@ import { PDFAnnotationService } from '../services/PDFAnnotationService';
 import { automaticSearchService } from '../services/AutomaticSearchService';
 import { ReportOrchestrator } from '../services/ReportOrchestrator';
 import AgentOrchestrator, { type OrchestratorProgress } from '../services/AgentOrchestrator';
+import { runReasoningPipelineStream } from '../services/ReasoningPipeline';
 
 // ============================================================================
 // TYPES
@@ -2982,25 +2983,18 @@ ${agentRegistry.current.toManifest()}`;
     onChunk: (text: string) => void
   ): Promise<string> => {
     try {
+      // ── Step 1: Try backend (Railway / Render / running Express server) ──────
       const systemPrompt = buildConsultantPrompt(userInput, context);
-
       try {
         const endpointResponse = await fetch('/api/ai/consultant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: userInput,
-            context: {
-              phase: context,
-              caseStudy,
-              consultantCaseBrief,
-              consultantGateReady,
-              consultantGateMissing
-            },
+            context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
             systemPrompt
           })
         });
-
         if (endpointResponse.ok) {
           const payload = await endpointResponse.json() as Record<string, unknown>;
           captureAugmentedAIFromPayload(payload);
@@ -3016,32 +3010,49 @@ ${agentRegistry.current.toManifest()}`;
             return endpointText;
           }
         }
-      } catch (endpointError) {
-        console.warn('Unified consultant endpoint unavailable for streaming path, using legacy stream:', endpointError);
-      }
+      } catch { /* backend unavailable — use reasoning pipeline below */ }
 
-      const stream = await chatSession.current.sendMessageStream({
-        message: `${systemPrompt}\n\nUser says: ${userInput}`
-      });
+      // ── Steps 2–4: THINK → REASON → SOLVE → ANSWER (ReasoningPipeline) ─────
+      //
+      //   Step 2 (Thought)   — AI classifies and reasons through the problem
+      //   Step 3 (Solution)  — AI determines best response approach
+      //   Step 4 (Answer)    — AI streams the grounded final answer
+      //
+      // Extract document content from the user's message for Step 2 context.
+      const docContentMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i)
+        || userInput.match(/\[([^\]]+\.pdf[^\]]*?)\]/i);
+      const documentContext = docContentMatch ? docContentMatch[0] : undefined;
 
-      let aggregate = '';
-      for await (const part of stream) {
-        const delta = part?.text || '';
-        if (!delta) continue;
-        aggregate += delta;
-        onChunk(aggregate);
-      }
+      // Build a clean case context map for the reasoning engine
+      const caseContextMap: Record<string, string> = {
+        ...(caseStudy.organizationName ? { Organization: caseStudy.organizationName } : {}),
+        ...(caseStudy.country ? { Country: caseStudy.country } : {}),
+        ...(caseStudy.organizationType ? { Type: caseStudy.organizationType } : {}),
+        ...(caseStudy.objectives ? { Objective: caseStudy.objectives } : {}),
+        ...(caseStudy.currentMatter ? { Matter: caseStudy.currentMatter } : {}),
+        ...(caseStudy.targetAudience ? { Audience: caseStudy.targetAudience } : {}),
+        ...(caseStudy.jurisdiction ? { Jurisdiction: caseStudy.jurisdiction } : {}),
+      };
 
-      const finalText = aggregate.trim();
-      if (!finalText || /chat service unavailable/i.test(finalText)) {
-        const fallback = buildNaturalFallbackReply(userInput);
-        onChunk(fallback);
-        return fallback;
-      }
+      const result = await runReasoningPipelineStream(
+        {
+          userMessage: userInput,
+          documentContext,
+          caseContext: Object.keys(caseContextMap).length ? caseContextMap : undefined,
+          brainBlock: context || undefined,
+        },
+        (streamedAnswer) => onChunk(streamedAnswer)
+      );
 
-      return finalText;
+      if (result.answer?.trim()) return result.answer.trim();
+
+      // ── Last resort fallback ─────────────────────────────────────────────────
+      const fallback = buildNaturalFallbackReply(userInput);
+      onChunk(fallback);
+      return fallback;
+
     } catch (error) {
-      console.warn('Streaming response failed, falling back to non-streaming:', error);
+      console.warn('[processWithAIStream] Pipeline failed:', error);
       const fallbackText = await processWithAI(userInput, context);
       onChunk(fallbackText);
       return fallbackText;
