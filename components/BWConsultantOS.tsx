@@ -47,7 +47,8 @@ import { PDFAnnotationService } from '../services/PDFAnnotationService';
 import { automaticSearchService } from '../services/AutomaticSearchService';
 import { ReportOrchestrator } from '../services/ReportOrchestrator';
 import AgentOrchestrator, { type OrchestratorProgress } from '../services/AgentOrchestrator';
-import { runReasoningPipelineStream } from '../services/ReasoningPipeline';
+import { runReasoningPipelineStream, runReasoningPipeline } from '../services/ReasoningPipeline';
+import { runIssuePipeline } from '../services/IssueSolutionPipeline';
 
 // ============================================================================
 // TYPES
@@ -2958,19 +2959,33 @@ ${agentRegistry.current.toManifest()}`;
           }
         }
       } catch (endpointError) {
-        console.warn('Unified consultant endpoint unavailable, using legacy chat session:', endpointError);
+        console.warn('Unified consultant endpoint unavailable, using ReasoningPipeline:', endpointError);
       }
 
-      const response = await chatSession.current.sendMessage({
-        message: `${systemPrompt}\n\nUser says: ${userInput}`
+      // ── Fallback: ReasoningPipeline (non-streaming) ─────────────────────────────
+      //  Run engines + full 4-step reasoning before returning answer.
+      const intelligenceBlock = await runIssuePipeline({
+        issue: userInput,
+        country: caseStudy.country || undefined,
+        organizationName: caseStudy.organizationName || undefined,
+        organizationType: caseStudy.organizationType || undefined,
+        objectives: caseStudy.objectives || undefined,
+        currentMatter: caseStudy.currentMatter || undefined,
+      }).catch(() => undefined);
+
+      const reasoningResult = await runReasoningPipeline({
+        userMessage: userInput,
+        caseContext: {
+          ...(caseStudy.organizationName ? { Organization: caseStudy.organizationName } : {}),
+          ...(caseStudy.country ? { Country: caseStudy.country } : {}),
+          ...(caseStudy.currentMatter ? { Matter: caseStudy.currentMatter } : {}),
+        },
+        brainBlock: context || undefined,
+        intelligenceBlock: intelligenceBlock || undefined,
       });
 
-      const responseText = response.text?.trim();
-      if (!responseText || /chat service unavailable|AI service unavailable|Configure AWS credentials/i.test(responseText)) {
-        return buildNaturalFallbackReply(userInput);
-      }
-
-      return responseText;
+      if (reasoningResult.answer?.trim()) return reasoningResult.answer.trim();
+      return buildNaturalFallbackReply(userInput);
     } catch (error) {
       console.error('AI processing error:', error);
       return buildNaturalFallbackReply(userInput);
@@ -3034,12 +3049,36 @@ ${agentRegistry.current.toManifest()}`;
         ...(caseStudy.jurisdiction ? { Jurisdiction: caseStudy.jurisdiction } : {}),
       };
 
+      // ── IssueSolutionPipeline — run all 7 analysis engines in parallel ───────
+      //
+      //   GlobalIssueResolver   → issue classification + root causes
+      //   SituationAnalysisEngine → 7-perspective analysis
+      //   ProblemToSolutionGraph  → leverage points
+      //   HistoricalParallelMatcher → real historical case matches
+      //   MotivationDetector      → hidden risk signals
+      //   NSILIntelligenceHub     → strategic trust score
+      //   DecisionPipeline        → decision frame + immediate actions
+      //
+      //   All run synchronously (no external API) so the await is fast.
+      const intelligenceBlock = await runIssuePipeline({
+        issue: userInput,
+        country: caseStudy.country || undefined,
+        organizationName: caseStudy.organizationName || undefined,
+        organizationType: caseStudy.organizationType || undefined,
+        objectives: caseStudy.objectives || undefined,
+        currentMatter: caseStudy.currentMatter || undefined,
+        constraints: (caseStudy as any).constraints || undefined,
+        sector: (caseStudy as any).sector || caseStudy.organizationType || undefined,
+        uploadedDocuments: [],
+      }).catch(() => undefined);
+
       const result = await runReasoningPipelineStream(
         {
           userMessage: userInput,
           documentContext,
           caseContext: Object.keys(caseContextMap).length ? caseContextMap : undefined,
           brainBlock: context || undefined,
+          intelligenceBlock: intelligenceBlock || undefined,
         },
         (streamedAnswer) => onChunk(streamedAnswer)
       );

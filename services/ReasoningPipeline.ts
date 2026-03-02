@@ -16,6 +16,7 @@
 
 import { callTogether } from './togetherAIService';
 import { SYSTEM_INSTRUCTION_SHORT } from './aiPolicy';
+import type { IntelligenceBlock } from './IssueSolutionPipeline';
 
 export interface ReasoningInput {
   /** Raw user message */
@@ -24,8 +25,16 @@ export interface ReasoningInput {
   documentContext?: string;
   /** Current case study fields */
   caseContext?: Record<string, string>;
-  /** Brain/intelligence enrichment block */
+  /** Brain/intelligence enrichment block (legacy string) */
   brainBlock?: string;
+  /**
+   * Structured intelligence from IssueSolutionPipeline.
+   * Contains issue classification, root causes, leverage points,
+   * historical parallels, NSIL score and decision frame.
+   * When present this is injected as a rich dedicated section
+   * in the THINK prompt so the AI reasons from real analysis.
+   */
+  intelligenceBlock?: IntelligenceBlock;
   /** Prior conversation turns */
   conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
@@ -43,6 +52,56 @@ export interface ReasoningOutput {
   documentDriven: boolean;
   /** Whether full reasoning completed or short-circuit used */
   fullReasoning: boolean;
+}
+
+// ─── Intelligence block formatter ────────────────────────────────────────────
+
+/**
+ * Formats the structured IntelligenceBlock output from IssueSolutionPipeline
+ * into a dedicated THINK prompt section.
+ * Falls back to the legacy `brainBlock` string if no structured block exists.
+ */
+function formatIntelligenceBlock(
+  structured?: IntelligenceBlock,
+  legacy?: string
+): string {
+  if (structured?.complete) {
+    const parts: string[] = ['\n\n## ISSUE INTELLIGENCE (from analysis engines):'];
+    parts.push(`**Classified issue type:** ${structured.issueClassification}`);
+
+    if (structured.rootCauses.length) {
+      parts.push(`\n**Root causes:**\n${structured.rootCauses.map(c => `  • ${c}`).join('\n')}`);
+    }
+    if (structured.leveragePoints.length) {
+      parts.push(`\n**Key leverage points:**\n${structured.leveragePoints.map(l => `  • ${l}`).join('\n')}`);
+    }
+    if (structured.historicalParallels.length) {
+      parts.push(`\n**Matched historical cases:**\n${structured.historicalParallels.map(h => `  • ${h}`).join('\n')}`);
+    }
+    if (structured.hiddenRisks.length) {
+      parts.push(`\n**Hidden risks detected:**\n${structured.hiddenRisks.map(r => `  • ${r}`).join('\n')}`);
+    }
+    if (structured.strategicScore > 0) {
+      parts.push(`\n**NSIL trust score:** ${structured.strategicScore}/100 — ${structured.nsилSummary}`);
+    }
+    if (structured.situationSummary) {
+      parts.push(`\n**Situation analysis:** ${structured.situationSummary.slice(0, 600)}`);
+    }
+    if (structured.decisionFrame) {
+      parts.push(`\n**Decision frame:** ${structured.decisionFrame}`);
+    }
+    if (structured.immediateActions.length) {
+      parts.push(`\n**Recommended actions:**\n${structured.immediateActions.map(a => `  • ${a}`).join('\n')}`);
+    }
+    return parts.join('\n');
+  }
+
+  // Legacy fallback: raw string blob from BrainIntegrationService
+  if (legacy) {
+    return `\n\n## INTELLIGENCE ENRICHMENT:\n${legacy.slice(0, 2000)}`;
+  }
+
+  return '';
 }
 
 // ─── Internal reasoning prompt ────────────────────────────────────────────────
@@ -72,7 +131,7 @@ You are about to respond to a user. Before writing your answer, you MUST reason 
 
 ## CURRENT CASE CONTEXT:
 ${caseLines}${docBlock}${historyBlock}
-${input.brainBlock ? `\n## INTELLIGENCE ENRICHMENT:\n${input.brainBlock.slice(0, 2000)}` : ''}
+${formatIntelligenceBlock(input.intelligenceBlock, input.brainBlock)}
 
 ---
 
