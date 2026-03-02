@@ -3529,6 +3529,8 @@ ${agentRegistry.current.toManifest()}`;
       }
     }
 
+    // Capture before files are cleared — used to defer showing ReportOptionsPanel until after AI responds
+    const hadFileUpload = uploadedFiles.length > 0;
     const discoveredDocs: DocumentOption[] = [];
 
     // Process uploaded files
@@ -3539,7 +3541,8 @@ ${agentRegistry.current.toManifest()}`;
       for (let index = 0; index < uploadedFiles.length; index += 1) {
         const file = uploadedFiles[index];
         const fileContent = fileContents[index] || '';
-        if (fileContent.length < 400 || file.name.toLowerCase().endsWith('.pdf')) {
+        // Skip only if too short — PDFs are now included if text was successfully extracted via AI
+        if (fileContent.length < 400) {
           continue;
         }
 
@@ -3622,7 +3625,7 @@ ${agentRegistry.current.toManifest()}`;
       setReportOptionsDocTitle(uploadedFiles[0]?.name.replace(/\.[^/.]+$/, '') ?? 'Uploaded Document');
       setReportOptionsDocType('Uploaded Document');
       setReportOptionsMenu(uploadMenu);
-      setShowReportOptions(true);
+      // showReportOptions is deferred — shown AFTER the AI has responded with its document analysis
     }
 
     const userMessagePhase = readinessScore < 55 ? 'discovery' : readinessScore < 80 ? 'analysis' : 'recommendations';
@@ -4031,6 +4034,11 @@ Respond to the user's intent first, then advance the case with one follow-up if 
           : 'Continue sharing details — the consultant is building your case in real time.';
       setReactiveDraftStatus(reactiveStatusText);
       setReactiveDraftHint(reactiveHintText);
+
+      // Show report options AFTER AI has demonstrated it understood the document
+      if (hadFileUpload) {
+        setShowReportOptions(true);
+      }
 
       // Live Intel: fetch real data for detected country
       if (caseDraft.country) {
@@ -6178,86 +6186,86 @@ Use concrete facts from the case. No template language. Write the complete repor
                   )}
                 </>
               )}
-              
+              {/* Report Options Panel — inside scroll area, appears after AI document analysis */}
+              {showReportOptions && reportOptionsMenu && (
+                <div className="px-2 pt-6 pb-4 max-w-3xl mx-auto w-full">
+                  <ReportOptionsPanel
+                    menu={reportOptionsMenu}
+                    documentTitle={reportOptionsDocTitle}
+                    documentType={reportOptionsDocType}
+                    onSelectTier={(tierKey: ReportTierKey, includeAnnotation: boolean) => {
+                      setShowReportOptions(false);
+                      const tier = ReportLengthRouter.getTier(tierKey);
+                      setInputValue(
+                        `Generate a ${tier.label} (${tier.wordRange} words, ${tier.sectionCount} sections) based on the uploaded document.\n\nRequired sections:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso prepare key source passage annotations for the annotated PDF export.' : ''}`
+                      );
+                    }}
+                    onAddReport={(_id: string, title: string) => {
+                      setRecommendedDocs(prev => {
+                        if (prev.some(d => d.title === title)) return prev;
+                        return [...prev, {
+                          id: `options-panel-${Date.now()}`,
+                          title,
+                          description: `Additional report selected from document options panel`,
+                          icon: <FileText size={18} />,
+                          category: 'report' as const,
+                          relevance: 80,
+                          rationale: 'Selected from report options panel after document upload analysis.',
+                          pageRange: '8-20 pages',
+                          supportingDocuments: [],
+                        }];
+                      });
+                    }}
+                    onAddLetter={(_id: string, title: string) => {
+                      setRecommendedDocs(prev => {
+                        if (prev.some(d => d.title === title)) return prev;
+                        return [...prev, {
+                          id: `options-letter-${Date.now()}`,
+                          title,
+                          description: `Letter selected from document options panel`,
+                          icon: <Mail size={18} />,
+                          category: 'letter' as const,
+                          relevance: 75,
+                          rationale: 'Selected from letter options panel after document upload analysis.',
+                          pageRange: '1-4 pages',
+                          supportingDocuments: [],
+                        }];
+                      });
+                    }}
+                    onGenerateAnnotatedPDF={() => {
+                      const text = uploadedFileContentsRef[0] ?? '';
+                      const paragraphs = text
+                        .split(/\n\n+/)
+                        .filter(p => p.trim().length > 120)
+                        .slice(0, 10);
+                      const annotations = paragraphs.map((p, i) => ({
+                        label: `Passage ${i + 1}`,
+                        sourceText: p.slice(0, 300),
+                        analysisText:
+                          'Key passage from uploaded document. Submit the document in chat to generate full OS annotations with NSIL, HistoricalMatcher, and PartnerIntelligence analysis.',
+                        engineSources: ['NSIL', 'HistoricalMatcher'],
+                        severity: 'insight' as const,
+                      }));
+                      PDFAnnotationService.generate({
+                        documentTitle: reportOptionsDocTitle,
+                        documentType: reportOptionsDocType,
+                        jurisdiction: caseStudy.country || 'Unknown',
+                        preparedFor: caseStudy.organizationName || 'Government Member',
+                        reportId: `BWGA-${Date.now()}`,
+                        executiveSummary:
+                          `This annotated PDF was generated from an uploaded document by the BW NEXUS AI system. ` +
+                          `${paragraphs.length} key passages have been flagged. Submit the document in the chat conversation to generate full intelligence-annotated responses for each passage.`,
+                        annotations,
+                      });
+                    }}
+                    onDismiss={() => setShowReportOptions(false)}
+                  />
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* ── Report Options Panel — shown after document upload ─────────── */}
-            {showReportOptions && reportOptionsMenu && (
-              <div className="px-4 py-4 max-w-3xl mx-auto w-full">
-                <ReportOptionsPanel
-                  menu={reportOptionsMenu}
-                  documentTitle={reportOptionsDocTitle}
-                  documentType={reportOptionsDocType}
-                  onSelectTier={(tierKey: ReportTierKey, includeAnnotation: boolean) => {
-                    setShowReportOptions(false);
-                    const tier = ReportLengthRouter.getTier(tierKey);
-                    setInputValue(
-                      `Generate a ${tier.label} (${tier.wordRange} words, ${tier.sectionCount} sections) based on the uploaded document.\n\nRequired sections:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso prepare key source passage annotations for the annotated PDF export.' : ''}`
-                    );
-                  }}
-                  onAddReport={(_id: string, title: string) => {
-                    setRecommendedDocs(prev => {
-                      if (prev.some(d => d.title === title)) return prev;
-                      return [...prev, {
-                        id: `options-panel-${Date.now()}`,
-                        title,
-                        description: `Additional report selected from document options panel`,
-                        icon: <FileText size={18} />,
-                        category: 'report' as const,
-                        relevance: 80,
-                        rationale: 'Selected from report options panel after document upload analysis.',
-                        pageRange: '8-20 pages',
-                        supportingDocuments: [],
-                      }];
-                    });
-                  }}
-                  onAddLetter={(_id: string, title: string) => {
-                    setRecommendedDocs(prev => {
-                      if (prev.some(d => d.title === title)) return prev;
-                      return [...prev, {
-                        id: `options-letter-${Date.now()}`,
-                        title,
-                        description: `Letter selected from document options panel`,
-                        icon: <Mail size={18} />,
-                        category: 'letter' as const,
-                        relevance: 75,
-                        rationale: 'Selected from letter options panel after document upload analysis.',
-                        pageRange: '1-4 pages',
-                        supportingDocuments: [],
-                      }];
-                    });
-                  }}
-                  onGenerateAnnotatedPDF={() => {
-                    const text = uploadedFileContentsRef[0] ?? '';
-                    const paragraphs = text
-                      .split(/\n\n+/)
-                      .filter(p => p.trim().length > 120)
-                      .slice(0, 10);
-                    const annotations = paragraphs.map((p, i) => ({
-                      label: `Passage ${i + 1}`,
-                      sourceText: p.slice(0, 300),
-                      analysisText:
-                        'Key passage from uploaded document. Submit the document in chat to generate full OS annotations with NSIL, HistoricalMatcher, and PartnerIntelligence analysis.',
-                      engineSources: ['NSIL', 'HistoricalMatcher'],
-                      severity: 'insight' as const,
-                    }));
-                    PDFAnnotationService.generate({
-                      documentTitle: reportOptionsDocTitle,
-                      documentType: reportOptionsDocType,
-                      jurisdiction: caseStudy.country || 'Unknown',
-                      preparedFor: caseStudy.organizationName || 'Government Member',
-                      reportId: `BWGA-${Date.now()}`,
-                      executiveSummary:
-                        `This annotated PDF was generated from an uploaded document by the BW NEXUS AI system. ` +
-                        `${paragraphs.length} key passages have been flagged. Submit the document in the chat conversation to generate full intelligence-annotated responses for each passage.`,
-                      annotations,
-                    });
-                  }}
-                  onDismiss={() => setShowReportOptions(false)}
-                />
-              </div>
-            )}
 
             {/* Uploaded Files Preview */}
             {uploadedFiles.length > 0 && (
