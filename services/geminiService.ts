@@ -16,11 +16,10 @@
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config } from './config';
 import { invokeBedrockDirect, invokeBedrockDirectStream, extractFileViaBedrock, isDirectBedrockConfigured } from './awsBedrockService';
-import { callTogether, generateWithTogether, TOGETHER_SYSTEM_PROMPT } from './togetherAIService';
+import { callTogether, generateWithTogether } from './togetherAIService';
+import { SYSTEM_INSTRUCTION, SYSTEM_INSTRUCTION_SHORT } from './aiPolicy';
 
 const API_BASE = '/api';
-
-const SYSTEM_INSTRUCTION = `You are "BWGA AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System and senior strategic advisory partner. You are powered by the BW Global Advisory NSIL Agentic Runtime. Be precise, evidence-based, structured, and professional. Always reason from the uploaded documents and case context when provided.`;
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 

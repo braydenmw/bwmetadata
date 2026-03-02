@@ -20,9 +20,8 @@ export const TOGETHER_DEFAULT_MODEL = 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
 export const TOGETHER_FAST_MODEL    = 'meta-llama/Llama-3.2-3B-Instruct-Turbo';
 export const TOGETHER_VISION_MODEL  = 'meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo';
 
-export const TOGETHER_SYSTEM_PROMPT =
-  'You are BWGA AI — a senior strategic advisory intelligence system powered by the BW NEXUS AI agentic runtime. ' +
-  'Be precise, evidence-based, and professional. Use structured output when appropriate.';
+// Re-exported for back-compat with AgentOrchestrator and other importers
+export { SYSTEM_INSTRUCTION as TOGETHER_SYSTEM_PROMPT } from './aiPolicy';
 
 // ─── Client ───────────────────────────────────────────────────────────────────
 
