@@ -16,8 +16,8 @@ const API_BASE = (import.meta as { env?: Record<string, string> })?.env?.VITE_AP
 
 // ─── Together.ai config ────────────────────────────────────────────────────────
 const TOGETHER_API_URL = 'https://api.together.xyz/v1/chat/completions';
-const TOGETHER_MODEL   = (import.meta as any).env?.VITE_TOGETHER_MODEL || 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
-const _TOGETHER_KEY    = () => (import.meta as any).env?.VITE_TOGETHER_API_KEY as string || '';
+const TOGETHER_MODEL   = (import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_TOGETHER_MODEL || 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
+const _TOGETHER_KEY    = () => (import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_TOGETHER_API_KEY || '';
 
 /**
  * Core Together.ai call — supports streaming and non-streaming.
@@ -619,7 +619,6 @@ export const isDirectBedrockConfigured = (): boolean => {
 };
 
 // SigV4 helpers removed — Together.ai uses a simple Bearer token.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function _signBedrockRequest(_body: string, _path: string): Promise<Record<string, string>> {
   return { 'Content-Type': 'application/json' };
 }
@@ -688,7 +687,7 @@ export async function extractFileViaBedrock(file: File): Promise<string> {
   try {
     const extractedText = ext
       ? `[Attached ${ext.slice(1).toUpperCase()} file: ${file.name} — binary content provided as base64. Describe and extract key contents.]`
-      : (contentBlock as any).text || '';
+      : (contentBlock as Record<string, unknown>).text as string || '';
     if (!extractedText.trim()) return '';
     return await invokeTogetherAI(
       `Extract ALL key information from this document — organizations, countries, objectives, decisions, financials, timelines, stakeholders, findings, and risks. Be thorough and structured.\n\n${extractedText}`,

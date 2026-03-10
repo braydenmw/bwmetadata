@@ -851,7 +851,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       `BWConsultantOS case build: ${query}`,
       'medium'
     ).catch(() => { /* non-critical */ });
-  }, [caseStudy.country, caseStudy.organizationName]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [caseStudy.country, caseStudy.organizationName]);
 
   // ── Auto-inject location context pushed from Live Research ──────────────────
   useEffect(() => {
@@ -1024,7 +1024,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [copied, setCopied] = useState(false);
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);
   const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
-  const [_adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
+  const [_adaptiveQuestionsAsked, _setAdaptiveQuestionsAsked] = useState(0);
   const [_skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
   const [readinessScore, setReadinessScore] = useState(0);
   const [_caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
@@ -3166,8 +3166,8 @@ ${agentRegistry.current.toManifest()}`;
         organizationType: caseStudy.organizationType || docRef?.sector || undefined,
         objectives: caseStudy.objectives || undefined,
         currentMatter: caseStudy.currentMatter || docRef?.title || undefined,
-        constraints: (caseStudy as any).constraints || undefined,
-        sector: (caseStudy as any).sector || caseStudy.organizationType || docRef?.sector || undefined,
+        constraints: caseStudy.constraints || undefined,
+        sector: caseStudy.organizationType || docRef?.sector || undefined,
         uploadedDocuments: [],
       }).catch(() => undefined);
 
@@ -3997,6 +3997,8 @@ ${agentRegistry.current.toManifest()}`;
           })();
 
       let responseContent = '';
+      const isReportGeneration = userContent.startsWith('GENERATE_REPORT_NOW::');
+      const reportTierLabel = isReportGeneration ? userContent.split('\n')[0].replace('GENERATE_REPORT_NOW::', '').trim() : '';
       if (shouldPromptForOutputClarification) {
         responseContent = buildOutputClarificationPrompt(caseDraft);
         displayedMsgIds.current.add(assistantMessageId);
@@ -4062,10 +4064,6 @@ BEHAVIOUR:
 ${thisTurnContext || 'Continuing from prior turns — see case study JSON above.'}
 
 Respond to the user's intent first, then advance the case with one follow-up if needed.`;
-
-        // Detect if this is a report-generation tier request (sent by onSelectTier)
-        const isReportGeneration = userContent.startsWith('GENERATE_REPORT_NOW::');
-        const reportTierLabel = isReportGeneration ? userContent.split('\n')[0].replace('GENERATE_REPORT_NOW::', '').trim() : '';
 
         const docUploadBlock = hadFileUpload
           ? `
@@ -4245,7 +4243,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       // ── END TOOL CALL EXECUTION LOOP ─────────────────────────────────────────
 
       const nextFollowUp = getHighestValueFollowUp(caseDraft);
-      const likelyDirectQuestion = /\?|\b(explain|what|why|how|who|can you|could you|should we)\b/i.test(trimmedUserContent);
+      const _likelyDirectQuestion = /\?|\b(explain|what|why|how|who|can you|could you|should we)\b/i.test(trimmedUserContent);
 
       setExecutionTaskStatus('followup', 'completed', 'Follow-up managed by AI response');
 
@@ -4435,7 +4433,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     buildNaturalFallbackReply,
     enableFullCaseTreeMatching,
     activeIssuePack.label,
-    queueAction
+    queueAction,
+    reportOptionsDocTitle
   ]);
 
   // Handle file selection
@@ -5017,11 +5016,12 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         expansionTimeline: caseStudy.decisionDeadline,
         additionalContext: caseStudy.additionalContext,
         uploadedDocuments: caseStudy.uploadedDocuments,
-      } as Parameters<typeof ReportOrchestrator.assembleReportPayload>[0];
+      } as unknown as Parameters<typeof ReportOrchestrator.assembleReportPayload>[0];
       const payload = await ReportOrchestrator.assembleReportPayload(orchestratorParams);
-      const spi = (payload as any).spi;
-      const rroi = (payload as any).rroi;
-      const ethical = (payload as any).ethicalCheck;
+      const p_ = payload as Record<string, unknown>;
+      const spi = p_.spi;
+      const rroi = p_.rroi;
+      const ethical = p_.ethicalCheck;
       orchestratorSummary = [
         spi ? `SPI Score: ${spi.overallScore ?? ''}  |  ${spi.verdict ?? ''}` : '',
         rroi ? `RROI Projection: ${rroi.projectedROI ?? ''}  |  Breakeven: ${rroi.paybackPeriod ?? ''}` : '',
@@ -5219,7 +5219,7 @@ Use concrete facts from the case. No template language. Write the complete repor
       });
 
       if (result.success && result.documents.length > 0) {
-        setGeneratedDocuments(prev => [...prev, ...result.documents]);
+        setGeneratedDocuments(prev => [...prev, ...(result.documents as typeof prev)]);
         setMessages(prev => [...prev, {
           id: `agent-done-${Date.now()}`,
           role: 'assistant' as const,
