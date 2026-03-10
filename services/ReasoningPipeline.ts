@@ -115,7 +115,7 @@ const THINK_PROMPT = (input: ReasoningInput) => {
     : '  (no case context yet)';
 
   const docBlock = input.documentContext
-    ? `\n\n## UPLOADED DOCUMENT CONTENT:\n${input.documentContext.slice(0, 8000)}`
+    ? `\n\n## UPLOADED DOCUMENT CONTENT:\n${input.documentContext.slice(0, 16000)}`
     : '';
 
   const historyBlock = input.conversationHistory?.length
@@ -159,7 +159,7 @@ const ANSWER_PROMPT = (input: ReasoningInput, reasoning: {
     : '';
 
   const docBlock = input.documentContext
-    ? `\n\n## DOCUMENT CONTENT (you have already read this):\n${input.documentContext.slice(0, 12000)}`
+    ? `\n\n## DOCUMENT CONTENT (you have already read this):\n${input.documentContext.slice(0, 32000)}`
     : '';
 
   return `${SYSTEM_INSTRUCTION_SHORT}
@@ -234,7 +234,7 @@ export async function runReasoningPipeline(
     try {
       answer = await callTogether(
         [{ role: 'user', content: ANSWER_PROMPT(input, reasoning) }],
-        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 2048, temperature: 0.35 }
+        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.35 }
       );
     } catch (err) {
       console.warn('[ReasoningPipeline] Answer step failed:', err);
@@ -252,7 +252,7 @@ export async function runReasoningPipeline(
       });
       answer = await callTogether(
         [{ role: 'user', content: directPrompt }],
-        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 2048, temperature: 0.4 }
+        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.4 }
       );
     } catch (err) {
       console.warn('[ReasoningPipeline] Direct answer also failed:', err);
@@ -321,7 +321,7 @@ export async function runReasoningPipelineStream(
   try {
     await callTogether(
       [{ role: 'user', content: answerPrompt }],
-      { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 2048, temperature: 0.35, stream: true },
+      { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.35, stream: true },
       (token) => {
         accumulated += token;
         onToken(accumulated);

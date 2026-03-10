@@ -3114,9 +3114,10 @@ ${agentRegistry.current.toManifest()}`;
       //   Step 4 (Answer)    — AI streams the grounded final answer
       //
       // Extract document content from the user's message for Step 2 context.
+      // Use capture group [1] to get the raw document body — not the header prefix.
       const docContentMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i)
         || userInput.match(/\[([^\]]+\.pdf[^\]]*?)\]/i);
-      const documentContext = docContentMatch ? docContentMatch[0] : undefined;
+      const documentContext = docContentMatch ? (docContentMatch[1] ?? docContentMatch[0]) : undefined;
 
       // Build a clean case context map for the reasoning engine
       const caseContextMap: Record<string, string> = {
@@ -3165,7 +3166,9 @@ ${agentRegistry.current.toManifest()}`;
 
       const result = await runReasoningPipelineStream(
         {
-          userMessage: userInput,
+          // Use the typed query as the user message so the AI sees a clean prompt,
+          // not 30k document chars embedded in the quoted snippet.
+          userMessage: typedQuery || userInput,
           documentContext,
           caseContext: Object.keys(caseContextMap).length ? caseContextMap : undefined,
           brainBlock: context || undefined,
