@@ -203,6 +203,8 @@ export function getTimezoneFromCoordinates(lat: number, lon: number): string {
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
 import { searchCityLeadership, getWikipediaInfo, getCountryInfo } from './liveLocationSearchService';
 import { fetchWorldBankCountryIndicators } from './externalDataIntegrations';
+import { fetchACLEDEvents } from './acledService';
+import { screenEntitySanctions } from './openSanctionsService';
 
 function toIso2(country: string): string {
   const m: Record<string, string> = {
@@ -255,6 +257,24 @@ async function runCategoryResearch(
             confidence: 0.75,
             timestamp,
           });
+        }
+        // OpenSanctions — screen top leader names for PEP / sanctions flags
+        const leaderNames = results
+          .filter(r => r.extractedData?.leaderName)
+          .map(r => (r.extractedData as { leaderName: string }).leaderName);
+        if (leaderNames.length > 0) {
+          const screen = await screenEntitySanctions(leaderNames[0], 'Person').catch(() => null);
+          if (screen && screen.totalHits > 0) {
+            results.push({
+              source: 'OpenSanctions',
+              title: `Sanctions Check: ${leaderNames[0]}`,
+              snippet: `Status: ${screen.clearanceLevel}. ${screen.flaggedLists.length > 0 ? `Flagged on: ${screen.flaggedLists.join(', ')}.` : 'No active sanctions found.'}`,
+              url: 'https://www.opensanctions.org',
+              confidence: 0.95,
+              extractedData: { sanctionsStatus: screen.clearanceLevel, flaggedLists: screen.flaggedLists },
+              timestamp,
+            });
+          }
         }
         break;
       }
@@ -361,6 +381,18 @@ async function runCategoryResearch(
             }
           }
         } catch { /* GDELT timeout — fall through */ }
+        // ACLED — conflict & political violence events (complements GDELT news)
+        const acledEvents = await fetchACLEDEvents(country, 4).catch(() => []);
+        for (const ev of acledEvents) {
+          results.push({
+            source: `ACLED`,
+            title: `[${ev.type}] ${ev.actor} — ${ev.location}`,
+            snippet: `${ev.date}: ${ev.notes} ${ev.fatalities > 0 ? `(${ev.fatalities} fatalities)` : ''}`.trim(),
+            url: 'https://acleddata.com',
+            confidence: 0.9,
+            timestamp,
+          });
+        }
         if (results.length === 0) {
           const live = await ReactiveIntelligenceEngine.liveSearch(`${cityName} ${country} news development 2025 2026`, { category: 'news', country }).catch(() => []);
           results.push(...live.slice(0, 4).map(r => ({ source: r.source || 'Live Search', title: r.title, snippet: r.snippet, url: r.url, confidence: 0.75, timestamp })));

@@ -59,6 +59,10 @@ import { ConsultantGateService } from './ConsultantGateService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
 import { GlobalIssueResolver } from './GlobalIssueResolver';
 import { selfImprovementEngine } from './SelfImprovementEngine';
+import { getACLEDSummary } from './acledService';
+import { screenEntitySanctions } from './openSanctionsService';
+import { fetchComtradeData } from './unComtradeService';
+import { tavilyResearchQuestion } from './tavilySearchService';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -312,6 +316,10 @@ export class BrainIntegrationService {
       reactiveRisksResult,
       globalIssueResult,
       selfImprovementResult,
+      acledResult,
+      sanctionsResult,
+      comtradeResult,
+      tavilyResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -410,6 +418,22 @@ export class BrainIntegrationService {
       readiness >= 50
         ? selfImprovementEngine.analyzeAndImprove().catch(() => null)
         : Promise.resolve(null),
+      // ACLED — real-time conflict & political violence data
+      country && readiness >= 30
+        ? getACLEDSummary(country).catch(() => null)
+        : Promise.resolve(null),
+      // OpenSanctions — sanctions & PEP screening for the target org/partner
+      orgName
+        ? screenEntitySanctions(orgName).catch(() => null)
+        : Promise.resolve(null),
+      // UN Comtrade — bilateral trade statistics for the target country
+      country && readiness >= 30
+        ? fetchComtradeData(country).catch(() => null)
+        : Promise.resolve(null),
+      // Tavily — deep web research on the strategic question (needs API key)
+      strategicQuestion.length > 20 && readiness >= 40
+        ? tavilyResearchQuestion(strategicQuestion, country).catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -467,6 +491,18 @@ export class BrainIntegrationService {
 
     // SelfImprovementEngine — weight tuning actions (fire-and-forget, no prompt injection needed)
     void (selfImprovementResult); // consumed for side-effects only
+
+    // ACLED — conflict events
+    const acledSummary = acledResult.status === 'fulfilled' ? acledResult.value as import('./acledService').ACLEDSummary | null : null;
+
+    // OpenSanctions — partner screening
+    const sanctionsScreen = sanctionsResult.status === 'fulfilled' ? sanctionsResult.value as import('./openSanctionsService').SanctionsScreenResult | null : null;
+
+    // UN Comtrade — trade data
+    const comtradeData = comtradeResult.status === 'fulfilled' ? comtradeResult.value as import('./unComtradeService').ComtradeData | null : null;
+
+    // Tavily — synthesized research answer
+    const tavilyResearch = tavilyResult.status === 'fulfilled' ? tavilyResult.value as import('./tavilySearchService').TavilySearchResponse | null : null;
 
     // ConsultantGate — sync evaluation of case completeness
     const gateStatus = (() => {
@@ -1012,6 +1048,47 @@ export class BrainIntegrationService {
       if (globalIssueAnalysis.problemStatement) promptParts.push(`**Issue:** ${String(globalIssueAnalysis.problemStatement).substring(0, 200)}`);
       if (globalIssueAnalysis.rootCauses?.length) promptParts.push(`**Root Causes:** ${(globalIssueAnalysis.rootCauses as string[]).slice(0, 3).join('; ')}`);
       if (globalIssueAnalysis.recommendedActions?.length) promptParts.push(`**Actions:** ${(globalIssueAnalysis.recommendedActions as string[]).slice(0, 3).join('; ')}`);
+    }
+
+    // ── ACLED Conflict Intelligence ───────────────────────────────────────────
+    if (acledSummary) {
+      promptParts.push(`\n### ── ACLED CONFLICT INTELLIGENCE ──`);
+      promptParts.push(`**Country Risk Level:** ${acledSummary.riskLevel} | **Recent Events:** ${acledSummary.totalEvents} | **Fatalities:** ${acledSummary.totalFatalities}`);
+      const typeSummary = Object.entries(acledSummary.eventTypeCounts).map(([t, n]) => `${t}(${n})`).join(', ');
+      if (typeSummary) promptParts.push(`**Event Types:** ${typeSummary}`);
+      acledSummary.recentEvents.slice(0, 3).forEach(ev =>
+        promptParts.push(`- [${ev.date}] ${ev.type}: ${ev.actor} in ${ev.location}. ${ev.notes.substring(0, 120)}`)
+      );
+    }
+
+    // ── Sanctions & PEP Screening ─────────────────────────────────────────────
+    if (sanctionsScreen && sanctionsScreen.totalHits > 0) {
+      promptParts.push(`\n### ── SANCTIONS & PEP SCREENING ──`);
+      promptParts.push(`**Entity Screened:** ${sanctionsScreen.query} | **Status:** ${sanctionsScreen.clearanceLevel} | **Hits:** ${sanctionsScreen.totalHits}`);
+      if (sanctionsScreen.flaggedLists.length) promptParts.push(`**Flagged Lists:** ${sanctionsScreen.flaggedLists.join(', ')}`);
+      sanctionsScreen.hits.slice(0, 2).forEach(h => {
+        const tags = [h.isSanctioned ? '🚫 SANCTIONED' : '', h.isPEP ? '⚠️ PEP' : ''].filter(Boolean).join(' ');
+        promptParts.push(`- ${h.name} [${h.schema}] ${tags}${h.position ? ` — ${h.position}` : ''}`);
+      });
+    } else if (sanctionsScreen) {
+      promptParts.push(`\n### ── SANCTIONS & PEP SCREENING ──`);
+      promptParts.push(`**Entity:** ${sanctionsScreen.query} | **Status:** ✅ Clear — No matches on monitored sanctions lists.`);
+    }
+
+    // ── UN Comtrade Trade Data ────────────────────────────────────────────────
+    if (comtradeData) {
+      promptParts.push(`\n### ── UN COMTRADE TRADE INTELLIGENCE ──`);
+      promptParts.push(`**${comtradeData.country} (${comtradeData.year}):** ${comtradeData.tradeToGDPNote}`);
+      if (comtradeData.topPartners.length) promptParts.push(`**Key Trade Partners:** ${comtradeData.topPartners.join(', ')}`);
+    }
+
+    // ── Tavily Deep Research ──────────────────────────────────────────────────
+    if (tavilyResearch) {
+      promptParts.push(`\n### ── TAVILY DEEP RESEARCH ──`);
+      if (tavilyResearch.answer) promptParts.push(`**Synthesized Answer:** ${tavilyResearch.answer.substring(0, 400)}`);
+      tavilyResearch.results.slice(0, 3).forEach(r =>
+        promptParts.push(`- [${r.score.toFixed(2)}] ${r.title}: ${r.content.substring(0, 150)}`)
+      );
     }
 
     // ── Consultant Gate Status ────────────────────────────────────────────────
