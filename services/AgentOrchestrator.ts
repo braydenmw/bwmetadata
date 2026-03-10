@@ -137,7 +137,6 @@ export class AgentOrchestrator {
           organizationName,
           country,
           sector,
-          organizationType,
           objectives: objectives || strategicIntent.join(', '),
           onToken,
         });
@@ -199,11 +198,11 @@ export class AgentOrchestrator {
           // Lazy-import to avoid circular dependencies
           const { default: BrainIntegrationService } = await import('./BrainIntegrationService');
           emit('research', 'Research Agent', 15, `Enriching context for ${country}...`, 'ResearchAgent: BrainIntegrationService.enrich()');
-          brainContext = await BrainIntegrationService.enrich({
-            country,
-            organizationName,
-            organizationType,
-          });
+          brainContext = await BrainIntegrationService.enrich(
+            { country, organizationName, organizationType },
+            50,
+            objectives || strategicIntent.join(', ')
+          );
           emit('research', 'Research Agent', 25, 'Brain context ready', `ResearchAgent: enriched ${Object.keys(brainContext || {}).length} dimensions`);
         } catch (e) {
           emit('research', 'Research Agent', 25, 'Brain context unavailable — continuing', `ResearchAgent: enrich failed: ${e instanceof Error ? e.message : e}`);

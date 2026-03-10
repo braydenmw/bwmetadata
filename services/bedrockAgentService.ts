@@ -73,7 +73,7 @@ async function _signRequest(
   secretKey: string
 ): Promise<Record<string, string>> {
   const now = new Date();
-  const amzDate = now.toISOString().replace(/[:\-]|\..*/g, '').slice(0, 15) + 'Z';
+  const amzDate = now.toISOString().replace(/[:-]|\..*/g, '').slice(0, 15) + 'Z';
   const dateStamp = amzDate.slice(0, 8);
   const service = 'bedrock';
   const host = `bedrock-agent-runtime.${region}.amazonaws.com`;

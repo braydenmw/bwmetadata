@@ -176,7 +176,9 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
   // ─── Extract key intelligence ───────────────────────────────────────────────
 
   const issueClassification: string =
-    (issue as any)?.issueCategory || (issue as any)?.issueType || 'General advisory';
+    (issue as unknown as Record<string, string>)?.issueCategory ||
+    (issue as unknown as Record<string, string>)?.issueType ||
+    'General advisory';
 
   const rootCauses: string[] =
     (graph as any)?.rootCauses?.map((n: any) => n.description || String(n)).filter(Boolean).slice(0, 4) ||

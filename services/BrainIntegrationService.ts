@@ -52,7 +52,7 @@ import { selfLearningEngine } from './selfLearningEngine';
 import { UnbiasedAnalysisEngine } from './UnbiasedAnalysisEngine';
 import PersonaEngine from './PersonaEngine';
 import { DerivedIndexService } from './DerivedIndexService';
-import { findRelevantEngagements, buildAdvisorSnapshot } from './GlobalIntelligenceEngine';
+import { findRelevantEngagements, buildAdvisorSnapshot as _buildAdvisorSnapshot } from './GlobalIntelligenceEngine';
 import { buildAdvisorInputFromParams } from './buildAdvisorInputModel';
 import { osintSearch } from './osintSearchService';
 import { ConsultantGateService } from './ConsultantGateService';
@@ -129,8 +129,6 @@ export interface BrainContext {
   historicalParallels: ParallelMatchResult | null;
   /** Ranked partner candidates — best matched institutional, government, corporate partners */
   rankedPartners: RankedPartner[] | null;
-  /** Derived indices — PRI/TCO/CRI extended scores */
-  derivedIndices: { pri?: any; cri?: any } | null;
   /** Situation analysis — perspectives, blind spots, contrarian view */
   situationAnalysis: { unconsideredNeeds: string[]; blindSpots: string[]; recommendedQuestions: string[]; contrarianView: string } | null;
   /** Self-learning insights — performance-based recommendations */
@@ -496,10 +494,10 @@ export class BrainIntegrationService {
       try {
         const summary = SituationAnalysisEngine.quickSummary(params);
         return {
-          unconsideredNeeds: summary.unconsideredNeeds ?? [],
-          blindSpots: summary.blindSpots ?? [],
-          recommendedQuestions: summary.recommendedQuestions ?? [],
-          contrarianView: summary.contrarianView ?? '',
+          unconsideredNeeds: summary.topUnconsideredNeed ? [summary.topUnconsideredNeed] : [],
+          blindSpots: summary.topBlindSpot ? [summary.topBlindSpot] : [],
+          recommendedQuestions: summary.topQuestion ? [summary.topQuestion] : [],
+          contrarianView: '',
         };
       } catch { return null; }
     })();

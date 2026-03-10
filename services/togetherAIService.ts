@@ -20,8 +20,9 @@ export const TOGETHER_DEFAULT_MODEL = 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
 export const TOGETHER_FAST_MODEL    = 'meta-llama/Llama-3.2-3B-Instruct-Turbo';
 export const TOGETHER_VISION_MODEL  = 'meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo';
 
-// Re-exported for back-compat with AgentOrchestrator and other importers
-export { SYSTEM_INSTRUCTION as TOGETHER_SYSTEM_PROMPT } from './aiPolicy';
+// Imported locally so it can be used as a default parameter in this file
+import { SYSTEM_INSTRUCTION } from './aiPolicy';
+export const TOGETHER_SYSTEM_PROMPT = SYSTEM_INSTRUCTION;
 
 // ─── Client ───────────────────────────────────────────────────────────────────
 
@@ -124,7 +125,7 @@ export async function callTogether(
  */
 export async function generateWithTogether(
   prompt: string,
-  systemInstruction = TOGETHER_SYSTEM_PROMPT,
+  systemInstruction = SYSTEM_INSTRUCTION,
   onToken?: (token: string) => void
 ): Promise<string> {
   return callTogether(

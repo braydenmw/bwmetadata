@@ -5018,10 +5018,10 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         uploadedDocuments: caseStudy.uploadedDocuments,
       } as unknown as Parameters<typeof ReportOrchestrator.assembleReportPayload>[0];
       const payload = await ReportOrchestrator.assembleReportPayload(orchestratorParams);
-      const p_ = payload as Record<string, unknown>;
-      const spi = p_.spi;
-      const rroi = p_.rroi;
-      const ethical = p_.ethicalCheck;
+      const p_ = payload as unknown as Record<string, unknown>;
+      const spi = p_.spi as { overallScore?: unknown; verdict?: unknown } | undefined;
+      const rroi = p_.rroi as { projectedROI?: unknown; paybackPeriod?: unknown } | undefined;
+      const ethical = p_.ethicalCheck as { passed?: boolean; flags?: string[] } | undefined;
       orchestratorSummary = [
         spi ? `SPI Score: ${spi.overallScore ?? ''}  |  ${spi.verdict ?? ''}` : '',
         rroi ? `RROI Projection: ${rroi.projectedROI ?? ''}  |  Breakeven: ${rroi.paybackPeriod ?? ''}` : '',
@@ -5219,7 +5219,16 @@ Use concrete facts from the case. No template language. Write the complete repor
       });
 
       if (result.success && result.documents.length > 0) {
-        setGeneratedDocuments(prev => [...prev, ...(result.documents as typeof prev)]);
+        setGeneratedDocuments(prev => [
+          ...prev,
+          ...result.documents.map(d => ({
+            id: d.id,
+            title: d.typeName,
+            content: d.fullMarkdown,
+            category: 'report' as const,
+            htmlContent: d.fullMarkdown,
+          }))
+        ]);
         setMessages(prev => [...prev, {
           id: `agent-done-${Date.now()}`,
           role: 'assistant' as const,
