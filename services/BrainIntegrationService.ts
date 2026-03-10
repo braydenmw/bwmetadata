@@ -57,6 +57,8 @@ import { buildAdvisorInputFromParams } from './buildAdvisorInputModel';
 import { osintSearch } from './osintSearchService';
 import { ConsultantGateService } from './ConsultantGateService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
+import { GlobalIssueResolver } from './GlobalIssueResolver';
+import { selfImprovementEngine } from './SelfImprovementEngine';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -308,6 +310,8 @@ export class BrainIntegrationService {
       osintResult,
       reactiveOpportunitiesResult,
       reactiveRisksResult,
+      globalIssueResult,
+      selfImprovementResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -398,6 +402,14 @@ export class BrainIntegrationService {
       country && readiness >= 40
         ? ReactiveIntelligenceEngine.monitorRisks(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
+      // GlobalIssueResolver — universal problem-solver treating any query as a solvable issue
+      strategicQuestion.length > 20
+        ? new GlobalIssueResolver().resolveIssue(strategicQuestion.substring(0, 300)).catch(() => null)
+        : Promise.resolve(null),
+      // SelfImprovementEngine — runtime weight tuning and regression correction
+      readiness >= 50
+        ? selfImprovementEngine.analyzeAndImprove().catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -449,6 +461,12 @@ export class BrainIntegrationService {
     const reactiveRisks = Array.isArray(reactiveRisksRaw)
       ? reactiveRisksRaw.slice(0, 5).map(r => ({ id: r.id || '', type: r.type || 'risk', description: r.description || r.signal || '', signal: r.signal || '' }))
       : null;
+
+    // GlobalIssueResolver — structured issue analysis
+    const globalIssueAnalysis = globalIssueResult.status === 'fulfilled' ? globalIssueResult.value as any | null : null;
+
+    // SelfImprovementEngine — weight tuning actions (fire-and-forget, no prompt injection needed)
+    void (selfImprovementResult); // consumed for side-effects only
 
     // ConsultantGate — sync evaluation of case completeness
     const gateStatus = (() => {
@@ -986,6 +1004,14 @@ export class BrainIntegrationService {
         promptParts.push(`**Live Risks:**`);
         reactiveRisks.slice(0, 3).forEach(r => promptParts.push(`- [${r.type}] ${r.description || r.signal}`));
       }
+    }
+
+    // ── Global Issue Resolver ─────────────────────────────────────────────────
+    if (globalIssueAnalysis) {
+      promptParts.push(`\n### ── GLOBAL ISSUE RESOLVER ──`);
+      if (globalIssueAnalysis.problemStatement) promptParts.push(`**Issue:** ${String(globalIssueAnalysis.problemStatement).substring(0, 200)}`);
+      if (globalIssueAnalysis.rootCauses?.length) promptParts.push(`**Root Causes:** ${(globalIssueAnalysis.rootCauses as string[]).slice(0, 3).join('; ')}`);
+      if (globalIssueAnalysis.recommendedActions?.length) promptParts.push(`**Actions:** ${(globalIssueAnalysis.recommendedActions as string[]).slice(0, 3).join('; ')}`);
     }
 
     // ── Consultant Gate Status ────────────────────────────────────────────────

@@ -201,43 +201,198 @@ export function getTimezoneFromCoordinates(lat: number, lon: number): string {
 // Uses ReactiveIntelligenceEngine for real-time web search and intelligence
 
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
+import { searchCityLeadership, getWikipediaInfo, getCountryInfo } from './liveLocationSearchService';
+import { fetchWorldBankCountryIndicators } from './externalDataIntegrations';
 
-async function simulateWebSearch(keywords: string[], category: string): Promise<ResearchResult[]> {
-  const results: ResearchResult[] = [];
+function toIso2(country: string): string {
+  const m: Record<string, string> = {
+    'philippines': 'PH', 'vietnam': 'VN', 'indonesia': 'ID', 'thailand': 'TH',
+    'malaysia': 'MY', 'singapore': 'SG', 'australia': 'AU', 'india': 'IN',
+    'china': 'CN', 'japan': 'JP', 'south korea': 'KR', 'united states': 'US',
+    'usa': 'US', 'germany': 'DE', 'united kingdom': 'GB', 'uk': 'GB',
+    'france': 'FR', 'brazil': 'BR', 'mexico': 'MX', 'nigeria': 'NG',
+    'kenya': 'KE', 'ghana': 'GH', 'south africa': 'ZA', 'egypt': 'EG',
+    'uae': 'AE', 'saudi arabia': 'SA', 'turkey': 'TR', 'pakistan': 'PK',
+    'fiji': 'FJ', 'papua new guinea': 'PG', 'myanmar': 'MM', 'cambodia': 'KH',
+    'new zealand': 'NZ', 'canada': 'CA', 'argentina': 'AR', 'chile': 'CL',
+    'sri lanka': 'LK', 'nepal': 'NP', 'bangladesh': 'BD', 'laos': 'LA',
+  };
+  return m[country.toLowerCase()] || country.toUpperCase().substring(0, 2);
+}
+
+async function runCategoryResearch(
+  category: ResearchTask['category'],
+  query: LocationQuery,
+  keywords: string[]
+): Promise<ResearchResult[]> {
   const timestamp = new Date().toISOString();
+  const cityName = query.city || query.query;
+  const country = query.country || '';
+  const results: ResearchResult[] = [];
 
-  // Use ReactiveIntelligenceEngine for real live search
   try {
-    const searchQuery = keywords.slice(0, 3).join(' ');
-    const liveResults = await ReactiveIntelligenceEngine.liveSearch(searchQuery, { category });
-
-    for (const lr of liveResults.slice(0, keywords.length)) {
-      results.push({
-        source: lr.url || getCategorySource(category),
-        title: lr.title || `${keywords[0]} - Intelligence`,
-        snippet: lr.snippet || `Live intelligence for ${searchQuery}.`,
-        url: lr.url,
-        confidence: 0.85,
-        timestamp,
-      });
+    switch (category) {
+      case 'leadership': {
+        const leaders = await searchCityLeadership(cityName, country).catch(() => []);
+        for (const ldr of leaders.slice(0, 3)) {
+          results.push({
+            source: ldr.sourceUrl || 'Wikidata',
+            title: `${ldr.name} — ${ldr.role}`,
+            snippet: [ldr.description, ldr.party ? `Party: ${ldr.party}` : '', ldr.tenure ? `Tenure: ${ldr.tenure}` : ''].filter(Boolean).join('. ') || `${ldr.role} of ${cityName}.`,
+            url: ldr.sourceUrl,
+            confidence: 0.9,
+            extractedData: { leaderName: ldr.name, leaderRole: ldr.role, leaderParty: ldr.party, leaderTenure: ldr.tenure },
+            timestamp,
+          });
+        }
+        const wiki = await getWikipediaInfo(cityName).catch(() => null);
+        if (wiki) {
+          results.push({
+            source: 'Wikipedia',
+            title: `${cityName} — Wikipedia`,
+            snippet: wiki.extract.substring(0, 400),
+            url: wiki.fullUrl,
+            confidence: 0.75,
+            timestamp,
+          });
+        }
+        break;
+      }
+      case 'economy': {
+        const iso = country ? toIso2(country) : '';
+        if (iso) {
+          const wb = await fetchWorldBankCountryIndicators(iso).catch(() => null);
+          if (wb) {
+            const gdpFmt = wb.gdp
+              ? (wb.gdp >= 1e12 ? `$${(wb.gdp / 1e12).toFixed(2)}T` : `$${(wb.gdp / 1e9).toFixed(1)}B`)
+              : null;
+            results.push({
+              source: 'World Bank',
+              title: `${country} Economic Indicators — World Bank ${wb.gdpYear || ''}`,
+              snippet: [
+                gdpFmt ? `GDP: ${gdpFmt}` : null,
+                wb.gdpGrowth != null ? `Growth: ${wb.gdpGrowth.toFixed(1)}%` : null,
+                wb.internetUsersPercent != null ? `Internet users: ${wb.internetUsersPercent.toFixed(0)}%` : null,
+              ].filter(Boolean).join('. '),
+              url: `https://data.worldbank.org/country/${iso}`,
+              confidence: 0.95,
+              extractedData: { gdp: wb.gdp, gdpGrowth: wb.gdpGrowth, gdpYear: wb.gdpYear, internetPct: wb.internetUsersPercent },
+              timestamp,
+            });
+          }
+        }
+        const countryData = await getCountryInfo(country).catch(() => null);
+        if (countryData) {
+          const currencies = Object.keys((countryData.currencies as Record<string, unknown>) || {}).join(', ');
+          const langs = Object.values((countryData.languages as Record<string, string>) || {}).join(', ');
+          results.push({
+            source: 'REST Countries API',
+            title: `${country} Country Profile`,
+            snippet: `Currency: ${currencies || 'N/A'}. Languages: ${langs || 'N/A'}. Population: ${(countryData.population as number)?.toLocaleString() || 'N/A'}. Area: ${(countryData.area as number)?.toLocaleString() || 'N/A'} km².`,
+            url: 'https://restcountries.com',
+            confidence: 0.88,
+            extractedData: { currencies, population: countryData.population, area: countryData.area, languages: langs },
+            timestamp,
+          });
+        }
+        if (results.length < 2) {
+          const live = await ReactiveIntelligenceEngine.liveSearch(keywords.slice(0, 2).join(' '), { category: 'economy', country }).catch(() => []);
+          results.push(...live.slice(0, 3).map(r => ({ source: r.source || 'Live Search', title: r.title, snippet: r.snippet, url: r.url, confidence: 0.75, timestamp })));
+        }
+        break;
+      }
+      case 'demographics': {
+        const countryData = await getCountryInfo(country).catch(() => null);
+        if (countryData) {
+          const langs = Object.values((countryData.languages as Record<string, string>) || {}).join(', ');
+          const pop = countryData.population as number;
+          results.push({
+            source: 'REST Countries API',
+            title: `${country} Demographics`,
+            snippet: `Population: ${pop?.toLocaleString() || 'N/A'}. Languages: ${langs || 'N/A'}. Area: ${(countryData.area as number)?.toLocaleString() || 'N/A'} km². Region: ${(countryData.subregion as string) || (countryData.region as string) || 'N/A'}.`,
+            url: 'https://restcountries.com',
+            confidence: 0.9,
+            extractedData: { population: pop, languages: langs, area: countryData.area, region: countryData.region },
+            timestamp,
+          });
+        }
+        const iso = country ? toIso2(country) : '';
+        if (iso) {
+          const wb = await fetchWorldBankCountryIndicators(iso).catch(() => null);
+          if (wb?.internetUsersPercent != null) {
+            results.push({
+              source: 'World Bank',
+              title: `${country} Digital Access`,
+              snippet: `Internet users: ${wb.internetUsersPercent.toFixed(0)}% of population (World Bank).`,
+              url: `https://data.worldbank.org/country/${iso}`,
+              confidence: 0.9,
+              extractedData: { internetPct: wb.internetUsersPercent },
+              timestamp,
+            });
+          }
+        }
+        if (results.length === 0) {
+          const live = await ReactiveIntelligenceEngine.liveSearch(`${cityName} ${country} population demographics`, { category: 'demographics' }).catch(() => []);
+          results.push(...live.slice(0, 3).map(r => ({ source: r.source || 'Live Search', title: r.title, snippet: r.snippet, url: r.url, confidence: 0.7, timestamp })));
+        }
+        break;
+      }
+      case 'news': {
+        try {
+          const gdeltQ = encodeURIComponent(`"${cityName}" ${country}`);
+          const gdeltRes = await fetch(
+            `https://api.gdeltproject.org/api/v2/doc/doc?query=${gdeltQ}&mode=artlist&maxrecords=5&format=json`,
+            { signal: AbortSignal.timeout(8000) }
+          );
+          if (gdeltRes.ok) {
+            const gdeltData = await gdeltRes.json();
+            const articles = (gdeltData.articles || []) as Array<{ title?: string; url?: string; domain?: string; seendate?: string }>;
+            for (const art of articles.slice(0, 4)) {
+              const rawDate = art.seendate || '';
+              const dateStr = rawDate.replace(/(\d{4})(\d{2})(\d{2})T\d+Z/, '$1-$2-$3');
+              results.push({
+                source: art.domain || 'GDELT',
+                title: art.title || `${cityName} News`,
+                snippet: `${dateStr ? `[${dateStr}] ` : ''}${art.title || ''}`,
+                url: art.url || '',
+                confidence: 0.8,
+                timestamp,
+              });
+            }
+          }
+        } catch { /* GDELT timeout — fall through */ }
+        if (results.length === 0) {
+          const live = await ReactiveIntelligenceEngine.liveSearch(`${cityName} ${country} news development 2025 2026`, { category: 'news', country }).catch(() => []);
+          results.push(...live.slice(0, 4).map(r => ({ source: r.source || 'Live Search', title: r.title, snippet: r.snippet, url: r.url, confidence: 0.75, timestamp })));
+        }
+        break;
+      }
+      case 'infrastructure':
+      case 'investment':
+      case 'projects': {
+        const live = await ReactiveIntelligenceEngine.liveSearch(keywords.slice(0, 3).join(' '), { category, country }).catch(() => []);
+        results.push(...live.slice(0, 5).map(r => ({
+          source: r.source || getCategorySource(category),
+          title: r.title,
+          snippet: r.snippet,
+          url: r.url,
+          confidence: 0.8,
+          timestamp,
+        })));
+        break;
+      }
     }
-  } catch {
-    // Fallback: generate descriptive entries for each keyword if live search unavailable
-  }
+  } catch { /* non-fatal */ }
 
-  // Ensure at least one result per keyword
-  for (const keyword of keywords) {
-    if (!results.some(r => r.title.toLowerCase().includes(keyword.toLowerCase().split(' ')[0]))) {
-      results.push({
-        source: getCategorySource(category),
-        title: `${keyword} - Research`,
-        snippet: `Data point: ${keyword}. Source: ${getCategorySource(category)}.`,
-        confidence: 0.65,
-        timestamp,
-      });
-    }
+  if (results.length === 0) {
+    results.push({
+      source: getCategorySource(category),
+      title: `${cityName} — ${category} data`,
+      snippet: `Research ongoing for ${cityName} ${category} profile.`,
+      confidence: 0.4,
+      timestamp,
+    });
   }
-
   return results;
 }
 
@@ -348,19 +503,71 @@ function synthesizeProfile(
     }],
   };
 
-  // In production, we would parse task results and update the profile
-  // For now, we'll update based on completion status
-  const completedCategories = tasks.filter(t => t.status === 'complete').map(t => t.category);
-  
-  if (completedCategories.length > 0) {
-    profile.knownFor = [`${geocoding.city} - ${geocoding.region}, ${geocoding.country}`];
-    if (completedCategories.includes('infrastructure')) {
-      profile.strategicAdvantages = ['Strategic location', 'Growing infrastructure'];
+  // ── Extract real data from completed research agents ───────────────────────
+  const getTaskResults = (cat: ResearchTask['category']) =>
+    tasks.find(t => t.category === cat && t.status === 'complete')?.results ?? [];
+
+  const econResults = getTaskResults('economy');
+  const wbResult = econResults.find(r => r.source === 'World Bank');
+  if (wbResult?.extractedData) {
+    const ed = wbResult.extractedData as { gdp?: number; gdpGrowth?: number; gdpYear?: string; internetPct?: number };
+    if (ed.gdp) {
+      const f = ed.gdp >= 1e12 ? `$${(ed.gdp / 1e12).toFixed(2)} trillion` : `$${(ed.gdp / 1e9).toFixed(1)} billion`;
+      profile.economics!.gdpLocal = `${f} (${ed.gdpYear || 'latest'}) — World Bank`;
     }
-    if (completedCategories.includes('economy')) {
-      profile.keySectors = ['Services', 'Manufacturing', 'Agriculture'];
-    }
+    if (ed.gdpGrowth != null) profile.economics!.gdpGrowthRate = `${ed.gdpGrowth.toFixed(1)}%`;
   }
+  const restEconResult = econResults.find(r => r.source === 'REST Countries API');
+  if (restEconResult?.extractedData) {
+    const ed = restEconResult.extractedData as { currencies?: string };
+    if (ed.currencies) profile.economics!.majorIndustries = [`Currency: ${ed.currencies}`, ...(profile.economics?.majorIndustries?.filter(i => i !== 'Researching...') ?? [])];
+  }
+
+  const demoResults = getTaskResults('demographics');
+  const demoRest = demoResults.find(r => r.source === 'REST Countries API');
+  if (demoRest?.extractedData) {
+    const ed = demoRest.extractedData as { population?: number; languages?: string };
+    if (ed.population) profile.demographics!.population = ed.population.toLocaleString();
+    if (ed.languages) profile.demographics!.workingAgePopulation = `Languages: ${ed.languages}`;
+  }
+  const wbDemoResult = demoResults.find(r => r.source === 'World Bank');
+  if (wbDemoResult?.extractedData) {
+    const ed = wbDemoResult.extractedData as { internetPct?: number };
+    if (ed.internetPct != null) profile.infrastructure!.internetPenetration = `${ed.internetPct.toFixed(0)}%`;
+  }
+
+  const leadResults = getTaskResults('leadership');
+  const realLeaders = leadResults
+    .filter(r => r.extractedData?.leaderName)
+    .map((r, idx) => {
+      const d = r.extractedData as { leaderName: string; leaderRole: string; leaderParty?: string; leaderTenure?: string };
+      return {
+        id: `leader-research-${idx}`,
+        name: d.leaderName,
+        role: d.leaderRole || 'Political Leader',
+        tenure: d.leaderTenure || 'Current',
+        achievements: [`${d.leaderRole || 'Leader'} of ${geocoding.city}${d.leaderParty ? ` — ${d.leaderParty}` : ''}`],
+        rating: 70,
+        internationalEngagementFocus: false,
+      };
+    });
+  if (realLeaders.length > 0) profile.leaders = realLeaders;
+
+  const newsResults = getTaskResults('news');
+  if (newsResults.length > 0) {
+    profile.recentNews = newsResults.slice(0, 4).map(r => ({
+      date: new Date().toISOString().split('T')[0],
+      title: r.title,
+      summary: r.snippet,
+      source: r.source,
+      link: r.url || '#',
+    }));
+  }
+
+  profile.knownFor = [
+    `${geocoding.city}, ${geocoding.region ? geocoding.region + ', ' : ''}${geocoding.country}`,
+    ...tasks.filter(t => t.status === 'complete' && t.results.length > 0).map(t => `${t.results[0]?.title?.substring(0, 60) || t.category}`),
+  ].filter(Boolean).slice(0, 5);
 
   return profile;
 }
@@ -452,7 +659,7 @@ class LocationResearchManager {
         this.notifyListeners(sessionId);
 
         try {
-          task.results = await simulateWebSearch(task.keywords, task.category);
+          task.results = await runCategoryResearch(task.category, session.query, task.keywords);
           task.status = 'complete';
           task.progress = 100;
           completedTasks++;

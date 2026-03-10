@@ -65,6 +65,7 @@ import { MultiAgentOrchestrator, type SynthesizedAnalysis } from '../services/Mu
 import { PartnerIntelligenceEngine, type PartnerCandidate } from '../services/PartnerIntelligenceEngine';
 import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
 import { selfLearningEngine } from '../services/selfLearningEngine';
+import { selfImprovementEngine } from '../services/SelfImprovementEngine';
 
 // ============================================================================
 // TYPES
@@ -870,6 +871,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
     // ── Start AutonomousScheduler (polls background tasks every tick) ────────────
     autonomousScheduler.start();
+    selfImprovementEngine.analyzeAndImprove().catch(() => null); // self-tune on mount
 
     // ── Subscribe to EventBus — capture intelligence from all background services ──
     const unsubscribeHandlers: Array<() => void> = [];
