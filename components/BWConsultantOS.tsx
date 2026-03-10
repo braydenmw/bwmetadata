@@ -54,10 +54,12 @@ import HistoricalParallelMatcher, { type ParallelMatchResult } from '../services
 import { UnbiasedAnalysisEngine, type FullUnbiasedAnalysis } from '../services/UnbiasedAnalysisEngine';
 import { CounterfactualEngine, type CounterfactualAnalysis } from '../services/CounterfactualEngine';
 import { SituationAnalysisEngine, type SituationAnalysisResult } from '../services/SituationAnalysisEngine';
-import NSILIntelligenceHub, { type QuickAssessment } from '../services/NSILIntelligenceHub';
+import NSILIntelligenceHub, { type QuickAssessment, type IntelligenceReport } from '../services/NSILIntelligenceHub';
 import MotivationDetector from '../services/MotivationDetector';
 import { UserSignalDecoder, type UserSignalReport, type UserInputSnapshot } from '../services/reflexive/UserSignalDecoder';
 import AdversarialReasoningService, { type AdversarialOutputs } from '../services/AdversarialReasoningService';
+import { locationResearchManager } from '../services/agenticLocationIntelligence';
+import { DecisionPipeline, type DecisionPacket } from '../services/DecisionPipeline';
 
 // ============================================================================
 // TYPES
@@ -794,6 +796,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const voiceSpeakingRef = useRef(false);
   const displayedMsgIds = useRef<Set<string>>(new Set());
   const spokenMsgIds = useRef<Set<string>>(new Set());
+  const locationSessionIdRef = useRef<string | null>(null);
+  const locationProfileContextRef = useRef<string>('');
 
   // ── TTS: fires whenever a new assistant message arrives and loading is done ──
   // Completely decoupled from TypewriterText so it always triggers regardless
@@ -4093,6 +4097,32 @@ ${agentRegistry.current.toManifest()}`;
               priorityThemes: [],
             };
 
+            // ── Background location research (fire-and-forget, enriches next turn) ──
+            const locationQuery = [caseDraft.jurisdiction, caseDraft.country].filter(s => s.trim()).join(', ');
+            if (locationQuery && !locationSessionIdRef.current) {
+              locationResearchManager.startResearch(locationQuery).then(session => {
+                locationSessionIdRef.current = session.id;
+                locationResearchManager.subscribe(session.id, updatedSession => {
+                  if (updatedSession.status === 'complete' && updatedSession.profile) {
+                    const p = updatedSession.profile;
+                    locationProfileContextRef.current = [
+                      `## LIVE LOCATION INTELLIGENCE (agenticLocationIntelligence — 7-category agentic research)`,
+                      `Location researched: ${updatedSession.query.city ?? ''}${updatedSession.query.country ? ', ' + updatedSession.query.country : ''}`,
+                      p.knownFor?.length ? `Known for: ${p.knownFor.slice(0, 4).join(', ')}` : '',
+                      p.keySectors?.length ? `Key sectors: ${p.keySectors.slice(0, 4).join(', ')}` : '',
+                      p.strategicAdvantages?.length ? `Strategic advantages: ${p.strategicAdvantages.filter(s => s !== 'Awaiting live data').slice(0, 3).join('; ')}` : '',
+                      p.economics?.majorIndustries?.length ? `Major industries: ${p.economics.majorIndustries.filter(s => s !== 'Researching...').slice(0, 4).join(', ')}` : '',
+                      p.economics?.topExports?.length ? `Top exports: ${p.economics.topExports.filter(s => s !== 'Researching...').slice(0, 3).join(', ')}` : '',
+                      p.demographics?.population && p.demographics.population !== 'Researching...' ? `Population: ${p.demographics.population}` : '',
+                      p.investmentPrograms?.length ? `Investment programs: ${p.investmentPrograms.filter(s => s !== 'Awaiting live data').slice(0, 3).join('; ')}` : '',
+                      p.infrastructureScore ? `Infrastructure score: ${p.infrastructureScore}/100` : '',
+                      p.politicalStability ? `Political stability score: ${p.politicalStability}/100` : '',
+                    ].filter(Boolean).join('\n');
+                  }
+                });
+              }).catch(() => {});
+            }
+
             // ── Tier 1: Run always (even with minimal context) ────────────────
             const [situationResult, nsilResult, userSignalResult, motivationResult] = await Promise.all([
               Promise.resolve<SituationAnalysisResult | null>(
@@ -4127,6 +4157,13 @@ ${agentRegistry.current.toManifest()}`;
                   : null
               ).catch(() => null),
             ]);
+
+            // ── Tier 2.5: Full 19-engine NSIL analysis (readiness >= 50) ──────
+            const nsilFullResult = await (
+              liveReadiness >= 50
+                ? NSILIntelligenceHub.runFullAnalysis(partialParams)
+                : Promise.resolve(null as IntelligenceReport | null)
+            ).catch(() => null as IntelligenceReport | null);
 
             // ── Tier 3: Adversarial reasoning at high readiness (>= 60) ───────
             const adversarialResult = await Promise.resolve<AdversarialOutputs | null>(
@@ -4248,6 +4285,42 @@ ${agentRegistry.current.toManifest()}`;
               );
             }
 
+            // ── TIER 2.5 ENGINE OUTPUTS (readiness >= 50) — 19-engine full analysis ──
+
+            if (nsilFullResult) {
+              const fullRec = nsilFullResult.recommendation;
+              const auto = nsilFullResult.autonomous;
+              const reflexive = nsilFullResult.reflexive;
+              const insights = nsilFullResult.applicableInsights;
+              const persona = nsilFullResult.personaAnalysis;
+              const globalStd = nsilFullResult.globalStandards;
+              const latentAdvs = reflexive?.latentAdvantages?.latentAdvantages ?? [];
+              const actionLabel = { 'proceed': 'PROCEED', 'proceed-with-caution': 'PROCEED WITH CAUTION', 'revise-and-retry': 'REVISE & RETRY', 'do-not-proceed': 'DO NOT PROCEED' }[fullRec.action] ?? fullRec.action.toUpperCase();
+              blocks.push(
+                `## NSIL FULL ANALYSIS — 19-ENGINE UNIFIED ASSESSMENT\n` +
+                `**Master recommendation: ${actionLabel}** (confidence: ${fullRec.confidence}%)\n` +
+                `Summary: ${fullRec.summary}\n` +
+                (fullRec.criticalActions.length ? `Critical actions: ${fullRec.criticalActions.slice(0, 3).join('; ')}\n` : '') +
+                (fullRec.keyRisks.length ? `Key risks: ${fullRec.keyRisks.slice(0, 3).join('; ')}\n` : '') +
+                (fullRec.keyOpportunities.length ? `Key opportunities: ${fullRec.keyOpportunities.slice(0, 3).join('; ')}\n` : '') +
+                `Ethical gate: ${fullRec.ethicalGate.toUpperCase()} | Emotional risk: ${fullRec.emotionalRisk}/100\n` +
+                (auto.creativeStrategies.length ? `Creative strategies: ${auto.creativeStrategies.slice(0, 2).map(s => s.strategy).join('; ')}\n` : '') +
+                (auto.crossDomainInsights.length ? `Cross-domain insights: ${auto.crossDomainInsights.slice(0, 2).map(i => `${i.analogy} (from ${i.sourceModel})`).join('; ')}\n` : '') +
+                (auto.autonomousGoals.length ? `Autonomous goals: ${auto.autonomousGoals.slice(0, 2).map(g => g.goal).join('; ')}\n` : '') +
+                `Scenario outlook: ${auto.scenarioOutlook.riskLevel} | Probability of success: ${auto.scenarioOutlook.probabilityOfSuccess}%` +
+                (latentAdvs.length ? `\nLatent (hidden) advantages: ${latentAdvs.slice(0, 2).map((a: { asset: string }) => a.asset).join('; ')}` : '') +
+                (reflexive?.lifecyclePosition?.currentPhase ? `\nRegional lifecycle stage: ${reflexive.lifecyclePosition.currentPhase}` : '') +
+                (globalStd?.criticalGaps?.length ? `\nIFC compliance gaps: ${globalStd.criticalGaps.slice(0, 2).map((g: { description: string }) => g.description).join('; ')}` : '') +
+                (persona?.synthesis?.overallRecommendation ? `\nMulti-persona debate outcome: ${persona.synthesis.overallRecommendation.replace(/-/g, ' ').toUpperCase()}` : '') +
+                (insights.length ? `\nHistorical AI insights: ${insights.slice(0, 2).map(i => i.insight).join('; ')}` : '')
+              );
+            }
+
+            // ── LOCATION PROFILE (if background research completed) ────────────
+            if (locationProfileContextRef.current) {
+              blocks.push(locationProfileContextRef.current);
+            }
+
             // ── TIER 3 ENGINE OUTPUTS (readiness >= 60) ──────────────────────
 
             if (adversarialResult) {
@@ -4268,9 +4341,9 @@ ${agentRegistry.current.toManifest()}`;
 
             if (blocks.length > 0) {
               advancedIntelligenceBlock =
-                `\n\n## ── ADVANCED INTELLIGENCE LAYER (7-engine NSIL stack — not in standard AI advisory) ──\n\n` +
+                `\n\n## ── ADVANCED INTELLIGENCE LAYER (19-engine NSIL stack + agentic location intelligence — not in standard AI advisory) ──\n\n` +
                 blocks.join('\n\n') +
-                `\n\nAPPLY ALL OF THE ABOVE: Reference the NSIL hub status, surface unconsidered needs the user hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, flag the key unbiased risk, and use Monte Carlo probabilities where relevant. Do not just list these — weave them into expert advisory prose.`;
+                `\n\nAPPLY ALL OF THE ABOVE: Reference the 19-engine NSIL master recommendation, surface unconsidered needs the client hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, surface latent (hidden) advantages the client is underselling, apply the multi-persona debate outcome, flag IFC compliance gaps, use Monte Carlo probabilities, and weave any live location intelligence into expert advisory prose. Do not bullet-list — synthesise into authoritative insight.`;
             }
           } catch (advErr) {
             console.warn('[Advanced Intelligence] non-fatal:', advErr);
@@ -5278,6 +5351,15 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         additionalContext: caseStudy.additionalContext,
         uploadedDocuments: caseStudy.uploadedDocuments,
       } as unknown as Parameters<typeof ReportOrchestrator.assembleReportPayload>[0];
+      // ── DecisionPipeline governance gate ────────────────────────────────
+      let decisionPacket: DecisionPacket | null = null;
+      try {
+        const dpResult = await DecisionPipeline.run(orchestratorParams as unknown as Parameters<typeof DecisionPipeline.run>[0]);
+        decisionPacket = dpResult.packet;
+      } catch {
+        // Non-critical — governance gate may be unavailable in offline mode
+      }
+
       const payload = await ReportOrchestrator.assembleReportPayload(orchestratorParams);
       const p_ = payload as unknown as Record<string, unknown>;
       const spi = p_.spi as { overallScore?: unknown; verdict?: unknown } | undefined;
@@ -5287,6 +5369,9 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         spi ? `SPI Score: ${spi.overallScore ?? ''}  |  ${spi.verdict ?? ''}` : '',
         rroi ? `RROI Projection: ${rroi.projectedROI ?? ''}  |  Breakeven: ${rroi.paybackPeriod ?? ''}` : '',
         ethical?.passed === false ? `⚠ Ethical flags: ${(ethical.flags ?? []).join(', ')}` : '',
+        decisionPacket ? `Governance gate: ${decisionPacket.exports.reportReady ? '✓ PASSED' : '⚠ BLOCKERS'}` : '',
+        decisionPacket?.exports.blockers.length ? `Blockers: ${decisionPacket.exports.blockers.join('; ')}` : '',
+        decisionPacket?.scores?.overall !== undefined ? `Decision score: ${decisionPacket.scores.overall}` : '',
       ].filter(Boolean).join('\n');
     } catch {
       // Non-critical — orchestrator may block on gate; continue without it
