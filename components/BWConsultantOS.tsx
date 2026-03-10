@@ -6671,16 +6671,20 @@ Use concrete facts from the case. No template language. Write the complete repor
                         )}
                         <div className={`whitespace-pre-wrap ${msg.role === 'assistant' ? 'text-[13px] leading-[1.7] text-slate-800' : ''}`}>
                           {msg.role === 'assistant' && msgIdx === messages.length - 1 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
-                            <TypewriterText text={msg.content} speed={75} onStart={() => {
-                              displayedMsgIds.current.add(msg.id);
+                            <TypewriterText text={msg.content} speed={75}
+                              onStart={() => {
+                                displayedMsgIds.current.add(msg.id);
+                              }}
+                              onComplete={() => {
                                 if (voiceEnabled && !spokenMsgIds.current.has(msg.id)) {
-                                spokenMsgIds.current.add(msg.id);
-                                voiceSpeakingRef.current = true;
-                                ttsService.speak(msg.content).finally(() => {
-                                  voiceSpeakingRef.current = false;
-                                });
-                              }
-                            }} />
+                                  spokenMsgIds.current.add(msg.id);
+                                  voiceSpeakingRef.current = true;
+                                  ttsService.speak(msg.content).finally(() => {
+                                    voiceSpeakingRef.current = false;
+                                  });
+                                }
+                              }}
+                            />
                           ) : (
                             <span dangerouslySetInnerHTML={{
                               __html: msg.content
