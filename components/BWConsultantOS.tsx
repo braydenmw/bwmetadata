@@ -34,7 +34,6 @@ import RecommendationScorer, { type RecommendationScore } from '../services/Reco
 import MissionGraphService from '../services/autonomy/MissionGraphService';
 import type { MissionSnapshot } from '../types/autonomy';
 import { RegionalDevelopmentOrchestrator } from '../services/RegionalDevelopmentOrchestrator';
-import type { PartnerCandidate } from '../services/PartnerIntelligenceEngine';
 import BrainIntegrationService, { type BrainContext } from '../services/BrainIntegrationService';
 import { PersistentMemorySystem } from '../services/PersistentMemorySystem';
 import { DocumentTypeRouter } from '../services/DocumentTypeRouter';
@@ -60,6 +59,10 @@ import { UserSignalDecoder, type UserSignalReport, type UserInputSnapshot } from
 import AdversarialReasoningService, { type AdversarialOutputs } from '../services/AdversarialReasoningService';
 import { locationResearchManager } from '../services/agenticLocationIntelligence';
 import { DecisionPipeline, type DecisionPacket } from '../services/DecisionPipeline';
+import { EventBus } from '../services/EventBus';
+import { autonomousScheduler } from '../services/AutonomousScheduler';
+import { MultiAgentOrchestrator, type SynthesizedAnalysis } from '../services/MultiAgentOrchestrator';
+import { PartnerIntelligenceEngine, type PartnerCandidate } from '../services/PartnerIntelligenceEngine';
 
 // ============================================================================
 // TYPES
@@ -798,6 +801,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const spokenMsgIds = useRef<Set<string>>(new Set());
   const locationSessionIdRef = useRef<string | null>(null);
   const locationProfileContextRef = useRef<string>('');
+  const eventBusInsightsRef = useRef<string>('');
+  const multiAgentContextRef = useRef<string>('');
+  const multiAgentRunningRef = useRef(false);
 
   // ── TTS: fires whenever a new assistant message arrives and loading is done ──
   // Completely decoupled from TypewriterText so it always triggers regardless
@@ -859,11 +865,53 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       window.speechSynthesis.getVoices();
       window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
     }
+
+    // ── Start AutonomousScheduler (polls background tasks every tick) ────────────
+    autonomousScheduler.start();
+
+    // ── Subscribe to EventBus — capture intelligence from all background services ──
+    const unsubscribeHandlers: Array<() => void> = [];
+
+    const appendEventInsight = (label: string, content: string) => {
+      const entry = `[${label}] ${content.slice(0, 300)}`;
+      eventBusInsightsRef.current = [
+        ...eventBusInsightsRef.current.split('\n').slice(-12), // keep last 12 entries
+        entry
+      ].join('\n');
+    };
+
+    unsubscribeHandlers.push(
+      EventBus.subscribe('consultantInsightsGenerated', e => {
+        if (e.insights?.length) {
+          appendEventInsight('CONSULTANT_INSIGHTS', e.insights.map((i: { content?: string; text?: string }) => i.content ?? i.text ?? String(i)).join(' | '));
+        }
+      }),
+      EventBus.subscribe('learningUpdate', e => {
+        if (e.message) appendEventInsight('LEARNING_UPDATE', e.message);
+      }),
+      EventBus.subscribe('searchResultReady', e => {
+        if (e.result?.summary) appendEventInsight('SEARCH_RESULT', `${e.query}: ${e.result.summary}`);
+      }),
+      EventBus.subscribe('fullyAutonomousRunComplete', e => {
+        const summary = e.deepThinking?.summary ?? e.deepThinking?.insight ?? '';
+        if (summary) appendEventInsight('AUTONOMOUS_RUN', summary);
+      }),
+      EventBus.subscribe('ecosystemPulse', e => {
+        const pulse = e.signals;
+        if (pulse?.opportunities?.length) appendEventInsight('ECOSYSTEM_PULSE', `Alignment: ${pulse.alignment}% | Opportunities: ${pulse.opportunities.slice(0, 2).join('; ')}`);
+      }),
+      EventBus.subscribe('proactiveDiscovery', e => {
+        if (e.actions?.length) appendEventInsight('PROACTIVE_DISCOVERY', e.actions.slice(0, 3).join('; '));
+      })
+    );
+
     return () => {
       ttsService.stop();
       if (typeof window !== 'undefined' && window.speechSynthesis) {
         window.speechSynthesis.onvoiceschanged = null;
       }
+      autonomousScheduler.stop();
+      unsubscribeHandlers.forEach(unsub => unsub());
     };
   }, []);
 
@@ -4097,6 +4145,40 @@ ${agentRegistry.current.toManifest()}`;
               priorityThemes: [],
             };
 
+            // ── Background MultiAgentOrchestrator (fire-and-forget, enriches next turn) ──
+            if (liveReadiness >= 40 && !multiAgentRunningRef.current && (caseDraft.country || caseDraft.currentMatter)) {
+              multiAgentRunningRef.current = true;
+              const agentProfile = {
+                organizationName: caseDraft.organizationName || undefined,
+                country: caseDraft.country || undefined,
+                region: caseDraft.jurisdiction || undefined,
+                organizationType: caseDraft.organizationType || undefined,
+                industry: caseDraft.organizationType ? [caseDraft.organizationType] : undefined,
+                problemStatement: caseDraft.currentMatter || undefined,
+                strategicIntent: caseDraft.objectives ? [caseDraft.objectives] : undefined,
+              } as Parameters<typeof MultiAgentOrchestrator.synthesizeAnalysis>[0]['organizationProfile'];
+              MultiAgentOrchestrator.synthesizeAnalysis({
+                organizationProfile: agentProfile,
+                query: caseDraft.currentMatter || trimmedUserContent,
+                dataScope: 'comprehensive',
+                includeCustomData: true,
+              }).then((result: SynthesizedAnalysis) => {
+                const synthesis = result.synthesis;
+                const historical = result.historicalPatterns;
+                multiAgentContextRef.current = [
+                  `## MULTI-AGENT SYNTHESIS (6 specialist AI agents — historical, government, banking, corporate, market, risk)`,
+                  synthesis.primaryInsight ? `Primary insight: ${synthesis.primaryInsight}` : '',
+                  synthesis.alternativeViewpoints.length ? `Alternative viewpoints: ${synthesis.alternativeViewpoints.slice(0, 2).join('; ')}` : '',
+                  synthesis.recommendedNextSteps.length ? `Multi-agent recommended next steps: ${synthesis.recommendedNextSteps.slice(0, 3).join('; ')}` : '',
+                  historical.similarCases ? `Similar cases analysed: ${historical.similarCases} | Success rate: ${historical.successRate}% | Typical timeline: ${historical.timeline}` : '',
+                  historical.failurePatterns.length ? `Common failure patterns: ${historical.failurePatterns.slice(0, 2).join('; ')}` : '',
+                  synthesis.dataGaps.length ? `Data gaps flagged by agents: ${synthesis.dataGaps.slice(0, 2).join('; ')}` : '',
+                ].filter(Boolean).join('\n');
+              }).catch(() => { multiAgentRunningRef.current = false; });
+            }
+
+            // ── Synchronous PartnerIntelligenceEngine (pure computation, Tier 2) ────────
+
             // ── Background location research (fire-and-forget, enriches next turn) ──
             const locationQuery = [caseDraft.jurisdiction, caseDraft.country].filter(s => s.trim()).join(', ');
             if (locationQuery && !locationSessionIdRef.current) {
@@ -4319,6 +4401,50 @@ ${agentRegistry.current.toManifest()}`;
             // ── LOCATION PROFILE (if background research completed) ────────────
             if (locationProfileContextRef.current) {
               blocks.push(locationProfileContextRef.current);
+            }
+
+            // ── PARTNER INTELLIGENCE (when org + country + sector available) ───────
+            if (liveReadiness >= 35 && caseDraft.country && (caseDraft.organizationType || caseDraft.objectives)) {
+              try {
+                const candidates: PartnerCandidate[] = [
+                  { id: 'gov-dev-agency', name: 'Government Development Agency', type: 'government', countries: [caseDraft.country.toLowerCase()], sectors: ['regional development', 'policy', 'infrastructure', 'health', 'education'] },
+                  { id: 'multilateral-dev-bank', name: 'Multilateral Development Bank', type: 'multilateral', countries: [caseDraft.country.toLowerCase()], sectors: ['energy', 'housing', 'digital', 'health', 'infrastructure', 'agriculture'] },
+                  { id: 'banking-consortium', name: 'Banking Consortium', type: 'bank', countries: [caseDraft.country.toLowerCase()], sectors: ['banking', 'trade', 'housing', 'energy', 'manufacturing'] },
+                  { id: 'delivery-partner', name: 'Strategic Delivery Partner', type: 'corporate', countries: [caseDraft.country.toLowerCase()], sectors: ['logistics', 'infrastructure', 'digital', 'services', 'construction'] },
+                  { id: 'community-org', name: 'Community / Civil Society Partner', type: 'community', countries: [caseDraft.country.toLowerCase()], sectors: ['social', 'health', 'education', 'environment', 'agriculture'] },
+                ];
+                const ranked = PartnerIntelligenceEngine.rankPartners({
+                  country: caseDraft.country,
+                  sector: caseDraft.organizationType || caseDraft.objectives,
+                  objective: caseDraft.objectives || caseDraft.currentMatter,
+                  constraints: caseDraft.constraints || '',
+                  candidates,
+                });
+                if (ranked.length > 0) {
+                  blocks.push(
+                    `## PARTNER INTELLIGENCE (PartnerIntelligenceEngine — 6-metric scoring)
+` +
+                    ranked.slice(0, 3).map(r =>
+                      `• **${r.partner.name}** (${r.partner.type}) — Total fit: ${r.score.total.toFixed(0)}/100 | ` +
+                      `Partner fit: ${r.score.partnerFit.toFixed(0)} | Policy alignment: ${r.score.policyAlignment.toFixed(0)} | ` +
+                      `Delivery reliability: ${r.score.deliveryReliability.toFixed(0)}\n  Reasons: ${r.reasons.join(', ')}`
+                    ).join('\n')
+                  );
+                }
+              } catch { /* non-fatal */ }
+            }
+
+            // ── MULTI-AGENT CONTEXT (from background run, if ready) ────────────
+            if (multiAgentContextRef.current) {
+              blocks.push(multiAgentContextRef.current);
+            }
+
+            // ── EVENTBUS LIVE INTELLIGENCE (from background services) ────────────
+            if (eventBusInsightsRef.current.trim()) {
+              blocks.push(
+                `## LIVE SYSTEM INTELLIGENCE (EventBus — autonomous background services)\n` +
+                eventBusInsightsRef.current
+              );
             }
 
             // ── TIER 3 ENGINE OUTPUTS (readiness >= 60) ──────────────────────
