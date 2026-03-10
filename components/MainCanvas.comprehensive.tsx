@@ -88,7 +88,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const [showDocumentUpload, setShowDocumentUpload] = useState(false);
 
     const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-        { text: "Hello! I'm your BW Consultant, powered by the NSIL (Nexus Strategic Intelligence Layer) system. I can help you with partnership analysis, risk assessment, financial modeling, document generation, and strategic decision-making. I have access to real-time market intelligence, 27-formula scoring algorithms, and can generate board-ready reports. How can I assist you with your partnership analysis today?", sender: 'bw', timestamp: new Date() }
+        { text: "Welcome — I'm your BW Consultant, here to help you think clearly and move forward with confidence. Whether you're evaluating a partner, entering a market, or structuring a deal — just tell me what you're working on and we'll build your case together.", sender: 'bw', timestamp: new Date() }
     ]);
     const [chatInput, setChatInput] = useState('');
     const chatMessagesEndRef = React.useRef<HTMLDivElement | null>(null);
@@ -126,7 +126,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
             return [...msgs, {
               text: input.includes('thank') 
                 ? "You're welcome! I'm here to support your partnership analysis with full NSIL intelligence. What else can I help with?"
-                : `Hello! I'm your BW Consultant, powered by the NSIL Intelligence Hub with 46 formulas, 8 autonomous engines, and 60 years of methodology knowledge. I can analyse your situation from perspectives you haven't considered. How can I help ${params.organizationName || 'you'} today?`,
+                : `Good to hear from you${params.organizationName ? ', ' + params.organizationName : ''}. Tell me what you're working on — a deal, a market, a partnership — and I'll help you build a clear, confident path forward.`,
               sender: 'bw' as const,
               timestamp: new Date()
             }];

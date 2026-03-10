@@ -1795,6 +1795,75 @@ NEVER:
 `;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// OPENAI TTS — PREMIUM VOICE (server-side, consistent across all environments)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+router.post('/tts', async (req: Request, res: Response) => {
+  try {
+    const { text, voice = 'nova', model = 'tts-1-hd' } = req.body as {
+      text: string;
+      voice?: string;
+      model?: string;
+    };
+
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return res.status(400).json({ error: 'text is required' });
+    }
+
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    if (!OPENAI_API_KEY) {
+      return res.status(503).json({ error: 'TTS unavailable — OPENAI_API_KEY not configured' });
+    }
+
+    // Sanitise: strip markdown, cap at 4096 chars (OpenAI TTS limit)
+    const clean = text
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/#{1,6}\s/g, '')
+      .replace(/\n/g, ' ')
+      .trim()
+      .slice(0, 4096);
+
+    const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,          // tts-1-hd — highest quality
+        input: clean,
+        voice,          // nova: warm, natural, professional
+        response_format: 'mp3',
+        speed: 0.95,    // Slightly measured — consultant delivery
+      }),
+    });
+
+    if (!ttsResponse.ok) {
+      const errBody = await ttsResponse.text().catch(() => '');
+      console.error('[TTS] OpenAI error:', ttsResponse.status, errBody);
+      return res.status(502).json({ error: 'TTS upstream error' });
+    }
+
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Cache-Control', 'no-store');
+    // Stream audio bytes directly to client
+    const reader = ttsResponse.body?.getReader();
+    if (!reader) return res.status(500).json({ error: 'TTS stream unavailable' });
+    const pump = async () => {
+      const { done, value } = await reader.read();
+      if (done) { res.end(); return; }
+      res.write(Buffer.from(value));
+      await pump();
+    };
+    await pump();
+  } catch (error) {
+    console.error('[TTS] Error:', error);
+    res.status(500).json({ error: 'TTS request failed' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // OPENAI GPT-4 INTEGRATION
 // ═══════════════════════════════════════════════════════════════════════════════
 

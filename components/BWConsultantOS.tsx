@@ -49,6 +49,10 @@ import { ReportOrchestrator } from '../services/ReportOrchestrator';
 import AgentOrchestrator, { type OrchestratorProgress } from '../services/AgentOrchestrator';
 import { runReasoningPipelineStream, runReasoningPipeline } from '../services/ReasoningPipeline';
 import { runIssuePipeline } from '../services/IssueSolutionPipeline';
+import { ttsService } from '../services/ttsService';
+import HistoricalParallelMatcher, { type ParallelMatchResult } from '../services/HistoricalParallelMatcher';
+import { UnbiasedAnalysisEngine, type FullUnbiasedAnalysis } from '../services/UnbiasedAnalysisEngine';
+import { CounterfactualEngine, type CounterfactualAnalysis } from '../services/CounterfactualEngine';
 
 // ============================================================================
 // TYPES
@@ -419,8 +423,8 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
   );
 };
 
-// ── Pick the most natural-sounding voice available ───────────────────────────
-const pickHumanVoice = (): SpeechSynthesisVoice | null => {
+// ── Pick the most natural-sounding voice available (kept as browser fallback reference) ──────────
+const _pickHumanVoice = (): SpeechSynthesisVoice | null => {
   const voices = window.speechSynthesis?.getVoices() ?? [];
   // Prefer natural / premium English voices
   const preferred = ['Google UK English Female', 'Google UK English Male', 'Microsoft Zira', 'Microsoft Mark', 'Samantha', 'Karen', 'Daniel', 'Moira', 'Fiona'];
@@ -775,7 +779,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isStreamingResponse, setIsStreamingResponse] = useState(false);
-  const [voiceEnabled] = useState(true);
+  const [voiceEnabled, setVoiceEnabled] = useState<boolean>(() => ttsService.isEnabled());
   const voiceSpeakingRef = useRef(false);
   const displayedMsgIds = useRef<Set<string>>(new Set());
   const spokenMsgIds = useRef<Set<string>>(new Set());
@@ -819,15 +823,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     aiInsights: []
   });
 
-  // Preload browser voices (Chrome loads them async)
+  // Preload browser voices (Chrome loads them async) and sync ttsService on unmount
   useEffect(() => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.getVoices();
       window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
     }
     return () => {
+      ttsService.stop();
       if (typeof window !== 'undefined' && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
         window.speechSynthesis.onvoiceschanged = null;
       }
     };
@@ -2753,11 +2757,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         id: crypto.randomUUID(),
         role: 'assistant',
         content: [
-          'Hello — I am your BW Consultant, powered by the NSIL Agentic Runtime.',
+          'Welcome — I\'m glad you\'re here.',
           '',
-          'I work across strategy, market entry, government engagement, investment structuring, regulatory compliance, and cross-border advisory — producing board-ready reports, letters of intent, and decision briefs.',
+          'I\'m your BW Consultant — think of me as a senior advisor in your corner. I help leaders like you navigate complex opportunities with clarity and confidence.',
           '',
-          'Tell me what decision you are trying to make, and I will start building your case immediately.'
+          'Whether you\'re exploring a new market, evaluating a partnership, approaching government, or structuring an investment — you don\'t need to have everything figured out before we start.',
+          '',
+          'Just tell me what you\'re working on, and we\'ll build your case together.'
         ].join('\n'),
         timestamp: new Date(),
         phase: 'discovery'
@@ -2868,7 +2874,7 @@ ${agentRegistry.current.toManifest()}`;
     const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed);
 
     if (isGreetingOnly) {
-      return 'Hello \u2014 I can help with strategy, risk, partnerships, market entry, compliance, or document drafting. Tell me what decision you are trying to make right now, and I\u2019ll give you a direct recommendation.';
+      return 'Good to hear from you. Tell me what you\'re working on — a deal, a market, a partner, a pitch — and I\'ll help you build a clear path forward.';
     }
 
     // ── DOCUMENT UPLOAD AWARENESS ──
@@ -4014,7 +4020,105 @@ ${agentRegistry.current.toManifest()}`;
           setExecutionTaskStatus('insight', 'completed', `Brain: ${BrainIntegrationService.summarise(brainCtx)}`);
         }
         const brainBlock = brainCtxRef.current?.promptBlock ?? '';
-        // ── PERSISTENT MEMORY — inject up to 5 recent session turns ──
+
+        // ── ADVANCED DECISION INTELLIGENCE (parallel, readiness-gated) ─────────
+        // Engines not normally used in standard AI advisory — run synchronously
+        // (all are pure computation, no async I/O) and inject as context blocks.
+        let advancedIntelligenceBlock = '';
+        if (liveReadiness >= 35 && !isGreetingOnly && !shouldPromptForOutputClarification) {
+          try {
+            const partialParams = {
+              organizationName: caseDraft.organizationName || undefined,
+              organizationType: caseDraft.organizationType || undefined,
+              country: caseDraft.country || undefined,
+              region: caseDraft.jurisdiction || undefined,
+              problemStatement: caseDraft.currentMatter || undefined,
+              strategicIntent: caseDraft.objectives ? [caseDraft.objectives] : undefined,
+              industry: caseDraft.organizationType ? [caseDraft.organizationType] : undefined,
+              targetPartner: caseDraft.organizationName || undefined,
+            };
+
+            // Run three engines in parallel (all pure sync wrapped in Promise.all)
+            const [historicalResult, unbiasedResult, counterfactualResult] = await Promise.all([
+              Promise.resolve<ParallelMatchResult | null>(
+                caseDraft.country || caseDraft.organizationType
+                  ? HistoricalParallelMatcher.match(partialParams)
+                  : null
+              ).catch(() => null),
+              Promise.resolve<FullUnbiasedAnalysis | null>(
+                caseDraft.objectives || caseDraft.currentMatter
+                  ? UnbiasedAnalysisEngine.analyze(partialParams)
+                  : null
+              ).catch(() => null),
+              Promise.resolve<CounterfactualAnalysis | null>(
+                caseDraft.currentMatter || caseDraft.objectives
+                  ? CounterfactualEngine.analyze(partialParams)
+                  : null
+              ).catch(() => null),
+            ]);
+
+            const blocks: string[] = [];
+
+            if (historicalResult && historicalResult.matches.length > 0) {
+              const topMatches = historicalResult.matches.slice(0, 3);
+              blocks.push(
+                `## HISTORICAL PRECEDENTS (HistoricalParallelMatcher — 60-year case library)\n` +
+                `Success rate across similar cases: ${historicalResult.successRate}%\n` +
+                topMatches.map(m =>
+                  `• **${m.title}** (${m.country}, ${m.year}) — ${m.outcome.replace('-', ' ')}. ` +
+                  `Key lesson: ${m.lessonsLearned[0] ?? m.keyFactors[0] ?? '—'}`
+                ).join('\n') +
+                (historicalResult.synthesisInsight ? `\nSynthesis: ${historicalResult.synthesisInsight}` : '') +
+                (historicalResult.commonSuccessFactors.length
+                  ? `\nCommon success factors: ${historicalResult.commonSuccessFactors.slice(0, 3).join(', ')}`
+                  : '') +
+                (historicalResult.commonFailureFactors.length
+                  ? `\nCommon failure factors: ${historicalResult.commonFailureFactors.slice(0, 2).join(', ')}`
+                  : '')
+              );
+            }
+
+            if (unbiasedResult) {
+              const pc = unbiasedResult.prosCons;
+              const topPros = pc.pros.slice(0, 3).map(p => p.point).join('; ');
+              const topCons = pc.cons.slice(0, 3).map(c => c.point).join('; ');
+              const rec = pc.overallAssessment.recommendation;
+              const recLabel = { proceed: 'PROCEED', 'proceed-with-caution': 'PROCEED WITH CAUTION', reconsider: 'RECONSIDER', 'not-recommended': 'NOT RECOMMENDED' }[rec] ?? rec;
+              blocks.push(
+                `## UNBIASED PRO/CON ANALYSIS (UnbiasedAnalysisEngine — balanced assessment)\n` +
+                `Assessment: **${recLabel}** (confidence: ${pc.overallAssessment.confidence}%)\n` +
+                `Pros: ${topPros || '—'}\n` +
+                `Cons: ${topCons || '—'}\n` +
+                `Reasoning: ${pc.overallAssessment.reasoning}` +
+                (unbiasedResult.alternatives.length > 0
+                  ? `\nAlternative options worth considering: ${unbiasedResult.alternatives.slice(0, 2).map(a => a.title).join(', ')}`
+                  : '')
+              );
+            }
+
+            if (counterfactualResult && counterfactualResult.scenarios.length > 0) {
+              const mc = counterfactualResult.monteCarlo;
+              blocks.push(
+                `## COUNTERFACTUAL SCENARIOS (CounterfactualEngine — Monte Carlo)\n` +
+                `Monte Carlo (${mc.iterations} iterations): Median outcome ${mc.distribution.p50.toFixed(0)}% | ` +
+                `Probability of loss: ${mc.probabilityOfLoss.toFixed(0)}% | ` +
+                `VaR (95%): ${mc.valueAtRisk95.toFixed(0)}%\n` +
+                counterfactualResult.scenarios.slice(0, 3).map(s =>
+                  `• **${s.name}** (${s.probability}% probability) — ${s.description}`
+                ).join('\n')
+              );
+            }
+
+            if (blocks.length > 0) {
+              advancedIntelligenceBlock =
+                `\n\n## ── ADVANCED INTELLIGENCE LAYER (engines not in standard AI advisory) ──\n\n` +
+                blocks.join('\n\n') +
+                `\n\nApply all of the above in your response. Reference specific historical precedents, flag the key risk from the unbiased analysis, and note the probability range from Monte Carlo where relevant.`;
+            }
+          } catch (advErr) {
+            console.warn('[Advanced Intelligence] non-fatal:', advErr);
+          }
+        }
         const priorTurns = memoryRef.current.recall('consultant-turns', 5);
         const memoryBlock = priorTurns.length
           ? `\n\n### PRIOR SESSION CONTEXT (${priorTurns.length} remembered turns)\n` +
@@ -4136,8 +4240,8 @@ CRITICAL INSTRUCTION: Write the complete ${reportTierLabel} document NOW. Do NOT
 You MUST write each section in full prose, formatted with ## headers, to the specified word count. Start writing the document immediately with no preamble.` : '';
 
         const effectiveSystemPrompt = isReportGeneration
-          ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}`
-          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}`;
+          ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}${advancedIntelligenceBlock}`
+          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}${advancedIntelligenceBlock}`;
 
         // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
         const effectiveUserContent = isReportGeneration
@@ -6556,19 +6660,12 @@ Use concrete facts from the case. No template language. Write the complete repor
                           {msg.role === 'assistant' && msgIdx === messages.length - 1 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
                             <TypewriterText text={msg.content} speed={75} onStart={() => {
                               displayedMsgIds.current.add(msg.id);
-                              if (voiceEnabled && !spokenMsgIds.current.has(msg.id) && typeof window !== 'undefined' && window.speechSynthesis) {
+                                if (voiceEnabled && !spokenMsgIds.current.has(msg.id)) {
                                 spokenMsgIds.current.add(msg.id);
-                                window.speechSynthesis.cancel();
-                                const visibleText = msg.content.replace(/\*\*(.*?)\*\*/g, '$1');
-                                const utter = new SpeechSynthesisUtterance(visibleText);
-                                const voice = pickHumanVoice();
-                                if (voice) utter.voice = voice;
-                                utter.rate = 0.95;
-                                utter.pitch = 1.04;
-                                utter.volume = 1;
                                 voiceSpeakingRef.current = true;
-                                utter.onend = () => { voiceSpeakingRef.current = false; };
-                                window.speechSynthesis.speak(utter);
+                                ttsService.speak(msg.content).finally(() => {
+                                  voiceSpeakingRef.current = false;
+                                });
                               }
                             }} />
                           ) : (
@@ -6795,6 +6892,33 @@ Use concrete facts from the case. No template language. Write the complete repor
                   }`}
                 >
                   {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+                </button>
+                {/* Voice output (TTS) toggle */}
+                <button
+                  type="button"
+                  title={voiceEnabled ? 'Voice on — click to mute' : 'Voice off — click to enable'}
+                  onClick={() => {
+                    const next = !voiceEnabled;
+                    setVoiceEnabled(next);
+                    ttsService.setEnabled(next);
+                  }}
+                  className={`p-3 border transition-all flex-shrink-0 flex items-center gap-1 ${
+                    voiceEnabled
+                      ? 'bg-blue-50 text-blue-600 border-blue-300 hover:bg-blue-100'
+                      : 'bg-stone-100 text-slate-400 border-stone-300 hover:bg-stone-200'
+                  }`}
+                >
+                  {voiceEnabled ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                  )}
                 </button>
                 <textarea
                   value={inputValue}
