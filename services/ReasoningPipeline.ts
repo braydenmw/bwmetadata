@@ -98,7 +98,7 @@ function formatIntelligenceBlock(
 
   // Legacy fallback: raw string blob from BrainIntegrationService
   if (legacy) {
-    return `\n\n## INTELLIGENCE ENRICHMENT:\n${legacy.slice(0, 4000)}`;
+    return `\n\n## INTELLIGENCE ENRICHMENT:\n${legacy.slice(0, 12000)}`;
   }
 
   return '';
@@ -123,6 +123,8 @@ const THINK_PROMPT = (input: ReasoningInput) => {
     : '';
 
   return `You are about to respond to a user. Before writing your answer, you MUST reason through the problem in three steps. Think carefully — this reasoning shapes the quality of your final answer.
+
+CRITICAL: You MUST answer the user's question directly. If they ask about a person, place, or topic — your reasoning must focus on delivering a substantive factual briefing. Do NOT reason about asking for more context — reason about what you KNOW and how to deliver maximum value immediately.
 
 ## USER MESSAGE:
 "${input.userMessage}"
@@ -176,16 +178,20 @@ const ANSWER_PROMPT = (input: ReasoningInput, reasoning: {
 
 ## CASE CONTEXT:
 ${caseLines || '(none yet)'}${docBlock}${historyBlock}
-${input.brainBlock ? `\n## INTELLIGENCE DATA:\n${input.brainBlock.slice(0, 8000)}` : ''}
+${input.brainBlock ? `\n## INTELLIGENCE DATA:\n${input.brainBlock.slice(0, 16000)}` : ''}
 
 ---
 
-Write your response now. Follow your reasoning. Be direct, specific, and professional.
-- Do NOT repeat "I've captured..." phrases
-- Do NOT run a numbered intake checklist
-- Answer what the user actually asked first
-- Reference specific facts from the document or context if available
-- End with at most ONE follow-up question if genuinely needed`;
+CRITICAL RULES — OBEY THESE:
+1. ANSWER FIRST with substantive factual knowledge. Do NOT ask for context, motive, or clarification before answering.
+2. If asked about a person, place, country, or topic: deliver a comprehensive briefing with real facts, data, and analysis.
+3. Do NOT say "I've captured the key elements" or ask "What outcome are you trying to achieve?" — these phrases are BANNED.
+4. Do NOT run a numbered intake checklist or ask multiple questions.
+5. Sound like a senior consultant who has worked across 80+ countries — confident, direct, and knowledgeable.
+6. Use specific facts from the intelligence data and context if available — cite sources naturally.
+7. After delivering your substantive answer, you may ask at most ONE targeted follow-up question if genuinely useful.
+
+Write your response now. Follow your reasoning. Be direct, specific, and professional.`;
 };
 
 // ─── Pipeline ─────────────────────────────────────────────────────────────────

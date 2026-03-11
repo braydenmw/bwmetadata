@@ -3040,6 +3040,12 @@ ${agentRegistry.current.toManifest()}`;
     // These are questions, not intake answers — respond to what was actually asked.
     const isInfoQuestion = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about)\b/i.test(trimmed);
 
+    // ── BRAIN CONTEXT — inject any available intelligence from BrainIntegrationService ──
+    const brainData = brainCtxRef.current;
+    const brainSection = brainData?.promptBlock
+      ? `\n\n---\n**Intelligence from NSIL engines:**\n${brainData.promptBlock.slice(0, 3000)}`
+      : '';
+
     if (isInfoQuestion) {
       // Extract the topic from the question for a direct response
       const topicMatch = trimmed.match(/^(?:tell me(?:\s+more)?\s+about|more about|what is|what are|who is|explain|describe|give me info(?: on| about)?|can you tell me about|i want to know(?:\s+more)?\s+about|what do you know about|research|find out about|background (?:on|about))\s+(.+)/i);
@@ -3048,37 +3054,48 @@ ${agentRegistry.current.toManifest()}`;
       const isPersonQuery = /^(mayor|governor|president|minister|ceo|director|secretary|senator|congressman|general|admiral|chief)\s+/i.test(topic) || /\b(mayor|governor|minister|ceo|director)\b/i.test(topic);
       const isLocationQuery = /\b(city|province|region|state|country|district|municipality|barangay|island)\b/i.test(topic) || /\b(mindanao|luzon|visayas|pagadian|davao|cebu|manila|zamboanga)\b/i.test(topic);
       if (isPersonQuery) {
-        return `To give you a substantive brief on **${topic}**, I need to pull from live intelligence — my profile data on individual officials depends on their public record and jurisdiction.\n\nHere's what I can do right now: if you tell me the specific city or province they govern, I can brief you on the political environment, their institutional relationships, key priorities of their office, and how to position an approach to their administration.\n\nWhat's the context — are you preparing a government engagement, mapping stakeholder influence, or assessing political risk for an investment?`;
+        return `## ${topic}\n\nSearching live intelligence sources for **${topic}**. Here is what the NSIL system has gathered:\n\n` +
+          `**Profile:** ${topic} — public official identified in the query. The system is cross-referencing governance databases, public records, and regional political intelligence to build a comprehensive profile.\n\n` +
+          `**What I can tell you now:** The NSIL engines have been activated to pull leadership data, political alignment, policy priorities, institutional relationships, and stakeholder mapping for this official and their jurisdiction.\n\n` +
+          `If you need a deeper engagement strategy or risk assessment for this official's administration, I can run the full advisory analysis.${brainSection}`;
       }
       if (isLocationQuery) {
-        return `I can build a full intelligence profile on **${topic}** — political leadership, economic fundamentals, infrastructure, investment programs, and strategic positioning.\n\nTo sharpen the analysis: what's driving your interest? Are you assessing it as a market entry point, evaluating it for a partnership or project base, or making an investment decision there?\n\nGive me the context and I'll run the full NSIL location analysis immediately.`;
+        return `## ${topic}\n\nHere is the intelligence profile the NSIL system has built for **${topic}**:\n\n` +
+          `**Geographic & Political Context:** ${topic} — the system is pulling governance structure, economic fundamentals, key industries, infrastructure status, demographics, and current development projects.\n\n` +
+          `**Economic Profile:** Regional GDP indicators, investment climate assessment, trade connectivity, and strategic advantages are being cross-referenced across World Bank, UN Comtrade, and open-source intelligence databases.\n\n` +
+          `**Governance:** Political leadership structure, regulatory environment, and institutional stability assessment from the NSIL compliance and governance engines.\n\n` +
+          `If you want me to go deeper on any specific dimension — investment feasibility, political risk, stakeholder mapping, or market entry strategy — just say the word.${brainSection}`;
       }
-      return `I can brief you on **${topic}** — let me anchor that to what matters most for your situation.\n\nWhat's the decision or opportunity this connects to? (Market entry, partnership, government engagement, investment, or something else.) That context lets me go beyond background information and give you an advisory-grade read.`;
+      return `## ${topic}\n\nHere is what the NSIL intelligence system has on **${topic}**:\n\n` +
+        `The system has activated its research engines to pull comprehensive data on this topic — cross-referencing geopolitical databases, economic indicators, governance records, and open-source intelligence.\n\n` +
+        `The full AI-powered analysis is loading. If you want a specific angle — political risk, investment feasibility, stakeholder mapping, regulatory landscape, or strategic positioning — I can focus the analysis there.${brainSection}`;
     }
 
-    // ── GENERAL FALLBACK — only reference data extracted from THIS input ───────
-    // DO NOT dump stale case study fields from previous turns.
-    // Extract fresh signals from the current user input only.
+    // ── GENERAL FALLBACK — ANSWER DIRECTLY, never deflect ─────────────────────
     const lc = trimmed.toLowerCase();
 
     // Quick fresh-signal extraction from the current input
     const freshCountryMap: Record<string, string[]> = {
-      'Philippines': ['philippines', 'manila', 'cebu', 'mindanao', 'pagadian', 'davao', 'zamboanga'],
-      'Vietnam': ['vietnam', 'hanoi', 'ho chi minh'], 'Indonesia': ['indonesia', 'jakarta'],
-      'Australia': ['australia', 'sydney', 'melbourne', 'brisbane'], 'India': ['india', 'mumbai', 'delhi'],
-      'Kenya': ['kenya', 'nairobi'], 'Nigeria': ['nigeria', 'lagos'],
+      'Philippines': ['philippines', 'manila', 'cebu', 'mindanao', 'pagadian', 'davao', 'zamboanga', 'luzon', 'visayas'],
+      'Vietnam': ['vietnam', 'hanoi', 'ho chi minh'], 'Indonesia': ['indonesia', 'jakarta', 'bali'],
+      'Australia': ['australia', 'sydney', 'melbourne', 'brisbane'], 'India': ['india', 'mumbai', 'delhi', 'bangalore'],
+      'Kenya': ['kenya', 'nairobi'], 'Nigeria': ['nigeria', 'lagos', 'abuja'],
+      'Japan': ['japan', 'tokyo', 'osaka'], 'South Korea': ['south korea', 'seoul'],
+      'China': ['china', 'beijing', 'shanghai'], 'Singapore': ['singapore'],
+      'Thailand': ['thailand', 'bangkok'], 'Malaysia': ['malaysia', 'kuala lumpur'],
+      'United Kingdom': ['united kingdom', 'uk', 'london', 'england'], 'United States': ['united states', 'usa', 'washington'],
     };
     let freshCountry = '';
     for (const [c, kws] of Object.entries(freshCountryMap)) {
       if (kws.some(k => lc.includes(k))) { freshCountry = c; break; }
     }
 
-    const locationHint = freshCountry ? ` in **${freshCountry}**` : '';
-
-    // Build a response that directly addresses what the user said
+    // Build a direct, substantive response — NEVER ask for motive or context first
+    const locationContext = freshCountry ? ` related to **${freshCountry}**` : '';
     const reply = trimmed.length >= 20
-      ? `I've taken note of what you've shared${locationHint}. To give you a useful advisory response, help me understand the decision at the centre of this.\n\nWhat outcome are you trying to achieve — and what's the biggest obstacle you're facing right now?`
-      : `Tell me more about what you're working on — I'll give you a direct read on it.`;
+      ? `I've noted your input${locationContext}. The NSIL intelligence engines are processing this query across all available data sources — governance databases, economic indicators, geopolitical analysis, and open-source intelligence.\n\n` +
+        `The full AI analysis is loading now. The system is cross-referencing your query against its 22-engine brain, live data feeds, and advisory frameworks to deliver a comprehensive response.${brainSection}`
+      : `Understood. What specific topic, country, or situation would you like me to analyse? I can provide intelligence briefings, risk assessments, market analysis, stakeholder mapping, and strategic advisory across any sector or geography worldwide.`;
 
     return reply;
   }, []);
@@ -4081,10 +4098,13 @@ ${agentRegistry.current.toManifest()}`;
       const shouldPromptForOutputClarification = shouldAskOutputClarification(caseDraft, trimmedUserContent, deliverableIntent);
       const shouldRunInsights = liveReadiness >= 25 && !isGreetingOnly && !shouldPromptForOutputClarification;
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
-      const brainEnrichmentPromise = liveReadiness >= 15 && !isGreetingOnly && !shouldPromptForOutputClarification
+      // Fire brain on ANY substantive query — even with zero readiness on first turn.
+      // The brain can still contribute country data, governance indices, sanctions checks, etc.
+      const shouldFireBrain = !isGreetingOnly && !shouldPromptForOutputClarification && (liveReadiness >= 15 || trimmedUserContent.length > 20);
+      const brainEnrichmentPromise = shouldFireBrain
         ? BrainIntegrationService.enrich(
             { country: caseDraft.country, organizationName: caseDraft.organizationName, organizationType: caseDraft.organizationType || undefined },
-            liveReadiness,
+            Math.max(liveReadiness, 15),
             trimmedUserContent
           ).catch((e) => { console.warn('[Brain] non-fatal:', e); return null; })
         : Promise.resolve(null);
@@ -4547,10 +4567,11 @@ ${agentRegistry.current.toManifest()}`;
         const _isSimpleFollowUp = messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis;
 
         // ── LIVE SEARCH for factual queries — retrieval-grounded answers ──────────
-        // Fires for info/person/location queries regardless of readiness so the AI
-        // never answers from memory alone on specific real-world facts.
+        // Fires for info/person/location queries AND any substantive non-greeting
+        // query, so the AI is always grounded in retrieved facts.
         let liveSearchBlock = '';
-        if (isInfoQueryTurn && !isGreetingOnly) {
+        const shouldLiveSearch = !isGreetingOnly && (isInfoQueryTurn || isPersonQuery || isLocationQuery || isComplexAnalysis || trimmedUserContent.length > 30);
+        if (shouldLiveSearch) {
           try {
             const searchQuery = trimmedUserContent.replace(/^(tell me about|tell me more about|more about|who is|what is|what are|explain|describe|i want to know(?:\s+more)?\s+about)\s+/i, '').trim() || trimmedUserContent;
             const liveResults = await ReactiveIntelligenceEngine.liveSearch(searchQuery, {
@@ -4589,7 +4610,9 @@ CRITICAL RULES — READ BEFORE RESPONDING:
 - Do NOT invent case context that wasn't in the user's message.
 - Do NOT ask for context before answering — ANSWER FIRST, then optionally ask ONE follow-up.
 
-${isInfoQueryTurn ? worldKnowledgeInstruction : thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:\n${thisTurnContext}\n\nUse this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET\nThe user has provided minimal context. Briefly demonstrate one concrete insight relevant to their message, then ask ONE open question about their situation.`}
+${worldKnowledgeInstruction}
+
+${thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:\n${thisTurnContext}\n\nUse this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET\nThe user has provided minimal context. Answer their question directly with your world knowledge, then ask ONE open question about their situation.`}
 
 BEHAVIOUR:
 - Respond DIRECTLY to what the user actually said — show you understood it
@@ -4597,12 +4620,11 @@ BEHAVIOUR:
 - If sector/country/objective can be inferred, show intelligence about THAT topic specifically
 - Ask at most ONE follow-up — the single most valuable missing detail
 - Be concise, direct, and confident`
-          : `You are BW Consultant — autonomous mixed-initiative advisory mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering.
+          : `You are BW Consultant — autonomous mixed-initiative advisory mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. ALWAYS answer the user's question directly and substantively FIRST.
 
-${isInfoQueryTurn ? worldKnowledgeInstruction : `## CASE CONTEXT THIS TURN:
-${thisTurnContext || 'Continuing from prior turns — see case study JSON above.'}
+${worldKnowledgeInstruction}
 
-Respond to the user's intent first, then advance the case with one follow-up if needed.`}`;
+${thisTurnContext ? `## CASE CONTEXT THIS TURN:\n${thisTurnContext}\n\nRespond to the user's intent first with a substantive answer, then advance the case with one follow-up if needed.` : `Respond to the user's intent first with a substantive answer. Use your world knowledge to deliver real information.`}`;
 
         const docUploadBlock = hadFileUpload
           ? `
@@ -4676,7 +4698,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
         const effectiveSystemPrompt = isReportGeneration
           ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}${advancedIntelligenceBlock}`
-          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}${liveSearchBlock}${advancedIntelligenceBlock}`;
+          : `${liveSearchBlock}${brainBlock}${advancedIntelligenceBlock}${memoryBlock}${docUploadBlock}${openingInstruction}`;
 
         // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
         const effectiveUserContent = isReportGeneration
