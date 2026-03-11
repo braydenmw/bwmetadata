@@ -19,7 +19,7 @@ import { documentGenerator } from '../services/locationIntelligenceDocumentGener
 import { osintSearch, type OsintResult } from '../services/osintSearchService';
 import { comprehensiveLiveSearch } from '../services/liveLocationSearchService';
 import { locationResearchManager } from '../services/agenticLocationIntelligence';
-import { multiSourceResearch as multiSourceResearchV1 } from '../services/multiSourceResearchService';
+import { multiSourceResearch as multiSourceResearchV1 } from '../services/multiSourceResearchService_v2';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
