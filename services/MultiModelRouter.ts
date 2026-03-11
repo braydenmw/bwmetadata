@@ -25,6 +25,7 @@ import {
   type TogetherMessage,
   type TogetherOptions,
 } from './togetherAIService';
+import { callGroq, isGroqAvailable, GROQ_DEFAULT_MODEL, GROQ_FAST_MODEL, GROQ_REASONING_MODEL } from './groqService';
 
 // ─── Task Types ─────────────────────────────────────────────────────────────
 
@@ -69,10 +70,11 @@ const TASK_DEFAULTS: Record<AITaskType, Partial<TogetherOptions>> = {
 };
 
 // Fallback chain: if primary model fails, try these in order
+// Groq models are prefixed with 'groq:' to distinguish providers
 const FALLBACK_CHAIN: Record<string, string[]> = {
-  [TOGETHER_FAST_MODEL]:    [TOGETHER_DEFAULT_MODEL],
-  [TOGETHER_DEFAULT_MODEL]: [TOGETHER_FAST_MODEL],
-  [TOGETHER_VISION_MODEL]:  [TOGETHER_DEFAULT_MODEL, TOGETHER_FAST_MODEL],
+  [TOGETHER_FAST_MODEL]:    [TOGETHER_DEFAULT_MODEL, `groq:${GROQ_FAST_MODEL}`, `groq:${GROQ_DEFAULT_MODEL}`],
+  [TOGETHER_DEFAULT_MODEL]: [TOGETHER_FAST_MODEL, `groq:${GROQ_REASONING_MODEL}`, `groq:${GROQ_DEFAULT_MODEL}`, `groq:${GROQ_FAST_MODEL}`],
+  [TOGETHER_VISION_MODEL]:  [TOGETHER_DEFAULT_MODEL, TOGETHER_FAST_MODEL, `groq:${GROQ_DEFAULT_MODEL}`],
 };
 
 // ─── Usage Tracking ─────────────────────────────────────────────────────────
@@ -137,11 +139,22 @@ export async function routeAITask(
     const fallbacks = FALLBACK_CHAIN[model] || [];
     for (const fallbackModel of fallbacks) {
       try {
-        const fallbackResult = await callTogether(
-          messages,
-          { ...mergedOptions, model: fallbackModel },
-          onToken
-        );
+        let fallbackResult: string;
+        if (fallbackModel.startsWith('groq:')) {
+          if (!isGroqAvailable()) continue;
+          const groqModel = fallbackModel.replace('groq:', '');
+          fallbackResult = await callGroq(
+            messages,
+            { model: groqModel, maxTokens: mergedOptions.maxTokens, temperature: mergedOptions.temperature },
+            onToken
+          );
+        } else {
+          fallbackResult = await callTogether(
+            messages,
+            { ...mergedOptions, model: fallbackModel },
+            onToken
+          );
+        }
         logUsage({
           model: fallbackModel,
           taskType,

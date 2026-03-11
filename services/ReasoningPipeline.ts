@@ -15,6 +15,7 @@
  */
 
 import { callTogether } from './togetherAIService';
+import { callGroq, isGroqAvailable, GROQ_REASONING_MODEL } from './groqService';
 import { SYSTEM_INSTRUCTION_SHORT } from './aiPolicy';
 import type { IntelligenceBlock } from './IssueSolutionPipeline';
 import { conversationMemoryManager } from './ConversationMemoryManager';
@@ -247,13 +248,22 @@ export async function runReasoningPipeline(
 
   try {
     const thinkContent = THINK_PROMPT(input) + classificationContext + webSearchBlock + (learningBlock ? `\n${learningBlock}` : '');
-    const thinkRaw = await callTogether(
-      [
-        { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
-        { role: 'user', content: thinkContent },
-      ],
-      { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 600, temperature: 0.2 }
-    );
+    const thinkMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
+      { role: 'user', content: thinkContent },
+    ];
+    const thinkOpts = { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 600, temperature: 0.2 };
+
+    // Race Together.ai vs Groq (gpt-oss-120b deep reasoning): use whichever returns first
+    let thinkRaw: string;
+    if (isGroqAvailable()) {
+      thinkRaw = await Promise.any([
+        callTogether(thinkMessages, thinkOpts),
+        callGroq(thinkMessages, { model: GROQ_REASONING_MODEL, maxTokens: 600, temperature: 0.2 }),
+      ]);
+    } else {
+      thinkRaw = await callTogether(thinkMessages, thinkOpts);
+    }
 
     const jsonMatch = thinkRaw.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
@@ -279,13 +289,21 @@ export async function runReasoningPipeline(
     // Full pipeline: use the thought to ground the answer
     try {
       const answerContent = ANSWER_PROMPT(input, reasoning) + webSearchBlock + (learningBlock ? `\n${learningBlock}` : '');
-      answer = await callTogether(
-        [
-          { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
-          { role: 'user', content: answerContent },
-        ],
-        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.35 }
-      );
+      const answerMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+        { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
+        { role: 'user', content: answerContent },
+      ];
+      const answerOpts = { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.35 };
+
+      // Race Together.ai vs Groq for best latency
+      if (isGroqAvailable()) {
+        answer = await Promise.any([
+          callTogether(answerMessages, answerOpts),
+          callGroq(answerMessages, { maxTokens: 4096, temperature: 0.35 }),
+        ]);
+      } else {
+        answer = await callTogether(answerMessages, answerOpts);
+      }
     } catch (err) {
       console.warn('[ReasoningPipeline] Answer step failed:', err);
     }
@@ -305,13 +323,19 @@ export async function runReasoningPipeline(
         step3_solution: 'Answer directly and professionally.',
         document_driven: Boolean(input.documentContext),
       });
-      answer = await callTogether(
-        [
-          { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
-          { role: 'user', content: directPrompt },
-        ],
-        { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.4 }
-      );
+      const directMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+        { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
+        { role: 'user', content: directPrompt },
+      ];
+      // Race Together vs Groq for the direct fallback too
+      if (isGroqAvailable()) {
+        answer = await Promise.any([
+          callTogether(directMessages, { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.4 }),
+          callGroq(directMessages, { maxTokens: 4096, temperature: 0.4 }),
+        ]);
+      } else {
+        answer = await callTogether(directMessages, { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.4 });
+      }
     } catch (err) {
       console.warn('[ReasoningPipeline] Direct answer also failed:', err);
       answer = '';
@@ -375,13 +399,22 @@ export async function runReasoningPipelineStream(
 
   try {
     const thinkContent = THINK_PROMPT(input) + classificationCtxStream + webSearchBlockStream + (learningBlockStream ? `\n${learningBlockStream}` : '');
-    const thinkRaw = await callTogether(
-      [
-        { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
-        { role: 'user', content: thinkContent },
-      ],
-      { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 600, temperature: 0.2 }
-    );
+    const thinkMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
+      { role: 'user', content: thinkContent },
+    ];
+    const thinkOpts = { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 600, temperature: 0.2 };
+
+    // Race Together.ai vs Groq (gpt-oss-120b deep reasoning) for fastest think
+    let thinkRaw: string;
+    if (isGroqAvailable()) {
+      thinkRaw = await Promise.any([
+        callTogether(thinkMessages, thinkOpts),
+        callGroq(thinkMessages, { model: GROQ_REASONING_MODEL, maxTokens: 600, temperature: 0.2 }),
+      ]);
+    } else {
+      thinkRaw = await callTogether(thinkMessages, thinkOpts);
+    }
     const jsonMatch = thinkRaw.match(/\{[\s\S]*\}/);
     if (jsonMatch) reasoning = JSON.parse(jsonMatch[0]);
   } catch (err) {
@@ -408,12 +441,14 @@ export async function runReasoningPipelineStream(
   let accumulated = '';
   let streamFailed = false;
 
+  const answerMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+    { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
+    { role: 'user', content: answerPrompt },
+  ];
+
   try {
     await callTogether(
-      [
-        { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
-        { role: 'user', content: answerPrompt },
-      ],
+      answerMessages,
       { model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo', maxTokens: 4096, temperature: 0.35, stream: true },
       (token) => {
         accumulated += token;
@@ -421,8 +456,26 @@ export async function runReasoningPipelineStream(
       }
     );
   } catch (err) {
-    console.warn('[ReasoningPipeline] Stream failed:', err);
+    console.warn('[ReasoningPipeline] Together stream failed, trying Groq:', err);
     streamFailed = true;
+  }
+
+  // Groq fallback: if Together streaming failed, try Groq
+  if (streamFailed && isGroqAvailable()) {
+    try {
+      accumulated = '';
+      await callGroq(
+        answerMessages,
+        { maxTokens: 4096, temperature: 0.35 },
+        (token) => {
+          accumulated += token;
+          onToken(accumulated);
+        }
+      );
+      streamFailed = false;
+    } catch (groqErr) {
+      console.warn('[ReasoningPipeline] Groq stream also failed:', groqErr);
+    }
   }
 
   // Track the AI's answer in memory

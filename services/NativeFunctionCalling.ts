@@ -18,6 +18,7 @@
  */
 
 import { callTogether, type TogetherMessage, type TogetherOptions, TOGETHER_API_URL, TOGETHER_DEFAULT_MODEL } from './togetherAIService';
+import { callGroq, isGroqAvailable } from './groqService';
 import { AgentToolRegistry, type AgentTool, type AgentToolResult } from './agent/AgentToolRegistry';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -242,7 +243,21 @@ async function fallbackTextParsing(
     };
   }
 
-  const fullText = await callTogether(augmentedMessages, options, onToken);
+  let fullText: string;
+  try {
+    fullText = await callTogether(augmentedMessages, options, onToken);
+  } catch (err) {
+    if (isGroqAvailable()) {
+      console.warn('[NativeFunctionCalling] Together failed, falling back to Groq:', err);
+      fullText = await callGroq(
+        augmentedMessages,
+        { maxTokens: options.maxTokens ?? 4096, temperature: options.temperature ?? 0.4 },
+        onToken
+      );
+    } else {
+      throw err;
+    }
+  }
   const toolResults: Array<{ name: string; result: AgentToolResult }> = [];
 
   // Parse any tool calls from the text
