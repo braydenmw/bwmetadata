@@ -5765,111 +5765,59 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         let content = '';
 
         if (isLetter) {
-          // Try letter route first (DocumentTypeRouter)
-          const letterRoute = DocumentTypeRouter.routeLetter(doc.id);
-          if (letterRoute) {
-            const { promptInstruction } = letterRoute;
-            const aiPrompt = [
-              `You are BW Global Advisory writing a professional institutional letter.`,
-              `Letter Type: ${doc.title}${audienceNote}`,
+          // Route letter — uses exact match or category-aware fallback
+          const letterRoute = DocumentTypeRouter.routeLetterWithFallback(doc.id, doc.category || 'general', doc.title);
+          const { promptInstruction } = letterRoute;
+          const aiPrompt = [
+            `You are BW Global Advisory writing a professional institutional letter.`,
+            `Letter Type: ${doc.title}${audienceNote}`,
+            ``,
+            `### Letter Brief`,
+            promptInstruction,
+            ``,
+            `### Case Context`,
+            caseContextStr,
+            ``,
+            `### Intelligence Context`,
+            brainBlock,
+            ``,
+            `Write the complete letter now. Formal, institutional tone. No placeholders. Jurisdiction: ${caseStudy.jurisdiction || caseStudy.country || 'Global'}.`,
+          ].join('\n');
+          content = await processWithAI(aiPrompt, `Generating letter ${i + 1}/${docsToGenerate.length}: ${doc.title}`);
+        } else {
+          // Route document — uses exact match or category-aware fallback with sections
+          const docRoute = DocumentTypeRouter.routeDocumentWithFallback(doc.id, doc.category || 'strategic', doc.title);
+          const { sectionPrompts } = docRoute;
+          const sectionContents: string[] = [];
+
+          for (let s = 0; s < sectionPrompts.length; s++) {
+            const sp = sectionPrompts[s];
+            const sectionPrompt = [
+              `## Document Section: ${sp.title}`,
               ``,
-              `### Letter Brief`,
-              promptInstruction,
+              `### Your Instructions`,
+              sp.prompt,
               ``,
               `### Case Context`,
               caseContextStr,
               ``,
-              `### Intelligence Context`,
+              `### Intelligence Context (use real data from this to strengthen the section)`,
               brainBlock,
               ``,
-              `Write the complete letter now. Formal, institutional tone. No placeholders. Jurisdiction: ${caseStudy.jurisdiction || caseStudy.country || 'Global'}.`,
+              `### Constraints`,
+              `- Maximum ${sp.maxWords} words for this section`,
+              `- Professional document prose — not bullet lists unless the instruction specifies it`,
+              `- Ground all claims in the case context and intelligence data above`,
+              `- Begin directly with the content — no meta-commentary`,
             ].join('\n');
-            content = await processWithAI(aiPrompt, `Generating letter ${i + 1}/${docsToGenerate.length}: ${doc.title}`);
-          } else {
-            // Fallback letter prompt
-            content = await processWithAI(
-              `You are BW Global Advisory writing a professional institutional letter.
-Write: ${doc.title}${audienceNote}
 
-Case context:
-${consultantCaseBrief}
-
-Real-life matter: ${realLifeMatterPack}
-
-${customResearchTopics.length > 0 ? `Additional research topics to address: ${customResearchTopics.join(', ')}` : ''}
-
-Letter format: formal, institutional, jurisdiction-aware (${caseStudy.jurisdiction || caseStudy.country || 'Global'}).
-Structure: ## Opening | ## Purpose and Context | ## Key Points | ## Supporting Evidence | ## Next Steps
-Address the named counterpart or their role. Use concrete facts and timelines. No template placeholders. Write the complete letter.`,
-              `Generating letter ${i + 1}/${docsToGenerate.length}: ${doc.title}. Produce the full letter — do not summarise or truncate.`
+            const sectionContent = await processWithAI(
+              sectionPrompt,
+              `Generating section ${s + 1}/${sectionPrompts.length} — "${sp.title}" — for ${doc.title}`
             );
+            sectionContents.push(`## ${sp.title}\n\n${sectionContent}`);
           }
-        } else {
-          // Try document route (DocumentTypeRouter section prompts)
-          const docRoute = DocumentTypeRouter.routeDocument(doc.id);
-          if (docRoute) {
-            const { sectionPrompts } = docRoute;
-            const sectionContents: string[] = [];
-
-            for (let s = 0; s < sectionPrompts.length; s++) {
-              const sp = sectionPrompts[s];
-              const sectionPrompt = [
-                `## Document Section: ${sp.title}`,
-                ``,
-                `### Your Instructions`,
-                sp.prompt,
-                ``,
-                `### Case Context`,
-                caseContextStr,
-                ``,
-                `### Intelligence Context (use real data from this to strengthen the section)`,
-                brainBlock,
-                ``,
-                `### Constraints`,
-                `- Maximum ${sp.maxWords} words for this section`,
-                `- Professional document prose — not bullet lists unless the instruction specifies it`,
-                `- Ground all claims in the case context and intelligence data above`,
-                `- Begin directly with the content — no meta-commentary`,
-              ].join('\n');
-
-              const sectionContent = await processWithAI(
-                sectionPrompt,
-                `Generating section ${s + 1}/${sectionPrompts.length} — "${sp.title}" — for ${doc.title}`
-              );
-              sectionContents.push(`## ${sp.title}\n\n${sectionContent}`);
-            }
-            content = sectionContents.join('\n\n');
-          } else {
-            // Fallback report prompt
-            content = await processWithAI(
-              `You are BW Global Advisory writing a professional consulting report.
-Write: ${doc.title}${audienceNote}
-
-Case context:
-${consultantCaseBrief}
-
-Real-life matter: ${realLifeMatterPack}
-
-${customResearchTopics.length > 0 ? `Additional research topics to address: ${customResearchTopics.join(', ')}` : ''}
-
-Regional kernel: Governance ${regionalKernel.governanceReadiness}% | Top interventions: ${regionalKernel.interventions.slice(0, 3).map(i => i.title).join(', ')}
-
-Output depth: ${outputDepthSpec.label} — ${outputDepthSpec.instruction}
-
-Report structure (use ## for each section):
-## Executive Summary
-## Context and Background
-## Key Findings
-## Analysis and Evidence
-## Risks and Mitigants
-## Recommendations
-## Next Steps
-## Annexures
-
-Use concrete facts from the case. No template language. Write the complete report now.`,
-              `Generating document ${i + 1} of ${docsToGenerate.length}: ${doc.title}. Produce the full document — do not summarise or truncate.`
-            );
-          }
+          content = sectionContents.join('\n\n');
         }
 
         const profDoc = buildProfDoc(content, doc);
