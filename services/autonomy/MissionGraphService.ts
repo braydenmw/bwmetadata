@@ -209,7 +209,7 @@ export class MissionGraphService {
     return this.saveSnapshot(snapshot);
   }
 
-  static runCycleFromCaseInput(input: MissionCaseInput): MissionSnapshot {
+  static async runCycleFromCaseInput(input: MissionCaseInput): Promise<MissionSnapshot> {
     return this.upsertFromCaseInput(input, { forceRun: true });
   }
 

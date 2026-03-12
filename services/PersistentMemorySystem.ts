@@ -57,7 +57,7 @@ export class PersistentMemorySystem {
       persistentVectorStore.addKnowledge(
         `[${category}] ${fullEntry.action}`,
         JSON.stringify({ ...fullEntry.context, lessons: fullEntry.lessonsLearned }),
-        { category, memoryId: fullEntry.id, confidence: fullEntry.confidence }
+        fullEntry.confidence
       );
     } catch {
       // Vector store bridge is non-blocking
@@ -69,7 +69,7 @@ export class PersistentMemorySystem {
     return entries.slice(-limit).reverse(); // Most recent first
   }
 
-  searchMemory(query: string, category?: string): MemoryEntry[] {
+  async searchMemory(query: string, category?: string): Promise<MemoryEntry[]> {
     const allEntries: MemoryEntry[] = [];
     const categories = category ? [category] : Array.from(this.memory.keys());
 
@@ -89,7 +89,7 @@ export class PersistentMemorySystem {
     // Also query vector store for semantic matches
     try {
       const vectorResults = persistentVectorStore.search(query, 10, 0.3);
-      for (const vr of vectorResults) {
+      for (const vr of await vectorResults) {
         const meta = vr.metadata as { memoryId?: string; category?: string } | undefined;
         if (meta?.memoryId && !keywordResults.some(kr => kr.id === meta.memoryId)) {
           // Find original entry from store

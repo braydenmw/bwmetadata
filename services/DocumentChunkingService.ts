@@ -77,7 +77,7 @@ function chunkBySentence(text: string, maxSize: number, minSize: number, overlap
       currentStart = offset - overlap;
     } else {
       if (!currentChunk) currentStart = offset;
-      currentChunk += (currentChunk ? ' - : '') + sentence;
+      currentChunk += (currentChunk ? ' ' : '') + sentence;
     }
     offset += sentence.length + 1; // +1 for space
   }

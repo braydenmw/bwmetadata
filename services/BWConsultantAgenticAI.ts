@@ -236,7 +236,7 @@ export class BWConsultantAgenticAI {
     const recommendations: ConsultantInsight[] = [];
 
     // Based on learning history
-    const similarConsultations = persistentMemory.searchMemory(context);
+    const similarConsultations = await persistentMemory.searchMemory(context);
 
     if (similarConsultations.length > 0) {
       const successfulPatterns = similarConsultations.filter(c => c.outcome?.success);
@@ -427,7 +427,7 @@ export class BWConsultantAgenticAI {
 
   // Initialize learning from history
   private async initializeLearning(): Promise<void> {
-    const learningData = persistentMemory.searchMemory('successful_insights');
+    const learningData = await persistentMemory.searchMemory('successful_insights');
     for (const data of learningData) {
       if (data.context?.params) {
         const key = JSON.stringify(data.context.params);

@@ -2075,7 +2075,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
   }, [regionalKernel, currentPhase]);
 
-  const realLifeMatterPack = useMemo(() => {
+  const _realLifeMatterPack = useMemo(() => {
     const lines = [
       `Person: ${caseStudy.userName || 'Not provided'} (${caseStudy.contactRole || 'Role not provided'})`,
       `Organization: ${caseStudy.organizationName || 'Not provided'} (${caseStudy.organizationType || 'Type not provided'})`,
@@ -5861,7 +5861,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       setIsLoading(false);
       setGeneratingProgress(null);
     }
-  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, outputDepthSpec, regionalKernel, customResearchTopics]);
+  }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantGateReady, consultantGateMissing]);
 
   // ─── Autonomous Run - AgentOrchestrator (Together.ai + Llama 3.1 70B) ────────────────
   const handleAutonomousRun = useCallback(async () => {
@@ -6742,9 +6742,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       return;
     }
 
-    const snapshot = MissionGraphService.upsertFromCaseInput(missionCaseInput);
-
-    setMissionSnapshot(snapshot);
+    MissionGraphService.upsertFromCaseInput(missionCaseInput).then(setMissionSnapshot);
   }, [
     caseStudy.organizationName,
     caseStudy.currentMatter,
@@ -6777,8 +6775,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
   }, [showWorkspaceModal, consultantAuditAutoRefresh, loadConsultantAuditEvents]);
 
   const handleRunAutonomyCycle = useCallback(() => {
-    const snapshot = MissionGraphService.runCycleFromCaseInput(missionCaseInput);
-    setMissionSnapshot(snapshot);
+    MissionGraphService.runCycleFromCaseInput(missionCaseInput).then(setMissionSnapshot);
   }, [missionCaseInput]);
 
   const handleToggleAutonomyPause = useCallback(() => {
