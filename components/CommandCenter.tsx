@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info, UserX, ShieldAlert, AlertTriangle, Search, Layers, BookOpen, Link2, RotateCcw } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
 
@@ -470,7 +470,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Four Problem Cards */}
                     <div className="grid md:grid-cols-2 gap-6 mb-14">
                         {/* Problem 1: No Identity */}
-                        <div className="bg-white border border-slate-200 p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-red-50 to-orange-50 hidden md:flex items-center justify-center border-r border-slate-100">
+                                <UserX size={40} className="text-red-300" />
+                            </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">1</span>
                                 <h3 className="text-base font-bold text-slate-900">No Identity, No Context, No Continuity</h3>
@@ -484,7 +487,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* Problem 2: No Verification */}
-                        <div className="bg-white border border-slate-200 p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-amber-50 to-yellow-50 hidden md:flex items-center justify-center border-r border-slate-100">
+                                <ShieldAlert size={40} className="text-amber-300" />
+                            </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">2</span>
                                 <h3 className="text-base font-bold text-slate-900">No Entity Verification &mdash; Just Confident Guessing</h3>
@@ -498,7 +504,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* Problem 3: Bias */}
-                        <div className="bg-white border border-slate-200 p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-rose-50 to-pink-50 hidden md:flex items-center justify-center border-r border-slate-100">
+                                <Globe size={40} className="text-rose-300" />
+                            </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">3</span>
                                 <h3 className="text-base font-bold text-slate-900">The Bias Problem Nobody Talks About</h3>
@@ -512,7 +521,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* Problem 4: No Adversarial Check */}
-                        <div className="bg-white border border-slate-200 p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-orange-50 to-red-50 hidden md:flex items-center justify-center border-r border-slate-100">
+                                <AlertTriangle size={40} className="text-orange-300" />
+                            </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">4</span>
                                 <h3 className="text-base font-bold text-slate-900">No Adversarial Check on Its Own Output</h3>
@@ -537,8 +549,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     {/* Intake Flow */}
-                    <div className="bg-slate-50 border border-slate-200 rounded-sm p-6 mb-10">
-                        <h3 className="text-base font-bold text-slate-900 mb-4">Structured Intake &mdash; The System Learns You First</h3>
+                    <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border border-blue-200 rounded-sm p-6 mb-10">
+                        <h3 className="text-base font-bold text-blue-900 mb-4">Structured Intake &mdash; The System Learns You First</h3>
                         <div className="grid md:grid-cols-5 gap-4 mb-4">
                             {[
                                 { num: '1', label: 'Who am I speaking to?', sub: 'Name, role, experience' },
@@ -562,7 +574,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* What this system does that others don't */}
                     <h3 className="text-xl font-bold text-slate-900 mb-6">What this system does that others don&rsquo;t:</h3>
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-blue-50 to-indigo-50 hidden md:flex items-center justify-center border-l border-blue-100">
+                                <Search size={40} className="text-blue-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <CheckCircle2 size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Entity Verification Pipeline</h4>
@@ -572,28 +587,40 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {expandedCards.has('s1') ? 'Show less' : 'Read more \u2192'}
                             </button>
                         </div>
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-emerald-50 to-teal-50 hidden md:flex items-center justify-center border-l border-emerald-100">
+                                <Scale size={40} className="text-emerald-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Scale size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Identical Formula, Every Country</h4>
                             </div>
                             <p className="text-sm text-slate-600 leading-relaxed">The same weighted scoring model runs for Papua New Guinea that runs for the United States. The data inputs differ &mdash; because reality differs &mdash; but the <strong>methodology doesn&rsquo;t discriminate</strong>. Regional unknowns are evaluated on true merit, not internet popularity.</p>
                         </div>
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-violet-50 to-purple-50 hidden md:flex items-center justify-center border-l border-violet-100">
+                                <Layers size={40} className="text-violet-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Shield size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Multi-Engine Triangulation</h4>
                             </div>
                             <p className="text-sm text-slate-600 leading-relaxed">19 engines challenge, verify, and stress-test every assessment &mdash; adversarial analysis, historical precedent matching, counterfactual simulation, blind-spot detection, sanctions screening, and live entity intelligence. No single model, no single pass.</p>
                         </div>
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-sky-50 to-cyan-50 hidden md:flex items-center justify-center border-l border-sky-100">
+                                <BookOpen size={40} className="text-sky-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Briefcase size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Persistent Case Memory</h4>
                             </div>
                             <p className="text-sm text-slate-600 leading-relaxed">The system remembers who you are, what you&rsquo;re working on, and what was discussed before. It builds a <strong>case file</strong>, not a chat log. Context shapes the depth of analysis, the risks surfaced, and the follow-up questions asked.</p>
                         </div>
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-amber-50 to-orange-50 hidden md:flex items-center justify-center border-l border-amber-100">
+                                <Link2 size={40} className="text-amber-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <FileCheck size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Source Accountability</h4>
@@ -603,7 +630,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {expandedCards.has('s5') ? 'Show less' : 'Read more \u2192'}
                             </button>
                         </div>
-                        <div className="bg-white border border-blue-200 p-5 shadow-sm">
+                        <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
+                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-green-50 to-emerald-50 hidden md:flex items-center justify-center border-l border-green-100">
+                                <RotateCcw size={40} className="text-green-300" />
+                            </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <TrendingUp size={18} className="text-blue-600 flex-shrink-0" />
                                 <h4 className="text-sm font-bold text-slate-900">Deterministic &bull; Auditable &bull; Defensible</h4>
@@ -625,15 +655,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {expandedCards.has('geo') ? 'Show less' : 'Read more \u2192'}
                         </button>
                     </div>
-
-                    <div className="text-center">
-                        <p className="text-base text-slate-600 italic max-w-2xl mx-auto mb-3">
-                            General AI systems are <strong className="text-slate-900">answer machines</strong> &mdash; they optimise for giving you a fluent response to whatever you type. This system is a <strong className="text-slate-900">case-building advisor</strong> &mdash; it optimises for giving you a verified, unbiased, contextual assessment you could actually act on.
-                        </p>
-                        <p className="text-sm text-slate-500 max-w-xl mx-auto">
-                            The fundamental difference: other AI gives you words. This system gives you a position you can defend.
-                        </p>
-                    </div>
                 </div>
             </section>
 
@@ -646,8 +667,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 opacity-20"></div>
                 <div className="relative max-w-4xl mx-auto text-center space-y-3">
                     <p className="text-sm font-bold text-blue-400 uppercase tracking-wider">Why I Built This</p>
-                    <p className="text-lg md:text-xl text-white font-light leading-relaxed">
-                        A government minister gave me 30 minutes. I had no analyst team, no institutional database, no six-week turnaround. Just a laptop and a problem that needed an answer that could survive a committee room.
+                    <p className="text-lg md:text-xl text-white font-light leading-relaxed max-w-2xl mx-auto">
+                        General AI systems are <strong className="text-white">answer machines</strong> &mdash; they optimise for giving you a fluent response to whatever you type. This system is a <strong className="text-white">case-building advisor</strong> &mdash; it optimises for giving you a verified, unbiased, contextual assessment you could actually act on.
+                    </p>
+                    <p className="text-lg text-blue-200 leading-relaxed max-w-xl mx-auto font-medium">
+                        The fundamental difference: other AI gives you words. This system gives you a position you can defend.
                     </p>
                     <p className="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
                         That gap &mdash; between what real decisions demand and what any existing tool could produce &mdash; is why this exists. Institutional-grade analysis has always been gatekept by cost and connections. This system removes the gate.
