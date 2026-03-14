@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info, UserX, ShieldAlert, AlertTriangle, Search, Layers, BookOpen, Link2, RotateCcw } from 'lucide-react';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
 
@@ -471,8 +471,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-2 gap-6 mb-14">
                         {/* Problem 1: No Identity */}
                         <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-red-50 to-orange-50 hidden md:flex items-center justify-center border-r border-slate-100">
-                                <UserX size={40} className="text-red-300" />
+                            <div className="absolute left-0 top-0 bottom-0 w-24 hidden md:block border-r border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">1</span>
@@ -488,8 +489,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Problem 2: No Verification */}
                         <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-amber-50 to-yellow-50 hidden md:flex items-center justify-center border-r border-slate-100">
-                                <ShieldAlert size={40} className="text-amber-300" />
+                            <div className="absolute left-0 top-0 bottom-0 w-24 hidden md:block border-r border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">2</span>
@@ -505,8 +507,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Problem 3: Bias */}
                         <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-rose-50 to-pink-50 hidden md:flex items-center justify-center border-r border-slate-100">
-                                <Globe size={40} className="text-rose-300" />
+                            <div className="absolute left-0 top-0 bottom-0 w-24 hidden md:block border-r border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">3</span>
@@ -522,8 +525,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Problem 4: No Adversarial Check */}
                         <div className="bg-white border border-slate-200 p-6 md:pl-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-orange-50 to-red-50 hidden md:flex items-center justify-center border-r border-slate-100">
-                                <AlertTriangle size={40} className="text-orange-300" />
+                            <div className="absolute left-0 top-0 bottom-0 w-24 hidden md:block border-r border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center">4</span>
@@ -549,7 +553,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     {/* Intake Flow */}
-                    <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border border-blue-200 rounded-sm p-6 mb-10">
+                    <div className="relative border border-blue-200 rounded-sm p-6 mb-10 overflow-hidden">
+                        <div className="absolute inset-0">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                            <div className="absolute inset-0 bg-white/90 backdrop-blur-sm" />
+                        </div>
+                        <div className="relative">
                         <h3 className="text-base font-bold text-blue-900 mb-4">Structured Intake &mdash; The System Learns You First</h3>
                         <div className="grid md:grid-cols-5 gap-4 mb-4">
                             {[
@@ -569,14 +578,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-sm text-slate-600 leading-relaxed text-justify">
                             A novice gets more educational framing and broader exploration. A professional gets deeper entity-level intelligence and risk quantification immediately. Both get the same unbiased data &mdash; but the <em>presentation</em> adapts to the person. That conversational intake &mdash; knowing <em>who</em> before advising <em>what</em> &mdash; is something no general AI does today. And it&rsquo;s the difference between a search engine with a chat interface and an actual advisory system.
                         </p>
+                        </div>
                     </div>
 
                     {/* What this system does that others don't */}
                     <h3 className="text-xl font-bold text-slate-900 mb-6">What this system does that others don&rsquo;t:</h3>
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-blue-50 to-indigo-50 hidden md:flex items-center justify-center border-l border-blue-100">
-                                <Search size={40} className="text-blue-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-blue-100">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <CheckCircle2 size={18} className="text-blue-600 flex-shrink-0" />
@@ -588,8 +599,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </button>
                         </div>
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-emerald-50 to-teal-50 hidden md:flex items-center justify-center border-l border-emerald-100">
-                                <Scale size={40} className="text-emerald-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-emerald-100">
+                                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Scale size={18} className="text-blue-600 flex-shrink-0" />
@@ -598,8 +610,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-600 leading-relaxed">The same weighted scoring model runs for Papua New Guinea that runs for the United States. The data inputs differ &mdash; because reality differs &mdash; but the <strong>methodology doesn&rsquo;t discriminate</strong>. Regional unknowns are evaluated on true merit, not internet popularity.</p>
                         </div>
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-violet-50 to-purple-50 hidden md:flex items-center justify-center border-l border-violet-100">
-                                <Layers size={40} className="text-violet-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-violet-100">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Shield size={18} className="text-blue-600 flex-shrink-0" />
@@ -608,8 +621,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-600 leading-relaxed">19 engines challenge, verify, and stress-test every assessment &mdash; adversarial analysis, historical precedent matching, counterfactual simulation, blind-spot detection, sanctions screening, and live entity intelligence. No single model, no single pass.</p>
                         </div>
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-sky-50 to-cyan-50 hidden md:flex items-center justify-center border-l border-sky-100">
-                                <BookOpen size={40} className="text-sky-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-sky-100">
+                                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <Briefcase size={18} className="text-blue-600 flex-shrink-0" />
@@ -618,8 +632,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-600 leading-relaxed">The system remembers who you are, what you&rsquo;re working on, and what was discussed before. It builds a <strong>case file</strong>, not a chat log. Context shapes the depth of analysis, the risks surfaced, and the follow-up questions asked.</p>
                         </div>
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-amber-50 to-orange-50 hidden md:flex items-center justify-center border-l border-amber-100">
-                                <Link2 size={40} className="text-amber-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-amber-100">
+                                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <FileCheck size={18} className="text-blue-600 flex-shrink-0" />
@@ -631,8 +646,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </button>
                         </div>
                         <div className="bg-white border border-blue-200 p-5 md:pr-28 shadow-sm relative overflow-hidden">
-                            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-bl from-green-50 to-emerald-50 hidden md:flex items-center justify-center border-l border-green-100">
-                                <RotateCcw size={40} className="text-green-300" />
+                            <div className="absolute right-0 top-0 bottom-0 w-24 hidden md:block border-l border-green-100">
+                                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=200&h=500&fit=crop&auto=format&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/40" />
                             </div>
                             <div className="flex items-center gap-2 mb-2">
                                 <TrendingUp size={18} className="text-blue-600 flex-shrink-0" />
