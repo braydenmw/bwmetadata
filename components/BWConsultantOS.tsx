@@ -3069,19 +3069,16 @@ ${agentRegistry.current.toManifest()}`;
     // These are questions, not intake answers - respond to what was actually asked.
     const isInfoQuestion = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about)\b/i.test(trimmed);
 
-    // ── BRAIN CONTEXT - inject any available intelligence from BrainIntegrationService ──
-    const brainData = brainCtxRef.current;
-    const brainSection = brainData?.promptBlock
-      ? `\n\n---\n**Intelligence from NSIL engines:**\n${brainData.promptBlock.slice(0, 3000)}`
-      : '';
+    // ── BRAIN CONTEXT is available via brainCtxRef for AI system prompts ──
+    // Note: brain intelligence is injected into the AI system prompt (effectiveSystemPrompt)
+    // and should NOT be shown directly in the visible chat response.
 
     if (isInfoQuestion) {
       // Extract the topic from the question for a direct response
       const topicMatch = trimmed.match(/^(?:tell me(?:\s+more)?\s+about|more about|what is|what are|who is|explain|describe|give me info(?: on| about)?|can you tell me about|i want to know(?:\s+more)?\s+about|what do you know about|research|find out about|background (?:on|about))\s+(.+)/i);
       const topic = topicMatch?.[1]?.trim() || trimmed;
 
-      return `## ${topic}\n\nI'm analysing your query about **${topic}** now. The AI research pipeline is running - this includes web search for current data, root cause analysis, and multi-perspective strategic assessment.\n\n` +
-        `${brainSection ? brainSection + '\n\n' : ''}` +
+      return `Good question. Let me pull together what I know about **${topic}** and cross-reference it with current data.\n\n` +
         `If you want me to focus on a specific angle - investment feasibility, political risk, regulatory landscape, or market entry - let me know.`;
     }
 
@@ -3104,13 +3101,41 @@ ${agentRegistry.current.toManifest()}`;
       if (kws.some(k => lc.includes(k))) { freshCountry = c; break; }
     }
 
-    // Build a direct, substantive response - NEVER ask for motive or context first
-    const locationContext = freshCountry ? ` related to **${freshCountry}**` : '';
-    const reply = trimmed.length >= 20
-      ? `I've noted your input${locationContext}. The AI analysis pipeline is processing your query now - running issue classification, root cause analysis, and web research for current data.\n\n` +
-        `The full response will draw from AI reasoning, live World Bank economic data, and web intelligence.${brainSection}`
-      : `Understood. What specific topic, country, or situation would you like me to analyse? I can provide intelligence briefings, risk assessments, market analysis, stakeholder mapping, and strategic advisory across any sector or geography worldwide.`;
+    // ── Detect sector keywords for a more specific acknowledgment ──
+    const sectorHints: Record<string, string[]> = {
+      'manufacturing': ['factory', 'manufactur', 'plant', 'assembly', 'production'],
+      'agriculture & fisheries': ['farm', 'agri', 'food', 'crop', 'fish', 'aquaculture', 'livestock'],
+      'energy': ['solar', 'wind', 'renewable', 'energy', 'battery', 'hydrogen'],
+      'technology': ['tech', 'software', 'digital', 'fintech', 'ai', 'data'],
+      'mining': ['mining', 'mineral', 'ore', 'coal', 'gas', 'petroleum'],
+      'logistics & trade': ['logistics', 'freight', 'shipping', 'port', 'supply chain', 'supply'],
+      'tourism': ['tourism', 'hotel', 'resort', 'hospitality'],
+      'health': ['hospital', 'pharma', 'medical', 'healthcare'],
+      'financial services': ['bank', 'finance', 'investment', 'insurance'],
+    };
+    let freshSector = '';
+    for (const [sector, kws] of Object.entries(sectorHints)) {
+      if (kws.some(k => lc.includes(k))) { freshSector = sector; break; }
+    }
 
+    // Build a direct, conversational acknowledgment that reflects the user's actual input
+    if (trimmed.length >= 20) {
+      const parts: string[] = [];
+      if (freshCountry && freshSector) {
+        parts.push(`Understood - you're looking at **${freshSector}** opportunities in **${freshCountry}**.`);
+      } else if (freshCountry) {
+        parts.push(`Understood - let me focus on **${freshCountry}** for you.`);
+      } else if (freshSector) {
+        parts.push(`Understood - I'll look into the **${freshSector}** angle.`);
+      } else {
+        parts.push(`Understood. Let me work through this for you.`);
+      }
+      parts.push(`I'm pulling together market intelligence, regulatory landscape, and strategic options now. The full analysis will follow shortly.`);
+      parts.push(`\nWhile that runs - is there a specific angle you want me to prioritise? For example: market entry strategy, regulatory requirements, investment incentives, or risk assessment.`);
+      return parts.join(' ');
+    }
+
+    const reply = `Understood. What specific topic, country, or situation would you like me to analyse? I can cover market entry, regulatory landscape, investment feasibility, risk assessment, and stakeholder mapping across any sector or geography.`;
     return reply;
   }, []);
 
