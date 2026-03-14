@@ -94,7 +94,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             subtitle: 'Self-directed agents that plan research, spawn specialists, evolve their own models, query live global data, and simulate cascading futures.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 22-engine parallel brain fires on every query - multi-model consensus, goal-directed agent spawning, self-modifying formulas, live intelligence from 15+ global APIs (ACLED, OpenSanctions, GLEIF, OpenCorporates, V-Dem, Brave Search, UN Comtrade, GDELT, World Bank, Wikidata), an Entity Intelligence Pipeline that verifies every mentioned entity across 7 sources in parallel, a Geopolitical Arbitrage Engine that spots where global disruptions create openings for regional markets, and forward-looking system dynamics simulation.',
+            summary: 'A 22-engine parallel brain fires on every query \u2014 multi-model consensus, goal-directed agents, self-modifying formulas, 15+ live global APIs, entity verification across 7 sources, geopolitical arbitrage detection, and forward-looking system dynamics simulation.',
             full: (
                 <div className="space-y-6">
                     <p className="text-sm text-slate-700 leading-relaxed">These systems give the OS the ability to act on its own &mdash; not just respond to prompts. They plan research, spawn specialist agents, evolve their own scoring models based on outcomes, query live global data sources in real time, and simulate futures with cascading feedback loops. Every autonomous action is governed by gates that control what happens without human approval.</p>
@@ -454,13 +454,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </p>
                     <div id="brain" className="relative -top-28" />
 
-                    {/* ── What Every AI Lacks vs What This System Does ── */}
+                    {/* ── What Every AI Lacks + Two-Photo Comparison ── */}
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-3">
                         What Every AI Advisory System Currently Lacks
                     </h2>
-                    <p className="text-base text-slate-600 mb-8 leading-relaxed">
+                    <p className="text-base text-slate-600 mb-6 leading-relaxed">
                         The single biggest gap across every general-purpose AI &mdash; the household names, the billion-dollar chatbots, the search engines that bolted on a conversation layer &mdash; when it comes to strategic advisory work is this: <strong className="text-slate-900">they don&rsquo;t know who they&rsquo;re talking to, and they don&rsquo;t verify what they&rsquo;re talking about.</strong>
                     </p>
+
+                    <div className="space-y-4 mb-8">
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                            They don&rsquo;t ask who you are. First-time founder or $200&thinsp;M infrastructure investor &mdash; both get the same blank prompt box. No intake, no case memory, no continuity. Every conversation starts at zero.
+                        </p>
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                            Ask one &ldquo;Is Sunrise Holdings Ltd in Fiji legitimate?&rdquo; and you&rsquo;ll get a fluent, confident answer &mdash; fabricated from statistical patterns. It cannot check a corporate registry, screen a sanctions list, or verify an LEI number. It <em>sounds</em> authoritative. It is not. And in advisory work &mdash; where someone might commit capital, sign an MOU, or brief a minister based on that answer &mdash; that&rsquo;s dangerous.
+                        </p>
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                            The internet has orders of magnitude more content about New York and Singapore than about Suva, Lusaka, or Tbilisi. When a general AI evaluates a lesser-known market, it defaults to the nearest well-known comparison &mdash; erasing the actual characteristics of the place. <strong className="text-slate-900">Well-known places get the benefit of the doubt. Unknown places get the benefit of the stereotype.</strong> That&rsquo;s not advisory &mdash; that&rsquo;s pattern-matching dressed up as analysis.
+                        </p>
+                        <p className="text-sm text-slate-700 leading-relaxed">
+                            And there is no second engine challenging the output. No counterfactual asking &ldquo;what if the opposite is true?&rdquo; No scoring formula that treats Fiji and Singapore identically. One model, one pass, one perspective &mdash; for decisions that might affect a community, an investment, or a government strategy. One perspective isn&rsquo;t enough.
+                        </p>
+                    </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
                         {/* ── LEFT: Every Other AI ── */}
@@ -469,19 +484,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-red-900/60 to-red-900/30 flex items-end p-4">
                                 <span className="text-white font-bold text-lg drop-shadow">Every Other AI</span>
                             </div>
-                            <div className="p-5 bg-red-50/30">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    They don&rsquo;t ask who you are. First-time founder or $200M infrastructure investor &mdash; both get the same blank prompt box. No intake, no case memory, no continuity. Every conversation starts at zero.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    Ask one &ldquo;Is Sunrise Holdings Ltd in Fiji legitimate?&rdquo; and you&rsquo;ll get a fluent, confident answer &mdash; fabricated from statistical patterns. It cannot check a corporate registry, screen a sanctions list, or verify an LEI number. It <em>sounds</em> authoritative. It is not.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    The internet has orders of magnitude more content about New York and Singapore than about Suva, Lusaka, or Tbilisi. Lesser-known markets get mapped to the nearest well-known comparison &mdash; erasing who they actually are. <strong className="text-slate-900">Well-known places get the benefit of the doubt. Unknown places get the benefit of the stereotype.</strong>
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed">
-                                    And there is no second engine challenging the output. No counterfactual, no adversarial check, no scoring formula that treats Fiji and Singapore identically. One model, one pass, one perspective &mdash; for decisions that might affect a community, an investment, or a government strategy.
-                                </p>
+                            <div className="p-5 bg-red-50/30 space-y-2">
+                                {[
+                                    'Blank prompt box \u2014 no identity, no intake, no memory',
+                                    'Training-data guesses \u2014 cannot check a real registry',
+                                    'Biased toward well-known markets \u2014 stereotypes the rest',
+                                    'One model, one pass \u2014 no adversarial check on its own output',
+                                    'No source accountability \u2014 confident fiction fills the gaps',
+                                ].map((pt, i) => (
+                                    <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                        <span className="mt-0.5 w-4 h-4 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&times;</span>
+                                        {pt}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -491,19 +506,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-blue-900/60 to-blue-900/30 flex items-end p-4">
                                 <span className="text-white font-bold text-lg drop-shadow">This System</span>
                             </div>
-                            <div className="p-5 bg-blue-50/30">
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    It starts by learning who you are &mdash; your role, your firm, your purpose, your experience level. A novice gets broader exploration. A professional gets entity-level intelligence immediately. Both get the same unbiased data &mdash; the presentation adapts. That&rsquo;s the difference between a chat interface and an advisory system.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    When someone mentions a company, partner, or jurisdiction, it queries <strong>real registries</strong> &mdash; sanctions databases, corporate registries, LEI lookups, governance data, independent web search, and live news. It tells you what it verified and what it couldn&rsquo;t. Every claim traces to a named source. When it doesn&rsquo;t have data, it says so.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                    The same weighted scoring model runs for Papua New Guinea that runs for the United States. The methodology doesn&rsquo;t discriminate. 19 engines challenge, verify, and stress-test every assessment &mdash; adversarial analysis, counterfactual simulation, blind-spot detection, sanctions screening, and live entity intelligence. Run it again tomorrow &mdash; same answer. Every output comes with a method trail.
-                                </p>
-                                <p className="text-sm text-slate-700 leading-relaxed">
-                                    It also scans live global disruptions &mdash; wars, sanctions, trade fractures, supply-chain breaks &mdash; and identifies where those disruptions create structural openings for regional cities and lesser-known jurisdictions. Vietnam replaced China in textiles when tariffs hit. Dubai absorbed displaced Gulf War capital. These patterns repeat &mdash; and this system spots them before the user thinks to ask.
-                                </p>
+                            <div className="p-5 bg-blue-50/30 space-y-2">
+                                {[
+                                    'Structured intake \u2014 learns your role, firm, purpose, and experience first',
+                                    'Real registry lookups \u2014 sanctions, corporate, LEI, governance, live news',
+                                    'Identical formula for every country \u2014 methodology doesn\u2019t discriminate',
+                                    '19 engines challenge every assessment \u2014 deterministic, auditable, defensible',
+                                    'Every claim sourced \u2014 tells you what it verified and what it couldn\u2019t',
+                                    'Scans live global disruptions for regional arbitrage opportunities',
+                                ].map((pt, i) => (
+                                    <div key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                                        <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
+                                        {pt}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
