@@ -475,12 +475,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                                 <div className="space-y-2.5">
                                     {[
-                                        'No intake — a founder and a fund manager get the same blank box',
-                                        'No entity verification — confident answers fabricated from patterns',
-                                        'Systemic regional bias — 100\u00d7 more training data on New York than Suva',
-                                        'No adversarial check — one pass, no challenge, no stress test',
-                                        'No case memory — every conversation starts at zero',
-                                        'No deliverables — you still need a team to produce documents',
+                                        'It doesn\u2019t ask who you are before it starts advising you',
+                                        'It cannot verify whether a company, partner, or entity actually exists',
+                                        'It knows far more about major cities than the places that actually need the tools',
+                                        'Nothing challenges the answer it gives you — there is no second opinion built in',
+                                        'It forgets everything the moment you close the window',
+                                        'You walk away with paragraphs of text, not something a board or investor can act on',
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-start gap-2">
                                             <span className="mt-0.5 w-4 h-4 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&times;</span>
@@ -508,12 +508,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                                 <div className="space-y-2.5">
                                     {[
-                                        'Structured intake — adapts depth to your role, firm, and purpose',
-                                        'Entity verification — 7 live sources including OpenSanctions, GLEIF, and V-Dem',
-                                        'Same formula, every country — 38 indices, identical methodology, 200+ backtested cases',
-                                        '19 engines in parallel — adversarial debate, Monte Carlo, SAT logic, blind-spot detection',
-                                        'Persistent case memory — builds a case file, not a chat log',
-                                        'Execution-ready output — LOIs, MOUs, Term Sheets, 5 audience-specific formats',
+                                        'It learns who you are, what you\u2019re working on, and what you need before it says a word',
+                                        'It checks real registries and real data sources — not training-data guesses',
+                                        'It runs the same scoring formula for Papua New Guinea that it runs for the United States',
+                                        'Multiple engines challenge every answer before it reaches you — nothing goes unchecked',
+                                        'It remembers your case across sessions and gets sharper the more you use it',
+                                        'You walk away with documents ready for a boardroom, an investor, or a government brief',
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-start gap-2">
                                             <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&#10003;</span>
