@@ -447,60 +447,74 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-4xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-light text-center leading-tight mb-4 text-slate-900">
-                        An Institutional Intelligence Operating System
+                        What Every AI Advisory System Currently Lacks
                     </h2>
                     <p className="text-center text-lg md:text-xl font-light mb-12 max-w-3xl mx-auto text-slate-600">
-                        Regional cities are too important to be managed with fragmented tooling. I built this because the tools that existed weren&rsquo;t built for the problems I kept seeing in real regional decision environments. This is a <span className="text-blue-600 font-normal">full operating system for strategic decisions</span> &mdash; part research analyst, part debate room, part document engine. You describe your situation. It builds the case. You walk away with something defensible.
+                        The single biggest gap across every general-purpose AI &mdash; when it comes to strategic advisory work &mdash; is this: <strong className="text-slate-900">they don&rsquo;t know who they&rsquo;re talking to, and they don&rsquo;t verify what they&rsquo;re talking about.</strong>
                     </p>
                     <div id="brain" className="relative -top-28" />
 
-                    {/* ── Why This System Is Fundamentally Different ── */}
-                    <div className="mb-10">
-                        {/* Narrative Introduction */}
-                        <div className="mb-10">
-                            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-5">A Completely Different Kind of System</h3>
-                            <div className="space-y-4 text-base text-slate-700 leading-relaxed text-justify">
-                                <p>
-                                    Every AI system available today &mdash; the household names, the enterprise platforms, the billion-dollar chatbots &mdash; follows the same architecture: one model, one pass, one perspective. You type a question into a blank prompt box. It generates fluent text from statistical patterns in its training data. It doesn&rsquo;t know who you are. It doesn&rsquo;t verify what it tells you. A first-year student and a sovereign wealth fund manager get identical treatment. The output sounds authoritative &mdash; but there is nothing behind it you can trace, verify, or defend in a boardroom.
-                                </p>
-                                <p>
-                                    BWGA Ai is not an improvement on that model &mdash; it is a <strong className="text-slate-900">fundamentally different system</strong>. Built from the ground up as an institutional intelligence operating system, it runs structured intake before any analysis begins, verifies every entity against 7 live registries in parallel, applies 38 proprietary scoring indices with identical methodology to every country on earth, challenges every output through 19 analytical engines including adversarial debate and Monte Carlo simulation, builds a persistent case file that compounds across sessions, and generates execution-ready documents &mdash; LOIs, MOUs, Term Sheets, strategy briefs &mdash; formatted for five different audiences. This is not an AI assistant. This is the system that didn&rsquo;t exist before.
-                                </p>
+                    {/* ── The 4 Critical Failures — Full Narrative ── */}
+                    <div className="mb-12">
+                        <div className="grid md:grid-cols-2 gap-x-8 text-base text-slate-700 leading-relaxed text-justify">
+                            <div className="space-y-5">
+                                {/* 1. No Identity */}
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">1. No Identity, No Context, No Continuity</h3>
+                                    <p>
+                                        ChatGPT doesn&rsquo;t ask who you are. It doesn&rsquo;t know if you&rsquo;re a first-time founder exploring Papua New Guinea or a seasoned infrastructure investor evaluating a $200M port deal in Mozambique. It treats both identically &mdash; a blank prompt box. There&rsquo;s no intake, no case building, no memory of your situation across turns or sessions. Every conversation starts at zero.
+                                    </p>
+                                </div>
+
+                                {/* 2. No Entity Verification */}
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">2. No Entity Verification &mdash; Just Confident Guessing</h3>
+                                    <p>
+                                        Ask <em>&ldquo;Is Sunrise Holdings Ltd in Fiji a legitimate company?&rdquo;</em> and you get a fluent, confident answer &mdash; entirely fabricated from statistical patterns in training data. It cannot check a corporate registry. It cannot screen against sanctions lists. It cannot verify an LEI number. It cannot pull real governance scores for Fiji vs. Australia and compare them objectively. It sounds authoritative. It is not. And in advisory work &mdash; where someone might commit capital, sign an MOU, or brief a minister based on what an AI tells them &mdash; that&rsquo;s dangerous.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="space-y-5 mt-5 md:mt-0">
+                                {/* 3. The Bias Problem */}
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">3. The Bias Problem Nobody Talks About</h3>
+                                    <p>
+                                        This is the deepest issue. Every large language model is trained on internet text. The internet has orders of magnitude more content about New York, London, Singapore, and Dubai than it does about Suva, Port Moresby, Lusaka, or Tbilisi. When you ask a general AI to evaluate an opportunity in a lesser-known market, it defaults to the nearest well-known comparison &mdash; erasing the actual characteristics of the place. It surfaces mainly negative framing because limited training data for smaller markets skews toward news coverage of problems, not opportunities. It pads answers with generic GDP statistics instead of entity-specific, verifiable intelligence. <strong className="text-slate-900">Well-known places get the benefit of the doubt. Unknown places get the benefit of the stereotype.</strong> That&rsquo;s not advisory &mdash; that&rsquo;s pattern-matching dressed up as analysis.
+                                    </p>
+                                </div>
+
+                                {/* 4. No Adversarial Check */}
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">4. No Adversarial Check on Its Own Output</h3>
+                                    <p>
+                                        When ChatGPT gives you an answer, there is no second engine challenging it. No counterfactual analysis asking <em>&ldquo;what if the opposite is true?&rdquo;</em> No unbiased scoring engine running the same formula for Fiji that it runs for Singapore. No Monte Carlo simulation stress-testing the probability of loss. It&rsquo;s one model, one pass, one perspective &mdash; for decisions that might affect a community, an investment, or a government strategy.
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Two Photo Comparison — matching Tier 3 card style */}
+                    {/* ── Is This System Actually Different? — Two Photo Cards ── */}
+                    <div className="mb-10">
+                        <h3 className="text-2xl md:text-3xl font-bold text-slate-900 text-center mb-3">Is This System Actually Different?</h3>
+                        <p className="text-center text-lg text-slate-600 mb-10 max-w-2xl mx-auto">Yes &mdash; architecturally, not just cosmetically.</p>
+
                         <div className="grid md:grid-cols-2 gap-8">
-                            {/* LEFT — Every AI Today */}
+                            {/* LEFT — The Status Quo */}
                             <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                                 <div className="h-56 relative overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=500&fit=crop&q=80" alt="A single laptop on a desk — the limits of current AI advisory" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
                                     <div className="absolute bottom-5 left-6 right-6">
-                                        <span className="inline-block px-2.5 py-1 bg-red-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-2">Every AI Today</span>
-                                        <h4 className="text-xl md:text-2xl font-bold text-white leading-snug">One Model. One Pass.<br />No Verification.</h4>
+                                        <span className="inline-block px-2.5 py-1 bg-red-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-2">Every Other AI</span>
+                                        <h4 className="text-xl md:text-2xl font-bold text-white leading-snug">Answer Machines</h4>
+                                        <p className="text-sm text-slate-300 mt-1">Optimised for giving you a fluent response to whatever you type.</p>
                                     </div>
                                 </div>
                                 <div className="p-6 md:p-8">
-                                    <p className="text-sm text-slate-600 leading-relaxed text-justify mb-5">
-                                        You type a question. A single language model generates a single response from memorised internet text. No one asks <em>&ldquo;what if the opposite is true?&rdquo;</em> No one checks whether the entities mentioned actually exist. No one adjusts for regional bias. No one remembers next week.
+                                    <p className="text-base text-slate-700 leading-relaxed text-justify">
+                                        General AI systems are answer machines. You type a question, one model generates one response from memorised internet text, and you receive fluent paragraphs that sound authoritative but cannot be traced to a source, verified against a registry, or defended in a boardroom. There is no intake. No case file. No memory of who you are. No adversarial check. No deliverables. You still need consultants, lawyers, and analysts to turn the output into something actionable. The system doesn&rsquo;t know what it doesn&rsquo;t know &mdash; and it never tells you.
                                     </p>
-                                    <div className="space-y-3">
-                                        {[
-                                            { t: 'No Identity or Context', d: 'Everyone gets the same blank prompt box. No intake, no memory, no case-building.' },
-                                            { t: 'No Entity Verification', d: 'Confident answers fabricated from patterns. Cannot query a single live registry.' },
-                                            { t: 'Systemic Regional Bias', d: '100\u00d7 more data on New York than Suva. Unknown markets get stereotyped.' },
-                                            { t: 'Single-Pass Output', d: 'One model, one perspective, no adversarial check, no stress test.' },
-                                            { t: 'No Case Memory', d: 'Every session starts at zero. No continuity across conversations.' },
-                                            { t: 'No Deliverables', d: 'Paragraphs of text. You still need a team to produce usable documents.' },
-                                            { t: 'No Ethics Gate', d: 'No fairness checks, no compliance, no mechanism to reject on ethical grounds.' },
-                                        ].map((item, i) => (
-                                            <div key={i} className="flex items-start gap-2.5">
-                                                <span className="mt-0.5 w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&times;</span>
-                                                <p className="text-sm text-slate-600 leading-relaxed"><strong className="text-slate-800">{item.t}:</strong> {item.d}</p>
-                                            </div>
-                                        ))}
-                                    </div>
                                 </div>
                             </div>
 
@@ -511,31 +525,41 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-slate-900/40 to-transparent" />
                                     <div className="absolute bottom-5 left-6 right-6">
                                         <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-2">BWGA Ai</span>
-                                        <h4 className="text-xl md:text-2xl font-bold text-white leading-snug">19 Engines. 7 Live Sources.<br />One Institutional System.</h4>
+                                        <h4 className="text-xl md:text-2xl font-bold text-white leading-snug">A Case-Building Advisor</h4>
+                                        <p className="text-sm text-blue-200 mt-1">Optimised for giving you a verified, unbiased, contextual assessment you can act on.</p>
                                     </div>
                                 </div>
                                 <div className="p-6 md:p-8">
-                                    <p className="text-sm text-slate-600 leading-relaxed text-justify mb-5">
-                                        You describe your situation. The system learns who you are, verifies every entity mentioned, runs 19 analytical engines in parallel, builds a persistent case file, and generates execution-ready documents formatted for whoever needs to read them &mdash; investor, government, board, partner, or community.
+                                    <p className="text-base text-slate-700 leading-relaxed text-justify mb-5">
+                                        This system establishes who you are, what firm you represent, what you&rsquo;re trying to achieve, and whether you&rsquo;re exploring or executing &mdash; before a single line of analysis runs. That context shapes everything: the depth, the language, the risks surfaced, and the follow-up questions asked.
                                     </p>
                                     <div className="space-y-3">
-                                        {[
-                                            { t: 'Structured Intake', d: 'Learns your role, firm, sector, purpose, and experience before analysis begins.' },
-                                            { t: '7-Source Verification', d: 'Every entity checked against OpenSanctions, OpenCorporates, GLEIF, Brave, GDELT, V-Dem, and Tavily.' },
-                                            { t: 'Same Formula, Every Country', d: '38 indices, identical methodology, backtested against 200+ real outcomes across 50+ nations.' },
-                                            { t: '19 Engines in Parallel', d: 'Adversarial debate, Monte Carlo simulation, SAT logic, blind-spot detection \u2014 deterministic and auditable.' },
-                                            { t: 'Persistent Case File', d: 'Context compounds across sessions. The system remembers, learns, and sharpens over time.' },
-                                            { t: 'Execution-Ready Documents', d: 'LOIs, MOUs, Term Sheets, briefs \u2014 five audience-specific formats from every analysis.' },
-                                            { t: 'Ethics + 195-Country Compliance', d: 'Rawlsian fairness scoring, IFC standards, full jurisdiction checks. Can reject on ethics alone.' },
-                                        ].map((item, i) => (
-                                            <div key={i} className="flex items-start gap-2.5">
-                                                <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
-                                                <p className="text-sm text-slate-600 leading-relaxed"><strong className="text-slate-800">{item.t}:</strong> {item.d}</p>
-                                            </div>
-                                        ))}
+                                        <div className="flex items-start gap-2.5">
+                                            <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
+                                            <p className="text-sm text-slate-700 leading-relaxed"><strong className="text-slate-900">Entity verification pipeline:</strong> When someone mentions a company, partner, or jurisdiction, the system queries real registries &mdash; OpenSanctions, OpenCorporates, GLEIF, V-Dem governance data &mdash; not training-data guesses. It tells you what it verified and what it couldn&rsquo;t.</p>
+                                        </div>
+                                        <div className="flex items-start gap-2.5">
+                                            <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
+                                            <p className="text-sm text-slate-700 leading-relaxed"><strong className="text-slate-900">Identical formula, every country:</strong> The same weighted scoring model runs for Papua New Guinea that runs for the United States. Data inputs differ because reality differs &mdash; the methodology doesn&rsquo;t discriminate.</p>
+                                        </div>
+                                        <div className="flex items-start gap-2.5">
+                                            <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
+                                            <p className="text-sm text-slate-700 leading-relaxed"><strong className="text-slate-900">19-engine triangulation:</strong> Every assessment is challenged by adversarial analysis, historical precedent matching, counterfactual simulation, and blind-spot detection. When it makes a claim, it tells you which data source it came from. When it doesn&rsquo;t have data, it says so.</p>
+                                        </div>
+                                        <div className="flex items-start gap-2.5">
+                                            <span className="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">&#10003;</span>
+                                            <p className="text-sm text-slate-700 leading-relaxed"><strong className="text-slate-900">Persistent case memory:</strong> The system remembers who you are, what you&rsquo;re working on, and what was discussed before. It builds a case file, not a chat log.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Closing statement */}
+                        <div className="mt-10 bg-slate-50 border border-slate-200 rounded-sm px-6 py-5">
+                            <p className="text-base text-slate-700 leading-relaxed text-justify">
+                                <strong className="text-slate-900">The fundamental difference:</strong> General AI systems are answer machines &mdash; they optimise for giving you a fluent response to whatever you type. BWGA Ai is designed as a <strong className="text-slate-900">case-building advisor</strong> &mdash; it optimises for giving you a verified, unbiased, contextual assessment that you could actually act on. That is the gap this system was built to close.
+                            </p>
                         </div>
                     </div>
                 </div>
