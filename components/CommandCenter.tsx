@@ -454,90 +454,129 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </p>
                     <div id="brain" className="relative -top-28" />
 
-                    {/* ── What Every AI Lacks + Two-Photo Comparison ── */}
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-3">
-                        What Every AI Advisory System Currently Lacks
-                    </h2>
-                    <p className="text-base text-slate-600 mb-6 leading-relaxed">
-                        The single biggest gap across every general-purpose AI &mdash; the household names, the billion-dollar chatbots, the search engines that bolted on a conversation layer &mdash; when it comes to strategic advisory work is this: <strong className="text-slate-900">they don&rsquo;t know who they&rsquo;re talking to, and they don&rsquo;t verify what they&rsquo;re talking about.</strong>
-                    </p>
-
-                    <div className="space-y-4 mb-8">
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            They don&rsquo;t ask who you are. First-time founder or $200&thinsp;M infrastructure investor &mdash; both get the same blank prompt box. No intake, no case memory, no continuity. Every conversation starts at zero.
-                        </p>
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            Ask one &ldquo;Is Sunrise Holdings Ltd in Fiji legitimate?&rdquo; and you&rsquo;ll get a fluent, confident answer &mdash; fabricated from statistical patterns. It cannot check a corporate registry, screen a sanctions list, or verify an LEI number. It <em>sounds</em> authoritative. It is not. And in advisory work &mdash; where someone might commit capital, sign an MOU, or brief a minister based on that answer &mdash; that&rsquo;s dangerous.
-                        </p>
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            The internet has orders of magnitude more content about New York and Singapore than about Suva, Lusaka, or Tbilisi. When a general AI evaluates a lesser-known market, it defaults to the nearest well-known comparison &mdash; erasing the actual characteristics of the place. <strong className="text-slate-900">Well-known places get the benefit of the doubt. Unknown places get the benefit of the stereotype.</strong> That&rsquo;s not advisory &mdash; that&rsquo;s pattern-matching dressed up as analysis.
-                        </p>
-                        <p className="text-sm text-slate-700 leading-relaxed">
-                            And there is no second engine challenging the output. No counterfactual asking &ldquo;what if the opposite is true?&rdquo; No scoring formula that treats Fiji and Singapore identically. One model, one pass, one perspective &mdash; for decisions that might affect a community, an investment, or a government strategy. One perspective isn&rsquo;t enough.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6 mb-10">
-                        {/* ── LEFT: Every Other AI ── */}
-                        <div className="relative rounded-md overflow-hidden border border-red-200/60 shadow-md">
-                            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-48 object-cover" loading="lazy" />
-                            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-red-900/50 flex flex-col justify-end p-5">
-                                <p className="text-[10px] font-bold text-red-300 uppercase tracking-widest mb-1">The problem</p>
-                                <span className="text-white font-bold text-xl drop-shadow">Every Other AI</span>
-                            </div>
-                            <div className="divide-y divide-red-100">
-                                {([
-                                    ['gap-id', 'No Identity or Context', 'Doesn\u2019t ask who you are, what firm you represent, or what you\u2019re trying to achieve. A first-time founder exploring Papua New Guinea and a seasoned investor evaluating a $200M port deal in Mozambique both get the same blank prompt box. No intake, no case building, no memory across sessions.'],
-                                    ['gap-verify', 'No Entity Verification', 'Ask \u201CIs Sunrise Holdings Ltd in Fiji legitimate?\u201D and you get a fluent, confident answer \u2014 fabricated from statistical patterns. It cannot query a corporate registry, screen against sanctions lists, verify an LEI number, or pull real governance scores. In advisory work, where capital gets committed on this basis, that\u2019s dangerous.'],
-                                    ['gap-bias', 'Systemic Regional Bias', 'The internet has 100\u00d7 more content about New York than Suva. Lesser-known markets get mapped to the nearest Western comparison \u2014 erasing their actual characteristics. Negative framing dominates because limited training data skews toward news coverage of problems, not opportunities. Pattern-matching dressed up as analysis.'],
-                                    ['gap-engine', 'Single-Pass, No Challenge', 'One model, one pass, one perspective. No second engine asking \u201Cwhat if the opposite is true?\u201D No counterfactual simulation, no scoring formula that treats Fiji and Singapore identically, no adversarial debate. For decisions affecting communities, investments, or government strategy \u2014 one perspective isn\u2019t enough.'],
-                                    ['gap-memory', 'No Case Memory', 'Every conversation starts at zero. It doesn\u2019t remember what you discussed last week, what entities were flagged, or what strategy was being developed. There is no case file, no continuity, no compounding intelligence across sessions.'],
-                                    ['gap-output', 'No Actionable Deliverables', 'Gives you paragraphs of text \u2014 not documents you can use. No Letters of Intent, no due diligence reports, no board-ready strategy briefs, no stakeholder-specific versions. You still need a team to turn the answer into something someone can act on.'],
-                                    ['gap-ethics', 'No Ethical or Compliance Gate', 'Recommendations are not checked against fairness principles, environmental standards, or jurisdiction-specific regulations. There is no computational ethics layer, no IFC Performance Standard assessment, and no mechanism to reject a recommendation on ethical grounds even when the financial case is strong.'],
-                                ] as [string, string, string][]).map(([id, title, detail]) => (
-                                    <div key={id} className="px-5 py-3 bg-red-50/20 cursor-pointer hover:bg-red-50/40 transition-colors" onClick={() => toggleCard(id)}>
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">&times;</span>
-                                            <span className="font-semibold text-slate-900 text-sm flex-1">{title}</span>
-                                            <span className={`text-red-400 text-xs transition-transform ${expandedCards.has(id) ? 'rotate-180' : ''}`}>&#9660;</span>
-                                        </div>
-                                        {expandedCards.has(id) && (
-                                            <p className="text-sm text-slate-600 leading-relaxed mt-2 ml-8">{detail}</p>
-                                        )}
-                                    </div>
-                                ))}
+                    {/* ── The Gap vs The Solution — Premium Comparison ── */}
+                    <div className="mb-10">
+                        {/* Section header band */}
+                        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 rounded-t-lg px-6 py-5 flex items-center justify-between">
+                            <h3 className="text-lg font-bold text-white">What Every AI Advisory System Currently Lacks</h3>
+                            <div className="hidden md:flex items-center gap-6">
+                                <span className="text-[10px] font-bold text-red-300 uppercase tracking-widest">The Gap</span>
+                                <span className="text-white/30">|</span>
+                                <span className="text-[10px] font-bold text-blue-300 uppercase tracking-widest">This System</span>
                             </div>
                         </div>
 
-                        {/* ── RIGHT: This System ── */}
-                        <div className="relative rounded-md overflow-hidden border border-blue-200/60 shadow-md">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-48 object-cover" loading="lazy" />
-                            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-blue-900/50 flex flex-col justify-end p-5">
-                                <p className="text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-1">The solution</p>
-                                <span className="text-white font-bold text-xl drop-shadow">This System</span>
-                            </div>
-                            <div className="divide-y divide-blue-100">
-                                {([
-                                    ['sol-id', 'Structured Intake \u2014 Learns You First', 'Captures your role, firm, sector, purpose, experience level, and what results you need before any analysis begins. A novice gets broader educational framing. A professional gets entity-level intelligence and risk quantification immediately. Both get the same unbiased data \u2014 the presentation adapts to the person. That\u2019s the difference between a chat interface and an advisory system.'],
-                                    ['sol-verify', 'Real Registry Verification', 'When someone mentions a company, partner, or jurisdiction, the Entity Intelligence Pipeline fires automatically \u2014 querying OpenSanctions, OpenCorporates, GLEIF, Brave Search, GDELT, V-Dem, and Tavily in parallel. It tells you what it verified and what it couldn\u2019t. Every significant finding traces back to a named source. When it lacks data, it says so \u2014 instead of filling the gap with confident fiction.'],
-                                    ['sol-bias', 'Same Formula, Every Country', 'The identical weighted scoring model \u2014 38 proprietary indices \u2014 runs for Papua New Guinea exactly as it runs for the United States. Data inputs differ because reality differs, but the methodology doesn\u2019t discriminate. Regional unknowns are evaluated on true merit, not internet popularity. Backtested against 200+ real historical cases with known outcomes.'],
-                                    ['sol-engine', '19 Engines Challenge Every Answer', 'Adversarial Bayesian debate with 5 independent personas, counterfactual Monte Carlo simulation, propositional logic validation, neuroscience-based cognition modelling, cross-domain analogical reasoning, blind-spot detection, sanctions screening, and live entity intelligence \u2014 all firing in parallel. Deterministic: run it again tomorrow with the same inputs and you get the same answer. Every output comes with a method trail.'],
-                                    ['sol-memory', 'Persistent Case Intelligence', 'The system builds a case file, not a chat log. It remembers who you are, what you\u2019re working on, what entities were flagged, what strategy is being developed, and what was discussed before. Context compounds across sessions \u2014 shaping the depth of analysis, the risks surfaced, and the follow-up questions asked.'],
-                                    ['sol-output', 'Execution-Ready Deliverables', 'Generates Letters of Intent, MOUs, NDAs, Term Sheets, strategic briefs, stakeholder narratives, and partnership frameworks directly from the analysis. Five audience-specific formats \u2014 investor, government, community, partner, executive \u2014 so the same findings are framed correctly for whoever reads them. Compresses weeks of advisory into a decision-ready operating flow.'],
-                                    ['sol-ethics', 'Computational Ethics + 195-Country Compliance', 'Every recommendation is scored against Rawlsian fairness, intergenerational equity, multi-stakeholder utility, and Gini inequality impact \u2014 mathematical scores, not checkbox exercises. All 8 IFC Performance Standards assessed automatically. A 195-country compliance database checks jurisdiction-specific regulations. The system can recommend \u201Creject\u201D on ethical grounds alone, even when the financial case is strong.'],
-                                ] as [string, string, string][]).map(([id, title, detail]) => (
-                                    <div key={id} className="px-5 py-3 bg-blue-50/20 cursor-pointer hover:bg-blue-50/40 transition-colors" onClick={() => toggleCard(id)}>
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-xs font-bold">&#10003;</span>
-                                            <span className="font-semibold text-slate-900 text-sm flex-1">{title}</span>
-                                            <span className={`text-blue-400 text-xs transition-transform ${expandedCards.has(id) ? 'rotate-180' : ''}`}>&#9660;</span>
+                        {/* Intro text */}
+                        <div className="bg-slate-50 border-x border-slate-200 px-6 py-5">
+                            <p className="text-sm text-slate-600 leading-relaxed max-w-3xl">
+                                The single biggest gap across every general-purpose AI &mdash; the household names, the billion-dollar chatbots &mdash; when it comes to strategic advisory work: <strong className="text-slate-900">they don&rsquo;t know who they&rsquo;re talking to, and they don&rsquo;t verify what they&rsquo;re talking about.</strong> Here&rsquo;s what that means &mdash; and what this system does instead.
+                            </p>
+                        </div>
+
+                        {/* Comparison rows */}
+                        <div className="border border-slate-200 border-t-0 rounded-b-lg overflow-hidden divide-y divide-slate-200">
+                            {([
+                                {
+                                    n: 1,
+                                    gapTitle: 'No Identity or Context',
+                                    gapShort: 'Everyone gets the same blank prompt box. No intake, no memory, no continuity.',
+                                    gapFull: 'A first-time founder exploring Papua New Guinea and a seasoned investor evaluating a $200M port deal in Mozambique both get identical treatment. There is no intake process, no case building, no memory of your situation across turns or sessions. Every conversation starts at zero. The system doesn\u2019t know if you need education or execution.',
+                                    solTitle: 'Structured Intake \u2014 Learns You First',
+                                    solShort: 'Captures role, firm, sector, purpose, and experience level before any analysis begins.',
+                                    solFull: 'A novice gets broader educational framing and exploration. A professional gets entity-level intelligence and risk quantification immediately. Both get the same unbiased data \u2014 the presentation adapts to the person. The system asks who you are, what firm you represent, what you\u2019re trying to achieve, and whether you\u2019re exploring or executing. That context shapes the depth of analysis, the language used, the risks surfaced, and the follow-up questions asked.',
+                                },
+                                {
+                                    n: 2,
+                                    gapTitle: 'No Entity Verification',
+                                    gapShort: 'Gives fluent, confident answers fabricated from statistical patterns in training data.',
+                                    gapFull: 'Ask \u201CIs Sunrise Holdings Ltd in Fiji legitimate?\u201D and you get a confident answer that sounds authoritative but is entirely fabricated. It cannot query a corporate registry, screen against sanctions lists, verify an LEI number, or pull real governance scores for Fiji vs. Australia. In advisory work \u2014 where someone might commit capital, sign an MOU, or brief a minister based on that answer \u2014 that\u2019s dangerous.',
+                                    solTitle: 'Real Registry Verification',
+                                    solShort: '7-source Entity Intelligence Pipeline fires automatically on every mentioned entity.',
+                                    solFull: 'When someone mentions a company, partner, or jurisdiction, the system queries OpenSanctions (sanctions/PEP screening), OpenCorporates (corporate registry), GLEIF (LEI/ownership chain), Brave Search (independent web index), GDELT (news sentiment), V-Dem (academic governance scores), and Tavily (deep research) in parallel. It tells you what it verified and what it couldn\u2019t. Every significant finding traces back to a named source. When it lacks data, it says so.',
+                                },
+                                {
+                                    n: 3,
+                                    gapTitle: 'Systemic Regional Bias',
+                                    gapShort: 'Internet has 100\u00d7 more content about New York than Suva. Unknown places get stereotyped.',
+                                    gapFull: 'Every large language model is trained on internet text. Lesser-known markets get mapped to the nearest well-known comparison \u2014 erasing their actual characteristics. Negative framing dominates because limited training data skews toward news coverage of problems, not opportunities. Well-known places get the benefit of the doubt. Unknown places get the benefit of the stereotype. That\u2019s not advisory \u2014 that\u2019s pattern-matching dressed up as analysis.',
+                                    solTitle: 'Same Formula, Every Country',
+                                    solShort: '38 proprietary indices, identical methodology, backtested against 200+ real historical cases.',
+                                    solFull: 'The identical weighted scoring model runs for Papua New Guinea exactly as it runs for the United States. Data inputs differ because reality differs, but the methodology doesn\u2019t discriminate. Regional unknowns are evaluated on true merit, not internet popularity. All 38 scoring indices run as a dependency graph with parallel execution, memoisation, mathematical bounds enforcement, and confidence intervals per formula per context. Backtested against 200+ real cases with known outcomes \u2014 Tesla Shanghai, Samsung Vietnam, PEZA Philippines, Rwanda IT Hub.',
+                                },
+                                {
+                                    n: 4,
+                                    gapTitle: 'Single-Pass, No Challenge',
+                                    gapShort: 'One model, one pass, one perspective. No adversarial check on its own output.',
+                                    gapFull: 'There is no second engine asking \u201Cwhat if the opposite is true?\u201D No counterfactual simulation. No scoring formula that treats Fiji and Singapore identically. No stress test. No blind-spot detection. It\u2019s one model generating one answer for decisions that might affect a community, an investment, or a government strategy.',
+                                    solTitle: '19 Engines Challenge Every Answer',
+                                    solShort: 'Adversarial debate, Monte Carlo simulation, logic validation \u2014 deterministic and auditable.',
+                                    solFull: 'Adversarial Bayesian debate with 5 independent personas (Skeptic, Advocate, Regulator, Accountant, Operator), counterfactual Monte Carlo simulation running 10,000 iterations, propositional logic validation via SAT solver, neuroscience-based cognition modelling with 7 neural models, cross-domain analogical reasoning, blind-spot detection, sanctions screening, and live entity intelligence \u2014 all firing in parallel. Run it again tomorrow with the same inputs: same answer. Every output comes with a method trail.',
+                                },
+                                {
+                                    n: 5,
+                                    gapTitle: 'No Case Memory',
+                                    gapShort: 'Every conversation starts at zero. No continuity, no compounding intelligence.',
+                                    gapFull: 'It doesn\u2019t remember what you discussed last week, what entities were flagged, or what strategy was being developed. There is no case file, no continuity, no compounding intelligence across sessions. Ask the same question twice and it doesn\u2019t know you already asked. Every session treats you as a stranger.',
+                                    solTitle: 'Persistent Case Intelligence',
+                                    solShort: 'Builds a case file, not a chat log. Context compounds across sessions.',
+                                    solFull: 'The system builds a case file \u2014 not a chat log. It remembers who you are, what you\u2019re working on, what entities were flagged, what strategy is being developed, and what was discussed before. Context compounds across sessions, shaping the depth of analysis, the risks surfaced, and the follow-up questions asked. The case model informs every engine in the pipeline, so recommendations get sharper over time.',
+                                },
+                                {
+                                    n: 6,
+                                    gapTitle: 'No Actionable Deliverables',
+                                    gapShort: 'Gives you paragraphs of text. You still need a team to produce documents.',
+                                    gapFull: 'No Letters of Intent, no due diligence reports, no board-ready strategy briefs, no stakeholder-specific versions. The output is conversational text that requires interpretation. You still need consultants, lawyers, and analysts to turn the answer into something a board, investor, or government can act on.',
+                                    solTitle: 'Execution-Ready Deliverables',
+                                    solShort: 'LOIs, MOUs, NDAs, Term Sheets, briefs \u2014 five audience-specific formats from every analysis.',
+                                    solFull: 'Generates Letters of Intent, MOUs, NDAs, Term Sheets, strategic briefs, stakeholder narratives, and partnership frameworks directly from the analysis. Five audience-specific formats \u2014 investor (ROI-focused), government (policy-aligned), community (impact-centred), partner (technical), executive (board-ready) \u2014 so the same findings are framed correctly for whoever reads them. Compresses weeks of advisory and drafting cycles into a decision-ready operating flow.',
+                                },
+                                {
+                                    n: 7,
+                                    gapTitle: 'No Ethical or Compliance Gate',
+                                    gapShort: 'No fairness checks, no jurisdiction-specific regulations, no mechanism to say \u201Creject.\u201D',
+                                    gapFull: 'Recommendations are not checked against fairness principles, environmental standards, or jurisdiction-specific regulations. There is no computational ethics layer, no IFC Performance Standard assessment, and no mechanism to reject a recommendation on ethical grounds even when the financial case is strong. A profitable recommendation that harms a vulnerable community passes through unchallenged.',
+                                    solTitle: 'Computational Ethics + 195-Country Compliance',
+                                    solShort: 'Rawlsian fairness, IFC standards, 195-country compliance \u2014 the system can reject on ethics alone.',
+                                    solFull: 'Every recommendation is scored against Rawlsian fairness (does the least-advantaged group benefit?), intergenerational equity using Stern Review discount rates, multi-stakeholder utility, and Gini coefficient for inequality impact \u2014 mathematical scores, not checkbox exercises. All 8 IFC Performance Standards assessed automatically. A 195-country compliance database checks jurisdiction-specific investment frameworks, tax treaties, anti-corruption laws, and dispute resolution mechanisms. The system can recommend \u201Creject\u201D on ethical grounds alone, even when the financial case is strong.',
+                                },
+                            ]).map((row) => (
+                                <div key={row.n} className="group cursor-pointer hover:bg-slate-50/50 transition-colors" onClick={() => toggleCard(`cmp-${row.n}`)}>
+                                    <div className="grid md:grid-cols-2">
+                                        {/* Gap side */}
+                                        <div className="p-4 md:p-5 md:border-r border-slate-200">
+                                            <div className="flex items-start gap-3">
+                                                <span className="mt-0.5 flex-shrink-0 w-7 h-7 rounded-lg bg-red-100 text-red-500 flex items-center justify-center text-xs font-bold">{row.n}</span>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <span className="w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&times;</span>
+                                                        <h4 className="font-bold text-slate-900 text-sm">{row.gapTitle}</h4>
+                                                    </div>
+                                                    <p className="text-xs text-slate-500 leading-relaxed">{row.gapShort}</p>
+                                                    {expandedCards.has(`cmp-${row.n}`) && (
+                                                        <p className="text-sm text-slate-600 leading-relaxed mt-3 border-l-2 border-red-200 pl-3">{row.gapFull}</p>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
-                                        {expandedCards.has(id) && (
-                                            <p className="text-sm text-slate-600 leading-relaxed mt-2 ml-8">{detail}</p>
-                                        )}
+                                        {/* Solution side */}
+                                        <div className="p-4 md:p-5 bg-blue-50/20">
+                                            <div className="flex items-start gap-3">
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <span className="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&#10003;</span>
+                                                        <h4 className="font-bold text-slate-900 text-sm">{row.solTitle}</h4>
+                                                    </div>
+                                                    <p className="text-xs text-slate-500 leading-relaxed">{row.solShort}</p>
+                                                    {expandedCards.has(`cmp-${row.n}`) && (
+                                                        <p className="text-sm text-slate-600 leading-relaxed mt-3 border-l-2 border-blue-200 pl-3">{row.solFull}</p>
+                                                    )}
+                                                </div>
+                                                <span className={`mt-1 text-slate-400 text-[10px] transition-transform flex-shrink-0 ${expandedCards.has(`cmp-${row.n}`) ? 'rotate-180' : ''}`}>&#9660;</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
