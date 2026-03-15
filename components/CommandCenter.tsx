@@ -419,13 +419,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                TIER 1: THE DIFFERENCE — Built Different
+                TIER 1: THE DIFFERENCE
             ═══════════════════════════════════════════════════════════════ */}
             <section id="platform" className="relative py-16 px-4 bg-slate-50 overflow-hidden">
                 {/* Subtle background texture */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent" />
                 <div className="relative max-w-5xl mx-auto">
-                    <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-3 text-center">Built Different</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-center leading-tight mb-4 text-slate-900">
                         One System. Zero Compromise.
                     </h2>
@@ -514,7 +513,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="relative py-12 px-4 bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white overflow-hidden">
                 <div className="absolute inset-0 opacity-20"></div>
                 <div className="relative max-w-4xl mx-auto text-center space-y-3">
-                    <p className="text-sm font-bold text-blue-400 uppercase tracking-wider">Why I Built This</p>
                     <p className="text-lg md:text-xl text-white font-light leading-relaxed max-w-2xl mx-auto">
                         General AI systems are <strong className="text-white">answer machines</strong> &mdash; they optimise for giving you a fluent response to whatever you type. This system is a <strong className="text-white">case-building advisor</strong> &mdash; it optimises for giving you a verified, unbiased, contextual assessment you could actually act on.
                     </p>
