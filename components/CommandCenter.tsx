@@ -477,24 +477,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (LEFT) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">The System That Replaces the Gap</h4>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">The First Regional-First Investment Intelligence System</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    So we built what doesn't exist. A system where five specialized AI reasoning engines — Skeptic, Advocate, Accountant, Regulator, Operator — run independently on every case. They don't agree by default. The Skeptic flags the risks your optimism missed. The Regulator catches the compliance exposure you didn't know applied. The Accountant stress-tests the numbers everyone else assumed were solid. You see the full debate before you see a conclusion.
+                                    Now lets see if you get the same response you got from ChatGPT. Most AI tools were built for general conversation, then retrofitted for business use. Regional development was never their design center, which is why they are strongest where data is loud and weakest where decisions are hardest: secondary cities, border economies, and undercapitalized regions.
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Every claim is validated against live data — not training data from two years ago. OpenSanctions for entity screening. OpenCorporates for registry verification. World Bank for macro indicators. GDELT for real-time news sentiment. V-Dem for governance quality. If the system can't verify something, it tells you — with a confidence score, not a guess.
+                                    We built the opposite architecture. This system is 100% dedicated to regional development and investment across the globe. It does not treat regional locations as edge cases. It treats them as the primary mission. Every workflow, scoring model, and output is built to answer one question: what will unlock investment, jobs, and long-term economic resilience in this place, under these constraints, right now?
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    The output isn't a summary you have to rewrite. It's a board-ready package: investment prospectus, risk register, stakeholder engagement plan, funding submission brief — all traceable back to the data sources and the reasoning that produced them.
+                                    Every engagement becomes a persistent case file with location, sector, constraints, stakeholders, timeline, and evidence. Five independent engines &mdash; Skeptic, Advocate, Accountant, Regulator, and Operator &mdash; challenge each other before any recommendation is made. Claims are validated against live authoritative sources. If something cannot be verified, it is flagged as unknown with confidence scoring. The output is not a paragraph. It is a defensible operating package with full traceability to sources and reasoning.
                                 </p>
                                 
                                 {/* Core Capabilities */}
                                 <div className="space-y-2 mb-5">
                                     {[
-                                        'Five AI perspectives that challenge each other — disagreements shown, not hidden',
-                                        'Live entity verification against sanctions, corporate registries, and ownership chains',
-                                        'Confidence scoring on every claim — you know exactly what to trust',
-                                        'Decision-ready documents, not paragraphs you need to reformat',
+                                        'Built for regional development first, not adapted to it later',
+                                        'Place-based investment intelligence, not generic prompt responses',
+                                        'Jurisdiction-specific constraints surfaced before capital is committed',
+                                        'Decision-ready documents with traceable evidence and logic',
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-start gap-2">
                                             <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
@@ -510,12 +510,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">How It Works</p>
                                         <div className="space-y-2">
                                             {[
-                                                'You describe your opportunity — who, what, where, why',
-                                                'System structures it into a normalized case dataset',
+                                                'You define a place-specific decision: location, sector, objective, constraints, timeline',
+                                                'System creates a persistent regional case file with full context',
                                                 'Five engines run independently: Skeptic, Advocate, Accountant, Regulator, Operator',
-                                                'Claims validated against live registries, sanctions, trade data',
-                                                'What-if stress testing on rates, partnerships, and market shifts',
-                                                'Scored across 21 proprietary formulas — then assembled into documents',
+                                                'Claims are validated against live registries, sanctions, trade, governance, and market signals',
+                                                'What-if stress tests model policy, partner, financing, and market volatility',
+                                                'Results are assembled into documents with confidence scoring and provenance',
                                             ].map((item, i) => (
                                                 <div key={i} className="flex items-start gap-2">
                                                     <span className="mt-0.5 w-5 h-5 rounded-full bg-white text-slate-700 flex items-center justify-center flex-shrink-0 text-[10px] font-bold border border-slate-300">{i + 1}</span>
@@ -528,15 +528,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     {/* What You Get */}
                                     <div className="border-l-2 border-blue-500 pl-4">
                                         <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">What You Get</p>
-                                        <p className="text-[11px] text-slate-500 mb-3">Not a pitch deck requiring interpretation. A defensible operating position.</p>
+                                        <p className="text-[11px] text-slate-500 mb-3">Not a nicer AI response. A region-specific position you can defend.</p>
                                         <div className="space-y-2">
                                             {[
-                                                'Board-ready strategic analysis with sourced reasoning',
-                                                'Full adversarial debate transcript — all five perspectives visible',
-                                                'Confidence scores per claim (e.g. "89% market data, 54% partner stability")',
-                                                'Assumptions explicitly flagged — what the system doesn\'t know, it says',
-                                                'Sequenced recommendations with milestones and risk mitigation',
-                                                'Ready-to-use LOIs, prospectuses, NAIF briefs, and stakeholder plans',
+                                                'Clear go / no-go or conditional pathway grounded in evidence',
+                                                'Visible adversarial debate across all five perspectives',
+                                                'Confidence per claim: proven, assumed, or unknown',
+                                                'Assumptions, blind spots, and verification gaps explicitly flagged',
+                                                'Sequenced recommendations with milestones and risk mitigations',
+                                                'Ready-to-send briefs, submissions, LOIs, and stakeholder plans',
                                             ].map((item, i) => (
                                                 <div key={i} className="flex items-start gap-2">
                                                     <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
