@@ -360,7 +360,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* 2-COLUMN: Header (left) + Body copy (right) */}
                     <div className="grid md:grid-cols-5 gap-12 items-start">
 
-                        {/* LEFT: Header */}
+                        {/* LEFT: Header + Founder statement */}
                         <div className="md:col-span-2 md:sticky md:top-24">
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4">Regional Cities &middot; Global Impact</p>
                             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-5">
@@ -369,7 +369,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-lg text-slate-400 font-medium leading-snug mb-8">
                                 Overlooked by the Tools<br />Built to Serve Them
                             </p>
-                            <div className="w-12 h-1 bg-blue-600"></div>
+
+                            {/* Founder statement — blue panel */}
+                            <div className="bg-blue-700 rounded-sm p-6">
+                                <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">A Note From the Founder</p>
+                                <p className="text-base text-white leading-relaxed mb-6">
+                                    I grew up watching regional communities absorb economic shocks that better-resourced places never would have had to face — not because of bad decisions, but because of bad tools. No regional council should lose a decade of investment potential because their city doesn&rsquo;t appear in a model built for somewhere else.
+                                </p>
+                                <p className="text-base text-blue-100 leading-relaxed mb-6">
+                                    This system exists because the world&rsquo;s most important economies — the ones feeding, moving, and manufacturing everything we depend on — deserve the same standard of intelligence that has always been reserved for the capitals that overlook them.
+                                </p>
+                                <div className="border-t border-blue-500 pt-5">
+                                    <p className="text-sm text-blue-50 italic leading-relaxed mb-3">
+                                        &ldquo;Every region that succeeded left a blueprint. Every region that stalled left a lesson. The system reads both &mdash; so yours doesn&rsquo;t have to start from zero.&rdquo;
+                                    </p>
+                                    <p className="text-blue-300 text-sm font-semibold">&mdash; Brayden Walls, Founder</p>
+                                </div>
+                            </div>
                         </div>
 
                         {/* RIGHT: 4 paragraphs — new global copy */}
