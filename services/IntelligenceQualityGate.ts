@@ -35,6 +35,7 @@ export interface IntelligenceQualityInput {
   gateStatus?: { isReady?: boolean; missing?: string[] } | null;
   reactiveOpportunities?: unknown[] | null;
   reactiveRisks?: unknown[] | null;
+  researchEcosystem?: { ecosystemReadinessScore?: number; confidence?: number } | null;
 }
 
 export class IntelligenceQualityGate {
@@ -116,6 +117,21 @@ export class IntelligenceQualityGate {
     if ((input.reactiveRisks?.length || 0) > 0 && (input.reactiveOpportunities?.length || 0) === 0) {
       score -= 6;
       reasons.push('Reactive risk signals are present without balancing opportunity signals.');
+    }
+
+    const ecosystemScore = input.researchEcosystem?.ecosystemReadinessScore;
+    const ecosystemConfidence = input.researchEcosystem?.confidence ?? 0;
+    if (ecosystemScore !== undefined) {
+      if (ecosystemScore >= 70) {
+        strengths.push(`Research ecosystem readiness is strong (${ecosystemScore}/100).`);
+      } else if (ecosystemScore < 45) {
+        score -= 8;
+        reasons.push(`Research ecosystem readiness is weak (${ecosystemScore}/100), raising execution risk.`);
+      }
+      if (ecosystemConfidence < 40) {
+        score -= 4;
+        reasons.push(`Research ecosystem score confidence is low (${ecosystemConfidence}/100).`);
+      }
     }
 
     score = Math.max(0, Math.min(100, score));

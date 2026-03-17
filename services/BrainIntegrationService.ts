@@ -66,6 +66,10 @@ import { tavilyResearchQuestion } from './tavilySearchService';
 import { ReportParameters } from '../types';
 import IntelligenceQualityGate, { type IntelligenceQualityAssessment } from './IntelligenceQualityGate';
 import { resolveCountryCode as resolveGovernanceCountryCode } from './vdemGovernanceService';
+import {
+  ResearchEcosystemScoringService,
+  type ResearchEcosystemAssessment,
+} from './ResearchEcosystemScoringService';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -159,6 +163,8 @@ export interface BrainContext {
   reactiveRisks: Array<{ id: string; type: string; description?: string; signal?: string }> | null;
   /** Intelligence quality adjudication for this brain snapshot */
   qualityGate: IntelligenceQualityAssessment;
+  /** Research ecosystem readiness: talent attraction + innovation conversion */
+  researchEcosystem: ResearchEcosystemAssessment | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -687,6 +693,28 @@ export class BrainIntegrationService {
         : null,
     };
 
+    const researchEcosystem = ResearchEcosystemScoringService.assess({
+      country,
+      readiness,
+      gdp: externalData.gdp,
+      gdpGrowth: externalData.gdpGrowth,
+      costOfLiving: externalData.costOfLiving,
+      rankedPartnerCount: rankedPartners?.length || 0,
+      compliancePresent: Boolean(compliance),
+      gateReady: Boolean(gateStatus?.isReady),
+      researchSpendPctGDP: (params as any).researchSpendPctGDP,
+      phdGraduatesPer100k: (params as any).phdGraduatesPer100k,
+      scientistCompRatioToMinWage: (params as any).scientistCompRatioToMinWage,
+      computeCapacityIndex: (params as any).computeCapacityIndex,
+      talentMobilityIndex: (params as any).talentMobilityIndex,
+      startupCapitalIndex: (params as any).startupCapitalIndex,
+      scaleCapitalIndex: (params as any).scaleCapitalIndex,
+      patentToStartupConversion: (params as any).patentToStartupConversion,
+      industryAbsorptionIndex: (params as any).industryAbsorptionIndex,
+      policyExecutionIndex: (params as any).policyExecutionIndex,
+      marketAccessIndex: (params as any).marketAccessIndex,
+    });
+
     // ── Build the combined prompt block ───────────────────────────────────────
     const promptParts: string[] = [
       `\n\n${'═'.repeat(70)}`,
@@ -1107,6 +1135,11 @@ export class BrainIntegrationService {
       promptParts.push(`**Who:** ${gateStatus.summary.who}  |  **Where:** ${gateStatus.summary.where}  |  **Deadline:** ${gateStatus.summary.deadline}`);
     }
 
+    if (researchEcosystem) {
+      promptParts.push('');
+      promptParts.push(ResearchEcosystemScoringService.formatForPrompt(researchEcosystem));
+    }
+
     const provisionalResult = {
       indices,
       adversarial,
@@ -1144,6 +1177,7 @@ export class BrainIntegrationService {
       gateStatus,
       reactiveOpportunities,
       reactiveRisks,
+      researchEcosystem,
     };
 
     const qualityGate = IntelligenceQualityGate.assess(provisionalResult);
@@ -1189,6 +1223,7 @@ export class BrainIntegrationService {
       gateStatus,
       reactiveOpportunities,
       reactiveRisks,
+      researchEcosystem,
       qualityGate,
     };
 
