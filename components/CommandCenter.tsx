@@ -117,7 +117,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Self-Evolving Algorithm Engine</h4>
                         <p className="text-sm text-slate-600 leading-relaxed">Scoring formulas adjust their own weights using online gradient descent and Thompson Sampling (Bayesian bandits) based on outcome feedback. Exponential moving averages track performance trends. If accuracy drifts, the system rolls back automatically to the last known-good configuration. Every change is logged with a full audit trail: what changed, why, what triggered it, and accuracy before and after.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Operates continuously in the background. Keeps the 38 scoring indices calibrated without manual intervention.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Operates continuously in the background. Keeps the 46+ formula architecture calibrated without manual intervention.</p>
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
@@ -244,7 +244,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'e': {
             title: 'Proprietary Quantitative Architecture',
-            subtitle: '38 scoring indices, 200+ backtested cases, and 195-country compliance &mdash; the knowledge base underneath everything.',
+            subtitle: '46+ proprietary formulas, 200+ backtested cases, 195-country governance coverage, and Research Ecosystem scoring (TAI/ICI/ERS) &mdash; the knowledge base underneath everything.',
             icon: 'E',
             color: 'from-rose-600 to-rose-800',
             summary: 'Purpose-built scoring formulas running as a dependency graph, sixty years of searchable institutional memory, and a 195-country queryable compliance engine.',
@@ -253,9 +253,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-sm text-slate-700 leading-relaxed">This is the quantitative foundation that every other engine draws from. The formulas produce the scores. The historical cases provide the precedents. The compliance database provides the jurisdiction-specific rules. Without this layer, the reasoning engines would have nothing to reason over.</p>
 
                     <div className="border-l-2 border-rose-600 pl-4">
-                        <h4 className="font-semibold text-slate-900 text-sm mb-1">38 Proprietary Scoring Indices</h4>
+                        <h4 className="font-semibold text-slate-900 text-sm mb-1">46+ Proprietary Formulas + Research Ecosystem Scoring</h4>
                         <p className="text-sm text-slate-600 leading-relaxed">BARNA, NVI, CRI, SPI, RROI, SEAM, IVAS, SCF, CAP, AGI, VCI, ATI, ESI, ISI, OSI, TCO, PRI, RNI, SRA, IDV, FMS, DCS, DQS, GCS, RDBI, AFC and more. Each is a composite formula purpose-built for investment and regional strategy. They run as a dependency DAG (directed acyclic graph) with topological-sort parallel execution, memoisation of intermediate results, mathematical bounds enforcement, and confidence intervals per formula per context.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 3 &mdash; quantitative scoring. The DAG scheduler executes all 38 formulas with dependency-aware parallelism. Every score traces back to its exact inputs and weights.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 3 &mdash; quantitative scoring. The DAG scheduler executes 46+ formulas with dependency-aware parallelism, including Research Ecosystem formulas (TAI, ICI, ERS). Every score traces back to its exact inputs and weights.</p>
                     </div>
 
                     <div className="border-l-2 border-rose-600 pl-4">
@@ -497,48 +497,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     ))}
                                 </div>
                                 
-                                {/* Two-Column Grid: How It Works + What You Get */}
-                                <div className="grid md:grid-cols-2 gap-6 bg-slate-50 rounded-lg p-4 border border-slate-200">
-                                    {/* How It Works */}
-                                    <div className="border-l-2 border-slate-400 pl-4">
-                                        <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">How It Works</p>
-                                        <div className="space-y-2">
-                                            {[
-                                                'You define a place-specific decision: location, sector, objective, constraints, timeline',
-                                                'System creates a persistent regional case file with full context',
-                                                'Five engines run independently: Skeptic, Advocate, Accountant, Regulator, Operator',
-                                                'Claims are validated against live registries, sanctions, trade, governance, and market signals',
-                                                'What-if stress tests model policy, partner, financing, and market volatility',
-                                                'Results are assembled into documents with confidence scoring and provenance',
-                                            ].map((item, i) => (
-                                                <div key={i} className="flex items-start gap-2">
-                                                    <span className="mt-0.5 w-5 h-5 rounded-full bg-white text-slate-700 flex items-center justify-center flex-shrink-0 text-[10px] font-bold border border-slate-300">{i + 1}</span>
-                                                    <p className="text-xs text-slate-600 leading-snug">{item}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    
-                                    {/* What You Get */}
-                                    <div className="border-l-2 border-blue-500 pl-4">
-                                        <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">What You Get</p>
-                                        <p className="text-[11px] text-slate-500 mb-3">Not a nicer AI response. A region-specific position you can defend.</p>
-                                        <div className="space-y-2">
-                                            {[
-                                                'Clear go / no-go or conditional pathway grounded in evidence',
-                                                'Visible adversarial debate across all five perspectives',
-                                                'Confidence per claim: proven, assumed, or unknown',
-                                                'Assumptions, blind spots, and verification gaps explicitly flagged',
-                                                'Sequenced recommendations with milestones and risk mitigations',
-                                                'Ready-to-send briefs, submissions, LOIs, and stakeholder plans',
-                                            ].map((item, i) => (
-                                                <div key={i} className="flex items-start gap-2">
-                                                    <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
-                                                    <p className="text-xs text-slate-600 leading-snug">{item}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                {/* The Actual Breakthrough */}
+                                <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                                    <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-3">The Actual Breakthrough — Applying the Failure Model to Regional City Economic Perception</p>
+                                    <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                        The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
+                                    </p>
+                                    <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                        This system was built as a direct countermeasure to each one. It replaces CBD-biased data gaps with live regional intelligence: governance scores, trade flows, sanctions registries, infrastructure capacity, and ecosystem readiness — the signals that never appear in a national aggregate. It pressure-tests causal assumptions through five independent reasoning engines — Skeptic, Advocate, Accountant, Regulator, Operator — because the inherited model of how regional economies work has rarely been subjected to structured adversarial challenge. It forces the search beyond the obvious, surfacing pathways that peer conformity and existing networks would never reach.
+                                    </p>
+                                    <p className="text-sm text-slate-600 leading-relaxed text-justify">
+                                        What the system returns is not a report. It is a position — built in the language of institutional legitimacy, structured to satisfy fiduciary guardrails, with every claim marked proven, assumed, or unknown, and every gap explicitly flagged. A regional thesis that can be presented to a board, an investment committee, or a minister and withstand scrutiny. Not because the region was made to look like something it is not, but because the analysis was finally done properly.
+                                    </p>
                                 </div>
                             </div>
                             
@@ -645,7 +615,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center"><GitBranch size={14} /></span>
                                         <h3 className="text-base font-bold text-white leading-snug">The Intelligence Architecture</h3>
                                     </div>
-                                    <p className="text-xs text-white/80 leading-relaxed">The NSIL pipeline, 22-engine parallel brain, Entity Intelligence Pipeline, and live external intelligence layer</p>
+                                    <p className="text-xs text-white/80 leading-relaxed">The NSIL pipeline, 22-engine parallel brain, Entity Intelligence Pipeline, live external intelligence layer, and Research Ecosystem Readiness scoring (TAI/ICI/ERS)</p>
                                 </div>
                                 <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
                             </div>
@@ -3554,6 +3524,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <li><strong>ReactiveIntelligenceEngine</strong> &mdash; Opportunity detection + live risk monitoring</li>
                                     <li><strong>GlobalIssueResolver</strong> &mdash; Universal problem-solver with root cause analysis</li>
                                     <li><strong>SelfImprovementEngine</strong> &mdash; Runtime weight tuning with drift detection and rollback</li>
+                                    <li><strong>ResearchEcosystemScoringService</strong> &mdash; TAI/ICI/ERS scoring with confidence calibration, integrated into runtime adjudication</li>
                                     <li><strong>ACLED, OpenSanctions, UN Comtrade, Tavily</strong> &mdash; Live external data agents</li>
                                     <li><strong>OSINT search</strong> &mdash; Open-source intelligence for country/org context</li>
                                     <li><strong>Derived indices</strong> &mdash; PRI (Political Risk), TCO (Total Cost), CRI (Country Risk)</li>
@@ -3737,9 +3708,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <li><strong>34+ Specialized Intelligence Engines</strong> - Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus proactive and reflexive engines</li>
                                     <li><strong>12 Core Algorithm Engines</strong> - From vector memory retrieval to frontier intelligence with negotiation simulation</li>
                                     <li><strong>10-Layer Deterministic Pipeline</strong> - Laws &rarr; Shield &rarr; Boardroom &rarr; Engine &rarr; Stress Test &rarr; Brain &rarr; Autonomous &rarr; Proactive &rarr; Output &rarr; Reflexive</li>
-                                    <li><strong>46+ Proprietary Formulas</strong> - Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring</li>
+                                    <li><strong>46+ Proprietary Formulas</strong> - Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring, and Research Ecosystem formulas (TAI/ICI/ERS)</li>
                                     <li><strong>7 Neuroscience Models</strong> - Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
-                                    <li><strong>22-Engine Parallel Brain</strong> - BrainIntegrationService fires formula indices, regional kernel, decision pipeline, domain agents, persona debate, derived indices, OSINT, ReactiveIntelligence, GlobalIssueResolver, SelfImprovementEngine, ACLED, OpenSanctions, UN Comtrade, and Tavily simultaneously via Promise.allSettled</li>
+                                    <li><strong>22-Engine Parallel Brain</strong> - BrainIntegrationService fires formula indices, regional kernel, decision pipeline, domain agents, persona debate, derived indices, ResearchEcosystemScoringService, OSINT, ReactiveIntelligence, GlobalIssueResolver, SelfImprovementEngine, ACLED, OpenSanctions, UN Comtrade, and Tavily simultaneously via Promise.allSettled</li>
                                     <li><strong>Entity Intelligence Pipeline</strong> - 7-source parallel entity verification: OpenSanctions screening, OpenCorporates registry, GLEIF LEI lookup, V-Dem governance scoring, Tavily deep research, Brave independent search, GDELT news sentiment. Produces composite risk ratings with source accountability</li>
                                     <li><strong>Groq Function Calling</strong> - 4 tool schemas (screen_entity, lookup_company, research_entity, compare_governance) enable the AI to autonomously invoke verification tools during conversation with up to 3 rounds of tool use</li>
                                     <li><strong>15+ Live External Data APIs</strong> - ACLED conflict data, OpenSanctions screening, OpenCorporates, GLEIF, V-Dem v14 governance, Brave Search, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata SPARQL, Wikipedia, REST Countries, DuckDuckGo web search, Tavily deep research - every data point timestamped with confidence scoring</li>
