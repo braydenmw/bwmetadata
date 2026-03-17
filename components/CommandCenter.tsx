@@ -386,16 +386,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* RIGHT: 3 paragraphs — regional cities investment thesis */}
+                        {/* RIGHT: 2 paragraphs — regional cities investment thesis */}
                         <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed">
                             <p>
-                                Regional cities are the operating core of national economies. They produce export value, process food and resources, move freight, supply skilled labor, and host the infrastructure that keeps countries competitive. From industrial corridors to logistics ports and agricultural belts, these places are not peripheral to growth, they are the foundation of it. When regional city performance strengthens, national resilience, productivity, and fiscal stability strengthen with it.
+                                Regional cities are no longer peripheral to economic strategy—they are essential to national resilience. They produce export value, process resources, move critical freight, supply skilled labor, and host the infrastructure that keeps countries competitive in a world shaped by supply-chain volatility, geopolitical fragmentation, and climate uncertainty. From industrial corridors to logistics ports to agricultural belts, these places generate the diversification that crowded major hubs can no longer deliver. When regional city performance strengthens, national resilience, productivity, and fiscal stability strengthen with it.
                             </p>
                             <p>
-                                Yet they are still treated as a second thought because legacy investment tools were built around capitals and tier-one metros. Most global datasets underrepresent regional markets, risk models apply urban assumptions that do not fit local realities, and capital screens overlook places that are harder to classify quickly. In an uncertain climate marked by supply-chain shocks, geopolitical risk, and tighter capital discipline, this is a structural blind spot. Regional cities should be first-pick markets because they offer diversification, strategic assets, and underpriced upside that crowded major hubs can no longer deliver at the same risk-adjusted value.
-                            </p>
-                            <p>
-                                BWGA AI is built 100% for this mission: regional-city development and investment intelligence. Our system evaluates each location on its own terms, combining historical precedent, live data, governance context, workforce readiness, infrastructure conditions, and cross-border linkages to support real decisions. These markets hold far more value than they are given credit for, and we are ready to work with governments, investors, operators, and institutions that are prepared to make regional cities their first pick.
+                                Yet capital still flows to tier-one metros because legacy investment tools were built to screen and evaluate major cities. Global datasets underrepresent regional markets, risk models apply urban assumptions that do not fit local realities, and capital allocation screens overlook places that are harder to classify in milliseconds. In today's uncertain world, this is a critical blind spot. BWGA AI is built 100% to solve it: we evaluate regional cities on their own terms, combining historical precedent, live data, governance context, workforce readiness, infrastructure conditions, and cross-border value to generate defensible investment positions. These markets hold far more strategic and financial value than they are given credit for, and we are ready to work with governments, investors, and institutions prepared to make them first-pick priorities.
                             </p>
                         </div>
                     </div>
@@ -719,41 +716,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                     </div>
-
-                    {/* Assurance + Document Factory - Two Photo + Script Cards */}
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* Assurance Architecture Card */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                            <div className="h-48 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1560732488-6b0df240254a?w=800&h=400&fit=crop&q=80" alt="Assurance Architecture" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-                                <div className="absolute bottom-4 left-5">
-                                    <h3 className="text-lg font-bold text-white">Trust Is Structural, Not Promotional</h3>
-                                </div>
-                            </div>
-                            <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    Trust in BW Ai is structural, not promotional: deterministic scoring for reproducible outcomes, formula-level traceability for every recommendation, end-to-end audit logging from intake to output, continuous recalibration using live macro and market feeds, and human sign-off requirements for high-impact decisions.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Document Factory Card */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                            <div className="h-48 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&h=400&fit=crop&q=80" alt="Document Factory" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-                                <div className="absolute bottom-4 left-5">
-                                    <h3 className="text-lg font-bold text-white">From Analysis to Execution Assets</h3>
-                                </div>
-                            </div>
-                            <div className="p-6">
-                                <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                    BW Ai does not end at analysis. It generates execution artifacts teams can use immediately: Letters of Intent (LOI), Memorandums of Understanding (MOU), Non-Disclosure Agreements (NDA), Term Sheets and strategic briefs, stakeholder narratives, and partnership negotiation frameworks. This compresses weeks of advisory and drafting cycles into a decision-ready operating flow.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -772,116 +734,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-
-            {/* GLOBAL STANDARDS & ETHICS */}
-            <section className="py-20 px-4 bg-slate-50">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
-
-                        {/* SINGLE CONSOLIDATED GLOBAL STANDARDS CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-emerald-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Global Standards & Ethics</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Your Projects Meet the Highest Global Benchmarks. Automatically.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Every report you generate is measured against IFC Performance Standards and UN Sustainable Development Goals &mdash; the same frameworks used by the World Bank, DFIs, and 100+ global financial institutions. You don&rsquo;t need to know the standards. You just need to answer the intake questions.
-                                </p>
-
-                                {/* Three Steps */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <div className="border-l-2 border-blue-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-blue-600 text-white rounded text-[10px] font-bold flex items-center justify-center">1</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Global Baseline Applied</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Your project is scored against IFC Performance Standards (PS1&ndash;PS8) &mdash; covering environmental management, labour conditions, land acquisition, and indigenous peoples&rsquo; rights. Your report is valid in any country from the moment it&rsquo;s generated.</p>
-                                    </div>
-                                    <div className="border-l-2 border-amber-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-amber-600 text-white rounded text-[10px] font-bold flex items-center justify-center">2</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Gaps Identified & Scored</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Your inputs are checked against every Performance Standard. Where you fall short, you&rsquo;ll see exactly what&rsquo;s missing &mdash; with severity ratings, business impact assessment, and clear recommendations. You see the red flags before your investors do.</p>
-                                    </div>
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-emerald-600 text-white rounded text-[10px] font-bold flex items-center justify-center">3</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Local Law Resolved</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Once a gap is found, the matching local regulations are surfaced &mdash; with exact legal references, required forms, enforcing agencies, and filing deadlines for your specific jurisdiction. Global standard in, local action plan out.</p>
-                                    </div>
-                                </div>
-
-                                {/* What This Means For You */}
-                                <div className="bg-slate-50 border border-slate-200 p-4">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-2">What This Means For You</h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-600">
-                                        <p><strong className="text-slate-800">Start Anywhere:</strong> Generate a report from any country, immediately. The global baseline works everywhere.</p>
-                                        <p><strong className="text-slate-800">Investor-Ready From Day One:</strong> Global investors and DFIs prefer IFC Standards. Meeting these benchmarks opens doors to financing that local compliance alone cannot.</p>
-                                        <p><strong className="text-slate-800">Protected By Default:</strong> Every report highlights exact compliance risks with severity ratings &mdash; protecting you from legal exposure and deal-killers.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop&q=80" alt="Global standards compliance" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            {/* WORK WITH US - Partnership & Pilot Programs */}
-            <section id="partnerships" className="py-20 px-4 bg-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
-
-                        {/* SINGLE CONSOLIDATED PARTNERSHIP CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Partnership Opportunity</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Early Partners Shape What This Becomes. That&rsquo;s By Design.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Nobody is building what we&rsquo;re building. The advisory industry still runs on billable hours, recycled templates, and institutional gatekeeping. We&rsquo;re replacing that with a system that gives any organisation &mdash; regardless of size or budget &mdash; access to the same depth of strategic intelligence that used to cost six figures and take months.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    We&rsquo;re not looking for customers. We&rsquo;re looking for partners &mdash; organisations willing to put this system to work on real problems and help us sharpen it. Every pilot shapes the intelligence. Every partnership makes the platform stronger for every user after you. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
-                                </p>
-
-                                {/* Three Partner Types */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Investment Promotion Agencies</h5>
-                                        <p className="text-xs text-slate-600">Your next intake cycle becomes the proving ground &mdash; faster, defensible assessments while directly shaping what gets built next.</p>
-                                    </div>
-                                    <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Regional Economic Development</h5>
-                                        <p className="text-xs text-slate-600">Intelligence designed for regional economies &mdash; not retrofitted from corporate tools. Be one of the first in the world to use it.</p>
-                                    </div>
-                                    <div className="border-l-2 border-orange-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Public-Private Partnerships</h5>
-                                        <p className="text-xs text-slate-600">Work directly with the developer. Your pain points become features. No enterprise vendor will ever offer that.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
 
             {/* SOLVING REAL PROBLEMS  -  Statement Piece */}
             <section className="relative py-20 px-4 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800 overflow-hidden">
