@@ -25,6 +25,7 @@ import { Router, Request, Response } from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { serverVectorStore } from '../services/vectorStore.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -248,6 +249,66 @@ router.get('/preferences', async (_req: Request, res: Response) => {
   }
 });
 
+// ─── Vector Retrieval ───────────────────────────────────────────────────────
+
+router.post('/vectors', async (req: Request, res: Response) => {
+  try {
+    const documents = Array.isArray(req.body?.documents)
+      ? req.body.documents
+      : [req.body];
+
+    const saved = [];
+    for (const document of documents) {
+      if (!document?.text) continue;
+      const record = await serverVectorStore.upsertDocument({
+        id: document.id,
+        text: document.text,
+        source: document.source,
+        metadata: document.metadata
+      });
+      saved.push({
+        id: record.id,
+        source: record.source,
+        embeddingModel: record.embeddingModel,
+        updatedAt: record.updatedAt
+      });
+    }
+
+    if (saved.length === 0) {
+      return res.status(400).json({ error: 'At least one document with text is required' });
+    }
+
+    res.status(201).json({ success: true, saved });
+  } catch (error) {
+    console.error('[Memory] Error saving vector documents:', error);
+    res.status(500).json({ error: 'Failed to save vector documents' });
+  }
+});
+
+router.post('/search', async (req: Request, res: Response) => {
+  try {
+    const query = sanitizeString(req.body?.query, 5000);
+    if (!query) {
+      return res.status(400).json({ error: 'query is required' });
+    }
+
+    const results = await serverVectorStore.search(query, {
+      topK: typeof req.body?.topK === 'number' ? req.body.topK : undefined,
+      minScore: typeof req.body?.minScore === 'number' ? req.body.minScore : undefined,
+      source: req.body?.source
+    });
+
+    res.json({
+      query,
+      count: results.length,
+      results
+    });
+  } catch (error) {
+    console.error('[Memory] Error searching vectors:', error);
+    res.status(500).json({ error: 'Failed to search vectors' });
+  }
+});
+
 // ─── Stats ──────────────────────────────────────────────────────────────────
 
 router.get('/stats', async (_req: Request, res: Response) => {
@@ -255,6 +316,7 @@ router.get('/stats', async (_req: Request, res: Response) => {
     const sessions = await readJSON<Record<string, Session>>('sessions.json', {});
     const learnings = await readJSON<Learning[]>('learnings.json', []);
     const prefs = await readJSON<Preferences>('preferences.json', { updatedAt: '' });
+    const vectorStats = await serverVectorStore.stats();
 
     res.json({
       sessions: Object.keys(sessions).length,
@@ -263,6 +325,7 @@ router.get('/stats', async (_req: Request, res: Response) => {
       hasPreferences: !!prefs.updatedAt,
       oldestSession: Object.values(sessions).reduce((oldest, s) => s.createdAt < oldest ? s.createdAt : oldest, new Date().toISOString()),
       newestSession: Object.values(sessions).reduce((newest, s) => s.updatedAt > newest ? s.updatedAt : newest, ''),
+      vectors: vectorStats,
     });
   } catch (error) {
     console.error('[Memory] Error getting stats:', error);

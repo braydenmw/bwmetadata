@@ -26,6 +26,7 @@
  */
 
 import { aiEmbeddingService } from './AIEmbeddingService';
+import { config } from './config';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -63,6 +64,8 @@ const DB_NAME = 'bw_nexus_vector_store';
 const DB_VERSION = 1;
 const STORE_VECTORS = 'vectors';
 const STORE_KNOWLEDGE = 'knowledge';
+const SERVER_VECTOR_ENDPOINT = `${config.apiBaseUrl}/memory/vectors`;
+const SERVER_SEARCH_ENDPOINT = `${config.apiBaseUrl}/memory/search`;
 
 // ─── Persistent Vector Store ────────────────────────────────────────────────
 
@@ -71,6 +74,10 @@ class PersistentVectorStore {
   private memoryIndex: Map<string, StoredVector> = new Map();
   private knowledgeIndex: Map<string, KnowledgeEntry> = new Map();
   private initialized = false;
+
+  private get shouldUseServer(): boolean {
+    return config.useRealBackend && typeof fetch !== 'undefined';
+  }
 
   /**
    * Initialize IndexedDB and load existing vectors into memory.
@@ -183,6 +190,12 @@ class PersistentVectorStore {
 
     this.memoryIndex.set(id, entry);
     await this.persistVector(entry);
+
+    if (this.shouldUseServer) {
+      await this.pushDocumentToServer(entry).catch(() => {
+        // Local persistence is already complete; server sync is best-effort.
+      });
+    }
   }
 
   /**
@@ -202,6 +215,14 @@ class PersistentVectorStore {
    */
   async search(query: string, topK = 5, minScore = 0.1): Promise<RetrievalResult[]> {
     await this.initialize();
+
+    if (this.shouldUseServer) {
+      const serverResults = await this.searchServer(query, topK, minScore).catch(() => [] as RetrievalResult[]);
+      if (serverResults.length > 0) {
+        return serverResults;
+      }
+    }
+
     if (this.memoryIndex.size === 0) return [];
 
     let queryVector: number[];
@@ -264,6 +285,23 @@ class PersistentVectorStore {
 
     this.knowledgeIndex.set(entry.id, entry);
     await this.persistKnowledge(entry);
+
+    if (this.shouldUseServer) {
+      await this.pushDocumentToServer({
+        id: entry.id,
+        text: entry.content,
+        source: 'knowledge',
+        metadata: {
+          topic: entry.topic,
+          confidence: entry.confidence,
+          createdAt: entry.createdAt,
+        },
+        vector: entry.embedding || this.simpleEmbed(entry.content),
+        createdAt: entry.createdAt,
+      }).catch(() => {
+        // Local persistence is already complete; server sync is best-effort.
+      });
+    }
   }
 
   /**
@@ -381,6 +419,45 @@ class PersistentVectorStore {
         tx.onerror = () => resolve();
       } catch { resolve(); }
     });
+  }
+
+  private async pushDocumentToServer(entry: StoredVector): Promise<void> {
+    const response = await fetch(SERVER_VECTOR_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: entry.id,
+        text: entry.text,
+        source: entry.source,
+        metadata: entry.metadata,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server vector sync failed: ${response.status}`);
+    }
+  }
+
+  private async searchServer(query: string, topK: number, minScore: number): Promise<RetrievalResult[]> {
+    const response = await fetch(SERVER_SEARCH_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, topK, minScore }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server vector search failed: ${response.status}`);
+    }
+
+    const payload = await response.json();
+    const results = Array.isArray(payload?.results) ? payload.results : [];
+    return results.map((result: RetrievalResult) => ({
+      id: result.id,
+      text: result.text,
+      score: result.score,
+      source: result.source,
+      metadata: result.metadata,
+    }));
   }
 }
 

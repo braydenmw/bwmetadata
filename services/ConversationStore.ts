@@ -22,6 +22,8 @@ const DB_NAME = 'bw_nexus_conversations';
 const DB_VERSION = 1;
 const RETENTION_DAYS = 90;
 
+import { config } from './config';
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 export interface Conversation {
@@ -61,6 +63,10 @@ export interface Learning {
 class ConversationStore {
   private db: IDBDatabase | null = null;
   private initPromise: Promise<void> | null = null;
+
+  private get shouldUseServer(): boolean {
+    return config.useRealBackend && typeof fetch !== 'undefined';
+  }
 
   constructor() {
     this.initPromise = this.init();
@@ -140,6 +146,8 @@ class ConversationStore {
     if (this.db) {
       await this.idbPut('conversations', conv);
     }
+
+    await this.syncSession(conv.id).catch(() => {});
     return conv;
   }
 
@@ -178,6 +186,7 @@ class ConversationStore {
     if (conv) {
       Object.assign(conv, updates, { updatedAt: new Date().toISOString() });
       await this.idbPut('conversations', conv);
+      await this.syncSession(id).catch(() => {});
     }
   }
 
@@ -208,6 +217,8 @@ class ConversationStore {
         await this.idbPut('conversations', conv);
       }
     }
+
+    await this.syncSession(conversationId).catch(() => {});
 
     return msg;
   }
@@ -268,6 +279,7 @@ class ConversationStore {
       timestamp: new Date().toISOString(),
     };
     await this.idbPut('learnings', learning);
+    await this.syncLearning(learning).catch(() => {});
   }
 
   async getLearnings(type?: Learning['type'], limit = 50): Promise<Learning[]> {
@@ -392,6 +404,55 @@ class ConversationStore {
       const req = store.get(key);
       req.onsuccess = () => resolve((req.result as T) || null);
       req.onerror = () => resolve(null);
+    });
+  }
+
+  private async syncSession(conversationId: string): Promise<void> {
+    if (!this.shouldUseServer) return;
+    const conversation = await this.getConversation(conversationId);
+    if (!conversation) return;
+    const messages = await this.getMessages(conversationId, 200);
+
+    await fetch(`${config.apiBaseUrl}/memory/sessions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: conversation.id,
+        title: conversation.title,
+        summary: conversation.summary,
+        messages: messages.map((message) => ({
+          role: message.role,
+          content: message.content,
+          timestamp: message.timestamp,
+        })),
+        metadata: {
+          tags: conversation.tags,
+          messageCount: conversation.messageCount,
+        },
+      }),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Session sync failed: ${response.status}`);
+      }
+    });
+  }
+
+  private async syncLearning(learning: Learning): Promise<void> {
+    if (!this.shouldUseServer) return;
+
+    await fetch(`${config.apiBaseUrl}/memory/learnings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: learning.type,
+        content: learning.content,
+        confidence: 0.8,
+        source: `conversation:${learning.conversationId}`,
+      }),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Learning sync failed: ${response.status}`);
+      }
     });
   }
 }
