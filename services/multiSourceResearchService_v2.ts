@@ -24,13 +24,10 @@
  * 6. Wikidata (structured verified facts)
  */
 
-import { invokeBedrockDirect } from './awsBedrockService';
 import { type CityProfile, type CityLeader, type EconomicData } from '../data/globalLocationProfiles';
 import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
-
-// AI research uses AWS Bedrock (invokeBedrockDirect) - no Gemini key needed
 
 // ==================== TYPES ====================
 
@@ -454,11 +451,24 @@ async function tryDirectGeminiResearch(
       enrichedContext
     );
     console.log('[GLI Research] Prompt length:', prompt.length);
-    console.log('[GLI Research] Calling Bedrock for:', locationQuery);
+    console.log('[GLI Research] Calling AI service for:', locationQuery);
 
-    const responseText = await invokeBedrockDirect(prompt);
-    console.log('[GLI Research] Bedrock response length:', responseText.length);
-    console.log('[GLI Research] Bedrock response preview:', responseText.substring(0, 300));
+    // Use Gemini AI for inference
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const apiKey = typeof window !== 'undefined' && (window as any).__ENV__?.VITE_GEMINI_API_KEY 
+      || process.env.VITE_GEMINI_API_KEY 
+      || process.env.GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      throw new Error('No Gemini API key configured');
+    }
+    
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+    console.log('[GLI Research] AI response length:', responseText.length);
+    console.log('[GLI Research] AI response preview:', responseText.substring(0, 300));
 
     onProgress?.({
       stage: 'Processing',
@@ -596,7 +606,20 @@ async function tryDirectGeminiEntityResearch(
     const sourceNames = searchResults.map(r => r.displayLink).filter(Boolean);
     const prompt = ENTITY_INTELLIGENCE_PROMPT(query, wikiData?.extract || null, sourceNames);
 
-    const responseText = await invokeBedrockDirect(prompt);
+    // Use Gemini AI for inference
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const apiKey = typeof window !== 'undefined' && (window as any).__ENV__?.VITE_GEMINI_API_KEY 
+      || process.env.VITE_GEMINI_API_KEY 
+      || process.env.GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      throw new Error('No Gemini API key configured');
+    }
+    
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
 
     let aiIntelligence: Record<string, unknown> | null = null;
     try {

@@ -3408,7 +3408,7 @@ ${agentRegistry.current.toManifest()}`;
         if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
-      return 'I was unable to generate a response right now. Confirm the backend server is running (`npm run dev`) and an AI provider is configured (AWS Bedrock via `AWS_REGION`, or `OPENAI_API_KEY` / `GROQ_API_KEY`) in the `.env` file, then try again.';
+      return 'I was unable to generate a response right now. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
     } catch (error) {
       console.error('AI processing error:', error);
       return 'I encountered an error processing your request. Please try again in a moment.';
@@ -3463,13 +3463,13 @@ ${agentRegistry.current.toManifest()}`;
       }
 
       // Both backend attempts failed — return clear error
-      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and an AI provider is configured (AWS Bedrock or OPENAI_API_KEY) in `.env`, then try again.';
+      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
       onChunk(errorMsg);
       return errorMsg;
 
     } catch (error) {
       console.warn('[processWithAIStream] Pipeline failed:', error);
-      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and an AI provider is configured (AWS Bedrock or OPENAI_API_KEY) in `.env`, then try again.';
+      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
       onChunk(errorMsg);
       return errorMsg;
     }
@@ -5424,7 +5424,7 @@ CRITICAL RULES:
 
       let fallbackContent: string;
       if (isApiKeyIssue) {
-        fallbackContent = '⚠️ **AI Service Not Configured**\n\nConfigure at least one AI provider in your `.env` file:\n\n1. **AWS Bedrock** (primary): set `AWS_REGION` (uses IAM role on AWS)\n2. **OpenAI**: set `OPENAI_API_KEY` for GPT-4 access\n3. **Groq**: set `GROQ_API_KEY` for fast inference\n\nThen restart the server so the backend can use the provider.';
+        fallbackContent = '⚠️ **AI Service Not Configured**\n\nAdd an API key to your `.env` file to enable AI features:\n\n- **OpenAI**: `OPENAI_API_KEY=sk-...`\n- **Groq**: `GROQ_API_KEY=...` (free tier)\n- **Together.ai**: `TOGETHER_API_KEY=...` (free tier)\n\nRestart the server after adding your API key.';
       } else if (isRateLimited) {
         fallbackContent = '⏳ **Rate Limit Reached**\n\nThe AI service is temporarily rate-limited. Please wait a moment and try again. Your query has been preserved.';
       } else {
@@ -6281,7 +6281,7 @@ CRITICAL RULES:
         setMessages(prev => [...prev, {
           id: `agent-err-${Date.now()}`,
           role: 'assistant' as const,
-          content: `Autonomous Run encountered an issue: ${result.error || 'Unknown error'}. Confirm the backend API is running and an AI provider is configured (AWS Bedrock via AWS_REGION, or OPENAI_API_KEY / GROQ_API_KEY) in .env.`,
+          content: `Autonomous Run encountered an issue: ${result.error || 'Unknown error'}. Confirm the backend API is running and add an API key to .env (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.`,
           timestamp: new Date(),
           phase: 'generation' as const,
         }]);

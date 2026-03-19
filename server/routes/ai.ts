@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -24,19 +23,6 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const CONSULTANT_AUDIT_FILE = path.join(DATA_DIR, 'consultant-audit.jsonl');
 const CONSULTANT_REPLAY_FILE = path.join(DATA_DIR, 'consultant-replay.jsonl');
 
-// Lazy initialize Gemini - API key is read at request time, not module load time
-let genAI: GoogleGenerativeAI | null = null;
-const getGenAI = () => {
-  if (genAI === null) {
-    const API_KEY = process.env.GEMINI_API_KEY;
-    if (API_KEY) {
-      genAI = new GoogleGenerativeAI(API_KEY);
-      console.log('[AI Routes] Gemini AI initialized successfully');
-    }
-  }
-  return genAI;
-};
-
 // ─── Together.ai config ────────────────────────────────────────────────────────
 const TOGETHER_API_URL  = 'https://api.together.xyz/v1/chat/completions';
 const TOGETHER_MODEL_ID = process.env.TOGETHER_MODEL || 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
@@ -45,33 +31,53 @@ const getGroqKey        = () => String(process.env.GROQ_API_KEY || '').trim().re
 const GROQ_API_URL      = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL_ID     = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
-// ─── Unified AI helper: Bedrock primary → OpenAI → Groq → Together → Gemini ──
-const isBedrockAvailable = (): boolean => !!process.env.AWS_REGION;
+// ─── Unified AI helper: OpenAI → Groq → Together ──
 const getOpenAIKey = () => String(process.env.OPENAI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 
 const isAIAvailable = (): boolean => {
-  if (isBedrockAvailable()) return true;
   if (getOpenAIKey()) return true;
   if (getGroqKey()) return true;
   if (getTogetherKey()) return true;
-  if (getGenAI()) return true;
   return false;
 };
 
 const generateWithAI = async (prompt: string, systemInstruction?: string): Promise<string> => {
-  // 0. Bedrock (primary — production AWS)
-  if (isBedrockAvailable()) {
+  const openaiKey = getOpenAIKey();
+  const groqKey = getGroqKey();
+  const togetherKey = getTogetherKey();
+  
+  // 1. OpenAI (primary)
+  if (openaiKey) {
     try {
-      const text = await invokeConsultantWithBedrock(
-        systemInstruction ? `${systemInstruction}\n\n${prompt}` : prompt
-      );
-      if (text) return text;
-    } catch (bedrockErr) {
-      console.warn('[AI Routes] Bedrock failed, trying next provider:', bedrockErr instanceof Error ? bedrockErr.message : bedrockErr);
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openaiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            ...(systemInstruction ? [{ role: 'system', content: systemInstruction }] : []),
+            { role: 'user', content: prompt },
+          ],
+          max_tokens: 4096,
+          temperature: 0.4,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = (data.choices?.[0]?.message?.content || '').trim();
+        if (text) return text;
+      } else {
+        console.warn('[AI Routes] OpenAI error:', res.status);
+      }
+    } catch (openaiErr) {
+      console.warn('[AI Routes] OpenAI failed, trying Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
     }
   }
-  // 1. Groq fallback
-  const groqKey = getGroqKey();
+  
+  // 2. Groq fallback
   if (groqKey) {
     try {
       const res = await fetch(GROQ_API_URL, {
@@ -101,8 +107,8 @@ const generateWithAI = async (prompt: string, systemInstruction?: string): Promi
       console.warn('[AI Routes] Groq failed, trying Together:', groqErr instanceof Error ? groqErr.message : groqErr);
     }
   }
-  // 2. Together.ai fallback
-  const togetherKey = getTogetherKey();
+  
+  // 3. Together.ai fallback
   if (togetherKey) {
     try {
       const res = await fetch(TOGETHER_API_URL, {
@@ -129,17 +135,10 @@ const generateWithAI = async (prompt: string, systemInstruction?: string): Promi
         console.warn('[AI Routes] Together.ai error:', res.status);
       }
     } catch (togetherErr) {
-      console.warn('[AI Routes] Together.ai failed, trying Gemini:', togetherErr instanceof Error ? togetherErr.message : togetherErr);
+      console.warn('[AI Routes] Together.ai failed:', togetherErr instanceof Error ? togetherErr.message : togetherErr);
     }
   }
-  // 3. Gemini fallback
-  const ai = getGenAI();
-  if (ai) {
-    const model = ai.getGenerativeModel({ model: 'gemini-2.0-flash', ...(systemInstruction ? { systemInstruction } : {}) });
-    const result = await model.generateContent(prompt);
-    return result.response.text();
-  }
-  throw new Error('No AI provider configured. Set AWS_REGION for Bedrock, or add OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY / GEMINI_API_KEY in .env.');
+  throw new Error('No AI provider configured. Add OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY in .env.');
 };
 // System instruction for the AI
 const SYSTEM_INSTRUCTION = `
@@ -253,7 +252,7 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
   }
 };
 
-type ConsultantProvider = 'together' | 'groq' | 'bedrock' | 'gemini' | 'openai';
+type ConsultantProvider = 'together' | 'groq' | 'openai';
 
 interface ConsultantProviderAttempt {
   provider: ConsultantProvider;
@@ -526,7 +525,7 @@ interface ReplayMetricCounts {
 
 const normalizeConsultantProvider = (value: unknown): ConsultantProvider | null => {
   const normalized = String(value || '').toLowerCase();
-  if (normalized === 'together' || normalized === 'groq' || normalized === 'bedrock' || normalized === 'gemini' || normalized === 'openai') {
+  if (normalized === 'together' || normalized === 'groq' || normalized === 'openai') {
     return normalized;
   }
   return null;
@@ -555,10 +554,10 @@ const logConsultantAuditEvent = async (event: Record<string, unknown>) => {
 };
 
 const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
-  const defaultOrder: ConsultantProvider[] = ['bedrock', 'openai', 'groq', 'together', 'gemini'];
+  const defaultOrder: ConsultantProvider[] = ['openai', 'groq', 'together'];
   if (!Array.isArray(input)) return defaultOrder;
 
-  const VALID_PROVIDERS = new Set<ConsultantProvider>(['together', 'groq', 'bedrock', 'gemini', 'openai']);
+  const VALID_PROVIDERS = new Set<ConsultantProvider>(['together', 'groq', 'openai']);
   const normalized = input
     .map((value) => String(value).toLowerCase())
     .filter((value): value is ConsultantProvider => VALID_PROVIDERS.has(value as ConsultantProvider));
@@ -664,29 +663,6 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
   return text;
 };
 
-const invokeConsultantWithGemini = async (prompt: string): Promise<string> => {
-  const ai = getGenAI();
-  if (!ai) {
-    throw new Error('Gemini unavailable: GEMINI_API_KEY missing');
-  }
-
-  const model = ai.getGenerativeModel({
-    model: 'gemini-2.0-flash',
-    systemInstruction: CONSULTANT_SYSTEM_INSTRUCTION,
-    generationConfig: {
-      temperature: 0.4,
-      maxOutputTokens: 1800
-    }
-  });
-
-  const result = await model.generateContent(prompt);
-  const text = result.response.text()?.trim() || '';
-  if (!text) {
-    throw new Error('Gemini returned empty response');
-  }
-  return text;
-};
-
 const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
@@ -728,58 +704,6 @@ const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
   return text;
 };
 
-const invokeConsultantWithBedrock = async (prompt: string): Promise<string> => {
-  const AWS_REGION = process.env.AWS_REGION;
-  if (!AWS_REGION) {
-    throw new Error('Bedrock unavailable: AWS_REGION missing');
-  }
-
-  const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
-
-  let accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-  let secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-
-  if ((!accessKeyId || !secretAccessKey) && process.env.AWS_BEDROCK_API_KEY) {
-    try {
-      const decoded = Buffer.from(process.env.AWS_BEDROCK_API_KEY, 'base64').toString('utf-8').replace(/^[^\x20-\x7E]+/, '');
-      const separatorIndex = decoded.indexOf(':');
-      if (separatorIndex > 0) {
-        accessKeyId = decoded.slice(0, separatorIndex);
-        secretAccessKey = decoded.slice(separatorIndex + 1);
-      }
-    } catch {
-      throw new Error('Bedrock unavailable: failed to decode AWS_BEDROCK_API_KEY');
-    }
-  }
-
-  const client = new BedrockRuntimeClient({
-    region: AWS_REGION,
-    ...(accessKeyId && secretAccessKey ? { credentials: { accessKeyId, secretAccessKey } } : {})
-  });
-
-  const command = new InvokeModelCommand({
-    modelId: process.env.BEDROCK_CONSULTANT_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0',
-    contentType: 'application/json',
-    accept: 'application/json',
-    body: JSON.stringify({
-      anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: 1800,
-      temperature: 0.4,
-      system: CONSULTANT_SYSTEM_INSTRUCTION,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
-  const response = await client.send(command);
-  const payload = JSON.parse(new TextDecoder().decode(response.body));
-  const text = payload?.content?.[0]?.text?.trim() || '';
-
-  if (!text) {
-    throw new Error('Bedrock returned empty response');
-  }
-  return text;
-};
-
 const runConsultantBroker = async (
   prompt: string,
   order: ConsultantProvider[]
@@ -791,8 +715,6 @@ const runConsultantBroker = async (
       const invoker =
         provider === 'together'  ? invokeConsultantWithTogether(prompt)
         : provider === 'groq'    ? invokeConsultantWithGroq(prompt)
-        : provider === 'bedrock' ? invokeConsultantWithBedrock(prompt)
-        : provider === 'gemini'  ? invokeConsultantWithGemini(prompt)
         :                          invokeConsultantWithOpenAI(prompt);
       const text = await withTimeout(
         invoker,
@@ -814,12 +736,7 @@ const runConsultantBroker = async (
 
 // Middleware to check API availability
 const requireApiKey = (_req: Request, res: Response, next: () => void) => {
-  if (!isAIAvailable()) {
-    return res.status(503).json({ 
-      error: 'AI service unavailable', 
-      message: 'Configure AWS_REGION for Bedrock (primary), or add OPENAI_API_KEY / GROQ_API_KEY as a fallback provider in server .env'
-    });
-  }
+  // Clean environment - no API keys required for routing
   next();
 };
 
@@ -1366,7 +1283,7 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
     const current = getReplayMetricCounts(currentWindowEvents);
     const previous = getReplayMetricCounts(previousWindowEvents);
 
-    const providers: ConsultantProvider[] = ['bedrock', 'gemini', 'openai'];
+    const providers: ConsultantProvider[] = ['gemini', 'openai'];
     const providerMetrics = providers.reduce<Record<ConsultantProvider, {
       current: ReplayMetricCounts;
       previous: ReplayMetricCounts;
@@ -1699,130 +1616,147 @@ Return structured JSON response with:
 }
 `;
     
-    // Priority 1: AWS Bedrock (Production AI)
-    const AWS_BEDROCK_API_KEY = process.env.AWS_BEDROCK_API_KEY;
-    const AWS_REGION = process.env.AWS_REGION;
+    // Priority: Use available AI provider
+    const openaiKey = getOpenAIKey();
+    const groqKey = getGroqKey();
+    const togetherKey = getTogetherKey();
     
-    if (AWS_BEDROCK_API_KEY && AWS_REGION) {
+    // Try OpenAI first
+    if (openaiKey) {
       try {
-        console.log('[Multi-Agent] Using AWS Bedrock (Production AI)...');
+        console.log('[Multi-Agent] Using OpenAI (gpt-4o)...');
         
-        const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
-        
-        // Decode the Bedrock API Key to get credentials
-        let accessKeyId: string | undefined;
-        let secretAccessKey: string | undefined;
-        
-        try {
-          const decoded = Buffer.from(AWS_BEDROCK_API_KEY, 'base64').toString('utf-8');
-          const cleanDecoded = decoded.replace(/^[^\x20-\x7E]+/, '');
-          const colonIndex = cleanDecoded.indexOf(':');
-          if (colonIndex > 0) {
-            accessKeyId = cleanDecoded.substring(0, colonIndex);
-            secretAccessKey = cleanDecoded.substring(colonIndex + 1);
-            console.log('[Multi-Agent] Decoded credentials from API key');
-          }
-        } catch {
-          console.warn('[Multi-Agent] Could not decode API key');
-        }
-        
-        const clientConfig: { region: string; credentials?: { accessKeyId: string; secretAccessKey: string } } = {
-          region: AWS_REGION
-        };
-        
-        if (accessKeyId && secretAccessKey) {
-          clientConfig.credentials = {
-            accessKeyId,
-            secretAccessKey
-          };
-        }
-        
-        const client = new BedrockRuntimeClient(clientConfig);
-        const modelId = 'anthropic.claude-3-sonnet-20240229-v1:0';
-        
-        const requestBody = {
-          anthropic_version: 'bedrock-2023-05-31',
-          max_tokens: 4096,
-          messages: [{ role: 'user', content: enrichedPrompt }],
-          temperature: 0.7
-        };
-
-        const command = new InvokeModelCommand({
-          modelId,
-          contentType: 'application/json',
-          accept: 'application/json',
-          body: JSON.stringify(requestBody)
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${openaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              ...(systemInstruction ? [{ role: 'system', content: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION }] : []),
+              { role: 'user', content: enrichedPrompt }
+            ],
+            max_tokens: 4096,
+            temperature: 0.7,
+          }),
         });
 
-        const response = await client.send(command);
-        const result = JSON.parse(new TextDecoder().decode(response.body));
-        
-        if (result.content?.[0]?.text) {
-          const text = result.content[0].text;
+        if (response.ok) {
+          const data = await response.json();
+          const text = (data.choices?.[0]?.message?.content || '').trim();
           
-          // Try to parse as JSON
-          try {
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              const parsed = JSON.parse(jsonMatch[0]);
-              return res.json({
-                ...parsed,
-                agentId: 'bedrock-claude',
-                model: 'bedrock'
-              });
+          if (text) {
+            // Try to parse as JSON
+            try {
+              const jsonMatch = text.match(/\{[\s\S]*\}/);
+              if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[0]);
+                return res.json({
+                  ...parsed,
+                  agentId: 'openai-gpt4',
+                  model: 'openai'
+                });
+              }
+            } catch {
+              // Return as plain text response
             }
-          } catch {
-            // Return as plain text response
+            
+            return res.json({
+              text: text,
+              confidence: 0.90,
+              reasoning: ['OpenAI gpt-4o analysis completed'],
+              agentId: 'openai-gpt4',
+              model: 'openai'
+            });
           }
-          
-          return res.json({
-            text: text,
-            confidence: 0.90,
-            reasoning: ['AWS Bedrock Claude analysis completed'],
-            agentId: 'bedrock-claude',
-            model: 'bedrock'
-          });
         }
-      } catch (bedrockError) {
-        console.warn('[Multi-Agent] Bedrock error, falling back to Gemini:', 
-          bedrockError instanceof Error ? bedrockError.message : 'Unknown error');
+      } catch (openaiError) {
+        console.warn('[Multi-Agent] OpenAI error:', openaiError instanceof Error ? openaiError.message : 'Unknown error');
       }
     }
     
-    // Priority 2: Gemini (Fallback)
-    const geminiAI = getGenAI();
-    if (geminiAI) {
-      console.log('[Multi-Agent] Using Gemini AI (Fallback)...');
-      const model = geminiAI.getGenerativeModel({ 
-        model: 'gemini-2.0-flash',
-        systemInstruction: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION
-      });
-      
-      const result = await model.generateContent(enrichedPrompt);
-      const text = result.response.text();
-      
-      // Try to parse as JSON
+    // Fallback to Groq
+    if (groqKey) {
       try {
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0]);
-          return res.json({
-            ...parsed,
-            agentId: 'gemini-flash',
-            model: 'gemini'
-          });
+        console.log('[Multi-Agent] Using Groq (Fallback)...');
+        
+        const response = await fetch(GROQ_API_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${groqKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: GROQ_MODEL_ID,
+            messages: [
+              ...(systemInstruction ? [{ role: 'system', content: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION }] : []),
+              { role: 'user', content: enrichedPrompt }
+            ],
+            max_completion_tokens: 4096,
+            temperature: 0.7,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const text = (data.choices?.[0]?.message?.content || '').trim();
+          
+          if (text) {
+            return res.json({
+              text: text,
+              confidence: 0.85,
+              reasoning: ['Groq analysis completed'],
+              agentId: 'groq-llama',
+              model: 'groq'
+            });
+          }
         }
-      } catch {
-        // Return as plain text response
+      } catch (groqError) {
+        console.warn('[Multi-Agent] Groq error:', groqError instanceof Error ? groqError.message : 'Unknown error');
       }
-      
-      return res.json({
-        text: text,
-        confidence: 0.85,
-        reasoning: ['Gemini AI analysis completed'],
-        agentId: 'gemini-flash',
-        model: 'gemini'
-      });
+    }
+    
+    // Final fallback to Together.ai
+    if (togetherKey) {
+      try {
+        console.log('[Multi-Agent] Using Together.ai (Final Fallback)...');
+        
+        const response = await fetch(TOGETHER_API_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${togetherKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: TOGETHER_MODEL_ID,
+            messages: [
+              ...(systemInstruction ? [{ role: 'system', content: systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION }] : []),
+              { role: 'user', content: enrichedPrompt }
+            ],
+            max_tokens: 4096,
+            temperature: 0.7,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const text = (data.choices?.[0]?.message?.content || '').trim();
+          
+          if (text) {
+            return res.json({
+              text: text,
+              confidence: 0.80,
+              reasoning: ['Together.ai Llama analysis completed'],
+              agentId: 'together-llama',
+              model: 'together'
+            });
+          }
+        }
+      } catch (togetherError) {
+        console.warn('[Multi-Agent] Together.ai error:', togetherError instanceof Error ? togetherError.message : 'Unknown error');
+      }
     }
     
     // No AI available

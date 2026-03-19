@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, Loader, MessageCircle, Sparkles, Globe, History, ArrowRight } from 'lucide-react';
-import { invokeAI } from '../services/awsBedrockService';
+import { invokeAI } from '../services/geminiService';
 
 interface Message {
   id: string;

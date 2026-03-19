@@ -100,10 +100,6 @@ export default defineConfig(({ mode }) => {
                 return 'vendor-icons';
               }
 
-              if (inPkg(['/@aws-sdk/', '/@smithy/'])) {
-                return 'vendor-aws';
-              }
-
               if (inPkg(['/leaflet/', '/react-leaflet/'])) {
                 return 'vendor-maps';
               }

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI - AI SERVICE (AWS BEDROCK - Claude 3.5 Sonnet)
+ * BW NEXUS AI - AI SERVICE (Cloud-Agnostic)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Gemini has been removed. All AI calls now route to:
+ * Unified AI service supporting multiple providers:
  *   1. Backend API  (/api/ai/*)  - primary path when server is running
- *   2. AWS Bedrock direct (SigV4) - browser fallback, no server needed
+ *   2. Direct API calls - browser fallback with Together.ai, OpenAI, Gemini
  *
  * All exports preserve their original function signatures so every component
  * import continues to work without any changes.
@@ -15,7 +15,6 @@
 
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config } from './config';
-import { invokeBedrockDirect, invokeBedrockDirectStream, extractFileViaBedrock, isDirectBedrockConfigured } from './awsBedrockService';
 import { callTogether, generateWithTogether } from './togetherAIService';
 import { SYSTEM_INSTRUCTION, SYSTEM_INSTRUCTION_SHORT } from './aiPolicy';
 
@@ -64,10 +63,6 @@ async function ai(prompt: string, system = SYSTEM_INSTRUCTION): Promise<string> 
   if (isTogetherConfigured()) {
     return generateWithTogether(prompt, system);
   }
-  // 3. Direct Bedrock (only works with browser-side AWS creds)
-  if (isDirectBedrockConfigured()) {
-    return invokeBedrockDirect(prompt, system);
-  }
   throw new Error('AI backend unavailable. Ensure the server is running and AI keys are configured in the server .env.');
 }
 
@@ -110,11 +105,6 @@ async function aiStream(prompt: string, system = SYSTEM_INSTRUCTION, onToken?: (
       {},
       onToken
     );
-  }
-  if (isDirectBedrockConfigured()) {
-    let acc = '';
-    await invokeBedrockDirectStream(prompt, system, (tok) => { acc += tok; onToken?.(acc); });
-    return acc;
   }
   throw new Error('AI backend unavailable.');
 }
@@ -174,7 +164,7 @@ export const getChatSession = (): {
       } catch { /* fall through */ }
 
       // 2. Together.ai streaming (SSE), wrapped as async iterable
-      if (isTogetherConfigured() || isDirectBedrockConfigured()) {
+      if (isTogetherConfigured()) {
         try {
           const chunks: string[] = [];
           await aiStream(msg.message, SYSTEM_INSTRUCTION, (tok) => chunks.push(tok));
@@ -445,6 +435,11 @@ export const runCopilotAnalysis = async (query: string, context: string): Promis
 
 // ─── extractFileTextViaAI ─────────────────────────────────────────────────────
 
+// ─── Main AI exports (for backward compatibility) ──────────────────────────────
+
+export { ai as invoiceAI };
+export const invokeAI = ai;
+
 const SUPPORTED_MIME_TYPES: Record<string, string> = {
   '.pdf': 'application/pdf',
   '.png': 'image/png',
@@ -465,17 +460,7 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     return `[${file.name}] - File too large for extraction (${(file.size / 1024 / 1024).toFixed(1)} MB). Please reduce to under 18 MB.`;
   }
 
-  // 1. Bedrock vision/document API (PDF, images)
-  if (isDirectBedrockConfigured()) {
-    try {
-      const extracted = await extractFileViaBedrock(file);
-      if (extracted) return `[${file.name}]\n${extracted}`;
-    } catch (err) {
-      console.warn('Bedrock file extraction failed:', err);
-    }
-  }
-
-  // 2. Client-side PDF text extraction (browser-native, no credentials needed)
+  // 1. Client-side PDF text extraction (browser-native, no credentials needed)
   if (lowerName.endsWith('.pdf')) {
     try {
       const pdfjsLib = await import('pdfjs-dist');

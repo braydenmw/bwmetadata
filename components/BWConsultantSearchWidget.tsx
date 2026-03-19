@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Search, Loader, AlertCircle, ExternalLink } from 'lucide-react';
-import { invokeAI } from '../services/awsBedrockService';
+import { invokeAI } from '../services/geminiService';
 import { UnifiedBWConsultant } from './UnifiedBWConsultant';
 
 export interface SearchResult {
