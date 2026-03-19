@@ -36,16 +36,22 @@ Create an IAM role with this policy:
 Set these on your AWS deployment (EC2, ECS, Lambda, Elastic Beanstalk):
 
 ```bash
-# Required — at least one AI provider key must be set
-GROQ_API_KEY=your-groq-key
+# Required — AWS Bedrock is the primary AI provider
 AWS_REGION=us-east-1
 NODE_ENV=production
 PORT=3000
 
-# Optional additional AI providers (fallback chain: Groq → Together → Gemini → OpenAI)
-TOGETHER_API_KEY=your-together-key
-GEMINI_API_KEY=your-gemini-key
-OPENAI_API_KEY=your-openai-key
+# Optional additional AI providers (fallback chain: Bedrock → OpenAI → Groq → Together → Gemini)
+# Add keys to expand NSIL intelligence reach and enable multi-agent consensus
+# OPENAI_API_KEY=your-openai-key
+# GROQ_API_KEY=your-groq-key
+# TOGETHER_API_KEY=your-together-key
+# GEMINI_API_KEY=your-gemini-key
+
+# Optional external data sources for expanded intelligence
+# SERPER_API_KEY=your-serper-key
+# PERPLEXITY_API_KEY=your-perplexity-key
+# NEWS_API_KEY=your-news-api-key
 
 # App Configuration
 REACT_APP_USE_REAL_AI=true

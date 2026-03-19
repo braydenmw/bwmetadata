@@ -27,11 +27,12 @@ for (const envPath of envPaths) {
   }
 }
 
-// Debug: Check if API key is loaded (never log key length in production)
-console.log('GEMINI_API_KEY loaded:', process.env.GEMINI_API_KEY ? 'Yes' : 'No');
-console.log('TOGETHER_API_KEY loaded:', process.env.TOGETHER_API_KEY ? 'Yes' : 'No');
+// Debug: Check which AI providers are configured
+console.log('AWS_REGION (Bedrock):', process.env.AWS_REGION ? 'Yes' : 'No');
 console.log('OPENAI_API_KEY loaded:', process.env.OPENAI_API_KEY ? 'Yes' : 'No');
 console.log('GROQ_API_KEY loaded:', process.env.GROQ_API_KEY ? 'Yes' : 'No');
+console.log('TOGETHER_API_KEY loaded:', process.env.TOGETHER_API_KEY ? 'Yes' : 'No');
+console.log('GEMINI_API_KEY loaded:', process.env.GEMINI_API_KEY ? 'Yes' : 'No');
 
 // Import routes
 import aiRoutes from './routes/ai.js';
@@ -203,11 +204,12 @@ app.get('/api/health', (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     version: '1.0.0',
     ai: {
+      bedrock: !!process.env.AWS_REGION,
+      openai: !!process.env.OPENAI_API_KEY,
       groq: !!process.env.GROQ_API_KEY,
       together: !!process.env.TOGETHER_API_KEY,
       gemini: !!process.env.GEMINI_API_KEY,
-      openai: !!process.env.OPENAI_API_KEY,
-      available: !!(process.env.GROQ_API_KEY || process.env.TOGETHER_API_KEY || process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY),
+      available: !!(process.env.AWS_REGION || process.env.OPENAI_API_KEY || process.env.GROQ_API_KEY || process.env.TOGETHER_API_KEY || process.env.GEMINI_API_KEY),
     }
   });
 });
