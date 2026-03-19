@@ -16,7 +16,7 @@ import {
   Globe, FileCheck, PenTool, Download, Copy, Check,
   HelpCircle,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle,
-  Mic, MicOff,
+  Mic, MicOff, ChevronDown,
 } from 'lucide-react';
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
@@ -46,8 +46,8 @@ import { PDFAnnotationService } from '../services/PDFAnnotationService';
 import { automaticSearchService } from '../services/AutomaticSearchService';
 import { ReportOrchestrator } from '../services/ReportOrchestrator';
 import AgentOrchestrator, { type OrchestratorProgress } from '../services/AgentOrchestrator';
-import { runReasoningPipelineStream, runReasoningPipeline } from '../services/ReasoningPipeline';
-import { runIssuePipeline } from '../services/IssueSolutionPipeline';
+// ReasoningPipeline + IssueSolutionPipeline: server handles AI calls;
+// client-side pipeline removed (no API keys available in browser).
 import { ttsService } from '../services/ttsService';
 import HistoricalParallelMatcher, { type ParallelMatchResult } from '../services/HistoricalParallelMatcher';
 import { UnbiasedAnalysisEngine, type FullUnbiasedAnalysis } from '../services/UnbiasedAnalysisEngine';
@@ -69,7 +69,7 @@ import { selfImprovementEngine } from '../services/SelfImprovementEngine';
 import { conversationMemoryManager } from '../services/ConversationMemoryManager';
 import { conversationStore } from '../services/ConversationStore';
 import { learnFromConversation } from '../services/SelfLearningLoop';
-import { webSearch, formatResultsForPrompt } from '../services/WebSearchGateway';
+// webSearch/formatResultsForPrompt: moved to server-only paths.
 import { runWithFunctionCalling } from '../services/NativeFunctionCalling';
 import { quickRegionalIntel } from '../services/RegionalIntelligenceAgent';
 import { outputModerationService } from '../services/OutputModerationService';
@@ -1124,11 +1124,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
-  // Report options panel - shown after document upload
+  // Report options panel - shown after document upload OR document intent detection
   const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
   const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
   const [reportOptionsDocType, setReportOptionsDocType] = useState('');
   const [showReportOptions, setShowReportOptions] = useState(false);
+  const [documentBuilderActive, setDocumentBuilderActive] = useState(false);
   const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
   const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');
@@ -1193,6 +1194,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [augmentedCapabilityMode, setAugmentedCapabilityMode] = useState('');
   const [augmentedCapabilityTags, setAugmentedCapabilityTags] = useState<string[]>([]);
   const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
+  const [augmentedPanelExpanded, setAugmentedPanelExpanded] = useState(false);
   const [augmentedReviewLoading, setAugmentedReviewLoading] = useState(false);
   const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
   const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
@@ -3284,10 +3286,21 @@ ${agentRegistry.current.toManifest()}`;
   const classifyDeliverableIntent = useCallback((input: string): DeliverableIntent => {
     const text = input.toLowerCase();
 
-    if (/\b(full report|board report|case study|dossier|submission|business case)\b/.test(text)) return 'report';
-    if (/\b(letter|loi|mou|email draft|submission letter|cover letter)\b/.test(text)) return 'letter';
-    if (/\b(full pack|document pack|report \+ letter|end-to-end|complete package)\b/.test(text)) return 'full_case';
+    // Report / case study intent - explicit document types + "write/draft/prepare/create" patterns
+    if (/\b(full report|board report|case study|dossier|submission|business case|feasibility study|strategy report|advisory report|situation report|assessment report|due diligence|risk assessment|market analysis|sector analysis|investment case|white paper|policy brief|proposal)\b/.test(text)) return 'report';
+    if (/\b(write|draft|prepare|create|produce|generate|build|put together|compose|author)\b.{0,30}\b(report|case study|analysis|assessment|strategy|document|paper|brief|review|evaluation|study|dossier|proposal)\b/.test(text)) return 'report';
+
+    // Letter intent - explicit letter types + "write/draft" a letter pattern
+    if (/\b(letter|loi|mou|email draft|submission letter|cover letter|invitation letter|expression of interest|eoi|formal correspondence|memorandum|notice|declaration)\b/.test(text)) return 'letter';
+    if (/\b(write|draft|prepare|create|produce|compose)\b.{0,30}\b(letter|email|correspondence|memo|memorandum|loi|mou|eoi)\b/.test(text)) return 'letter';
+
+    // Full case pack
+    if (/\b(full pack|document pack|report \+ letter|end-to-end|complete package|full case|everything|all documents)\b/.test(text)) return 'full_case';
+
+    // Background research
     if (/\b(background|overview|intel brief|briefing|research only)\b/.test(text)) return 'background';
+
+    // Quick answer
     if (/\b(quick answer|simple answer|just tell me|next step|recommendation)\b/.test(text)) return 'quick_answer';
 
     return 'unknown';
@@ -3356,67 +3369,46 @@ ${agentRegistry.current.toManifest()}`;
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
     try {
       const systemPrompt = buildConsultantPrompt(userInput, context);
-      try {
-        const endpointResponse = await fetch('/api/ai/consultant', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: userInput,
-            context: {
-              phase: context,
-              caseStudy,
-              consultantCaseBrief,
-              consultantGateReady,
-              consultantGateMissing
-            },
-            systemPrompt
-          })
-        });
-
-        if (endpointResponse.ok) {
-          const payload = await endpointResponse.json() as Record<string, unknown>;
-          captureAugmentedAIFromPayload(payload);
-          const endpointText = String(payload?.text || '').trim();
-          if (endpointText) {
-            return endpointText;
-          }
-        }
-      } catch (endpointError) {
-        console.warn('Unified consultant endpoint unavailable, using ReasoningPipeline:', endpointError);
-      }
-
-      // ── Fallback: ReasoningPipeline (non-streaming) ─────────────────────────────
-      //  Run engines + full 4-step reasoning before returning answer.
-      //  Use only the typed query (before any document separator) for the engines.
-      const _docSep = userInput.indexOf('\n\n**Uploaded Documents:**');
-      const _focusedIssue = _docSep > -1 ? userInput.slice(0, _docSep).trim() : userInput;
-      const intelligenceBlock = await runIssuePipeline({
-        issue: _focusedIssue || userInput.slice(0, 500),
-        country: caseStudy.country || undefined,
-        organizationName: caseStudy.organizationName || undefined,
-        organizationType: caseStudy.organizationType || undefined,
-        objectives: caseStudy.objectives || undefined,
-        currentMatter: caseStudy.currentMatter || undefined,
-      }).catch(() => undefined);
-
-      const _docMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i);
-      const _docCtx = _docMatch ? (_docMatch[1] ?? undefined) : undefined;
-
-      const reasoningResult = await runReasoningPipeline({
-        userMessage: _focusedIssue || userInput,
-        documentContext: _docCtx,
-        caseContext: {
-          ...(caseStudy.organizationName ? { Organization: caseStudy.organizationName } : {}),
-          ...(caseStudy.country ? { Country: caseStudy.country } : {}),
-          ...(caseStudy.currentMatter ? { Matter: caseStudy.currentMatter } : {}),
+      const reqBody = JSON.stringify({
+        message: userInput,
+        context: {
+          phase: context,
+          caseStudy,
+          consultantCaseBrief,
+          consultantGateReady,
+          consultantGateMissing
         },
-        brainBlock: context || undefined,
-        intelligenceBlock: intelligenceBlock || undefined,
+        systemPrompt
       });
 
-      if (reasoningResult.answer?.trim()) return reasoningResult.answer.trim();
-      // All AI providers failed to return content - surface clear error
-      return 'I was unable to generate a response right now. Confirm the backend API is running and server-side AI keys (for example TOGETHER_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY) are configured, then try again.';
+      // Try backend up to 2 times — client-side AI providers are not available in the browser
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const endpointResponse = await fetch('/api/ai/consultant', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: reqBody,
+          });
+
+          if (endpointResponse.ok) {
+            const payload = await endpointResponse.json() as Record<string, unknown>;
+            captureAugmentedAIFromPayload(payload);
+            const endpointText = String(payload?.text || '').trim();
+            if (endpointText) {
+              return endpointText;
+            }
+            console.warn(`[processWithAI] Backend returned OK but empty text (attempt ${attempt + 1})`);
+          } else {
+            console.warn(`[processWithAI] Backend returned ${endpointResponse.status} (attempt ${attempt + 1})`);
+          }
+        } catch (endpointError) {
+          console.warn(`[processWithAI] Backend unavailable (attempt ${attempt + 1}):`, endpointError);
+        }
+        // Brief pause before retry
+        if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
+      }
+
+      return 'I was unable to generate a response right now. Confirm the backend server is running (`npm run dev`) and GROQ_API_KEY is configured in the `.env` file, then try again.';
     } catch (error) {
       console.error('AI processing error:', error);
       return 'I encountered an error processing your request. Please try again in a moment.';
@@ -3431,147 +3423,57 @@ ${agentRegistry.current.toManifest()}`;
     try {
       // ── Step 1: Try backend (Railway / Render / running Express server) ──────
       const systemPrompt = buildConsultantPrompt(userInput, context);
-      try {
-        const endpointResponse = await fetch('/api/ai/consultant', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: userInput,
-            context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
-            systemPrompt
-          })
-        });
-        if (endpointResponse.ok) {
-          const payload = await endpointResponse.json() as Record<string, unknown>;
-          captureAugmentedAIFromPayload(payload);
-          const endpointText = String(payload?.text || '').trim();
-          if (endpointText) {
-            const chunks = endpointText.match(/.{1,120}(?:\s|$)/g) || [endpointText];
-            let aggregate = '';
-            for (const chunk of chunks) {
-              aggregate += chunk;
-              onChunk(aggregate.trim());
-              await new Promise<void>((resolve) => setTimeout(resolve, 30));
-            }
-            return endpointText;
-          }
-        }
-      } catch { /* backend unavailable - use reasoning pipeline below */ }
+      const reqBody = JSON.stringify({
+        message: userInput,
+        context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
+        systemPrompt
+      });
 
-      // ── Steps 2-4: THINK → REASON → SOLVE → ANSWER (ReasoningPipeline) ─────
-      //
-      //   Step 2 (Thought)   - AI classifies and reasons through the problem
-      //   Step 3 (Solution)  - AI determines best response approach
-      //   Step 4 (Answer)    - AI streams the grounded final answer
-      //
-      // Extract document content from the user's message for Step 2 context.
-      // Use capture group [1] to get the raw document body - not the header prefix.
-      const docContentMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i)
-        || userInput.match(/\[([^\]]+\.pdf[^\]]*?)\]/i);
-      const documentContext = docContentMatch ? (docContentMatch[1] ?? docContentMatch[0]) : undefined;
-
-      // Build a clean case context map for the reasoning engine
-      const caseContextMap: Record<string, string> = {
-        ...(caseStudy.organizationName ? { Organization: caseStudy.organizationName } : {}),
-        ...(caseStudy.country ? { Country: caseStudy.country } : {}),
-        ...(caseStudy.organizationType ? { Type: caseStudy.organizationType } : {}),
-        ...(caseStudy.objectives ? { Objective: caseStudy.objectives } : {}),
-        ...(caseStudy.currentMatter ? { Matter: caseStudy.currentMatter } : {}),
-        ...(caseStudy.targetAudience ? { Audience: caseStudy.targetAudience } : {}),
-        ...(caseStudy.jurisdiction ? { Jurisdiction: caseStudy.jurisdiction } : {}),
-      };
-
-      // ── IssueSolutionPipeline - run AI analysis engines in parallel ──────────
-      //
-      // Runs 5 AI-powered analyses in parallel:
-      //  1. AI Issue Classification (category, confidence, reasoning)
-      //  2. AI Root Cause Analysis (deep systemic analysis)
-      //  3. AI 7-Perspective Situation Analysis
-      //  4. AI Web Research (live data, current findings)
-      //  5. AI Debate (for/against arguments + synthesis)
-      // Plus live World Bank economic data for the target country.
-      //
-      const docSeparatorIdx = userInput.indexOf('\n\n**Uploaded Documents:**');
-      const typedQuery = docSeparatorIdx > -1
-        ? userInput.slice(0, docSeparatorIdx).trim()
-        : userInput;
-      // Build a short issue description from ref analysis if available
-      const docRef = latestDocAnalysisRef.current;
-      const docIssueSummary = docRef
-        ? `Document analysis - ${docRef.title} (${docRef.country}, ${docRef.sector}).` +
-          ` Key issues: ${docRef.keyIssues.slice(0, 3).join('; ')}.`
-        : documentContext?.slice(0, 500) ?? '';
-      const issueForPipeline = typedQuery
-        ? `${typedQuery}${docIssueSummary ? ` Context: ${docIssueSummary}` : ''}`
-        : (docIssueSummary || userInput.slice(0, 500));
-
-      const intelligenceBlock = await runIssuePipeline({
-        issue: issueForPipeline,
-        country: caseStudy.country || docRef?.country || undefined,
-        organizationName: caseStudy.organizationName || undefined,
-        organizationType: caseStudy.organizationType || docRef?.sector || undefined,
-        objectives: caseStudy.objectives || undefined,
-        currentMatter: caseStudy.currentMatter || docRef?.title || undefined,
-        constraints: caseStudy.constraints || undefined,
-        sector: caseStudy.organizationType || docRef?.sector || undefined,
-        uploadedDocuments: [],
-      }).catch(() => undefined);
-
-      // Build conversation history using the ConversationMemoryManager.
-      // This provides a rolling summary of older turns + recent verbatim turns
-      // instead of the old .slice(-8) with 400-char limits (~3200 chars total).
-      let conversationHistory = messages
-        .filter(m => (m.role === 'user' || m.role === 'assistant') && m.content?.trim())
-        .slice(-8)
-        .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content.slice(0, 400) }));
-
-      // Enhance brainBlock with memory manager context (rolling summary + cross-session learnings)
-      let enhancedContext = context || '';
-      try {
-        const memoryContext = await conversationMemoryManager.formatForPrompt();
-        if (memoryContext) {
-          enhancedContext = (enhancedContext ? enhancedContext + '\n\n' : '') + memoryContext;
-        }
-      } catch { /* memory enhancement is optional */ }
-
-      // Inject live web search results if the query seems to need current data
-      const needsSearch = /\b(latest|current|recent|today|2024|2025|news|what is happening|update)\b/i.test(typedQuery || userInput);
-      if (needsSearch) {
+      // Try backend up to 2 times — the server handles Groq calls; client-side has no API keys
+      for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          const searchResults = await webSearch(typedQuery || userInput, { maxResults: 4 });
-          if (searchResults.length > 0) {
-            const searchBlock = formatResultsForPrompt(searchResults, 2000);
-            enhancedContext = (enhancedContext ? enhancedContext + '\n\n' : '') + searchBlock;
+          const endpointResponse = await fetch('/api/ai/consultant', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: reqBody,
+          });
+          if (endpointResponse.ok) {
+            const payload = await endpointResponse.json() as Record<string, unknown>;
+            captureAugmentedAIFromPayload(payload);
+            const endpointText = String(payload?.text || '').trim();
+            if (endpointText) {
+              const chunks = endpointText.match(/.{1,120}(?:\s|$)/g) || [endpointText];
+              let aggregate = '';
+              for (const chunk of chunks) {
+                aggregate += chunk;
+                onChunk(aggregate.trim());
+                await new Promise<void>((resolve) => setTimeout(resolve, 30));
+              }
+              return endpointText;
+            }
+            console.warn(`[processWithAIStream] Backend returned OK but empty text (attempt ${attempt + 1})`);
+          } else {
+            console.warn(`[processWithAIStream] Backend returned ${endpointResponse.status} (attempt ${attempt + 1})`);
           }
-        } catch { /* web search is optional */ }
+        } catch (err) {
+          console.warn(`[processWithAIStream] Backend unavailable (attempt ${attempt + 1}):`, err);
+        }
+        // Brief pause before retry
+        if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
-      const result = await runReasoningPipelineStream(
-        {
-          userMessage: typedQuery || userInput,
-          documentContext,
-          caseContext: Object.keys(caseContextMap).length ? caseContextMap : undefined,
-          brainBlock: enhancedContext || undefined,
-          intelligenceBlock: intelligenceBlock || undefined,
-          conversationHistory: conversationHistory.length ? conversationHistory : undefined,
-        },
-        (streamedAnswer) => onChunk(streamedAnswer)
-      );
-
-      if (result.answer?.trim()) return result.answer.trim();
-
-      // ── Last resort: all streaming providers failed - return clear error ──────
-      const errorMsg = 'I was unable to generate a response. Please verify your API keys (OpenAI, Together.ai, or Groq) are configured in the `.env` file and restart the dev server.';
+      // Both backend attempts failed — return clear error
+      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and GROQ_API_KEY is set in `.env`, then try again.';
       onChunk(errorMsg);
       return errorMsg;
 
     } catch (error) {
       console.warn('[processWithAIStream] Pipeline failed:', error);
-      const fallbackText = await processWithAI(userInput, context);
-      onChunk(fallbackText);
-      return fallbackText;
+      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and GROQ_API_KEY is set in `.env`, then try again.';
+      onChunk(errorMsg);
+      return errorMsg;
     }
-  }, [buildConsultantPrompt, processWithAI, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, captureAugmentedAIFromPayload, messages]);
+  }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, captureAugmentedAIFromPayload]);
 
   const getHighestValueFollowUp = useCallback((draft: CaseStudy) => {
     if (!draft.organizationName.trim()) return 'Which organization is the decision owner for this matter?';
@@ -4347,11 +4249,13 @@ ${agentRegistry.current.toManifest()}`;
       const shouldPromptForOutputClarification = shouldAskOutputClarification(caseDraft, trimmedUserContent, deliverableIntent);
       const isFastFactQuery = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)\b/i.test(trimmedUserContent)
         && !/\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection|letter|report|case study)\b/i.test(trimmedUserContent);
-      const shouldRunInsights = !isGreetingOnly && !shouldPromptForOutputClarification && (fullSpectrumReasoningMode || liveReadiness >= 25) && (fullSpectrumReasoningMode || !isFastFactQuery);
+      const isDocBuilderIntent = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
+      const shouldRunInsights = !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 25) && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery);
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
       // Fire brain on ANY substantive query - even with zero readiness on first turn.
       // The brain can still contribute country data, governance indices, sanctions checks, etc.
-      const shouldFireBrain = !isGreetingOnly && !shouldPromptForOutputClarification && (fullSpectrumReasoningMode || !isFastFactQuery) && (fullSpectrumReasoningMode || liveReadiness >= 15 || trimmedUserContent.length > 20);
+      // Document builder intent ALWAYS fires brain for maximum research depth.
+      const shouldFireBrain = !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery) && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 15 || trimmedUserContent.length > 20);
       const brainEnrichmentPromise = shouldFireBrain
         ? BrainIntegrationService.enrich(
             { country: caseDraft.country, organizationName: caseDraft.organizationName, organizationType: caseDraft.organizationType || undefined },
@@ -4511,35 +4415,36 @@ ${agentRegistry.current.toManifest()}`;
               ).catch(() => null),
             ]);
 
-            // ── Tier 2: Run when enough context exists (readiness >= 35) ──────
+            // ── Tier 2: Run when enough context exists (readiness >= 35, or document builder intent) ──────
+            const tier2Gate = isDocBuilderIntent ? 0 : 35;
             const [historicalResult, unbiasedResult, counterfactualResult] = await Promise.all([
               Promise.resolve<ParallelMatchResult | null>(
-                liveReadiness >= 35 && (caseDraft.country || caseDraft.organizationType)
+                liveReadiness >= tier2Gate && (caseDraft.country || caseDraft.organizationType || isDocBuilderIntent)
                   ? HistoricalParallelMatcher.match(partialParams)
                   : null
               ).catch(() => null),
               Promise.resolve<FullUnbiasedAnalysis | null>(
-                liveReadiness >= 35 && (caseDraft.objectives || caseDraft.currentMatter)
+                liveReadiness >= tier2Gate && (caseDraft.objectives || caseDraft.currentMatter || isDocBuilderIntent)
                   ? UnbiasedAnalysisEngine.analyze(partialParams)
                   : null
               ).catch(() => null),
               Promise.resolve<CounterfactualAnalysis | null>(
-                liveReadiness >= 35 && (caseDraft.currentMatter || caseDraft.objectives)
+                liveReadiness >= tier2Gate && (caseDraft.currentMatter || caseDraft.objectives || isDocBuilderIntent)
                   ? CounterfactualEngine.analyze(partialParams)
                   : null
               ).catch(() => null),
             ]);
 
-            // ── Tier 2.5: Full 19-engine NSIL analysis (readiness >= 50) ──────
+            // ── Tier 2.5: Full 19-engine NSIL analysis (readiness >= 50, or document builder intent) ──────
             const nsilFullResult = await (
-              liveReadiness >= 50
+              liveReadiness >= 50 || isDocBuilderIntent
                 ? NSILIntelligenceHub.runFullAnalysis(partialParams)
                 : Promise.resolve(null as IntelligenceReport | null)
             ).catch(() => null as IntelligenceReport | null);
 
-            // ── Tier 3: Adversarial reasoning at high readiness (>= 60) ───────
+            // ── Tier 3: Adversarial reasoning at high readiness (>= 60, or document builder intent) ───────
             const adversarialResult = await Promise.resolve<AdversarialOutputs | null>(
-              liveReadiness >= 60
+              liveReadiness >= 60 || isDocBuilderIntent
                 ? AdversarialReasoningService.generate(partialParams as Parameters<typeof AdversarialReasoningService.generate>[0])
                 : null
             ).catch(() => null);
@@ -5080,9 +4985,60 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
           geoArbBlock = geoArbData.summaryForPrompt;
         }
 
+        // ── DOCUMENT BUILDER MODE ─────────────────────────────────────────────
+        // When the user explicitly asks for a letter, report, or case study,
+        // activate the document builder workflow: the AI acts as a fully qualified
+        // research assistant, proactively offers alternatives and ideas, asks about
+        // length preference, and prepares a structured draft.
+        let documentBuilderBlock = '';
+        const isDocBuilderIntent = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
+        if (isDocBuilderIntent && !isReportGeneration) {
+          const intentLabel = deliverableIntent === 'letter' ? 'letter/correspondence' : deliverableIntent === 'full_case' ? 'complete document package' : 'report/case study';
+          documentBuilderBlock = `
+
+## DOCUMENT BUILDER MODE ACTIVATED
+==================================
+The user has requested a ${intentLabel}. You are now operating in DOCUMENT BUILDER mode.
+
+YOUR ROLE: Act as a fully qualified research assistant AND document drafter. You are not just answering a question — you are building a professional deliverable.
+
+STEP 1 — IMMEDIATE RESEARCH & ANALYSIS:
+- Research the topic thoroughly using ALL available intelligence (NSIL engines, brain enrichment, historical parallels, governance data, entity intelligence).
+- Surface relevant facts, precedents, risks, and opportunities the user may not have considered.
+- Think BEYOND what they asked — what angles, perspectives, or comparisons would make this document stronger?
+
+STEP 2 — PROACTIVE ALTERNATIVES & IDEAS:
+Before diving into the draft, PROACTIVELY offer:
+- 2-3 alternative approaches or angles for the document
+- Ideas the user might not have considered (related topics, different audiences, complementary documents)
+- Relevant comparisons from other countries, sectors, or historical cases
+- Any risks or sensitivities they should be aware of
+
+STEP 3 — ASK ABOUT PREFERENCES (briefly, at the end):
+After presenting your research and ideas, ask the user:
+1. **Length preference**: "How detailed should this be? Options range from a quick 1-page summary to a comprehensive 20+ page report. I can do:
+   • Quick summary (1 page, key points only)
+   • Situation brief (2-4 pages, focused analysis)
+   • Advisory report (5-12 pages, full analysis with recommendations)
+   • Strategy document (15-25 pages, deep-dive with implementation plan)
+   • Full case study (30-50 pages, comprehensive with all supporting evidence)"
+2. **Format**: "Should this be a single unified document, or broken into separate focused reports by topic?"
+3. **Any specific requirements**: audience, tone, deadline, or format preferences
+
+STEP 4 — WRITE THE DRAFT:
+Once the user confirms their preferences (or if they say "just write it"), produce the document IMMEDIATELY using all available intelligence. Do not hold back.
+
+CRITICAL RULES:
+- Do NOT just describe what you could write — RESEARCH and PRESENT findings immediately
+- Be proactive: surface ideas, alternatives, and angles the user hasn't mentioned
+- Use ALL NSIL engines and intelligence available — this is where the full system capability shines
+- If the user says "just write it" or gives enough context, skip the questions and produce the document
+- Every response should move the document forward — no empty acknowledgments`;
+        }
+
         const effectiveSystemPrompt = isReportGeneration
           ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}${advancedIntelligenceBlock}${entityIntelBlock}${vdemBlock}${geoArbBlock}`
-          : `${liveSearchBlock}${brainBlock}${advancedIntelligenceBlock}${entityIntelBlock}${vdemBlock}${geoArbBlock}${memoryBlock}${docUploadBlock}${openingInstruction}`;
+          : `${liveSearchBlock}${brainBlock}${advancedIntelligenceBlock}${entityIntelBlock}${vdemBlock}${geoArbBlock}${memoryBlock}${docUploadBlock}${documentBuilderBlock}${openingInstruction}`;
 
         // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
         const effectiveUserContent = isReportGeneration
@@ -5366,6 +5322,35 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
             }];
           });
         }
+      }
+
+      // ── DOCUMENT BUILDER: Auto-show report options when document intent detected ──
+      // Even without a file upload, when the user asks for a letter/report/case study,
+      // build a report options menu from conversation context and show the tier picker.
+      if (isDocBuilderIntent && !isReportGeneration && !hadFileUpload) {
+        setDocumentBuilderActive(true);
+        const conversationWordCount = ReportLengthRouter.estimateWordCount(
+          caseDraft.currentMatter + ' ' + caseDraft.objectives + ' ' + trimmedUserContent
+        );
+        const docBuilderMenu = ReportLengthRouter.computeOptions({
+          sourceWordCount: Math.max(conversationWordCount, 500),
+          caseReadiness: Math.max(liveReadiness, 30),
+          enginesActivated: brainCtxRef.current ? 12 : 3,
+          jurisdiction: caseDraft.country || 'Unknown',
+          sector: caseDraft.organizationType || 'General Advisory',
+          hasConflict: false,
+          hasMultipleRegions: false,
+          hasMultistakeholder: false,
+        });
+        const docTitle = deliverableIntent === 'letter'
+          ? 'Requested Letter'
+          : deliverableIntent === 'full_case'
+            ? 'Full Case Package'
+            : 'Requested Report';
+        setReportOptionsDocTitle(docTitle);
+        setReportOptionsDocType(deliverableIntent === 'letter' ? 'Letter' : 'Report');
+        setReportOptionsMenu(docBuilderMenu);
+        setShowReportOptions(true);
       }
 
       // Auto-save the generated formal document to Final Report workspace
@@ -8011,49 +7996,63 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
               )}
               {messages.length > 0 && (augmentedAISnapshot || augmentedRecommendedTools.length > 0 || augmentedUnresolvedGaps.length > 0) && (
                 <div className="max-w-4xl mx-auto mt-2 border border-emerald-300 bg-emerald-50 px-3 py-2">
-                  <p className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1">
-                    <CheckCircle2 size={11} className="text-emerald-700" />
-                    Augmented AI Human-in-the-Loop {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
-                  </p>
-                  {(strategicPipeline || overlookedIntelligence) && (
-                    <p className="mt-1 text-[10px] text-emerald-800">
-                      Strategic readiness: {typeof strategicPipeline?.readinessScore === 'number' ? `${strategicPipeline.readinessScore}%` : 'n/a'}
-                      {overlookedIntelligence?.topRegionalOpportunities?.[0]?.place ? ` • Top regional target: ${overlookedIntelligence.topRegionalOpportunities[0].place}` : ''}
-                    </p>
-                  )}
-                  {augmentedCapabilityTags.length > 0 && (
-                    <p className="mt-1 text-[10px] text-emerald-800">
-                      Tags: {augmentedCapabilityTags.join(' • ')}
-                    </p>
-                  )}
-                  {augmentedAISnapshot?.steps?.length ? (
-                    <ul className="mt-1 space-y-0.5">
-                      {augmentedAISnapshot.steps.map((step) => (
-                        <li key={`aug-step-${step.title}`} className="text-[10px] text-emerald-900">• <strong>{step.title}:</strong> {step.detail}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {augmentedUnresolvedGaps.length > 0 && (
-                    <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1">
-                      <p className="text-[10px] font-semibold text-amber-900">Top unresolved gaps</p>
-                      <ul className="mt-0.5 space-y-0.5">
-                        {augmentedUnresolvedGaps.slice(0, 3).map((gap, index) => (
-                          <li key={`aug-gap-${gap.key}-${index}`} className="text-[10px] text-amber-800">• [{gap.severity}] {gap.question}</li>
-                        ))}
-                      </ul>
+                  <button
+                    type="button"
+                    onClick={() => setAugmentedPanelExpanded((prev) => !prev)}
+                    className="w-full flex items-center justify-between gap-1 text-left"
+                  >
+                    <span className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1">
+                      <CheckCircle2 size={11} className="text-emerald-700" />
+                      Augmented AI Human-in-the-Loop {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
+                      {augmentedUnresolvedGaps.length > 0 && !augmentedPanelExpanded && (
+                        <span className="text-[10px] text-amber-700 ml-1">({augmentedUnresolvedGaps.length} gaps)</span>
+                      )}
+                    </span>
+                    <ChevronDown size={14} className={`text-emerald-600 transition-transform ${augmentedPanelExpanded ? 'rotate-180' : ''}`} />
+                  </button>
+                  {augmentedPanelExpanded && (
+                    <div className="mt-1.5 max-h-48 overflow-y-auto">
+                      {(strategicPipeline || overlookedIntelligence) && (
+                        <p className="mt-1 text-[10px] text-emerald-800">
+                          Strategic readiness: {typeof strategicPipeline?.readinessScore === 'number' ? `${strategicPipeline.readinessScore}%` : 'n/a'}
+                          {overlookedIntelligence?.topRegionalOpportunities?.[0]?.place ? ` • Top regional target: ${overlookedIntelligence.topRegionalOpportunities[0].place}` : ''}
+                        </p>
+                      )}
+                      {augmentedCapabilityTags.length > 0 && (
+                        <p className="mt-1 text-[10px] text-emerald-800">
+                          Tags: {augmentedCapabilityTags.join(' • ')}
+                        </p>
+                      )}
+                      {augmentedAISnapshot?.steps?.length ? (
+                        <ul className="mt-1 space-y-0.5">
+                          {augmentedAISnapshot.steps.map((step) => (
+                            <li key={`aug-step-${step.title}`} className="text-[10px] text-emerald-900">• <strong>{step.title}:</strong> {step.detail}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                      {augmentedUnresolvedGaps.length > 0 && (
+                        <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1">
+                          <p className="text-[10px] font-semibold text-amber-900">Top unresolved gaps</p>
+                          <ul className="mt-0.5 space-y-0.5">
+                            {augmentedUnresolvedGaps.slice(0, 3).map((gap, index) => (
+                              <li key={`aug-gap-${gap.key}-${index}`} className="text-[10px] text-amber-800">• [{gap.severity}] {gap.question}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {augmentedRecommendedTools.length > 0 && (
+                        <div className="mt-2 border border-emerald-200 bg-white px-2 py-1">
+                          <p className="text-[10px] font-semibold text-emerald-900">Recommended software tools</p>
+                          <ul className="mt-0.5 space-y-0.5">
+                            {augmentedRecommendedTools.slice(0, 4).map((tool) => (
+                              <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) - {tool.bwUseCase}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   )}
-                  {augmentedRecommendedTools.length > 0 && (
-                    <div className="mt-2 border border-emerald-200 bg-white px-2 py-1">
-                      <p className="text-[10px] font-semibold text-emerald-900">Recommended software tools</p>
-                      <ul className="mt-0.5 space-y-0.5">
-                        {augmentedRecommendedTools.slice(0, 4).map((tool) => (
-                          <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) - {tool.bwUseCase}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                     <span className="text-[10px] text-emerald-800 flex items-center gap-1">
                       <CheckCircle2 size={10} className="text-emerald-600" />
                       {augmentedReviewState === 'accept' ? 'Augmented reasoning auto-applied' : 'Applying augmented reasoning…'}
