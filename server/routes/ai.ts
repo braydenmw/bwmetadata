@@ -41,43 +41,15 @@ const isAIAvailable = (): boolean => {
   return false;
 };
 
-const generateWithAI = async (prompt: string, systemInstruction?: string): Promise<string> => {
+const generateWithAI = async (messages: any[], systemInstruction?: string): Promise<string> => {
   const openaiKey = getOpenAIKey();
   const groqKey = getGroqKey();
   const togetherKey = getTogetherKey();
-  
-  // 1. OpenAI (primary)
-  if (openaiKey) {
-    try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${openaiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            ...(systemInstruction ? [{ role: 'system', content: systemInstruction }] : []),
-            { role: 'user', content: prompt },
-          ],
-          max_tokens: 4096,
-          temperature: 0.4,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const text = (data.choices?.[0]?.message?.content || '').trim();
-        if (text) return text;
-      } else {
-        console.warn('[AI Routes] OpenAI error:', res.status);
-      }
-    } catch (openaiErr) {
-      console.warn('[AI Routes] OpenAI failed, trying Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
-    }
-  }
-  
-  // 2. Groq fallback
+
+  // Prepend system instruction if provided
+  const fullMessages = systemInstruction ? [{ role: 'system', content: systemInstruction }, ...messages] : messages;
+
+  // 1. Groq (primary — fastest inference, free tier available)
   if (groqKey) {
     try {
       const res = await fetch(GROQ_API_URL, {
@@ -88,10 +60,7 @@ const generateWithAI = async (prompt: string, systemInstruction?: string): Promi
         },
         body: JSON.stringify({
           model: GROQ_MODEL_ID,
-          messages: [
-            ...(systemInstruction ? [{ role: 'system', content: systemInstruction }] : []),
-            { role: 'user', content: prompt },
-          ],
+          messages: fullMessages,
           max_completion_tokens: 4096,
           temperature: 0.4,
         }),
@@ -104,10 +73,38 @@ const generateWithAI = async (prompt: string, systemInstruction?: string): Promi
         console.warn('[AI Routes] Groq error:', res.status);
       }
     } catch (groqErr) {
-      console.warn('[AI Routes] Groq failed, trying Together:', groqErr instanceof Error ? groqErr.message : groqErr);
+      console.warn('[AI Routes] Groq failed, trying OpenAI:', groqErr instanceof Error ? groqErr.message : groqErr);
     }
   }
-  
+
+  // 2. OpenAI fallback
+  if (openaiKey) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openaiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: fullMessages,
+          max_tokens: 4096,
+          temperature: 0.4,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = (data.choices?.[0]?.message?.content || '').trim();
+        if (text) return text;
+      } else {
+        console.warn('[AI Routes] OpenAI error:', res.status);
+      }
+    } catch (openaiErr) {
+      console.warn('[AI Routes] OpenAI failed, trying Together:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
+    }
+  }
+
   // 3. Together.ai fallback
   if (togetherKey) {
     try {
@@ -119,10 +116,7 @@ const generateWithAI = async (prompt: string, systemInstruction?: string): Promi
         },
         body: JSON.stringify({
           model: TOGETHER_MODEL_ID,
-          messages: [
-            ...(systemInstruction ? [{ role: 'system', content: systemInstruction }] : []),
-            { role: 'user', content: prompt },
-          ],
+          messages: fullMessages,
           max_tokens: 4096,
           temperature: 0.4,
         }),
@@ -356,14 +350,7 @@ const normalizeConsultantOutput = (rawText: string): string => {
     return 'I can assist with your report and next actions. Share the exact objective, jurisdiction, and decision deadline, and I will proceed.';
   }
 
-  const firstQuestionIndex = text.indexOf('?');
-  if (firstQuestionIndex === -1) {
-    return text;
-  }
-
-  const before = text.slice(0, firstQuestionIndex + 1);
-  const after = text.slice(firstQuestionIndex + 1).replace(/\?/g, '.');
-  return `${before}${after}`;
+  return text;
 };
 
 const redactText = (value: string): string => {
@@ -554,7 +541,7 @@ const logConsultantAuditEvent = async (event: Record<string, unknown>) => {
 };
 
 const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
-  const defaultOrder: ConsultantProvider[] = ['openai', 'groq', 'together'];
+  const defaultOrder: ConsultantProvider[] = ['groq', 'openai', 'together'];
   if (!Array.isArray(input)) return defaultOrder;
 
   const VALID_PROVIDERS = new Set<ConsultantProvider>(['together', 'groq', 'openai']);
@@ -646,7 +633,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
         { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
-      max_completion_tokens: 1800,
+      max_completion_tokens: 4096,
       temperature: 0.4,
     }),
   });
@@ -778,14 +765,11 @@ router.post('/insights', requireApiKey, async (req: Request, res: Response) => {
 // Chat/copilot message
 router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
   try {
-    const { message, context } = req.body;
-    
-    const prompt = context 
-      ? `CONTEXT: ${JSON.stringify(context)}\n\nUSER QUERY: ${message}`
-      : message;
-    
-    const text = await generateWithAI(prompt, SYSTEM_INSTRUCTION);
-    
+    const { messages } = req.body;
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: 'messages array is required in request body' });
+    }
+    const text = await generateWithAI(messages, SYSTEM_INSTRUCTION);
     res.json({
       id: Date.now().toString(),
       type: 'strategy',
@@ -800,6 +784,22 @@ router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({ error: 'Failed to process chat', details: errorMessage });
   }
+});
+
+// AI runtime status endpoint
+router.get('/status', (_req: Request, res: Response) => {
+  const openaiKey = getOpenAIKey();
+  const groqKey = getGroqKey();
+  const togetherKey = getTogetherKey();
+
+  res.json({
+    aiAvailable: Boolean(openaiKey || groqKey || togetherKey),
+    providers: {
+      openai: Boolean(openaiKey),
+      groq: Boolean(groqKey),
+      together: Boolean(togetherKey)
+    }
+  });
 });
 
 // Unified BW Consultant endpoint with model-broker fallback (Bedrock -> Gemini -> OpenAI)

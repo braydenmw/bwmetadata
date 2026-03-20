@@ -22,6 +22,7 @@ export interface AgentToolResult {
   data: unknown;
   error?: string;
   latencyMs: number;
+  summary?: string;
 }
 
 export class AgentToolRegistry {

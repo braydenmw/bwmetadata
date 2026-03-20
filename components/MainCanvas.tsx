@@ -2294,6 +2294,8 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
                         <DocumentGenerationSuite
                             entityName={params.organizationName}
                             targetMarket={params.userCity}
+                            reportData={reportData}
+                            reportParams={params}
                         />
                     </motion.div>
                 </motion.div>

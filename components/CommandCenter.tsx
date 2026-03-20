@@ -1527,17 +1527,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
 
                                         {/* 5-Phase Flow */}
-                                        <div className="flex items-center gap-1 mb-5 overflow-x-auto pb-1">
+                                        <div className="flex items-center gap-1.5 mb-5 overflow-x-auto pb-1">
                                             {[
-                                                { label: 'Intake', color: 'bg-blue-100 text-blue-700 border-blue-300' },
-                                                { label: 'Discovery', color: 'bg-indigo-100 text-indigo-700 border-indigo-300' },
-                                                { label: 'Analysis', color: 'bg-amber-100 text-amber-700 border-amber-300' },
-                                                { label: 'Recommendations', color: 'bg-orange-100 text-orange-700 border-orange-300' },
-                                                { label: 'Generation', color: 'bg-emerald-100 text-emerald-700 border-emerald-300' },
+                                                { label: '1. Intake', color: 'bg-stone-900 text-white border-stone-900' },
+                                                { label: '2. Discovery', color: 'bg-stone-700 text-white border-stone-700' },
+                                                { label: '3. Analysis', color: 'bg-amber-600 text-white border-amber-600' },
+                                                { label: '4. Recommendations', color: 'bg-amber-500 text-white border-amber-500' },
+                                                { label: '5. Generation', color: 'bg-blue-600 text-white border-blue-600' },
                                             ].map((phase, i, arr) => (
-                                                <div key={phase.label} className="flex items-center gap-1 flex-shrink-0">
-                                                    <div className={`px-3 py-1.5 rounded-full border text-xs font-semibold ${phase.color}`}>{phase.label}</div>
-                                                    {i < arr.length - 1 && <span className="text-slate-300 text-sm">&rarr;</span>}
+                                                <div key={phase.label} className="flex items-center gap-1.5 flex-shrink-0">
+                                                    <div className={`px-3 py-1.5 rounded-full border text-xs font-bold tracking-wide ${phase.color}`}>{phase.label}</div>
+                                                    {i < arr.length - 1 && <span className="text-stone-400 text-sm font-bold">&rarr;</span>}
                                                 </div>
                                             ))}
                                         </div>
@@ -2190,11 +2190,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <p className="text-xs text-blue-600 font-medium mt-0.5">Powered by NSIL Agentic Runtime &bull; Case Study Builder</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-1 mb-4 flex-wrap">
-                                    {['Intake','Discovery','Analysis','Recommendations','Generation'].map((phase, i, arr) => (
-                                        <span key={phase} className="flex items-center gap-1">
-                                            <span className="px-2.5 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full text-xs font-semibold">{phase}</span>
-                                            {i < arr.length - 1 && <span className="text-slate-300 text-xs">&rarr;</span>}
+                                <div className="flex items-center gap-1.5 mb-4 flex-wrap">
+                                    {[
+                                        { label: '1. Intake', color: 'bg-stone-900 text-white border-stone-900' },
+                                        { label: '2. Discovery', color: 'bg-stone-700 text-white border-stone-700' },
+                                        { label: '3. Analysis', color: 'bg-amber-600 text-white border-amber-600' },
+                                        { label: '4. Recommendations', color: 'bg-amber-500 text-white border-amber-500' },
+                                        { label: '5. Generation', color: 'bg-blue-600 text-white border-blue-600' },
+                                    ].map((phase, i, arr) => (
+                                        <span key={phase.label} className="flex items-center gap-1.5">
+                                            <span className={`px-3 py-1 rounded-full border text-xs font-bold tracking-wide ${phase.color}`}>{phase.label}</span>
+                                            {i < arr.length - 1 && <span className="text-stone-400 text-xs font-bold">&rarr;</span>}
                                         </span>
                                     ))}
                                 </div>

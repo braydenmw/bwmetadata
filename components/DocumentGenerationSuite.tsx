@@ -4,6 +4,226 @@ import jsPDF from 'jspdf';
 import { RefinedIntake, ReportData, ReportParameters } from '../types';
 import { evaluateDocReadiness } from '../services/intakeMapping';
 import { applyTemplateContext, createDefaultIntake, getMissingIntakeFields, StructuredDocumentIntake } from '../services/documentTemplateEngine';
+import { DocumentTypeRouter } from '../services/DocumentTypeRouter';
+import { PrecedentMatchingEngine } from '../services/historicalDataEngine';
+
+// Map DocumentGenerationSuite IDs to DocumentTypeRouter IDs where they differ
+const ROUTER_ID_MAP: Record<string, string> = {
+  'proposal': 'partner-proposal',
+  'executive-summary': 'executive-brief',
+  'risk-assessment': 'risk-assessment-report',
+  'due-diligence-request': 'due-diligence-report',
+};
+
+/** Serialize computedIntelligence into a markdown intelligence block for AI prompts */
+function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportParameters): string {
+  const parts: string[] = [];
+  const ci = reportData?.computedIntelligence;
+
+  if (!ci && !reportParams) return '';
+
+  parts.push('### ── NSIL INTELLIGENCE CONTEXT ──');
+
+  // Confidence scores
+  const cs = reportData?.confidenceScores;
+  if (cs?.overall) {
+    parts.push(`\n**Confidence Scores:** Overall ${(cs.overall * 100).toFixed(0)}% | Economic Readiness ${((cs.economicReadiness ?? 0) * 100).toFixed(0)}% | Symbiotic Fit ${((cs.symbioticFit ?? 0) * 100).toFixed(0)}% | Political Stability ${((cs.politicalStability ?? 0) * 100).toFixed(0)}% | Partner Reliability ${((cs.partnerReliability ?? 0) * 100).toFixed(0)}% | Ethical Alignment ${((cs.ethicalAlignment ?? 0) * 100).toFixed(0)}%`);
+  }
+
+  // SPI - Strategic Partnership Index
+  if (ci?.spi) {
+    const spi = ci.spi as Record<string, unknown>;
+    parts.push(`\n**Strategic Partnership Index (SPI):** ${spi.overallScore ?? spi.score ?? 'N/A'}/100`);
+    if (spi.components) parts.push(`Components: ${JSON.stringify(spi.components).slice(0, 300)}`);
+  }
+
+  // RROI - Risk-Return on Investment
+  if (ci?.rroi) {
+    const rroi = ci.rroi as Record<string, unknown>;
+    parts.push(`\n**Risk-Return Index (RROI):** Score ${rroi.score ?? rroi.rroiScore ?? 'N/A'} | Rating: ${rroi.rating || 'N/A'}`);
+  }
+
+  // SEAM - Symbiotic Economic Alignment Model
+  if (ci?.seam) {
+    const seam = ci.seam as Record<string, unknown>;
+    parts.push(`\n**SEAM Blueprint:** Alignment ${seam.alignmentScore ?? seam.overallAlignment ?? 'N/A'}%`);
+  }
+
+  // Ethics Check
+  if (ci?.ethicsCheck) {
+    const ec = ci.ethicsCheck as Record<string, unknown>;
+    parts.push(`\n**Ethical Safeguards:** Gate ${ec.overallDecision ?? ec.decision ?? 'N/A'} | Score ${ec.overallScore ?? ec.ethicalScore ?? 'N/A'}`);
+    if (ec.dimensions && Array.isArray(ec.dimensions)) {
+      parts.push(`Dimensions: ${(ec.dimensions as Array<Record<string, unknown>>).map(d => `${d.name}(${d.score})`).join(', ')}`);
+    }
+  }
+
+  // Adversarial Shield
+  if (ci?.adversarialShield) {
+    const as_ = ci.adversarialShield as Record<string, unknown>;
+    parts.push(`\n**Adversarial Shield:** Threat Level ${as_.threatLevel ?? 'N/A'} | Confidence ${as_.confidenceScore ?? 'N/A'}%`);
+    if (as_.topThreats && Array.isArray(as_.topThreats)) {
+      (as_.topThreats as Array<Record<string, unknown>>).slice(0, 3).forEach(t => parts.push(`- Threat: ${t.name || t.description} (severity: ${t.severity})`));
+    }
+  }
+
+  // Persona Panel (5-persona debate)
+  if (ci?.personaPanel) {
+    const pp = ci.personaPanel as Record<string, unknown>;
+    parts.push(`\n**5-Persona Adversarial Debate:** Consensus: ${pp.consensus ?? pp.overallAssessment ?? 'N/A'}`);
+    if (pp.personas && Array.isArray(pp.personas)) {
+      (pp.personas as Array<Record<string, unknown>>).slice(0, 5).forEach(p => parts.push(`- ${p.role || p.name}: ${String(p.verdict || p.assessment || '').slice(0, 120)}`));
+    }
+  }
+
+  // PRI/TCO/CRI derived indices
+  if (ci?.pri) {
+    const pri = ci.pri as Record<string, unknown>;
+    parts.push(`\n**Political Risk Index (PRI):** ${pri.score ?? pri.overallScore ?? 'N/A'}/100 | Rating: ${pri.rating ?? 'N/A'}`);
+  }
+  if (ci?.tco) {
+    const tco = ci.tco as Record<string, unknown>;
+    parts.push(`**Total Cost of Ownership (TCO):** ${tco.score ?? tco.totalScore ?? 'N/A'}`);
+  }
+  if (ci?.cri) {
+    const cri = ci.cri as Record<string, unknown>;
+    parts.push(`**Cultural Risk Index (CRI):** ${cri.score ?? cri.overallScore ?? 'N/A'}/100`);
+  }
+
+  // Advanced Indices
+  if (ci?.advancedIndices) {
+    const ai_ = ci.advancedIndices as Record<string, unknown>;
+    const keys = ['SEQ', 'FMS', 'DCS', 'DQS', 'GCS'];
+    const vals = keys.map(k => {
+      const v = ai_[k] || ai_[k.toLowerCase()];
+      return v ? `${k}: ${typeof v === 'object' ? JSON.stringify(v).slice(0, 80) : v}` : null;
+    }).filter(Boolean);
+    if (vals.length) parts.push(`\n**Advanced Intelligence Indices:** ${vals.join(' | ')}`);
+  }
+
+  // Agentic Brain
+  if (ci?.agenticBrain) {
+    const ab = ci.agenticBrain as Record<string, unknown>;
+    parts.push(`\n**Agentic Brain Snapshot:** Goal: ${ab.currentGoal ?? 'N/A'} | Confidence: ${ab.confidenceLevel ?? 'N/A'}`);
+    if (ab.recommendations && Array.isArray(ab.recommendations)) {
+      (ab.recommendations as string[]).slice(0, 3).forEach(r => parts.push(`- ${r}`));
+    }
+  }
+
+  // Frontier Intelligence
+  if (ci?.frontierIntelligence) {
+    const fi = ci.frontierIntelligence as Record<string, unknown>;
+    parts.push(`\n**Frontier Intelligence:** ${fi.summary || fi.headline || JSON.stringify(fi).slice(0, 200)}`);
+  }
+
+  // Proactive Briefing
+  if (ci?.proactiveBriefing) {
+    const pb = ci.proactiveBriefing as Record<string, unknown>;
+    parts.push(`\n**Proactive Briefing:** Backtest Accuracy ${pb.backtestAccuracy ?? 'N/A'}%`);
+    if (pb.proactiveSignals && Array.isArray(pb.proactiveSignals)) {
+      (pb.proactiveSignals as Array<Record<string, unknown>>).slice(0, 3).forEach(s => parts.push(`- [${s.urgency}] ${s.title}: ${String(s.description).slice(0, 120)}`));
+    }
+    if (pb.actionPriorities && Array.isArray(pb.actionPriorities)) {
+      parts.push(`**Action Priorities:** ${(pb.actionPriorities as string[]).slice(0, 5).join('; ')}`);
+    }
+  }
+
+  // NSIL Intelligence (autonomous + reflexive layers)
+  if (ci?.nsilIntelligence) {
+    const nsil = ci.nsilIntelligence as Record<string, unknown>;
+    if (nsil.recommendation) {
+      const rec = nsil.recommendation as Record<string, unknown>;
+      parts.push(`\n**NSIL Recommendation:** ${rec.action ?? 'N/A'} (Confidence: ${rec.confidence ?? 'N/A'})`);
+      if (rec.summary) parts.push(`Summary: ${String(rec.summary).slice(0, 300)}`);
+      if (rec.criticalActions && Array.isArray(rec.criticalActions)) parts.push(`Critical Actions: ${(rec.criticalActions as string[]).slice(0, 4).join('; ')}`);
+      if (rec.keyRisks && Array.isArray(rec.keyRisks)) parts.push(`Key Risks: ${(rec.keyRisks as string[]).slice(0, 4).join('; ')}`);
+      if (rec.keyOpportunities && Array.isArray(rec.keyOpportunities)) parts.push(`Key Opportunities: ${(rec.keyOpportunities as string[]).slice(0, 4).join('; ')}`);
+    }
+  }
+
+  // Situation Analysis (blind spots, unconsidered needs)
+  if (ci?.situationAnalysis) {
+    const sa = ci.situationAnalysis as Record<string, unknown>;
+    parts.push(`\n**Situation Analysis:**`);
+    if (sa.blindSpots && Array.isArray(sa.blindSpots)) parts.push(`Blind Spots: ${(sa.blindSpots as string[]).slice(0, 3).join('; ')}`);
+    if (sa.unconsideredNeeds && Array.isArray(sa.unconsideredNeeds)) parts.push(`Unconsidered Needs: ${(sa.unconsideredNeeds as string[]).slice(0, 3).join('; ')}`);
+    if (sa.stakeholderViews && Array.isArray(sa.stakeholderViews)) parts.push(`Stakeholder Views: ${(sa.stakeholderViews as Array<Record<string, unknown>>).slice(0, 3).map(v => `${v.stakeholder}: ${String(v.view).slice(0, 80)}`).join('; ')}`);
+  }
+
+  // Historical Parallels
+  if (ci?.historicalParallels) {
+    const hp = ci.historicalParallels as Record<string, unknown>;
+    parts.push(`\n**Historical Parallels:**`);
+    if (hp.matches && Array.isArray(hp.matches)) {
+      (hp.matches as Array<Record<string, unknown>>).slice(0, 3).forEach(m => parts.push(`- ${m.title || m.caseId} (${m.country}, ${m.year}) — Relevance: ${m.relevanceScore ?? 'N/A'}% | Outcome: ${m.outcome ?? 'N/A'}`));
+    }
+    if (hp.successFactors && Array.isArray(hp.successFactors)) parts.push(`Success Factors: ${(hp.successFactors as string[]).slice(0, 4).join('; ')}`);
+    if (hp.failureFactors && Array.isArray(hp.failureFactors)) parts.push(`Failure Factors: ${(hp.failureFactors as string[]).slice(0, 4).join('; ')}`);
+  }
+
+  // Regional Kernel
+  if (ci?.regionalKernel) {
+    const rk = ci.regionalKernel as Record<string, unknown>;
+    parts.push(`\n**Regional Development Kernel:**`);
+    if (rk.governanceReadiness) parts.push(`Governance Readiness: ${JSON.stringify(rk.governanceReadiness).slice(0, 200)}`);
+    if (rk.interventions && Array.isArray(rk.interventions)) parts.push(`Interventions: ${(rk.interventions as string[]).slice(0, 3).join('; ')}`);
+  }
+
+  // Symbiotic Partners
+  if (ci?.symbioticPartners && Array.isArray(ci.symbioticPartners) && ci.symbioticPartners.length > 0) {
+    parts.push(`\n**Symbiotic Partner Matches:**`);
+    (ci.symbioticPartners as Array<Record<string, unknown>>).slice(0, 3).forEach(p => parts.push(`- ${p.name || p.partnerName}: Score ${p.score ?? p.matchScore ?? 'N/A'} | Type: ${p.type || p.partnerType || 'N/A'}`));
+  }
+
+  // Diversification Analysis
+  if (ci?.diversificationAnalysis) {
+    const da = ci.diversificationAnalysis as Record<string, unknown>;
+    parts.push(`\n**Diversification Analysis:** Score ${da.overallScore ?? da.score ?? 'N/A'} | ${da.recommendation || ''}`);
+  }
+
+  // IVAS / SCF
+  if (ci?.ivas) {
+    const ivas = ci.ivas as Record<string, unknown>;
+    parts.push(`\n**Investment Value Alignment Score (IVAS):** ${ivas.score ?? ivas.overallScore ?? 'N/A'}`);
+  }
+  if (ci?.scf) {
+    const scf = ci.scf as Record<string, unknown>;
+    parts.push(`**Strategic Clarity Factor (SCF):** ${scf.score ?? scf.overallScore ?? 'N/A'}`);
+  }
+
+  // Add live precedent matches if reportParams available
+  if (reportParams) {
+    try {
+      const precedents = PrecedentMatchingEngine.findMatches(reportParams, 0.5);
+      if (precedents.length > 0) {
+        parts.push(`\n### ── HISTORICAL PRECEDENT MATCHES ──`);
+        precedents.slice(0, 5).forEach(p => {
+          const c = p.historicalCase;
+          parts.push(`- **${c.title}** (${c.country}, ${c.year}) — ${c.strategy}`);
+          parts.push(`  Outcome: ${c.outcomes.result} | ROI: ${c.outcomes.roiAchieved?.toFixed(1)}x | Success Probability: ${p.probabilityOfSuccess}%`);
+          if (c.outcomes.keyLearnings?.length) parts.push(`  Key Learnings: ${c.outcomes.keyLearnings.slice(0, 2).join('; ')}`);
+        });
+      }
+    } catch { /* precedent engine not critical */ }
+  }
+
+  // Report sections content (executive summary, risks, recommendations)
+  if (reportData?.executiveSummary?.content) {
+    parts.push(`\n### ── EXECUTIVE SUMMARY ──`);
+    parts.push(String(reportData.executiveSummary.content).slice(0, 500));
+  }
+  if (reportData?.risks?.content) {
+    parts.push(`\n### ── RISK ANALYSIS ──`);
+    parts.push(String(reportData.risks.content).slice(0, 500));
+  }
+  if (reportData?.recommendations?.content) {
+    parts.push(`\n### ── RECOMMENDATIONS ──`);
+    parts.push(String(reportData.recommendations.content).slice(0, 500));
+  }
+
+  parts.push(`${'═'.repeat(50)}`);
+  return parts.join('\n');
+}
 
 type DocumentType = 'loi' | 'mou' | 'proposal' | 'executive-summary' | 'financial-model' | 'risk-assessment' | 'dossier' | 'comparison' | 'term-sheet' | 'investment-memo' | 'due-diligence-request' | 'business-intelligence-report' | 'partnership-analyzer' | 'stakeholder-analysis' | 'market-entry-strategy' | 'competitive-analysis' | 'operational-plan' | 'integration-plan' | 'entry-advisory' | 'cultural-brief' | 'blind-spot-audit';
 type RewriteMode = 'formalize' | 'shorten' | 'legal-safe' | 'board-ready';
@@ -379,6 +599,82 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
     setSelectedDocsQueue(prev => prev.includes(docType) ? prev.filter(d => d !== docType) : [...prev, docType]);
   };
 
+  /** Call backend AI endpoint for document generation */
+  const callAI = async (prompt: string, systemPrompt: string): Promise<string> => {
+    try {
+      const response = await fetch('/api/ai/consultant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: prompt, systemPrompt }),
+      });
+      if (response.ok) {
+        const data = await response.json() as Record<string, unknown>;
+        const text = String(data?.text || '').trim();
+        if (text) return text;
+      }
+    } catch (e) {
+      console.warn('[DocumentGenerationSuite] AI call failed:', e);
+    }
+    return '';
+  };
+
+  /** Generate a single document using DocumentTypeRouter + AI backend */
+  const generateDocumentWithAI = async (docType: DocumentType): Promise<string> => {
+    const template = documentTemplates.find(d => d.id === docType);
+    if (!template) return '';
+
+    const routerId = ROUTER_ID_MAP[docType] || docType;
+    const route = DocumentTypeRouter.routeDocumentWithFallback(routerId, template.category, template.title);
+
+    const context = [
+      `Entity: ${entityName}`,
+      `Target Partner: ${targetPartnerName}`,
+      `Target Market: ${targetMarket}`,
+      `Deal Value: $${(dealValue / 1000000).toFixed(1)}M`,
+      `Date: ${new Date().toLocaleDateString()}`,
+    ].join('\n');
+
+    // Build intelligence context from NSIL data
+    const intelligenceBlock = buildIntelligenceBlock(reportData, reportParams);
+
+    const sectionInstructions = route.sectionPrompts
+      .map((s, i) => `Section ${i + 1}: "${s.title}" (~${s.maxWords} words)\n${s.prompt}`)
+      .join('\n\n');
+
+    const lengthGuidance =
+      lengthPreset === 'brief' ? 'Keep to approximately 60% of the suggested word counts.' :
+      lengthPreset === 'extended' ? 'Expand to approximately 140% of the suggested word counts with additional detail.' :
+      'Follow the suggested word counts.';
+
+    const prompt = [
+      `Generate a complete, professional ${template.title} document.`,
+      ``,
+      `### Case Context`,
+      context,
+      ``,
+      ...(intelligenceBlock ? [
+        `### Intelligence Context (use real data from this to strengthen the document — cite specific scores, risks, precedents, and recommendations)`,
+        intelligenceBlock,
+        ``,
+      ] : []),
+      `### Document Structure — write each section fully:`,
+      sectionInstructions,
+      ``,
+      lengthGuidance,
+      ``,
+      `CRITICAL: Ground all claims in the intelligence data above. Reference specific NSIL scores, historical precedents, risk assessments, and ethical evaluations. No generic filler — every assertion must be evidence-backed from the intelligence context.`,
+      `Format: Use markdown headers (## Section Title) for each section. Write publication-ready prose. Use the specific entity names, market, and deal value provided — no placeholder brackets like [xyz].`,
+    ].join('\n');
+
+    const systemPrompt = `You are a senior international business consultant at BW Global Advisory producing a ${template.title}. You have access to the full NSIL Intelligence Suite output including 20+ analytical engines, historical precedent matches, adversarial risk screening, and composite scoring. Write with authority, precision, and analytical depth. Every claim MUST reference specific data from the intelligence context — scores, percentages, historical cases, risk levels, ethical gate outcomes. This is a live intelligence-driven document, not a template.`;
+
+    try {
+      return await callAI(prompt, systemPrompt);
+    } catch {
+      return '';
+    }
+  };
+
   const clearRewriteState = () => {
     setLastRewriteMode(null);
     setRewriteBaseContent('');
@@ -398,99 +694,12 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
     setIsGenerating(true);
     clearRewriteState();
     setOriginalGeneratedContent('');
-    
-    // Simulate generation time based on document complexity
-    const generationTime = docType === 'dossier' ? 8000 : docType === 'financial-model' ? 4000 : 2500;
-    
-    await new Promise(r => setTimeout(r, generationTime));
 
-    let content = '';
+    // Try AI-powered generation first via DocumentTypeRouter
+    let content = await generateDocumentWithAI(docType);
 
-    switch (docType) {
-      case 'loi':
-        content = generateLOI();
-        break;
-      case 'mou':
-        content = generateMOU();
-        break;
-      case 'proposal':
-        content = generateProposal();
-        break;
-      case 'executive-summary':
-        content = generateExecutiveSummary();
-        break;
-      case 'financial-model':
-        content = generateFinancialModel();
-        break;
-      case 'risk-assessment':
-        content = generateRiskAssessment();
-        break;
-      case 'blind-spot-audit':
-        content = generateBlindSpotAudit();
-        break;
-      case 'dossier':
-        content = generateDossier();
-        break;
-      case 'comparison':
-        content = generateComparison();
-        break;
-      case 'term-sheet':
-        content = generateTermSheet();
-        break;
-      case 'investment-memo':
-        content = generateInvestmentMemo();
-        break;
-      case 'due-diligence-request':
-        content = generateDueDiligenceRequest();
-        break;
-      case 'business-intelligence-report':
-        content = generateBusinessIntelligenceReport();
-        break;
-      case 'partnership-analyzer':
-        content = generatePartnershipAnalyzer();
-        break;
-      case 'stakeholder-analysis':
-        content = generateStakeholderAnalysis();
-        break;
-      case 'market-entry-strategy':
-        content = generateMarketEntryStrategy();
-        break;
-      case 'competitive-analysis':
-        content = generateCompetitiveAnalysis();
-        break;
-      case 'operational-plan':
-        content = generateOperationalPlan();
-        break;
-      case 'integration-plan':
-        content = generateIntegrationPlan();
-        break;
-      case 'entry-advisory':
-        content = generateEntryAdvisory();
-        break;
-      case 'cultural-brief':
-        content = generateCulturalBrief();
-        break;
-    }
-
-    const contextApplied = applyTemplateContext(content, structuredIntake, lengthPreset);
-    const adjusted = adjustByLength(contextApplied);
-    setGeneratedContent(adjusted);
-    setOriginalGeneratedContent(adjusted);
-    setRewriteHistory([adjusted]);
-    setRewriteHistoryIndex(0);
-    setIsGenerating(false);
-    onDocumentGenerated?.(docType, contextApplied);
-  };
-
-  const generateSelectedBatch = async () => {
-    if (selectedDocsQueue.length === 0) return;
-    setIsGenerating(true);
-    const batch: Array<{ id: DocumentType; title: string; content: string }> = [];
-    for (const docType of selectedDocsQueue) {
-      // Simulate time similar to single-generation
-      const generationTime = docType === 'dossier' ? 8000 : docType === 'financial-model' ? 4000 : 2500;
-      await new Promise(r => setTimeout(r, generationTime));
-      let content = '';
+    // Fall back to hardcoded templates only if AI failed
+    if (!content) {
       switch (docType) {
         case 'loi': content = generateLOI(); break;
         case 'mou': content = generateMOU(); break;
@@ -513,6 +722,52 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
         case 'integration-plan': content = generateIntegrationPlan(); break;
         case 'entry-advisory': content = generateEntryAdvisory(); break;
         case 'cultural-brief': content = generateCulturalBrief(); break;
+      }
+    }
+
+    const contextApplied = applyTemplateContext(content, structuredIntake, lengthPreset);
+    const adjusted = adjustByLength(contextApplied);
+    setGeneratedContent(adjusted);
+    setOriginalGeneratedContent(adjusted);
+    setRewriteHistory([adjusted]);
+    setRewriteHistoryIndex(0);
+    setIsGenerating(false);
+    onDocumentGenerated?.(docType, contextApplied);
+  };
+
+  const generateSelectedBatch = async () => {
+    if (selectedDocsQueue.length === 0) return;
+    setIsGenerating(true);
+    const batch: Array<{ id: DocumentType; title: string; content: string }> = [];
+    for (const docType of selectedDocsQueue) {
+      // Try AI-powered generation first
+      let content = await generateDocumentWithAI(docType);
+
+      // Fall back to hardcoded templates only if AI failed
+      if (!content) {
+        switch (docType) {
+          case 'loi': content = generateLOI(); break;
+          case 'mou': content = generateMOU(); break;
+          case 'proposal': content = generateProposal(); break;
+          case 'executive-summary': content = generateExecutiveSummary(); break;
+          case 'financial-model': content = generateFinancialModel(); break;
+          case 'risk-assessment': content = generateRiskAssessment(); break;
+          case 'blind-spot-audit': content = generateBlindSpotAudit(); break;
+          case 'dossier': content = generateDossier(); break;
+          case 'comparison': content = generateComparison(); break;
+          case 'term-sheet': content = generateTermSheet(); break;
+          case 'investment-memo': content = generateInvestmentMemo(); break;
+          case 'due-diligence-request': content = generateDueDiligenceRequest(); break;
+          case 'business-intelligence-report': content = generateBusinessIntelligenceReport(); break;
+          case 'partnership-analyzer': content = generatePartnershipAnalyzer(); break;
+          case 'stakeholder-analysis': content = generateStakeholderAnalysis(); break;
+          case 'market-entry-strategy': content = generateMarketEntryStrategy(); break;
+          case 'competitive-analysis': content = generateCompetitiveAnalysis(); break;
+          case 'operational-plan': content = generateOperationalPlan(); break;
+          case 'integration-plan': content = generateIntegrationPlan(); break;
+          case 'entry-advisory': content = generateEntryAdvisory(); break;
+          case 'cultural-brief': content = generateCulturalBrief(); break;
+        }
       }
       const adjusted = adjustByLength(applyTemplateContext(content, structuredIntake, lengthPreset));
       batch.push({ id: docType, title: documentTemplates.find(d => d.id === docType)?.title || docType, content: adjusted });
@@ -1939,60 +2194,82 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
     return rows;
   };
 
-  const applyRewrite = (mode: RewriteMode) => {
+  const applyRewrite = async (mode: RewriteMode) => {
     if (!generatedContent.trim()) return;
 
     const base = generatedContent;
     setRewriteBaseContent(base);
-    let updated = base;
+    setIsGenerating(true);
 
-    if (mode === 'formalize') {
-      updated = base
-        .replace(/\bcan't\b/gi, 'cannot')
-        .replace(/\bwon't\b/gi, 'will not')
-        .replace(/\bdon't\b/gi, 'do not')
-        .replace(/\bwe're\b/gi, 'we are')
-        .replace(/\bit's\b/gi, 'it is')
-        .replace(/\bok\b/gi, 'acceptable');
-    }
+    const modeInstructions: Record<RewriteMode, string> = {
+      'formalize': 'Rewrite this document in the most formal business/institutional tone possible. Replace all contractions. Use precise, authoritative language. Maintain all factual content but elevate the register to executive correspondence level.',
+      'shorten': 'Condense this document to approximately 40% of its current length while preserving all critical facts, figures, risk assessments, and recommendations. Use bullet points for lists. Cut filler and reduce examples.',
+      'legal-safe': 'Rewrite this document to be legally safe for external distribution. Replace all guarantees with projections ("will" → "is expected to", "guarantee" → "target"). Add appropriate disclaimers. Remove any language that could create binding obligations. Flag any claims that need verification.',
+      'board-ready': 'Rewrite this document as a board-ready executive brief. Lead with a 3-sentence executive summary and clear recommendation (GO/NO-GO/CONDITIONAL). Followed by key highlights in bullet form, then the condensed supporting analysis. Maximum 2 pages equivalent. Every number should be defensible.',
+    };
 
-    if (mode === 'shorten') {
-      const paragraphs = base.split(/\n\n+/).filter(Boolean);
-      updated = paragraphs.slice(0, 10).join('\n\n');
-      if (paragraphs.length > 10) {
-        updated += '\n\n[Shortened version: additional sections removed for executive brevity.]';
+    let updated = '';
+    try {
+      const rewritePrompt = [
+        `Rewrite the following document according to these instructions:`,
+        ``,
+        `### Rewrite Mode: ${mode.toUpperCase()}`,
+        modeInstructions[mode],
+        ``,
+        `### Original Document`,
+        base,
+        ``,
+        `Rewrite the entire document now. Preserve all specific data, names, amounts, and intelligence references. Output the rewritten document only — no meta-commentary.`,
+      ].join('\n');
+
+      updated = await callAI(rewritePrompt, `You are a senior document editor at BW Global Advisory. Rewrite documents precisely as instructed while preserving factual accuracy and intelligence-grounded claims.`);
+    } catch { /* AI rewrite failed */ }
+
+    // Fall back to deterministic rewrite if AI fails
+    if (!updated) {
+      updated = base;
+      if (mode === 'formalize') {
+        updated = base
+          .replace(/\bcan't\b/gi, 'cannot')
+          .replace(/\bwon't\b/gi, 'will not')
+          .replace(/\bdon't\b/gi, 'do not')
+          .replace(/\bwe're\b/gi, 'we are')
+          .replace(/\bit's\b/gi, 'it is')
+          .replace(/\bok\b/gi, 'acceptable');
+      }
+      if (mode === 'shorten') {
+        const paragraphs = base.split(/\n\n+/).filter(Boolean);
+        updated = paragraphs.slice(0, 10).join('\n\n');
+        if (paragraphs.length > 10) {
+          updated += '\n\n[Shortened version: additional sections removed for executive brevity.]';
+        }
+      }
+      if (mode === 'legal-safe') {
+        const sanitized = base
+          .replace(/\bguarantee(s|d)?\b/gi, 'target')
+          .replace(/\bwill definitely\b/gi, 'is expected to')
+          .replace(/\bmust\b/gi, 'should');
+        updated = `${sanitized}\n\nLEGAL SAFETY NOTICE:\nThis document is a strategic draft for discussion purposes only and does not constitute legal, tax, investment, or regulatory advice. Obtain jurisdiction-specific counsel before execution.`;
+      }
+      if (mode === 'board-ready') {
+        const lines = base.split('\n').filter(l => l.trim().length > 0);
+        const highlights = lines
+          .filter(l => l.includes('Recommendation') || l.includes('ROI') || l.includes('Risk') || l.includes('Timeline'))
+          .slice(0, 6)
+          .map(l => `* ${l.replace(/^\*\s*/, '')}`);
+        const boardHeader = [
+          'BOARD BRIEF VERSION',
+          `Prepared for: ${structuredIntake.audience || 'Board / Executive Committee'}`,
+          `Objective: ${structuredIntake.objective || 'Strategic decision support'}`,
+          '', 'KEY HIGHLIGHTS:',
+          ...(highlights.length > 0 ? highlights : ['* Recommendation and risk summary included in the body below.']),
+          '', 'FULL DRAFT:'
+        ].join('\n');
+        updated = `${boardHeader}\n\n${base}`;
       }
     }
 
-    if (mode === 'legal-safe') {
-      const sanitized = base
-        .replace(/\bguarantee(s|d)?\b/gi, 'target')
-        .replace(/\bwill definitely\b/gi, 'is expected to')
-        .replace(/\bmust\b/gi, 'should');
-      updated = `${sanitized}\n\nLEGAL SAFETY NOTICE:\nThis document is a strategic draft for discussion purposes only and does not constitute legal, tax, investment, or regulatory advice. Obtain jurisdiction-specific counsel before execution.`;
-    }
-
-    if (mode === 'board-ready') {
-      const lines = base.split('\n').filter(l => l.trim().length > 0);
-      const highlights = lines
-        .filter(l => l.includes('Recommendation') || l.includes('ROI') || l.includes('Risk') || l.includes('Timeline'))
-        .slice(0, 6)
-        .map(l => `* ${l.replace(/^\*\s*/, '')}`);
-
-      const boardHeader = [
-        'BOARD BRIEF VERSION',
-        `Prepared for: ${structuredIntake.audience || 'Board / Executive Committee'}`,
-        `Objective: ${structuredIntake.objective || 'Strategic decision support'}`,
-        '',
-        'KEY HIGHLIGHTS:',
-        ...(highlights.length > 0 ? highlights : ['* Recommendation and risk summary included in the body below.']),
-        '',
-        'FULL DRAFT:'
-      ].join('\n');
-
-      updated = `${boardHeader}\n\n${base}`;
-    }
-
+    setIsGenerating(false);
     setGeneratedContent(updated);
     setLastRewriteMode(mode);
     setShowRedline(true);

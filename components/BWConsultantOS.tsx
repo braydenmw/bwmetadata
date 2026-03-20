@@ -1196,6 +1196,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
   const [augmentedPanelExpanded, setAugmentedPanelExpanded] = useState(false);
   const [augmentedReviewLoading, setAugmentedReviewLoading] = useState(false);
+  const [showAugmentedPanel, setShowAugmentedPanel] = useState(false);
   const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
   const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
 
@@ -3365,6 +3366,12 @@ ${agentRegistry.current.toManifest()}`;
     });
   }, [isLowSignalInsight]);
 
+  // Detect fallback/error messages that should NOT overwrite a valid AI response
+  const isFallbackErrorResponse = useCallback((text: string): boolean => {
+    if (!text) return true;
+    return /I was unable to generate a response|Confirm the backend server is running|I encountered an error processing your request|AI Service Not Configured|Rate Limit Reached/.test(text);
+  }, []);
+
   // Process user input through real AI
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
     try {
@@ -3408,10 +3415,11 @@ ${agentRegistry.current.toManifest()}`;
         if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
-      return 'I was unable to generate a response right now. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
+      // Return empty string so callers can distinguish failure from a real response
+      return '';
     } catch (error) {
       console.error('AI processing error:', error);
-      return 'I encountered an error processing your request. Please try again in a moment.';
+      return '';
     }
   }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, captureAugmentedAIFromPayload]);
 
@@ -3462,14 +3470,14 @@ ${agentRegistry.current.toManifest()}`;
         if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
-      // Both backend attempts failed — return clear error
-      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
+      // Both backend attempts failed — return clear error only for the primary streaming call
+      const errorMsg = 'I was unable to generate a response. Please confirm the backend server is running and your API key is configured, then try again.';
       onChunk(errorMsg);
       return errorMsg;
 
     } catch (error) {
       console.warn('[processWithAIStream] Pipeline failed:', error);
-      const errorMsg = 'I was unable to generate a response. Confirm the backend server is running (`npm run dev`) and add an API key to `.env` (OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY), then restart and try again.';
+      const errorMsg = 'I was unable to generate a response. Please confirm the backend server is running and your API key is configured, then try again.';
       onChunk(errorMsg);
       return errorMsg;
     }
@@ -5149,6 +5157,7 @@ CRITICAL RULES:
           try {
             const result = await agentRegistry.current.execute(call.name, call.params);
             const summary = (
+              result.summary ??
               (result.data as { summary?: string })?.summary ??
               (result.success ? JSON.stringify(result.data).slice(0, 600) : `Error: ${result.error}`)
             );
@@ -5161,7 +5170,9 @@ CRITICAL RULES:
         // Second AI pass: incorporate tool results into the response
         // Merge regional intelligence if available
         const regionalIntel = await regionalIntelPromise;
-        if (regionalIntel) {
+        const hasRegionalData = regionalIntel && regionalIntel.summary
+          && !/No data found|No recent news found|No government sources found/i.test(regionalIntel.summary);
+        if (hasRegionalData) {
           toolResultLines.push(`**regional_intelligence** (${regionalIntel.sources} sources):\n${regionalIntel.summary}\nKey facts: ${regionalIntel.keyFacts.slice(0, 5).join('; ')}`);
         }
         const toolContext = toolResultLines.join('\n\n');
@@ -5169,10 +5180,9 @@ CRITICAL RULES:
           `${userContent}\n\n[Live intelligence retrieved]:\n${toolContext}`,
           `You have access to the tool results above. Use them to give a specific, data-grounded response. Identify key matching parts across all available angles (market, risk, governance, audience, outputs). Do NOT emit any more tool calls.`
         );
-        if (augmented && augmented.length > 20) {
+        // Only replace the response if we got a REAL augmented response (not empty/fallback error)
+        if (augmented && augmented.length > 20 && !isFallbackErrorResponse(augmented)) {
           responseContent = augmented;
-        } else {
-          responseContent = `${responseContent}\n\n${toolContext}`;
         }
       }
       // Store this turn in memory for future context recall
@@ -5372,6 +5382,8 @@ CRITICAL RULES:
               .replace(/$/, '</p>'),
           }];
         });
+        // Auto-open the live draft view so user sees the generated report immediately
+        setTimeout(() => setShowFinalReport(true), 600);
       }
 
       // Auto-save document-builder AI responses (letters, reports) as drafts
@@ -5498,6 +5510,7 @@ CRITICAL RULES:
     extractConsultantSignals,
     fetchLiveIntelForCountry,
     processWithAI,
+    isFallbackErrorResponse,
     enableFullCaseTreeMatching,
     fullSpectrumReasoningMode,
     queueAction,
@@ -7957,32 +7970,72 @@ CRITICAL RULES:
                   {showExecutionTimeline ? 'Hide Runtime' : 'Show Runtime'}
                 </button>
               </div>
-              {showExecutionTimeline && executionTimeline.length > 0 && (
+              {showExecutionTimeline && (
                 <div className="max-w-4xl mx-auto mt-2 border border-stone-200 bg-stone-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-slate-800">Background Runtime</p>
-                  <div className="mt-1 grid md:grid-cols-2 gap-1.5">
-                    {executionTimeline.map((task) => (
-                      <div key={task.id} className="flex items-start justify-between gap-2 border border-stone-200 bg-white px-2 py-1">
-                        <div>
-                          <p className="text-[11px] text-slate-700 font-medium">{task.label}</p>
-                          {task.detail && <p className="text-[10px] text-slate-500">{task.detail}</p>}
+                  {executionTimeline.length > 0 && (
+                    <div className="mt-1 grid md:grid-cols-2 gap-1.5">
+                      {executionTimeline.map((task) => (
+                        <div key={task.id} className="flex items-start justify-between gap-2 border border-stone-200 bg-white px-2 py-1">
+                          <div>
+                            <p className="text-[11px] text-slate-700 font-medium">{task.label}</p>
+                            {task.detail && <p className="text-[10px] text-slate-500">{task.detail}</p>}
+                          </div>
+                          <span className={`text-[10px] px-1.5 py-0.5 border ${
+                            task.status === 'completed'
+                              ? 'bg-green-50 text-green-700 border-green-200'
+                              : task.status === 'running'
+                                ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                : task.status === 'failed'
+                                  ? 'bg-red-50 text-red-700 border-red-200'
+                                  : task.status === 'skipped'
+                                    ? 'bg-amber-50 text-amber-700 border-amber-200'
+                                    : 'bg-stone-100 text-stone-600 border-stone-200'
+                          }`}>
+                            {task.status.toUpperCase()}
+                          </span>
                         </div>
-                        <span className={`text-[10px] px-1.5 py-0.5 border ${
-                          task.status === 'completed'
-                            ? 'bg-green-50 text-green-700 border-green-200'
-                            : task.status === 'running'
-                              ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : task.status === 'failed'
-                                ? 'bg-red-50 text-red-700 border-red-200'
-                                : task.status === 'skipped'
-                                  ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                  : 'bg-stone-100 text-stone-600 border-stone-200'
-                        }`}>
-                          {task.status.toUpperCase()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
+                  {/* Pending Actions - shown inside runtime panel as a compact list */}
+                  {pendingActions.filter((a) => a.status !== 'done' && a.status !== 'rejected').length > 0 && (
+                    <div className="mt-2 border-t border-stone-200 pt-2">
+                      <p className="text-[11px] font-semibold text-amber-900 flex items-center gap-1 mb-1">
+                        <Zap size={11} className="text-amber-600" />
+                        Pending Actions
+                      </p>
+                      <ul className="space-y-1">
+                        {pendingActions
+                          .filter((a) => a.status !== 'done' && a.status !== 'rejected')
+                          .map((action) => (
+                            <li key={action.id} className="flex items-center justify-between gap-2 text-[11px] px-2 py-1 bg-white border border-stone-200">
+                              <span className="text-slate-700 truncate">{action.label}</span>
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                {action.status === 'executing' ? (
+                                  <Loader2 size={11} className="animate-spin text-blue-600" />
+                                ) : (
+                                  <>
+                                    <button
+                                      onClick={() => setApprovalGateAction(action)}
+                                      className="px-1.5 py-0.5 text-[10px] bg-blue-600 text-white hover:bg-blue-700"
+                                    >
+                                      Run
+                                    </button>
+                                    <button
+                                      onClick={() => setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'rejected' } : a))}
+                                      className="px-1.5 py-0.5 text-[10px] text-slate-500 hover:text-slate-700"
+                                    >
+                                      &times;
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
               {/* Onboarding guided flow */}
@@ -8022,116 +8075,86 @@ CRITICAL RULES:
                   <p className="text-[11px] text-blue-700 mt-0.5">{reactiveDraftHint}</p>
                 </div>
               )}
+              {/* Augmented AI Human-in-the-Loop panel is now gated by explicit user action */}
               {messages.length > 0 && (augmentedAISnapshot || augmentedRecommendedTools.length > 0 || augmentedUnresolvedGaps.length > 0) && (
-                <div className="max-w-4xl mx-auto mt-2 border border-emerald-300 bg-emerald-50 px-3 py-2">
+                <div className="max-w-4xl mx-auto mt-2">
                   <button
                     type="button"
-                    onClick={() => setAugmentedPanelExpanded((prev) => !prev)}
-                    className="w-full flex items-center justify-between gap-1 text-left"
+                    onClick={() => setShowAugmentedPanel((prev) => !prev)}
+                    className="px-3 py-2 text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 mb-2"
                   >
-                    <span className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1">
-                      <CheckCircle2 size={11} className="text-emerald-700" />
-                      Augmented AI Human-in-the-Loop {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
-                      {augmentedUnresolvedGaps.length > 0 && !augmentedPanelExpanded && (
-                        <span className="text-[10px] text-amber-700 ml-1">({augmentedUnresolvedGaps.length} gaps)</span>
-                      )}
-                    </span>
-                    <ChevronDown size={14} className={`text-emerald-600 transition-transform ${augmentedPanelExpanded ? 'rotate-180' : ''}`} />
+                    {showAugmentedPanel ? 'Hide Augmented AI Runtime' : 'Show Augmented AI Runtime'}
                   </button>
-                  {augmentedPanelExpanded && (
-                    <div className="mt-1.5 max-h-48 overflow-y-auto">
-                      {(strategicPipeline || overlookedIntelligence) && (
-                        <p className="mt-1 text-[10px] text-emerald-800">
-                          Strategic readiness: {typeof strategicPipeline?.readinessScore === 'number' ? `${strategicPipeline.readinessScore}%` : 'n/a'}
-                          {overlookedIntelligence?.topRegionalOpportunities?.[0]?.place ? ` • Top regional target: ${overlookedIntelligence.topRegionalOpportunities[0].place}` : ''}
-                        </p>
-                      )}
-                      {augmentedCapabilityTags.length > 0 && (
-                        <p className="mt-1 text-[10px] text-emerald-800">
-                          Tags: {augmentedCapabilityTags.join(' • ')}
-                        </p>
-                      )}
-                      {augmentedAISnapshot?.steps?.length ? (
-                        <ul className="mt-1 space-y-0.5">
-                          {augmentedAISnapshot.steps.map((step) => (
-                            <li key={`aug-step-${step.title}`} className="text-[10px] text-emerald-900">• <strong>{step.title}:</strong> {step.detail}</li>
-                          ))}
-                        </ul>
-                      ) : null}
-                      {augmentedUnresolvedGaps.length > 0 && (
-                        <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1">
-                          <p className="text-[10px] font-semibold text-amber-900">Top unresolved gaps</p>
-                          <ul className="mt-0.5 space-y-0.5">
-                            {augmentedUnresolvedGaps.slice(0, 3).map((gap, index) => (
-                              <li key={`aug-gap-${gap.key}-${index}`} className="text-[10px] text-amber-800">• [{gap.severity}] {gap.question}</li>
-                            ))}
-                          </ul>
+                  {showAugmentedPanel && (
+                    <div className="border border-emerald-300 bg-emerald-50 px-3 py-2">
+                      <button
+                        type="button"
+                        onClick={() => setAugmentedPanelExpanded((prev) => !prev)}
+                        className="w-full flex items-center justify-between gap-1 text-left"
+                      >
+                        <span className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1">
+                          <CheckCircle2 size={11} className="text-emerald-700" />
+                          Augmented AI Human-in-the-Loop {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
+                          {augmentedUnresolvedGaps.length > 0 && !augmentedPanelExpanded && (
+                            <span className="text-[10px] text-amber-700 ml-1">({augmentedUnresolvedGaps.length} gaps)</span>
+                          )}
+                        </span>
+                        <ChevronDown size={14} className={`text-emerald-600 transition-transform ${augmentedPanelExpanded ? 'rotate-180' : ''}`} />
+                      </button>
+                      {augmentedPanelExpanded && (
+                        <div className="mt-1.5 max-h-48 overflow-y-auto">
+                          {(strategicPipeline || overlookedIntelligence) && (
+                            <p className="mt-1 text-[10px] text-emerald-800">
+                              Strategic readiness: {typeof strategicPipeline?.readinessScore === 'number' ? `${strategicPipeline.readinessScore}%` : 'n/a'}
+                              {overlookedIntelligence?.topRegionalOpportunities?.[0]?.place ? ` • Top regional target: ${overlookedIntelligence.topRegionalOpportunities[0].place}` : ''}
+                            </p>
+                          )}
+                          {augmentedCapabilityTags.length > 0 && (
+                            <p className="mt-1 text-[10px] text-emerald-800">
+                              Tags: {augmentedCapabilityTags.join(' • ')}
+                            </p>
+                          )}
+                          {augmentedAISnapshot?.steps?.length ? (
+                            <ul className="mt-1 space-y-0.5">
+                              {augmentedAISnapshot.steps.map((step) => (
+                                <li key={`aug-step-${step.title}`} className="text-[10px] text-emerald-900">• <strong>{step.title}:</strong> {step.detail}</li>
+                              ))}
+                            </ul>
+                          ) : null}
+                          {augmentedUnresolvedGaps.length > 0 && (
+                            <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1">
+                              <p className="text-[10px] font-semibold text-amber-900">Top unresolved gaps</p>
+                              <ul className="mt-0.5 space-y-0.5">
+                                {augmentedUnresolvedGaps.slice(0, 3).map((gap, index) => (
+                                  <li key={`aug-gap-${gap.key}-${index}`} className="text-[10px] text-amber-800">• [{gap.severity}] {gap.question}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {augmentedRecommendedTools.length > 0 && (
+                            <div className="mt-2 border border-emerald-200 bg-white px-2 py-1">
+                              <p className="text-[10px] font-semibold text-emerald-900">Recommended software tools</p>
+                              <ul className="mt-0.5 space-y-0.5">
+                                {augmentedRecommendedTools.slice(0, 4).map((tool) => (
+                                  <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) - {tool.bwUseCase}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       )}
-                      {augmentedRecommendedTools.length > 0 && (
-                        <div className="mt-2 border border-emerald-200 bg-white px-2 py-1">
-                          <p className="text-[10px] font-semibold text-emerald-900">Recommended software tools</p>
-                          <ul className="mt-0.5 space-y-0.5">
-                            {augmentedRecommendedTools.slice(0, 4).map((tool) => (
-                              <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) - {tool.bwUseCase}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] text-emerald-800 flex items-center gap-1">
+                          <CheckCircle2 size={10} className="text-emerald-600" />
+                          {augmentedReviewState === 'accept' ? 'Augmented reasoning auto-applied' : 'Applying augmented reasoning…'}
+                        </span>
+                        {augmentedReviewLoading && <Loader2 size={11} className="animate-spin text-emerald-700" />}
+                      </div>
                     </div>
                   )}
-                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10px] text-emerald-800 flex items-center gap-1">
-                      <CheckCircle2 size={10} className="text-emerald-600" />
-                      {augmentedReviewState === 'accept' ? 'Augmented reasoning auto-applied' : 'Applying augmented reasoning…'}
-                    </span>
-                    {augmentedReviewLoading && <Loader2 size={11} className="animate-spin text-emerald-700" />}
-                  </div>
                 </div>
               )}
-              {/* Action Execution Panel */}
-              {pendingActions.filter((a) => a.status !== 'done' && a.status !== 'rejected').length > 0 && (
-                <div className="max-w-4xl mx-auto mt-2 border border-amber-300 bg-amber-50 px-3 py-2">
-                  <p className="text-[11px] font-semibold text-amber-900 flex items-center gap-1">
-                    <Zap size={11} className="text-amber-600" />
-                    Pending Actions
-                  </p>
-                  <div className="mt-1 space-y-1">
-                    {pendingActions
-                      .filter((a) => a.status !== 'done' && a.status !== 'rejected')
-                      .map((action) => (
-                        <div key={action.id} className="flex items-center justify-between gap-2 border border-amber-200 bg-white px-2 py-1">
-                          <div>
-                            <p className="text-[11px] text-slate-800 font-medium">{action.label}</p>
-                            <p className="text-[10px] text-slate-500">{action.description}</p>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            {action.status === 'executing' ? (
-                              <Loader2 size={12} className="animate-spin text-blue-600" />
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => setApprovalGateAction(action)}
-                                  className="px-2 py-0.5 text-[10px] bg-blue-600 text-white hover:bg-blue-700"
-                                >
-                                  <PlayCircle size={10} className="inline mr-1" />
-                                  Execute
-                                </button>
-                                <button
-                                  onClick={() => setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'rejected' } : a))}
-                                  className="px-2 py-0.5 text-[10px] bg-stone-100 text-slate-600 border border-stone-300 hover:bg-stone-200"
-                                >
-                                  Dismiss
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
-              )}
+              {/* Pending Actions no longer rendered here — moved inside Runtime panel above */}
               {/* Compliance Warning Strip */}
               {complianceWarnings.length > 0 && (
                 <div className="max-w-4xl mx-auto mt-2 border border-red-200 bg-red-50 px-3 py-2">
