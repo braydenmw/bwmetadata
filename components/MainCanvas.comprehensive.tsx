@@ -88,7 +88,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
     const [showDocumentUpload, setShowDocumentUpload] = useState(false);
 
     const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-        { text: "Welcome — I'm your BW Consultant. Are you looking to know more about something, need help writing a letter, want to build a case study, or just need some guidance? Let me know and we'll get started.", sender: 'bw', timestamp: new Date() }
+        { text: "Hello — welcome, and thank you for being here.\n\nI'm your BW AI Consultant. I'm here to assist you in any way I can to help you better connect with those who wish to do business or invest in regional areas, no matter where they are in the world. Whether it's preparing the right documents, understanding a new market, building a compelling case, or simply working through an idea — this is what I do.\n\nAre you looking to know more about something? Need help writing a letter or proposal? Want to build a case study for a project you're working on? Or do you just need some guidance on where to start?\n\nLet me know what you need and we'll get to work.", sender: 'bw', timestamp: new Date() }
     ]);
     const [chatInput, setChatInput] = useState('');
     const chatMessagesEndRef = React.useRef<HTMLDivElement | null>(null);

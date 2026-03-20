@@ -1543,7 +1543,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
 
                                         <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                            Welcome &mdash; I'm your BW Consultant. Are you looking to know more about something, need help writing a letter, want to build a case study, or just need some guidance? Let me know and we'll get started.
+                                            Hello &mdash; welcome, and thank you for being here.<br /><br />
+                                            I'm your BW AI Consultant. I'm here to assist you in any way I can to help you better connect with those who wish to do business or invest in regional areas, no matter where they are in the world. Whether it's preparing the right documents, understanding a new market, building a compelling case, or simply working through an idea &mdash; this is what I do.<br /><br />
+                                            Are you looking to know more about something? Need help writing a letter or proposal? Want to build a case study for a project you're working on? Or do you just need some guidance on where to start?<br /><br />
+                                            Let me know what you need and we'll get to work.
                                         </p>
                                         {/* Add logic to capture name/location and act on it in subsequent steps */}
                                         {/* This would be handled in the chat logic or intake form, e.g. */}

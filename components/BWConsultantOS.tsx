@@ -3040,7 +3040,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       const initialMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: 'Welcome — I\'m your BW Consultant. Are you looking to know more about something, need help writing a letter, want to build a case study, or just need some guidance? Let me know and we\'ll get started.',
+        content: [
+          'Hello — welcome, and thank you for being here.',
+          '',
+          'I\'m your BW AI Consultant. I\'m here to assist you in any way I can to help you better connect with those who wish to do business or invest in regional areas, no matter where they are in the world. Whether it\'s preparing the right documents, understanding a new market, building a compelling case, or simply working through an idea — this is what I do.',
+          '',
+          'Are you looking to know more about something? Need help writing a letter or proposal? Want to build a case study for a project you\'re working on? Or do you just need some guidance on where to start?',
+          '',
+          'Let me know what you need and we\'ll get to work.'
+        ].join('\n'),
         timestamp: new Date(),
         phase: 'discovery'
       };
