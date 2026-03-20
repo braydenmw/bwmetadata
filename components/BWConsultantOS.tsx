@@ -3655,14 +3655,18 @@ ${agentRegistry.current.toManifest()}`;
       let runtimeHint = '';
       if (!lastBackendError) {
         try {
-          const healthResponse = await fetch(resolveApiUrl('/api/health'));
-          if (!healthResponse.ok) {
-            runtimeHint = ` Health endpoint returned ${healthResponse.status}.`;
+          const statusResponse = await fetch(resolveApiUrl('/api/ai/status'));
+          if (!statusResponse.ok) {
+            runtimeHint = ` AI status endpoint returned ${statusResponse.status}.`;
           } else {
-            const healthPayload = await healthResponse.json() as Record<string, unknown>;
-            const ai = healthPayload?.ai as Record<string, unknown> | undefined;
-            if (ai && ai.configured === false) {
-              runtimeHint = ' Backend AI provider is not configured.';
+            const statusPayload = await statusResponse.json() as Record<string, unknown>;
+            const aiAvailable = statusPayload?.aiAvailable;
+            const providers = statusPayload?.providers as Record<string, unknown> | undefined;
+            const bedrock = providers?.bedrock as Record<string, unknown> | undefined;
+            if (aiAvailable === false) {
+              runtimeHint = ' Backend AI providers are not runtime-ready.';
+            } else if (bedrock && bedrock.configured === true && bedrock.credentialsResolved === false) {
+              runtimeHint = ` Bedrock credentials unresolved: ${String(bedrock.detail || 'missing runtime credentials')}.`;
             }
           }
         } catch {

@@ -390,6 +390,31 @@ const diagnoseBedrockCredentials = async (): Promise<{ ok: boolean; detail: stri
   }
 };
 
+interface RuntimeProviderAvailability {
+  bedrock: boolean;
+  openai: boolean;
+  together: boolean;
+  bedrockConfigured: boolean;
+  bedrockCredentialDetail: string;
+}
+
+const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailability> => {
+  const openai = Boolean(getOpenAIKey());
+  const together = Boolean(getTogetherKey());
+  const bedrockConfigured = hasBedrockSignal();
+  const bedrockCredentials = bedrockConfigured
+    ? await diagnoseBedrockCredentials()
+    : { ok: false, detail: 'Bedrock not configured' };
+
+  return {
+    bedrock: bedrockConfigured && bedrockCredentials.ok,
+    openai,
+    together,
+    bedrockConfigured,
+    bedrockCredentialDetail: bedrockCredentials.detail,
+  };
+};
+
 const sanitizeConsultantMessage = (message: string): string => {
   const normalized = message.split('\0').join('').trim();
   if (normalized.length > CONSULTANT_MAX_MESSAGE_CHARS) {
@@ -894,11 +919,17 @@ const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
 const runConsultantBroker = async (
   prompt: string,
   order: ConsultantProvider[],
-  timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS
+  timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS,
+  providerAvailability?: Partial<Record<ConsultantProvider, boolean>>
 ): Promise<{ text: string; provider: ConsultantProvider; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
 
   for (const provider of order) {
+    if (providerAvailability && providerAvailability[provider] === false) {
+      attempts.push({ provider, ok: false, detail: `${provider} unavailable by runtime readiness` });
+      continue;
+    }
+
     try {
       const invoker =
         provider === 'bedrock'   ? invokeConsultantWithBedrock(prompt)
@@ -989,32 +1020,59 @@ router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
 
 // AI runtime status endpoint
 router.get('/status', async (_req: Request, res: Response) => {
-  const openaiKey = getOpenAIKey();
-  const togetherKey = getTogetherKey();
-  const bedrockConfigured = hasBedrockSignal();
-  const bedrockCredentials = bedrockConfigured
-    ? await diagnoseBedrockCredentials()
-    : { ok: false, detail: 'Bedrock not configured' };
+  const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean((bedrockConfigured && bedrockCredentials.ok) || openaiKey || togetherKey),
+    aiAvailable: Boolean(availability.bedrock || availability.openai || availability.together),
     providers: {
       bedrock: {
-        configured: bedrockConfigured,
-        credentialsResolved: bedrockCredentials.ok,
-        detail: bedrockCredentials.detail
+        configured: availability.bedrockConfigured,
+        credentialsResolved: availability.bedrock,
+        detail: availability.bedrockCredentialDetail
       },
-      openai: Boolean(openaiKey),
-      together: Boolean(togetherKey)
+      openai: availability.openai,
+      together: availability.together
+    }
+  });
+});
+
+router.get('/readiness', async (_req: Request, res: Response) => {
+  const availability = await getRuntimeProviderAvailability();
+  const ready = availability.bedrock || availability.openai || availability.together;
+
+  const reasons: string[] = [];
+  if (!availability.bedrock && availability.bedrockConfigured) {
+    reasons.push(`bedrock_not_ready: ${availability.bedrockCredentialDetail}`);
+  }
+  if (!availability.openai) reasons.push('openai_not_configured');
+  if (!availability.together) reasons.push('together_not_configured');
+  if (ready && reasons.length === 0) reasons.push('ai_runtime_ready');
+
+  res.status(ready ? 200 : 503).json({
+    ready,
+    reasons,
+    providers: {
+      bedrock: {
+        configured: availability.bedrockConfigured,
+        ready: availability.bedrock,
+        detail: availability.bedrockCredentialDetail
+      },
+      openai: {
+        ready: availability.openai
+      },
+      together: {
+        ready: availability.together
+      }
     }
   });
 });
 
 router.get('/control/status', async (_req: Request, res: Response) => {
+  const availability = await getRuntimeProviderAvailability();
   const providers = {
-    bedrock: hasBedrockSignal(),
-    openai: Boolean(getOpenAIKey()),
-    together: Boolean(getTogetherKey())
+    bedrock: availability.bedrock,
+    openai: availability.openai,
+    together: availability.together
   };
   const learningHint = await AdaptiveControlLearning.getHint();
   const sample = deriveControlDecision(
@@ -1075,12 +1133,13 @@ router.post('/consultant', async (req: Request, res: Response) => {
     );
 
     const learningHint = await AdaptiveControlLearning.getHint();
+    const providerAvailability = await getRuntimeProviderAvailability();
     const controlDecision = deriveControlDecision(
       requestEnvelope,
       {
-        bedrock: hasBedrockSignal(),
-        openai: Boolean(getOpenAIKey()),
-        together: Boolean(getTogetherKey()),
+        bedrock: providerAvailability.bedrock,
+        openai: providerAvailability.openai,
+        together: providerAvailability.together,
       },
       learningHint
     );
@@ -1195,7 +1254,16 @@ router.post('/consultant', async (req: Request, res: Response) => {
     }
 
     const prompt = buildConsultantPrompt(sanitizedMessage, intent, sanitizedContextResult.context, systemPrompt);
-    const brokerResult = await runConsultantBroker(prompt, providerOrder, controlDecision.timeoutMs);
+    const brokerResult = await runConsultantBroker(
+      prompt,
+      providerOrder,
+      controlDecision.timeoutMs,
+      {
+        bedrock: providerAvailability.bedrock,
+        openai: providerAvailability.openai,
+        together: providerAvailability.together,
+      }
+    );
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 
     const replayRecord: ConsultantReplayRecord = {
@@ -1498,7 +1566,17 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
     const payload = sourceRecord.payload;
     const intent = detectConsultantIntent(payload.message);
     const prompt = buildConsultantPrompt(payload.message, intent, payload.context, payload.systemPrompt);
-    const brokerResult = await runConsultantBroker(prompt, payload.modelOrder);
+    const providerAvailability = await getRuntimeProviderAvailability();
+    const brokerResult = await runConsultantBroker(
+      prompt,
+      payload.modelOrder,
+      CONSULTANT_PROVIDER_TIMEOUT_MS,
+      {
+        bedrock: providerAvailability.bedrock,
+        openai: providerAvailability.openai,
+        together: providerAvailability.together,
+      }
+    );
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 
     const retryReplayHash = buildReplayHash(payload);
