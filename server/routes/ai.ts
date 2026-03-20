@@ -31,12 +31,17 @@ const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim(
 const BEDROCK_REGION = process.env.AWS_REGION || 'us-east-1';
 const BEDROCK_MODEL_ID = process.env.BEDROCK_CONSULTANT_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0';
 const bedrockClient = new BedrockRuntimeClient({ region: BEDROCK_REGION });
+type AIMessageRole = 'system' | 'user' | 'assistant';
+interface AIMessage {
+  role: AIMessageRole;
+  content: string;
+}
 
 // ─── Unified AI helper: Bedrock → OpenAI → Together ──
 const getOpenAIKey = () => String(process.env.OPENAI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 const hasBedrockSignal = () => Boolean(process.env.AWS_REGION || process.env.BEDROCK_CONSULTANT_MODEL_ID || process.env.AWS_ACCESS_KEY_ID || process.env.AWS_PROFILE);
 
-const invokeBedrockMessages = async (messages: any[], systemInstruction?: string): Promise<string> => {
+const invokeBedrockMessages = async (messages: AIMessage[], systemInstruction?: string): Promise<string> => {
   const normalizedMessages = messages
     .filter((m) => m && typeof m?.content === 'string' && (m.role === 'user' || m.role === 'assistant'))
     .map((m) => ({
@@ -79,20 +84,30 @@ const invokeBedrockMessages = async (messages: any[], systemInstruction?: string
   return text;
 };
 
-const isAIAvailable = (): boolean => {
+const _isAIAvailable = (): boolean => {
   if (hasBedrockSignal()) return true;
   if (getOpenAIKey()) return true;
   if (getTogetherKey()) return true;
   return false;
 };
 
-const generateWithAI = async (messages: any[], systemInstruction?: string): Promise<string> => {
+const generateWithAI = async (input: string | AIMessage[], systemInstruction?: string): Promise<string> => {
   const openaiKey = getOpenAIKey();
   const togetherKey = getTogetherKey();
   const providerConfigured = Boolean(hasBedrockSignal() || openaiKey || togetherKey);
 
-  // Prepend system instruction if provided
-  const fullMessages = systemInstruction ? [{ role: 'system', content: systemInstruction }, ...messages] : messages;
+  const baseMessages: AIMessage[] = typeof input === 'string'
+    ? [{ role: 'user', content: input }]
+    : input
+        .filter((msg): msg is AIMessage =>
+          Boolean(msg) &&
+          typeof msg.content === 'string' &&
+          (msg.role === 'system' || msg.role === 'user' || msg.role === 'assistant')
+        );
+
+  const fullMessages: AIMessage[] = systemInstruction
+    ? [{ role: 'system', content: systemInstruction }, ...baseMessages]
+    : baseMessages;
 
   // 1. AWS Bedrock (primary for AWS live deployments)
   if (hasBedrockSignal()) {
@@ -951,7 +966,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       provider: brokerResult.provider,
       attempts: brokerResult.attempts,
       confidence: 0.86,
-      model: brokerResult.provider === 'gemini' ? 'gemini-2.0-flash' : brokerResult.provider,
+      model: brokerResult.provider,
       capabilityMode: capabilityProfile.mode,
       capabilityTags: capabilityProfile.capabilityTags,
       unresolvedGaps: capabilityProfile.gaps.slice(0, 3).map((gap) => ({
@@ -1147,7 +1162,7 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       provider: brokerResult.provider,
       attempts: brokerResult.attempts,
       confidence: 0.86,
-      model: brokerResult.provider === 'gemini' ? 'gemini-2.0-flash' : brokerResult.provider,
+      model: brokerResult.provider,
       replayHash: retryReplayHash,
       replayAvailable: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
@@ -1289,7 +1304,7 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
     const current = getReplayMetricCounts(currentWindowEvents);
     const previous = getReplayMetricCounts(previousWindowEvents);
 
-    const providers: ConsultantProvider[] = ['gemini', 'openai'];
+    const providers: ConsultantProvider[] = ['bedrock', 'openai'];
     const providerMetrics = providers.reduce<Record<ConsultantProvider, {
       current: ReplayMetricCounts;
       previous: ReplayMetricCounts;

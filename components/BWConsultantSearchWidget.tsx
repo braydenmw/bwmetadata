@@ -67,7 +67,7 @@ User query: ${query.trim()}`;
       let realResults: SearchResult[] = [];
       try {
         // Try to parse as JSON array
-        const cleaned = aiResponse.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+        const cleaned = aiResponse.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
         const parsed = JSON.parse(cleaned);
         if (Array.isArray(parsed)) {
           realResults = parsed.map((item: Record<string, unknown>) => ({
@@ -81,7 +81,7 @@ User query: ${query.trim()}`;
         // If JSON parsing fails, use the raw text as a single result
         realResults = [{
           title: `Analysis: ${query.trim()}`,
-          description: aiResponse.text.slice(0, 500),
+          description: aiResponse.slice(0, 500),
           confidence: 0.85,
           category: 'AI Response'
         }];
@@ -91,7 +91,7 @@ User query: ${query.trim()}`;
       if (realResults.length === 0) {
         realResults.push({
           title: `Analysis: ${query.trim()}`,
-          description: aiResponse.text.slice(0, 500),
+          description: aiResponse.slice(0, 500),
           confidence: 0.8,
           category: 'General Analysis'
         });

@@ -115,7 +115,7 @@ BW Ai:`;
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
-        content: aiResponse.text,
+        content: aiResponse,
         timestamp: new Date()
       };
 

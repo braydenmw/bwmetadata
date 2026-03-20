@@ -29,6 +29,12 @@ import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
 
+type WindowWithRuntimeEnv = Window & {
+  __ENV__?: {
+    VITE_GEMINI_API_KEY?: string;
+  };
+};
+
 // ==================== TYPES ====================
 
 // Debug flag: enable verbose research logging via VITE_DEBUG_RESEARCH=true
@@ -455,7 +461,7 @@ async function tryDirectGeminiResearch(
 
     // Use Gemini AI for inference
     const { GoogleGenerativeAI } = await import('@google/generative-ai');
-    const apiKey = typeof window !== 'undefined' && (window as any).__ENV__?.VITE_GEMINI_API_KEY 
+    const apiKey = typeof window !== 'undefined' && (window as WindowWithRuntimeEnv).__ENV__?.VITE_GEMINI_API_KEY 
       || process.env.VITE_GEMINI_API_KEY 
       || process.env.GEMINI_API_KEY;
     
@@ -608,7 +614,7 @@ async function tryDirectGeminiEntityResearch(
 
     // Use Gemini AI for inference
     const { GoogleGenerativeAI } = await import('@google/generative-ai');
-    const apiKey = typeof window !== 'undefined' && (window as any).__ENV__?.VITE_GEMINI_API_KEY 
+    const apiKey = typeof window !== 'undefined' && (window as WindowWithRuntimeEnv).__ENV__?.VITE_GEMINI_API_KEY 
       || process.env.VITE_GEMINI_API_KEY 
       || process.env.GEMINI_API_KEY;
     

@@ -1129,7 +1129,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
   const [reportOptionsDocType, setReportOptionsDocType] = useState('');
   const [showReportOptions, setShowReportOptions] = useState(false);
-  const [documentBuilderActive, setDocumentBuilderActive] = useState(false);
+  const [_documentBuilderActive, setDocumentBuilderActive] = useState(false);
   const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
   const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');
@@ -5006,8 +5006,8 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
         // research assistant, proactively offers alternatives and ideas, asks about
         // length preference, and prepares a structured draft.
         let documentBuilderBlock = '';
-        const isDocBuilderIntent = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
-        if (isDocBuilderIntent && !isReportGeneration) {
+        const isDocBuilderMode = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
+        if (isDocBuilderMode && !isReportGeneration) {
           const intentLabel = deliverableIntent === 'letter' ? 'letter/correspondence' : deliverableIntent === 'full_case' ? 'complete document package' : 'report/case study';
           documentBuilderBlock = `
 
