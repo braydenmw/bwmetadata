@@ -387,7 +387,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* RIGHT: 2 paragraphs — regional cities investment thesis */}
-                        <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed">
+                        <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
                             <p>
                                 Regional cities are no longer peripheral to economic strategy—they are essential to national resilience. They produce export value, process resources, move critical freight, supply skilled labor, and host the infrastructure that keeps countries competitive in a world shaped by supply-chain volatility, geopolitical fragmentation, and climate uncertainty. From industrial corridors to logistics ports to agricultural belts, these places generate the diversification that crowded major hubs can no longer deliver. When regional city performance strengthens, national resilience, productivity, and fiscal stability strengthen with it.
                             </p>
