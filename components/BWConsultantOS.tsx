@@ -3040,17 +3040,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       const initialMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: [
-          'Welcome — how can I help you today?',
-          '',
-          'I can help you with:',
-          '• Research a market, company, or opportunity',
-          '• Compare options or partnerships side by side',
-          '• Build a case study for a project you\'re working on',
-          '• Draft a professional letter or proposal',
-          '',
-          'Just tell me what you need and we\'ll get started.'
-        ].join('\n'),
+        content: 'Welcome — I\'m your BW Consultant. Are you looking to know more about something, need help writing a letter, want to build a case study, or just need some guidance? Let me know and we\'ll get started.',
         timestamp: new Date(),
         phase: 'discovery'
       };
@@ -7666,7 +7656,7 @@ CRITICAL RULES:
                           </div>
                         )}
                         <div className={`whitespace-pre-wrap ${msg.role === 'assistant' ? 'text-[13px] leading-[1.7] text-slate-800' : ''}`}>
-                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
+                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && msgIdx > 0 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
                             <TypewriterText text={msg.content} speed={25}
                               onComplete={() => {
                                 displayedMsgIds.current.add(msg.id);

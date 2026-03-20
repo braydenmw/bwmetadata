@@ -1543,13 +1543,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
 
                                         <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                            Welcome &mdash; how can I help you today?<br /><br />
-                                            I can help you with:<br />
-                                            &bull; Research a market, company, or opportunity<br />
-                                            &bull; Compare options or partnerships side by side<br />
-                                            &bull; Build a case study for a project you're working on<br />
-                                            &bull; Draft a professional letter or proposal<br /><br />
-                                            Just tell me what you need and we'll get started.
+                                            Welcome &mdash; I'm your BW Consultant. Are you looking to know more about something, need help writing a letter, want to build a case study, or just need some guidance? Let me know and we'll get started.
                                         </p>
                                         {/* Add logic to capture name/location and act on it in subsequent steps */}
                                         {/* This would be handled in the chat logic or intake form, e.g. */}
