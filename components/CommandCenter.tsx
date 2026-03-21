@@ -416,32 +416,35 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Why This Doesn&rsquo;t Exist Yet</span>
-                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">How Regional Investment Decisions Are Actually Made Today &mdash; and Why They Keep Failing</h4>
+                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">The Problem</span>
+                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">Everyone Is Looking for Growth. Every System Points to the Same Place.</h4>
                                 <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
-                                    Every week, regional councils, state agencies, developers, and fund managers make high-stakes decisions about where to invest, what to build, and who to back in regional cities. None of them have the tools they need.
+                                    Governments are chasing economic resilience. Companies are searching for new markets. Individuals are trying to secure a future that feels less certain every year. The world is changing faster than the systems built to understand it&mdash;and everyone can feel it. So we rely on what we know, what we&rsquo;re told, and what the people around us believe. We follow the same signals to the same destinations, expecting a different outcome. It never comes.
+                                </p>
+                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                                    Global foreign direct investment fell to $1.3 trillion in 2023&mdash;down over 10% when you strip out accounting flows between European holding companies. Investment into developing regions dropped 7%. International project finance&mdash;the funding that builds real infrastructure&mdash;collapsed 26%. And the capital that does move? It flows to the same tier-one cities it always has. Not because those are the best opportunities, but because that is where every tool, every dataset, and every advisory model was trained to look.
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                                     <div className="border-l-2 border-amber-500 pl-3">
                                         <h5 className="text-base font-bold text-slate-900 mb-1">Advisory Firms</h5>
-                                        <p className="text-sm text-slate-600">Charge six figures for static PDFs built on the same public data everyone already has. Reports take months, are outdated on arrival, and are optimised for billable hours &mdash; not decision quality.</p>
+                                        <p className="text-sm text-slate-600">Recycle the same public data into six-figure PDFs that take months to arrive. Their models are optimised for the markets they already know&mdash;not the ones that need to be understood.</p>
+                                    </div>
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">AI Platforms</h5>
+                                        <p className="text-sm text-slate-600">Trained on the same concentrated datasets that created the blind spot in the first place. They can summarise what&rsquo;s already known about London or Sydney. They have nothing to say about the regional city that actually holds the opportunity.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
                                         <h5 className="text-base font-bold text-slate-900 mb-1">Government Portals</h5>
-                                        <p className="text-sm text-slate-600">Promote regions but cannot match live investor intent to local opportunity. They tell you the population and top exports &mdash; not whether the regulatory pathway is viable or the workforce can deliver.</p>
+                                        <p className="text-sm text-slate-600">List populations and export volumes. They cannot tell you whether the workforce, the regulatory pathway, and the funding timeline actually align&mdash;or whether the opportunity is real.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">AI Chatbots</h5>
-                                        <p className="text-sm text-slate-600">Sound authoritative but never verify an entity, check a sanctions list, or flag a missing workforce. One answer from one model &mdash; no challenge, no second opinion, no audit trail.</p>
-                                    </div>
-                                    <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">The System-Wide Gap</h5>
-                                        <p className="text-sm text-slate-600">Nobody tests whether the workforce, regulatory pathway, and funding timeline actually align. No tool challenges its own conclusions. Nothing produced is a document a board can act on without weeks of rework.</p>
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">The Result</h5>
+                                        <p className="text-sm text-slate-600">Trillions in capital circulate through the same corridors while regional cities&mdash;home to 40% of the world&rsquo;s urban population and the fastest-growing economies on earth&mdash;remain invisible to the systems that decide where money goes.</p>
                                     </div>
                                 </div>
                                 <div className="pt-4 border-t border-slate-200">
-                                    <p className="text-sm text-slate-600 leading-relaxed">
-                                        <strong className="text-slate-900">Why now, more than ever.</strong> Supply chains are fracturing. Climate events are reshaping trade corridors. Geopolitical tensions are forcing governments to rethink where critical infrastructure sits. The regions that absorb these shocks &mdash; that grow the food, move the freight, and house the workforce &mdash; are being asked to do more with less visibility than ever. The old tools were already failing. The pace of change has made them irrelevant. Understanding these markets now requires a fundamentally different approach &mdash; one that is live, verified, stress-tested, and built for the speed at which conditions actually move.
+                                    <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                                        This will never change by doing more of the same. The tools weren&rsquo;t broken. They were never built. Understanding these markets requires something that doesn&rsquo;t exist yet&mdash;intelligence that is live, verified, stress-tested, and built from the ground up for the places the world depends on but has never learned to see.
                                     </p>
                                 </div>
                             </div>
