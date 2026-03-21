@@ -372,17 +372,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             {/* Founder statement — blue panel */}
                             <div className="bg-blue-700 rounded-sm p-6">
-                                <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">Regional Focus</p>
-                                <div className="overflow-hidden rounded-sm border border-blue-500/60 bg-blue-800">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=1200&h=800&fit=crop&q=80"
-                                        alt="Regional city and surrounding development landscape"
-                                        className="w-full h-56 object-cover"
-                                    />
-                                    <p className="px-3 py-2 text-xs text-blue-100 leading-relaxed">
-                                        Regional cities and corridors are where logistics, industry, workforce, and infrastructure converge to drive national growth.
-                                    </p>
-                                </div>
+                                <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-2">Regional Focus</p>
+                                <p className="text-sm text-blue-100 leading-relaxed">
+                                    Regional cities and corridors are where logistics, industry, workforce, and infrastructure converge to drive national growth.
+                                </p>
                             </div>
                         </div>
 
@@ -417,12 +410,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">The Problem</span>
-                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">Everyone Is Looking for Growth. Every System Points to the Same Place.</h4>
+                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">Capital is Blind. It Follows the Safest Signal to the Most Saturated Markets.</h4>
                                 <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
-                                    Governments are chasing economic resilience. Companies are searching for new markets. Individuals are trying to secure a future that feels less certain every year. The world is changing faster than the systems built to understand it&mdash;and everyone can feel it. So we rely on what we know, what we&rsquo;re told, and what the people around us believe. We follow the same signals to the same destinations, expecting a different outcome. It never comes.
+                                    The global investment apparatus is broken. Trillions of dollars of institutional capital are trapped in a herd mentality&mdash;pouring endlessly into overvalued tier-one CBDs and generic ESG megaprojects because they satisfy a tick-box compliance matrix. Advisory firms recycle the same macroeconomic data, build the same models, and point their clients to the same &ldquo;safe&rdquo; jurisdictions. When a market saturates or a geopolitical shock hits, they act surprised.
                                 </p>
                                 <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
-                                    The numbers tell the story. Global foreign direct investment has fallen for two consecutive years&mdash;down 11% in 2024 alone. Infrastructure funding in developing regions dropped 35%. Renewable energy investment fell 31%. Project finance collapsed 26%. In 2026, trade wars are escalating, and deal activity has hit record lows. Yet, the capital that does move concentrates in the same handful of cities it always has. Regional cities&mdash;the places that absorb the shocks, grow the food, move the freight, and keep national economies running&mdash;are left out of every model. Ironically, the very places being overlooked are the ones most shielded from the volatility tearing through overexposed global markets.
+                                    While capital chases safety, it ignores the actual engines of the economy. Regional hubs, logistics corridors, agricultural centers, and industrial heartlands&mdash;the places that absorb supply chain shocks, grow the food, move the freight, and keep nations functioning&mdash;are chronically underfunded. Not because they lack returns, but because the existing advisory models were never built to evaluate them. Trillions in locked regional value is being missed because no one built the intelligence to prove it.
                                 </p>
                                 <div className="pt-4 border-t border-slate-200">
                                     <h5 className="text-lg font-bold text-slate-900 mb-2">The Way It Works Today is Broken</h5>
