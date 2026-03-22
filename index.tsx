@@ -7,7 +7,22 @@ window.addEventListener('error', (evt) => {
 });
 
 window.addEventListener('unhandledrejection', (evt) => {
-  console.error('Unhandled Promise Rejection:', evt.reason);
+  const err = evt.reason;
+  const msg = ((err?.message) ?? '').toLowerCase();
+  const isChunk =
+    err?.name === 'ChunkLoadError' ||
+    msg.includes('dynamically imported module') ||
+    msg.includes('loading chunk') ||
+    (err instanceof TypeError && msg.includes('module'));
+  if (isChunk) {
+    const last = Number(sessionStorage.getItem('bw_chunk_reload_at') ?? 0);
+    if (Date.now() - last > 15_000) {
+      sessionStorage.setItem('bw_chunk_reload_at', String(Date.now()));
+      window.location.reload();
+    }
+  } else {
+    console.error('Unhandled Promise Rejection:', err);
+  }
 });
 
 const rootElement = document.getElementById('root');
@@ -33,6 +48,20 @@ const root = ReactDOM.createRoot(rootElement);
 
     // Mount indicator removed per user request
   } catch (err: any) {
+    const msg = ((err?.message) ?? '').toLowerCase();
+    const isChunk =
+      err?.name === 'ChunkLoadError' ||
+      msg.includes('dynamically imported module') ||
+      msg.includes('loading chunk') ||
+      (err instanceof TypeError && msg.includes('module'));
+    if (isChunk) {
+      const last = Number(sessionStorage.getItem('bw_chunk_reload_at') ?? 0);
+      if (Date.now() - last > 15_000) {
+        sessionStorage.setItem('bw_chunk_reload_at', String(Date.now()));
+        window.location.reload();
+        return;
+      }
+    }
     console.error('Error importing app:', err);
     const overlay = document.getElementById('global-error-overlay');
     if (overlay) {

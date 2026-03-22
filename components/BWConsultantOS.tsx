@@ -1,6 +1,6 @@
 /**
  * BW CONSULTANT OS - Case Study Builder
- * 
+ * @version 2
  * Flow:
  * 1. Baseline Intake - Who are you? What do you need?
  * 2. Case Building - AI asks follow-up questions to understand the matter
