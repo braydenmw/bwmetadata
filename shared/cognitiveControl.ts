@@ -79,13 +79,13 @@ export const deriveControlDecision = (
   } as const;
 
   const liveOrder: ControlProvider[] = [
-    providers.bedrock ? 'bedrock' : null,
-    providers.openai ? 'openai' : null,
     providers.groq ? 'groq' : null,
     providers.together ? 'together' : null,
+    providers.openai ? 'openai' : null,
+    providers.bedrock ? 'bedrock' : null,
   ].filter((p): p is ControlProvider => Boolean(p));
 
-  const fallbackOrder: ControlProvider[] = ['bedrock', 'openai', 'groq', 'together'];
+  const fallbackOrder: ControlProvider[] = ['groq', 'together', 'openai', 'bedrock'];
   const providerOrder = uniqueProviders(liveOrder.length ? [...liveOrder, ...fallbackOrder] : fallbackOrder);
 
   const explain: string[] = [
