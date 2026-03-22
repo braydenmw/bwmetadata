@@ -382,10 +382,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* RIGHT: regional cities investment thesis */}
                         <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
                             <p>
-                                Forty percent of the world&rsquo;s urban population lives in regional cities. They grow the food, move the freight, train the workforce, and absorb the shocks that capital cities never have to think about. They are the fastest-growing urban areas on earth&mdash;and the least understood. Not because they lack value, but because every tool, every dataset, and every advisory firm was built to look somewhere else. So everyone follows the same signals to the same places, calls it strategy, and wonders why the outcomes never change.
+                                The tools that shape global capital&mdash;the risk indices, the advisory frameworks, the investment models&mdash;were calibrated on a world that prioritised concentration. A handful of tier-one cities cross-referenced against each other until the data confirmed the bias. Every place that didn&rsquo;t fit that template was classified as &ldquo;emerging,&rdquo; &ldquo;high-risk,&rdquo; or simply absent from the analysis. That classification became self-fulfilling. Capital avoided the regions. The regions lacked the proof. The proof required the capital.
                             </p>
                             <p>
-                                Meanwhile, the people in these regions carry knowledge, capability, and economic potential that no algorithm was ever trained to measure. The global economy doesn&rsquo;t just benefit from these places. It depends on them. And right now, nobody is building the intelligence to prove it.
+                                What broke wasn&rsquo;t the regions. What broke was the intelligence layer. The corridors that route global supply chains, the cities that anchor national food systems, the hubs that house the industrial workforce&mdash;none of them were ever given a language that institutional decision-makers could read. They built economies without being legible to the people with the resources to accelerate them. That&rsquo;s not a data shortage. It&rsquo;s a structural blindspot&mdash;and it has never had a purpose-built solution.
                             </p>
                             <p className="text-slate-900 font-semibold">
                                 Until now.
