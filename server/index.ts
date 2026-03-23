@@ -153,26 +153,31 @@ app.use('/api/ai/', aiLimiter);
 app.use('/api/search/location-intelligence', aiLimiter);
 
 // CORS - allow frontend origin (flexible for different deployment scenarios)
+// Set FRONTEND_URL in production to avoid wildcard openings
+const frontEndUrl = process.env.FRONTEND_URL || process.env.VITE_API_BASE_URL || '';
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  frontEndUrl,
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
   'http://localhost:3003',
   'http://localhost:5173',
   'https://bw-nexus-ai.onrender.com',
+  'https://*.cloudfront.net',
+  'https://*.amplifyapp.com',
+  'https://*.s3.amazonaws.com',
 ].filter(Boolean);
 
 // In production, also allow same-origin requests (AWS serves frontend + API from same host)
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true; // same-origin or non-browser clients
-  if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) return true;
-  // Allow known deployment managed domains and Railway config
-  // - aws: amazonaws, amplifyapp, elasticbeanstalk, awsapprunner
-  // - railway: *.railway.app and *.up.railway.app
+  if (allowedOrigins.some(allowed => allowed && (allowed.endsWith('*') ? origin.startsWith(allowed.slice(0, -1)) : origin === allowed))) return true;
   const hostname = new URL(origin).hostname;
+  // Enable known managed hosting domains
   if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(hostname)) return true;
   if (/\.(railway|up\.railway)\.app$/i.test(hostname) || /\.railway\.app$/i.test(hostname)) return true;
+  if (/\.cloudfront\.net$/i.test(hostname)) return true;
+  if (/\.s3\.amazonaws\.com$/i.test(hostname)) return true;
   return false;
 };
 
@@ -212,11 +217,19 @@ app.get('/api/health', (_req: Request, res: Response) => {
   const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
   const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
   const aiConfigured = hasBedrock || hasOpenAI || hasGroq || hasTogether;
+  const frontendUrlOrApi = frontEndUrl || 'not configured';
 
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
     version: '1.0.0',
+    backend: {
+      port: PORT,
+      nodeEnv: process.env.NODE_ENV || 'development',
+      serverUrl: `http://localhost:${PORT}`,
+      configuredApiBaseUrl: process.env.VITE_API_BASE_URL || '/api',
+      frontendUrl: frontendUrlOrApi,
+    },
     ai: {
       configured: aiConfigured,
       // available reflects env-signal presence only; use /api/ai/readiness

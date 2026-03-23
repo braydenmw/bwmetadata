@@ -3666,24 +3666,35 @@ ${agentRegistry.current.toManifest()}`;
       let runtimeHint = '';
       if (!lastBackendError) {
         try {
-          const statusResponse = await fetch(resolveApiUrl('/api/ai/status'));
-          if (statusResponse.status === 404) {
-            runtimeHint = ' The backend server is not running or is not reachable at the configured URL. Start the backend with \'npm run server\' (local) or verify your deployment is running on AWS/Railway.';
-          } else if (!statusResponse.ok) {
-            runtimeHint = ` Backend returned an unexpected status (${statusResponse.status}). Check server logs for errors.`;
+          const [statusResponse, healthResponse] = await Promise.allSettled([
+            fetch(resolveApiUrl('/api/ai/status')),
+            fetch(resolveApiUrl('/api/health')),
+          ]);
+          if (statusResponse.status === 'rejected' || healthResponse.status === 'rejected') {
+            runtimeHint = ' The backend API endpoint is unreachable from this client. Confirm the backend URL and network access, then check /api/health and /api/ai/readiness.';
           } else {
-            const statusPayload = await statusResponse.json() as Record<string, unknown>;
-            const aiAvailable = statusPayload?.aiAvailable;
-            const providers = statusPayload?.providers as Record<string, unknown> | undefined;
-            const bedrock = providers?.bedrock as Record<string, unknown> | undefined;
-            if (aiAvailable === false) {
-              runtimeHint = ' Backend AI providers are not runtime-ready.';
-            } else if (bedrock && bedrock.configured === true && bedrock.credentialsResolved === false) {
-              runtimeHint = ` Bedrock credentials unresolved: ${String(bedrock.detail || 'missing runtime credentials')}.`;
+            const status = statusResponse.value;
+            const health = healthResponse.value;
+
+            if (status.status === 404) {
+              runtimeHint = ' The backend server is not running or reachable at the configured URL. Start the backend with \'npm run server\' (local) or verify your deployment is running on AWS/Railway (ECS/Fargate, App Runner, or-Amplify).';
+            } else if (!status.ok) {
+              runtimeHint = ` Backend status endpoint returned ${status.status}. Check server logs and /api/health.`;
+            } else {
+              const statusPayload = await status.json() as Record<string, unknown>;
+              const aiAvailable = statusPayload?.aiAvailable;
+              const providers = statusPayload?.providers as Record<string, unknown> | undefined;
+              const bedrock = providers?.bedrock as Record<string, unknown> | undefined;
+              if (aiAvailable === false) {
+                runtimeHint = ' Backend AI providers are not runtime-ready. Run /api/ai/readiness and verify AWS Bedrock/OpenAI/Groq/Together credentials are resolved.';
+              } else if (bedrock && bedrock.configured === true && bedrock.credentialsResolved === false) {
+                runtimeHint = ` Bedrock credentials unresolved: ${String(bedrock.detail || 'missing runtime credentials')}.`;
+              }
             }
           }
-        } catch {
-          runtimeHint = ' Backend API endpoint is unreachable from this client.';
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          runtimeHint = ` Backend connection check failed: ${msg}. Ensure dependent services can connect outbound and use correct backend URL.`;
         }
       }
 
