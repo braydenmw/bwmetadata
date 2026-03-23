@@ -169,6 +169,8 @@ const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) return true;
   // Allow any *.amazonaws.com, *.amplifyapp.com, *.elasticbeanstalk.com, *.awsapprunner.com domain
   if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(new URL(origin).hostname)) return true;
+  // Allow any *.up.railway.app domain
+  if (/\.up\.railway\.app$/i.test(new URL(origin).hostname)) return true;
   return false;
 };
 
