@@ -152,32 +152,9 @@ const aiLimiter = rateLimit({
 app.use('/api/ai/', aiLimiter);
 app.use('/api/search/location-intelligence', aiLimiter);
 
-// CORS - allow frontend origin (flexible for different deployment scenarios)
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3002',
-  'http://localhost:3003',
-  'http://localhost:5173',
-  'https://bw-nexus-ai.onrender.com',
-].filter(Boolean);
-
-// In production, also allow same-origin requests (AWS serves frontend + API from same host)
-const isAllowedOrigin = (origin: string | undefined): boolean => {
-  if (!origin) return true; // same-origin or non-browser clients
-  if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) return true;
-  // Allow any *.amazonaws.com, *.amplifyapp.com, *.elasticbeanstalk.com, *.awsapprunner.com domain
-  if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(new URL(origin).hostname)) return true;
-  return false;
-};
-
+// CORS - allow all origins in production (frontend and API on same domain)
 app.use(cors({
-  origin: (origin, callback) => {
-    if (isAllowedOrigin(origin)) return callback(null, true);
-    console.warn(`CORS blocked origin: ${origin}`);
-    callback(new Error('Not allowed by CORS'));
-  },
+  origin: true,
   credentials: true
 }));
 
