@@ -163,12 +163,12 @@ const allowedOrigins = [
   'https://bw-nexus-ai.onrender.com',
 ].filter(Boolean);
 
-// In production, also allow same-origin requests (AWS serves frontend + API from same host)
+// In production, also allow same-origin requests (Railway serves frontend + API from same host)
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true; // same-origin or non-browser clients
   if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) return true;
-  // Allow any *.amazonaws.com, *.amplifyapp.com, *.elasticbeanstalk.com, *.awsapprunner.com domain
-  if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(new URL(origin).hostname)) return true;
+  // Allow any *.up.railway.app domain
+  if (/\.up\.railway\.app$/i.test(new URL(origin).hostname)) return true;
   return false;
 };
 
@@ -198,16 +198,10 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 // NOTE: This only checks env-signal presence. For credential-resolved
 // availability use GET /api/ai/readiness which performs actual validation.
 app.get('/api/health', (_req: Request, res: Response) => {
-  const hasBedrock = Boolean(
-    String(process.env.AWS_REGION || '').trim() ||
-    String(process.env.BEDROCK_CONSULTANT_MODEL_ID || '').trim() ||
-    String(process.env.AWS_ACCESS_KEY_ID || '').trim() ||
-    String(process.env.AWS_PROFILE || '').trim()
-  );
   const hasOpenAI = Boolean(String(process.env.OPENAI_API_KEY || '').trim());
   const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
   const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
-  const aiConfigured = hasBedrock || hasOpenAI || hasGroq || hasTogether;
+  const aiConfigured = hasOpenAI || hasGroq || hasTogether;
 
   res.json({ 
     status: 'ok', 
@@ -219,10 +213,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
       // for credential-resolved availability.
       available: false,
       readinessEndpoint: '/api/ai/readiness',
-      provider: hasBedrock ? 'bedrock' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
+      provider: hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
       message: aiConfigured
         ? 'AI provider env vars detected — call /api/ai/readiness for live status'
-        : 'Add AWS Bedrock credentials (or OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY) to enable AI features'
+        : 'Add OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY to enable AI features'
     }
   });
 });

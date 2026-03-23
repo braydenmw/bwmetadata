@@ -3,8 +3,6 @@
  * Handles AWS-specific configuration for Bedrock, RDS, and other services
  */
 
-import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
-
 // AWS Region - for AWS deployments
 export const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
 
@@ -18,13 +16,17 @@ export const BEDROCK_ENABLED = Boolean(
 );
 
 /**
- * Lazy-initialize Bedrock client only when AWS credentials are available
- * This prevents errors when running locally without AWS credentials
+ * Lazy-initialize Bedrock client only when AWS credentials are available.
+ * @aws-sdk/client-bedrock-runtime is an optional dependency — this avoids
+ * a hard crash on Railway (or any non-AWS host) where the package may not
+ * be installed.
  */
-let bedrockClient: BedrockRuntimeClient | null = null;
+let bedrockClient: any | null = null;
 
-export function getBedrockClient(): BedrockRuntimeClient {
+export function getBedrockClient(): any {
   if (!bedrockClient) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { BedrockRuntimeClient } = require('@aws-sdk/client-bedrock-runtime');
     const clientConfig: any = { region: AWS_REGION };
     
     // Use explicit credentials if provided (AWS Lambda, ECS, production)
