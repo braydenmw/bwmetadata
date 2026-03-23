@@ -153,8 +153,13 @@ app.use('/api/ai/', aiLimiter);
 app.use('/api/search/location-intelligence', aiLimiter);
 
 // CORS - allow frontend origin (flexible for different deployment scenarios)
+const railwayDomain = process.env.RAILWAY_PUBLIC_DOMAIN
+  ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+  : undefined;
+
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  railwayDomain,
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
