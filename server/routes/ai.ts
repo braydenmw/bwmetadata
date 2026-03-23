@@ -3,7 +3,10 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
-import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+// @aws-sdk/client-bedrock-runtime is an optional peer — import lazily so the
+// server starts without AWS credentials when only OpenAI/Groq/Together are used.
+type BedrockRuntimeClientType = import('@aws-sdk/client-bedrock-runtime').BedrockRuntimeClient;
+type InvokeModelCommandType = import('@aws-sdk/client-bedrock-runtime').InvokeModelCommand;
 import { AdaptiveControlLearning } from '../services/AdaptiveControlLearning.js';
 import {
   deriveControlDecision,
@@ -43,7 +46,18 @@ const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 const BEDROCK_REGION = process.env.AWS_REGION || 'us-east-1';
 const BEDROCK_MODEL_ID = process.env.BEDROCK_CONSULTANT_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0';
-const bedrockClient = new BedrockRuntimeClient({ region: BEDROCK_REGION });
+
+// Lazy Bedrock client — only instantiated when AWS env vars are present so the
+// server starts cleanly on Railway without AWS credentials.
+let _bedrockClient: BedrockRuntimeClientType | null = null;
+const getBedrockClient = (): BedrockRuntimeClientType => {
+  if (!_bedrockClient) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { BedrockRuntimeClient } = require('@aws-sdk/client-bedrock-runtime');
+    _bedrockClient = new BedrockRuntimeClient({ region: BEDROCK_REGION }) as BedrockRuntimeClientType;
+  }
+  return _bedrockClient;
+};
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -74,14 +88,16 @@ const invokeBedrockMessages = async (messages: AIMessage[], systemInstruction?: 
     messages: normalizedMessages,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { InvokeModelCommand } = require('@aws-sdk/client-bedrock-runtime');
   const command = new InvokeModelCommand({
     modelId: BEDROCK_MODEL_ID,
     contentType: 'application/json',
     accept: 'application/json',
     body: JSON.stringify(payload),
-  });
+  }) as InvokeModelCommandType;
 
-  const response = await bedrockClient.send(command);
+  const response = await getBedrockClient().send(command);
   const raw = new TextDecoder().decode(response.body);
   const data = JSON.parse(raw) as { content?: Array<{ type?: string; text?: string }> };
   const text = (data.content || [])
