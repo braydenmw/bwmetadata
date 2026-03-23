@@ -167,8 +167,12 @@ const allowedOrigins = [
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true; // same-origin or non-browser clients
   if (allowedOrigins.some(allowed => origin.startsWith(allowed || ''))) return true;
-  // Allow any *.amazonaws.com, *.amplifyapp.com, *.elasticbeanstalk.com, *.awsapprunner.com domain
-  if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(new URL(origin).hostname)) return true;
+  // Allow known deployment managed domains and Railway config
+  // - aws: amazonaws, amplifyapp, elasticbeanstalk, awsapprunner
+  // - railway: *.railway.app and *.up.railway.app
+  const hostname = new URL(origin).hostname;
+  if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(hostname)) return true;
+  if (/\.(railway|up\.railway)\.app$/i.test(hostname) || /\.railway\.app$/i.test(hostname)) return true;
   return false;
 };
 
