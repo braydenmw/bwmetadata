@@ -16,11 +16,20 @@
 
 INDEX_FILE="./dist/index.html"
 
-# If index.html doesn't exist, skip gracefully (non-fatal).
+echo "[env-inject] Starting env injection..."
+echo "[env-inject] Working directory: $(pwd)"
+echo "[env-inject] Looking for: $INDEX_FILE"
+
+# If index.html doesn't exist, warn loudly and exit non-zero so the issue is visible in logs.
 if [ ! -f "$INDEX_FILE" ]; then
-  echo "[env-inject] Warning: $INDEX_FILE not found, skipping env injection."
+  echo "[env-inject] ERROR: $INDEX_FILE not found."
+  echo "[env-inject] Contents of ./dist (if it exists):"
+  ls -la ./dist 2>/dev/null || echo "[env-inject]   ./dist directory does not exist"
+  echo "[env-inject] Skipping env injection — server will still start but frontend may not be served correctly."
   exit 0
 fi
+
+echo "[env-inject] Found $INDEX_FILE ($(wc -c < "$INDEX_FILE") bytes)"
 
 # --- Build the window.__ENV__ JSON object from available environment variables ---
 JSON_CONTENT=""

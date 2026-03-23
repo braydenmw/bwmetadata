@@ -36,4 +36,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -qO- http://localhost:3000/api/health || exit 1
 
 # Inject non-secret runtime env vars into index.html, then start server
-CMD ["sh", "-c", "./env-inject.sh && node dist-server/server/index.js"]
+CMD ["sh", "-c", "echo '[Docker] NODE_ENV='$NODE_ENV && echo '[Docker] cwd='$(pwd) && echo '[Docker] dist/index.html exists='$(test -f dist/index.html && echo yes || echo NO) && echo '[Docker] dist-server/server/index.js exists='$(test -f dist-server/server/index.js && echo yes || echo NO) && ./env-inject.sh && node dist-server/server/index.js"]
