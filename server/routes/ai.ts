@@ -40,6 +40,7 @@ const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim(
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
+const getAnthropicKey = () => String(process.env.ANTHROPIC_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -52,6 +53,7 @@ const getOpenAIKey = () => String(process.env.OPENAI_API_KEY || '').trim().repla
 const _isAIAvailable = (): boolean => {
   // Bedrock removed
   if (getOpenAIKey()) return true;
+  if (getAnthropicKey()) return true;
   if (getGroqKey()) return true;
   if (getTogetherKey()) return true;
   return false;
@@ -59,9 +61,10 @@ const _isAIAvailable = (): boolean => {
 
 const generateWithAI = async (input: string | AIMessage[], systemInstruction?: string): Promise<string> => {
   const openaiKey = getOpenAIKey();
+  const anthropicKey = getAnthropicKey();
   const groqKey = getGroqKey();
   const togetherKey = getTogetherKey();
-  const providerConfigured = Boolean(openaiKey || groqKey || togetherKey);
+  const providerConfigured = Boolean(openaiKey || anthropicKey || groqKey || togetherKey);
 
   const baseMessages: AIMessage[] = typeof input === 'string'
     ? [{ role: 'user', content: input }]
@@ -103,7 +106,38 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
         console.warn('[AI Routes] OpenAI error:', res.status);
       }
     } catch (openaiErr) {
-      console.warn('[AI Routes] OpenAI failed, trying Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
+      console.warn('[AI Routes] OpenAI failed, trying Anthropic/Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
+    }
+  }
+
+  // 2b. Anthropic fallback
+  if (anthropicKey) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': anthropicKey,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4096,
+          system: systemInstruction || '',
+          messages: fullMessages
+            .filter(m => m.role !== 'system')
+            .map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = (data.content?.[0]?.text || '').trim();
+        if (text) return text;
+      } else {
+        console.warn('[AI Routes] Anthropic error:', res.status);
+      }
+    } catch (anthropicErr) {
+      console.warn('[AI Routes] Anthropic failed, trying Groq:', anthropicErr instanceof Error ? anthropicErr.message : anthropicErr);
     }
   }
 
@@ -351,6 +385,7 @@ const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number, label: str
 
 interface RuntimeProviderAvailability {
   openai: boolean;
+  anthropic: boolean;
   groq: boolean;
   together: boolean;
   bedrockConfigured: boolean;
@@ -359,11 +394,12 @@ interface RuntimeProviderAvailability {
 
 const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailability> => {
   const openai = Boolean(getOpenAIKey());
+  const anthropic = Boolean(getAnthropicKey());
   const groq = Boolean(getGroqKey());
   const together = Boolean(getTogetherKey());
-  // Bedrock removed
   return {
     openai,
+    anthropic,
     groq,
     together,
     bedrockConfigured: false,
@@ -1011,10 +1047,11 @@ router.get('/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean(availability.openai || availability.groq || availability.together),
+    aiAvailable: Boolean(availability.openai || availability.anthropic || availability.groq || availability.together),
     providers: {
       // Bedrock removed
       openai: availability.openai,
+      anthropic: availability.anthropic,
       groq: availability.groq,
       together: availability.together
     }
@@ -1023,11 +1060,12 @@ router.get('/status', async (_req: Request, res: Response) => {
 
 router.get('/readiness', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
-  const ready = availability.openai || availability.groq || availability.together;
+  const ready = availability.openai || availability.anthropic || availability.groq || availability.together;
 
   const reasons: string[] = [];
   // Bedrock removed
   if (!availability.openai) reasons.push('openai_not_configured');
+  if (!availability.anthropic) reasons.push('anthropic_not_configured');
   if (!availability.groq) reasons.push('groq_not_configured');
   if (!availability.together) reasons.push('together_not_configured');
   if (ready && reasons.length === 0) reasons.push('ai_runtime_ready');
@@ -1039,6 +1077,9 @@ router.get('/readiness', async (_req: Request, res: Response) => {
       // Bedrock removed
       openai: {
         ready: availability.openai
+      },
+      anthropic: {
+        ready: availability.anthropic
       },
       groq: {
         ready: availability.groq
@@ -1055,6 +1096,7 @@ router.get('/control/status', async (_req: Request, res: Response) => {
   const providers = {
     // Bedrock removed
     openai: availability.openai,
+    anthropic: availability.anthropic,
     groq: availability.groq,
     together: availability.together
   };
@@ -1127,13 +1169,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
     // frontend shows a helpful setup message instead of an error.
     const noProviderAvailable =
       !providerAvailability.openai &&
+      !providerAvailability.anthropic &&
       !providerAvailability.groq &&
       !providerAvailability.together;
     if (noProviderAvailable) {
       return res.json({
         requestId,
         taskType: normalizedTaskType,
-        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GROQ_API_KEY — free at console.groq.com (recommended — fast and reliable)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
+        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GROQ_API_KEY — free at console.groq.com (recommended — fast and reliable)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n• ANTHROPIC_API_KEY — console.anthropic.com\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
         provider: 'rule-engine',
         attempts: [],
         confidence: 1,
@@ -1268,6 +1311,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       {
         // Bedrock removed
         openai: providerAvailability.openai,
+        anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
       }
@@ -1580,6 +1624,7 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       {
         // Bedrock removed
         openai: providerAvailability.openai,
+        anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
       }
