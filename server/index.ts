@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables - check multiple possible locations
-// Priority: local overrides first, then project root envs.
+// Priority: production env values first, then local overrides in development.
 const envPaths = [
   path.resolve(process.cwd(), '.env'),
   path.resolve(__dirname, '.env'),
@@ -22,11 +22,17 @@ const envPaths = [
   path.resolve(__dirname, '.env.local'),
 ];
 
+const fallbackOverride = process.env.NODE_ENV !== 'production';
 for (const envPath of envPaths) {
-  const result = dotenv.config({ path: envPath, override: true });
+  const result = dotenv.config({ path: envPath, override: fallbackOverride });
   if (!result.error) {
     console.log('Loaded env vars from:', envPath);
   }
+}
+
+// Ensure production PORT from infra is not overwritten by local .env defaults
+if (!process.env.PORT) {
+  process.env.PORT = '3001';
 }
 
 // Debug: Check which AI providers are configured
