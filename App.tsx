@@ -68,7 +68,7 @@ type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'r
 const App: React.FC = () => {
     // --- STATE ---
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
-    const [viewMode, setViewMode] = useState<ViewMode>('command-center');
+    const [viewMode, setViewMode] = useState<ViewMode>('intake');
     const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
     const [pendingLocationData, setPendingLocationData] = useState<{
         profile: CityProfile;
