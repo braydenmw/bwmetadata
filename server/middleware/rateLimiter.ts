@@ -71,8 +71,8 @@ export function userRateLimit(options: RateLimitOptions) {
 
 export const aiUserLimiter = userRateLimit({
   windowMs: 60 * 1000,
-  maxRequests: 15,
-  message: 'AI rate limit exceeded. Maximum 15 requests per minute.',
+  maxRequests: 60,
+  message: 'AI rate limit exceeded. Maximum 60 requests per minute.',
 });
 
 export const reportUserLimiter = userRateLimit({
