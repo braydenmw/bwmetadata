@@ -1566,6 +1566,28 @@ router.post('/consultant', async (req: Request, res: Response) => {
           boundaries: brainContext.capabilityBoundary.boundaries,
           dataSources: brainContext.capabilityBoundary.dataSources,
         } : null,
+        financialAnalysis: brainContext.financialAnalysis ? {
+          npv: { npv: brainContext.financialAnalysis.npv.npv, discountRate: brainContext.financialAnalysis.npv.discountRate },
+          irr: { irrPercent: brainContext.financialAnalysis.irr.irrPercent, converged: brainContext.financialAnalysis.irr.converged },
+          payback: brainContext.financialAnalysis.payback,
+          wacc: brainContext.financialAnalysis.wacc,
+          scenarios: {
+            base: { npv: brainContext.financialAnalysis.scenarios.base.npv, irr: brainContext.financialAnalysis.scenarios.base.irr.irrPercent, returnMultiple: brainContext.financialAnalysis.scenarios.base.returnMultiple },
+            downside: { npv: brainContext.financialAnalysis.scenarios.downside.npv, irr: brainContext.financialAnalysis.scenarios.downside.irr.irrPercent },
+            upside: { npv: brainContext.financialAnalysis.scenarios.upside.npv, irr: brainContext.financialAnalysis.scenarios.upside.irr.irrPercent },
+          },
+          sensitivityDrivers: brainContext.financialAnalysis.sensitivityDrivers,
+        } : null,
+        riskMatrix: brainContext.riskMatrix ? {
+          aggregate: brainContext.riskMatrix.aggregate,
+          topRisks: brainContext.riskMatrix.topRisks.map(r => ({
+            id: r.id, name: r.name, category: r.category, severity: r.severity,
+            likelihood: r.likelihood, impact: r.impact, score: r.score,
+            impactUSD: r.impactUSD, mitigationStrategy: r.mitigationStrategy,
+            residualScore: r.residualScore, residualSeverity: r.residualSeverity,
+          })),
+          heatMap: brainContext.riskMatrix.heatMap,
+        } : null,
         readiness: brainContext.readiness,
         computedAt: brainContext.computedAt,
       } : null,

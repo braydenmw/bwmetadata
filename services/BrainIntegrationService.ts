@@ -94,6 +94,8 @@ import { QuantumMonteCarlo } from './quantum/QuantumMonteCarlo';
 import { QuantumPatternMatcher } from './quantum/QuantumPatternMatcher';
 import { QuantumCognitionBridge } from './quantum/QuantumCognitionBridge';
 import { SystemCapabilityBoundary, type CapabilitySnapshot } from './SystemCapabilityBoundary';
+import { FinancialCalculationService, type FinancialSnapshot } from './FinancialCalculationService';
+import { RiskMatrixEngine, type RiskMatrixResult } from './RiskMatrixEngine';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -229,6 +231,10 @@ export interface BrainContext {
   quantumCognition: any | null;
   /** System capability boundaries - what the system does and does not do */
   capabilityBoundary: CapabilitySnapshot | null;
+  /** Financial Calculation Engine - NPV / IRR / payback / scenarios */
+  financialAnalysis: FinancialSnapshot | null;
+  /** Risk Matrix Engine - programmatic 5x5 likelihood x impact grid */
+  riskMatrix: RiskMatrixResult | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -1051,6 +1057,40 @@ export class BrainIntegrationService {
       ecosystemConfidence: researchEcosystem?.confidence,
     });
 
+    // ── Financial Calculation Engine ──────────────────────────────────────────
+    const financialAnalysis = (() => {
+      try {
+        const fp: any = params;
+        const investNum = parseFloat(fp.totalInvestment || fp.capitalAllocation || '0') || 10_000_000;
+        const revNum = parseFloat(fp.annualRevenue || fp.revenueYear1 || fp.revenue || '0') || investNum * 0.4;
+        const growthRate = 0.15;
+        const opMargin = 0.25;
+        const discRate = 0.10;
+        return FinancialCalculationService.computeSnapshot({
+          capitalInvestment: investNum,
+          baseRevenue: revNum,
+          growthRate,
+          operatingMargin: opMargin,
+          discountRate: discRate,
+        });
+      } catch { return null; }
+    })();
+
+    // ── Risk Matrix Engine ────────────────────────────────────────────────────
+    const riskMatrix = (() => {
+      try {
+        const fp: any = params;
+        const investNum = parseFloat(fp.totalInvestment || fp.capitalAllocation || '0') || 10_000_000;
+        const polStability = (compositeScore as any)?.components?.politicalStability ?? 50;
+        return RiskMatrixEngine.computeRiskMatrix({
+          investmentUSD: investNum,
+          country: country || undefined,
+          sector: fp.sector || fp.industry || undefined,
+          politicalStabilityScore: polStability,
+        });
+      } catch { return null; }
+    })();
+
     // ── System Capability Boundary - always-on trust layer ──────────────────
     const capabilityBoundary = (() => {
       try { return SystemCapabilityBoundary.getSnapshot(); } catch { return null; }
@@ -1661,6 +1701,22 @@ export class BrainIntegrationService {
       } catch { /* non-critical */ }
     }
 
+    // ── Financial Calculation Engine ──────────────────────────────────────────
+    if (financialAnalysis) {
+      try {
+        const summary = FinancialCalculationService.formatForPrompt(financialAnalysis);
+        if (summary) promptParts.push(`\n${summary}`);
+      } catch { /* non-critical */ }
+    }
+
+    // ── Risk Matrix Engine ────────────────────────────────────────────────────
+    if (riskMatrix) {
+      try {
+        const summary = RiskMatrixEngine.formatForPrompt(riskMatrix);
+        if (summary) promptParts.push(`\n${summary}`);
+      } catch { /* non-critical */ }
+    }
+
     const provisionalResult = {
       indices,
       adversarial,
@@ -1719,6 +1775,8 @@ export class BrainIntegrationService {
       quantumPatterns,
       quantumCognition,
       capabilityBoundary,
+      financialAnalysis,
+      riskMatrix,
     };
 
     const qualityGate = IntelligenceQualityGate.assess(provisionalResult);
@@ -1785,6 +1843,8 @@ export class BrainIntegrationService {
       quantumPatterns,
       quantumCognition,
       capabilityBoundary,
+      financialAnalysis,
+      riskMatrix,
       qualityGate,
     };
 
