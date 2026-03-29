@@ -3425,14 +3425,35 @@ async function findSimilarCities(profile: CityProfile): Promise<SimilarCity[]> {
     const query = `cities similar to ${profile.city} ${profile.country} in ${profile.keySectors?.[0] || 'economy'}`;
     const results = await performGoogleSearch(query, 5);
 
+    const profileTerms = new Set(
+      [profile.city, profile.country, profile.region, ...(profile.keySectors || [])]
+        .filter(Boolean)
+        .map(t => t.toLowerCase())
+    );
+
     for (const result of results.slice(0, 3)) {
       const match = result.snippet.match(/(\w+),\s*(\w+)/);
       if (match) {
+        // Compute similarity from snippet term overlap instead of random
+        const snippetLower = (result.snippet || '').toLowerCase();
+        const snippetWords = new Set(snippetLower.split(/\W+/).filter(w => w.length > 2));
+        let overlapCount = 0;
+        for (const term of profileTerms) {
+          if (snippetWords.has(term) || snippetLower.includes(term)) overlapCount++;
+        }
+        const termOverlap = profileTerms.size > 0 ? overlapCount / profileTerms.size : 0;
+        // Region match bonus
+        const regionBonus = match[2].toLowerCase() === profile.country.toLowerCase() ? 0.1 : 0;
+        // Position bonus (earlier results are more relevant)
+        const posIdx = results.indexOf(result);
+        const positionBonus = (3 - Math.min(posIdx, 2)) * 0.05;
+        const similarity = Math.min(0.95, Math.max(0.3, 0.4 + termOverlap * 0.35 + regionBonus + positionBonus));
+
         similar.push({
           city: match[1],
           country: match[2],
           region: profile.region,
-          similarity: 0.6 + Math.random() * 0.3,
+          similarity,
           reason: `Similar ${profile.keySectors?.[0] || 'economic'} profile`,
           keyMetric: profile.keySectors?.[0] || 'economy'
         });

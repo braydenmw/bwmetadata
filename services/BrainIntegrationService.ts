@@ -74,6 +74,11 @@ import {
   FailureModeGovernanceService,
   type FailureModeGovernanceAssessment,
 } from './FailureModeGovernanceService';
+import { proactiveOrchestrator, type ProactiveBriefing } from './proactive/ProactiveOrchestrator';
+import type { CurrentContext } from './proactive/ProactiveSignalMiner';
+import { simulateScenario as causalSimulateScenario } from '../core/causal-reasoning-simulation/index';
+import { checkCompliance as coreCheckCompliance, detectBias as coreDetectBias } from '../core/ethics-governance/index';
+import { RegionalCityDiscoveryEngine, type DiscoveryResult } from './RegionalCityDiscoveryEngine';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -171,6 +176,14 @@ export interface BrainContext {
   researchEcosystem: ResearchEcosystemAssessment | null;
   /** Failure mode governance: delusion/model/search/objective/guardrail risk */
   failureModeGovernance: FailureModeGovernanceAssessment | null;
+  /** Proactive Layer 7 briefing: drift, backtesting, signals, meta-cognition */
+  proactiveBriefing: ProactiveBriefing | null;
+  /** Core causal reasoning simulation result */
+  causalSimulation: { explanation: string; outcome?: number } | null;
+  /** Core ethics/governance compliance + bias check */
+  coreEthics: { isCompliant: boolean; overallRisk: string; topIssues: string[]; biases: string[] } | null;
+  /** Regional City Discovery - proactive overlooked city matches */
+  regionalCityDiscovery: DiscoveryResult | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -338,6 +351,10 @@ export class BrainIntegrationService {
       sanctionsResult,
       comtradeResult,
       tavilyResult,
+      proactiveResult,
+      causalResult,
+      coreComplianceResult,
+      coreBiasResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -452,6 +469,36 @@ export class BrainIntegrationService {
       strategicQuestion.length > 20 && readiness >= 40
         ? tavilyResearchQuestion(strategicQuestion, country).catch(() => null)
         : Promise.resolve(null),
+      // ProactiveOrchestrator (Layer 7) - drift, backtesting, signals, meta-cognition
+      readiness >= 30 && country
+        ? proactiveOrchestrator.runProactiveCycle({
+            country,
+            sector: (params as any).sector || params.organizationType || 'general',
+            strategy: strategicQuestion || (params as any).objectives || 'strategic engagement',
+            investmentSizeM: (params as any).investmentSizeM || 10,
+            keyFactors: [
+              country,
+              (params as any).sector || params.organizationType || '',
+              orgName,
+              ...(Array.isArray((params as any).strategicIntent) ? (params as any).strategicIntent : []),
+            ].filter(Boolean),
+          } as CurrentContext).catch(() => null)
+        : Promise.resolve(null),
+      // Core causal reasoning simulation
+      (params as any).currentMatter || strategicQuestion
+        ? causalSimulateScenario({
+            problem: (params as any).currentMatter || strategicQuestion,
+            context: { country, sector: (params as any).sector || '', readiness },
+            baseRate: readiness / 100,
+            interventionEffect: 0.15,
+          }).catch(() => null)
+        : Promise.resolve(null),
+      // Core ethics/governance compliance check
+      country
+        ? Promise.resolve((() => { try { return coreCheckCompliance(`Investment in ${(params as any).sector || 'general'} sector in ${country}`, params); } catch { return null; } })())
+        : Promise.resolve(null),
+      // Core ethics/governance bias detection
+      Promise.resolve((() => { try { return coreDetectBias?.(params) ?? null; } catch { return null; } })()),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -521,6 +568,32 @@ export class BrainIntegrationService {
 
     // Tavily - synthesized research answer
     const tavilyResearch = tavilyResult.status === 'fulfilled' ? tavilyResult.value as import('./tavilySearchService').TavilySearchResponse | null : null;
+
+    // ProactiveOrchestrator (Layer 7) - briefing
+    const proactiveBriefing = proactiveResult.status === 'fulfilled' ? proactiveResult.value as ProactiveBriefing | null : null;
+
+    // Core causal reasoning simulation
+    const causalSimulation = (() => {
+      if (causalResult.status !== 'fulfilled' || !causalResult.value) return null;
+      const v = causalResult.value as any;
+      return { explanation: v.explanation || '', outcome: v.posteriorRate ?? v.adjustedRate ?? undefined };
+    })();
+
+    // Core ethics/governance
+    const coreEthics = (() => {
+      const comp = coreComplianceResult.status === 'fulfilled' ? coreComplianceResult.value as any : null;
+      const bias = coreBiasResult.status === 'fulfilled' ? coreBiasResult.value as any : null;
+      if (!comp && !bias) return null;
+      return {
+        isCompliant: comp?.isCompliant ?? true,
+        overallRisk: comp?.overallRisk || 'low',
+        topIssues: (comp?.complianceResults || comp?.results || [])
+          .filter((r: any) => !r.passed)
+          .slice(0, 3)
+          .map((r: any) => r.message || r.description || ''),
+        biases: Array.isArray(bias) ? bias.slice(0, 3).map((b: any) => `${b.biasType}: ${b.description || b.mitigationSuggestion || ''}`) : [],
+      };
+    })();
 
     // ConsultantGate - sync evaluation of case completeness
     const gateStatus = (() => {
@@ -595,6 +668,18 @@ export class BrainIntegrationService {
           };
         }
         return null;
+      } catch { return null; }
+    })();
+
+    // ── Regional City Discovery Engine - proactive overlooked city matching ───
+    const regionalCityDiscovery: DiscoveryResult | null = (() => {
+      try {
+        return RegionalCityDiscoveryEngine.discover({
+          targetSectors: [(params as any).sector || params.organizationType || ''].filter(Boolean),
+          targetRegions: country ? undefined : undefined, // discover across all regions
+          country: undefined, // don't limit to single country - show alternatives
+          preferOverlooked: true,
+        }, 10);
       } catch { return null; }
     })();
 
@@ -1172,6 +1257,54 @@ export class BrainIntegrationService {
       promptParts.push(FailureModeGovernanceService.formatForPrompt(failureModeGovernance));
     }
 
+    // ── Proactive Layer 7 Briefing ────────────────────────────────────────────
+    if (proactiveBriefing) {
+      promptParts.push(`\n### ── PROACTIVE INTELLIGENCE (Layer 7) ──`);
+      promptParts.push(`**Backtest Accuracy:** ${(proactiveBriefing.backtestAccuracy * 100).toFixed(1)}% | **Confidence:** ${(proactiveBriefing.confidence * 100).toFixed(1)}%`);
+      if (proactiveBriefing.calibrationSummary) promptParts.push(`**Calibration:** ${proactiveBriefing.calibrationSummary}`);
+      if (proactiveBriefing.driftSummary) promptParts.push(`**Drift Detection:** ${proactiveBriefing.driftSummary}`);
+      if (proactiveBriefing.cognitiveSummary) promptParts.push(`**Meta-Cognition:** ${proactiveBriefing.cognitiveSummary}`);
+      if (proactiveBriefing.proactiveSignals.length) {
+        promptParts.push(`**Proactive Signals (${proactiveBriefing.proactiveSignals.length}):**`);
+        proactiveBriefing.proactiveSignals.slice(0, 5).forEach(s =>
+          promptParts.push(`- [${s.type}/${s.urgency}] ${s.title}: ${s.description?.substring(0, 150) || ''}`)
+        );
+      }
+      if (proactiveBriefing.actionPriorities.length) {
+        promptParts.push(`**Priority Actions:** ${proactiveBriefing.actionPriorities.slice(0, 4).join(' | ')}`);
+      }
+    }
+
+    // ── Core Causal Reasoning ────────────────────────────────────────────────
+    if (causalSimulation) {
+      promptParts.push(`\n### ── CAUSAL REASONING SIMULATION ──`);
+      if (causalSimulation.outcome !== undefined) promptParts.push(`**Projected Outcome Rate:** ${(causalSimulation.outcome * 100).toFixed(1)}%`);
+      if (causalSimulation.explanation) promptParts.push(`**Causal Chain:** ${String(causalSimulation.explanation).substring(0, 300)}`);
+    }
+
+    // ── Core Ethics & Governance ──────────────────────────────────────────────
+    if (coreEthics) {
+      promptParts.push(`\n### ── CORE ETHICS & GOVERNANCE ──`);
+      promptParts.push(`**Compliant:** ${coreEthics.isCompliant ? '✅ Yes' : '🚫 No'} | **Risk Level:** ${coreEthics.overallRisk}`);
+      if (coreEthics.topIssues.length) {
+        promptParts.push(`**Compliance Issues:**`);
+        coreEthics.topIssues.forEach(i => promptParts.push(`- ⚠ ${i}`));
+      }
+      if (coreEthics.biases.length) {
+        promptParts.push(`**Detected Biases:**`);
+        coreEthics.biases.forEach(b => promptParts.push(`- ${b}`));
+      }
+    }
+
+    // ── Regional City Discovery ──────────────────────────────────────────────
+    if (regionalCityDiscovery && regionalCityDiscovery.topMatches.length > 0) {
+      const cityPrompt = RegionalCityDiscoveryEngine.discoverForPrompt({
+        targetSectors: [(params as any).sector || params.organizationType || ''].filter(Boolean),
+        preferOverlooked: true,
+      });
+      if (cityPrompt) promptParts.push(cityPrompt);
+    }
+
     const provisionalResult = {
       indices,
       adversarial,
@@ -1211,6 +1344,10 @@ export class BrainIntegrationService {
       reactiveRisks,
       researchEcosystem,
       failureModeGovernance,
+      proactiveBriefing,
+      causalSimulation,
+      coreEthics,
+      regionalCityDiscovery,
     };
 
     const qualityGate = IntelligenceQualityGate.assess(provisionalResult);
@@ -1258,6 +1395,10 @@ export class BrainIntegrationService {
       reactiveRisks,
       researchEcosystem,
       failureModeGovernance,
+      proactiveBriefing,
+      causalSimulation,
+      coreEthics,
+      regionalCityDiscovery,
       qualityGate,
     };
 
@@ -1298,6 +1439,12 @@ export class BrainIntegrationService {
         `Failure Governance: ${ctx.failureModeGovernance.overallRisk}/100 risk ` +
         `| anti-influence ${ctx.failureModeGovernance.antiInfluenceScore}/100 (${ctx.failureModeGovernance.decision})`
       );
+    }
+    if (ctx.proactiveBriefing) {
+      lines.push(`Proactive L7: ${(ctx.proactiveBriefing.confidence * 100).toFixed(0)}% conf | ${ctx.proactiveBriefing.proactiveSignals.length} signals | backtest ${(ctx.proactiveBriefing.backtestAccuracy * 100).toFixed(0)}%`);
+    }
+    if (ctx.coreEthics) {
+      lines.push(`Ethics: ${ctx.coreEthics.isCompliant ? 'Compliant' : 'NON-COMPLIANT'} (${ctx.coreEthics.overallRisk})`);
     }
     return lines.join(' · ');
   }

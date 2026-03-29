@@ -323,7 +323,10 @@ export class DeepThinkingEngine {
       children: factors.map((factor, idx) => ({
         id: `${type}-${factor}`,
         content: `${factor} evaluation`,
-        confidence: 60 + Math.random() * 30,
+        // Derive child confidence from parent branch type, cot score, and factor position
+        confidence: Math.min(95, Math.max(10,
+          baseConfidence + (cot.confidenceScore - 50) * 0.2 + (factors.length - idx) * 3
+        )),
         reasoning: [this.evaluateFactor(factor, params)],
         children: [],
         depth: 2,
