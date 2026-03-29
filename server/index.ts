@@ -257,43 +257,69 @@ app.use('/api/governance', governanceRoutes);
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
 
-// Serve static frontend in production
-if (process.env.NODE_ENV === 'production') {
-  // Try multiple possible dist paths
+// Serve static frontend from the Vite build output (dist/).
+// This runs regardless of NODE_ENV so that Railway/Nixpacks deployments
+// (which don't strip source files) always serve the compiled app and never
+// accidentally fall back to the source index.html at the project root.
+{
+  // Resolve the dist/ directory relative to the compiled server bundle or cwd.
   const possibleDistPaths = [
-    path.join(__dirname, '..', '..', 'dist'),  // From dist-server/server/
-    path.join(__dirname, '..', 'dist'),         // From dist-server/
-    path.join(process.cwd(), 'dist'),           // From project root
+    path.join(__dirname, '..', '..', 'dist'),  // From dist-server/server/ (Docker)
+    path.join(__dirname, '..', 'dist'),         // From dist-server/ (Docker alt)
+    path.join(process.cwd(), 'dist'),           // From project root (Nixpacks/Railway)
   ];
-  
-  let distPath = possibleDistPaths[0];
+
+  let distPath: string | null = null;
   for (const p of possibleDistPaths) {
     if (fs.existsSync(path.join(p, 'index.html'))) {
       distPath = p;
-      console.log('Serving static files from:', distPath);
       break;
     }
   }
-  
-  // DEBUG: optionally log static asset lookups (set DEBUG_STATIC=true in env to enable)
-  if (process.env.DEBUG_STATIC === 'true') {
-    app.use((req: Request, _res: Response, next: NextFunction) => {
-      if (req.path.startsWith('/assets') || req.path === '/' || req.path.endsWith('.js') || req.path.endsWith('.css') || req.path.endsWith('index.html')) {
-        const filePath = path.join(distPath, req.path === '/' ? 'index.html' : req.path);
-        const exists = fs.existsSync(filePath);
-        const stat = exists ? fs.statSync(filePath) : null;
-        console.log(`[STATIC DEBUG] ${req.method} ${req.path} -> ${filePath} exists=${exists} size=${stat ? stat.size : 0}`);
+
+  if (!distPath) {
+    console.error(
+      '[Static] ERROR: Could not find dist/index.html in any of:\n' +
+      possibleDistPaths.map(p => `  ${p}`).join('\n') +
+      '\nRun `npm run build` to generate the frontend bundle.'
+    );
+  } else {
+    const distIndexHtml = path.join(distPath, 'index.html');
+    console.log(`[Static] Serving frontend from: ${distPath}`);
+    console.log(`[Static] dist/index.html exists: ${fs.existsSync(distIndexHtml)}`);
+
+    // DEBUG: optionally log static asset lookups (set DEBUG_STATIC=true in env to enable)
+    if (process.env.DEBUG_STATIC === 'true') {
+      app.use((req: Request, _res: Response, next: NextFunction) => {
+        if (req.path.startsWith('/assets') || req.path === '/' || req.path.endsWith('.js') || req.path.endsWith('.css') || req.path.endsWith('index.html')) {
+          const filePath = path.join(distPath!, req.path === '/' ? 'index.html' : req.path);
+          const exists = fs.existsSync(filePath);
+          const stat = exists ? fs.statSync(filePath) : null;
+          console.log(`[STATIC DEBUG] ${req.method} ${req.path} -> ${filePath} exists=${exists} size=${stat ? stat.size : 0}`);
+        }
+        next();
+      });
+    }
+
+    // Serve compiled assets (JS, CSS, images, etc.) from dist/ only.
+    // The `index` option is disabled so that Express does NOT automatically
+    // serve dist/index.html for "/", letting the explicit SPA fallback below
+    // handle it with logging. The `root` is scoped to dist/ so the source
+    // index.html at the project root is never reachable through this middleware.
+    app.use(express.static(distPath, { index: false }));
+
+    // SPA fallback — serve dist/index.html for every non-API route so that
+    // client-side routing works. This explicitly uses the built file and logs
+    // which file is being sent so it is easy to verify in production logs.
+    app.get('*', (_req: Request, res: Response) => {
+      if (!fs.existsSync(distIndexHtml)) {
+        console.error(`[Static] SPA fallback: dist/index.html not found at ${distIndexHtml}`);
+        return res.status(503).send('Frontend not built. Run `npm run build`.');
       }
-      next();
+      console.log(`[Static] SPA fallback -> ${distIndexHtml}`);
+      res.sendFile(distIndexHtml);
     });
   }
-  
-  app.use(express.static(distPath));
-  
-  // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
 }
 
 // Error handling
