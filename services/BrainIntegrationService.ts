@@ -352,11 +352,12 @@ function formatExternalDataBlock(ext: BrainContext['externalData'], country: str
   return lines.length > 1 ? lines.join('\n') : '';
 }
 
-// ─── Engine Group Classification ──────────────────────────────────────────────
-// Instead of firing all 50+ engines like a child rushing, the brain now thinks
-// first. It classifies the query, determines what engine groups are relevant,
-// and progressively activates only what's needed — like an experienced adult
-// who knows which tools to reach for.
+// ─── Intelligent Brain Thinking System ────────────────────────────────────────
+// The brain doesn't just pattern-match keywords. It THINKS. It introspects its
+// own capabilities, deeply analyses what the user is really asking, scores every
+// engine group for relevance, and builds an execution plan with reasoning.
+// When live data is needed, it knows which engines have real-time access.
+// The thinking process is logged so the AI consultant can see the brain's reasoning.
 
 type EngineGroup =
   | 'foundation'    // Core scoring: indices, NSIL, composite, case graph, maturity, gate
@@ -372,86 +373,450 @@ type EngineGroup =
   | 'proactive'     // Proactive: Layer 7, self-improvement, causal reasoning
   | 'ethics';       // Ethics: IFC standards, compliance check, bias detection
 
-function classifyQuery(
+// ─── Engine Capability Registry ──────────────────────────────────────────────
+// Every engine group declares what it provides, what questions it answers,
+// whether it has live external data, and when it's most useful. The brain
+// introspects this registry to decide what to fire for any given query.
+
+interface EngineGroupCapability {
+  group: EngineGroup;
+  provides: string;
+  answersQuestions: string[];
+  hasLiveData: boolean;
+  dataSources: string[];
+  requiresCountry: boolean;
+  requiresOrg: boolean;
+  minReadiness: number;
+  costWeight: number; // 1-10, higher = more expensive to run
+}
+
+const ENGINE_REGISTRY: EngineGroupCapability[] = [
+  {
+    group: 'foundation',
+    provides: '15 strategic indices (BARNA/NVI/CRI/CAP/AGI/VCI/ATI/ESI/ISI/OSI/TCO/PRI/RNI/SRA/IDV), NSIL assessment, composite scores, case graph, maturity scoring, methodology KB, problem-to-solution graph, situation analysis, consultant gate',
+    answersQuestions: ['readiness', 'scores', 'quality', 'maturity', 'baseline', 'how ready', 'what is status', 'overview', 'summary', 'assess', 'evaluate', 'diagnose', 'what do we know', 'starting point'],
+    hasLiveData: false,
+    dataSources: ['Internal indices', 'Methodology knowledge base', 'Case graph builder'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 0,
+    costWeight: 3,
+  },
+  {
+    group: 'country',
+    provides: 'GDP, GDP growth, cost of living, crime index, trade data, conflict events, compliance alerts, regional development plans, ESG climate scores, global data fabric signals',
+    answersQuestions: ['economy', 'gdp', 'growth', 'cost of living', 'safety', 'conflict', 'trade', 'regulation', 'compliance', 'country profile', 'jurisdiction', 'market size', 'stability', 'environment', 'climate', 'how safe', 'what are the risks in', 'tell me about'],
+    hasLiveData: true,
+    dataSources: ['World Bank API', 'Numbeo API', 'ACLED API', 'UN Comtrade API', 'Global Compliance Framework', 'ESG Climate Scorer'],
+    requiresCountry: true,
+    requiresOrg: false,
+    minReadiness: 0,
+    costWeight: 4,
+  },
+  {
+    group: 'organization',
+    provides: 'Company registry records, sanctions screening, OSINT intelligence, partner rankings, partner comparisons',
+    answersQuestions: ['company', 'partner', 'organization', 'entity', 'who are they', 'sanctions', 'due diligence', 'background check', 'partner fit', 'stakeholder', 'who should we work with', 'is this entity safe', 'firm'],
+    hasLiveData: true,
+    dataSources: ['OpenCorporates API', 'OpenSanctions API', 'OSINT search', 'Partner Intelligence Engine'],
+    requiresCountry: false,
+    requiresOrg: true,
+    minReadiness: 0,
+    costWeight: 3,
+  },
+  {
+    group: 'strategic',
+    provides: 'Adversarial 5-persona debate, persona analysis (Skeptic/Advocate/Regulator/Accountant), domain agent synthesis (Gov/Banking/Corporate/Market/Risk/Historical), decision pipeline, motivation detection, unbiased pro/con analysis, causal reasoning',
+    answersQuestions: ['strategy', 'recommend', 'advise', 'what should we do', 'approach', 'plan', 'decision', 'options', 'pros cons', 'feasibility', 'evaluate', 'engage', 'next steps', 'how to proceed', 'best approach', 'debate', 'perspectives', 'what are our options'],
+    hasLiveData: false,
+    dataSources: ['Adversarial Reasoning Service', 'Persona Engine', 'Domain Agent Orchestrator', 'Decision Pipeline', 'Causal Reasoning Engine'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 30,
+    costWeight: 6,
+  },
+  {
+    group: 'historical',
+    provides: 'Historical patterns (200-year case library), parallel matches (60 years documented), reference engagements, pattern confidence scores',
+    answersQuestions: ['precedent', 'what happened before', 'similar cases', 'historical', 'lessons learned', 'track record', 'has this worked', 'past examples', 'evidence', 'case study', 'what can we learn', 'comparable'],
+    hasLiveData: false,
+    dataSources: ['Historical Learning Engine', 'Historical Parallel Matcher', 'Global Intelligence Engine', 'Pattern Confidence Engine'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 15,
+    costWeight: 2,
+  },
+  {
+    group: 'risk',
+    provides: 'Risk matrix (5x5 likelihood x impact), counterfactual what-if scenarios, reactive live opportunity/risk signals, derived risk indices (PRI/TCO/CRI)',
+    answersQuestions: ['risk', 'threat', 'danger', 'what could go wrong', 'vulnerability', 'mitigation', 'what if', 'worst case', 'scenario', 'exposure', 'likelihood', 'impact', 'compliance risk', 'audit', 'due diligence'],
+    hasLiveData: true,
+    dataSources: ['Risk Matrix Engine', 'Counterfactual Engine', 'Reactive Intelligence Engine', 'Derived Index Service'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 25,
+    costWeight: 4,
+  },
+  {
+    group: 'financial',
+    provides: 'NPV/IRR/payback calculations, government incentives, cost analysis, financial projections, ROI scenarios',
+    answersQuestions: ['cost', 'budget', 'roi', 'npv', 'irr', 'payback', 'revenue', 'profit', 'investment', 'funding', 'incentive', 'capital', 'financial', 'how much', 'is it worth it', 'return', 'economic benefit', 'grants', 'tax incentive'],
+    hasLiveData: false,
+    dataSources: ['Financial Calculation Service', 'Government Incentive Vault'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 20,
+    costWeight: 2,
+  },
+  {
+    group: 'deep-research',
+    provides: 'Tavily web research synthesis, multi-agent consensus (Gemini/GPT-4/Claude), comprehensive external research answers',
+    answersQuestions: ['research', 'find out', 'what is the latest', 'current situation', 'investigate', 'deep dive', 'comprehensive', 'detailed analysis', 'thorough', 'explore', 'what does the evidence say', 'search for'],
+    hasLiveData: true,
+    dataSources: ['Tavily Search API', 'Multi-Agent Consensus (Gemini/GPT-4/Claude)'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 40,
+    costWeight: 8,
+  },
+  {
+    group: 'relocation',
+    provides: 'City rankings, overlooked city discovery, 90-day relocation plans, workforce intelligence (salary/talent/attrition), supply chain maps, function-level split analysis, network effects, tier-1 extraction, boots-on-ground local intelligence',
+    answersQuestions: ['relocate', 'offshore', 'outsource', 'bpo', 'nearshore', 'city', 'where should we go', 'workforce', 'talent', 'labor', 'supply chain', 'manufacturing', 'headcount', 'which location', 'compare cities', 'site selection', 'move operations'],
+    hasLiveData: false,
+    dataSources: ['Regional City Discovery Engine', 'Global City Index', 'Workforce Intelligence Engine', 'Supply Chain Mapper', 'Boots on Ground Network', 'Relocation Pathway Engine'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 20,
+    costWeight: 5,
+  },
+  {
+    group: 'quantum',
+    provides: 'Monte Carlo risk simulation (5000 iterations), quantum pattern detection, cognitive bias modelling',
+    answersQuestions: ['simulate', 'probability', 'monte carlo', 'simulation', 'uncertainty', 'confidence interval', 'bias', 'cognitive', 'pattern', 'statistical', 'model'],
+    hasLiveData: false,
+    dataSources: ['Quantum Monte Carlo Engine', 'Quantum Pattern Matcher', 'Quantum Cognition Bridge'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 50,
+    costWeight: 7,
+  },
+  {
+    group: 'proactive',
+    provides: 'Layer 7 proactive briefing (drift detection, backtesting, meta-cognition, signals), self-improvement analysis, self-learning recommendations',
+    answersQuestions: ['what are we missing', 'proactive', 'signal', 'trend', 'drift', 'improve', 'calibrate', 'something we should know', 'overlooked', 'blind spot', 'early warning'],
+    hasLiveData: false,
+    dataSources: ['Proactive Orchestrator (Layer 7)', 'Self-Improvement Engine', 'Self-Learning Engine'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 30,
+    costWeight: 5,
+  },
+  {
+    group: 'ethics',
+    provides: 'IFC Global Standards compliance gaps, SDG alignment, ethics/governance compliance check, bias detection',
+    answersQuestions: ['ethical', 'ifc', 'standards', 'sdg', 'sustainable', 'governance', 'bias', 'compliance', 'responsible', 'esg', 'social impact', 'labor rights', 'human rights', 'environmental'],
+    hasLiveData: false,
+    dataSources: ['IFC Global Standards Engine', 'Core Ethics/Governance Module'],
+    requiresCountry: false,
+    requiresOrg: false,
+    minReadiness: 20,
+    costWeight: 2,
+  },
+];
+
+// ─── Deep Query Intelligence Analyzer ────────────────────────────────────────
+// Breaks down what the user is really asking — intent, domain, complexity,
+// whether they need live data, temporal focus, and extracted entities.
+
+type QueryIntent = 'assess' | 'compare' | 'plan' | 'investigate' | 'report' | 'advise' | 'calculate' | 'monitor' | 'conversational';
+type QueryComplexity = 'trivial' | 'simple' | 'moderate' | 'complex' | 'deep';
+type TemporalFocus = 'past' | 'present' | 'future' | 'mixed';
+
+interface QueryAnalysis {
+  intent: QueryIntent;
+  domains: string[];
+  needsLiveData: boolean;
+  needsHistorical: boolean;
+  needsDeepResearch: boolean;
+  complexity: QueryComplexity;
+  temporalFocus: TemporalFocus;
+  mentionsCountry: boolean;
+  mentionsOrg: boolean;
+  mentionsFinance: boolean;
+  mentionsRisk: boolean;
+  mentionsRelocation: boolean;
+  mentionsEthics: boolean;
+  isDocumentRequest: boolean;
+  isTrivial: boolean;
+}
+
+function analyzeQuery(
+  query: string,
+  params: Partial<ReportParameters>
+): QueryAnalysis {
+  const q = (query || '').toLowerCase().trim();
+
+  // ── Trivial detection ──────────────────────────────────────────────────
+  const isTrivial = q.length < 20 && /^(hi|hello|hey|thanks?|ok|yes|no|sure|good|great|cool|nice|bye|cheers)\b/i.test(q);
+
+  // ── Intent detection ──────────────────────────────────────────────────
+  let intent: QueryIntent = 'advise';
+  if (isTrivial) intent = 'conversational';
+  else if (/\breport\b|\bdraft\b|\bwrite\b|\bgenerat|\bdocument\b|\bletter\b|\bbrief\b|\bproposal\b|\bsubmission\b/i.test(q)) intent = 'report';
+  else if (/\bcompare\b|\bversus\b|\bvs\.?\b|\bdifference|\bwhich.*(better|best)\b|\bbenchmark/i.test(q)) intent = 'compare';
+  else if (/\bhow much\b|\bcalculat|\bnpv\b|\birr\b|\broi\b|\bcost\b|\bbudget\b|\bforecast/i.test(q)) intent = 'calculate';
+  else if (/\bplan\b|\bstrateg|\broadmap\b|\btimeline\b|\bphase|\bstep.?by.?step|\bnext.?step|\bhow.?to\b/i.test(q)) intent = 'plan';
+  else if (/\bmonitor|\btrack|\bwatch|\balert|\bsignal|\bupdate|\blatest|\bcurrent\b/i.test(q)) intent = 'monitor';
+  else if (/\binvestigat|\bresearch|\bfind.?out|\bdig.?into|\bdeep.?dive|\bexplore|\banalyze|\banalyse/i.test(q)) intent = 'investigate';
+  else if (/\bassess|\bevaluat|\breview|\baudit|\bcheck|\bdiagnos|\bexamin/i.test(q)) intent = 'assess';
+
+  // ── Domain detection ──────────────────────────────────────────────────
+  const domains: string[] = [];
+  if (/financ|cost|budget|roi|npv|irr|revenue|profit|invest|fund|incent|capital|economic|monetary|grant|tax/i.test(q)) domains.push('financial');
+  if (/risk|threat|danger|vulnerab|sanction|compliance|regulat|legal|audit|due.?diligence/i.test(q)) domains.push('risk');
+  if (/reloc|offshor|outsourc|bpo|nearshore|city|cities|workforce|supply.?chain|headcount|labor|labour|talent|manufactur|site.?select/i.test(q)) domains.push('relocation');
+  if (/strateg|feasib|engag|opportunit|recommend|advise|consult|decision|path|approach|option/i.test(q)) domains.push('strategic');
+  if (/ethic|ifc|standard|sdg|sustain|govern|bias|esg|social.?impact|human.?right|labor.?right|environment/i.test(q)) domains.push('ethics');
+  if (/partner|company|organi[sz]ation|entity|firm|stakeholder|who.?(are|is)|background/i.test(q)) domains.push('organization');
+  if (/histor|precedent|past|previous|lesson|track.?record|case.?study|similar|example|evidence/i.test(q)) domains.push('historical');
+  if (/country|nation|jurisdiction|market|region|economy|gdp|trade|export|import/i.test(q)) domains.push('country');
+  if (/simulat|probability|monte.?carlo|uncertain|confidence|statistical|model|quantum/i.test(q)) domains.push('quantum');
+
+  // ── Live data needs ────────────────────────────────────────────────────
+  // If the user needs current/real-time information, we MUST fire engines with live data
+  const needsLiveData =
+    intent === 'monitor' ||
+    /\bcurrent|\blatest|\btoday|\bnow|\brecent|\breal.?time|\blive|\bup.?to.?date|\b202[4-9]\b|\bthis year\b/i.test(q) ||
+    /\bwhat.?is.?happening|\bmarket.?condition|\bnews|\bbreaking|\bsituation\b/i.test(q);
+
+  // ── Historical needs ───────────────────────────────────────────────────
+  const needsHistorical =
+    /\bhistor|\bprecedent|\bpast|\blesson|\btrack.?record|\bcase.?study|\bsimilar|\bevidence|\bhas.?this.?worked|\bwhat.?happened/i.test(q) ||
+    intent === 'assess' || intent === 'compare';
+
+  // ── Deep research needs ────────────────────────────────────────────────
+  const needsDeepResearch =
+    intent === 'investigate' ||
+    /\bresearch|\bdeep.?dive|\bcomprehensive|\bdetailed|\bfull.?analysis|\bthorough|\binvestigate|\bexplore|\bsearch.?for/i.test(q);
+
+  // ── Complexity assessment ──────────────────────────────────────────────
+  let complexity: QueryComplexity = 'moderate';
+  if (isTrivial) complexity = 'trivial';
+  else if (q.length < 40 && domains.length <= 1) complexity = 'simple';
+  else if (q.length > 200 || domains.length >= 3 || needsDeepResearch) complexity = 'deep';
+  else if (domains.length >= 2 || intent === 'compare' || intent === 'plan') complexity = 'complex';
+
+  // ── Temporal focus ─────────────────────────────────────────────────────
+  let temporalFocus: TemporalFocus = 'mixed';
+  const hasPast = /\bhistor|\bpast|\bprevious|\bwas\b|\bwere\b|\bused to\b|\bbefore\b/i.test(q);
+  const hasPresent = /\bcurrent|\bnow|\btoday|\bis\b|\bare\b|\bstatus\b|\bsituation\b/i.test(q);
+  const hasFuture = /\bwill\b|\bfuture|\bforecast|\bpredict|\bproject|\bexpect|\bplan\b|\bnext\b|\bshould\b/i.test(q);
+  if (hasPast && !hasPresent && !hasFuture) temporalFocus = 'past';
+  else if (hasPresent && !hasPast && !hasFuture) temporalFocus = 'present';
+  else if (hasFuture && !hasPast && !hasPresent) temporalFocus = 'future';
+
+  // ── Entity presence ────────────────────────────────────────────────────
+  const mentionsCountry = Boolean(params.country) || /\bcountry|\bnation|\bjurisdiction|\bmarket\b/i.test(q);
+  const mentionsOrg = Boolean(params.organizationName || params.targetPartner) || /\bcompany|\bpartner|\borgani[sz]ation|\bentity|\bfirm/i.test(q);
+
+  return {
+    intent,
+    domains,
+    needsLiveData,
+    needsHistorical,
+    needsDeepResearch,
+    complexity,
+    temporalFocus,
+    mentionsCountry,
+    mentionsOrg,
+    mentionsFinance: domains.includes('financial'),
+    mentionsRisk: domains.includes('risk'),
+    mentionsRelocation: domains.includes('relocation'),
+    mentionsEthics: domains.includes('ethics'),
+    isDocumentRequest: intent === 'report',
+    isTrivial,
+  };
+}
+
+// ─── Brain Thinking Process ──────────────────────────────────────────────────
+// The brain introspects its capabilities, scores each engine group against the
+// query analysis, and produces an execution plan with reasoning for each decision.
+
+interface ThinkingResult {
+  groups: Set<EngineGroup>;
+  reasoning: string[];
+  queryAnalysis: QueryAnalysis;
+  engineScores: Map<EngineGroup, number>;
+}
+
+function thinkAndPlan(
   query: string,
   params: Partial<ReportParameters>,
   readiness: number
-): Set<EngineGroup> {
-  const q = (query || '').toLowerCase().trim();
-  const groups = new Set<EngineGroup>();
+): ThinkingResult {
+  const analysis = analyzeQuery(query, params);
+  const reasoning: string[] = [];
+  const engineScores = new Map<EngineGroup, number>();
 
-  // Trivial / greeting queries → skip everything
-  if (q.length < 20 && /^(hi|hello|hey|thanks?|ok|yes|no|sure|good|great)\b/i.test(q)) {
-    return groups;
-  }
-
-  // Foundation always runs for substantive queries
-  if (q.length >= 20 || readiness >= 25) {
-    groups.add('foundation');
+  // For trivial queries, short-circuit
+  if (analysis.isTrivial) {
+    reasoning.push('Query is conversational/trivial — no engines needed');
+    return { groups: new Set(), reasoning, queryAnalysis: analysis, engineScores };
   }
 
-  // Country-related engines
-  if (params.country) {
-    groups.add('country');
+  reasoning.push(`Intent: ${analysis.intent} | Complexity: ${analysis.complexity} | Domains: [${analysis.domains.join(', ')}] | LiveData: ${analysis.needsLiveData} | Temporal: ${analysis.temporalFocus}`);
+
+  // ── Score each engine group ──────────────────────────────────────────
+  for (const capability of ENGINE_REGISTRY) {
+    let score = 0;
+    const reasons: string[] = [];
+
+    // 1. Domain match — does the query's domain overlap with this engine?
+    const domainMatch = analysis.domains.some(d => d === capability.group) ||
+      analysis.domains.some(d => {
+        // Cross-domain relationships: strategic questions benefit from historical
+        if (d === 'strategic' && capability.group === 'historical') return true;
+        if (d === 'strategic' && capability.group === 'ethics') return true;
+        if (d === 'risk' && capability.group === 'ethics') return true;
+        if (d === 'relocation' && capability.group === 'country') return true;
+        if (d === 'relocation' && capability.group === 'financial') return true;
+        if (d === 'financial' && capability.group === 'country') return true;
+        return false;
+      });
+    if (domainMatch) {
+      score += 35;
+      reasons.push('domain-match');
+    }
+
+    // 2. Question-keyword match — how many of the engine's answerable questions appear?
+    const qLower = (query || '').toLowerCase();
+    const keywordHits = capability.answersQuestions.filter(kw => qLower.includes(kw.toLowerCase()));
+    const keywordScore = Math.min(30, keywordHits.length * 10);
+    if (keywordScore > 0) {
+      score += keywordScore;
+      reasons.push(`keyword-hits(${keywordHits.length})`);
+    }
+
+    // 3. Live data bonus — if the query needs live data and this engine has it
+    if (analysis.needsLiveData && capability.hasLiveData) {
+      score += 20;
+      reasons.push('live-data-needed');
+    }
+
+    // 4. Parameter availability — can this engine actually run?
+    if (capability.requiresCountry && !params.country) {
+      score -= 40; // Can't run without country
+      reasons.push('missing-country-param');
+    }
+    if (capability.requiresOrg && !params.organizationName && !params.targetPartner) {
+      score -= 30; // Can't run without org
+      reasons.push('missing-org-param');
+    }
+
+    // 5. Readiness gate — is the case mature enough?
+    if (readiness < capability.minReadiness) {
+      score -= 20;
+      reasons.push(`below-min-readiness(${capability.minReadiness})`);
+    }
+
+    // 6. Complexity alignment — expensive engines for complex queries
+    if (analysis.complexity === 'deep' && capability.costWeight >= 6) {
+      score += 15;
+      reasons.push('complexity-match-deep');
+    }
+    if (analysis.complexity === 'simple' && capability.costWeight >= 7) {
+      score -= 15;
+      reasons.push('too-expensive-for-simple');
+    }
+
+    // 7. Intent-specific boosts
+    if (analysis.intent === 'report' && (capability.group === 'strategic' || capability.group === 'historical' || capability.group === 'ethics')) {
+      score += 15;
+      reasons.push('report-needs-depth');
+    }
+    if (analysis.intent === 'calculate' && capability.group === 'financial') {
+      score += 25;
+      reasons.push('calculation-intent');
+    }
+    if (analysis.intent === 'monitor' && capability.hasLiveData) {
+      score += 20;
+      reasons.push('monitoring-needs-live');
+    }
+    if (analysis.intent === 'compare' && (capability.group === 'country' || capability.group === 'relocation')) {
+      score += 15;
+      reasons.push('comparison-boost');
+    }
+    if (analysis.intent === 'investigate' && capability.group === 'deep-research') {
+      score += 25;
+      reasons.push('investigation-intent');
+    }
+
+    // 8. Historical needs
+    if (analysis.needsHistorical && capability.group === 'historical') {
+      score += 20;
+      reasons.push('historical-needed');
+    }
+
+    // 9. Foundation is almost always useful for substantive queries
+    if (capability.group === 'foundation' && !analysis.isTrivial) {
+      score += 20;
+      reasons.push('foundation-baseline');
+    }
+
+    // 10. Progressive readiness escalation — more engines as case matures
+    if (readiness >= 60 && (capability.group === 'strategic' || capability.group === 'historical' || capability.group === 'risk')) {
+      score += 10;
+      reasons.push('readiness-escalation-60');
+    }
+    if (readiness >= 75 && (capability.group === 'financial' || capability.group === 'ethics')) {
+      score += 10;
+      reasons.push('readiness-escalation-75');
+    }
+    if (readiness >= 85 && (capability.group === 'quantum' || capability.group === 'proactive' || capability.group === 'deep-research')) {
+      score += 15;
+      reasons.push('readiness-escalation-85');
+    }
+
+    // 11. Country availability boost — if we HAVE a country, country engines are cheap wins
+    if (params.country && capability.group === 'country') {
+      score += 15;
+      reasons.push('country-available');
+    }
+
+    // 12. Org availability boost
+    if ((params.organizationName || params.targetPartner) && capability.group === 'organization') {
+      score += 15;
+      reasons.push('org-available');
+    }
+
+    engineScores.set(capability.group, Math.max(0, score));
+    if (reasons.length) {
+      reasoning.push(`  ${capability.group}: score=${Math.max(0, score)} [${reasons.join(', ')}]`);
+    }
   }
 
-  // Organization / partner engines
-  if (params.organizationName || params.targetPartner ||
-      /partner|company|organi[sz]ation|entity|firm|stakeholder/i.test(q)) {
-    groups.add('organization');
+  // ── Build execution plan from scores ──────────────────────────────────
+  // Threshold: >30 = fire the engine group
+  const ACTIVATION_THRESHOLD = 30;
+  const selectedGroups = new Set<EngineGroup>();
+
+  const sortedScores = [...engineScores.entries()].sort((a, b) => b[1] - a[1]);
+  for (const [group, score] of sortedScores) {
+    if (score >= ACTIVATION_THRESHOLD) {
+      selectedGroups.add(group);
+    }
   }
 
-  // Strategic analysis
-  if (/strateg|feasib|assessment|evaluat|engag|opportunit|recommend|advise|consult|option|decision|path/i.test(q)) {
-    groups.add('strategic');
-    groups.add('historical');
+  // ── Safety net: ensure we don't run zero engines for real queries ──────
+  if (selectedGroups.size === 0 && !analysis.isTrivial) {
+    selectedGroups.add('foundation');
+    reasoning.push('Safety net: Added foundation as minimum for non-trivial query');
   }
 
-  // Risk analysis
-  if (/risk|threat|danger|vulnerab|sanction|compliance|regulat|legal|audit|due.?diligence/i.test(q)) {
-    groups.add('risk');
-    groups.add('ethics');
-  }
+  reasoning.push(`Decision: Activating ${selectedGroups.size} groups → [${[...selectedGroups].join(', ')}]`);
 
-  // Financial analysis
-  if (/financ|cost|budget|roi|npv|irr|revenue|profit|invest|fund|incent|capital|economic|monetary/i.test(q)) {
-    groups.add('financial');
-  }
-
-  // Relocation / offshoring
-  if (/reloc|offshor|outsourc|bpo|nearshore|city|cities|workforce|supply.?chain|headcount|labor|labour|talent|manufactur/i.test(q)) {
-    groups.add('relocation');
-  }
-
-  // Deep research
-  if (/research|deep.?dive|comprehensive|detailed|full.?analysis|thorough|investigate|explore/i.test(q)) {
-    groups.add('deep-research');
-  }
-
-  // Document / report generation
-  if (/report|document|letter|brief|proposal|submission|study|draft|write|generat/i.test(q)) {
-    groups.add('strategic');
-    groups.add('historical');
-    groups.add('ethics');
-  }
-
-  // Progressive escalation based on case readiness
-  if (readiness >= 60 && groups.has('foundation')) {
-    groups.add('strategic');
-    groups.add('historical');
-    groups.add('risk');
-  }
-  if (readiness >= 75 && groups.has('foundation')) {
-    groups.add('financial');
-    groups.add('ethics');
-  }
-  if (readiness >= 85) {
-    groups.add('quantum');
-    groups.add('proactive');
-    groups.add('deep-research');
-  }
-
-  return groups;
+  return { groups: selectedGroups, reasoning, queryAnalysis: analysis, engineScores };
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
@@ -477,13 +842,17 @@ export class BrainIntegrationService {
     const isoCode = country ? countryToISO(country) : '';
     const orgName = params.organizationName || params.targetPartner || '';
 
-    // ── INTELLIGENT ENGINE CLASSIFICATION ──────────────────────────────────────
-    // The brain now thinks before it acts. Classify the query to determine
-    // which engine groups are relevant, then only fire what's needed.
-    const groups = classifyQuery(strategicQuestion, params, readiness);
+    // ── INTELLIGENT BRAIN THINKING ────────────────────────────────────────────
+    // The brain introspects its own capabilities, deeply analyses the query,
+    // scores every engine group for relevance, and builds an execution plan.
+    // It knows which engines have live data when real-time info is needed.
+    const thinking = thinkAndPlan(strategicQuestion, params, readiness);
+    const groups = thinking.groups;
     const g = (group: EngineGroup) => groups.has(group);
 
-    console.log(`[Brain] Query classified → ${groups.size} groups active: [${[...groups].join(', ')}] (readiness: ${readiness}%)`);
+    console.log(`[Brain] THINKING → Intent: ${thinking.queryAnalysis.intent} | Complexity: ${thinking.queryAnalysis.complexity} | LiveData: ${thinking.queryAnalysis.needsLiveData}`);
+    console.log(`[Brain] SCORES → ${[...thinking.engineScores.entries()].map(([g, s]) => `${g}:${s}`).join(' | ')}`);
+    console.log(`[Brain] DECISION → ${groups.size} groups active: [${[...groups].join(', ')}] (readiness: ${readiness}%)`);
 
     // For trivial queries (greetings etc), return a minimal context immediately
     if (groups.size === 0) {
@@ -1222,6 +1591,25 @@ export class BrainIntegrationService {
       `## BWGA AI BRAIN CONTEXT - Readiness ${readiness}% - ${new Date().toISOString()}`,
       `This block is injected from the background intelligence layer. Use it to inform your response - do not summarise it verbatim, but let it shape the precision and depth of your recommendations.`,
     ];
+
+    // ── Brain Thinking Log (so the AI sees how the brain reasoned) ────────────
+    promptParts.push(`\n### ── BRAIN THINKING PROCESS ──`);
+    promptParts.push(`**Query Intent:** ${thinking.queryAnalysis.intent} | **Complexity:** ${thinking.queryAnalysis.complexity} | **Temporal Focus:** ${thinking.queryAnalysis.temporalFocus}`);
+    promptParts.push(`**Domains Detected:** [${thinking.queryAnalysis.domains.join(', ')}]`);
+    promptParts.push(`**Live Data Needed:** ${thinking.queryAnalysis.needsLiveData ? 'YES — prioritizing real-time engines' : 'No'} | **Historical Needed:** ${thinking.queryAnalysis.needsHistorical ? 'Yes' : 'No'} | **Deep Research:** ${thinking.queryAnalysis.needsDeepResearch ? 'Yes' : 'No'}`);
+    const topEngines = [...thinking.engineScores.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([g, s]) => `${g}(${s})`)
+      .join(', ');
+    promptParts.push(`**Engine Relevance Scores (top 6):** ${topEngines}`);
+    promptParts.push(`**Engines Activated:** ${groups.size} groups → [${[...groups].join(', ')}]`);
+    if (thinking.queryAnalysis.needsLiveData) {
+      const liveEngines = ENGINE_REGISTRY.filter(e => e.hasLiveData && groups.has(e.group));
+      if (liveEngines.length) {
+        promptParts.push(`**Live Data Sources Active:** ${liveEngines.flatMap(e => e.dataSources).join(', ')}`);
+      }
+    }
 
     // ── System Capability Boundaries (always first - shapes all responses) ────
     try {
