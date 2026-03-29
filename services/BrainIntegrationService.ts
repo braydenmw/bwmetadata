@@ -352,13 +352,115 @@ function formatExternalDataBlock(ext: BrainContext['externalData'], country: str
   return lines.length > 1 ? lines.join('\n') : '';
 }
 
+// ─── Engine Group Classification ──────────────────────────────────────────────
+// Instead of firing all 50+ engines like a child rushing, the brain now thinks
+// first. It classifies the query, determines what engine groups are relevant,
+// and progressively activates only what's needed — like an experienced adult
+// who knows which tools to reach for.
+
+type EngineGroup =
+  | 'foundation'    // Core scoring: indices, NSIL, composite, case graph, maturity, gate
+  | 'country'       // Country intelligence: World Bank, Numbeo, ACLED, Comtrade, compliance, regional, ESG
+  | 'organization'  // Org intelligence: OpenCorp, sanctions, OSINT, partners
+  | 'strategic'     // Strategic analysis: adversarial, persona, domain agents, decision pipeline
+  | 'historical'    // Historical: patterns, parallels, reference engagements
+  | 'risk'          // Risk focus: risk matrix, counterfactual, reactive, derived indices
+  | 'financial'     // Financial: NPV/IRR calc, incentives, cost analysis
+  | 'deep-research' // External research: Tavily, multi-agent consensus, OSINT deep
+  | 'relocation'    // Relocation: city discovery, boots on ground, pathway, workforce, supply chain
+  | 'quantum'       // Quantum: Monte Carlo, pattern matcher, cognition bridge
+  | 'proactive'     // Proactive: Layer 7, self-improvement, causal reasoning
+  | 'ethics';       // Ethics: IFC standards, compliance check, bias detection
+
+function classifyQuery(
+  query: string,
+  params: Partial<ReportParameters>,
+  readiness: number
+): Set<EngineGroup> {
+  const q = (query || '').toLowerCase().trim();
+  const groups = new Set<EngineGroup>();
+
+  // Trivial / greeting queries → skip everything
+  if (q.length < 20 && /^(hi|hello|hey|thanks?|ok|yes|no|sure|good|great)\b/i.test(q)) {
+    return groups;
+  }
+
+  // Foundation always runs for substantive queries
+  if (q.length >= 20 || readiness >= 25) {
+    groups.add('foundation');
+  }
+
+  // Country-related engines
+  if (params.country) {
+    groups.add('country');
+  }
+
+  // Organization / partner engines
+  if (params.organizationName || params.targetPartner ||
+      /partner|company|organi[sz]ation|entity|firm|stakeholder/i.test(q)) {
+    groups.add('organization');
+  }
+
+  // Strategic analysis
+  if (/strateg|feasib|assessment|evaluat|engag|opportunit|recommend|advise|consult|option|decision|path/i.test(q)) {
+    groups.add('strategic');
+    groups.add('historical');
+  }
+
+  // Risk analysis
+  if (/risk|threat|danger|vulnerab|sanction|compliance|regulat|legal|audit|due.?diligence/i.test(q)) {
+    groups.add('risk');
+    groups.add('ethics');
+  }
+
+  // Financial analysis
+  if (/financ|cost|budget|roi|npv|irr|revenue|profit|invest|fund|incent|capital|economic|monetary/i.test(q)) {
+    groups.add('financial');
+  }
+
+  // Relocation / offshoring
+  if (/reloc|offshor|outsourc|bpo|nearshore|city|cities|workforce|supply.?chain|headcount|labor|labour|talent|manufactur/i.test(q)) {
+    groups.add('relocation');
+  }
+
+  // Deep research
+  if (/research|deep.?dive|comprehensive|detailed|full.?analysis|thorough|investigate|explore/i.test(q)) {
+    groups.add('deep-research');
+  }
+
+  // Document / report generation
+  if (/report|document|letter|brief|proposal|submission|study|draft|write|generat/i.test(q)) {
+    groups.add('strategic');
+    groups.add('historical');
+    groups.add('ethics');
+  }
+
+  // Progressive escalation based on case readiness
+  if (readiness >= 60 && groups.has('foundation')) {
+    groups.add('strategic');
+    groups.add('historical');
+    groups.add('risk');
+  }
+  if (readiness >= 75 && groups.has('foundation')) {
+    groups.add('financial');
+    groups.add('ethics');
+  }
+  if (readiness >= 85) {
+    groups.add('quantum');
+    groups.add('proactive');
+    groups.add('deep-research');
+  }
+
+  return groups;
+}
+
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export class BrainIntegrationService {
   /**
-   * Run all background engines in parallel and return a rich context block.
-   * Safe to call on every non-trivial turn - results are cached for 3 minutes
-   * per unique (country × org × readiness-bucket) key.
+   * Intelligent engine orchestration — classifies the query first, then
+   * activates only the engine groups that are relevant. Results are cached
+   * for 3 minutes per unique (country × org × readiness-bucket) key.
    */
   static async enrich(
     params: Partial<ReportParameters>,
@@ -375,7 +477,45 @@ export class BrainIntegrationService {
     const isoCode = country ? countryToISO(country) : '';
     const orgName = params.organizationName || params.targetPartner || '';
 
-    // ── Run everything in parallel ────────────────────────────────────────────
+    // ── INTELLIGENT ENGINE CLASSIFICATION ──────────────────────────────────────
+    // The brain now thinks before it acts. Classify the query to determine
+    // which engine groups are relevant, then only fire what's needed.
+    const groups = classifyQuery(strategicQuestion, params, readiness);
+    const g = (group: EngineGroup) => groups.has(group);
+
+    console.log(`[Brain] Query classified → ${groups.size} groups active: [${[...groups].join(', ')}] (readiness: ${readiness}%)`);
+
+    // For trivial queries (greetings etc), return a minimal context immediately
+    if (groups.size === 0) {
+      const minimal: BrainContext = {
+        promptBlock: '',
+        indices: null, adversarial: null, agentConsensus: null,
+        historicalPatterns: [], externalData: {},
+        nsilAssessment: null, compositeScore: null, compliance: null,
+        caseGraph: null, regionalKernel: null, decisionPacket: null,
+        computedAt: new Date().toISOString(), readiness,
+        recommendedDocumentIds: [], recommendedLetterIds: [],
+        methodologyKB: null, ifcAssessment: null, patternAssessment: null,
+        maturityScores: null, problemGraph: null, dataFabric: null,
+        motivationAnalysis: null, counterfactualAnalysis: null,
+        domainAnalysis: null, historicalParallels: null, rankedPartners: null,
+        derivedIndices: null, situationAnalysis: null, selfLearningInsights: null,
+        unbiasedAnalysis: null, personaAnalysis: null, referenceEngagements: null,
+        osintResults: null, gateStatus: null, reactiveOpportunities: null,
+        reactiveRisks: null, researchEcosystem: null, failureModeGovernance: null,
+        proactiveBriefing: null, causalSimulation: null, coreEthics: null,
+        regionalCityDiscovery: null, bootsOnGround: null, relocationPathway: null,
+        globalCityIndex: null, relocationOutcomes: null, supplyChainMap: null,
+        workforceIntelligence: null, functionSplit: null, esgClimate: null,
+        networkEffects: null, tier1Extraction: null, governmentIncentives: null,
+        quantumMonteCarlo: null, quantumPatterns: null, quantumCognition: null,
+        capabilityBoundary: null, financialAnalysis: null, riskMatrix: null,
+        qualityGate: { score: 0, decision: 'skip', reasons: [], flags: [] } as any,
+      };
+      return minimal;
+    }
+
+    // ── Run SELECTED engines in parallel ──────────────────────────────────────
     const [
       indicesResult,
       adversarialResult,
@@ -407,44 +547,44 @@ export class BrainIntegrationService {
       coreComplianceResult,
       coreBiasResult,
     ] = await Promise.allSettled([
-      // 15 indices
-      calculateAllIndices(params).catch(() => null),
-      // Adversarial (requires full ReportParameters shape)
-      AdversarialReasoningService.generate(params as ReportParameters).catch(() => null),
-      // Historical patterns
-      HistoricalLearningEngine.findRelevantPatterns(params as ReportParameters).catch(() => [] as HistoricalPattern[]),
-      // World Bank live
-      isoCode ? fetchWorldBankCountryIndicators(isoCode).catch(() => null) : Promise.resolve(null),
-      // OpenCorporates company lookup
-      orgName ? fetchOpenCorporatesCompany(orgName).catch(() => null) : Promise.resolve(null),
-      // Numbeo cost-of-living
-      country ? fetchNumbeoCityData(country).catch(() => null) : Promise.resolve(null),
-      // Multi-agent consensus on the strategic question (only if we have a question)
-      strategicQuestion.length > 20
+      // 15 indices [FOUNDATION]
+      g('foundation') ? calculateAllIndices(params).catch(() => null) : Promise.resolve(null),
+      // Adversarial (requires full ReportParameters shape) [STRATEGIC]
+      g('strategic') ? AdversarialReasoningService.generate(params as ReportParameters).catch(() => null) : Promise.resolve(null),
+      // Historical patterns [HISTORICAL]
+      g('historical') ? HistoricalLearningEngine.findRelevantPatterns(params as ReportParameters).catch(() => [] as HistoricalPattern[]) : Promise.resolve([] as HistoricalPattern[]),
+      // World Bank live [COUNTRY]
+      g('country') && isoCode ? fetchWorldBankCountryIndicators(isoCode).catch(() => null) : Promise.resolve(null),
+      // OpenCorporates company lookup [ORGANIZATION]
+      g('organization') && orgName ? fetchOpenCorporatesCompany(orgName).catch(() => null) : Promise.resolve(null),
+      // Numbeo cost-of-living [COUNTRY]
+      g('country') && country ? fetchNumbeoCityData(country).catch(() => null) : Promise.resolve(null),
+      // Multi-agent consensus [DEEP-RESEARCH]
+      g('deep-research') && strategicQuestion.length > 20
         ? MultiAgentOrchestrator.runConsensus(strategicQuestion, { params, readiness }).catch(() => null)
         : Promise.resolve(null),
-      // NSIL Intelligence Hub - national strategic intelligence layer
-      Promise.resolve(NSILIntelligenceHub.quickAssess(params)).catch(() => null),
-      // Composite score (SPI/IVAS/SCF)
-      CompositeScoreService.getScores(params as ReportParameters).catch(() => null),
-      // Compliance framework - jurisdiction-specific alerts
-      country
+      // NSIL Intelligence Hub [FOUNDATION]
+      g('foundation') ? Promise.resolve(NSILIntelligenceHub.quickAssess(params)).catch(() => null) : Promise.resolve(null),
+      // Composite score (SPI/IVAS/SCF) [FOUNDATION]
+      g('foundation') ? CompositeScoreService.getScores(params as ReportParameters).catch(() => null) : Promise.resolve(null),
+      // Compliance framework - jurisdiction-specific alerts [COUNTRY]
+      g('country') && country
         ? Promise.resolve(GlobalComplianceFramework.checkCompliance({
             country,
             sector: (params as any).sector || params.organizationType || undefined,
           })).catch(() => null)
         : Promise.resolve(null),
-      // Case graph - structural relationship map of the case
-      Promise.resolve(CaseGraphBuilder.build({
+      // Case graph - structural relationship map [FOUNDATION]
+      g('foundation') ? Promise.resolve(CaseGraphBuilder.build({
         organizationName: params.organizationName,
         country: params.country,
         organizationType: (params as any).sector || params.organizationType || '',
         currentMatter: (params as any).problemStatement || (params as any).currentMatter || '',
         objectives: ((params as any).strategicIntent || []).join(', ') || (params as any).objectives || '',
         constraints: (params as any).constraints || '',
-      })).catch(() => null),
-      // Regional development kernel - ranked interventions and ecosystem analysis
-      country && readiness >= 50
+      })).catch(() => null) : Promise.resolve(null),
+      // Regional development kernel [COUNTRY]
+      g('country') && country && readiness >= 50
         ? Promise.resolve(RegionalDevelopmentOrchestrator.run({
             regionProfile: country,
             sector: (params as any).sector || params.organizationType || 'general',
@@ -459,12 +599,12 @@ export class BrainIntegrationService {
             partnerCandidates: [],
           })).catch(() => null)
         : Promise.resolve(null),
-      // DecisionPipeline - structured decision packet with ranked options
-      readiness >= 40 && params.country
+      // DecisionPipeline [STRATEGIC]
+      g('strategic') && readiness >= 40 && params.country
         ? DecisionPipeline.run(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
-      // Domain agent synthesis (Gov Policy, Banking, Corporate, Market, Risk, Historical)
-      readiness >= 55 && strategicQuestion.length > 15
+      // Domain agent synthesis [STRATEGIC]
+      g('strategic') && readiness >= 55 && strategicQuestion.length > 15
         ? DomainAgentOrchestrator.synthesizeAnalysis({
             organizationProfile: params as ReportParameters,
             query: strategicQuestion.substring(0, 400),
@@ -472,56 +612,56 @@ export class BrainIntegrationService {
             includeCustomData: false,
           }).catch(() => null)
         : Promise.resolve(null),
-      // PersonaEngine - Skeptic / Advocate / Regulator / Accountant
-      readiness >= 30
+      // PersonaEngine [STRATEGIC]
+      g('strategic') && readiness >= 30
         ? PersonaEngine.runFullAnalysis(params).catch(() => null)
         : Promise.resolve(null),
-      // DerivedIndexService - PRI (Political Risk), TCO (Total Cost), CRI (Country Risk)
-      params.country && readiness >= 35
+      // DerivedIndexService [RISK]
+      g('risk') && params.country && readiness >= 35
         ? Promise.all([
             DerivedIndexService.calculatePRI(params as ReportParameters).catch(() => null),
             DerivedIndexService.calculateTCO(params as ReportParameters).catch(() => null),
             DerivedIndexService.calculateCRI(params as ReportParameters).catch(() => null),
           ]).catch(() => null)
         : Promise.resolve(null),
-      // OSINT search - live open-source intelligence for country/org
-      (country || orgName) && readiness >= 25
+      // OSINT search [ORGANIZATION]
+      g('organization') && (country || orgName) && readiness >= 25
         ? osintSearch(`${country} ${orgName} strategic investment opportunities`.trim(), ['government', 'news', 'business'], 6).catch(() => null)
         : Promise.resolve(null),
-      // ReactiveIntelligenceEngine - opportunity detection
-      country && readiness >= 40
+      // ReactiveIntelligenceEngine - opportunity detection [RISK]
+      g('risk') && country && readiness >= 40
         ? ReactiveIntelligenceEngine.detectOpportunities(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
-      // ReactiveIntelligenceEngine - live risk monitoring
-      country && readiness >= 40
+      // ReactiveIntelligenceEngine - live risk monitoring [RISK]
+      g('risk') && country && readiness >= 40
         ? ReactiveIntelligenceEngine.monitorRisks(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
       // GlobalIssueResolver - universal problem-solver treating any query as a solvable issue
       strategicQuestion.length > 20
         ? new GlobalIssueResolver().resolveIssue(strategicQuestion.substring(0, 300)).catch(() => null)
         : Promise.resolve(null),
-      // SelfImprovementEngine - runtime weight tuning and regression correction
-      readiness >= 50
+      // SelfImprovementEngine [PROACTIVE]
+      g('proactive') && readiness >= 50
         ? selfImprovementEngine.analyzeAndImprove().catch(() => null)
         : Promise.resolve(null),
-      // ACLED - real-time conflict & political violence data
-      country && readiness >= 30
+      // ACLED - real-time conflict & political violence data [COUNTRY]
+      g('country') && country && readiness >= 30
         ? getACLEDSummary(country).catch(() => null)
         : Promise.resolve(null),
-      // OpenSanctions - sanctions & PEP screening for the target org/partner
-      orgName
+      // OpenSanctions [ORGANIZATION]
+      g('organization') && orgName
         ? screenEntitySanctions(orgName).catch(() => null)
         : Promise.resolve(null),
-      // UN Comtrade - bilateral trade statistics for the target country
-      country && readiness >= 30
+      // UN Comtrade [COUNTRY]
+      g('country') && country && readiness >= 30
         ? fetchComtradeData(country).catch(() => null)
         : Promise.resolve(null),
-      // Tavily - deep web research on the strategic question (needs API key)
-      strategicQuestion.length > 20 && readiness >= 40
+      // Tavily deep research [DEEP-RESEARCH]
+      g('deep-research') && strategicQuestion.length > 20 && readiness >= 40
         ? tavilyResearchQuestion(strategicQuestion, country).catch(() => null)
         : Promise.resolve(null),
-      // ProactiveOrchestrator (Layer 7) - drift, backtesting, signals, meta-cognition
-      readiness >= 30 && country
+      // ProactiveOrchestrator (Layer 7) [PROACTIVE]
+      g('proactive') && readiness >= 30 && country
         ? proactiveOrchestrator.runProactiveCycle({
             country,
             sector: (params as any).sector || params.organizationType || 'general',
@@ -535,8 +675,8 @@ export class BrainIntegrationService {
             ].filter(Boolean),
           } as CurrentContext).catch(() => null)
         : Promise.resolve(null),
-      // Core causal reasoning simulation
-      (params as any).currentMatter || strategicQuestion
+      // Core causal reasoning simulation [STRATEGIC]
+      g('strategic') && ((params as any).currentMatter || strategicQuestion)
         ? causalSimulateScenario({
             problem: (params as any).currentMatter || strategicQuestion,
             context: { country, sector: (params as any).sector || '', readiness },
@@ -544,12 +684,12 @@ export class BrainIntegrationService {
             interventionEffect: 0.15,
           }).catch(() => null)
         : Promise.resolve(null),
-      // Core ethics/governance compliance check
-      country
+      // Core ethics/governance compliance check [ETHICS]
+      g('ethics') && country
         ? Promise.resolve((() => { try { return coreCheckCompliance(`Investment in ${(params as any).sector || 'general'} sector in ${country}`, params); } catch { return null; } })())
         : Promise.resolve(null),
-      // Core ethics/governance bias detection
-      Promise.resolve((() => { try { return coreDetectBias?.(params) ?? null; } catch { return null; } })()),
+      // Core ethics/governance bias detection [ETHICS]
+      g('ethics') ? Promise.resolve((() => { try { return coreDetectBias?.(params) ?? null; } catch { return null; } })()) : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -654,8 +794,8 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // GlobalIntelligenceEngine - sync reference engagement matching
-    const referenceEngagements = (() => {
+    // GlobalIntelligenceEngine [HISTORICAL]
+    const referenceEngagements = g('historical') ? (() => {
       try {
         const model = buildAdvisorInputFromParams(params as ReportParameters);
         const engagements = findRelevantEngagements(model, 3);
@@ -667,7 +807,7 @@ export class BrainIntegrationService {
           outcomes: e.outcomes ?? [],
         }));
       } catch { return null; }
-    })();
+    })() : null;
 
     // Unpack new engines (indices 13-20 in the settled array)
     const _settledAll = [
@@ -679,14 +819,14 @@ export class BrainIntegrationService {
     // We need to destructure from the original Promise.allSettled call.
     // They are NOT in settledAll above - they're in the raw call below.
     // We re-run them synchronously (cached) via direct assignment:
-    const methodologyKB = (() => { try { return MethodologyKnowledgeBase.lookupAll({ country, industry: (params as any).sector ? [(params as any).sector] : undefined, problemStatement: strategicQuestion || (params as any).currentMatter || '' }); } catch { return null; } })();
-    const patternAssessment = (() => { try { return PatternConfidenceEngine.assess(params as ReportParameters); } catch { return null; } })();
-    const maturityScores = (() => { try { return readiness >= 25 ? { scores: calculateMaturityScores(params), insights: generateAIInsights(params) } : null; } catch { return null; } })();
-    const problemGraph = (() => { try { return ((params as any).currentMatter || strategicQuestion) ? ProblemToSolutionGraphService.buildGraph({ currentMatter: (params as any).currentMatter || strategicQuestion, objectives: (params as any).objectives || strategicQuestion, constraints: (params as any).constraints || '', evidenceNotes: (params as any).uploadedDocuments || [] }) : null; } catch { return null; } })();
-    const dataFabric = (() => { try { return country ? GlobalDataFabricService.buildSnapshot(country, (params as any).jurisdiction || country, [(params as any).organizationType || '', (params as any).sector || ''].filter(Boolean)) : null; } catch { return null; } })();
+    const methodologyKB = g('foundation') ? (() => { try { return MethodologyKnowledgeBase.lookupAll({ country, industry: (params as any).sector ? [(params as any).sector] : undefined, problemStatement: strategicQuestion || (params as any).currentMatter || '' }); } catch { return null; } })() : null;
+    const patternAssessment = g('historical') ? (() => { try { return PatternConfidenceEngine.assess(params as ReportParameters); } catch { return null; } })() : null;
+    const maturityScores = g('foundation') ? (() => { try { return readiness >= 25 ? { scores: calculateMaturityScores(params), insights: generateAIInsights(params) } : null; } catch { return null; } })() : null;
+    const problemGraph = g('foundation') ? (() => { try { return ((params as any).currentMatter || strategicQuestion) ? ProblemToSolutionGraphService.buildGraph({ currentMatter: (params as any).currentMatter || strategicQuestion, objectives: (params as any).objectives || strategicQuestion, constraints: (params as any).constraints || '', evidenceNotes: (params as any).uploadedDocuments || [] }) : null; } catch { return null; } })() : null;
+    const dataFabric = g('country') ? (() => { try { return country ? GlobalDataFabricService.buildSnapshot(country, (params as any).jurisdiction || country, [(params as any).organizationType || '', (params as any).sector || ''].filter(Boolean)) : null; } catch { return null; } })() : null;
 
-    // ── Situation Analysis Engine - perspectives, blind spots, contrarian view ─
-    const situationAnalysis = (() => {
+    // ── Situation Analysis Engine [FOUNDATION] ─
+    const situationAnalysis = g('foundation') ? (() => {
       try {
         const summary = SituationAnalysisEngine.quickSummary(params);
         return {
@@ -696,18 +836,18 @@ export class BrainIntegrationService {
           contrarianView: '',
         };
       } catch { return null; }
-    })();
+    })() : null;
 
-    // ── Self-Learning Engine - performance-based recommendations ──────────────
-    const selfLearningInsights = (() => {
+    // ── Self-Learning Engine [PROACTIVE] ──────────────
+    const selfLearningInsights = g('proactive') ? (() => {
       try {
         const recs = (selfLearningEngine as any).getRecommendations?.();
         return Array.isArray(recs) ? recs.slice(0, 5) : null;
       } catch { return null; }
-    })();
+    })() : null;
 
-    // ── Unbiased Analysis Engine - pro/con, debate, alternatives ─────────────
-    const unbiasedAnalysis = (() => {
+    // ── Unbiased Analysis Engine [STRATEGIC] ─────────────
+    const unbiasedAnalysis = g('strategic') ? (() => {
       try {
         const eng = new UnbiasedAnalysisEngine();
         const full = (eng as any).generateFullAnalysis?.(params) ?? (eng as any).analyze?.(params);
@@ -720,10 +860,10 @@ export class BrainIntegrationService {
         }
         return null;
       } catch { return null; }
-    })();
+    })() : null;
 
-    // ── Regional City Discovery Engine - proactive overlooked city matching ───
-    const regionalCityDiscovery: DiscoveryResult | null = (() => {
+    // ── Regional City Discovery Engine [RELOCATION] ───
+    const regionalCityDiscovery: DiscoveryResult | null = g('relocation') ? (() => {
       try {
         return RegionalCityDiscoveryEngine.discover({
           targetSectors: [(params as any).sector || params.organizationType || ''].filter(Boolean),
@@ -732,7 +872,7 @@ export class BrainIntegrationService {
           preferOverlooked: true,
         }, 10);
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── OutcomeTracker - track enrichment run for learning ────────────────────
     (() => {
@@ -744,17 +884,17 @@ export class BrainIntegrationService {
       } catch { /* non-critical */ }
     })();
 
-    // ── Boots on Ground Intelligence - local ground-truth for candidate cities ─
-    const bootsOnGround = (() => {
+    // ── Boots on Ground Intelligence [RELOCATION] ─
+    const bootsOnGround = g('relocation') ? (() => {
       try {
         if (!country) return null;
         const report = BotsOnGroundNetwork.getByCountry(country);
         return report.length ? report : BotsOnGroundNetwork.getAllReports().slice(0, 3);
       } catch { return null; }
-    })();
+    })() : null;
 
-    // ── Relocation Pathway Engine - 90-day phased action plans ────────────────
-    const relocationPathway = (() => {
+    // ── Relocation Pathway Engine [RELOCATION] ────────────────
+    const relocationPathway = g('relocation') ? (() => {
       try {
         if (readiness < 30 || !country) return null;
         const headcount = (params as any).employeeCount || 50;
@@ -768,10 +908,10 @@ export class BrainIntegrationService {
           urgency: 'standard',
         });
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Global City Index - multi-dimensional city rankings ──────────────────
-    const globalCityIndex = (() => {
+    const globalCityIndex = g('relocation') ? (() => {
       try {
         const sector = ((params as any).sector || params.organizationType || 'general').toLowerCase();
         const sectorKey = sector.includes('bpo') || sector.includes('it') ? 'it-bpo'
@@ -782,10 +922,10 @@ export class BrainIntegrationService {
           ? GlobalCityIndex.getRankingsBySector(sectorKey as any)
           : GlobalCityIndex.getRankings();
       } catch { return null; }
-    })();
+    })() : null;
 
-    // ── Relocation Outcome Tracker - historical outcome lessons ───────────────
-    const relocationOutcomes = (() => {
+    // ── Relocation Outcome Tracker [RELOCATION] ───────
+    const relocationOutcomes = g('relocation') ? (() => {
       try {
         const relevant = RelocationOutcomeTracker.findRelevant(
           country,
@@ -793,10 +933,10 @@ export class BrainIntegrationService {
         );
         return relevant.length ? relevant : RelocationOutcomeTracker.getSummary();
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Supply Chain Ecosystem Mapper ─────────────────────────────────────────
-    const supplyChainMap = (() => {
+    const supplyChainMap = g('relocation') ? (() => {
       try {
         if (!country) return null;
         // Try to get map for known cities in that country
@@ -808,10 +948,10 @@ export class BrainIntegrationService {
         // Fallback: return first available
         return SupplyChainEcosystemMapper.getMap(cityNames[0]);
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Workforce Intelligence Engine ─────────────────────────────────────────
-    const workforceIntelligence = (() => {
+    const workforceIntelligence = g('relocation') ? (() => {
       try {
         if (!country) return null;
         const profile = WorkforceIntelligenceEngine.getProfile(country);
@@ -819,56 +959,56 @@ export class BrainIntegrationService {
           ['Cebu', 'Davao', 'Townsville']
         );
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Function-Level Splitter ───────────────────────────────────────────────
-    const functionSplit = (() => {
+    const functionSplit = g('relocation') ? (() => {
       try {
         if (readiness < 35) return null;
         return FunctionLevelSplitter.quickAnalyze(
           (params as any).sector || params.organizationType || 'general'
         );
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── ESG & Climate Resilience Scorer ───────────────────────────────────────
-    const esgClimate = (() => {
+    const esgClimate = g('country') ? (() => {
       try {
         if (!country) return null;
         const profile = ESGClimateScorer.getProfile(country);
         return profile || ESGClimateScorer.getRankings();
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Network Effect Engine ─────────────────────────────────────────────────
-    const networkEffects = (() => {
+    const networkEffects = g('relocation') ? (() => {
       try {
         if (!country) return null;
         const profile = NetworkEffectEngine.getProfile(country);
         return profile || NetworkEffectEngine.getRankings();
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Tier-1 Extraction Engine ──────────────────────────────────────────────
-    const tier1Extraction = (() => {
+    const tier1Extraction = g('relocation') ? (() => {
       try {
         return Tier1ExtractionEngine.scanCity(
           country,
           [(params as any).sector || params.organizationType || 'general']
         );
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Government Incentive Vault ────────────────────────────────────────────
-    const governmentIncentives = (() => {
+    const governmentIncentives = g('financial') ? (() => {
       try {
         if (!country) return null;
         return GovernmentIncentiveVault.searchByCountry(country);
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Quantum Monte Carlo Risk Simulation ───────────────────────────────────
-    const quantumMonteCarlo = (() => {
+    const quantumMonteCarlo = g('quantum') ? (() => {
       try {
         if (readiness < 25) return null;
         return QuantumMonteCarlo.quickSimulate(
@@ -877,10 +1017,10 @@ export class BrainIntegrationService {
           (params as any).avgSalaryUSD || 30000
         );
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Quantum Pattern Matcher ───────────────────────────────────────────────
-    const quantumPatterns = (() => {
+    const quantumPatterns = g('quantum') ? (() => {
       try {
         if (readiness < 20) return null;
         return QuantumPatternMatcher.findPatterns(
@@ -889,10 +1029,10 @@ export class BrainIntegrationService {
           [country || 'Unknown']
         );
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Quantum Cognition Bridge ──────────────────────────────────────────────
-    const quantumCognition = (() => {
+    const quantumCognition = g('quantum') ? (() => {
       try {
         if (readiness < 25) return null;
         return QuantumCognitionBridge.quickModel([
@@ -901,10 +1041,10 @@ export class BrainIntegrationService {
           { name: 'Explore alternative markets', rationalScore: 0.6 },
         ]);
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Historical Parallel Matcher - 60 years of global case evidence ────────
-    const historicalParallels: ParallelMatchResult | null = (() => {
+    const historicalParallels: ParallelMatchResult | null = g('historical') ? (() => {
       try {
         if (readiness >= 15 && (country || strategicQuestion || (params as any).currentMatter)) {
           return HistoricalParallelMatcher.match({
@@ -914,7 +1054,7 @@ export class BrainIntegrationService {
         }
         return null;
       } catch { return null; }
-    })();
+    })() : null;
 
     // ── Partner Intelligence Engine - ranked institutional/corporate matches ──
     const GLOBAL_PARTNER_CANDIDATES: PartnerCandidate[] = [
@@ -931,7 +1071,7 @@ export class BrainIntegrationService {
       { id: 'gic-sg', name: 'GIC Private Limited', type: 'bank', countries: ['singapore', 'global'], sectors: ['real estate', 'infrastructure', 'technology', 'finance', 'logistics', 'healthcare'] },
       { id: 'proparco', name: 'Proparco (DFI France)', type: 'multilateral', countries: ['africa', 'asia', 'latin america', 'caribbean', 'global'], sectors: ['energy', 'agriculture', 'health', 'finance', 'urban', 'environment'] },
     ];
-    const rankedPartners: RankedPartner[] | null = (() => {
+    const rankedPartners: RankedPartner[] | null = g('organization') ? (() => {
       try {
         if (readiness >= 25 && country) {
           return PartnerIntelligenceEngine.rankPartners({
@@ -944,22 +1084,22 @@ export class BrainIntegrationService {
         }
         return null;
       } catch { return null; }
-    })();
-    // IFC assessment (sync path - assessProject is synchronous)
-    const ifcAssessment = (() => { try { return (country && ((params as any).sector || (params as any).organizationType)) ? IFCGlobalStandardsEngine.assessProject({ country, sector: (params as any).sector || (params as any).organizationType || 'investment', projectType: (params as any).organizationType || 'investment', investmentSizeM: 10, hasESMS: readiness >= 60, hasLaborPolicies: true, prohibitsChildLabor: true, prohibitsForcedLabor: true, hasOHSProgram: readiness >= 50 }) : null; } catch { return null; } })();
+    })() : null;
+    // IFC assessment [ETHICS]
+    const ifcAssessment = g('ethics') ? (() => { try { return (country && ((params as any).sector || (params as any).organizationType)) ? IFCGlobalStandardsEngine.assessProject({ country, sector: (params as any).sector || (params as any).organizationType || 'investment', projectType: (params as any).organizationType || 'investment', investmentSizeM: 10, hasESMS: readiness >= 60, hasLaborPolicies: true, prohibitsChildLabor: true, prohibitsForcedLabor: true, hasOHSProgram: readiness >= 50 }) : null; } catch { return null; } })() : null;
 
-    // Motivation Detector - stakeholder motivation red-flags (sync static)
-    const motivationAnalysis = (() => { try { return MotivationDetector.analyze(params as ReportParameters); } catch { return null; } })();
+    // Motivation Detector [STRATEGIC]
+    const motivationAnalysis = g('strategic') ? (() => { try { return MotivationDetector.analyze(params as ReportParameters); } catch { return null; } })() : null;
 
-    // Counterfactual Engine - what-if scenario modelling (sync static)
-    const counterfactualAnalysis = (() => { try { return CounterfactualEngine.analyze(params); } catch { return null; } })();
+    // Counterfactual Engine [RISK]
+    const counterfactualAnalysis = g('risk') ? (() => { try { return CounterfactualEngine.analyze(params); } catch { return null; } })() : null;
 
     // narrativeSynthesisEngine - bound for future prompt reference (singleton)
     const _narrativeSynth = narrativeSynthesisEngine;
     void _narrativeSynth;
 
-    // Stored partners (synchronous localStorage read)
-    const storedPartners = (() => { try { return ((PartnerComparisonEngine as any).getPartners?.() ?? []).slice(0, 3); } catch { return []; } })();
+    // Stored partners [ORGANIZATION]
+    const storedPartners = g('organization') ? (() => { try { return ((PartnerComparisonEngine as any).getPartners?.() ?? []).slice(0, 3); } catch { return []; } })() : [];
 
     // ── Shape adversarial result ──────────────────────────────────────────────
     let adversarial: BrainContext['adversarial'] = null;
