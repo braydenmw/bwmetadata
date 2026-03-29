@@ -1560,6 +1560,12 @@ router.post('/consultant', async (req: Request, res: Response) => {
         quantumMonteCarlo: brainContext.quantumMonteCarlo ?? null,
         quantumPatterns: brainContext.quantumPatterns ?? null,
         quantumCognition: brainContext.quantumCognition ?? null,
+        capabilityBoundary: brainContext.capabilityBoundary ? {
+          totalEngines: brainContext.capabilityBoundary.totalEngines,
+          totalCapabilities: brainContext.capabilityBoundary.totalCapabilities,
+          boundaries: brainContext.capabilityBoundary.boundaries,
+          dataSources: brainContext.capabilityBoundary.dataSources,
+        } : null,
         readiness: brainContext.readiness,
         computedAt: brainContext.computedAt,
       } : null,

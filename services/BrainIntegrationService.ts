@@ -93,6 +93,7 @@ import { GovernmentIncentiveVault } from './GovernmentIncentiveVault';
 import { QuantumMonteCarlo } from './quantum/QuantumMonteCarlo';
 import { QuantumPatternMatcher } from './quantum/QuantumPatternMatcher';
 import { QuantumCognitionBridge } from './quantum/QuantumCognitionBridge';
+import { SystemCapabilityBoundary, type CapabilitySnapshot } from './SystemCapabilityBoundary';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -226,6 +227,8 @@ export interface BrainContext {
   quantumPatterns: any | null;
   /** Quantum Cognition Bridge - cognitive bias modelling */
   quantumCognition: any | null;
+  /** System capability boundaries - what the system does and does not do */
+  capabilityBoundary: CapabilitySnapshot | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -1048,12 +1051,23 @@ export class BrainIntegrationService {
       ecosystemConfidence: researchEcosystem?.confidence,
     });
 
+    // ── System Capability Boundary - always-on trust layer ──────────────────
+    const capabilityBoundary = (() => {
+      try { return SystemCapabilityBoundary.getSnapshot(); } catch { return null; }
+    })();
+
     // ── Build the combined prompt block ───────────────────────────────────────
     const promptParts: string[] = [
       `\n\n${'═'.repeat(70)}`,
       `## BWGA AI BRAIN CONTEXT - Readiness ${readiness}% - ${new Date().toISOString()}`,
       `This block is injected from the background intelligence layer. Use it to inform your response - do not summarise it verbatim, but let it shape the precision and depth of your recommendations.`,
     ];
+
+    // ── System Capability Boundaries (always first - shapes all responses) ────
+    try {
+      const boundaryPrompt = SystemCapabilityBoundary.summarizeForPrompt();
+      if (boundaryPrompt) promptParts.push(boundaryPrompt);
+    } catch { /* non-critical */ }
 
     if (indices) promptParts.push(formatIndicesBlock(indices));
     if (adversarial) promptParts.push(formatAdversarialBlock(adversarial));
@@ -1704,6 +1718,7 @@ export class BrainIntegrationService {
       quantumMonteCarlo,
       quantumPatterns,
       quantumCognition,
+      capabilityBoundary,
     };
 
     const qualityGate = IntelligenceQualityGate.assess(provisionalResult);
@@ -1769,6 +1784,7 @@ export class BrainIntegrationService {
       quantumMonteCarlo,
       quantumPatterns,
       quantumCognition,
+      capabilityBoundary,
       qualityGate,
     };
 
