@@ -95,13 +95,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'b': {
             title: 'Agentic & Autonomous Systems',
-            subtitle: 'Forty-four parallel engines orchestrated as a unified brain &mdash; planning research, running adversarial analysis, querying 15+ live external sources, spawning specialist agents, and adapting runtime control modes from live outcomes.',
+            subtitle: 'Fifty-plus parallel engines orchestrated as a unified brain &mdash; planning research, running adversarial analysis, querying 15+ live external sources, spawning specialist agents, quantum risk simulation, and adapting runtime control modes from live outcomes.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 44-engine parallel brain fires on every query &mdash; formula indices, reactive intelligence, entity verification, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with graceful degradation and full audit trail.',
+            summary: 'A 50+ engine parallel brain fires on every query &mdash; formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with graceful degradation and full audit trail.',
             full: (
                 <div className="space-y-6">
-                    <p className="text-sm text-slate-700 leading-relaxed">These systems provide goal-directed autonomy for research, synthesis, and live intelligence gathering. Forty-four engines fire in parallel on every query via the Brain Integration Service &mdash; each contributing a different analytical dimension. Specialist agents spawn on demand, external data providers are queried in real time, and governance gates (red/amber/green) enforce control at every step. Output quality and freshness depend on provider availability, API configuration, and release-gate verdicts.</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">These systems provide goal-directed autonomy for research, synthesis, and live intelligence gathering. Fifty-plus engines fire in parallel on every query via the Brain Integration Service &mdash; each contributing a different analytical dimension, including three quantum-inspired engines (Monte Carlo risk simulation, pattern discovery, and cognitive bias modelling). Specialist agents spawn on demand, external data providers are queried in real time, and governance gates (red/amber/green) enforce control at every step. Output quality and freshness depend on provider availability, API configuration, and release-gate verdicts.</p>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Multi-Agent Brain System</h4>
@@ -129,8 +129,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Brain Integration Service &mdash; 44-Engine Parallel Brain</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Every query fires 44+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code> &mdash; adversarial reasoning, comprehensive indices, multi-agent orchestration, historical learning, NSIL intelligence hub, composite scoring, global compliance, case graph building, regional development, partner comparison, decision pipeline, document routing, IFC standards, pattern confidence, maturity scoring, problem-to-solution graphs, motivation detection, counterfactual analysis, narrative synthesis, historical parallel matching, partner intelligence, situation analysis, outcome tracking, self-learning, unbiased analysis, persona debate, derived indices, OSINT search, consultant gating, reactive intelligence, global issue resolution, self-improvement, ACLED conflict data, sanctions screening, trade statistics (UN Comtrade), deep web research (Tavily), intelligence quality gating, V-Dem governance, Research Ecosystem scoring (TAI/ICI/ERS), failure mode governance, and more. Results are unpacked, merged, and injected into a unified strategic prompt. Engines that fail gracefully degrade without blocking the rest.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: The runtime brain. Sits between your input and the AI response, ensuring every answer draws on the full weight of the system&rsquo;s 44+ parallel engines &mdash; the most comprehensive intelligence orchestration layer in any investment analysis platform.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Every query fires 50+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code> &mdash; adversarial reasoning, comprehensive indices, multi-agent orchestration, historical learning, NSIL intelligence hub, composite scoring, global compliance, case graph building, regional development, partner comparison, decision pipeline, document routing, IFC standards, pattern confidence, maturity scoring, problem-to-solution graphs, motivation detection, counterfactual analysis, narrative synthesis, historical parallel matching, partner intelligence, situation analysis, outcome tracking, self-learning, unbiased analysis, persona debate, derived indices, OSINT search, consultant gating, reactive intelligence, global issue resolution, self-improvement, ACLED conflict data, sanctions screening, trade statistics (UN Comtrade), deep web research (Tavily), intelligence quality gating, V-Dem governance, Research Ecosystem scoring (TAI/ICI/ERS), failure mode governance, and more. Results are unpacked, merged, and injected into a unified strategic prompt. Engines that fail gracefully degrade without blocking the rest.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: The runtime brain. Sits between your input and the AI response, ensuring every answer draws on the full weight of the system&rsquo;s 50+ parallel engines &mdash; including quantum Monte Carlo risk simulation, quantum pattern matching, quantum cognition bias modelling, production-grade financial calculations (Newton-Raphson IRR, NPV, WACC), 5&times;5 risk matrix analysis, and proactive overlooked-city discovery &mdash; the most comprehensive intelligence orchestration layer in any investment analysis platform.</p>
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
@@ -203,7 +203,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'd': {
             title: 'Self-Monitoring & Calibration',
-            subtitle: 'The system audits its own reasoning, tracks perception drift, learns from every interaction, and can hard-gate or reject recommendations on ethical and control grounds.',
+            subtitle: 'The system audits its own reasoning, tracks perception drift, learns from every interaction, adapts its own control mode from outcome history, and can hard-gate or reject recommendations on ethical and control grounds.',
             icon: 'D',
             color: 'from-violet-600 to-violet-800',
             summary: 'Metacognitive bias detection, statistical drift monitoring with automatic recalibration, event-driven continuous learning, runtime weight tuning with rollback, and computational ethics scoring against Rawlsian fairness principles.',
@@ -245,7 +245,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'e': {
             title: 'Proprietary Quantitative Architecture',
-            subtitle: '46+ proprietary formulas, 200+ backtested cases, 195-country governance coverage, and Research Ecosystem scoring (TAI/ICI/ERS) &mdash; the quantitative substrate beneath every tribunal and control decision.',
+            subtitle: '46+ proprietary formulas, 3 quantum-inspired engines, production-grade financial modelling (IRR/NPV/WACC), 200+ backtested cases, 195-country governance coverage, and Research Ecosystem scoring (TAI/ICI/ERS) &mdash; the quantitative substrate beneath every tribunal and control decision.',
             icon: 'E',
             color: 'from-rose-600 to-rose-800',
             summary: 'Purpose-built scoring formulas running as a dependency graph, sixty years of searchable institutional memory, and a 195-country queryable compliance engine.',
@@ -320,11 +320,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <span className="text-lg font-light tracking-wide hidden sm:block text-slate-800">BWGA Intelligence</span>
                     </div>
                     <div className="hidden lg:flex items-center gap-6 text-sm text-slate-600 font-medium">
-                        <button onClick={() => scrollToSection('mission')} className="hover:text-blue-600 transition-colors">Mission</button>
-                        <button onClick={() => scrollToSection('platform')} className="hover:text-blue-600 transition-colors">The Platform</button>
-                        <button onClick={() => scrollToSection('brain')} className="hover:text-blue-600 transition-colors">The Brain</button>
-                        <button onClick={() => { setUnifiedActiveTab('proof'); setShowUnifiedSystemOverview(true); }} className="hover:text-blue-600 transition-colors">Proof</button>
-                        <button onClick={() => scrollToSection('partnerships')} className="hover:text-blue-600 transition-colors">Partnerships</button>
                         <button onClick={() => scrollToSection('launch-platform')} className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Launch Consultant</button>
                     </div>
                 </div>
@@ -501,7 +496,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div className="pt-4 border-t border-slate-200">
                                     <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                        People call it AI. It isn&rsquo;t&mdash;not in the way you think. It&rsquo;s a hybrid system: computational finance, adversarial reasoning, autonomous intelligence, and live-data infrastructure stitched into a single NSIL pipeline&mdash;ten layered gates from input validation to audience-adaptive output, each built from scratch, each applying theory from a discipline never before wired into investment intelligence. One input triggers 44+ engines simultaneously. Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. That pipeline does not exist anywhere else&hellip;
+                                        People call it AI. It isn&rsquo;t&mdash;not in the way you think. It&rsquo;s a hybrid system: computational finance, adversarial reasoning, autonomous intelligence, quantum-inspired simulation, and live-data infrastructure stitched into a single NSIL pipeline&mdash;ten layered gates from input validation to audience-adaptive output, each built from scratch, each applying theory from a discipline never before wired into investment intelligence. One input triggers 50+ engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modelling, and cognitive bias quantification. Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. That pipeline does not exist anywhere else&hellip;
                                     </p>
                                 </div>
                             </div>
@@ -603,7 +598,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center"><GitBranch size={14} /></span>
                                         <h3 className="text-base font-bold text-white leading-snug">The Intelligence Architecture</h3>
                                     </div>
-                                    <p className="text-xs text-white/80 leading-relaxed">The 10-layer NSIL pipeline, 44-engine parallel brain, cognitive control plane, adaptive learning kernel, Five Engine Tribunal runtime (proceed/proceed-with-controls/hold), Perception Delta Indexing, 15+ live external intelligence APIs, 7 reflexive intelligence engines, continuous self-monitoring with drift detection, and Research Ecosystem Readiness scoring (TAI/ICI/ERS).</p>
+                                    <p className="text-xs text-white/80 leading-relaxed">The 10-layer NSIL pipeline, 50+ engine parallel brain, cognitive control plane, adaptive learning kernel, Five Engine Tribunal runtime (proceed/proceed-with-controls/hold), Perception Delta Indexing, 15+ live external intelligence APIs, 7 reflexive intelligence engines, 3 quantum-inspired engines (Monte Carlo/Pattern/Cognition), production-grade financial modelling (IRR/NPV/WACC), 5&times;5 risk matrix, continuous self-monitoring with drift detection, and Research Ecosystem Readiness scoring (TAI/ICI/ERS).</p>
                                 </div>
                                 <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
                             </div>

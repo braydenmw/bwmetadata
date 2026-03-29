@@ -31,5 +31,5 @@ ENV PORT=3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -qO- http://localhost:3000/api/health || exit 1
 
-# Direct start — env injection happens at orchestrator level (Docker, ECS, K8s)
-CMD [ node, dist-server/server/index.js]
+# Direct start â€” env injection happens at orchestrator level (Docker, ECS, K8s)
+CMD ["node", "dist-server/server/index.js"]
