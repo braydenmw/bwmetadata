@@ -257,25 +257,41 @@ app.use('/api/governance', governanceRoutes);
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
 
-// Serve static frontend in production
-if (process.env.NODE_ENV === 'production') {
-  // Try multiple possible dist paths
+// Serve static frontend — always active so the app works regardless of NODE_ENV value
+{
+  // Try multiple possible dist paths (order matters: most specific first)
   const possibleDistPaths = [
-    path.join(__dirname, '..', '..', 'dist'),  // From dist-server/server/
+    path.join(__dirname, '..', '..', 'dist'),  // From dist-server/server/ (production bundle)
     path.join(__dirname, '..', 'dist'),         // From dist-server/
-    path.join(process.cwd(), 'dist'),           // From project root
+    path.join(process.cwd(), 'dist'),           // From project root (fallback)
   ];
-  
-  let distPath = possibleDistPaths[0];
+
+  console.log('[Static] NODE_ENV:', process.env.NODE_ENV || '(not set)');
+  console.log('[Static] __dirname:', __dirname);
+  console.log('[Static] cwd:', process.cwd());
+  console.log('[Static] Probing dist paths:');
+  for (const p of possibleDistPaths) {
+    const hasIndex = fs.existsSync(path.join(p, 'index.html'));
+    console.log(`  ${p} -> index.html exists: ${hasIndex}`);
+  }
+
+  let distPath = possibleDistPaths[0]; // default
+  let distFound = false;
   for (const p of possibleDistPaths) {
     if (fs.existsSync(path.join(p, 'index.html'))) {
       distPath = p;
-      console.log('Serving static files from:', distPath);
+      distFound = true;
       break;
     }
   }
-  
-  // DEBUG: optionally log static asset lookups (set DEBUG_STATIC=true in env to enable)
+
+  if (distFound) {
+    console.log('[Static] Serving frontend from:', distPath);
+  } else {
+    console.warn('[Static] WARNING: index.html not found in any candidate dist path. Static serving will be attempted from:', distPath);
+  }
+
+  // DEBUG: log static asset lookups (set DEBUG_STATIC=true in env to enable)
   if (process.env.DEBUG_STATIC === 'true') {
     app.use((req: Request, _res: Response, next: NextFunction) => {
       if (req.path.startsWith('/assets') || req.path === '/' || req.path.endsWith('.js') || req.path.endsWith('.css') || req.path.endsWith('index.html')) {
@@ -287,12 +303,14 @@ if (process.env.NODE_ENV === 'production') {
       next();
     });
   }
-  
+
   app.use(express.static(distPath));
-  
-  // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+
+  // SPA fallback — serve index.html for all non-API routes
+  app.get('*', (req: Request, res: Response) => {
+    const indexPath = path.join(distPath, 'index.html');
+    console.log(`[SPA Fallback] ${req.method} ${req.path} -> ${indexPath}`);
+    res.sendFile(indexPath);
   });
 }
 
