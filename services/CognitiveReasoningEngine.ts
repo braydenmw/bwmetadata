@@ -116,7 +116,7 @@ function countKeywords(text: string, ...words: string[]): number {
 // "At the core, the problem and solution are the same. The answer lies within."
 // Strip away every layer of human complication to find the irreducible kernel.
 
-function extractCoreTruth(query: string, params: any): CoreTruthResult {
+function extractCoreTruth(query: string, _params: Record<string, unknown>): CoreTruthResult {
   const q = query.toLowerCase();
   const humanComplications: string[] = [];
   let coreProblem = '';
@@ -200,7 +200,7 @@ function extractCoreTruth(query: string, params: any): CoreTruthResult {
 // ─── Emotional Read ───────────────────────────────────────────────────────────
 // Detect the emotional undercurrent — what are stakeholders FEELING, not just saying
 
-function readEmotionalUndercurrent(query: string, params: any): string[] {
+function readEmotionalUndercurrent(query: string, _params: Record<string, unknown>): string[] {
   const q = query.toLowerCase();
   const reads: string[] = [];
 
@@ -271,7 +271,7 @@ function generateAnalogies(query: string): string[] {
 // ─── Perspective Rotation ─────────────────────────────────────────────────────
 // See through every party's eyes simultaneously
 
-function rotatePerspectives(query: string, params: any): CognitiveInsight[] {
+function rotatePerspectives(query: string, _params: Record<string, unknown>): CognitiveInsight[] {
   const q = query.toLowerCase();
   const insights: CognitiveInsight[] = [];
 
@@ -329,7 +329,7 @@ function rotatePerspectives(query: string, params: any): CognitiveInsight[] {
 
 // ─── Sunk Cost & Abandonment Detector ─────────────────────────────────────────
 
-function detectSunkCostTraps(query: string, params: any): CognitiveInsight[] {
+function detectSunkCostTraps(query: string, _params: Record<string, unknown>): CognitiveInsight[] {
   const q = query.toLowerCase();
   const insights: CognitiveInsight[] = [];
 
@@ -358,7 +358,7 @@ function detectSunkCostTraps(query: string, params: any): CognitiveInsight[] {
 
 // ─── Trust Calibration ────────────────────────────────────────────────────────
 
-function calibrateTrust(query: string, params: any): CognitiveInsight[] {
+function calibrateTrust(query: string, _params: Record<string, unknown>): CognitiveInsight[] {
   const q = query.toLowerCase();
   const insights: CognitiveInsight[] = [];
 
@@ -387,7 +387,7 @@ function calibrateTrust(query: string, params: any): CognitiveInsight[] {
 
 // ─── Relationship Dynamics ────────────────────────────────────────────────────
 
-function analyzeRelationships(query: string, params: any): RelationshipDynamics {
+function analyzeRelationships(query: string, _params: Record<string, unknown>): RelationshipDynamics {
   const q = query.toLowerCase();
 
   // Power balance detection
@@ -425,7 +425,7 @@ function analyzeRelationships(query: string, params: any): RelationshipDynamics 
 
 // ─── Temporal Patience Modelling ──────────────────────────────────────────────
 
-function modelTemporalPatience(query: string, params: any): TemporalPatience {
+function modelTemporalPatience(query: string, _params: Record<string, unknown>): TemporalPatience {
   const q = query.toLowerCase();
   const shortTermPain: string[] = [];
   const longTermGain: string[] = [];
@@ -471,7 +471,7 @@ function modelTemporalPatience(query: string, params: any): TemporalPatience {
 // ─── Pre-Mortem Analysis ──────────────────────────────────────────────────────
 // Imagine you are 2 years in the future and this initiative FAILED. Why?
 
-function runPreMortem(query: string, params: any): PreMortemResult {
+function runPreMortem(query: string, _params: Record<string, unknown>): PreMortemResult {
   const q = query.toLowerCase();
   const scenarios: PreMortemResult['failureScenarios'] = [];
 
@@ -535,7 +535,7 @@ function runPreMortem(query: string, params: any): PreMortemResult {
 // ─── Creative Recombination ───────────────────────────────────────────────────
 // Solutions from combining things nobody thought to combine
 
-function generateCreativeSolutions(query: string, params: any): string[] {
+function generateCreativeSolutions(query: string, _params: Record<string, unknown>): string[] {
   const q = query.toLowerCase();
   const solutions: string[] = [];
 
@@ -575,7 +575,7 @@ function generateCreativeSolutions(query: string, params: any): string[] {
 // These address gaps in how economic problems are actually solved
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function computeNewFormulas(query: string, params: any): Record<string, FormulaResult> {
+function computeNewFormulas(query: string, _params: Record<string, unknown>): Record<string, FormulaResult> {
   const q = query.toLowerCase();
   const results: Record<string, FormulaResult> = {};
 
@@ -737,7 +737,7 @@ function computeNewFormulas(query: string, params: any): Record<string, FormulaR
 // MAIN EXPORT: Full Cognitive Analysis
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export function runCognitiveAnalysis(query: string, params: any, readiness: number): CognitiveAnalysis {
+export function runCognitiveAnalysis(query: string, params: Record<string, unknown>, _readiness: number): CognitiveAnalysis {
   const coreTruth = extractCoreTruth(query, params);
   const emotionalRead = readEmotionalUndercurrent(query, params);
   const analogies = generateAnalogies(query);

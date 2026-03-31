@@ -421,7 +421,7 @@ export async function fetchCountryProfile(countryName: string): Promise<CountryP
       subregion: country.subregion || '',
       population: country.population || 0,
       area: country.area || 0,
-      currencies: Object.values(country.currencies || {}).map((c: any) => `${c.name} (${c.symbol || ''})`),
+      currencies: Object.values(country.currencies || {}).map((c: unknown) => { const cur = c as Record<string, string>; return `${cur.name} (${cur.symbol || ''})`; }),
       languages: Object.values(country.languages || {}),
       borders: country.borders || [],
       timezones: country.timezones || [],

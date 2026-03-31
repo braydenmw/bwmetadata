@@ -7,7 +7,7 @@
  * No user gets lost. Everyone can add custom data. Everyone gets guidance.
  */
 
-import type { ReportParameters } from '../types';
+import type { ReportParameters as _ReportParameters } from '../types';
 
 export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom';
 
@@ -244,17 +244,17 @@ export class AdaptiveQuestionnaire {
   /**
    * Detect user skill level from initial answers
    */
-  static detectSkillLevel(answers: Record<string, any>): SkillLevel {
+  static detectSkillLevel(answers: Record<string, unknown>): SkillLevel {
     let score = 0;
 
     // Check depth of understanding in answers
-    if (answers.organizationName && answers.organizationName.length > 3) score += 10;
+    if (typeof answers.organizationName === 'string' && answers.organizationName.length > 3) score += 10;
     if (answers.revenueBand && answers.revenueBand !== 'not_sure') score += 5;
-    if (answers.strategicIntent && answers.strategicIntent.length > 50) score += 15;
+    if (typeof answers.strategicIntent === 'string' && answers.strategicIntent.length > 50) score += 15;
     if (answers.investmentStructure && typeof answers.investmentStructure === 'object') score += 20;
-    if (answers.successMetrics && answers.successMetrics.length > 5) score += 10;
+    if (typeof answers.successMetrics === 'string' && answers.successMetrics.length > 5) score += 10;
     if (answers.riskScenarios && Array.isArray(answers.riskScenarios)) score += 15;
-    if (answers.customData && Object.keys(answers.customData).length > 0) score += 20;
+    if (answers.customData && typeof answers.customData === 'object' && Object.keys(answers.customData as Record<string, unknown>).length > 0) score += 20;
 
     if (score > 70) return 'expert';
     if (score > 50) return 'advanced';
@@ -267,7 +267,7 @@ export class AdaptiveQuestionnaire {
    */
   static getNextQuestion(
     skillLevel: SkillLevel,
-    currentAnswers: Record<string, any>,
+    currentAnswers: Record<string, unknown>,
     questionsAsked: number
   ): string | null {
     const interface_ =
@@ -401,12 +401,12 @@ export class AdaptiveReportRenderer {
    */
   static renderSection(
     sectionName: string,
-    data: any,
+    data: unknown,
     skillLevel: SkillLevel
   ): {
     title: string;
     content: string;
-    details?: any;
+    details?: unknown;
     explanation?: string;
     sources?: string[];
   } {

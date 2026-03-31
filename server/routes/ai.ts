@@ -27,7 +27,7 @@ import { runFiveEngineTribunal } from '../services/FiveEngineTribunal.js';
 import { BrainIntegrationService, type BrainContext } from '../../services/BrainIntegrationService.js';
 import { NSILIntelligenceHub } from '../../services/NSILIntelligenceHub.js';
 import { validateBody, aiValidation } from '../middleware/validate.js';
-import { callAI, callAIParallel, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
+import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -85,7 +85,7 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
     temperature: 0.4,
   });
 
-  return result;
+  return result.text;
 };
 // System instruction for the AI
 const SYSTEM_INSTRUCTION = `
@@ -1040,7 +1040,7 @@ router.get('/provider-status', async (_req: Request, res: Response) => {
       availableProviders: availableProviderCount(),
       providers: status,
     });
-  } catch (err) {
+  } catch (_err) {
     res.status(500).json({ error: 'Failed to get provider status' });
   }
 });

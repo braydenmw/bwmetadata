@@ -1294,7 +1294,7 @@ export async function calculateAllIndices(params: Partial<ReportParameters>): Pr
   const opportunityIndices = [barna, nvi, vci, agi, esi, mpi];
   const riskIndices = [cri, pri, sra, idv, crps, srci, eshock];
   const readinessIndices = [cap, isi, osi, rni];
-  const partnershipIndices = [pvi, cis, gci, rri];
+  const _partnershipIndices = [pvi, cis, gci, rri];
 
   const overallScore = Math.round(
     [barna, nvi, cri, cap, agi, vci, ati, esi, isi, osi, tco, pri, rni, sra, idv,

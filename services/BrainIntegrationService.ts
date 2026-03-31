@@ -1057,6 +1057,7 @@ export class BrainIntegrationService {
         computedAt: new Date().toISOString(), readiness,
         recommendedDocumentIds: [], recommendedLetterIds: [],
         methodologyKB: null, ifcAssessment: null, patternAssessment: null,
+        cognitiveAnalysis: null,
         maturityScores: null, problemGraph: null, dataFabric: null,
         motivationAnalysis: null, counterfactualAnalysis: null,
         domainAnalysis: null, historicalParallels: null, rankedPartners: null,
