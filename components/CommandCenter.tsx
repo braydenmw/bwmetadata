@@ -95,7 +95,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'b': {
             title: 'Agentic & Autonomous Systems',
-            subtitle: 'Fifty-plus parallel engines orchestrated as a unified brain with anticipatory thinking — planning research, running adversarial analysis, querying 20+ live external sources, predicting follow-up needs before you ask, spawning specialist agents, quantum risk simulation, intelligent multi-provider AI orchestration, and adapting runtime control modes from live outcomes.',
+            subtitle: '50+ parallel engines orchestrated as a unified brain with anticipatory thinking — adversarial analysis, 20+ live external sources, quantum risk simulation, multi-provider AI orchestration, and adaptive runtime control.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
             summary: 'A 50+ engine parallel brain fires on every query with anticipatory intelligence — formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, cognitive reasoning, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with intelligent provider load-balancing, graceful degradation and full audit trail.',
@@ -245,7 +245,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'e': {
             title: 'Proprietary Quantitative Architecture',
-            subtitle: '54+ proprietary formulas (including 8 cognitive-reasoning indices), 3 quantum-inspired engines, production-grade financial modelling (IRR/NPV/WACC), 200+ backtested cases, 195-country governance coverage, and Research Ecosystem scoring (TAI/ICI/ERS) — the quantitative substrate beneath every tribunal and control decision.',
+            subtitle: '54+ proprietary formulas, 8 cognitive-reasoning indices, 3 quantum-inspired engines, production-grade financial modelling (IRR/NPV/WACC), 200+ backtested cases, 195-country governance, and Research Ecosystem scoring.',
             icon: 'E',
             color: 'from-rose-600 to-rose-800',
             summary: 'Purpose-built scoring formulas running as a dependency graph, sixty years of searchable institutional memory, and a 195-country queryable compliance engine.',
@@ -396,40 +396,40 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 NARRATIVE FLOW: Problem + Status Quo → Solution (consolidated)
             ═══════════════════════════════════════════════════════════════ */}
 
-            <section className="py-12 px-4 bg-white">
+            <section className="py-8 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
+                    <div className="grid md:grid-cols-1 gap-5">
 
                         {/* CARD 1: Why This Doesn't Exist — matches Card 2 / Who This Is For layout */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">The Problem</span>
-                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">Capital is Blind. It Follows the Safest Signal to the Most Saturated Markets.</h4>
-                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                            <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
+                                <span className="inline-block px-2.5 py-0.5 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">The Problem</span>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">Capital is Blind. It Follows the Safest Signal to the Most Saturated Markets.</h4>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
                                     The global investment apparatus is broken. Trillions of dollars of institutional capital are trapped in a herd mentality&mdash;pouring endlessly into overvalued tier-one CBDs and generic ESG megaprojects because they satisfy a tick-box compliance matrix. Advisory firms recycle the same macroeconomic data, build the same models, and point their clients to the same &ldquo;safe&rdquo; jurisdictions. When a market saturates or a geopolitical shock hits, they act surprised.
                                 </p>
-                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
                                     While capital chases safety, it ignores the actual engines of the economy. Regional hubs, logistics corridors, agricultural centers, and industrial heartlands&mdash;the places that absorb supply chain shocks, grow the food, move the freight, and keep nations functioning&mdash;are chronically underfunded. Not because they lack returns, but because the existing advisory models were never built to evaluate them. Trillions in locked regional value is being missed because no one built the intelligence to prove it.
                                 </p>
-                                <div className="pt-4 border-t border-slate-200">
-                                    <h5 className="text-lg font-bold text-slate-900 mb-4">The Way It Works Today is Broken</h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="pt-3 border-t border-slate-200">
+                                    <h5 className="text-sm font-bold text-slate-900 mb-3">The Way It Works Today is Broken</h5>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-base font-bold text-slate-900 mb-1">What Advisory Firms Use</h5>
-                                            <p className="text-sm text-slate-600">They charge hundreds of thousands of dollars to deliver a 100-page PDF three months later. They recycle macro-level tier-one data and apply generic frameworks that completely miss the local nuance of regional projects.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Advisory Firms Use</h5>
+                                            <p className="text-xs text-slate-600">They charge hundreds of thousands of dollars to deliver a 100-page PDF three months later. They recycle macro-level tier-one data and apply generic frameworks that completely miss the local nuance of regional projects.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-base font-bold text-slate-900 mb-1">What Governments Use</h5>
-                                            <p className="text-sm text-slate-600">They rely on scattered portals and outdated census data. Planning decisions are disjointed across departments, forcing the project sponsor to carry the entire burden of piecing together regulatory alignment.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Governments Use</h5>
+                                            <p className="text-xs text-slate-600">They rely on scattered portals and outdated census data. Planning decisions are disjointed across departments, forcing the project sponsor to carry the entire burden of piecing together regulatory alignment.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-base font-bold text-slate-900 mb-1">What Business & Banking Use</h5>
-                                            <p className="text-sm text-slate-600">They run backward-looking Excel models built for standard CBD assets. They arbitrarily inflate risk premiums for regions because their rigid formulas can't quantify localized logistics, workforce, or resilience.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Business & Banking Use</h5>
+                                            <p className="text-xs text-slate-600">They run backward-looking Excel models built for standard CBD assets. They arbitrarily inflate risk premiums for regions because their rigid formulas can't quantify localized logistics, workforce, or resilience.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-base font-bold text-slate-900 mb-1">What General-Purpose AI Uses</h5>
-                                            <p className="text-sm text-slate-600">It hallucinates regulations and invents financial math. It produces simple summaries—not the defensible, traceable fiduciary logic required to survive a real boardroom tribunal.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What General-Purpose AI Uses</h5>
+                                            <p className="text-xs text-slate-600">It hallucinates regulations and invents financial math. It produces simple summaries—not the defensible, traceable fiduciary logic required to survive a real boardroom tribunal.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -441,11 +441,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* The Actual Breakthrough — Blue Feature Block */}
-                        <div className="bg-blue-700 rounded-sm p-6 md:p-10">
-                            <div className="grid md:grid-cols-5 gap-8 items-start">
+                        <div className="bg-blue-700 rounded-sm p-5 md:p-8">
+                            <div className="grid md:grid-cols-5 gap-6 items-start">
                                 <div className="md:col-span-2">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">The Actual Breakthrough</p>
-                                    <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-3">The Actual Breakthrough</p>
+                                    <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
                                         Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
                                     </h3>
                                     <button
@@ -467,36 +467,36 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* CARD 2: What We Built — matches "Who This Is For" layout */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
-                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">An Automated Due-Diligence &amp; Intelligence Engine</h4>
-                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                            <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
+                                <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">An Automated Due-Diligence &amp; Intelligence Engine</h4>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
                                     This system wasn&rsquo;t built in a boardroom. It was built from a regional city&mdash;the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
                                 </p>
-                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
                                     Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own&mdash;to prove that institutional-grade intelligence doesn&rsquo;t have to come with an institutional price tag.
                                 </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                     <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">Five AI Minds Argue Before You See a Word</h5>
-                                        <p className="text-sm text-slate-600">A Skeptic hunts for deal-killers. An Advocate finds hidden upside. An Accountant stress-tests the money. A Regulator checks sanctions and legal risk. An Operator asks if it can actually be built. Only what survives the debate reaches you.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Five AI Minds Argue Before You See a Word</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">A Skeptic hunts for deal-killers. An Advocate finds hidden upside. An Accountant stress-tests the money. A Regulator checks sanctions and legal risk. An Operator asks if it can actually be built. Only what survives the debate reaches you.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">It Catches What You Missed&mdash;Then Predicts What You&rsquo;ll Need Next</h5>
-                                        <p className="text-sm text-slate-600">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. An anticipatory thinking layer predicts your follow-up needs before you ask. You mention a small port in passing&mdash;it recognises it as an irreplaceable asset, values it accordingly, and pre-loads supply chain risk analysis, trade corridor data, and counterparty integrity checks before you think to request them.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">It Catches What You Missed&mdash;Then Predicts What You&rsquo;ll Need Next</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. An anticipatory layer predicts follow-up needs before you ask&mdash;you mention a port in passing and it pre-loads supply chain risk, trade corridor data, and counterparty integrity checks automatically.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">Real Math. Not Confident Guesswork.</h5>
-                                        <p className="text-sm text-slate-600">54+ proprietary formulas run thousands of simulated scenarios&mdash;probability of loss, risk-adjusted return, cost of doing nothing, partnership viability, ecosystem shock resilience, and the cost of inaction. A Cognitive Reasoning Engine strips every problem to its core truth&mdash;finding the simple answer humans buried under politics, ego, and bureaucracy. Every number traces to a formula. Every formula traces to your inputs. Nothing is invented.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Real Math. Not Confident Guesswork.</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">54+ proprietary formulas run thousands of simulated scenarios&mdash;probability of loss, risk-adjusted return, cost of doing nothing, partnership viability, and ecosystem shock resilience. A Cognitive Reasoning Engine strips every problem to its core truth. Every number traces to a formula. Every formula traces to your inputs.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">Boardroom Documents. Not Chat Transcripts.</h5>
-                                        <p className="text-sm text-slate-600">The output is Letters of Intent, term sheets, policy briefs, board packages&mdash;247+ document types with your actual scores and traceable reasoning. A governance tribunal issues a verdict: proceed, proceed with controls, or hold.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Boardroom Documents. Not Chat Transcripts.</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">Letters of Intent, term sheets, policy briefs, board packages&mdash;247+ document types with your actual scores and traceable reasoning. A governance tribunal issues a verdict: proceed, proceed with controls, or hold.</p>
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-slate-200">
-                                    <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                        People call it AI. It isn&rsquo;t&mdash;not in the way you think. It&rsquo;s a hybrid system: computational finance, adversarial reasoning, autonomous intelligence, quantum-inspired simulation, human cognitive modelling, and live-data infrastructure stitched into a single NSIL pipeline&mdash;ten layered gates from input validation to audience-adaptive output, each built from scratch, each applying theory from a discipline never before wired into investment intelligence. One input triggers 50+ engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modelling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that thinks about problems the way a human brain does: extracting core truths, reading emotional signals, running pre-mortems, rotating perspectives, and generating solutions no conventional analysis would consider. Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. That pipeline does not exist anywhere else&hellip;
+                                <div className="pt-3 border-t border-slate-200">
+                                    <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                                        People call it AI. It isn&rsquo;t&mdash;not in the way you think. It&rsquo;s a hybrid system: computational finance, adversarial reasoning, autonomous intelligence, quantum-inspired simulation, human cognitive modelling, and live-data infrastructure stitched into a single NSIL pipeline&mdash;ten layered gates from input validation to audience-adaptive output. One input triggers 50+ engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modelling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives. Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. That pipeline does not exist anywhere else&hellip;
                                     </p>
                                 </div>
                             </div>
@@ -509,37 +509,36 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* WHO THIS IS FOR */}
-            <section className="py-20 px-4 bg-white">
+            <section className="py-10 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                         {/* Text Content (Left) */}
-                        <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                            <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Who This Is For</span>
-                            <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
-                            <p className="text-base text-slate-600 leading-relaxed mb-5">
+                        <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
+                            <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">Who This Is For</span>
+                            <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
                                 The people who need this most are the ones who&rsquo;ve never had access to it. That&rsquo;s the point.
                             </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                 <div className="border-l-2 border-blue-500 pl-3">
-                                    <h5 className="text-base font-bold text-slate-900 mb-1">Regional Councils &amp; Development Agencies</h5>
-                                    <p className="text-sm text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Regional Councils &amp; Development Agencies</h5>
+                                    <p className="text-xs text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
                                 </div>
                                 <div className="border-l-2 border-emerald-500 pl-3">
-                                    <h5 className="text-base font-bold text-slate-900 mb-1">Government Agencies &amp; Investment Boards</h5>
-                                    <p className="text-sm text-slate-600">Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces documented rationale you can stand behind.</p>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Government Agencies &amp; Investment Boards</h5>
+                                    <p className="text-xs text-slate-600">Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces documented rationale you can stand behind.</p>
                                 </div>
                                 <div className="border-l-2 border-amber-500 pl-3">
-                                    <h5 className="text-base font-bold text-slate-900 mb-1">Businesses Expanding Into New Regions</h5>
-                                    <p className="text-sm text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Businesses Expanding Into New Regions</h5>
+                                    <p className="text-xs text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
                                 </div>
                                 <div className="border-l-2 border-purple-500 pl-3">
-                                    <h5 className="text-base font-bold text-slate-900 mb-1">First-Time Exporters &amp; Regional Entrepreneurs</h5>
-                                    <p className="text-sm text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">First-Time Exporters &amp; Regional Entrepreneurs</h5>
+                                    <p className="text-xs text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
                                 </div>
                             </div>
-                            <div className="pt-4 border-t border-slate-200">
-                                <p className="text-sm text-slate-600 leading-relaxed">
+                            <div className="pt-3 border-t border-slate-200">
+                                <p className="text-xs text-slate-600 leading-relaxed">
                                     <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs and guided intake. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, and adjustable Monte Carlo parameters. Same engine &mdash; different depth based on who&rsquo;s driving.
                                 </p>
                             </div>
@@ -555,23 +554,23 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 3: THE FIVE CORE ENGINES
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="py-12 px-4 bg-slate-50">
+            <section className="py-8 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     {/* Section Divider + Header for Architecture Cards */}
-                    <div className="max-w-4xl mx-auto mb-12 text-center">
-                        <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The Five Core Engines <span className="text-blue-600">&mdash; With Extra Intelligence</span></h3>
-                        <p className="text-lg text-slate-600 leading-relaxed">Five specialized reasoning engines work in sequence on every analysis. Each brings a different perspective, each can challenge the others, and each contributes to explicit verdict, gate, and contradiction telemetry.</p>
+                    <div className="max-w-4xl mx-auto mb-8 text-center">
+                        <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">The Five Core Engines <span className="text-blue-600">&mdash; With Extra Intelligence</span></h3>
+                        <p className="text-sm text-slate-600 leading-relaxed">Five specialized reasoning engines work in sequence on every analysis. Each brings a different perspective, each can challenge the others, and each contributes to explicit verdict, gate, and contradiction telemetry.</p>
                     </div>
 
                     {/* Six Equal Category Cards (A-E + Architecture) */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
                         {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
                             const cat = categoryDetails[key];
                             return (
                                 <button
                                     key={key}
                                     onClick={() => setExpandedEngine(key)}
-                                    className={`group relative bg-gradient-to-r ${cat.color} p-5 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left`}
+                                    className={`group relative bg-gradient-to-r ${cat.color} p-4 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left`}
                                 >
                                     <div className="flex items-start justify-between gap-3">
                                         <div className="flex-1">
@@ -590,7 +589,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* 6th Card - The Intelligence Architecture */}
                         <button
                             onClick={() => setShowFormulas(true)}
-                            className="group relative bg-gradient-to-r from-slate-900 to-blue-900 p-5 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left"
+                            className="group relative bg-gradient-to-r from-slate-900 to-blue-900 p-4 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left"
                         >
                             <div className="flex items-start justify-between gap-3">
                                 <div className="flex-1">
@@ -598,7 +597,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center"><GitBranch size={14} /></span>
                                         <h3 className="text-base font-bold text-white leading-snug">The Intelligence Architecture</h3>
                                     </div>
-                                    <p className="text-xs text-white/80 leading-relaxed">The 10-layer NSIL pipeline, 50+ engine parallel brain, 12-layer Cognitive Reasoning Engine modelling human decision-making, cognitive control plane, adaptive learning kernel, Five Engine Tribunal runtime (proceed/proceed-with-controls/hold), Perception Delta Indexing, 20+ live external intelligence APIs (IMF/Exchange Rate/Wikidata/World Bank Enhanced), multi-provider AI orchestration (Groq/Together/OpenAI/Anthropic), anticipatory thinking with unconventional-angle detection, 7 reflexive intelligence engines, 3 quantum-inspired engines (Monte Carlo/Pattern/Cognition), production-grade financial modelling (IRR/NPV/WACC), 5&times;5 risk matrix, continuous self-monitoring with drift detection, and Research Ecosystem Readiness scoring (TAI/ICI/ERS).</p>
+                                    <p className="text-xs text-white/80 leading-relaxed">10-layer NSIL pipeline, 50+ engine parallel brain, 12-layer Cognitive Reasoning Engine, Five Engine Tribunal runtime, 20+ live external APIs, multi-provider AI orchestration, anticipatory thinking, 3 quantum-inspired engines, production-grade financial modelling, drift detection, and Research Ecosystem scoring.</p>
                                 </div>
                                 <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
                             </div>
