@@ -469,37 +469,44 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (Left) */}
                             <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">An Automated Due-Diligence &amp; Intelligence Engine</h4>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">The Tools Don&rsquo;t Exist. So the Decisions Stay Broken.</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    This system wasn’t built in a boardroom. It was built from a regional city—the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
+                                    Every day, investment decisions worth billions are made using recycled data, generic frameworks, and gut instinct dressed up as analysis. Advisory firms charge millions to deliver what a competent team with the right tools could produce in hours. Governments plan with fragmented portals and outdated census figures. Banks inflate risk premiums on anything outside a tier-one CBD because their models were never built to evaluate anything else.
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own—to prove that institutional-grade intelligence doesn’t have to come with an institutional price tag.
+                                    The result is predictable: capital flows to the same saturated markets while the places that actually drive an economy&mdash;regional hubs, logistics corridors, agricultural centres, industrial heartlands&mdash;are chronically overlooked. Not because they lack returns, but because no tool existed to prove it. Trillions in locked regional value sits untouched because the intelligence to surface it was never built.
                                 </p>
+
+                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">The Way It Works Today Is Broken</h5>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                     <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Five AI Minds Argue Before You See a Word</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">A Skeptic hunts for deal-killers. An Advocate finds hidden upside. An Accountant stress-tests the money. A Regulator checks sanctions and legal risk. An Operator asks if it can actually be built. Only what survives the debate reaches you.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Advisory Firms Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They charge hundreds of thousands of dollars to deliver a 100-page PDF three months later. They recycle macro-level tier-one data and apply generic frameworks that completely miss the local nuance of regional projects.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">It Catches What You Missed—Then Predicts What You’ll Need Next</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. An anticipatory layer predicts follow-up needs before you ask—you mention a port in passing and it pre-loads supply chain risk, trade corridor data, and counterparty integrity checks automatically.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Governments Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They rely on scattered portals and outdated census data. Planning decisions are disjointed across departments, forcing the project sponsor to carry the entire burden of piecing together regulatory alignment.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Real Math. Not Confident Guesswork.</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">54+ proprietary formulas run thousands of simulated scenarios—probability of loss, risk-adjusted return, cost of doing nothing, partnership viability, and ecosystem shock resilience. A Cognitive Reasoning Engine strips every problem to its core truth. Every number traces to a formula. Every formula traces to your inputs.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Business &amp; Banking Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They run backward-looking Excel models built for standard CBD assets. They arbitrarily inflate risk premiums for regions because their rigid formulas can&rsquo;t quantify localized logistics, workforce, or resilience.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Boardroom Documents. Not Chat Transcripts.</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Letters of Intent, term sheets, policy briefs, board packages—247+ document types with your actual scores and traceable reasoning. A governance tribunal issues a verdict: proceed, proceed with controls, or hold.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What General-Purpose AI Uses</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">It hallucinates regulations and invents financial math. It produces simple summaries&mdash;not the defensible, traceable fiduciary logic required to survive a real boardroom tribunal.</p>
                                     </div>
                                 </div>
+
                                 <div className="pt-3 border-t border-slate-200">
+                                    <h5 className="text-sm font-bold text-slate-900 mb-1">So We Built the Tool That Should Have Existed.</h5>
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
-                                        <strong>What We Actually Built:</strong> A hybrid intelligence system that combines computational finance, adversarial reasoning, autonomous agents, quantum-inspired simulation, human cognitive modeling, and live global data infrastructure. One input triggers 50+ specialized engines simultaneously—including quantum Monte Carlo risk simulation, Newton-Raphson financial modeling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives.
+                                        The BW Consultant is an AI-powered intelligence system designed to help anyone&mdash;whether you&rsquo;re an investor, a business owner, a government planner, or a consultant&mdash;explore and understand new economic markets anywhere in the world. It looks at any place on earth and reveals its true economic value: the local economies, supply chains, workforce strengths, and growth opportunities that traditional tools miss.
+                                    </p>
+                                    <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
+                                        It pulls real-time data from 20+ global sources, runs thousands of simulated scenarios using 54+ proprietary formulas, stress-tests every claim through five independent AI minds that argue before you see a word, and produces over 240 types of boardroom-ready documents&mdash;not chat transcripts, not summaries, but the defensible analysis that opens doors.
                                     </p>
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                        Every claim is attacked before it’s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents—not summaries, not slides, not chat transcripts. This NSIL pipeline doesn’t exist anywhere else.
+                                        This isn&rsquo;t a chatbot with opinions. It&rsquo;s the tool that finally exists&mdash;so the decisions stop being broken.
                                     </p>
                                 </div>
                             </div>
