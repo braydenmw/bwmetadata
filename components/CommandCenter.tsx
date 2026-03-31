@@ -469,44 +469,84 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (Left) */}
                             <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">The Tools Don&rsquo;t Exist. So the Decisions Stay Broken.</h4>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">What the BW Consultant Is Designed to Do</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Every day, investment decisions worth billions are made using recycled data, generic frameworks, and gut instinct dressed up as analysis. Advisory firms charge millions to deliver what a competent team with the right tools could produce in hours. Governments plan with fragmented portals and outdated census figures. Banks inflate risk premiums on anything outside a tier-one CBD because their models were never built to evaluate anything else.
+                                    At its core, the BW Consultant is built to help anyone&mdash;whether you&rsquo;re an investor, a business owner, a government planner, or a consultant&mdash;explore and understand new economic markets worldwide. It focuses on &ldquo;places&rdquo; (like cities, regions, or countries) and reveals their true economic value and potential, which is often hidden or misunderstood. For example:
                                 </p>
+                                <ul className="text-sm text-slate-600 leading-relaxed mb-3 list-disc pl-5 space-y-1">
+                                    <li>It looks at local economies, supply chains, workforce strengths, and growth opportunities that traditional tools miss.</li>
+                                    <li>It helps you see beyond the obvious &ldquo;big city&rdquo; investments to find real opportunities in regional hubs, agricultural areas, industrial zones, or emerging markets.</li>
+                                    <li>It provides a complete picture of a place&rsquo;s worth, including risks, opportunities, and how it fits into the global economy, so you can make decisions based on facts, not guesswork.</li>
+                                </ul>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    The result is predictable: capital flows to the same saturated markets while the places that actually drive an economy&mdash;regional hubs, logistics corridors, agricultural centres, industrial heartlands&mdash;are chronically overlooked. Not because they lack returns, but because no tool existed to prove it. Trillions in locked regional value sits untouched because the intelligence to surface it was never built.
+                                    The big idea is that trillions of dollars in economic potential are locked away in overlooked places because no tool existed to properly analyze them. BW Nexus AI changes that by giving you the intelligence to surface and prove that value.
                                 </p>
 
-                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">The Way It Works Today Is Broken</h5>
+                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">How It Helps Anyone Exploring New Economic Markets</h5>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    Imagine you&rsquo;re trying to decide whether to invest in a new market, start a business in a different region, or plan government development. Current tools give you recycled data, generic templates, or incomplete information, leading to bad decisions. BW Nexus AI:
+                                </p>
+                                <ul className="text-sm text-slate-600 leading-relaxed mb-3 list-disc pl-5 space-y-1">
+                                    <li>Pulls in real-time data from global sources (like economic reports, trade data, and local statistics) to build a detailed profile of any place.</li>
+                                    <li>Uses smart analysis to predict trends, assess risks, and calculate true economic potential&mdash;things like how logistics, workforce, and regulations will impact your plans.</li>
+                                    <li>Generates customized reports and documents (over 240 types) that explain everything clearly, so you can understand and act on the insights.</li>
+                                    <li>Works for anyone, anywhere: Whether you&rsquo;re a small business owner looking at a new market or a government official planning infrastructure, it adapts to your needs and provides the depth of analysis that was previously impossible.</li>
+                                </ul>
+
+                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">Who This Is Built to Help</h5>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    This system is for anyone who needs to make informed decisions about economic opportunities:
+                                </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                     <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Advisory Firms Use</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">They charge hundreds of thousands of dollars to deliver a 100-page PDF three months later. They recycle macro-level tier-one data and apply generic frameworks that completely miss the local nuance of regional projects.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Business Consultants &amp; Investors</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">To find and evaluate new markets without wasting time on outdated or incomplete data.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Governments Use</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">They rely on scattered portals and outdated census data. Planning decisions are disjointed across departments, forcing the project sponsor to carry the entire burden of piecing together regulatory alignment.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Governments &amp; Planners</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">To understand regional economies and make better development decisions.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Business &amp; Banking Use</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">They run backward-looking Excel models built for standard CBD assets. They arbitrarily inflate risk premiums for regions because their rigid formulas can&rsquo;t quantify localized logistics, workforce, or resilience.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Businesses &amp; Banks</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">To assess risks and opportunities in non-traditional locations, avoiding inflated costs or missed chances.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What General-Purpose AI Uses</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">It hallucinates regulations and invents financial math. It produces simple summaries&mdash;not the defensible, traceable fiduciary logic required to survive a real boardroom tribunal.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Anyone Curious About Global Economics</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">It democratizes access to high-level analysis, so even individuals can explore markets that were once only accessible to big firms.</p>
                                     </div>
                                 </div>
 
+                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">The Problem: The Tools Don&rsquo;t Exist, So Decisions Stay Broken</h5>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    Every day, billions in investment decisions are made poorly because the right tools simply don&rsquo;t exist. Here&rsquo;s how the current system is broken:
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                    <div className="border-l-2 border-red-500 pl-3">
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Advisory Firms Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They charge huge fees for thick reports that take months to produce, but they&rsquo;re often just recycling old data and using cookie-cutter templates. They miss the unique details of local markets, so their advice is generic and unreliable&mdash;leading to wasted money on bad investments.</p>
+                                    </div>
+                                    <div className="border-l-2 border-orange-500 pl-3">
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Governments Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They rely on scattered websites and outdated statistics from different departments. Planning is fragmented, so decisions about projects (like building roads or factories) are made without a full picture, causing delays, extra costs, and missed opportunities.</p>
+                                    </div>
+                                    <div className="border-l-2 border-yellow-500 pl-3">
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What Businesses &amp; Banks Use</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">They stick to simple spreadsheets designed for big-city properties. For anything outside major urban centers, they just guess at higher risks and charge more, even if the real data shows it&rsquo;s a great opportunity. Their models can&rsquo;t handle the nuances of regional economies.</p>
+                                    </div>
+                                    <div className="border-l-2 border-gray-500 pl-3">
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">What General-Purpose AI Uses</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">Basic AI tools make up facts, invent numbers, or give vague summaries. They can&rsquo;t provide the detailed, verifiable analysis needed for serious decisions&mdash;like what a boardroom or regulator would require.</p>
+                                    </div>
+                                </div>
+
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    The result? Money flows to the same crowded markets, while hidden gems in regions, agriculture, or industry are ignored. Trillions in potential value stays locked because no one has the tools to prove it&rsquo;s worth investing in.
+                                </p>
+
                                 <div className="pt-3 border-t border-slate-200">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">So We Built the Tool That Should Have Existed.</h5>
-                                    <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
-                                        The BW Consultant is an AI-powered intelligence system designed to help anyone&mdash;whether you&rsquo;re an investor, a business owner, a government planner, or a consultant&mdash;explore and understand new economic markets anywhere in the world. It looks at any place on earth and reveals its true economic value: the local economies, supply chains, workforce strengths, and growth opportunities that traditional tools miss.
-                                    </p>
-                                    <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
-                                        It pulls real-time data from 20+ global sources, runs thousands of simulated scenarios using 54+ proprietary formulas, stress-tests every claim through five independent AI minds that argue before you see a word, and produces over 240 types of boardroom-ready documents&mdash;not chat transcripts, not summaries, but the defensible analysis that opens doors.
-                                    </p>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-1">BW Nexus AI Fixes This.</h5>
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                        This isn&rsquo;t a chatbot with opinions. It&rsquo;s the tool that finally exists&mdash;so the decisions stop being broken.
+                                        BW Nexus AI is the tool that finally exists: It delivers accurate, deep, and actionable intelligence that makes broken decisions a thing of the past. It&rsquo;s production-ready, with no shortcuts or fake data&mdash;just real analysis to help you unlock the world&rsquo;s economic potential.
                                     </p>
                                 </div>
                             </div>
