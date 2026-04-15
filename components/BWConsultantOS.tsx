@@ -178,6 +178,7 @@ interface CaseStudy {
   additionalContext: string[];
   uploadedDocuments: string[];
   aiInsights: string[];
+  domainMode?: string;
 }
 
 type CasePhase = 'intake' | 'discovery' | 'analysis' | 'recommendations' | 'generation';
@@ -562,7 +563,7 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
       if (!lastRef.current) lastRef.current = ts;
       const elapsed = ts - lastRef.current;
       if (elapsed >= speed) {
-        const chars = Math.min(Math.floor(elapsed / speed), 5);
+        const chars = Math.floor(elapsed / speed);
         const nextIdx = Math.min(indexRef.current + chars, text.length);
         indexRef.current = nextIdx;
         setDisplayed(text.slice(0, nextIdx));
@@ -935,9 +936,11 @@ interface BWConsultantOSProps {
     research?: object | null;
   } | null;
   onInitialContextHandled?: () => void;
+  /** Active intelligence domain mode — passed from Gateway intake */
+  domainMode?: string;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -1017,6 +1020,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     uploadedDocuments: [],
     aiInsights: []
   });
+
+  // Sync domainMode from Gateway params into caseStudy
+  useEffect(() => {
+    if (propDomainMode) {
+      setCaseStudy(prev => ({ ...prev, domainMode: propDomainMode }));
+    }
+  }, [propDomainMode]);
 
   // Preload browser voices (Chrome loads them async) and sync ttsService on unmount
   useEffect(() => {
@@ -1215,6 +1225,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const quickSyncSignatureRef = useRef('');
   const strategicApplySignatureRef = useRef('');
   const matterFingerprintRef = useRef('');
+  const matterArchiveRef = useRef<Array<{
+    matter: string;
+    country: string;
+    sector: string;
+    entities: string[];
+    timestamp: number;
+  }>>([]);
   
   // Workspace modal
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
@@ -1356,6 +1373,30 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       .split(' ')
       .filter((token) => token.length >= 4);
 
+    // Extract key entities (locations, people, orgs) from text for semantic linking
+    const extractEntities = (text: string): string[] => {
+      const lc = text.toLowerCase();
+      const entities: string[] = [];
+      // Location keywords
+      const locationPatterns = [
+        /\b(pagadian|manila|cebu|davao|zamboanga|mindanao|luzon|visayas|sydney|melbourne|lagos|nairobi|dubai|singapore|tokyo|london|berlin|riyadh|jakarta|bangkok|hanoi|mumbai|delhi|shanghai|beijing)\b/gi,
+        /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+(?:city|province|region|state|district|municipality)\b/gi,
+      ];
+      for (const pat of locationPatterns) {
+        const matches = text.match(pat) || [];
+        entities.push(...matches.map(m => m.toLowerCase().trim()));
+      }
+      // Person titles
+      const personMatch = text.match(/\b(?:mayor|governor|minister|president|senator|secretary|ambassador|ceo|director)\s+\w+(?:\s+\w+)?/gi);
+      if (personMatch) entities.push(...personMatch.map(m => m.toLowerCase().trim()));
+      // Sector keywords
+      const sectorWords = ['investment', 'partner', 'trade', 'agriculture', 'manufacturing', 'tourism', 'energy', 'mining', 'infrastructure', 'development', 'business', 'market', 'economy', 'regional', 'rural', 'urban'];
+      for (const sw of sectorWords) {
+        if (lc.includes(sw)) entities.push(sw);
+      }
+      return [...new Set(entities)];
+    };
+
     const previousFingerprint = matterFingerprintRef.current;
     const currentMatter = caseStudy.currentMatter.trim();
     const currentFingerprint = normalizeMatter(currentMatter);
@@ -1367,6 +1408,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
     if (!previousFingerprint) {
       matterFingerprintRef.current = currentFingerprint;
+      // Archive this as the first matter
+      matterArchiveRef.current = [{
+        matter: currentMatter.substring(0, 300),
+        country: caseStudy.country,
+        sector: caseStudy.organizationType,
+        entities: extractEntities(currentMatter),
+        timestamp: Date.now(),
+      }];
       return;
     }
 
@@ -1378,15 +1427,86 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     const currentTokens = tokenizeMatter(currentFingerprint);
     const overlapCount = currentTokens.filter((token) => previousTokens.has(token)).length;
     const overlapRatio = currentTokens.length > 0 ? overlapCount / currentTokens.length : 0;
-    const isMaterialMatterShift = currentMatter.length >= 40 && overlapRatio < 0.35;
+
+    // ── SMART MATTER DETECTION ──────────────────────────────────────────────
+    // Instead of a hard token-overlap threshold, check for semantic connections:
+    // shared country, shared sector, shared entities (people, places, topics)
+    const currentEntities = extractEntities(currentMatter);
+    const previousEntities = extractEntities(previousFingerprint);
+    const sharedEntities = currentEntities.filter(e => previousEntities.includes(e));
+
+    // Check if country context is shared
+    const sharedCountry = !!(caseStudy.country && caseStudy.country.trim().length > 0);
+
+    // Check if any archived matter shares entities with the new one
+    const linkedToArchive = matterArchiveRef.current.some(archived => {
+      const archivedEntities = archived.entities;
+      return (
+        archivedEntities.some(e => currentEntities.includes(e)) ||
+        (archived.country && archived.country === caseStudy.country) ||
+        (archived.sector && archived.sector === caseStudy.organizationType)
+      );
+    });
+
+    // A matter is truly new only if:
+    // 1. Token overlap is very low (< 0.20 instead of 0.35)
+    // 2. AND no shared entities with current or archived matters
+    // 3. AND no shared country/sector context
+    const isTokenDisjoint = currentMatter.length >= 40 && overlapRatio < 0.20;
+    const hasSemanticLink = sharedEntities.length > 0 || sharedCountry || linkedToArchive;
+    const isTrulyNewMatter = isTokenDisjoint && !hasSemanticLink;
 
     matterFingerprintRef.current = currentFingerprint;
 
-    if (!isMaterialMatterShift) {
+    // Archive the current matter regardless
+    matterArchiveRef.current = [
+      ...matterArchiveRef.current.slice(-9), // keep last 10 matters
+      {
+        matter: currentMatter.substring(0, 300),
+        country: caseStudy.country,
+        sector: caseStudy.organizationType,
+        entities: currentEntities,
+        timestamp: Date.now(),
+      }
+    ];
+
+    if (!isTrulyNewMatter) {
+      // Topic shift detected but semantically linked - keep context, note the transition
+      if (overlapRatio < 0.35 && currentMatter.length >= 40) {
+        const linkDescription = sharedEntities.length > 0
+          ? `linked by: ${sharedEntities.slice(0, 3).join(', ')}`
+          : sharedCountry
+            ? `same region: ${caseStudy.country}`
+            : 'related to previous topics';
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: crypto.randomUUID(),
+            role: 'system',
+            content: `Topic shift noted (${linkDescription}). Carrying forward all prior context and intelligence to inform this line of inquiry.`,
+            timestamp: new Date(),
+            phase: 'discovery'
+          }
+        ]);
+      }
       return;
     }
 
-    brainCtxRef.current = null;
+    // ── SELECTIVE RESET: Preserve what carries forward ──────────────────────
+    // Instead of wiping brainCtxRef entirely, preserve external data and
+    // historical patterns if the country is the same
+    const prevBrainCtx = brainCtxRef.current;
+    if (prevBrainCtx && caseStudy.country && prevBrainCtx.externalData) {
+      // Keep external data (country-level data carries forward)
+      // Only wipe the matter-specific analysis
+      brainCtxRef.current = {
+        ...prevBrainCtx,
+        promptBlock: '', // Clear the prompt-specific block
+      } as typeof prevBrainCtx;
+    } else {
+      brainCtxRef.current = null;
+    }
+
     quickSyncSignatureRef.current = '';
     strategicApplySignatureRef.current = '';
     setQuickDraftLines('');
@@ -1396,17 +1516,27 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setLiveInsightResults([]);
     setLiveInsightsRequested(false);
     setLastLiveInsightSearchSignature('');
+
+    // Build a summary of what was discussed before for context continuity
+    const archivedTopics = matterArchiveRef.current
+      .slice(0, -1) // exclude the one we just added
+      .map(a => a.matter.substring(0, 100))
+      .filter(Boolean);
+    const topicHistoryNote = archivedTopics.length > 0
+      ? ` Previous topics in this session: ${archivedTopics.join('; ')}.`
+      : '';
+
     setMessages((prev) => [
       ...prev,
       {
         id: crypto.randomUUID(),
         role: 'system',
-        content: 'New matter detected. NSIL context and strategic carry-over have been reset. Please provide the new problem details to continue.',
+        content: `New topic detected. NSIL analysis engines are recalibrating for this new line of inquiry.${topicHistoryNote} Core intelligence and session learnings have been preserved.`,
         timestamp: new Date(),
         phase: 'discovery'
       }
     ]);
-  }, [caseStudy.currentMatter]);
+  }, [caseStudy.currentMatter, caseStudy.country, caseStudy.organizationType]);
 
   const initializeExecutionTimeline = useCallback(() => {
     setExecutionTimeline([
@@ -3551,7 +3681,8 @@ ${agentRegistry.current.toManifest()}`;
           caseStudy,
           consultantCaseBrief,
           consultantGateReady,
-          consultantGateMissing
+          consultantGateMissing,
+          domainMode: caseStudy.domainMode || 'regional-development'
         },
         envelope: {
           requestId: crypto.randomUUID(),
@@ -3621,7 +3752,7 @@ ${agentRegistry.current.toManifest()}`;
       const systemPrompt = buildConsultantPrompt(userInput, context);
       const reqBody = JSON.stringify({
         message: userInput,
-        context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
+        context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, domainMode: caseStudy.domainMode || 'regional-development' },
         envelope: {
           requestId: crypto.randomUUID(),
           timestamp: new Date().toISOString(),
@@ -3688,7 +3819,7 @@ ${agentRegistry.current.toManifest()}`;
             runtimeHint = ' The backend API endpoint is unreachable from this client. Confirm the backend URL and network access, then check /api/health and /api/ai/readiness.';
           } else {
             const status = statusResponse.value;
-            const health = healthResponse.value;
+            // const health = healthResponse.value; // intentionally retained for future runtime diagnostics
 
             if (status.status === 404) {
               runtimeHint = ' The backend server is not running or reachable at the configured URL. Start the backend with \'npm run server\' (local) or verify your deployment is running on AWS/Railway (ECS/Fargate, App Runner, or-Amplify).';
@@ -4991,10 +5122,30 @@ ${agentRegistry.current.toManifest()}`;
           }
         }
         const priorTurns = memoryRef.current.recall('consultant-turns', 5);
-        const memoryBlock = priorTurns.length
+        const priorTurnsBlock = priorTurns.length
           ? `\n\n### PRIOR SESSION CONTEXT (${priorTurns.length} remembered turns)\n` +
             priorTurns.map(t => `- [${new Date(t.timestamp).toLocaleDateString()}] ${t.action.substring(0, 120)}`).join('\n')
           : '';
+
+        // ── CONVERSATION HISTORY: Include recent messages so the AI sees the full thread ──
+        const recentHistory = messages
+          .filter(m => m.role === 'user' || m.role === 'assistant')
+          .slice(-8) // last 8 turns (4 exchanges)
+          .map(m => `${m.role === 'user' ? 'User' : 'Consultant'}: ${m.content.substring(0, 500)}`)
+          .join('\n\n');
+        const conversationHistoryBlock = recentHistory
+          ? `\n\n### CONVERSATION HISTORY (recent exchanges in this session)\nThe following is the recent conversation. Use this to maintain context, identify connections between topics, and avoid repeating information the user already received.\n\n${recentHistory}`
+          : '';
+
+        // ── MATTER ARCHIVE: Show the AI what topics have been discussed ──
+        const matterArchive = matterArchiveRef.current;
+        const matterArchiveBlock = matterArchive.length > 1
+          ? `\n\n### TOPICS DISCUSSED IN THIS SESSION (${matterArchive.length} topics)\n` +
+            matterArchive.map((m, i) => `${i + 1}. ${m.matter.substring(0, 150)}${m.country ? ` [${m.country}]` : ''}${m.sector ? ` (${m.sector})` : ''}`).join('\n') +
+            `\n\nINSTRUCTION: These topics may be interconnected. When the user asks about a new topic, consider whether it relates to or builds upon previous topics. Draw connections proactively. Do NOT treat each topic as isolated unless the user explicitly starts a completely new inquiry.`
+          : '';
+
+        const memoryBlock = `${priorTurnsBlock}${conversationHistoryBlock}${matterArchiveBlock}`;
         setIsStreamingResponse(true);
         displayedMsgIds.current.add(assistantMessageId);
         // Build the system instruction. For greeting/low-readiness turns inject a
@@ -5335,6 +5486,8 @@ CRITICAL RULES:
         setMessages(prev => prev.map((msg) => (
           msg.id === assistantMessageId ? { ...msg, content: responseContent } : msg
         )));
+        // Mark as already displayed so TypewriterText doesn't re-type streamed content
+        displayedMsgIds.current.add(assistantMessageId);
         setExecutionTaskStatus('response', 'completed', 'Primary response delivered');
         // ── SAVE TURN TO PERSISTENT MEMORY ──
         memoryRef.current.remember('consultant-turns', {
@@ -5590,9 +5743,13 @@ CRITICAL RULES:
       }
 
       // ── DOCUMENT BUILDER: Auto-show report options when document intent detected ──
-      // Even without a file upload, when the user asks for a letter/report/case study,
-      // build a report options menu from conversation context and show the tier picker.
-      if (isDocBuilderIntent && !isReportGeneration && !hadFileUpload) {
+      // Only show the panel when the conversation has enough context — NOT on the
+      // very first message or a casual mention.  Require either:
+      //   • at least 2 prior messages (a real back-and-forth), OR
+      //   • readiness ≥ 15  (enough signals captured), OR
+      //   • the user's message is explicitly asking to generate (> 60 chars of substance)
+      const hasEnoughContext = messages.length >= 2 || liveReadiness >= 15 || trimmedUserContent.length > 60;
+      if (isDocBuilderIntent && !isReportGeneration && !hadFileUpload && hasEnoughContext) {
         setDocumentBuilderActive(true);
         const conversationWordCount = ReportLengthRouter.estimateWordCount(
           caseDraft.currentMatter + ' ' + caseDraft.objectives + ' ' + trimmedUserContent
@@ -6175,6 +6332,7 @@ CRITICAL RULES:
   }, []);
 
   const downloadSingleDocAsDocx = useCallback(async (doc: {title: string; content: string; category: 'report' | 'letter'}) => {
+    const isLetter = doc.category === 'letter';
     const meta: DocxDocumentMeta = {
       title: doc.title,
       subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
@@ -6182,13 +6340,16 @@ CRITICAL RULES:
       preparedBy: 'BW Global Advisory - NEXUS AI',
       date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
       reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-      classification: 'CONFIDENTIAL',
+      classification: isLetter ? 'DRAFT' : 'CONFIDENTIAL',
       jurisdiction: caseStudy.jurisdiction || caseStudy.country,
-      strategicReadiness: strategicPipeline?.readinessScore,
-      evidenceCredibility: overlookedIntelligence?.evidenceCredibility,
-      perceptionRealityGap: overlookedIntelligence?.perceptionRealityGap,
-      topRegionalOpportunities: overlookedIntelligence?.topRegionalOpportunities,
-      engagementDraftHints: strategicPipeline?.engagementDraftHints
+      strategicReadiness: isLetter ? undefined : strategicPipeline?.readinessScore,
+      evidenceCredibility: isLetter ? undefined : overlookedIntelligence?.evidenceCredibility,
+      perceptionRealityGap: isLetter ? undefined : overlookedIntelligence?.perceptionRealityGap,
+      topRegionalOpportunities: isLetter ? undefined : overlookedIntelligence?.topRegionalOpportunities,
+      engagementDraftHints: isLetter ? undefined : strategicPipeline?.engagementDraftHints,
+      includeStrategicAppendix: false,
+      includeConfidentialStatement: false,
+      includeFooterMetadata: true,
     };
     await downloadAsDocx(doc.content, meta);
   }, [caseStudy, strategicPipeline, overlookedIntelligence]);
@@ -6221,19 +6382,21 @@ CRITICAL RULES:
     // Helper: wrap AI content + case metadata into a ProfessionalDocument
     const buildProfDoc = (content: string, doc: DocumentOption): ProfessionalDocument => {
       const sections = parseMarkdown(content);
-      return {
+      const isLetter = doc.category === 'letter';
+    return {
         title: doc.title.toUpperCase(),
         subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
-        classification: 'CONFIDENTIAL',
+        classification: isLetter ? 'PUBLIC' : 'CONFIDENTIAL',
         preparedFor: caseStudy.organizationName || 'Client',
         preparedBy: 'BW Global Advisory - NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
-        reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        reportId: isLetter ? undefined : `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         version: '1.0',
         sections: sections.length > 0 ? sections : [{ title: doc.title, content, type: 'paragraph' }],
+        appendices: isLetter ? [] : undefined,
         footer: {
           company: 'BW Global Advisory',
-          disclaimer: `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential - do not distribute without prior written authorisation.`
+          disclaimer: isLetter ? `Draft letter prepared for ${caseStudy.organizationName || 'the recipient'}.` : `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential - do not distribute without prior written authorisation.`
         }
       };
     };
@@ -7921,8 +8084,8 @@ CRITICAL RULES:
                           </div>
                         )}
                         <div className={`whitespace-pre-wrap ${msg.role === 'assistant' ? 'text-[13px] leading-[1.7] text-slate-800' : ''}`}>
-                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && msgIdx > 0 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
-                            <TypewriterText text={msg.content} speed={25}
+                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
+                            <TypewriterText text={msg.content} speed={voiceEnabled ? ttsService.getTypingSpeedMs() : 25}
                               onComplete={() => {
                                 displayedMsgIds.current.add(msg.id);
                               }}
@@ -8120,8 +8283,8 @@ CRITICAL RULES:
             )}
 
             {/* Input Area */}
-            <div className="p-4 border-t border-stone-200 bg-white">
-              <div className="flex items-end gap-3 max-w-4xl mx-auto">
+            <div className="px-3 py-2 border-t border-stone-200 bg-white">
+              <div className="flex items-end gap-2 max-w-4xl mx-auto">
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="p-3 bg-stone-100 hover:bg-stone-200 text-slate-600 border border-stone-300 transition-all"
@@ -8193,7 +8356,7 @@ CRITICAL RULES:
                         ? "Select documents or describe what you need..."
                         : "Share more details or ask questions..."
                   }
-                  className="flex-1 resize-none border border-stone-300 px-3 md:px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px] max-h-[150px] leading-relaxed"
+                  className="flex-1 resize-none border border-stone-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[40px] max-h-[120px] leading-normal"
                   rows={1}
                 />
                 <button
@@ -8215,14 +8378,31 @@ CRITICAL RULES:
                     </>
                   )}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setShowExecutionTimeline((prev) => !prev)}
-                  className="px-3 py-2 text-xs border border-stone-300 bg-stone-50 text-slate-700 hover:bg-stone-100"
-                >
-                  {showExecutionTimeline ? 'Hide Runtime' : 'Show Runtime'}
-                </button>
               </div>
+              {/* Secondary controls row */}
+              <div className="flex items-center justify-between max-w-4xl mx-auto mt-1">
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowExecutionTimeline((prev) => !prev)}
+                    className="px-2 py-0.5 text-[10px] border border-stone-200 rounded bg-stone-50 text-slate-500 hover:bg-stone-100 hover:text-slate-700 transition-colors"
+                  >
+                    {showExecutionTimeline ? 'Hide Runtime' : 'Runtime'}
+                  </button>
+                  {messages.length > 0 && (augmentedAISnapshot || augmentedRecommendedTools.length > 0 || augmentedUnresolvedGaps.length > 0) && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAugmentedPanel((prev) => !prev)}
+                      className="px-2 py-0.5 text-[10px] border border-emerald-200 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                    >
+                      {showAugmentedPanel ? 'Hide AI Runtime' : 'AI Runtime'}
+                    </button>
+                  )}
+                </div>
+                <span className="text-[9px] text-slate-300">↵ send · ⇧↵ new line</span>
+              </div>
+
+              {/* Execution timeline panel */}
               {showExecutionTimeline && (
                 <div className="max-w-4xl mx-auto mt-2 border border-stone-200 bg-stone-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-slate-800">Background Runtime</p>
@@ -8328,18 +8508,9 @@ CRITICAL RULES:
                   <p className="text-[11px] text-blue-700 mt-0.5">{reactiveDraftHint}</p>
                 </div>
               )}
-              {/* Augmented AI Human-in-the-Loop panel is now gated by explicit user action */}
-              {messages.length > 0 && (augmentedAISnapshot || augmentedRecommendedTools.length > 0 || augmentedUnresolvedGaps.length > 0) && (
-                <div className="max-w-4xl mx-auto mt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowAugmentedPanel((prev) => !prev)}
-                    className="px-3 py-2 text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 mb-2"
-                  >
-                    {showAugmentedPanel ? 'Hide Augmented AI Runtime' : 'Show Augmented AI Runtime'}
-                  </button>
-                  {showAugmentedPanel && (
-                    <div className="border border-emerald-300 bg-emerald-50 px-3 py-2">
+              {/* Augmented AI expanded panel — rendered below the controls row */}
+              {showAugmentedPanel && (
+                <div className="max-w-4xl mx-auto mt-1 border border-emerald-300 bg-emerald-50 px-3 py-2 rounded">
                       <button
                         type="button"
                         onClick={() => setAugmentedPanelExpanded((prev) => !prev)}
@@ -8433,13 +8604,10 @@ CRITICAL RULES:
                         </span>
                         {augmentedReviewLoading && <Loader2 size={11} className="animate-spin text-emerald-700" />}
                       </div>
-                    </div>
-                  )}
                 </div>
               )}
-              {/* Pending Actions no longer rendered here — moved inside Runtime panel above */}
-              {/* Compliance Warning Strip */}
-              {complianceWarnings.length > 0 && (
+              {/* Compliance Warning Strip (only visible when runtime panel is shown) */}
+              {showAugmentedPanel && complianceWarnings.length > 0 && (
                 <div className="max-w-4xl mx-auto mt-2 border border-red-200 bg-red-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-red-800 flex items-center gap-1">
                     <AlertTriangle size={11} className="text-red-600" />
@@ -8452,9 +8620,7 @@ CRITICAL RULES:
                   </ul>
                 </div>
               )}
-              <p className="text-[10px] text-slate-400 mt-2 text-center">
-                Enter to send • Shift+Enter new line
-              </p>
+
             </div>
 
             {/* NSIL Footer */}
@@ -9375,20 +9541,20 @@ CRITICAL RULES:
 
       {/* Final Report Modal */}
       {showFinalReport && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-0 md:p-4">
-          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-4xl max-h-[92vh]'} flex flex-col overflow-hidden`} style={{ background: '#0f1923', border: isMobile ? 'none' : '1px solid #2a3a4a' }}>
+        <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center p-2 md:p-4">
+          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-4xl max-h-[92vh]'} flex flex-col overflow-hidden shadow-2xl`} style={{ background: '#ffffff', border: isMobile ? 'none' : '1px solid #d1d5db' }}>
 
             {/* ── Header ── */}
-            <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#1e3248', background: 'linear-gradient(135deg, #0f1923 0%, #1a2d40 100%)' }}>
+            <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#e5e7eb', background: '#ffffff' }}>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#b48228' }}>
+                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#1070ca' }}>
                     <FileText size={11} className="text-white" />
                   </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#b48228' }}>BW Global Advisory</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#1f2937' }}>BW Global Advisory</span>
                 </div>
-                <h2 className="text-xl font-bold text-white">NEXUS AI - Document Intelligence</h2>
-                <p className="text-xs mt-1" style={{ color: '#7a9ab8' }}>
+                <h2 className="text-xl font-bold text-slate-800">NEXUS AI - Document Intelligence</h2>
+                <p className="text-xs mt-1 font-medium" style={{ color: '#4b5563' }}>
                   {generatedDocuments.length > 0
                     ? `${generatedDocuments.length} document${generatedDocuments.length !== 1 ? 's' : ''} ready - analysis complete`
                     : 'Awaiting document analysis or report generation'}
@@ -9406,13 +9572,13 @@ CRITICAL RULES:
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
               {generatedDocuments.length > 0 ? (
                 generatedDocuments.map((doc) => (
-                  <div key={doc.id} className="overflow-hidden" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                  <div key={doc.id} className="overflow-hidden" style={{ border: '1px solid #d1d5db', background: '#ffffff' }}>
 
                     {/* Doc header strip */}
-                    <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#16263a', borderBottom: '1px solid #1e3248' }}>
+                    <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
                       <div>
-                        <p className="text-sm font-bold text-white">{doc.title}</p>
-                        <p className="text-[10px] mt-0.5" style={{ color: '#7a9ab8' }}>
+                        <p className="text-sm font-bold text-slate-900">{doc.title}</p>
+                        <p className="text-[10px] mt-0.5" style={{ color: '#6b7280' }}>
                           {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} &nbsp;·&nbsp; {caseStudy.country || 'Global'} &nbsp;·&nbsp; BW Global Advisory
                         </p>
                       </div>
@@ -9422,14 +9588,14 @@ CRITICAL RULES:
                     </div>
 
                     {/* Content preview */}
-                    <div className="px-5 py-4">
-                      <div className="text-xs leading-relaxed whitespace-pre-wrap font-mono" style={{ color: '#a8c0d6', maxHeight: '300px', overflowY: 'auto' }}>
+                    <div className="px-5 py-4" style={{ background: '#ffffff' }}>
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#334155', maxHeight: '300px', overflowY: 'auto', fontFamily: 'Calibri, Arial, sans-serif' }}>
                         {doc.content.slice(0, 2000)}{doc.content.length > 2000 ? '\n\n[…continued in full export]' : ''}
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="px-5 py-3 flex flex-wrap gap-2 border-t" style={{ borderColor: '#1e3248', background: '#0d1821' }}>
+                    <div className="px-5 py-3 flex flex-wrap gap-2 border-t" style={{ borderColor: '#e5e7eb', background: '#f9fafb' }}>
                       <button
                         onClick={() => {
                           const win = window.open('', '_blank');
@@ -9502,17 +9668,17 @@ CRITICAL RULES:
               ) : (
                 <div className="space-y-4">
                   {/* Empty state */}
-                  <div className="px-5 py-6 text-center" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
-                    <div className="w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: '#16263a' }}>
-                      <FileText size={20} style={{ color: '#7a9ab8' }} />
+                  <div className="px-5 py-6 text-center" style={{ border: '1px solid #d1d5db', background: '#fafafa' }}>
+                    <div className="w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: '#e5e7eb' }}>
+                      <FileText size={20} style={{ color: '#374151' }} />
                     </div>
-                    <p className="text-sm font-semibold text-white mb-1">No documents generated yet</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#7a9ab8' }}>
+                    <p className="text-sm font-semibold text-slate-900 mb-1">No documents generated yet</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
                       Upload a document or have a consultation session with the OS. Once the NEXUS AI analyses your document, it will appear here ready for export.
                     </p>
                   </div>
                   {messages.filter(m => m.role !== 'system').length > 2 && (
-                    <div className="px-5 py-4" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                    <div className="px-5 py-4" style={{ border: '1px solid #d1d5db', background: '#ffffff' }}>
                       <p className="text-sm font-semibold text-white mb-1">Generate from current session</p>
                       <p className="text-xs mb-3" style={{ color: '#7a9ab8' }}>
                         The NEXUS AI will synthesise your consultation into a structured advisory brief.
@@ -9534,12 +9700,12 @@ CRITICAL RULES:
             </div>
 
             {/* ── Footer ── */}
-            <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #1e3248', background: '#0d1821' }}>
-              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#3a5a7a' }}>BW Global Advisory - NEXUS AI Agentic Runtime - Confidential</p>
+            <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #e5e7eb', background: '#f8fafc' }}>
+              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#475569' }}>BW Global Advisory - NEXUS AI Agentic Runtime - Confidential</p>
               <button
                 onClick={() => setShowFinalReport(false)}
                 className="px-4 py-1.5 text-xs font-medium transition-all hover:opacity-90"
-                style={{ background: '#1e3248', color: '#a8c0d6', border: '1px solid #2a3a4a' }}
+                style={{ background: '#1d4ed8', color: '#ffffff', border: '1px solid #1e40af' }}
               >
                 Close
               </button>

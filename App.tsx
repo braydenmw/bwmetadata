@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, lazy, Suspense } from 'react';
 import { 
   ReportParameters, 
   CopilotInsight, 
@@ -108,6 +108,18 @@ const App: React.FC = () => {
     // AUTONOMOUS CAPABILITIES STATE
     const [autonomousMode] = useState(true); // DEFAULT ON
     const [autonomousInsights, setAutonomousInsights] = useState<CopilotInsight[]>([]);
+    const [isOnline, setIsOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+    useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
     const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
     const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
     // FULLY AUTONOMOUS SYSTEM STATE
@@ -131,6 +143,9 @@ const App: React.FC = () => {
     } | null>(null);
     // ECOSYSTEM STATE (from EventBus "meadow" signals)
     const [, setEcosystemPulse] = useState<EcosystemPulse | null>(null);
+
+    // Self-learning report timing
+    const reportStartTimeRef = useRef<number>(0);
 
     // COMBINED INSIGHTS - Merge regular and autonomous insights
     const combinedInsights = useMemo(() => {
@@ -201,86 +216,91 @@ const App: React.FC = () => {
             unsubConsultantInsights();
             unsubSearchResult();
         };
-    }, [isConsultantActive, params]);
+    }, []); // FIXED: EventBus is a singleton; handler updates use functional state setters
 
 
     // --- EFFECTS ---
-    // Copilot Auto-Gen - ONLY runs if valid input exists
+    // Copilot Auto-Gen - runs on key param changes with debounced trigger
+    const copilotKey = useMemo(
+        () => `${params.organizationName}|${params.country}|${viewMode}`,
+        [params.organizationName, params.country, viewMode]
+    );
+
     useEffect(() => {
         const timer = setTimeout(async () => {
-          // STRICT CHECK: Do not run if fields are empty
-          if ((viewMode === 'report-generator') && params.organizationName && params.country && params.organizationName.length > 2 && insights.length === 0) {
+            if (viewMode !== 'report-generator') return;
+            if (!params.organizationName || !params.country || params.organizationName.length <= 2) return;
+            if (insights.length > 0) return;
+
             try {
-              const [{ generateCopilotInsights }, { config }] = await Promise.all([
-                import('./services/geminiService'),
-                import('./services/config')
-              ]);
-              if (!config.useRealAI) {
-                return;
-              }
-              const newInsights = await generateCopilotInsights(params);
-              setInsights(newInsights);
+                const [{ generateCopilotInsights }, { config }] = await Promise.all([
+                    import('./services/geminiService'),
+                    import('./services/config')
+                ]);
+                if (!config.useRealAI) {
+                    return;
+                }
+                const newInsights = await generateCopilotInsights(params);
+                setInsights(newInsights);
             } catch (error) {
-              console.error("DEBUG: Error in copilot generation:", error);
+                console.error('DEBUG: Error in copilot generation:', error);
             }
-          }
         }, 1500);
+
         return () => clearTimeout(timer);
-        }, [params, viewMode, insights.length]);
+    }, [copilotKey, params, viewMode, insights.length]);
 
     // AUTONOMOUS CAPABILITIES EFFECTS
 
-    // Agentic Worker - true digital worker pipeline (plan -> tools -> memory -> verdict)
+    // Agentic Worker — stable deps via key fields to avoid frequent re-runs
+    const agenticKey = useMemo(
+        () => `${params.organizationName}|${params.country}|${(Array.isArray(params.industry) ? params.industry.join(',') : params.industry)}`,
+        [params.organizationName, params.country, params.industry]
+    );
+
     useEffect(() => {
-        if (autonomousMode && params.organizationName && params.country && params.organizationName.length > 2) {
-            const timer = setTimeout(async () => {
-                setIsAutonomousThinking(true);
+        if (!autonomousMode || !params.organizationName || params.organizationName.length <= 2) return;
+
+        const timer = setTimeout(async () => {
+            setIsAutonomousThinking(true);
+            try {
+                const { runSmartAgenticWorker } = await import('./services/agenticWorker');
+                const agenticResult: AgenticRun = await runSmartAgenticWorker(params, { maxSimilarCases: 5 });
+                setAutonomousInsights(agenticResult.insights);
+                setAutonomousSuggestions(agenticResult.executiveBrief.nextActions);
+            } catch (error) {
+                console.error(' AGENTIC WORKER: Error running digital worker:', error);
                 try {
-                    const { runSmartAgenticWorker } = await import('./services/agenticWorker');
-                    // Run the full agentic pipeline (tools + memory + payload)
-                    const agenticResult: AgenticRun = await runSmartAgenticWorker(params, { maxSimilarCases: 5 });
-
-                    // Merge insights produced by agentic worker
-                    setAutonomousInsights(agenticResult.insights);
-
-                    // Proactive suggestions based on next actions
-                    setAutonomousSuggestions(agenticResult.executiveBrief.nextActions);
-                } catch (error) {
-                    console.error(" AGENTIC WORKER: Error running digital worker:", error);
-                    // Fallback to legacy autonomous solve
-                    try {
-                        const { solveAndAct: autonomousSolve } = await import('./services/autonomousClient');
-                        const problem = `Analyze partnership and investment opportunities for ${params.organizationName} in ${params.country}`;
-                        const context = {
-                            region: params.country,
-                            industry: params.industry,
-                            dealSize: params.dealSize,
-                            strategicIntent: params.strategicIntent
-                        };
-                        const result = await autonomousSolve(problem, context, params, { autoAct: false, urgency: 'normal' });
-                        const fallbackInsights: CopilotInsight[] = result.solutions.map((solution: { action: string; reasoning: string; confidence?: number }, index: number) => ({
-                            id: `autonomous-${Date.now()}-${index}`,
-                            type: 'strategy' as const,
-                            title: `Autonomous Discovery: ${solution.action}`,
-                            description: solution.reasoning,
-                            content: `Autonomous analysis suggests: ${solution.action}. Reasoning: ${solution.reasoning}`,
-                            confidence: solution.confidence || 75,
-                            isAutonomous: true
-                        }));
-                        setAutonomousInsights(fallbackInsights);
-                        setAutonomousSuggestions(result.solutions.map((s: { action: string }) => s.action));
-                    } catch {
-                        // Fallback failed silently
-                    }
-                } finally {
-                    setIsAutonomousThinking(false);
+                    const { solveAndAct: autonomousSolve } = await import('./services/autonomousClient');
+                    const problem = `Analyze partnership and investment opportunities for ${params.organizationName} in ${params.country}`;
+                    const context = {
+                        region: params.country,
+                        industry: params.industry,
+                        dealSize: params.dealSize,
+                        strategicIntent: params.strategicIntent
+                    };
+                    const result = await autonomousSolve(problem, context, params, { autoAct: false, urgency: 'normal' });
+                    const fallbackInsights: CopilotInsight[] = result.solutions.map((solution: { action: string; reasoning: string; confidence?: number }, index: number) => ({
+                        id: `autonomous-${Date.now()}-${index}`,
+                        type: 'strategy' as const,
+                        title: `Autonomous Discovery: ${solution.action}`,
+                        description: solution.reasoning,
+                        content: `Autonomous analysis suggests: ${solution.action}. Reasoning: ${solution.reasoning}`,
+                        confidence: solution.confidence || 75,
+                        isAutonomous: true
+                    }));
+                    setAutonomousInsights(fallbackInsights);
+                    setAutonomousSuggestions(result.solutions.map((s: { action: string }) => s.action));
+                } catch {
+                    // Fallback failed silently
                 }
-            }, 3000); // Longer delay for autonomous analysis
+            } finally {
+                setIsAutonomousThinking(false);
+            }
+        }, 3000);
 
-            return () => clearTimeout(timer);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.organizationName, params.country, params.industry, autonomousMode]);
+        return () => clearTimeout(timer);
+    }, [agenticKey, autonomousMode, params]);
 
     // BW Consultant AI - Proactive guidance and automatic search
     useEffect(() => {
@@ -343,31 +363,34 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genPhase, params.id, genProgress, autonomousSuggestions]);
 
-    // Proactive Intelligence Monitoring - Continuous background analysis
+    // Proactive Intelligence Monitoring — runs one-shot on key param changes with debounce
     useEffect(() => {
-        if (autonomousMode && params.organizationName) {
-            const interval = setInterval(async () => {
-                try {
-                    const { ReactiveIntelligenceEngine } = await import('./services/ReactiveIntelligenceEngine');
-                    const opportunities = await ReactiveIntelligenceEngine.thinkAndAct(
-                        `Monitor for new opportunities related to ${params.organizationName} in ${params.country || 'target markets'}`,
-                        params,
-                        { autoAct: false, urgency: 'low' }
-                    );
+        if (!autonomousMode || !params.organizationName || params.organizationName.length <= 2) return;
 
-                    if (opportunities.actions.length > 0) {
-                        const newSuggestions = opportunities.actions.map(action => action.action);
-                        setAutonomousSuggestions(prev => [...new Set([...prev, ...newSuggestions])]);
-                    }
-                } catch (error) {
-                    console.error(" PROACTIVE: Error in monitoring:", error);
+        let cancelled = false;
+        const timer = setTimeout(async () => {
+            try {
+                const { ReactiveIntelligenceEngine } = await import('./services/ReactiveIntelligenceEngine');
+                const opportunities = await ReactiveIntelligenceEngine.thinkAndAct(
+                    `Monitor for new opportunities related to ${params.organizationName} in ${params.country || 'target markets'}`,
+                    params,
+                    { autoAct: false, urgency: 'low' }
+                );
+
+                if (!cancelled && opportunities.actions.length > 0) {
+                    const newSuggestions = opportunities.actions.map(action => action.action);
+                    setAutonomousSuggestions(prev => [...new Set([...prev, ...newSuggestions])]);
                 }
-            }, 30000); // Check every 30 seconds
+            } catch (error) {
+                if (!cancelled) console.error(' PROACTIVE: Error in monitoring:', error);
+            }
+        }, 5000); // One-shot 5 second debounce after params change
 
-            return () => clearInterval(interval);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autonomousMode, params.organizationName, params.country]);
+        return () => {
+            cancelled = true;
+            clearTimeout(timer);
+        };
+    }, [autonomousMode, params]);
 
     // --- ACTIONS ---
     const handleEscape = useCallback(() => {
@@ -450,6 +473,7 @@ const App: React.FC = () => {
             return;
         }
 
+        reportStartTimeRef.current = Date.now();
         setIsGeneratingReport(true);
         setGenPhase('intake');
         setGenProgress(5);
@@ -578,6 +602,10 @@ const App: React.FC = () => {
         }
 
         const completedReport = { ...updatedParams, status: 'complete' as const };
+        const elapsedMs = Date.now() - reportStartTimeRef.current;
+        console.info(`Report generation completed in ${elapsedMs}ms`);
+        reportStartTimeRef.current = 0;
+
         setGenPhase('complete');
         setGenProgress(100);
         setIsGeneratingReport(false);
@@ -653,6 +681,7 @@ const App: React.FC = () => {
                             setViewMode('main');
                         }}
                         onNavigate={(mode) => setViewMode(mode as ViewMode)}
+                        domainMode={params.domainMode}
                     />
                 </div>
             );
@@ -812,6 +841,18 @@ const App: React.FC = () => {
             </div>
         );
     };
+
+    if (!isOnline) {
+        return (
+            <div className="h-screen w-full bg-slate-950 text-white flex items-center justify-center p-6">
+                <div className="max-w-md text-center border border-white/20 rounded-lg p-8 bg-black/60 shadow-lg">
+                    <h1 className="text-2xl font-bold mb-4">No Internet Connection</h1>
+                    <p className="text-sm mb-4">You are currently offline. Please reconnect to the internet to use BW Consultant features.</p>
+                    <p className="text-xs text-slate-300">The app is available here once your network is restored.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="h-screen w-full bg-stone-50 font-sans text-stone-900 flex flex-col overflow-hidden">

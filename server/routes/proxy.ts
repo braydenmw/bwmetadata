@@ -48,7 +48,7 @@ router.post('/chat', async (req: Request, res: Response) => {
   const body: Record<string, unknown> = {
     model: model || 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
     messages: cleanMessages,
-    max_tokens: Math.min(max_tokens || 4096, 8192),
+    max_tokens: Math.min(max_tokens || 8192, 16384),
     temperature: Math.min(Math.max(temperature || 0.4, 0), 1.5),
     stream: Boolean(stream),
   };
@@ -175,13 +175,20 @@ router.post('/extract', async (req: Request, res: Response) => {
   const hostname = parsedUrl.hostname.toLowerCase();
   if (
     hostname === 'localhost' ||
+    hostname === '[::1]' ||
+    hostname === '::1' ||
     hostname.startsWith('127.') ||
     hostname.startsWith('10.') ||
     hostname.startsWith('192.168.') ||
     hostname.startsWith('172.') ||
+    hostname.startsWith('169.254.') ||
+    hostname.startsWith('fe80:') ||
     hostname === '0.0.0.0' ||
+    hostname === '[::]' ||
     hostname.endsWith('.local') ||
-    hostname.endsWith('.internal')
+    hostname.endsWith('.internal') ||
+    hostname.endsWith('.localhost') ||
+    /^\d+$/.test(hostname)
   ) {
     return res.status(403).json({ error: 'Internal URLs are not allowed' });
   }

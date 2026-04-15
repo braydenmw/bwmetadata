@@ -24,6 +24,11 @@ import { runStrategicIntelligencePipeline } from './strategicIntelligencePipelin
 import { buildBrainCoverageReport } from './brainCoverageAudit.js';
 import { buildPerceptionDeltaIndex } from '../services/PerceptionDeltaIndex.js';
 import { runFiveEngineTribunal } from '../services/FiveEngineTribunal.js';
+import { BrainIntegrationService, type BrainContext } from '../../services/BrainIntegrationService.js';
+import { NSILIntelligenceHub } from '../../services/NSILIntelligenceHub.js';
+import { validateBody, aiValidation } from '../middleware/validate.js';
+import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
+import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +45,7 @@ const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim(
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
+const getAnthropicKey = () => String(process.env.ANTHROPIC_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -52,18 +58,14 @@ const getOpenAIKey = () => String(process.env.OPENAI_API_KEY || '').trim().repla
 const _isAIAvailable = (): boolean => {
   // Bedrock removed
   if (getOpenAIKey()) return true;
+  if (getAnthropicKey()) return true;
   if (getGroqKey()) return true;
   if (getTogetherKey()) return true;
   return false;
 };
 
-const generateWithAI = async (input: string | AIMessage[], systemInstruction?: string): Promise<string> => {
-  const openaiKey = getOpenAIKey();
-  const groqKey = getGroqKey();
-  const togetherKey = getTogetherKey();
-  const providerConfigured = Boolean(openaiKey || groqKey || togetherKey);
-
-  const baseMessages: AIMessage[] = typeof input === 'string'
+const generateWithAI = async (input: string | AIMessage[], systemInstruction?: string, taskType?: TaskType): Promise<string> => {
+  const messages: AIMessage[] = typeof input === 'string'
     ? [{ role: 'user', content: input }]
     : input
         .filter((msg): msg is AIMessage =>
@@ -73,107 +75,22 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
         );
 
   const fullMessages: AIMessage[] = systemInstruction
-    ? [{ role: 'system', content: systemInstruction }, ...baseMessages]
-    : baseMessages;
+    ? [{ role: 'system', content: systemInstruction }, ...messages]
+    : messages;
 
-  // 1. AWS Bedrock (primary for AWS live deployments)
-  // Bedrock removed
-
-  // 2. OpenAI fallback
-  if (openaiKey) {
-    try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${openaiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: fullMessages,
-          max_tokens: 4096,
-          temperature: 0.4,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const text = (data.choices?.[0]?.message?.content || '').trim();
-        if (text) return text;
-      } else {
-        console.warn('[AI Routes] OpenAI error:', res.status);
-      }
-    } catch (openaiErr) {
-      console.warn('[AI Routes] OpenAI failed, trying Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
-    }
-  }
-
-  // 3. Groq fallback
-  if (groqKey) {
-    try {
-      const res = await fetch(GROQ_API_URL, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${groqKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: GROQ_MODEL_ID,
-          messages: fullMessages,
-          max_tokens: 4096,
-          temperature: 0.4,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const text = (data.choices?.[0]?.message?.content || '').trim();
-        if (text) return text;
-      } else {
-        console.warn('[AI Routes] Groq error:', res.status);
-      }
-    } catch (groqErr) {
-      console.warn('[AI Routes] Groq failed, trying Together:', groqErr instanceof Error ? groqErr.message : groqErr);
-    }
-  }
-
-  // 4. Together.ai fallback
-  if (togetherKey) {
-    try {
-      const res = await fetch(TOGETHER_API_URL, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${togetherKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: TOGETHER_MODEL_ID,
-          messages: fullMessages,
-          max_tokens: 4096,
-          temperature: 0.4,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const text = (data.choices?.[0]?.message?.content || '').trim();
-        if (text) return text;
-      } else {
-        console.warn('[AI Routes] Together.ai error:', res.status);
-      }
-    } catch (togetherErr) {
-      console.warn('[AI Routes] Together.ai failed:', togetherErr instanceof Error ? togetherErr.message : togetherErr);
-    }
-  }
-  console.error('[AI Routes] AI generation failed across configured providers', {
-    hasOpenAI: Boolean(openaiKey),
-    hasGroq: Boolean(groqKey),
-    hasTogether: Boolean(togetherKey),
+  // Use the intelligent multi-provider orchestrator
+  const result = await callAI({
+    messages: fullMessages,
+    taskType: taskType || 'general',
+    maxTokens: 8192,
+    temperature: 0.4,
   });
-  if (!providerConfigured) {
-    throw new Error('No AI provider configured. Set OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY.');
-  }
-  throw new Error('AI provider is configured, but upstream requests failed. Check provider key validity and outbound network access.');
+
+  return result.text;
 };
-// System instruction for the AI
-const SYSTEM_INSTRUCTION = `
+// System instruction for the AI — domain-switchable
+// Legacy default kept for backward compatibility; active instruction resolved via domainMode.
+const SYSTEM_INSTRUCTION_DEFAULT = `
 You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.
 You are NOT a standard chatbot. You are a deterministic economic modeling engine.
 
@@ -208,8 +125,15 @@ CONTEXT:
 - You operate to close the "100-Year Confidence Gap".
 - Your output should feel like a high-level intelligence dossier backed by real data.
 `;
+const SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_DEFAULT;
 
-const CONSULTANT_SYSTEM_INSTRUCTION = `
+/** Resolve the system instruction for a given domain mode */
+const _getSystemInstructionForDomain = (domainMode?: DomainMode): string => {
+  if (!domainMode || domainMode === 'regional-development') return SYSTEM_INSTRUCTION_DEFAULT;
+  return getDomainSystemInstruction(domainMode);
+};
+
+const CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT = `
 You are BW Consultant AI for Nexus Intelligence OS v7.0.
 
 Operating mode:
@@ -236,12 +160,23 @@ Response quality rules:
 - If context is incomplete, state assumptions briefly.
 - Preserve professional tone suitable for executive and government stakeholders.
 `;
+const CONSULTANT_SYSTEM_INSTRUCTION = CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT;
+
+/** Resolve the consultant system instruction for a given domain mode */
+const getConsultantInstructionForDomain = (domainMode?: DomainMode): string => {
+  if (!domainMode || domainMode === 'regional-development') return CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT;
+  return getDomainConsultantInstruction(domainMode);
+};
 
 type ConsultantIntent =
   | 'report_build'
   | 'information_lookup'
   | 'strategy_advice'
   | 'risk_assessment'
+  | 'financial_analysis'
+  | 'legal_analysis'
+  | 'product_analysis'
+  | 'policy_analysis'
   | 'clarification'
   | 'general';
 
@@ -253,6 +188,18 @@ const detectConsultantIntent = (message: string): ConsultantIntent => {
   }
   if (/\bfind\b|\bsearch\b|\bsource\b|\bevidence\b|\bcitation\b|\bdata\b/.test(text)) {
     return 'information_lookup';
+  }
+  if (/\bvaluation\b|\bdcf\b|\birr\b|\bnpv\b|\bportfolio\b|\blbo\b|\bwacc\b|\bfinancial model\b|\bbalance sheet\b/.test(text)) {
+    return 'financial_analysis';
+  }
+  if (/\blegal\b|\bjurisdiction\b|\bcourt\b|\blitigation\b|\bcontract\b|\bclause\b|\bprecedent\b|\bstatute\b/.test(text)) {
+    return 'legal_analysis';
+  }
+  if (/\bproduct[\s-]market fit\b|\bgo[\s-]to[\s-]market\b|\bpricing\b|\buser segment\b|\bfeature\b|\blaunch\b|\bsaas\b|\bchurn\b|\bretention\b/.test(text)) {
+    return 'product_analysis';
+  }
+  if (/\bpolicy\b|\bgovernance\b|\binstitutional\b|\breform\b|\bstakeholder.*map\b|\bconstituency\b|\blegislat\b/.test(text)) {
+    return 'policy_analysis';
   }
   if (/\brisk\b|\bthreat\b|\bcompliance\b|\bregulator\b|\baudit\b/.test(text)) {
     return 'risk_assessment';
@@ -277,6 +224,14 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
       return 'Focus on risk exposure, controls, assumptions, and mitigation sequence.';
     case 'strategy_advice':
       return 'Focus on decision options, trade-offs, and a recommended path with rationale.';
+    case 'financial_analysis':
+      return 'Focus on quantitative financial analysis: valuation, cash flow modelling, risk-return metrics, and scenario outputs.';
+    case 'legal_analysis':
+      return 'Focus on structured legal analysis: elements, jurisdictional considerations, precedent patterns, and compliance gaps.';
+    case 'product_analysis':
+      return 'Focus on product-market dynamics: fit scoring, competitive positioning, pricing elasticity, and go-to-market options.';
+    case 'policy_analysis':
+      return 'Focus on policy impact assessment: stakeholder mapping, institutional readiness, implementation feasibility, and distributional effects.';
     case 'clarification':
       return 'Use plain language to clarify user intent and ask one concise clarifying question if needed.';
     default:
@@ -351,6 +306,7 @@ const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number, label: str
 
 interface RuntimeProviderAvailability {
   openai: boolean;
+  anthropic: boolean;
   groq: boolean;
   together: boolean;
   bedrockConfigured: boolean;
@@ -359,11 +315,12 @@ interface RuntimeProviderAvailability {
 
 const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailability> => {
   const openai = Boolean(getOpenAIKey());
+  const anthropic = Boolean(getAnthropicKey());
   const groq = Boolean(getGroqKey());
   const together = Boolean(getTogetherKey());
-  // Bedrock removed
   return {
     openai,
+    anthropic,
     groq,
     together,
     bedrockConfigured: false,
@@ -762,23 +719,113 @@ const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
   return normalized.length > 0 ? Array.from(new Set(normalized)) : defaultOrder;
 };
 
-const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string) => `
-${deriveConsultantCapabilityProfile(message, context).brief}
+// ── Extract Partial<ReportParameters> from consultant context for Brain / NSIL ──
+const extractReportParamsFromContext = (message: string, context?: unknown): Record<string, unknown> => {
+  const params: Record<string, unknown> = {};
+  if (context && typeof context === 'object') {
+    const ctx = context as Record<string, unknown>;
+    // Map known context fields to ReportParameters keys
+    if (ctx.country) params.country = String(ctx.country);
+    if (ctx.city) params.userCity = String(ctx.city);
+    if (ctx.region) params.region = String(ctx.region);
+    if (ctx.organization || ctx.org || ctx.organizationName) params.organizationName = String(ctx.organization || ctx.org || ctx.organizationName);
+    if (ctx.industry) params.industry = Array.isArray(ctx.industry) ? ctx.industry : [String(ctx.industry)];
+    if (ctx.sector) params.industry = [String(ctx.sector)];
+    if (ctx.objectives) params.strategicObjectives = Array.isArray(ctx.objectives) ? ctx.objectives : [String(ctx.objectives)];
+    if (ctx.problemStatement) params.problemStatement = String(ctx.problemStatement);
+    if (ctx.investmentSize || ctx.totalInvestment) params.totalInvestment = String(ctx.investmentSize || ctx.totalInvestment);
+    if (ctx.riskTolerance) params.riskTolerance = String(ctx.riskTolerance);
+    if (ctx.targetPartner) params.targetPartner = String(ctx.targetPartner);
+    if (ctx.tier) params.tier = Array.isArray(ctx.tier) ? ctx.tier : [String(ctx.tier)];
+    // Spread any additional params the frontend may have passed
+    if (ctx.reportParams && typeof ctx.reportParams === 'object') {
+      Object.assign(params, ctx.reportParams);
+    }
+  }
+  // Ensure there's at least something from the message for engines to work with
+  if (!params.problemStatement && message) {
+    params.problemStatement = message.substring(0, 500);
+  }
+  return params;
+};
 
-OVERLOOKED-FIRST INTELLIGENCE:
-${JSON.stringify(buildOverlookedIntelligenceSnapshot(message, context), null, 2)}
+// ── Summarise NSIL IntelligenceReport for prompt injection ──
+const summariseNSILReport = (report: Record<string, unknown>): string => {
+  const parts: string[] = [];
+  const rec = report.recommendation as Record<string, unknown> | undefined;
+  if (rec) {
+    parts.push(`**NSIL Verdict:** ${rec.action} (${rec.confidence}% confidence)`);
+    if (rec.summary) parts.push(`**Summary:** ${String(rec.summary).substring(0, 400)}`);
+    if (Array.isArray(rec.criticalActions) && rec.criticalActions.length) parts.push(`**Critical Actions:** ${(rec.criticalActions as string[]).slice(0, 5).join('; ')}`);
+    if (Array.isArray(rec.keyRisks) && rec.keyRisks.length) parts.push(`**Key Risks:** ${(rec.keyRisks as string[]).slice(0, 5).join('; ')}`);
+    if (Array.isArray(rec.keyOpportunities) && rec.keyOpportunities.length) parts.push(`**Key Opportunities:** ${(rec.keyOpportunities as string[]).slice(0, 5).join('; ')}`);
+    if (rec.ethicalGate) parts.push(`**Ethical Gate:** ${JSON.stringify(rec.ethicalGate)}`);
+  }
+  const reflexive = report.reflexive as Record<string, unknown> | undefined;
+  if (reflexive) {
+    parts.push(`\n### ── REFLEXIVE INTELLIGENCE (Layer 9) ──`);
+    for (const [engine, result] of Object.entries(reflexive)) {
+      if (result && typeof result === 'object') {
+        const r = result as Record<string, unknown>;
+        const summary = r.summary || r.headline || r.topInsight || r.result || JSON.stringify(r).substring(0, 200);
+        parts.push(`**${engine}:** ${String(summary).substring(0, 300)}`);
+      }
+    }
+  }
+  const autonomous = report.autonomous as Record<string, unknown> | undefined;
+  if (autonomous) {
+    parts.push(`\n### ── AUTONOMOUS INTELLIGENCE (Layer 6) ──`);
+    for (const [engine, result] of Object.entries(autonomous)) {
+      if (result && typeof result === 'object') {
+        const r = result as Record<string, unknown>;
+        const summary = r.summary || r.headline || r.topInsight || JSON.stringify(r).substring(0, 200);
+        parts.push(`**${engine}:** ${String(summary).substring(0, 300)}`);
+      }
+    }
+  }
+  if (Array.isArray(report.applicableInsights) && report.applicableInsights.length) {
+    parts.push(`\n**Learning Insights:** ${(report.applicableInsights as {insight?: string}[]).slice(0, 3).map(i => i.insight || JSON.stringify(i)).join('; ')}`);
+  }
+  parts.push(`**Components Run:** ${Array.isArray(report.componentsRun) ? (report.componentsRun as string[]).join(', ') : 'N/A'}`);
+  return parts.join('\n');
+};
 
-STRATEGIC PIPELINE:
-${JSON.stringify(runStrategicIntelligencePipeline(message, context), null, 2)}
+// Truncate a string to a rough token budget (1 token ≈ 4 chars).
+// Keeps the beginning of the text which has the most important context.
+const truncateToTokenBudget = (text: string, maxTokens: number): string => {
+  const maxChars = maxTokens * 4;
+  if (text.length <= maxChars) return text;
+  return text.slice(0, maxChars) + '\n... [truncated for token budget]';
+};
+
+const MAX_PROMPT_TOKENS = 16000; // Expanded for deeper brain analysis — Groq 128K context supports this
+
+const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string) => {
+  // Build sections individually, then assemble and truncate
+  const capProfile = deriveConsultantCapabilityProfile(message, context).brief;
+  const brain = brainPromptBlock ? `\n═══ BRAIN INTELLIGENCE (summary) ═══\n${brainPromptBlock.slice(0, 6000)}\n═══ END ═══\n` : '';
+  const nsil = nsilSummary ? `\n═══ NSIL ANALYSIS (summary) ═══\n${nsilSummary.slice(0, 1500)}\n═══ END ═══\n` : '';
+  const overlooked = JSON.stringify(buildOverlookedIntelligenceSnapshot(message, context));
+  const pipeline = JSON.stringify(runStrategicIntelligencePipeline(message, context));
+  const ctxStr = context ? JSON.stringify(context) : 'No structured context provided.';
+
+  const raw = `${capProfile}
+${brain}
+${nsil}
+OVERLOOKED-FIRST INTELLIGENCE (compact):
+${overlooked.slice(0, 1500)}
+
+STRATEGIC PIPELINE (compact):
+${pipeline.slice(0, 1500)}
 
 INTENT: ${intent}
 INTENT DIRECTIVE: ${buildIntentDirective(intent)}
 
 CONTEXT:
-${context ? JSON.stringify(context, null, 2) : 'No structured context provided.'}
+${ctxStr.slice(0, 2000)}
 
 SYSTEM CASE PROMPT:
-${typeof systemPrompt === 'string' ? systemPrompt : 'N/A'}
+${typeof systemPrompt === 'string' ? systemPrompt.slice(0, 500) : 'N/A'}
 
 USER MESSAGE:
 ${message}
@@ -789,8 +836,10 @@ OUTPUT FORMAT:
 3) One follow-up question only if it materially improves quality.
 4) Do not force output-format menus unless user explicitly asks for format selection.
 `;
+  return truncateToTokenBudget(raw, MAX_PROMPT_TOKENS);
+};
 
-const invokeConsultantWithTogether = async (prompt: string): Promise<string> => {
+const invokeConsultantWithTogether = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const key = getTogetherKey();
   if (!key) {
     throw new Error('Together.ai unavailable: TOGETHER_API_KEY missing');
@@ -805,7 +854,7 @@ const invokeConsultantWithTogether = async (prompt: string): Promise<string> => 
     body: JSON.stringify({
       model: TOGETHER_MODEL_ID,
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
       max_tokens: 1800,
@@ -825,7 +874,7 @@ const invokeConsultantWithTogether = async (prompt: string): Promise<string> => 
   return text;
 };
 
-const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
+const invokeConsultantWithGroq = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const key = getGroqKey();
   if (!key) {
     throw new Error('Groq unavailable: GROQ_API_KEY missing');
@@ -840,7 +889,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
     body: JSON.stringify({
       model: GROQ_MODEL_ID,
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
       max_tokens: 1800,
@@ -863,7 +912,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
 
 
 
-const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
+const invokeConsultantWithOpenAI = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
     throw new Error('OpenAI unavailable: OPENAI_API_KEY missing');
@@ -882,7 +931,7 @@ const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
     body: JSON.stringify({
       model: 'gpt-4.1-mini',
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt }
       ],
       temperature: 0.4,
@@ -908,7 +957,8 @@ const runConsultantBroker = async (
   prompt: string,
   order: ConsultantProvider[],
   timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS,
-  providerAvailability?: Partial<Record<ConsultantProvider, boolean>>
+  providerAvailability?: Partial<Record<ConsultantProvider, boolean>>,
+  consultantInstruction?: string
 ): Promise<{ text: string; provider: ConsultantProvider; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
 
@@ -920,9 +970,9 @@ const runConsultantBroker = async (
 
     try {
       const invoker =
-        provider === 'groq'    ? invokeConsultantWithGroq(prompt)
-        : provider === 'together' ? invokeConsultantWithTogether(prompt)
-        :                          invokeConsultantWithOpenAI(prompt);
+        provider === 'groq'    ? invokeConsultantWithGroq(prompt, consultantInstruction)
+        : provider === 'together' ? invokeConsultantWithTogether(prompt, consultantInstruction)
+        :                          invokeConsultantWithOpenAI(prompt, consultantInstruction);
       const text = await withTimeout(
         invoker,
         timeoutMs,
@@ -1011,23 +1061,39 @@ router.get('/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean(availability.openai || availability.groq || availability.together),
+    aiAvailable: Boolean(availability.openai || availability.anthropic || availability.groq || availability.together),
     providers: {
       // Bedrock removed
       openai: availability.openai,
+      anthropic: availability.anthropic,
       groq: availability.groq,
       together: availability.together
     }
   });
 });
 
+// ─── Provider Orchestrator Status ──────────────────────────────────────────────
+router.get('/provider-status', async (_req: Request, res: Response) => {
+  try {
+    const status = getProviderStatus();
+    res.json({
+      orchestrator: 'active',
+      availableProviders: availableProviderCount(),
+      providers: status,
+    });
+  } catch (_err) {
+    res.status(500).json({ error: 'Failed to get provider status' });
+  }
+});
+
 router.get('/readiness', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
-  const ready = availability.openai || availability.groq || availability.together;
+  const ready = availability.openai || availability.anthropic || availability.groq || availability.together;
 
   const reasons: string[] = [];
   // Bedrock removed
   if (!availability.openai) reasons.push('openai_not_configured');
+  if (!availability.anthropic) reasons.push('anthropic_not_configured');
   if (!availability.groq) reasons.push('groq_not_configured');
   if (!availability.together) reasons.push('together_not_configured');
   if (ready && reasons.length === 0) reasons.push('ai_runtime_ready');
@@ -1039,6 +1105,9 @@ router.get('/readiness', async (_req: Request, res: Response) => {
       // Bedrock removed
       openai: {
         ready: availability.openai
+      },
+      anthropic: {
+        ready: availability.anthropic
       },
       groq: {
         ready: availability.groq
@@ -1055,6 +1124,7 @@ router.get('/control/status', async (_req: Request, res: Response) => {
   const providers = {
     // Bedrock removed
     openai: availability.openai,
+    anthropic: availability.anthropic,
     groq: availability.groq,
     together: availability.together
   };
@@ -1097,6 +1167,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'message is required' });
     }
 
+    // Extract domain mode from context (set by Gateway intake) or request body
+    const rawDomainMode = (context && typeof context === 'object' && (context as Record<string, unknown>).domainMode)
+      || req.body.domainMode;
+    const domainMode: DomainMode | undefined = typeof rawDomainMode === 'string'
+      ? rawDomainMode as DomainMode
+      : undefined;
+    const activeDomainInstruction = getConsultantInstructionForDomain(domainMode);
+
     const normalizedTaskType: ConsultantTaskType = (typeof taskType === 'string' ? taskType : 'general_assist') as ConsultantTaskType;
     if (!CONSULTANT_ALLOWED_TASK_TYPES.has(normalizedTaskType)) {
       return res.status(400).json({
@@ -1127,13 +1205,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
     // frontend shows a helpful setup message instead of an error.
     const noProviderAvailable =
       !providerAvailability.openai &&
+      !providerAvailability.anthropic &&
       !providerAvailability.groq &&
       !providerAvailability.together;
     if (noProviderAvailable) {
       return res.json({
         requestId,
         taskType: normalizedTaskType,
-        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GROQ_API_KEY — free at console.groq.com (recommended — fast and reliable)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
+        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GROQ_API_KEY — free at console.groq.com (recommended — fast and reliable)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n• ANTHROPIC_API_KEY — console.anthropic.com\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
         provider: 'rule-engine',
         attempts: [],
         confidence: 1,
@@ -1188,6 +1267,38 @@ router.post('/consultant', async (req: Request, res: Response) => {
       unresolvedGapCount: capabilityProfile.gaps.length,
       perceptionDelta
     });
+
+    // ═══ FULL BRAIN + NSIL WIRING ═══════════════════════════════════════════
+    // Run the 44-engine Brain and NSIL 10-layer pipeline in parallel.
+    // Both are wrapped in try/catch with timeouts so the consultant never stalls.
+    const reportParams = extractReportParamsFromContext(sanitizedMessage, sanitizedContextResult.context);
+    const readinessEstimate = strategicPipeline.readinessScore ?? 50;
+
+    let brainContext: BrainContext | null = null;
+    let nsilReport: Record<string, unknown> | null = null;
+
+    const BRAIN_TIMEOUT_MS = 12000;
+
+    try {
+      const [brainResult, nsilResult] = await Promise.allSettled([
+        Promise.race([
+          BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
+        ]),
+        Promise.race([
+          NSILIntelligenceHub.runFullAnalysis(reportParams),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
+        ]),
+      ]);
+      if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
+      else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
+      if (nsilResult.status === 'fulfilled') nsilReport = nsilResult.value as unknown as Record<string, unknown>;
+      else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
+    } catch (brainErr) {
+      console.warn('[Consultant] Brain/NSIL parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
+    }
+    // ═══ END BRAIN + NSIL WIRING ════════════════════════════════════════════
+
     if (shouldRequireOutputClarification(sanitizedMessage, intent)) {
       const clarificationText = buildOutputClarificationResponse();
 
@@ -1260,7 +1371,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
       });
     }
 
-    const prompt = buildConsultantPrompt(sanitizedMessage, intent, sanitizedContextResult.context, systemPrompt);
+    const prompt = buildConsultantPrompt(
+      sanitizedMessage,
+      intent,
+      sanitizedContextResult.context,
+      systemPrompt,
+      brainContext?.promptBlock ?? undefined,
+      nsilReport ? summariseNSILReport(nsilReport) : undefined
+    );
     const brokerResult = await runConsultantBroker(
       prompt,
       providerOrder,
@@ -1268,9 +1386,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
       {
         // Bedrock removed
         openai: providerAvailability.openai,
+        anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
-      }
+      },
+      activeDomainInstruction
     );
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 
@@ -1350,6 +1470,95 @@ router.post('/consultant', async (req: Request, res: Response) => {
       strategicPipeline,
       perceptionDelta,
       tribunal,
+      brainIntelligence: brainContext ? {
+        indices: brainContext.indices,
+        adversarial: brainContext.adversarial,
+        agentConsensus: brainContext.agentConsensus,
+        nsilAssessment: brainContext.nsilAssessment,
+        compositeScore: brainContext.compositeScore,
+        compliance: brainContext.compliance,
+        ifcAssessment: brainContext.ifcAssessment,
+        situationAnalysis: brainContext.situationAnalysis,
+        personaAnalysis: brainContext.personaAnalysis,
+        motivationAnalysis: brainContext.motivationAnalysis,
+        counterfactualAnalysis: brainContext.counterfactualAnalysis,
+        historicalParallels: brainContext.historicalParallels,
+        rankedPartners: brainContext.rankedPartners,
+        derivedIndices: brainContext.derivedIndices,
+        gateStatus: brainContext.gateStatus,
+        reactiveOpportunities: brainContext.reactiveOpportunities,
+        reactiveRisks: brainContext.reactiveRisks,
+        qualityGate: brainContext.qualityGate,
+        researchEcosystem: brainContext.researchEcosystem,
+        failureModeGovernance: brainContext.failureModeGovernance,
+        proactiveBriefing: brainContext.proactiveBriefing ? {
+          backtestAccuracy: brainContext.proactiveBriefing.backtestAccuracy,
+          calibrationSummary: brainContext.proactiveBriefing.calibrationSummary,
+          driftSummary: brainContext.proactiveBriefing.driftSummary,
+          cognitiveSummary: brainContext.proactiveBriefing.cognitiveSummary,
+          proactiveSignals: brainContext.proactiveBriefing.proactiveSignals.slice(0, 5),
+          actionPriorities: brainContext.proactiveBriefing.actionPriorities.slice(0, 5),
+          confidence: brainContext.proactiveBriefing.confidence,
+        } : null,
+        causalSimulation: brainContext.causalSimulation,
+        coreEthics: brainContext.coreEthics,
+        regionalCityDiscovery: brainContext.regionalCityDiscovery ? {
+          totalCitiesScanned: brainContext.regionalCityDiscovery.totalCitiesScanned,
+          topMatches: brainContext.regionalCityDiscovery.topMatches.slice(0, 10),
+          sectorHotspots: brainContext.regionalCityDiscovery.sectorHotspots,
+          insight: brainContext.regionalCityDiscovery.insight,
+        } : null,
+        bootsOnGround: brainContext.bootsOnGround ?? null,
+        relocationPathway: brainContext.relocationPathway ?? null,
+        globalCityIndex: brainContext.globalCityIndex ?? null,
+        relocationOutcomes: brainContext.relocationOutcomes ?? null,
+        supplyChainMap: brainContext.supplyChainMap ?? null,
+        workforceIntelligence: brainContext.workforceIntelligence ?? null,
+        functionSplit: brainContext.functionSplit ?? null,
+        esgClimate: brainContext.esgClimate ?? null,
+        networkEffects: brainContext.networkEffects ?? null,
+        tier1Extraction: brainContext.tier1Extraction ?? null,
+        governmentIncentives: brainContext.governmentIncentives ?? null,
+        quantumMonteCarlo: brainContext.quantumMonteCarlo ?? null,
+        quantumPatterns: brainContext.quantumPatterns ?? null,
+        quantumCognition: brainContext.quantumCognition ?? null,
+        capabilityBoundary: brainContext.capabilityBoundary ? {
+          totalEngines: brainContext.capabilityBoundary.totalEngines,
+          totalCapabilities: brainContext.capabilityBoundary.totalCapabilities,
+          boundaries: brainContext.capabilityBoundary.boundaries,
+          dataSources: brainContext.capabilityBoundary.dataSources,
+        } : null,
+        financialAnalysis: brainContext.financialAnalysis ? {
+          npv: { npv: brainContext.financialAnalysis.npv.npv, discountRate: brainContext.financialAnalysis.npv.discountRate },
+          irr: { irrPercent: brainContext.financialAnalysis.irr.irrPercent, converged: brainContext.financialAnalysis.irr.converged },
+          payback: brainContext.financialAnalysis.payback,
+          wacc: brainContext.financialAnalysis.wacc,
+          scenarios: {
+            base: { npv: brainContext.financialAnalysis.scenarios.base.npv, irr: brainContext.financialAnalysis.scenarios.base.irr.irrPercent, returnMultiple: brainContext.financialAnalysis.scenarios.base.returnMultiple },
+            downside: { npv: brainContext.financialAnalysis.scenarios.downside.npv, irr: brainContext.financialAnalysis.scenarios.downside.irr.irrPercent },
+            upside: { npv: brainContext.financialAnalysis.scenarios.upside.npv, irr: brainContext.financialAnalysis.scenarios.upside.irr.irrPercent },
+          },
+          sensitivityDrivers: brainContext.financialAnalysis.sensitivityDrivers,
+        } : null,
+        riskMatrix: brainContext.riskMatrix ? {
+          aggregate: brainContext.riskMatrix.aggregate,
+          topRisks: brainContext.riskMatrix.topRisks.map(r => ({
+            id: r.id, name: r.name, category: r.category, severity: r.severity,
+            likelihood: r.likelihood, impact: r.impact, score: r.score,
+            impactUSD: r.impactUSD, mitigationStrategy: r.mitigationStrategy,
+            residualScore: r.residualScore, residualSeverity: r.residualSeverity,
+          })),
+          heatMap: brainContext.riskMatrix.heatMap,
+        } : null,
+        readiness: brainContext.readiness,
+        computedAt: brainContext.computedAt,
+      } : null,
+      nsilAnalysis: nsilReport ? {
+        recommendation: (nsilReport as Record<string, unknown>).recommendation,
+        componentsRun: (nsilReport as Record<string, unknown>).componentsRun,
+        reflexive: (nsilReport as Record<string, unknown>).reflexive ?? null,
+        autonomous: (nsilReport as Record<string, unknown>).autonomous ?? null,
+      } : null,
       control: controlDecision,
       learningHint,
       replayHash,
@@ -1580,6 +1789,7 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       {
         // Bedrock removed
         openai: providerAvailability.openai,
+        anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
       }
@@ -2053,7 +2263,7 @@ router.post('/copilot-analysis', requireApiKey, async (req: Request, res: Respon
     if (jsonMatch) {
       return res.json(JSON.parse(jsonMatch[0]));
     }
-    
+
     res.json({
       summary: `Analysis of "${query}" suggests focusing on strategic opportunities.`,
       options: [
@@ -2063,7 +2273,107 @@ router.post('/copilot-analysis', requireApiKey, async (req: Request, res: Respon
     });
   } catch (error) {
     console.error('Copilot analysis error:', error);
-    res.status(500).json({ error: 'Analysis failed' });
+    res.status(500).json({ error: 'Failed to run copilot analysis' });
+  }
+});
+
+// ─── Monte Carlo Simulation Endpoint ─────────────────────────────────────────
+router.post('/monte-carlo', validateBody(aiValidation.monteCarlo), (req: Request, res: Response) => {
+  try {
+    const { inputs, trials = 200 } = req.body;
+
+    if (!Array.isArray(inputs) || inputs.length === 0) {
+      return res.status(400).json({ error: 'inputs array is required' });
+    }
+
+    if (trials > 10000) {
+      return res.status(400).json({ error: 'Maximum 10,000 trials allowed' });
+    }
+
+    const results = inputs.map((input: {
+      label: string;
+      baseValue: number;
+      distribution: 'uniform' | 'triangular' | 'normal';
+      min?: number;
+      max?: number;
+      mode?: number;
+      stdDev?: number;
+    }) => {
+      const samples: number[] = [];
+
+      for (let i = 0; i < trials; i++) {
+        let value: number;
+        switch (input.distribution) {
+          case 'uniform':
+            value = (input.min ?? input.baseValue * 0.7) + Math.random() * ((input.max ?? input.baseValue * 1.3) - (input.min ?? input.baseValue * 0.7));
+            break;
+          case 'triangular': {
+            const min = input.min ?? input.baseValue * 0.7;
+            const max = input.max ?? input.baseValue * 1.3;
+            const mode = input.mode ?? input.baseValue;
+            const u = Math.random();
+            const fc = (mode - min) / (max - min);
+            value = u < fc
+              ? min + Math.sqrt(u * (max - min) * (mode - min))
+              : max - Math.sqrt((1 - u) * (max - min) * (max - mode));
+            break;
+          }
+          case 'normal': {
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+            value = input.baseValue + z * (input.stdDev ?? input.baseValue * 0.15);
+            break;
+          }
+          default:
+            value = input.baseValue;
+        }
+        samples.push(value);
+      }
+
+      samples.sort((a, b) => a - b);
+
+      const mean = samples.reduce((s, v) => s + v, 0) / samples.length;
+      const percentile = (p: number) => {
+        const idx = (samples.length - 1) * p;
+        const lo = Math.floor(idx);
+        const hi = Math.ceil(idx);
+        return lo === hi ? samples[lo] : samples[lo] + (samples[hi] - samples[lo]) * (idx - lo);
+      };
+
+      const stdDev = Math.sqrt(samples.reduce((s, v) => s + (v - mean) ** 2, 0) / samples.length);
+
+      return {
+        label: input.label,
+        mean: parseFloat(mean.toFixed(2)),
+        median: parseFloat(percentile(0.5).toFixed(2)),
+        stdDev: parseFloat(stdDev.toFixed(2)),
+        p10: parseFloat(percentile(0.1).toFixed(2)),
+        p50: parseFloat(percentile(0.5).toFixed(2)),
+        p90: parseFloat(percentile(0.9).toFixed(2)),
+        min: parseFloat(samples[0].toFixed(2)),
+        max: parseFloat(samples[samples.length - 1].toFixed(2)),
+        trials,
+      };
+    });
+
+    const compositeP10 = results.reduce((s: number, r: { p10: number }) => s + r.p10, 0);
+    const compositeP50 = results.reduce((s: number, r: { p50: number }) => s + r.p50, 0);
+    const compositeP90 = results.reduce((s: number, r: { p90: number }) => s + r.p90, 0);
+
+    res.json({
+      results,
+      composite: {
+        p10: parseFloat(compositeP10.toFixed(2)),
+        p50: parseFloat(compositeP50.toFixed(2)),
+        p90: parseFloat(compositeP90.toFixed(2)),
+      },
+      trials,
+      generatedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Monte Carlo error:', error);
+    res.status(500).json({ error: 'Simulation failed' });
   }
 });
 

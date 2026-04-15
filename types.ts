@@ -190,6 +190,9 @@ export interface CapabilityAssessment {
 }
 
 export interface ReportParameters {
+  // Domain Mode
+  domainMode?: 'regional-development' | 'corporate-strategy' | 'legal-advisory' | 'product-strategy' | 'financial-analysis' | 'policy-governance' | 'general-intelligence';
+
   // Identity
   reportName: string;
   userName: string;
@@ -1348,6 +1351,17 @@ export interface ReportPayload {
     situationAnalysis?: Record<string, unknown>;
     historicalParallels?: Record<string, unknown>;
     regionalKernel?: Record<string, unknown>;
+    codebaseAudit?: {
+      totalFiles: number;
+      filesReviewed: number;
+      matchedFiles: number;
+      coveragePct: number;
+      verdict: 'pass' | 'partial' | 'review';
+      findings: string[];
+      evidence: Array<{ filePath: string; relevanceScore: number; matchedInContext: boolean; basis: string }>;
+    };
+    externalSearchSignals?: Array<{ query: string; results: Array<{ title: string; snippet: string; url: string; source: string; publishedAt?: string }>; source: string; status: 'ok' | 'failed'; error?: string }>;
+    };
   };
 }
 

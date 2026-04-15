@@ -7,29 +7,52 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import { requestLogger } from './middleware/logger.js';
+import { requestIdMiddleware, globalErrorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { aiUserLimiter, reportUserLimiter, authUserLimiter } from './middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables - check multiple possible locations
+// Priority: production env values first, then local overrides in development.
 const envPaths = [
-  path.resolve(__dirname, '.env'),           // Same directory
-  path.resolve(__dirname, '..', '.env'),     // Parent directory (dev)
-  path.resolve(__dirname, '..', '..', '.env'), // Two levels up (production bundled)
-  path.resolve(process.cwd(), '.env'),       // Current working directory
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(__dirname, '.env'),
+  path.resolve(__dirname, '..', '.env'),
+  path.resolve(__dirname, '..', '..', '.env'),
+  path.resolve(process.cwd(), '.env.local'),
+  path.resolve(__dirname, '.env.local'),
 ];
 
+// Preserve critical env vars set by the shell/infra before dotenv runs
+const shellNodeEnv = process.env.NODE_ENV;
+const shellPort = process.env.PORT;
+
+const fallbackOverride = shellNodeEnv !== 'production';
 for (const envPath of envPaths) {
-  const result = dotenv.config({ path: envPath, override: true });
+  // .env.local should always override .env (it contains real secrets)
+  const isLocal = envPath.endsWith('.env.local');
+  const result = dotenv.config({ path: envPath, override: isLocal || fallbackOverride });
   if (!result.error) {
-    console.log('Loaded .env from:', envPath);
-    break;
+    console.log('Loaded env vars from:', envPath);
   }
 }
 
+// Restore shell-set values — dotenv must never overwrite infra/CLI env vars
+if (shellNodeEnv) process.env.NODE_ENV = shellNodeEnv;
+if (shellPort) process.env.PORT = shellPort;
+
 // Debug: Check which AI providers are configured
-console.log('[Server] Clean environment - API keys optional');
-console.log('[Server] Add keys to .env when ready to enable AI features');
+console.log('[Server] Env loaded');
+if (process.env.NODE_ENV !== 'production') {
+  console.log('[Server] AI providers configured:', [
+    process.env.OPENAI_API_KEY ? 'OpenAI' : null,
+    process.env.GROQ_API_KEY ? 'Groq' : null,
+    process.env.TOGETHER_API_KEY ? 'Together' : null,
+    process.env.ANTHROPIC_API_KEY ? 'Anthropic' : null,
+  ].filter(Boolean).join(', ') || 'NONE');
+}
 
 // Import routes
 import aiRoutes from './routes/ai.js';
@@ -37,25 +60,29 @@ import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
 import autonomousRoutes from './routes/autonomous.js';
 import governanceRoutes from './routes/governance.js';
+import authRoutes from './routes/auth.js';
+import learningRoutes from './routes/learning.js';
+import { optionalAuth } from './middleware/auth.js';
+import { sanitizeBody } from './middleware/validate.js';
 // bedrock placeholder route removed — inference handled by /api/ai routes
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
 
 const app = express();
 const PORT = parseInt(String(process.env.PORT || 3001), 10);
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: isProduction
-        ? ["'self'"]
-        : ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.tailwindcss.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'", "https://api.worldbank.org", "https://restcountries.com", "https://nominatim.openstreetmap.org", "https://en.wikipedia.org", "https://google.serper.dev", "https://api.perplexity.ai", "https://generativelanguage.googleapis.com", "https://*.amazonaws.com", "https://api.together.xyz", "https://api.groq.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      connectSrc: ["'self'", "https://cdn.tailwindcss.com", "https://api.worldbank.org", "https://restcountries.com", "https://nominatim.openstreetmap.org", "https://en.wikipedia.org", "https://google.serper.dev", "https://api.perplexity.ai", "https://generativelanguage.googleapis.com", "https://*.amazonaws.com", "https://api.together.xyz", "https://api.groq.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+      workerSrc: ["'self'", "blob:"],
       frameSrc: ["'none'"],
     },
   },
@@ -146,7 +173,7 @@ app.use('/api/', apiLimiter);
 // Stricter limit for AI endpoints (expensive calls)
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 20,
+  max: 120,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'AI request rate limit exceeded. Please wait before trying again.' },
@@ -171,12 +198,29 @@ const allowedOrigins = [
   'https://*.s3.amazonaws.com',
 ].filter(Boolean);
 
+// Also allow ngrok tunnels in production
+if (isProduction) {
+  allowedOrigins.push('https://*.ngrok-free.dev', 'https://*.ngrok.io');
+}
+
 // In production, also allow same-origin requests (AWS serves frontend + API from same host)
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true; // same-origin or non-browser clients
   if (allowedOrigins.some(allowed => allowed && (allowed.endsWith('*') ? origin.startsWith(allowed.slice(0, -1)) : origin === allowed))) return true;
   const hostname = new URL(origin).hostname;
   // Enable known managed hosting domains
+  // In production, only allow origins explicitly listed in ALLOWED_ORIGINS env var
+  // In development, allow common managed hosting platforms
+  if (isProduction) {
+    const extraOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (extraOrigins.some(allowed => origin === allowed || hostname === allowed)) return true;
+    // Allow Railway and common PaaS domains in production
+    if (/\.railway\.app$/i.test(hostname)) return true;
+    if (/\.onrender\.com$/i.test(hostname)) return true;
+    if (/\.ngrok-free\.dev$/i.test(hostname) || /\.ngrok\.io$/i.test(hostname)) return true;
+    return false;
+  }
+  // Dev-only: allow managed hosting platforms
   if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(hostname)) return true;
   if (/\.(railway|up\.railway)\.app$/i.test(hostname) || /\.railway\.app$/i.test(hostname)) return true;
   if (/\.cloudfront\.net$/i.test(hostname)) return true;
@@ -197,14 +241,16 @@ app.use(cors({
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
+// Global sanitization and optional auth in request pipeline
+app.use(sanitizeBody);
+app.use(optionalAuth);
+
 // Compression
 app.use(compression());
 
-// Request logging
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  next();
-});
+// Request ID and structured logging middleware
+app.use(requestIdMiddleware);
+app.use(requestLogger);
 
 // Health check (before other routes for reliability)
 // NOTE: This only checks env-signal presence. For credential-resolved
@@ -248,11 +294,13 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // API Routes
-app.use('/api/ai', aiRoutes);
-app.use('/api/reports', reportsRoutes);
+app.use('/api/auth', authUserLimiter, authRoutes);
+app.use('/api/ai', aiUserLimiter, aiRoutes);
+app.use('/api/reports', reportUserLimiter, reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);
 app.use('/api/governance', governanceRoutes);
+app.use('/api/learning', learningRoutes);
 // bedrock placeholder route removed — all AI inference goes through /api/ai
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
@@ -266,45 +314,49 @@ if (process.env.NODE_ENV === 'production') {
     path.join(process.cwd(), 'dist'),           // From project root
   ];
   
-  let distPath = possibleDistPaths[0];
+  console.log('[Static] __dirname:', __dirname);
+  console.log('[Static] cwd:', process.cwd());
+  console.log('[Static] Searching for dist/index.html in:', possibleDistPaths.map(p => p + '/index.html'));
+  
+  let distPath: string | null = null;
   for (const p of possibleDistPaths) {
-    if (fs.existsSync(path.join(p, 'index.html'))) {
+    const indexPath = path.join(p, 'index.html');
+    const exists = fs.existsSync(indexPath);
+    console.log(`[Static]   ${indexPath} -> ${exists ? 'FOUND' : 'missing'}`);
+    if (exists && !distPath) {
       distPath = p;
-      console.log('Serving static files from:', distPath);
-      break;
     }
   }
   
-  // DEBUG: optionally log static asset lookups (set DEBUG_STATIC=true in env to enable)
-  if (process.env.DEBUG_STATIC === 'true') {
-    app.use((req: Request, _res: Response, next: NextFunction) => {
-      if (req.path.startsWith('/assets') || req.path === '/' || req.path.endsWith('.js') || req.path.endsWith('.css') || req.path.endsWith('index.html')) {
-        const filePath = path.join(distPath, req.path === '/' ? 'index.html' : req.path);
-        const exists = fs.existsSync(filePath);
-        const stat = exists ? fs.statSync(filePath) : null;
-        console.log(`[STATIC DEBUG] ${req.method} ${req.path} -> ${filePath} exists=${exists} size=${stat ? stat.size : 0}`);
-      }
-      next();
+  if (distPath) {
+    console.log('[Static] Serving static files from:', distPath);
+    
+    app.use(express.static(distPath));
+    
+    // SPA fallback - serve index.html for all non-API routes
+    app.get('*', (_req: Request, res: Response) => {
+      res.sendFile(path.join(distPath!, 'index.html'));
     });
+  } else {
+    console.error('[Static] WARNING: dist/index.html not found in any expected location!');
+    console.error('[Static] The frontend will not be served. Run "npm run build:client" to create it.');
+    // List what IS in the expected directories for debugging
+    for (const p of possibleDistPaths) {
+      try {
+        const parent = path.dirname(p);
+        if (fs.existsSync(parent)) {
+          console.error(`[Static] Contents of ${parent}:`, fs.readdirSync(parent));
+        }
+      } catch { /* ignore */ }
+    }
   }
-  
-  app.use(express.static(distPath));
-  
-  // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
 }
 
-// Error handling
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  void _next;
-  console.error('Server error:', err);
-  res.status(500).json({ 
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
+// Not found handler for unmatched routes
+app.use(notFoundHandler);
+
+// Global error handler
+app.use(globalErrorHandler);
 
 // Start server
 const server = app.listen(PORT, '0.0.0.0', () => {
@@ -346,12 +398,26 @@ process.on('unhandledRejection', (reason) => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+const gracefulShutdown = async (signal: string) => {
+  console.log(`${signal} received, shutting down gracefully`);
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
   });
-});
+  // Attempt to drain DB pools
+  try {
+    const { getPool } = await import('./db.js');
+    const pool = getPool();
+    if (pool) pool.end().catch(() => {});
+  } catch { /* db module may not be loaded */ }
+  // Force exit after 10s if graceful shutdown hangs
+  setTimeout(() => {
+    console.error('Graceful shutdown timed out, forcing exit');
+    process.exit(1);
+  }, 10000).unref();
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;

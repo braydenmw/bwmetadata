@@ -187,6 +187,7 @@ if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' 
 
   // Save learning data to localStorage
   private saveLearningData(): void {
+    if (typeof localStorage === 'undefined') return;
     try {
       localStorage.setItem('bw-nexus-learning-data', JSON.stringify(this.learningData));
       localStorage.setItem('bw-nexus-performance-history', JSON.stringify(this.performanceHistory));
@@ -197,6 +198,7 @@ if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' 
 
   // Load learning data from localStorage
   private loadLearningData(): void {
+    if (typeof localStorage === 'undefined') return;
     try {
       const data = localStorage.getItem('bw-nexus-learning-data');
       const history = localStorage.getItem('bw-nexus-performance-history');
@@ -211,6 +213,34 @@ if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' 
   // Get current performance metrics
   getCurrentMetrics(): PerformanceMetrics | null {
     return this.performanceHistory[this.performanceHistory.length - 1] || null;
+  }
+
+  // Get SPI weights from the last learning cycle
+  getSPIWeights(): Record<'ER'|'SP'|'PS'|'PR'|'EA'|'CA'|'UT', number> {
+    const defaultWeights = {
+      ER: 0.25,
+      SP: 0.20,
+      PS: 0.15,
+      PR: 0.15,
+      EA: 0.10,
+      CA: 0.10,
+      UT: 0.05,
+    };
+
+    const latest = this.getCurrentMetrics();
+    if (!latest) return defaultWeights;
+
+    // Simple adaptation: adjust using success rate and common errors
+    const adjustment = Math.min(0.1, Math.max(-0.1, (latest.successRate - 0.75) * 0.2));
+    return {
+      ER: Math.max(0.02, Math.min(0.5, defaultWeights.ER + adjustment * 0.2)),
+      SP: Math.max(0.02, Math.min(0.5, defaultWeights.SP + adjustment * 0.2)),
+      PS: Math.max(0.02, Math.min(0.5, defaultWeights.PS + adjustment * 0.3)),
+      PR: Math.max(0.02, Math.min(0.5, defaultWeights.PR + adjustment * 0.2)),
+      EA: Math.max(0.02, Math.min(0.5, defaultWeights.EA + adjustment * 0.1)),
+      CA: Math.max(0.02, Math.min(0.5, defaultWeights.CA + adjustment * 0.1)),
+      UT: Math.max(0.02, Math.min(0.5, defaultWeights.UT + adjustment * 0.0)),
+    };
   }
 
   // Export learning data for analysis

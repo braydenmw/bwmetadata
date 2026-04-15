@@ -323,7 +323,10 @@ export class DeepThinkingEngine {
       children: factors.map((factor, idx) => ({
         id: `${type}-${factor}`,
         content: `${factor} evaluation`,
-        confidence: 60 + Math.random() * 30,
+        // Derive child confidence from parent branch type, cot score, and factor position
+        confidence: Math.min(95, Math.max(10,
+          baseConfidence + (cot.confidenceScore - 50) * 0.2 + (factors.length - idx) * 3
+        )),
         reasoning: [this.evaluateFactor(factor, params)],
         children: [],
         depth: 2,
@@ -620,7 +623,7 @@ export class DeepThinkingEngine {
     cot: ChainOfThought,
     tot: ThoughtNode,
     reflection: SelfReflection,
-    existingInsights: CopilotInsight[]
+    _existingInsights: CopilotInsight[]
   ): Promise<CopilotInsight[]> {
     const insights: CopilotInsight[] = [];
     
@@ -705,7 +708,7 @@ export class DeepThinkingEngine {
       : 'Limited context available - recommend gathering more information';
   }
 
-  private generateHypotheses(params: ReportParameters, reportData: ReportData): string {
+  private generateHypotheses(params: ReportParameters, _reportData: ReportData): string {
     const hypotheses = [];
     
     if (params.strategicIntent?.includes('market-entry')) {
